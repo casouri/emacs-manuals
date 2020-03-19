@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 24.3.
+
+Copyright © 1990-1996, 1998-2013 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Argument Access in Advice (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Argument Access in Advice (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Argument Access in Advice (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Advising-Functions.html#Advising-Functions" rel="up" title="Advising Functions">
+<link href="Combined-Definition.html#Combined-Definition" rel="next" title="Combined Definition">
+<link href="Preactivation.html#Preactivation" rel="prev" title="Preactivation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Argument-Access-in-Advice"></a>
+<div class="header">
+<p>
+Next: <a href="Combined-Definition.html#Combined-Definition" accesskey="n" rel="next">Combined Definition</a>, Previous: <a href="Preactivation.html#Preactivation" accesskey="p" rel="prev">Preactivation</a>, Up: <a href="Advising-Functions.html#Advising-Functions" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Argument-Access-in-Advice-1"></a>
+<h3 class="section">17.8 Argument Access in Advice</h3>
+
+<p>The simplest way to access the arguments of an advised function in the
+body of a piece of advice is to use the same names that the function
+definition uses.  To do this, you need to know the names of the argument
+variables of the original function.
+</p>
+<p>While this simple method is sufficient in many cases, it has a
+disadvantage: it is not robust, because it hard-codes the argument names
+into the advice.  If the definition of the original function changes,
+the advice might break.
+</p>
+<p>Another method is to specify an argument list in the advice itself.
+This avoids the need to know the original function definition&rsquo;s argument
+names, but it has a limitation: all the advice on any particular
+function must use the same argument list, because the argument list
+actually used for all the advice comes from the first piece of advice
+for that function.
+</p>
+<p>A more robust method is to use macros that are translated into the
+proper access forms at activation time, i.e., when constructing the
+advised definition.  Access macros access actual arguments by their
+(zero-based) position, regardless of how these actual arguments get
+distributed onto the argument variables of a function.  This is robust
+because in Emacs Lisp the meaning of an argument is strictly
+determined by its position in the argument list.
+</p>
+<dl>
+<dt><a name="index-ad_002dget_002darg"></a>Macro: <strong>ad-get-arg</strong> <em>position</em></dt>
+<dd><p>This returns the actual argument that was supplied at <var>position</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dget_002dargs"></a>Macro: <strong>ad-get-args</strong> <em>position</em></dt>
+<dd><p>This returns the list of actual arguments supplied starting at
+<var>position</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dset_002darg"></a>Macro: <strong>ad-set-arg</strong> <em>position value</em></dt>
+<dd><p>This sets the value of the actual argument at <var>position</var> to
+<var>value</var>
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dset_002dargs"></a>Macro: <strong>ad-set-args</strong> <em>position value-list</em></dt>
+<dd><p>This sets the list of actual arguments starting at <var>position</var> to
+<var>value-list</var>.
+</p></dd></dl>
+
+<p>Now an example.  Suppose the function <code>foo</code> is defined as
+</p>
+<div class="example">
+<pre class="example">(defun foo (x y &amp;optional z &amp;rest r) ...)
+</pre></div>
+
+<p>and is then called with
+</p>
+<div class="example">
+<pre class="example">(foo 0 1 2 3 4 5 6)
+</pre></div>
+
+<p>which means that <var>x</var> is 0, <var>y</var> is 1, <var>z</var> is 2 and <var>r</var> is
+<code>(3 4 5 6)</code> within the body of <code>foo</code>.  Here is what
+<code>ad-get-arg</code> and <code>ad-get-args</code> return in this case:
+</p>
+<div class="example">
+<pre class="example">(ad-get-arg 0) &rArr; 0
+(ad-get-arg 1) &rArr; 1
+(ad-get-arg 2) &rArr; 2
+(ad-get-arg 3) &rArr; 3
+(ad-get-args 2) &rArr; (2 3 4 5 6)
+(ad-get-args 4) &rArr; (4 5 6)
+</pre></div>
+
+<p>Setting arguments also makes sense in this example:
+</p>
+<div class="example">
+<pre class="example">(ad-set-arg 5 &quot;five&quot;)
+</pre></div>
+
+<p>has the effect of changing the sixth argument to <code>&quot;five&quot;</code>.  If this
+happens in advice executed before the body of <code>foo</code> is run, then
+<var>r</var> will be <code>(3 4 &quot;five&quot; 6)</code> within that body.
+</p>
+<p>Here is an example of setting a tail of the argument list:
+</p>
+<div class="example">
+<pre class="example">(ad-set-args 0 '(5 4 3 2 1 0))
+</pre></div>
+
+<p>If this happens in advice executed before the body of <code>foo</code> is run,
+then within that body, <var>x</var> will be 5, <var>y</var> will be 4, <var>z</var>
+will be 3, and <var>r</var> will be <code>(2 1 0)</code> inside the body of
+<code>foo</code>.
+</p>
+<p>These argument constructs are not really implemented as Lisp macros.
+Instead they are implemented specially by the advice mechanism.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Combined-Definition.html#Combined-Definition" accesskey="n" rel="next">Combined Definition</a>, Previous: <a href="Preactivation.html#Preactivation" accesskey="p" rel="prev">Preactivation</a>, Up: <a href="Advising-Functions.html#Advising-Functions" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

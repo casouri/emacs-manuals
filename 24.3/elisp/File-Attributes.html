@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 24.3.
+
+Copyright © 1990-1996, 1998-2013 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>File Attributes (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="File Attributes (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="File Attributes (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Information-about-Files.html#Information-about-Files" rel="up" title="Information about Files">
+<link href="Locating-Files.html#Locating-Files" rel="next" title="Locating Files">
+<link href="Truenames.html#Truenames" rel="prev" title="Truenames">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="File-Attributes"></a>
+<div class="header">
+<p>
+Next: <a href="Locating-Files.html#Locating-Files" accesskey="n" rel="next">Locating Files</a>, Previous: <a href="Truenames.html#Truenames" accesskey="p" rel="prev">Truenames</a>, Up: <a href="Information-about-Files.html#Information-about-Files" accesskey="u" rel="up">Information about Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Other-Information-about-Files"></a>
+<h4 class="subsection">25.6.4 Other Information about Files</h4>
+
+<p>This section describes the functions for getting detailed
+information about a file, other than its contents.  This information
+includes the mode bits that control access permissions, the owner and
+group numbers, the number of names, the inode number, the size, and
+the times of access and modification.
+</p>
+<dl>
+<dt><a name="index-file_002dmodes"></a>Function: <strong>file-modes</strong> <em>filename</em></dt>
+<dd><a name="index-file-permissions"></a>
+<a name="index-permissions_002c-file"></a>
+<a name="index-file-attributes"></a>
+<a name="index-file-modes"></a>
+<p>This function returns the <em>mode bits</em> describing the <em>file
+permissions</em> of <var>filename</var>, as an integer.  It recursively follows
+symbolic links in <var>filename</var> at all levels.  If <var>filename</var>
+does not exist, the return value is <code>nil</code>.
+</p>
+<p>See <a href="http://www.gnu.org/software/coreutils/manual/html_node/File-Permissions.html#File-Permissions">File Permissions</a> in <cite>The <small>GNU</small> <code>Coreutils</code>
+Manual</cite>, for a description of mode bits.  If the low-order bit is 1,
+then the file is executable by all users, if the second-lowest-order
+bit is 1, then the file is writable by all users, etc.  The highest
+value returnable is 4095 (7777 octal), meaning that everyone has read,
+write, and execute permission, that the <acronym>SUID</acronym> bit is set for
+both others and group, and that the sticky bit is set.
+</p>
+<div class="example">
+<pre class="example">(file-modes &quot;~/junk/diffs&quot;)
+     &rArr; 492               ; <span class="roman">Decimal integer.</span>
+</pre><pre class="example">(format &quot;%o&quot; 492)
+     &rArr; &quot;754&quot;             ; <span class="roman">Convert to octal.</span>
+</pre><pre class="example">
+
+</pre><pre class="example">(set-file-modes &quot;~/junk/diffs&quot; #o666)
+     &rArr; nil
+</pre><pre class="example">
+
+</pre><pre class="example">% ls -l diffs
+  -rw-rw-rw-  1 lewis 0 3063 Oct 30 16:00 diffs
+</pre></div>
+
+<p>See <a href="Changing-Files.html#Changing-Files">Changing Files</a>, for functions that change file permissions,
+such as <code>set-file-modes</code>.
+</p>
+<a name="index-MS_002dDOS-and-file-modes"></a>
+<a name="index-file-modes-and-MS_002dDOS"></a>
+<p><strong>MS-DOS note:</strong> On MS-DOS, there is no such thing as an
+&ldquo;executable&rdquo; file mode bit.  So <code>file-modes</code> considers a file
+executable if its name ends in one of the standard executable
+extensions, such as <samp>.com</samp>, <samp>.bat</samp>, <samp>.exe</samp>, and some
+others.  Files that begin with the Unix-standard &lsquo;<samp>#!</samp>&rsquo; signature,
+such as shell and Perl scripts, are also considered executable.
+Directories are also reported as executable, for compatibility with
+Unix.  These conventions are also followed by <code>file-attributes</code>,
+below.
+</p></dd></dl>
+
+<p>If the <var>filename</var> argument to the next two functions is a
+symbolic link, then these function do <em>not</em> replace it with its
+target.  However, they both recursively follow symbolic links at all
+levels of parent directories.
+</p>
+<dl>
+<dt><a name="index-file_002dnlinks"></a>Function: <strong>file-nlinks</strong> <em>filename</em></dt>
+<dd><p>This functions returns the number of names (i.e., hard links) that
+file <var>filename</var> has.  If the file does not exist, then this function
+returns <code>nil</code>.  Note that symbolic links have no effect on this
+function, because they are not considered to be names of the files they
+link to.
+</p>
+<div class="example">
+<pre class="example">% ls -l foo*
+-rw-rw-rw-  2 rms       4 Aug 19 01:27 foo
+-rw-rw-rw-  2 rms       4 Aug 19 01:27 foo1
+</pre><pre class="example">
+
+</pre><pre class="example">(file-nlinks &quot;foo&quot;)
+     &rArr; 2
+</pre><pre class="example">(file-nlinks &quot;doesnt-exist&quot;)
+     &rArr; nil
+</pre></div>
+</dd></dl>
+
+<dl>
+<dt><a name="index-file_002dattributes"></a>Function: <strong>file-attributes</strong> <em>filename &amp;optional id-format</em></dt>
+<dd><a name="Definition-of-file_002dattributes"></a><p>This function returns a list of attributes of file <var>filename</var>.  If
+the specified file cannot be opened, it returns <code>nil</code>.
+The optional parameter <var>id-format</var> specifies the preferred format
+of attributes <acronym>UID</acronym> and <acronym>GID</acronym> (see below)&mdash;the
+valid values are <code>'string</code> and <code>'integer</code>.  The latter is
+the default, but we plan to change that, so you should specify a
+non-<code>nil</code> value for <var>id-format</var> if you use the returned
+<acronym>UID</acronym> or <acronym>GID</acronym>.
+</p>
+<p>The elements of the list, in order, are:
+</p>
+<ol start="0">
+<li> <code>t</code> for a directory, a string for a symbolic link (the name
+linked to), or <code>nil</code> for a text file.
+
+</li><li> The number of names the file has.  Alternate names, also known as hard
+links, can be created by using the <code>add-name-to-file</code> function
+(see <a href="Changing-Files.html#Changing-Files">Changing Files</a>).
+
+</li><li> The file&rsquo;s <acronym>UID</acronym>, normally as a string.  However, if it does
+not correspond to a named user, the value is an integer or a floating
+point number.
+
+</li><li> The file&rsquo;s <acronym>GID</acronym>, likewise.
+
+</li><li> The time of last access, as a list of four integers <code>(<var>sec-high</var>
+<var>sec-low</var> <var>microsec</var> <var>picosec</var>)</code>.  (This is similar to the
+value of <code>current-time</code>; see <a href="Time-of-Day.html#Time-of-Day">Time of Day</a>.)  Note that on
+some FAT-based filesystems, only the date of last access is recorded,
+so this time will always hold the midnight of the day of last access.
+
+</li><li> <a name="index-modification-time-of-file"></a>
+The time of last modification as a list of four integers (as above).
+This is the last time when the file&rsquo;s contents were modified.
+
+</li><li> The time of last status change as a list of four integers (as above).
+This is the time of the last change to the file&rsquo;s access mode bits,
+its owner and group, and other information recorded in the filesystem
+for the file, beyond the file&rsquo;s contents.
+
+</li><li> The size of the file in bytes.  If the size is too large to fit in a
+Lisp integer, this is a floating point number.
+
+</li><li> The file&rsquo;s modes, as a string of ten letters or dashes,
+as in &lsquo;<samp>ls -l</samp>&rsquo;.
+
+</li><li> <code>t</code> if the file&rsquo;s <acronym>GID</acronym> would change if file were
+deleted and recreated; <code>nil</code> otherwise.
+
+</li><li> The file&rsquo;s inode number.  If possible, this is an integer.  If the
+inode number is too large to be represented as an integer in Emacs
+Lisp but dividing it by <em>2^16</em> yields a representable integer,
+then the value has the
+form <code>(<var>high</var> . <var>low</var>)</code>, where <var>low</var> holds the low 16
+bits.  If the inode number is too wide for even that, the value is of the form
+<code>(<var>high</var> <var>middle</var> . <var>low</var>)</code>, where <code>high</code> holds
+the high bits, <var>middle</var> the middle 24 bits, and <var>low</var> the low
+16 bits.
+
+</li><li> The filesystem number of the device that the file is on.  Depending on
+the magnitude of the value, this can be either an integer or a cons
+cell, in the same manner as the inode number.  This element and the
+file&rsquo;s inode number together give enough information to distinguish
+any two files on the system&mdash;no two files can have the same values
+for both of these numbers.
+</li></ol>
+
+<p>For example, here are the file attributes for <samp>files.texi</samp>:
+</p>
+<div class="example">
+<pre class="example">(file-attributes &quot;files.texi&quot; 'string)
+     &rArr;  (nil 1 &quot;lh&quot; &quot;users&quot;
+          (20614 64019 50040 152000)
+          (20000 23 0 0)
+          (20614 64555 902289 872000)
+          122295 &quot;-rw-rw-rw-&quot;
+          nil  (5888 2 . 43978)
+          (15479 . 46724))
+</pre></div>
+
+<p>and here is how the result is interpreted:
+</p>
+<dl compact="compact">
+<dt><code>nil</code></dt>
+<dd><p>is neither a directory nor a symbolic link.
+</p>
+</dd>
+<dt><code>1</code></dt>
+<dd><p>has only one name (the name <samp>files.texi</samp> in the current default
+directory).
+</p>
+</dd>
+<dt><code>&quot;lh&quot;</code></dt>
+<dd><p>is owned by the user with name &quot;lh&quot;.
+</p>
+</dd>
+<dt><code>&quot;users&quot;</code></dt>
+<dd><p>is in the group with name &quot;users&quot;.
+</p>
+</dd>
+<dt><code>(20614 64019 50040 152000)</code></dt>
+<dd><p>was last accessed on October 23, 2012, at 20:12:03.050040152 UTC.
+</p>
+</dd>
+<dt><code>(20000 23 0 0)</code></dt>
+<dd><p>was last modified on July 15, 2001, at 08:53:43 UTC.
+</p>
+</dd>
+<dt><code>(20614 64555 902289 872000)</code></dt>
+<dd><p>last had its status changed on October 23, 2012, at 20:20:59.902289872 UTC.
+</p>
+</dd>
+<dt><code>122295</code></dt>
+<dd><p>is 122295 bytes long.  (It may not contain 122295 characters, though,
+if some of the bytes belong to multibyte sequences, and also if the
+end-of-line format is CR-LF.)
+</p>
+</dd>
+<dt><code>&quot;-rw-rw-rw-&quot;</code></dt>
+<dd><p>has a mode of read and write access for the owner, group, and world.
+</p>
+</dd>
+<dt><code>nil</code></dt>
+<dd><p>would retain the same <acronym>GID</acronym> if it were recreated.
+</p>
+</dd>
+<dt><code>(5888 2 . 43978)</code></dt>
+<dd><p>has an inode number of 6473924464520138.
+</p>
+</dd>
+<dt><code>(15479 . 46724)</code></dt>
+<dd><p>is on the file-system device whose number is 1014478468.
+</p></dd>
+</dl>
+</dd></dl>
+
+<a name="index-SELinux-context"></a>
+<p>SELinux is a Linux kernel feature which provides more sophisticated
+file access controls than ordinary &ldquo;Unix-style&rdquo; file permissions.
+If Emacs has been compiled with SELinux support on a system with
+SELinux enabled, you can use the function <code>file-selinux-context</code>
+to retrieve a file&rsquo;s SELinux security context.  For the function
+<code>set-file-selinux-context</code>, see <a href="Changing-Files.html#Changing-Files">Changing Files</a>.
+</p>
+<dl>
+<dt><a name="index-file_002dselinux_002dcontext"></a>Function: <strong>file-selinux-context</strong> <em>filename</em></dt>
+<dd><p>This function returns the SELinux security context of the file
+<var>filename</var>.  This return value is a list of the form
+<code>(<var>user</var> <var>role</var> <var>type</var> <var>range</var>)</code>, whose elements
+are the context&rsquo;s user, role, type, and range respectively, as Lisp
+strings.  See the SELinux documentation for details about what these
+actually mean.
+</p>
+<p>If the file does not exist or is inaccessible, or if the system does
+not support SELinux, or if Emacs was not compiled with SELinux
+support, then the return value is <code>(nil nil nil nil)</code>.
+</p></dd></dl>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Locating-Files.html#Locating-Files" accesskey="n" rel="next">Locating Files</a>, Previous: <a href="Truenames.html#Truenames" accesskey="p" rel="prev">Truenames</a>, Up: <a href="Information-about-Files.html#Information-about-Files" accesskey="u" rel="up">Information about Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

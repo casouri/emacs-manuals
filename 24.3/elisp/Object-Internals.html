@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 24.3.
+
+Copyright © 1990-1996, 1998-2013 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Object Internals (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Object Internals (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Object Internals (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="GNU-Emacs-Internals.html#GNU-Emacs-Internals" rel="up" title="GNU Emacs Internals">
+<link href="Buffer-Internals.html#Buffer-Internals" rel="next" title="Buffer Internals">
+<link href="Writing-Emacs-Primitives.html#Writing-Emacs-Primitives" rel="prev" title="Writing Emacs Primitives">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Object-Internals"></a>
+<div class="header">
+<p>
+Previous: <a href="Writing-Emacs-Primitives.html#Writing-Emacs-Primitives" accesskey="p" rel="prev">Writing Emacs Primitives</a>, Up: <a href="GNU-Emacs-Internals.html#GNU-Emacs-Internals" accesskey="u" rel="up">GNU Emacs Internals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Object-Internals-1"></a>
+<h3 class="section">E.6 Object Internals</h3>
+<a name="index-object-internals"></a>
+
+<p>GNU Emacs Lisp manipulates many different types of data.  The actual
+data are stored in a heap and the only access that programs have to it
+is through pointers.  Each pointer is 32 bits wide on 32-bit machines,
+and 64 bits wide on 64-bit machines; three of these bits are used for
+the tag that identifies the object&rsquo;s type, and the remainder are used
+to address the object.
+</p>
+<p>Because Lisp objects are represented as tagged pointers, it is always
+possible to determine the Lisp data type of any object.  The C data type
+<code>Lisp_Object</code> can hold any Lisp object of any data type.  Ordinary
+variables have type <code>Lisp_Object</code>, which means they can hold any
+type of Lisp value; you can determine the actual data type only at run
+time.  The same is true for function arguments; if you want a function
+to accept only a certain type of argument, you must check the type
+explicitly using a suitable predicate (see <a href="Type-Predicates.html#Type-Predicates">Type Predicates</a>).
+<a name="index-type-checking-internals"></a>
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Buffer-Internals.html#Buffer-Internals" accesskey="1">Buffer Internals</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Components of a buffer structure.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Window-Internals.html#Window-Internals" accesskey="2">Window Internals</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Components of a window structure.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Process-Internals.html#Process-Internals" accesskey="3">Process Internals</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Components of a process structure.
+</td></tr>
+</table>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 24.3.
+
+Copyright © 1990-1996, 1998-2013 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Documentation Basics (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Documentation Basics (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Documentation Basics (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Documentation.html#Documentation" rel="up" title="Documentation">
+<link href="Accessing-Documentation.html#Accessing-Documentation" rel="next" title="Accessing Documentation">
+<link href="Documentation.html#Documentation" rel="prev" title="Documentation">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Documentation-Basics"></a>
+<div class="header">
+<p>
+Next: <a href="Accessing-Documentation.html#Accessing-Documentation" accesskey="n" rel="next">Accessing Documentation</a>, Up: <a href="Documentation.html#Documentation" accesskey="u" rel="up">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Documentation-Basics-1"></a>
+<h3 class="section">24.1 Documentation Basics</h3>
+<a name="index-documentation-conventions"></a>
+<a name="index-writing-a-documentation-string"></a>
+<a name="index-string_002c-writing-a-doc-string"></a>
+
+<p>A documentation string is written using the Lisp syntax for strings,
+with double-quote characters surrounding the text of the string.  This
+is because it really is a Lisp string object.  The string serves as
+documentation when it is written in the proper place in the definition
+of a function or variable.  In a function definition, the documentation
+string follows the argument list.  In a variable definition, the
+documentation string follows the initial value of the variable.
+</p>
+<p>When you write a documentation string, make the first line a
+complete sentence (or two complete sentences) that briefly describes
+what the function or variable does.  Some commands, such as
+<code>apropos</code>, show only the first line of a multi-line documentation
+string.  Also, you should not indent the second line of a
+documentation string, if it has one, because that looks odd when you
+use <kbd>C-h f</kbd> (<code>describe-function</code>) or <kbd>C-h v</kbd>
+(<code>describe-variable</code>) to view the documentation string.  There
+are many other conventions for documentation strings; see
+<a href="Documentation-Tips.html#Documentation-Tips">Documentation Tips</a>.
+</p>
+<p>Documentation strings can contain several special text sequences,
+referring to key bindings which are looked up in the current keymaps
+when the user views the documentation.  This allows the help commands
+to display the correct keys even if a user rearranges the default key
+bindings.  See <a href="Keys-in-Documentation.html#Keys-in-Documentation">Keys in Documentation</a>.
+</p>
+<p>In the documentation string of an autoloaded command
+(see <a href="Autoload.html#Autoload">Autoload</a>), these special text sequences have an additional
+special effect: they cause <kbd>C-h f</kbd> (<code>describe-function</code>) on
+the command to trigger autoloading.  (This is needed for correctly
+setting up the hyperlinks in the <samp>*Help*</samp> buffer).
+</p>
+<a name="index-emacs_002dlisp_002ddocstring_002dfill_002dcolumn"></a>
+<p>Emacs Lisp mode fills documentation strings to the width
+specified by <code>emacs-lisp-docstring-fill-column</code>.
+</p>
+<p>Exactly where a documentation string is stored depends on how its
+function or variable was defined or loaded into memory:
+</p>
+<ul>
+<li> <a name="index-function_002ddocumentation"></a>
+When you define a function (see <a href="Lambda-Expressions.html#Lambda-Expressions">Lambda Expressions</a>, and
+see <a href="Function-Documentation.html#Function-Documentation">Function Documentation</a>), the documentation string is stored in
+the function definition itself.  You can also put function
+documentation in the <code>function-documentation</code> property of a
+function name.  That is useful for function definitions which can&rsquo;t
+hold a documentation string, such as keyboard macros.
+
+</li><li> <a name="index-variable_002ddocumentation"></a>
+When you define a variable with a <code>defvar</code> or related form
+(see <a href="Defining-Variables.html#Defining-Variables">Defining Variables</a>), the documentation is stored in the
+variable&rsquo;s <code>variable-documentation</code> property.
+
+</li><li> <a name="index-DOC_002dversion-_0028documentation_0029-file"></a>
+To save memory, the documentation for preloaded functions and
+variables (including primitive functions and autoloaded functions) is
+not kept in memory, but in the file
+<samp>emacs/etc/DOC-<var>version</var></samp>, where <var>version</var> is the Emacs
+version number (see <a href="Version-Info.html#Version-Info">Version Info</a>).
+
+</li><li> When a function or variable is loaded from a byte-compiled file during
+the Emacs session, its documentation string is not loaded into memory.
+Instead, Emacs looks it up in the byte-compiled file as needed.
+See <a href="Docs-and-Compilation.html#Docs-and-Compilation">Docs and Compilation</a>.
+</li></ul>
+
+<p>Regardless of where the documentation string is stored, you can
+retrieve it using the <code>documentation</code> or
+<code>documentation-property</code> function, described in the next section.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Accessing-Documentation.html#Accessing-Documentation" accesskey="n" rel="next">Accessing Documentation</a>, Up: <a href="Documentation.html#Documentation" accesskey="u" rel="up">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

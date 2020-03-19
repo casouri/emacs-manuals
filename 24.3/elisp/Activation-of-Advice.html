@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 24.3.
+
+Copyright © 1990-1996, 1998-2013 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Activation of Advice (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Activation of Advice (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Activation of Advice (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Advising-Functions.html#Advising-Functions" rel="up" title="Advising Functions">
+<link href="Enabling-Advice.html#Enabling-Advice" rel="next" title="Enabling Advice">
+<link href="Computed-Advice.html#Computed-Advice" rel="prev" title="Computed Advice">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Activation-of-Advice"></a>
+<div class="header">
+<p>
+Next: <a href="Enabling-Advice.html#Enabling-Advice" accesskey="n" rel="next">Enabling Advice</a>, Previous: <a href="Computed-Advice.html#Computed-Advice" accesskey="p" rel="prev">Computed Advice</a>, Up: <a href="Advising-Functions.html#Advising-Functions" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<a name="Activation-of-Advice-1"></a>
+<h3 class="section">17.5 Activation of Advice</h3>
+<a name="index-activating-advice"></a>
+<a name="index-advice_002c-activating"></a>
+
+<p>By default, advice does not take effect when you define it&mdash;only when
+you <em>activate</em> advice for the function.  However, the advice will
+be activated automatically if you define or redefine the function
+later.  You can request the activation of advice for a function when
+you define the advice, by specifying the <code>activate</code> flag in the
+<code>defadvice</code>; or you can activate the advice separately by calling
+the function <code>ad-activate</code> or one of the other activation
+commands listed below.
+</p>
+<p>Separating the activation of advice from the act of defining it permits
+you to add several pieces of advice to one function efficiently, without
+redefining the function over and over as each advice is added.  More
+importantly, it permits defining advice for a function before that
+function is actually defined.
+</p>
+<p>When a function&rsquo;s advice is first activated, the function&rsquo;s original
+definition is saved, and all enabled pieces of advice for that function
+are combined with the original definition to make a new definition.
+(Pieces of advice that are currently disabled are not used; see
+<a href="Enabling-Advice.html#Enabling-Advice">Enabling Advice</a>.)  This definition is installed, and optionally
+byte-compiled as well, depending on conditions described below.
+</p>
+<p>In all of the commands to activate advice, if <var>compile</var> is
+<code>t</code> (or anything but <code>nil</code> or a negative number), the
+command also compiles the combined definition which implements the
+advice.  If it is <code>nil</code> or a negative number, what happens
+depends on <code>ad-default-compilation-action</code> as described below.
+</p>
+<dl>
+<dt><a name="index-ad_002dactivate"></a>Command: <strong>ad-activate</strong> <em>function &amp;optional compile</em></dt>
+<dd><p>This command activates all the advice defined for <var>function</var>.
+</p></dd></dl>
+
+<p>Activating advice does nothing if <var>function</var>&rsquo;s advice is already
+active.  But if there is new advice, added since the previous time you
+activated advice for <var>function</var>, it activates the new advice.
+</p>
+<dl>
+<dt><a name="index-ad_002ddeactivate"></a>Command: <strong>ad-deactivate</strong> <em>function</em></dt>
+<dd><p>This command deactivates the advice for <var>function</var>.
+<a name="index-deactivating-advice"></a>
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dupdate"></a>Command: <strong>ad-update</strong> <em>function &amp;optional compile</em></dt>
+<dd><p>This command activates the advice for <var>function</var>
+if its advice is already activated.  This is useful
+if you change the advice.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dactivate_002dall"></a>Command: <strong>ad-activate-all</strong> <em>&amp;optional compile</em></dt>
+<dd><p>This command activates the advice for all functions.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002ddeactivate_002dall"></a>Command: <strong>ad-deactivate-all</strong></dt>
+<dd><p>This command deactivates the advice for all functions.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dupdate_002dall"></a>Command: <strong>ad-update-all</strong> <em>&amp;optional compile</em></dt>
+<dd><p>This command activates the advice for all functions
+whose advice is already activated.  This is useful
+if you change the advice of some functions.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dactivate_002dregexp"></a>Command: <strong>ad-activate-regexp</strong> <em>regexp &amp;optional compile</em></dt>
+<dd><p>This command activates all pieces of advice whose names match
+<var>regexp</var>.  More precisely, it activates all advice for any function
+which has at least one piece of advice that matches <var>regexp</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002ddeactivate_002dregexp"></a>Command: <strong>ad-deactivate-regexp</strong> <em>regexp</em></dt>
+<dd><p>This command deactivates all pieces of advice whose names match
+<var>regexp</var>.  More precisely, it deactivates all advice for any
+function which has at least one piece of advice that matches
+<var>regexp</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dupdate_002dregexp"></a>Command: <strong>ad-update-regexp</strong> <em>regexp &amp;optional compile</em></dt>
+<dd><p>This command activates pieces of advice whose names match <var>regexp</var>,
+but only those for functions whose advice is already activated.
+<a name="index-reactivating-advice"></a>
+</p>
+<p>Reactivating a function&rsquo;s advice is useful for putting into effect all
+the changes that have been made in its advice (including enabling and
+disabling specific pieces of advice; see <a href="Enabling-Advice.html#Enabling-Advice">Enabling Advice</a>) since the
+last time it was activated.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dstart_002dadvice"></a>Command: <strong>ad-start-advice</strong></dt>
+<dd><p>Turn on automatic advice activation when a function is defined or
+redefined.  This is the default mode.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002dstop_002dadvice"></a>Command: <strong>ad-stop-advice</strong></dt>
+<dd><p>Turn off automatic advice activation when a function is defined or
+redefined.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ad_002ddefault_002dcompilation_002daction"></a>User Option: <strong>ad-default-compilation-action</strong></dt>
+<dd><p>This variable controls whether to compile the combined definition
+that results from activating advice for a function.
+</p>
+<p>A value of <code>always</code> specifies to compile unconditionally.
+A value of <code>never</code> specifies never compile the advice.
+</p>
+<p>A value of <code>maybe</code> specifies to compile if the byte compiler is
+already loaded.  A value of <code>like-original</code> specifies to compile
+the advice if the original definition of the advised function is
+compiled or a built-in function.
+</p>
+<p>This variable takes effect only if the <var>compile</var> argument of
+<code>ad-activate</code> (or any of the above functions) did not force
+compilation.
+</p></dd></dl>
+
+<p>If the advised definition was constructed during &ldquo;preactivation&rdquo;
+(see <a href="Preactivation.html#Preactivation">Preactivation</a>), then that definition must already be compiled,
+because it was constructed during byte-compilation of the file that
+contained the <code>defadvice</code> with the <code>preactivate</code> flag.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Enabling-Advice.html#Enabling-Advice" accesskey="n" rel="next">Enabling Advice</a>, Previous: <a href="Computed-Advice.html#Computed-Advice" accesskey="p" rel="prev">Computed Advice</a>, Up: <a href="Advising-Functions.html#Advising-Functions" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
