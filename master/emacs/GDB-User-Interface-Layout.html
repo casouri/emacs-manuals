@@ -99,9 +99,27 @@ displays the following frame layout:
 +--------------------------------+--------------------------------+
 </pre></div>
 
+<a name="index-gdb_002dsave_002dwindow_002dconfiguration"></a>
+<a name="index-gdb_002dload_002dwindow_002dconfiguration"></a>
+<a name="index-gdb_002ddefault_002dwindow_002dconfiguration_002dfile"></a>
+<a name="index-gdb_002dwindow_002dconfiguration_002ddirectory"></a>
+<p>You can customize the window layout based on the one above and save
+that layout to a file using <code>gdb-save-window-configuration</code>.
+Then you can later load this layout back using
+<code>gdb-load-window-configuration</code>.  (Internally, Emacs uses the
+term window configuration instead of window layout.)  You can set your
+custom layout as the default one used by <code>gdb-many-windows</code> by
+customizing <code>gdb-default-window-configuration-file</code>.  If it is
+not an absolute file name, GDB looks under
+<code>gdb-window-configuration-directory</code> for the file.
+<code>gdb-window-configuration-directory</code> defaults to
+<code>user-emacs-directory</code> (see <a href="Find-Init.html#Find-Init">Find Init</a>).
+</p>
+
 <a name="index-gdb_002drestore_002dwindows"></a>
 <a name="index-gdb_002dmany_002dwindows"></a>
-<p>If you ever change the window layout, you can restore the many-windows
+<a name="index-gdb_002drestore_002dwindow_002dconfiguration_002dafter_002dquit"></a>
+<p>If you ever change the window layout, you can restore the default
 layout by typing <kbd>M-x gdb-restore-windows</kbd>.  To toggle
 between the many windows layout and a simple layout with just the GUD
 interaction buffer and a source file, type <kbd>M-x gdb-many-windows</kbd>.
@@ -112,7 +130,13 @@ interaction buffer and a source file, type <kbd>M-x gdb-many-windows</kbd>.
 of windows on your original frame will not be affected.  A separate
 frame for GDB sessions can come in especially handy if you work on a
 text-mode terminal, where the screen estate for windows could be at a
-premium.
+premium.  If you choose to start GDB in the same frame, consider
+setting <code>gdb-restore-window-configuration-after-quit</code> to a
+non-<code>nil</code> value.  Your original layout will then be restored
+after GDB quits.  Use <code>t</code> to always restore; use
+<code>if-gdb-many-windows</code> to restore only when
+<code>gdb-many-windows</code> is non-<code>nil</code>; use <code>if-gdb-show-main</code>
+to restore only when <code>gdb-show-main</code> is non-<code>nil</code>.
 </p>
 <p>You may also specify additional GDB-related buffers to display,
 either in the same frame or a different one.  Select the buffers you
