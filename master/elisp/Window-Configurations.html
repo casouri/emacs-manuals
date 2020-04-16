@@ -102,24 +102,26 @@ See <a href="Window-Parameters.html#Window-Parameters">Window Parameters</a>.
 <dl>
 <dt><a name="index-set_002dwindow_002dconfiguration"></a>Function: <strong>set-window-configuration</strong> <em>configuration</em></dt>
 <dd><p>This function restores the configuration of windows and buffers as
-specified by <var>configuration</var>, for the frame that <var>configuration</var>
-was created for.
+specified by <var>configuration</var>, for the frame that
+<var>configuration</var> was created for, regardless of whether that frame
+is selected or not.  The argument <var>configuration</var> must be a value
+that was previously returned by <code>current-window-configuration</code>
+for that frame.
 </p>
-<p>The argument <var>configuration</var> must be a value that was previously
-returned by <code>current-window-configuration</code>.  The configuration is
-restored in the frame from which <var>configuration</var> was made, whether
-that frame is selected or not.  In some rare cases this may trigger
-execution of the <code>window-size-change-functions</code> (see <a href="Window-Hooks.html#Window-Hooks">Window Hooks</a>) even if the size of windows did not change at all.  The
-<code>window-configuration-change-hook</code> functions will be called if and
-only if at least one window was added to or deleted from the frame.
+<p>If the frame from which <var>configuration</var> was saved is dead, all
+this function does is to restore the value of the variable
+<code>minibuffer-scroll-window</code> and to adjust the value returned by
+<code>minibuffer-selected-window</code>.  In this case, the function returns
+<code>nil</code>.  Otherwise, it returns <code>t</code>.
 </p>
-<p>If the frame from which <var>configuration</var> was saved is dead, all this
-function does is restore the three variables <code>window-min-height</code>,
-<code>window-min-width</code> and <code>minibuffer-scroll-window</code>.  In this
-case, the function returns <code>nil</code>.  Otherwise, it returns <code>t</code>.
+<p>If the buffer of a window of <var>configuration</var> has been killed since
+<var>configuration</var> was made, that window is, as a rule, removed from
+the restored configuration.  However, if that window is the last
+window remaining in the restored configuration, another live buffer is
+shown in it.
 </p>
-<p>Here is a way of using this function to get the same effect
-as <code>save-window-excursion</code>:
+<p>Here is a way of using this function to get the same effect as
+<code>save-window-excursion</code>:
 </p>
 <div class="example">
 <pre class="example">(let ((config (current-window-configuration)))
