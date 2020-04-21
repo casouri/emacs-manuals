@@ -136,7 +136,7 @@ after those elements.  For example:
 removing it involves changing the <small>CDR</small>s (see <a href="Setcdr.html#Setcdr">Setcdr</a>).
 </p>
 <div class="example">
-<pre class="example">(setq sample-list '(a b c (4)))
+<pre class="example">(setq sample-list (list 'a 'b 'c '(4)))
      &rArr; (a b c (4))
 </pre><pre class="example">(delq 'a sample-list)
      &rArr; (b c (4))
@@ -160,11 +160,11 @@ into the variable that held the original list:
 <pre class="example">(setq flowers (delq 'rose flowers))
 </pre></div>
 
-<p>In the following example, the <code>(4)</code> that <code>delq</code> attempts to match
-and the <code>(4)</code> in the <code>sample-list</code> are not <code>eq</code>:
+<p>In the following example, the <code>(list 4)</code> that <code>delq</code> attempts to match
+and the <code>(4)</code> in the <code>sample-list</code> are <code>equal</code> but not <code>eq</code>:
 </p>
 <div class="example">
-<pre class="example">(delq '(4) sample-list)
+<pre class="example">(delq (list 4) sample-list)
      &rArr; (a c (4))
 </pre></div>
 
@@ -179,7 +179,7 @@ says that it uses <code>eq</code> to compare <var>object</var> against the eleme
 of <code>list</code>.
 </p>
 <div class="example">
-<pre class="example">(setq sample-list '(a b c a b c))
+<pre class="example">(setq sample-list (list 'a 'b 'c 'a 'b 'c))
      &rArr; (a b c a b c)
 </pre><pre class="example">(remq 'a sample-list)
      &rArr; (b c b c)
@@ -199,10 +199,10 @@ its first occurrence in <var>list</var>.  Otherwise, it returns <code>nil</code>
 <p>Compare this with <code>memq</code>:
 </p>
 <div class="example">
-<pre class="example">(memql 1.2 '(1.1 1.2 1.3))  ; <span class="roman"><code>1.2</code> and <code>1.2</code> are <code>eql</code>.</span>
+<pre class="example">(memql 1.2 '(1.1 1.2 1.3))  ; <span class="roman"><code>1.2</code> and <code>1.2</code> must be <code>eql</code>.</span>
      &rArr; (1.2 1.3)
-</pre><pre class="example">(memq 1.2 '(1.1 1.2 1.3))  ; <span class="roman"><code>1.2</code> and <code>1.2</code> are not <code>eq</code>.</span>
-     &rArr; nil
+</pre><pre class="example">(memq 1.2 '(1.1 1.2 1.3))  ; <span class="roman"><code>1.2</code> and <code>1.2</code> need not be <code>eq</code>.</span>
+     &rArr; nil         ; <span class="roman">... or it might be <code>(1.2 1.3)</code>.</span>
 </pre></div>
 </dd></dl>
 
@@ -220,9 +220,9 @@ its first occurrence in <var>list</var>.  Otherwise, it returns <code>nil</code>
 <p>Compare this with <code>memq</code>:
 </p>
 <div class="example">
-<pre class="example">(member '(2) '((1) (2)))  ; <span class="roman"><code>(2)</code> and <code>(2)</code> are <code>equal</code>.</span>
+<pre class="example">(member (list 2) '((1) (2)))  ; <span class="roman"><code>(list 2)</code> and <code>(2)</code> are <code>equal</code>.</span>
      &rArr; ((2))
-</pre><pre class="example">(memq '(2) '((1) (2)))    ; <span class="roman"><code>(2)</code> and <code>(2)</code> are not <code>eq</code>.</span>
+</pre><pre class="example">(memq (list 2) '((1) (2)))    ; <span class="roman"><code>(list 2)</code> and <code>(2)</code> are not <code>eq</code>.</span>
      &rArr; nil
 </pre><pre class="example">;; <span class="roman">Two strings with the same contents are <code>equal</code>.</span>
 (member &quot;foo&quot; '(&quot;foo&quot; &quot;bar&quot;))
@@ -249,14 +249,14 @@ removed.
 <p>For example:
 </p>
 <div class="example">
-<pre class="example">(setq l '((2) (1) (2)))
+<pre class="example">(setq l (list '(2) '(1) '(2)))
 (delete '(2) l)
      &rArr; ((1))
 l
      &rArr; ((2) (1))
 ;; <span class="roman">If you want to change <code>l</code> reliably,</span>
 ;; <span class="roman">write <code>(setq l (delete '(2) l))</code>.</span>
-</pre><pre class="example">(setq l '((2) (1) (2)))
+</pre><pre class="example">(setq l (list '(2) '(1) '(2)))
 (delete '(1) l)
      &rArr; ((2) (2))
 l

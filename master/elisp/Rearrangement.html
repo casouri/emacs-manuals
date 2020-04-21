@@ -98,9 +98,9 @@ Unlike <code>append</code> (see <a href="Building-Lists.html#Building-Lists">Bui
 <var>lists</var> is not altered.  For example:
 </p>
 <div class="example">
-<pre class="example">(setq x '(1 2 3))
+<pre class="example">(setq x (list 1 2 3))  ; <span class="roman">Create a mutable list.</span>
      &rArr; (1 2 3)
-</pre><pre class="example">(nconc x '(4 5))
+</pre><pre class="example">(nconc x '(4 5))  ; <span class="roman">Modify the list&rsquo;s tail to be a constant list.</span>
      &rArr; (1 2 3 4 5)
 </pre><pre class="example">x
      &rArr; (1 2 3 4 5)
@@ -112,7 +112,7 @@ above example.  For the same reason, the last argument need not be a
 list:
 </p>
 <div class="example">
-<pre class="example">(setq x '(1 2 3))
+<pre class="example">(setq x (list 1 2 3))
      &rArr; (1 2 3)
 </pre><pre class="example">(nconc x 'z)
      &rArr; (1 2 3 . z)
@@ -120,11 +120,13 @@ list:
      &rArr; (1 2 3 . z)
 </pre></div>
 
-<p>However, the other arguments (all but the last) must be lists.
+<p>However, the other arguments (all but the last) should be mutable lists.
 </p>
-<p>A common pitfall is to use a quoted constant list as a non-last
-argument to <code>nconc</code>.  If you do this, your program will change
-each time you run it!  Here is what happens:
+<p>A common pitfall is to use a constant list as a non-last
+argument to <code>nconc</code>.  If you do this, the resulting behavior
+is undefined.  It is possible that your program will change
+each time you run it!  Here is what might happen (though this
+is not guaranteed to happen):
 </p>
 <div class="smallexample">
 <pre class="smallexample">(defun add-foo (x)            ; <span class="roman">We want this function to add</span>

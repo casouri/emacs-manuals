@@ -152,40 +152,38 @@ All symbols that have PATTERN in their name are described
 in the *Help* buffer.&quot;
   (interactive &quot;sDescribe symbols matching: &quot;)
   (let ((describe-func
-         (function
-          (lambda (s)
-</pre><pre class="smallexample">            ;; <span class="roman">Print description of symbol.</span>
-            (if (fboundp s)             ; <span class="roman">It is a function.</span>
-                (princ
-                 (format &quot;%s\t%s\n%s\n\n&quot; s
-                   (if (commandp s)
-                       (let ((keys (where-is-internal s)))
-                         (if keys
-                             (concat
-                              &quot;Keys: &quot;
-                              (mapconcat 'key-description
-                                         keys &quot; &quot;))
-                           &quot;Keys: none&quot;))
-                     &quot;Function&quot;)
-</pre><pre class="smallexample">                   (or (documentation s)
-                       &quot;not documented&quot;))))
+         (lambda (s)
+</pre><pre class="smallexample">           ;; <span class="roman">Print description of symbol.</span>
+           (if (fboundp s)             ; <span class="roman">It is a function.</span>
+               (princ
+                (format &quot;%s\t%s\n%s\n\n&quot; s
+                  (if (commandp s)
+                      (let ((keys (where-is-internal s)))
+                        (if keys
+                            (concat
+                             &quot;Keys: &quot;
+                             (mapconcat 'key-description
+                                        keys &quot; &quot;))
+                          &quot;Keys: none&quot;))
+                    &quot;Function&quot;)
+</pre><pre class="smallexample">                  (or (documentation s)
+                      &quot;not documented&quot;))))
 
-            (if (boundp s)              ; <span class="roman">It is a variable.</span>
-</pre><pre class="smallexample">                (princ
-                 (format &quot;%s\t%s\n%s\n\n&quot; s
-                   (if (custom-variable-p s)
-                       &quot;Option &quot; &quot;Variable&quot;)
-</pre><pre class="smallexample">                   (or (documentation-property
-                         s 'variable-documentation)
-                       &quot;not documented&quot;)))))))
+           (if (boundp s)              ; <span class="roman">It is a variable.</span>
+</pre><pre class="smallexample">               (princ
+                (format &quot;%s\t%s\n%s\n\n&quot; s
+                  (if (custom-variable-p s)
+                      &quot;Option &quot; &quot;Variable&quot;)
+</pre><pre class="smallexample">                  (or (documentation-property
+                        s 'variable-documentation)
+                      &quot;not documented&quot;))))))
         sym-list)
 </pre><pre class="smallexample">
 
 </pre><pre class="smallexample">    ;; <span class="roman">Build a list of symbols that match pattern.</span>
-    (mapatoms (function
-               (lambda (sym)
-                 (if (string-match pattern (symbol-name sym))
-                     (setq sym-list (cons sym sym-list))))))
+    (mapatoms (lambda (sym)
+                (if (string-match pattern (symbol-name sym))
+                    (setq sym-list (cons sym sym-list)))))
 </pre><pre class="smallexample">
 
 </pre><pre class="smallexample">    ;; <span class="roman">Display the data.</span>

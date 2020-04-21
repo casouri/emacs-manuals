@@ -211,9 +211,10 @@ keys may not be symbols:
       '((&quot;simple leaves&quot; . oak)
         (&quot;compound leaves&quot; . horsechestnut)))
 
-(assq &quot;simple leaves&quot; leaves)
+;; <span class="roman">The <code>copy-sequence</code> means the keys are not <code>eq</code>.</span>
+(assq (copy-sequence &quot;simple leaves&quot;) leaves)
      &rArr; nil
-(assoc &quot;simple leaves&quot; leaves)
+(assoc (copy-sequence &quot;simple leaves&quot;) leaves)
      &rArr; (&quot;simple leaves&quot; . oak)
 </pre></div>
 </dd></dl>
@@ -351,7 +352,7 @@ correct results, use the return value of <code>assq-delete-all</code> rather
 than looking at the saved value of <var>alist</var>.
 </p>
 <div class="example">
-<pre class="example">(setq alist '((foo 1) (bar 2) (foo 3) (lose 4)))
+<pre class="example">(setq alist (list '(foo 1) '(bar 2) '(foo 3) '(lose 4)))
      &rArr; ((foo 1) (bar 2) (foo 3) (lose 4))
 (assq-delete-all 'foo alist)
      &rArr; ((bar 2) (lose 4))
