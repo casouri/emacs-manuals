@@ -96,6 +96,12 @@ sessions (see <a href="Saving-Emacs-Sessions.html#Saving-Emacs-Sessions">Saving 
 recorded in the desktop file, together with their associated window
 configurations, and will be available after restoring the session.
 </p>
+<p>Note that the Tab Bar is different from the Tab Line (see <a href="Tab-Line.html#Tab-Line">Tab Line</a>).
+Whereas tabs on the Tab Line at the top of each window are used to
+switch between buffers, tabs on the Tab Bar at the top of each frame
+are used to switch between window configurations containing several
+windows.
+</p>
 <a name="index-tab_002dbar_002dmode"></a>
 <p>To toggle the use of tab bars, type <kbd>M-x tab-bar-mode</kbd>.  This
 command applies to all frames, including frames yet to be created.  To
@@ -109,9 +115,11 @@ is turned on automatically.  If the value is <code>t</code>, then
 tabs.  The value <code>1</code> hides the tab bar when it has only one tab,
 and shows it again when more tabs are created.  The value <code>nil</code>
 always keeps the tab bar hidden; in this case it&rsquo;s still possible to
-use persistent named window configurations without using the tab bar
-by typing the related commands: <kbd>M-x tab-new</kbd>, <kbd>M-x tab-next</kbd>,
-<kbd>M-x tab-close</kbd>, <kbd>M-x tab-switcher</kbd>, etc.
+switch between named window configurations without the tab bar by
+using <kbd>M-x tab-next</kbd>, <kbd>M-x tab-switcher</kbd>, and other commands
+that provide completion on tab names.  Also it&rsquo;s possible to create
+and close tabs without the tab bar by using commands <kbd>M-x
+tab-new</kbd>, <kbd>M-x tab-close</kbd>, etc.
 </p>
 <a name="index-C_002dx-t"></a>
 <p>The prefix key <kbd>C-x t</kbd> is analogous to <kbd>C-x 5</kbd>.
@@ -120,7 +128,8 @@ Whereas each <kbd>C-x 5</kbd> command pops up a buffer in a different frame
 tab with a different window configuration in the selected frame.
 </p>
 <p>The various <kbd>C-x t</kbd> commands differ in how they find or create the
-buffer to select:
+buffer to select.  The following commands can be used to select a buffer
+in a new tab:
 </p>
 <dl compact="compact">
 <dt><kbd>C-x t 2</kbd></dt>
@@ -129,23 +138,21 @@ buffer to select:
 <p>Add a new tab (<code>tab-new</code>).  You can control the choice of the
 buffer displayed in a new tab by customizing the variable
 <code>tab-bar-new-tab-choice</code>.
-</p></dd>
+</p>
+</dd>
 <dt><kbd>C-x t b <var>bufname</var> <span class="key">RET</span></kbd></dt>
 <dd><p>Select buffer <var>bufname</var> in another tab.  This runs
 <code>switch-to-buffer-other-tab</code>.
-</p></dd>
+</p>
+</dd>
 <dt><kbd>C-x t f <var>filename</var> <span class="key">RET</span></kbd></dt>
 <dd><p>Visit file <var>filename</var> and select its buffer in another tab.  This
 runs <code>find-file-other-tab</code>.  See <a href="Visiting.html#Visiting">Visiting</a>.
-</p></dd>
+</p>
+</dd>
 <dt><kbd>C-x t d <var>directory</var> <span class="key">RET</span></kbd></dt>
 <dd><p>Select a Dired buffer for directory <var>directory</var> in another tab.
 This runs <code>dired-other-tab</code>.  See <a href="Dired.html#Dired">Dired</a>.
-</p></dd>
-<dt><kbd>C-x t r <var>tabname</var> <span class="key">RET</span></kbd></dt>
-<dd><p>Renames the current tab to <var>tabname</var>.  You can control the
-programmatic name given to a tab by default by customizing the
-variable <code>tab-bar-tab-name-function</code>.
 </p></dd>
 </dl>
 
@@ -155,7 +162,7 @@ current before calling the command that adds a new tab.
 To start a new tab with other buffers, customize the variable
 <code>tab-bar-new-tab-choice</code>.
 </p>
-<p>The following commands are used to delete and operate on tabs:
+<p>The following commands can be used to delete tabs:
 </p>
 <dl compact="compact">
 <dt><kbd>C-x t 0</kbd></dt>
@@ -165,20 +172,49 @@ To start a new tab with other buffers, customize the variable
 is only one tab.
 </p>
 </dd>
+<dt><kbd>C-x t 1</kbd></dt>
+<dd><a name="index-C_002dx-t-1"></a>
+<a name="index-tab_002dclose_002dother"></a>
+<p>Close all tabs on the selected frame, except the selected one.
+</p></dd>
+</dl>
+
+<p>The following commands can be used to switch between tabs:
+</p>
+<dl compact="compact">
 <dt><kbd>C-x t o</kbd></dt>
+<dt><kbd>C-<span class="key">TAB</span></kbd></dt>
 <dd><a name="index-C_002dx-t-o"></a>
 <a name="index-C_002dTAB-1"></a>
 <a name="index-tab_002dnext"></a>
-<p>Switch to another tab.  If you repeat this command, it cycles through
+<p>Switch to the next tab.  If you repeat this command, it cycles through
 all the tabs on the selected frame.  With a positive numeric argument
 N, it switches to the next Nth tab; with a negative argument −N, it
 switches back to the previous Nth tab.
 </p>
 </dd>
-<dt><kbd>C-x t 1</kbd></dt>
-<dd><a name="index-C_002dx-t-1"></a>
-<a name="index-tab_002dclose_002dother"></a>
-<p>Close all tabs on the selected frame, except the selected one.
+<dt><kbd>S-C-<span class="key">TAB</span></kbd></dt>
+<dd><a name="index-S_002dC_002dTAB"></a>
+<a name="index-tab_002dprevious"></a>
+<p>Switch to the previous tab.  With a positive numeric argument N, it
+switches to the previous Nth tab; with a negative argument −N, it
+switches back to the next Nth tab.
+</p></dd>
+</dl>
+
+<p>The following commands can be used to operate on tabs:
+</p>
+<dl compact="compact">
+<dt><kbd>C-x t r <var>tabname</var> <span class="key">RET</span></kbd></dt>
+<dd><p>Rename the current tab to <var>tabname</var>.  You can control the
+programmatic name given to a tab by default by customizing the
+variable <code>tab-bar-tab-name-function</code>.
+</p>
+</dd>
+<dt><kbd>C-x t m</kbd></dt>
+<dd><p>Move the current tab N positions to the right with a positive numeric
+argument N.  With a negative argument −N, it moves the current tab
+N positions to the left.
 </p></dd>
 </dl>
 
