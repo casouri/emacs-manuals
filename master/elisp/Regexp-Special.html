@@ -111,16 +111,14 @@ first tries to match all three &lsquo;<samp>a</samp>&rsquo;s; but the rest of th
 The next alternative is for &lsquo;<samp>a*</samp>&rsquo; to match only two &lsquo;<samp>a</samp>&rsquo;s.  With
 this choice, the rest of the regexp matches successfully.
 </p>
-<p><strong>Warning:</strong> Nested repetition operators can run for an
-indefinitely long time, if they lead to ambiguous matching.  For
+<p><strong>Warning:</strong> Nested repetition operators can run for a very
+long time, if they lead to ambiguous matching.  For
 example, trying to match the regular expression &lsquo;<samp>\(x+y*\)*a</samp>&rsquo;
 against the string &lsquo;<samp>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxz</samp>&rsquo; could
 take hours before it ultimately fails.  Emacs must try each way of
 grouping the &lsquo;<samp>x</samp>&rsquo;s before concluding that none of them can work.
-Even worse, &lsquo;<samp>\(x*\)*</samp>&rsquo; can match the null string in infinitely
-many ways, so it causes an infinite loop.  To avoid these problems,
-check nested repetitions carefully, to make sure that they do not
-cause combinatorial explosions in backtracking.
+In general, avoid expressions that can match the same string in
+multiple ways.
 </p>
 </dd>
 <dt>&lsquo;<samp>+</samp>&rsquo;</dt>
