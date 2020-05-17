@@ -125,7 +125,7 @@ has the form:
 </pre></div>
 
 <p>The <small>CAR</small>, <var>option</var>, is a string, the name of a command-line
-option (not including the initial hyphen).  The <var>handler-function</var>
+option (including the initial hyphen).  The <var>handler-function</var>
 is called to handle <var>option</var>, and receives the option name as its
 sole argument.
 </p>
@@ -134,6 +134,14 @@ argument.  In these cases, the <var>handler-function</var> can find all the
 remaining command-line arguments in the variable
 <code>command-line-args-left</code> (see below).  (The entire list of
 command-line arguments is in <code>command-line-args</code>.)
+</p>
+<p>Note that the handling of <code>command-switch-alist</code> doesn&rsquo;t treat
+equals signs in <var>option</var> specially.  That is, if there&rsquo;s an option
+like <code>--name=value</code> on the command line, then only a
+<code>command-switch-alist</code> member whose <code>car</code> is literally
+<code>--name=value</code> will match this option.  If you want to parse such
+options, you need to use <code>command-line-functions</code> instead (see
+below).
 </p>
 <p>The command-line arguments are parsed by the <code>command-line-1</code>
 function in the <samp>startup.el</samp> file.  See also <a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Invocation.html#Emacs-Invocation">Command Line Arguments for Emacs Invocation</a> in <cite>The

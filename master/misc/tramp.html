@@ -496,14 +496,14 @@ Next: <a href="#Quick-Start-Guide" accesskey="n" rel="next">Quick Start Guide</a
 <a href="https://ftp.gnu.org/gnu/tramp/">https://ftp.gnu.org/gnu/tramp/</a>.  The version number of
 <small>TRAMP</small> can be obtained by the variable <code>tramp-version</code>.
 For released <small>TRAMP</small> versions, this is a three-number string
-like &ldquo;2.4.2&rdquo;.
+like &ldquo;2.4.3&rdquo;.
 </p>
 <p>A <small>TRAMP</small> release, which is packaged with Emacs, could differ
 slightly from the corresponding standalone release.  This is because
 it isn&rsquo;t always possible to synchronize release dates between Emacs
 and <small>TRAMP</small>.  Such version numbers have the Emacs version number
-as suffix, like &ldquo;2.3.5.26.3&rdquo;.  This means <small>TRAMP</small>&nbsp;2.3.5<!-- /@w --> as
-integrated in Emacs&nbsp;26.3<!-- /@w -->.  A complete list of <small>TRAMP</small>
+as suffix, like &ldquo;2.4.3.27.1&rdquo;.  This means <small>TRAMP</small>&nbsp;2.4.3<!-- /@w --> as
+integrated in Emacs&nbsp;27.1<!-- /@w -->.  A complete list of <small>TRAMP</small>
 versions packaged with Emacs can be retrieved by
 </p>
 <a name="index-customize_002dpackage_002demacs_002dversion_002dalist"></a>
@@ -515,12 +515,12 @@ versions packaged with Emacs can be retrieved by
 ELPA</a> package.  Besides the standalone releases, further minor version
 of <small>TRAMP</small> will appear on GNU ELPA, until the next <small>TRAMP</small>
 release appears.  These minor versions have a four-number string, like
-&ldquo;2.4.2.1&rdquo;.
+&ldquo;2.4.3.1&rdquo;.
 </p>
 <p><small>TRAMP</small> development versions are available on Git servers.
 Development versions contain new and incomplete features.  The
 development version of <small>TRAMP</small> is always the version number of
-the next release, plus the suffix &ldquo;-pre&rdquo;, like &ldquo;2.4.3-pre&rdquo;.
+the next release, plus the suffix &ldquo;-pre&rdquo;, like &ldquo;2.4.4-pre&rdquo;.
 </p>
 <p>One way to obtain <small>TRAMP</small> from Git server is to visit the
 Savannah project page at the following URL and then clicking on the
@@ -2606,7 +2606,7 @@ string of that environment variable looks always like
 </p>
 <div class="example">
 <pre class="example">echo $INSIDE_EMACS
-&rArr; 26.2,tramp:2.3.4
+&rArr; 27.1,tramp:2.4.3
 </pre></div>
 
 </dd>
@@ -3339,6 +3339,17 @@ host when the variable <code>default-directory</code> is remote:
                       &quot;/bin/sh&quot; &quot;-c&quot; &quot;grep -e tramp *&quot;))
 </pre></div>
 
+<a name="index-process_002dfile_002dreturn_002dsignal_002dstring"></a>
+<p><code>process-file</code> shall return either the exit code of the process,
+or a string describing the signal, when the process has been
+interrupted.  Since it cannot be determined reliably whether a remote
+process has been interrupted, <code>process-file</code> returns always the
+exit code.  When the user option
+<code>process-file-return-signal-string</code> is non-nil,
+<code>process-file</code> regards all exit codes greater than 128 as an
+indication that the process has been interrupted, and returns a
+respective string.
+</p>
 <p>Remote processes do not apply to <acronym title="the GNOME Virtual File
 System">GVFS</acronym> (see <a href="#GVFS_002dbased-methods">GVFS-based methods</a>) because the remote file system is mounted on the local host
 and <small>TRAMP</small> just accesses by changing the
@@ -3346,9 +3357,17 @@ and <small>TRAMP</small> just accesses by changing the
 </p>
 <p><small>TRAMP</small> starts a remote process when a command is executed in a
 remote file or directory buffer.  As of now, these packages have been
-integrated to work with <small>TRAMP</small>: <samp>compile.el</samp> (commands
-like <code>compile</code> and <code>grep</code>) and <samp>gud.el</samp> (<code>gdb</code> or
-<code>perldb</code>).
+integrated to work with <small>TRAMP</small>: <samp>shell.el</samp>,
+<samp>eshell.el</samp>, <samp>compile.el</samp> (commands like <code>compile</code> and
+<code>grep</code>) and <samp>gud.el</samp> (<code>gdb</code> or <code>perldb</code>).
+</p>
+<a name="index-INSIDE_005fEMACS_002c-environment-variable-2"></a>
+<p><small>TRAMP</small> always modifies the <code>INSIDE_EMACS</code> environment
+variable for remote processes.  Per default, this environment variable
+shows the Emacs version.  <small>TRAMP</small> adds its own version string,
+so it looks like &lsquo;<samp>27.1,tramp:2.4.3.1</samp>&rsquo;.  However, other packages
+might also add their name to this environment variable, like
+&lsquo;<samp>27.1,comint,tramp:2.4.3.1</samp>&rsquo;.
 </p>
 <p>For <small>TRAMP</small> to find the command on the remote, it must be
 accessible through the default search path as setup by <small>TRAMP</small>
@@ -3524,7 +3543,7 @@ variables.
 <a name="index-async_002dshell_002dcommand_002dwidth"></a>
 <a name="index-COLUMNS_002c-environment-variable"></a>
 <p>If Emacs supports the variable <code>async-shell-command-width</code> (since
-Emacs&nbsp;27.1<!-- /@w -->), <small>TRAMP</small> cares about its value for asynchronous
+Emacs&nbsp;27<!-- /@w -->), <small>TRAMP</small> cares about its value for asynchronous
 shell commands.  It specifies the number of display columns for
 command output.  For synchronous shell commands, a similar effect can
 be achieved by adding the environment variable <code>COLUMNS</code> to
@@ -4016,7 +4035,7 @@ row are possible, like <samp>/path/to/dir/file.tar.gz.uu/dir/file</samp>.
 </p>
 <a name="index-tramp_002darchive_002dall_002dgvfs_002dmethods"></a>
 <p>An archive file name could be a remote file name, as in
-<samp>/ftp:anonymous@ftp.gnu.org:/gnu/tramp/tramp-2.3.2.tar.gz/INSTALL</samp>.
+<samp>/ftp:anonymous@ftp.gnu.org:/gnu/tramp/tramp-2.4.3.tar.gz/INSTALL</samp>.
 Since all file operations are mapped internally to <acronym title="the GNOME Virtual File System">GVFS</acronym>
 operations, remote file names supported by <code>tramp-gvfs</code> perform
 better, because no local copy of the file archive must be downloaded
@@ -4027,15 +4046,15 @@ the similar &lsquo;<samp>/scp:user@host:...</samp>&rsquo;.  See the constant
 </p>
 <p>If <code>url-handler-mode</code> is enabled, archives could be visited via
 URLs, like
-<samp>https://ftp.gnu.org/gnu/tramp/tramp-2.3.2.tar.gz/INSTALL</samp>.  This
+<samp>https://ftp.gnu.org/gnu/tramp/tramp-2.4.3.tar.gz/INSTALL</samp>.  This
 allows complex file operations like
 </p>
 <div class="lisp">
 <pre class="lisp">(progn
   (url-handler-mode 1)
   (ediff-directories
-   &quot;https://ftp.gnu.org/gnu/tramp/tramp-2.3.1.tar.gz/tramp-2.3.1&quot;
-   &quot;https://ftp.gnu.org/gnu/tramp/tramp-2.3.2.tar.gz/tramp-2.3.2&quot; &quot;&quot;))
+   &quot;https://ftp.gnu.org/gnu/tramp/tramp-2.4.2.tar.gz/tramp-2.4.2&quot;
+   &quot;https://ftp.gnu.org/gnu/tramp/tramp-2.4.3.tar.gz/tramp-2.4.3&quot; &quot;&quot;))
 </pre></div>
 
 <p>It is even possible to access file archives in file archives, as
@@ -5650,6 +5669,7 @@ Next: <a href="#Concept-Index" accesskey="n" rel="next">Concept Index</a>, Previ
 <tr><th><a name="Variable-Index_vr_letter-I">I</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-INSIDE_005fEMACS_002c-environment-variable"><code>INSIDE_EMACS<span class="roman">, environment variable</span></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Remote-shell-setup">Remote shell setup</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-INSIDE_005fEMACS_002c-environment-variable-1"><code>INSIDE_EMACS<span class="roman">, environment variable</span></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Remote-shell-setup">Remote shell setup</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-INSIDE_005fEMACS_002c-environment-variable-2"><code>INSIDE_EMACS<span class="roman">, environment variable</span></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Remote-processes">Remote processes</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Variable-Index_vr_letter-N">N</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-non_002dessential"><code>non-essential</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#External-packages">External packages</a></td></tr>
@@ -5658,6 +5678,7 @@ Next: <a href="#Concept-Index" accesskey="n" rel="next">Concept Index</a>, Previ
 <tr><td></td><td valign="top"><a href="#index-password_002dcache"><code>password-cache</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Password-handling">Password handling</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-password_002dcache_002dexpiry"><code>password-cache-expiry</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Password-handling">Password handling</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-PATH_002c-environment-variable"><code>PATH<span class="roman">, environment variable</span></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#External-methods">External methods</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-process_002dfile_002dreturn_002dsignal_002dstring"><code>process-file-return-signal-string</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Remote-processes">Remote processes</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Variable-Index_vr_letter-R">R</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-remote_002dfile_002dname_002dinhibit_002dcache"><code>remote-file-name-inhibit-cache</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Frequently-Asked-Questions">Frequently Asked Questions</a></td></tr>

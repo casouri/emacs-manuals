@@ -150,6 +150,11 @@ putting a line like this in your init file (see <a href="Init-File.html#Init-Fil
 <pre class="example">(add-to-list 'load-path &quot;/path/to/my/lisp/library&quot;)
 </pre></div>
 
+<p>It is customary to put locally installed libraries in the
+<samp>site-lisp</samp> directory that is already in the default value of
+<code>load-path</code>, or in some subdirectory of <samp>site-lisp</samp>.  This
+way, you don&rsquo;t need to modify the default value of <code>load-path</code>.
+</p>
 <a name="index-autoload"></a>
 <p>Some commands are <em>autoloaded</em>; when you run them, Emacs
 automatically loads the associated library first.  For instance, the
@@ -171,6 +176,29 @@ buffer).  To disable this feature, change the variable
 <code>describe-variable</code> and <code>describe-function</code>, based on the
 prefix being completed.  To disable this feature, change the variable
 <code>help-enable-completion-autoload</code> to <code>nil</code>.
+</p>
+<p>Once you put your library in a directory where Emacs can find and
+load it, you may wish to make it available at startup.  This is useful
+when the library defines features that should be available
+automatically on demand, and manually loading the library is thus
+inconvenient.  In these cases, make sure the library will be loaded by
+adding suitable forms to your init file: either <code>load</code> or
+<code>require</code> (if you always need to load the library at startup), or
+<code>autoload</code> if you need Emacs to load the library when some
+command or function is invoked.  For example:
+</p>
+<div class="smalllisp">
+<pre class="smalllisp"> ;; Loads <samp>my-shining-package.elc</samp> unconditionally.
+ (require 'my-shining-package)
+</pre><pre class="smalllisp"> ;; Will load <samp>my-shining-package.elc</samp> when <code>my-func</code> is invoked.
+ (autoload 'my-func &quot;my-shining-package&quot;)
+</pre></div>
+
+<p>Note that installing a package using <code>package-install</code>
+(see <a href="Package-Installation.html#Package-Installation">Package Installation</a>) takes care of placing the package&rsquo;s
+Lisp files in a directory where Emacs will find it, and also writes
+the necessary initialization code into your init files, making the
+above manual customizations unnecessary.
 </p>
 <hr>
 <div class="header">
