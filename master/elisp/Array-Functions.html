@@ -117,7 +117,7 @@ vector, a string, a bool-vector or a char-table).
 <var>object</var>.  It returns <var>object</var>.
 </p>
 <div class="example">
-<pre class="example">(setq w (vector 'foo 'bar 'baz))  ; <span class="roman">Create a mutable vector.</span>
+<pre class="example">(setq w (vector 'foo 'bar 'baz))
      &rArr; [foo bar baz]
 (aset w 0 'fu)
      &rArr; fu
@@ -125,7 +125,7 @@ w
      &rArr; [fu bar baz]
 </pre><pre class="example">
 
-</pre><pre class="example">;; <span class="roman"><code>copy-sequence</code> creates a mutable string.</span>
+</pre><pre class="example">;; <span class="roman"><code>copy-sequence</code> copies the string to be modified later.</span>
 (setq x (copy-sequence &quot;asdfasfd&quot;))
      &rArr; &quot;asdfasfd&quot;
 (aset x 3 ?Z)
@@ -134,9 +134,7 @@ x
      &rArr; &quot;asdZasfd&quot;
 </pre></div>
 
-<p>The <var>array</var> should be mutable; that is, it should not be a constant,
-such as the constants created via quoting or via self-evaluating forms.
-See <a href="Constants-and-Mutability.html#Constants-and-Mutability">Constants and Mutability</a>.
+<p>The <var>array</var> should be mutable.  See <a href="Mutability.html#Mutability">Mutability</a>.
 </p>
 <p>If <var>array</var> is a string and <var>object</var> is not a character, a
 <code>wrong-type-argument</code> error results.  The function converts a
@@ -149,15 +147,13 @@ unibyte string to multibyte if necessary to insert a character.
 each element of <var>array</var> is <var>object</var>.  It returns <var>array</var>.
 </p>
 <div class="example">
-<pre class="example">;; <span class="roman">Create a mutable vector and then fill it with zeros.</span>
-(setq a (copy-sequence [a b c d e f g]))
+<pre class="example">(setq a (copy-sequence [a b c d e f g]))
      &rArr; [a b c d e f g]
 (fillarray a 0)
      &rArr; [0 0 0 0 0 0 0]
 a
      &rArr; [0 0 0 0 0 0 0]
-</pre><pre class="example">;; <span class="roman">Create a mutable string and then fill it with &quot;-&quot;.</span>
-(setq s (copy-sequence &quot;When in the course&quot;))
+</pre><pre class="example">(setq s (copy-sequence &quot;When in the course&quot;))
      &rArr; &quot;When in the course&quot;
 (fillarray s ?-)
      &rArr; &quot;------------------&quot;

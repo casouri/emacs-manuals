@@ -80,10 +80,10 @@ Next: <a href="Undisplayable-Characters.html#Undisplayable-Characters" accesskey
 
 <p>Fontsets do not always have to be created from scratch.  If only
 minor changes are required it may be easier to modify an existing
-fontset.  Modifying &lsquo;<samp>fontset-default</samp>&rsquo; will also affect other
-fontsets that use it as a fallback, so can be an effective way of
-fixing problems with the fonts that Emacs chooses for a particular
-script.
+fontset, usually &lsquo;<samp>fontset-default</samp>&rsquo;.  Modifying
+&lsquo;<samp>fontset-default</samp>&rsquo; will also affect other fontsets that use it as
+a fallback, so can be an effective way of fixing problems with the
+fonts that Emacs chooses for a particular script.
 </p>
 <p>Fontsets can be modified using the function <code>set-fontset-font</code>,
 specifying a character, a charset, a script, or a range of characters
@@ -91,26 +91,59 @@ to modify the font for, and a font specification for the font to be
 used.  Some examples are:
 </p>
 <div class="example">
-<pre class="example">;; Use Liberation Mono for latin-3 charset.
-(set-fontset-font &quot;fontset-default&quot; 'iso-8859-3
-                  &quot;Liberation Mono&quot;)
-
-;; Prefer a big5 font for han characters.
+<pre class="example">;; Prefer a big5 font for han characters.
 (set-fontset-font &quot;fontset-default&quot;
                   'han (font-spec :registry &quot;big5&quot;)
                   nil 'prepend)
-
-;; Use DejaVu Sans Mono as a fallback in fontset-startup
-;; before resorting to fontset-default.
-(set-fontset-font &quot;fontset-startup&quot; nil &quot;DejaVu Sans Mono&quot;
-                  nil 'append)
 
 ;; Use MyPrivateFont for the Unicode private use area.
 (set-fontset-font &quot;fontset-default&quot;  '(#xe000 . #xf8ff)
                   &quot;MyPrivateFont&quot;)
 
+;; Use Liberation Mono for latin-3 charset.
+(set-fontset-font &quot;fontset-default&quot; 'iso-8859-3
+                  &quot;Liberation Mono&quot;)
+
+;; Use DejaVu Sans Mono as a fallback in fontset-startup
+;; before resorting to fontset-default.
+(set-fontset-font &quot;fontset-startup&quot; nil &quot;DejaVu Sans Mono&quot;
+                  nil 'append)
 </pre></div>
 
+<p>See <a href="http://www.gnu.org/software/emacs/manual/html_node/elisp/Fontsets.html#Fontsets">Fontsets</a> in <cite>GNU Emacs Lisp Reference Manual</cite>, for more
+details about using the <code>set-fontset-font</code> function.
+</p>
+<a name="index-script-of-a-character"></a>
+<a name="index-codepoint-of-a-character"></a>
+<p>If you don&rsquo;t know the character&rsquo;s codepoint or the script to which it
+belongs, you can ask Emacs.  With point at the character, type
+<kbd><span class="nolinebreak">C-u</span>&nbsp;<span class="nolinebreak">C-x</span>&nbsp;=</kbd><!-- /@w --> (<code>what-cursor-position</code>), and this
+information, together with much more, will be displayed in the
+<samp>*Help*</samp> buffer that Emacs pops up.  See <a href="Position-Info.html#Position-Info">Position Info</a>.  For
+example, Japanese characters belong to the &lsquo;<samp>kana</samp>&rsquo; script, but
+Japanese text also mixes them with Chinese characters so the following
+uses the &lsquo;<samp>han</samp>&rsquo; script to set up Emacs to use the &lsquo;<samp>Kochi
+Gothic</samp>&rsquo; font for Japanese text:
+</p>
+<div class="example">
+<pre class="example">(set-fontset-font &quot;fontset-default&quot; 'han &quot;Kochi Gothic&quot;)
+</pre></div>
+
+<p><a name="index-CKJ-characters"></a>
+(For convenience, the &lsquo;<samp>han</samp>&rsquo; script in Emacs is set up to support
+all of the Chinese, Japanese, and Korean, a.k.a. <acronym>CJK</acronym>,
+characters, not just Chinese characters.)
+</p>
+<a name="index-script_002drepresentative_002dchars"></a>
+<p>For the list of known scripts, see the variable
+<code>script-representative-chars</code>.
+</p>
+<p>Fontset settings like those above only affect characters that the
+default font doesn&rsquo;t support, so if the &lsquo;<samp>Kochi Gothic</samp>&rsquo; font
+covers Latin characters, it will not be used for displaying Latin
+scripts, since the default font used by Emacs usually covers Basic
+Latin.
+</p>
 <a name="index-ignore-font"></a>
 <a name="index-fonts_002c-how-to-ignore"></a>
 <a name="index-face_002dignored_002dfonts"></a>
@@ -126,6 +159,11 @@ in your <samp>~/.emacs</samp>:
 <pre class="example">(add-to-list 'face-ignored-fonts &quot;Some Bad Font&quot;)
 </pre></div>
 
+<hr>
+<div class="header">
+<p>
+Next: <a href="Undisplayable-Characters.html#Undisplayable-Characters" accesskey="n" rel="next">Undisplayable Characters</a>, Previous: <a href="Defining-Fontsets.html#Defining-Fontsets" accesskey="p" rel="prev">Defining Fontsets</a>, Up: <a href="International.html#International" accesskey="u" rel="up">International</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html#Key-Index" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

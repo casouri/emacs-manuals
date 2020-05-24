@@ -92,14 +92,15 @@ stored in the system and the available font names are defined by the
 system, fontsets are defined within Emacs itself.  Once you have
 defined a fontset, you can use it within Emacs by specifying its name,
 anywhere that you could use a single font.  Of course, Emacs fontsets
-can use only the fonts that the system supports.  If some characters
+can use only the fonts that your system supports.  If some characters
 appear on the screen as empty boxes or hex codes, this means that the
 fontset in use for them has no font for those characters.  In this
 case, or if the characters are shown, but not as well as you would
-like, you may need to install extra fonts.  Your operating system may
-have optional fonts that you can install; or you can install the GNU
-Intlfonts package, which includes fonts for most supported
-scripts.<a name="DOCF9" href="#FOOT9"><sup>9</sup></a>
+like, you may need to install extra fonts or modify the fontset to use
+specific fonts already installed on your system (see below).  Your
+operating system may have optional fonts that you can install; or you
+can install the GNU Intlfonts package, which includes fonts for most
+supported scripts.<a name="DOCF9" href="#FOOT9"><sup>9</sup></a>
 </p>
 <p>Emacs creates three fontsets automatically: the <em>standard
 fontset</em>, the <em>startup fontset</em> and the <em>default fontset</em>.
@@ -126,22 +127,28 @@ explicitly requested, despite its name.
 <kbd><span class="nolinebreak">M-x</span>&nbsp;<span class="nolinebreak">describe-fontset</span></kbd><!-- /@w --> command.  It prompts for a fontset
 name, defaulting to the one used by the current frame, and then
 displays all the subranges of characters and the fonts assigned to
-them in that fontset.
+them in that fontset.  To see which fonts Emacs is using in a session
+started without a specific fontset (which is what happens normally),
+type <kbd>fontset-default <span class="key">RET</span></kbd> at the prompt, or just
+<kbd><span class="key">RET</span></kbd> to describe the fontset used by the current frame.
 </p>
 <p>A fontset does not necessarily specify a font for every character
 code.  If a fontset specifies no font for a certain character, or if
 it specifies a font that does not exist on your system, then it cannot
 display that character properly.  It will display that character as a
-hex code or thin space or an empty box instead.  (See <a href="Text-Display.html#Text-Display">glyphless characters</a>, for details.)
+hex code or thin space or an empty box instead.  (See <a href="Text-Display.html#Text-Display">glyphless characters</a>, for details.)  Or a fontset might specify a
+font for some range of characters, but you may not like their visual
+appearance.  If this happens, you may wish to modify your fontset; see
+<a href="Modifying-Fontsets.html#Modifying-Fontsets">Modifying Fontsets</a>, for how to do that.
 </p>
 <div class="footnote">
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
 <h3><a name="FOOT9" href="#DOCF9">(9)</a></h3>
-<p>If you run Emacs on X, you may need to inform the X
-server about the location of the newly installed fonts with commands
-such as:
+<p>If you run Emacs on X, you may need to
+inform the X server about the location of the newly installed fonts
+with commands such as:
 </p>
 <div class="example">
 <pre class="example"> xset fp+ /usr/local/share/emacs/fonts
