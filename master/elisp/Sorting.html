@@ -133,8 +133,15 @@ non-<code>nil</code> value.
 </li></ol>
 
 <p>The argument <var>predicate</var> is the function to use to compare keys.
-If keys are numbers, it defaults to <code>&lt;</code>; otherwise it defaults to
-<code>string&lt;</code>.
+It is called with two arguments, the keys to compare, and should
+return non-<code>nil</code> if the first key should come before the second
+in the sorting order.  What exactly are the key arguments depends on
+what <var>startkeyfun</var> and <var>endkeyfun</var> return.  If <var>predicate</var>
+is omitted or <code>nil</code>, it defaults to <code>&lt;</code> if the keys are
+numbers, to <code>compare-buffer-substrings</code> if the keys are cons
+cells (whose <code>car</code> and <code>cdr</code> are start and end buffer
+positions of the key), and to <code>string&lt;</code> otherwise (with keys
+assumed to be strings).
 </p>
 <p>As an example of <code>sort-subr</code>, here is the complete function
 definition for <code>sort-lines</code>:
