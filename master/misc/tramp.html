@@ -131,7 +131,8 @@ ul.no-bullet {list-style: none}
     </ul></li>
     <li><a name="toc-Android-shell-setup-hints" href="#Android-shell-setup">4.17 Android shell setup hints</a></li>
     <li><a name="toc-Auto_002dsave-and-Backup-configuration" href="#Auto_002dsave-and-Backup">4.18 Auto-save and Backup configuration</a></li>
-    <li><a name="toc-Issues-with-Cygwin-ssh" href="#Windows-setup-hints">4.19 Issues with Cygwin ssh</a></li>
+    <li><a name="toc-Protect-remote-files-by-encryption" href="#Keeping-files-encrypted">4.19 Protect remote files by encryption</a></li>
+    <li><a name="toc-Issues-with-Cygwin-ssh" href="#Windows-setup-hints">4.20 Issues with Cygwin ssh</a></li>
   </ul></li>
   <li><a name="toc-Using-TRAMP" href="#Usage">5 Using <small>TRAMP</small></a>
   <ul class="no-bullet">
@@ -304,6 +305,8 @@ Configuring TRAMP for use
 <tr><td align="left" valign="top">&bull; <a href="#Android-shell-setup">Android shell setup</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Android shell setup hints.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Auto_002dsave-and-Backup">Auto-save and Backup</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Auto-save and Backup.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Keeping-files-encrypted">Keeping files encrypted</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Protect remote files by encryption.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Windows-setup-hints">Windows setup hints</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Issues with Cygwin ssh.
 </td></tr>
@@ -854,6 +857,8 @@ System">GVFS</acronym>-based external methods.
 <tr><td align="left" valign="top">&bull; <a href="#Android-shell-setup">Android shell setup</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Android shell setup hints.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Auto_002dsave-and-Backup">Auto-save and Backup</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Auto-save and Backup.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Keeping-files-encrypted">Keeping files encrypted</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Protect remote files by encryption.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Windows-setup-hints">Windows setup hints</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Issues with Cygwin ssh.
 </td></tr>
@@ -2830,7 +2835,7 @@ the previous example, fix the connection properties as follows:
 <a name="Auto_002dsave-and-Backup"></a>
 <div class="header">
 <p>
-Next: <a href="#Windows-setup-hints" accesskey="n" rel="next">Windows setup hints</a>, Previous: <a href="#Android-shell-setup" accesskey="p" rel="prev">Android shell setup</a>, Up: <a href="#Configuration" accesskey="u" rel="up">Configuration</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Function-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Keeping-files-encrypted" accesskey="n" rel="next">Keeping files encrypted</a>, Previous: <a href="#Android-shell-setup" accesskey="p" rel="prev">Android shell setup</a>, Up: <a href="#Configuration" accesskey="u" rel="up">Configuration</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Function-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Auto_002dsave-and-Backup-configuration"></a>
 <h3 class="section">4.18 Auto-save and Backup configuration</h3>
@@ -2915,14 +2920,130 @@ auto-saved files to the same directory as the original file.
 <p>Alternatively, set the user option <code>tramp-auto-save-directory</code>
 to direct all auto saves to that location.
 </p>
+
+<hr>
+<a name="Keeping-files-encrypted"></a>
+<div class="header">
+<p>
+Next: <a href="#Windows-setup-hints" accesskey="n" rel="next">Windows setup hints</a>, Previous: <a href="#Auto_002dsave-and-Backup" accesskey="p" rel="prev">Auto-save and Backup</a>, Up: <a href="#Configuration" accesskey="u" rel="up">Configuration</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Function-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Protect-remote-files-by-encryption"></a>
+<h3 class="section">4.19 Protect remote files by encryption</h3>
+<a name="index-Encrypt-remote-directories"></a>
+
+<p>Sometimes, it is desirable to protect files located on remote
+directories, like cloud storages.  In order to do this, you might
+instruct <small>TRAMP</small> to encrypt all files copied to a given remote
+directory, and to decrypt such files when accessing.  This includes
+both file contents and file names.
+</p>
+<p><small>TRAMP</small> does this transparently.  Although both files and file
+names are encrypted on the remote side, they are accessible inside
+Emacs as they wouldn&rsquo;t be transformed as such.
+</p>
+<a name="index-encfs"></a>
+<a name="index-encfsctl"></a>
+<p>Internally, <small>TRAMP</small> uses the <code>encfs</code> package.
+Therefore, this feature is available only if this package is installed
+on the local host.  <small>TRAMP</small> does not keep and &lsquo;<samp>encfs
+mountpoint</samp>&rsquo; permanently.  Instead, it encrypts / decrypts files and
+file names on the fly, using <code>encfsctl</code>.
+</p>
+<dl>
+<dt><a name="index-tramp_002dcrypt_002dadd_002ddirectory"></a>Command: <strong>tramp-crypt-add-directory</strong> <em>name</em></dt>
+<dd><p>This command marks the existing remote directory <var>name</var> for
+encryption.  Files in that directory and all subdirectories will be
+encrypted before copying to, and decrypted after copying from that
+directory.  File and directory names will be also encrypted.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-tramp_002dcrypt_002dencfs_002doption"></a>User Option: <strong>tramp-crypt-encfs-option</strong></dt>
+<dd><p>If a remote directory is marked for encryption, it is initialized via
+<code>encfs</code> the very first time a file in this directory is
+accessed.  This user option controls, which default <code>encfs</code>
+configuration option will be selected, it can be <tt>&quot;--standard&quot;</tt>
+or <tt>&quot;--paranoia&quot;</tt>.  See the &lsquo;<samp>encfs(1)</samp>&rsquo; man page for details.
+</p>
+<p>However, <small>TRAMP</small> must adapt these configuration sets.  The
+<code>chainedNameIV</code> configuration option must be disabled; otherwise
+<small>TRAMP</small> couldn&rsquo;t handle file name encryption transparently.
+</p></dd></dl>
+
+<p>A password protected <samp>encfs</samp> configuration file is created the
+very first time you access an encrypted remote directory.  It is kept
+in your <code>user-emacs-directory</code> with the url-encoded directory
+name as part of the basename, and <samp>encfs6.xml</samp> as suffix.  If
+you, for example, mark the remote directory
+<samp>/nextcloud:user@host:/path/to/dir</samp> for encryption, the
+configuration file is saved as
+<samp>tramp-%2Fnextcloud%3Auser%40host%3A%2Fpath%2Fto%2Fdir%2F.encfs6.xml</samp>
+in <code>user-emacs-directory</code>.  Do not loose this file and the
+corresponding password; otherwise there is no way to decrypt your
+encrypted files.
+</p>
+<dl>
+<dt><a name="index-tramp_002dcrypt_002dsave_002dencfs_002dconfig_002dremote"></a>User Option: <strong>tramp-crypt-save-encfs-config-remote</strong></dt>
+<dd><p>If this user option is non-nil (the default), the <samp>encfs</samp>
+configuration file <samp>.encfs6.xml</samp> is also kept in the encrypted
+remote directory.  It depends on you, whether you regard the password
+protection of this file as sufficient.  The advantage would be, that
+such a remote directory could be accessed by different Emacs sessions,
+different users, without presharing the configuration file between the
+users.
+</p></dd></dl>
+
+<p>The command <code>encfsctl</code>, the workhorse for encryption /
+decryption, needs the configuration file password every call.
+Therefore, it is recommend to cache this password in Emacs.  This can
+be done using <code>auth-sources</code>, <a href="#Using-an-authentication-file">Using an authentication file</a>.
+An entry needs the url-encoded directory name as machine, your local
+user name as user, and the password.  The port is optional, if given
+it must be the string <tt>&quot;crypt&quot;</tt>.  The example above would require
+the following entry in the authentication file (<tt>&quot;yourname&quot;</tt> is the
+result of <code>(user-login-name)</code>):
+</p>
+<div class="example">
+<pre class="example">machine %2Fnextcloud%3Auser%40host%3A%2Fpath%2Fto%2Fdir%2F \
+        login yourname port crypt password geheim
+</pre></div>
+
+<p>If you use a remote file name with a quoted localname part, this
+localname and the corresponding file will not be encrypted /
+decrypted.  If you have an encrypted remote directory
+<samp>/nextcloud:user@host:/path/to/dir</samp>, the command
+</p>
+<div class="example">
+<pre class="example"><kbd>C-x d /nextcloud:user@host:/path/to/dir</kbd>
+</pre></div>
+
+<p>will show the directory listing with the plain file names, and the
+command
+</p>
+<div class="example">
+<pre class="example"><kbd>C-x d /nextcloud:user@host:/:/path/to/dir</kbd>
+</pre></div>
+
+<p>will show the directory listing with the encrypted file names, and
+visiting a file will show its encrypted contents.  However, it is
+highly discouraged to mix encrypted and not encrypted files in the
+same directory.
+</p>
+<dl>
+<dt><a name="index-tramp_002dcrypt_002dadd_002ddirectory-1"></a>Command: <strong>tramp-crypt-add-directory</strong> <em>name</em></dt>
+<dd><p>If a remote directory shall not include encrypted files anymore, it
+must be indicated by this command.
+</p></dd></dl>
+
+
 <hr>
 <a name="Windows-setup-hints"></a>
 <div class="header">
 <p>
-Previous: <a href="#Auto_002dsave-and-Backup" accesskey="p" rel="prev">Auto-save and Backup</a>, Up: <a href="#Configuration" accesskey="u" rel="up">Configuration</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Function-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="#Keeping-files-encrypted" accesskey="p" rel="prev">Keeping files encrypted</a>, Up: <a href="#Configuration" accesskey="u" rel="up">Configuration</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Function-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Issues-with-Cygwin-ssh"></a>
-<h3 class="section">4.19 Issues with Cygwin ssh</h3>
+<h3 class="section">4.20 Issues with Cygwin ssh</h3>
 <a name="index-cygwin_002c-issues"></a>
 
 <p>This section is incomplete.  Please share your solutions.
@@ -2954,10 +3075,10 @@ Wiki</a> it is explained how to use the helper program
 <a name="index-scpx-method-with-cygwin"></a>
 
 <p>When using the <samp>scpx</samp> access method, Emacs may call
-<code>scp</code> with MS Windows file naming, such as <code>c:/foo</code>.  But
+<code>scp</code> with MS Windows file naming, such as <samp>c:/foo</samp>.  But
 the version of <code>scp</code> that is installed with Cygwin does not
 know about MS Windows file naming, which causes it to incorrectly look
-for a host named <code>c</code>.
+for a host named &lsquo;<samp>c</samp>&rsquo;.
 </p>
 <p>A workaround: write a wrapper script for <samp>scp</samp> to convert
 Windows file names to Cygwin file names.
@@ -4402,8 +4523,8 @@ configure <samp>~/.ssh/config</samp> on the proxy host:
      ControlPersist	no
 </pre></div>
 
-<p>Check <code>man ssh_config</code> whether these options are supported on
-your proxy host.
+<p>Check the &lsquo;<samp>ssh_config(5)</samp>&rsquo; man page whether these options are
+supported on your proxy host.
 </p>
 
 </li><li> <small>TRAMP</small> does not connect to Samba or MS Windows hosts running
@@ -5578,6 +5699,8 @@ Next: <a href="#Variable-Index" accesskey="n" rel="next">Variable Index</a>, Pre
 <tr><td></td><td valign="top"><a href="#index-tramp_002dcleanup_002dall_002dconnections"><code>tramp-cleanup-all-connections</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Cleanup-remote-connections">Cleanup remote connections</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002dcleanup_002dconnection"><code>tramp-cleanup-connection</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Cleanup-remote-connections">Cleanup remote connections</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002dcleanup_002dthis_002dconnection"><code>tramp-cleanup-this-connection</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Cleanup-remote-connections">Cleanup remote connections</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tramp_002dcrypt_002dadd_002ddirectory"><code>tramp-crypt-add-directory</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Keeping-files-encrypted">Keeping files encrypted</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tramp_002dcrypt_002dadd_002ddirectory-1"><code>tramp-crypt-add-directory</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Keeping-files-encrypted">Keeping files encrypted</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002dget_002dcompletion_002dfunction"><code>tramp-get-completion-function</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Customizing-Completion">Customizing Completion</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002dparse_002detc_002dgroup"><code>tramp-parse-etc-group</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Customizing-Completion">Customizing Completion</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002dparse_002dhosts"><code>tramp-parse-hosts</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Customizing-Completion">Customizing Completion</a></td></tr>
@@ -5706,6 +5829,8 @@ Next: <a href="#Concept-Index" accesskey="n" rel="next">Concept Index</a>, Previ
 <tr><td></td><td valign="top"><a href="#index-tramp_002dcompletion_002duse_002dauth_002dsources"><code>tramp-completion-use-auth-sources</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#File-name-completion">File name completion</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002dconfirm_002drename_002dfile_002dnames"><code>tramp-confirm-rename-file-names</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Renaming-remote-files">Renaming remote files</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002dconnection_002dproperties"><code>tramp-connection-properties</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Predefined-connection-information">Predefined connection information</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tramp_002dcrypt_002dencfs_002doption"><code>tramp-crypt-encfs-option</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Keeping-files-encrypted">Keeping files encrypted</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tramp_002dcrypt_002dsave_002dencfs_002dconfig_002dremote"><code>tramp-crypt-save-encfs-config-remote</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Keeping-files-encrypted">Keeping files encrypted</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002ddefault_002dhost"><code>tramp-default-host</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Default-Host">Default Host</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002ddefault_002dhost_002dalist"><code>tramp-default-host-alist</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Default-Host">Default Host</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002ddefault_002dmethod"><code>tramp-default-method</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Default-Method">Default Method</a></td></tr>
@@ -5904,6 +6029,9 @@ Previous: <a href="#Variable-Index" accesskey="p" rel="prev">Variable Index</a>,
 <tr><td></td><td valign="top"><a href="#index-docker-method"><samp>docker</samp> method</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Customizing-Methods">Customizing Methods</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Concept-Index_cp_letter-E">E</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-encfs"><code>encfs</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Keeping-files-encrypted">Keeping files encrypted</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-encfsctl"><code>encfsctl</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Keeping-files-encrypted">Keeping files encrypted</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-Encrypt-remote-directories">Encrypt remote directories</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Keeping-files-encrypted">Keeping files encrypted</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-eshell"><code>eshell</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Remote-processes">Remote processes</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-exe-file-archive-suffix"><samp>exe</samp> file archive suffix</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Archive-file-names">Archive file names</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-external-methods">external methods</a>:</td><td>&nbsp;</td><td valign="top"><a href="#External-methods">External methods</a></td></tr>
