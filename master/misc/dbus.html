@@ -288,7 +288,7 @@ default) or the symbol <code>:session</code>.  An activatable service is
 described in a service registration file.  Under GNU/Linux, such files
 are located at <samp>/usr/share/dbus-1/system-services/</samp> (for the
 <code>:system</code> bus) or <samp>/usr/share/dbus-1/services/</samp>.  An
-activatable service is not necessarily registered at <var>bus</var> at already.
+activatable service is not necessarily registered at <var>bus</var> already.
 </p>
 <p>The result is a list of strings, which is <code>nil</code> when there are no
 activatable service names at all.  Example:
@@ -302,8 +302,8 @@ activatable service names at all.  Example:
 
 <dl>
 <dt><a name="index-dbus_002dlist_002dnames"></a>Function: <strong>dbus-list-names</strong> <em>bus</em></dt>
-<dd><p>All service names, which are registered at D-Bus <var>bus</var>, are
-returned.  The result is a list of strings, which is <code>nil</code> when
+<dd><p>This function returns all service names, which are registered at D-Bus
+<var>bus</var>.  The result is a list of strings, which is <code>nil</code> when
 there are no registered service names at all.  Well known names are
 strings like &lsquo;<samp>org.freedesktop.DBus</samp>&rsquo;.  Names starting with
 &lsquo;<samp>:</samp>&rsquo; are unique names for services.
@@ -314,10 +314,10 @@ strings like &lsquo;<samp>org.freedesktop.DBus</samp>&rsquo;.  Names starting wi
 
 <dl>
 <dt><a name="index-dbus_002dlist_002dknown_002dnames"></a>Function: <strong>dbus-list-known-names</strong> <em>bus</em></dt>
-<dd><p>Retrieves all registered services which correspond to a known name in <var>bus</var>.
-A service has a known name if it doesn&rsquo;t start with &lsquo;<samp>:</samp>&rsquo;.  The
-result is a list of strings, which is <code>nil</code> when there are no
-known names at all.
+<dd><p>This function retrieves all registered services which correspond to a
+known name in <var>bus</var>.  A service has a known name if it doesn&rsquo;t
+start with &lsquo;<samp>:</samp>&rsquo;.  The result is a list of strings, which is
+<code>nil</code> when there are no known names at all.
 </p>
 <p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
 <code>:session</code>.
@@ -326,9 +326,9 @@ known names at all.
 <dl>
 <dt><a name="index-dbus_002dlist_002dqueued_002downers"></a>Function: <strong>dbus-list-queued-owners</strong> <em>bus service</em></dt>
 <dd><p>For a given service, registered at D-Bus <var>bus</var> under the name
-<var>service</var>, all queued unique names are returned.  The result is a
-list of strings, or <code>nil</code> when there are no queued names for
-<var>service</var> at all.
+<var>service</var>, this function returns all queued unique names.  The
+result is a list of strings, or <code>nil</code> when there are no queued
+names for <var>service</var> at all.
 </p>
 <p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
 <code>:session</code>.  <var>service</var> must be a known service name as
@@ -338,9 +338,9 @@ string.
 <dl>
 <dt><a name="index-dbus_002dget_002dname_002downer"></a>Function: <strong>dbus-get-name-owner</strong> <em>bus service</em></dt>
 <dd><p>For a given service, registered at D-Bus <var>bus</var> under the name
-<var>service</var>, the unique name of the name owner is returned.  The
-result is a string, or <code>nil</code> when there exist no name owner of
-<var>service</var>.
+<var>service</var>, this function returns the unique name of the name
+owner.  The result is a string, or <code>nil</code> when there is no name
+owner of <var>service</var>.
 </p>
 <p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
 <code>:session</code>.  <var>service</var> must be a known service name as
@@ -349,26 +349,28 @@ string.
 
 <dl>
 <dt><a name="index-dbus_002dping"></a>Function: <strong>dbus-ping</strong> <em>bus service &amp;optional timeout</em></dt>
-<dd><p>Check whether the service name <var>service</var> is registered at D-Bus
-<var>bus</var>.  <var>service</var> might not have been started yet, it is
-autostarted if possible.  The result is either <code>t</code> or <code>nil</code>.
+<dd><p>This function checks whether the service name <var>service</var> is
+registered at D-Bus <var>bus</var>.  If <var>service</var> has not yet started,
+it is autostarted if possible.  The result is either <code>t</code> or
+<code>nil</code>.
 </p>
 <p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
 <code>:session</code>.  <var>service</var> must be a string.  <var>timeout</var>, a
 nonnegative integer, specifies the maximum number of milliseconds
-<code>dbus-ping</code> must return.  The default value is 25,000.  Example:
+before <code>dbus-ping</code> must return.  The default value is 25,000.
+Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(message
-   &quot;%s screensaver on board.&quot;
-   (cond
-     ((dbus-ping :session &quot;org.gnome.ScreenSaver&quot; 100) &quot;Gnome&quot;)
-     ((dbus-ping :session &quot;org.freedesktop.ScreenSaver&quot; 100) &quot;KDE&quot;)
-     (t &quot;No&quot;)))
+ &quot;%s screensaver on board.&quot;
+ (cond
+  ((dbus-ping :session &quot;org.gnome.ScreenSaver&quot; 100) &quot;Gnome&quot;)
+  ((dbus-ping :session &quot;org.freedesktop.ScreenSaver&quot; 100) &quot;KDE&quot;)
+  (t &quot;No&quot;)))
 </pre></div>
 
-<p>If it shall be checked whether <var>service</var> is already running
-without autostarting it, one shall apply
+<p>To check whether <var>service</var> is already running without autostarting
+it, you can instead write:
 </p>
 <div class="lisp">
 <pre class="lisp">(member service (dbus-list-known-names bus))
@@ -377,8 +379,8 @@ without autostarting it, one shall apply
 
 <dl>
 <dt><a name="index-dbus_002dget_002dunique_002dname"></a>Function: <strong>dbus-get-unique-name</strong> <em>bus</em></dt>
-<dd><p>The unique name, under which Emacs is registered at D-Bus <var>bus</var>,
-is returned as string.
+<dd><a name="dbus_002dget_002dunique_002dname"></a><p>This function returns the unique name, under which Emacs is registered
+at D-Bus <var>bus</var>, as a string.
 </p>
 <p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
 <code>:session</code>.
@@ -512,8 +514,8 @@ format.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect
-  :system &quot;org.freedesktop.Hal&quot;
-  &quot;/org/freedesktop/Hal/devices/computer&quot;)
+ :system &quot;org.freedesktop.Hal&quot;
+ &quot;/org/freedesktop/Hal/devices/computer&quot;)
 
 &rArr; &quot;&lt;!DOCTYPE node PUBLIC
     &quot;-//freedesktop//DTD D-BUS Object Introspection 1.0//EN&quot;
@@ -548,47 +550,52 @@ string and 2 boolean values.<a name="DOCF2" href="#FOOT2"><sup>2</sup></a>
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dxml"></a>Function: <strong>dbus-introspect-xml</strong> <em>bus service path</em></dt>
-<dd><p>This function has the same intention as function
+<dd><p>This function serves a similar purpose to the function
 <code>dbus-introspect</code>.  The returned value is a parsed XML tree,
 which can be used for further analysis.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-xml
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;)
 
 &rArr; (node ((name . &quot;/org/freedesktop/xesam/searcher/main&quot;))
-     (interface ((name . &quot;org.freedesktop.xesam.Search&quot;))
-       (method ((name . &quot;GetHitData&quot;))
-         (arg ((name . &quot;search&quot;) (type . &quot;s&quot;) (direction . &quot;in&quot;)))
-         (arg ((name . &quot;hit_ids&quot;) (type . &quot;au&quot;) (direction . &quot;in&quot;)))
-         (arg ((name . &quot;fields&quot;) (type . &quot;as&quot;) (direction . &quot;in&quot;)))
-         (arg ((name . &quot;hit_data&quot;) (type . &quot;aav&quot;) (direction . &quot;out&quot;)))
-       )
-       &hellip;
-       (signal ((name . &quot;HitsAdded&quot;))
-         (arg ((name . &quot;search&quot;) (type . &quot;s&quot;)))
-         (arg ((name . &quot;count&quot;) (type . &quot;u&quot;)))
-       )
-     )
-     &hellip;
-   )
+    (interface ((name . &quot;org.freedesktop.xesam.Search&quot;))
+      (method ((name . &quot;GetHitData&quot;))
+        (arg ((name . &quot;search&quot;)
+              (type . &quot;s&quot;)
+              (direction . &quot;in&quot;)))
+        (arg ((name . &quot;hit_ids&quot;)
+              (type . &quot;au&quot;)
+              (direction . &quot;in&quot;)))
+        (arg ((name . &quot;fields&quot;)
+              (type . &quot;as&quot;)
+              (direction . &quot;in&quot;)))
+        (arg ((name . &quot;hit_data&quot;)
+              (type . &quot;aav&quot;)
+              (direction . &quot;out&quot;))))
+      &hellip;
+      (signal ((name . &quot;HitsAdded&quot;))
+        (arg ((name . &quot;search&quot;) (type . &quot;s&quot;)))
+        (arg ((name . &quot;count&quot;) (type . &quot;u&quot;)))))
+    &hellip;)
 </pre></div>
 </dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dattribute"></a>Function: <strong>dbus-introspect-get-attribute</strong> <em>object attribute</em></dt>
-<dd><p>It returns the <var>attribute</var> value of a D-Bus introspection
-<var>object</var>.  <var>object</var> can be every subtree of a parsed XML tree
-as retrieved with <code>dbus-introspect-xml</code>.  <var>attribute</var> must be
-a string according to the attribute names in the D-Bus specification.
-Example:
+<dd><p>This function returns the <var>attribute</var> value of a D-Bus
+introspection <var>object</var>.  The value of <var>object</var> can be any
+subtree of a parsed XML tree as retrieved with
+<code>dbus-introspect-xml</code>.  <var>attribute</var> must be a string
+according to the attribute names in the D-Bus specification.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-attribute
-  (dbus-introspect-xml :system &quot;org.freedesktop.SystemToolsBackends&quot;
-    &quot;/org/freedesktop/SystemToolsBackends/UsersConfig&quot;)
-  &quot;name&quot;)
+ (dbus-introspect-xml
+  :system &quot;org.freedesktop.SystemToolsBackends&quot;
+  &quot;/org/freedesktop/SystemToolsBackends/UsersConfig&quot;)
+ &quot;name&quot;)
 
 &rArr; &quot;/org/freedesktop/SystemToolsBackends/UsersConfig&quot;
 </pre></div>
@@ -612,12 +619,12 @@ object paths and interfaces.
 </p>
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dnode_002dnames"></a>Function: <strong>dbus-introspect-get-node-names</strong> <em>bus service path</em></dt>
-<dd><p>All node names of <var>service</var> in D-Bus <var>bus</var> at object path
-<var>path</var> are returned as list of strings.  Example:
+<dd><p>This function returns all node names of <var>service</var> in D-Bus
+<var>bus</var> at object path <var>path</var> as a list of strings.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-node-names
-  :session &quot;org.gnome.seahorse&quot; &quot;/org/gnome/seahorse&quot;)
+ :session &quot;org.gnome.seahorse&quot; &quot;/org/gnome/seahorse&quot;)
 
 &rArr; (&quot;crypto&quot; &quot;keys&quot;)
 </pre></div>
@@ -650,9 +657,10 @@ Example:
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dinterface_002dnames"></a>Function: <strong>dbus-introspect-get-interface-names</strong> <em>bus service path</em></dt>
-<dd><p>There will be returned a list strings of all interface names of
+<dd><p>This function returns a list strings of all interface names of
 <var>service</var> in D-Bus <var>bus</var> at object path <var>path</var>.  This list
-will contain the default interface &lsquo;<samp>org.freedesktop.DBus.Introspectable</samp>&rsquo;.
+will contain the default interface
+&lsquo;<samp>org.freedesktop.DBus.Introspectable</samp>&rsquo;.
 </p>
 <p>Another default interface is &lsquo;<samp>org.freedesktop.DBus.Properties</samp>&rsquo;.
 If present, <code>interface</code> elements can also have <code>property</code>
@@ -660,8 +668,8 @@ children.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-interface-names
-  :system &quot;org.freedesktop.Hal&quot;
-  &quot;/org/freedesktop/Hal/devices/computer&quot;)
+ :system &quot;org.freedesktop.Hal&quot;
+ &quot;/org/freedesktop/Hal/devices/computer&quot;)
 
 &rArr; (&quot;org.freedesktop.DBus.Introspectable&quot;
     &quot;org.freedesktop.Hal.Device&quot;
@@ -672,30 +680,27 @@ children.  Example:
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dinterface"></a>Function: <strong>dbus-introspect-get-interface</strong> <em>bus service path interface</em></dt>
-<dd><p>Return <var>interface</var> of <var>service</var> in D-Bus <var>bus</var> at object
-path <var>path</var>.  The return value is an XML element.  <var>interface</var>
-must be a string, element of the list returned by
-<code>dbus-introspect-get-interface-names</code>.  Example:
+<dd><p>This function returns <var>interface</var> of <var>service</var> in D-Bus
+<var>bus</var> at object path <var>path</var>.  The return value is an XML
+element.  <var>interface</var> must be a string and a member of the list
+returned by <code>dbus-introspect-get-interface-names</code>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-interface
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot;)
 
 &rArr; (interface ((name . &quot;org.freedesktop.xesam.Search&quot;))
      (method ((name . &quot;GetHitData&quot;))
        (arg ((name . &quot;search&quot;) (type . &quot;s&quot;) (direction . &quot;in&quot;)))
        (arg ((name . &quot;hit_ids&quot;) (type . &quot;au&quot;) (direction . &quot;in&quot;)))
        (arg ((name . &quot;fields&quot;) (type . &quot;as&quot;) (direction . &quot;in&quot;)))
-       (arg ((name . &quot;hit_data&quot;) (type . &quot;aav&quot;) (direction . &quot;out&quot;)))
-     )
+       (arg ((name . &quot;hit_data&quot;) (type . &quot;aav&quot;) (direction . &quot;out&quot;))))
      &hellip;
      (signal ((name . &quot;HitsAdded&quot;))
        (arg ((name . &quot;search&quot;) (type . &quot;s&quot;)))
-       (arg ((name . &quot;count&quot;) (type . &quot;u&quot;)))
-     )
-   )
+       (arg ((name . &quot;count&quot;) (type . &quot;u&quot;)))))
 </pre></div>
 </dd></dl>
 
@@ -703,7 +708,8 @@ must be a string, element of the list returned by
 data from a running system:
 </p>
 <div class="lisp">
-<pre class="lisp">(with-current-buffer (switch-to-buffer &quot;*introspect*&quot;)
+<pre class="lisp">(progn
+  (pop-to-buffer &quot;*introspect*&quot;)
   (erase-buffer)
   (dolist (service (dbus-list-known-names :session))
     (dolist (path (dbus-introspect-get-all-nodes :session service &quot;/&quot;))
@@ -712,7 +718,7 @@ data from a running system:
       (when (delete
              &quot;org.freedesktop.DBus.Introspectable&quot;
              (dbus-introspect-get-interface-names :session service path))
-        (insert (message &quot;\nservice: \&quot;%s\&quot; path: \&quot;%s\&quot;\n&quot; service path)
+        (insert (format &quot;\nservice: \&quot;%s\&quot; path: \&quot;%s\&quot;\n&quot; service path)
                 (dbus-introspect :session service path))
         (redisplay t)))))
 </pre></div>
@@ -732,14 +738,15 @@ following functions return their specifications.
 </p>
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dmethod_002dnames"></a>Function: <strong>dbus-introspect-get-method-names</strong> <em>bus service path interface</em></dt>
-<dd><p>Return a list of strings of all method names of <var>interface</var> of
-<var>service</var> in D-Bus <var>bus</var> at object path <var>path</var>.  Example:
+<dd><p>This function returns a list of strings of all method names of
+<var>interface</var> of <var>service</var> in D-Bus <var>bus</var> at object path
+<var>path</var>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-method-names
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot;)
 
 &rArr; (&quot;GetState&quot; &quot;StartSearch&quot; &quot;GetHitCount&quot; &quot;GetHits&quot; &quot;NewSession&quot;
     &quot;CloseSession&quot; &quot;GetHitData&quot; &quot;SetProperty&quot; &quot;NewSearch&quot;
@@ -749,36 +756,37 @@ following functions return their specifications.
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dmethod"></a>Function: <strong>dbus-introspect-get-method</strong> <em>bus service path interface method</em></dt>
-<dd><p>This function returns <var>method</var> of <var>interface</var> as XML element.
-It must be located at <var>service</var> in D-Bus <var>bus</var> at object path
-<var>path</var>.  <var>method</var> must be a string, element of the list
-returned by <code>dbus-introspect-get-method-names</code>.  Example:
+<dd><p>This function returns <var>method</var> of <var>interface</var> as an XML
+element.  It must be located at <var>service</var> in D-Bus <var>bus</var> at
+object path <var>path</var>.  <var>method</var> must be a string and a member of
+the list returned by <code>dbus-introspect-get-method-names</code>.
+Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-method
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot; &quot;GetHitData&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot; &quot;GetHitData&quot;)
 
 &rArr; (method ((name . &quot;GetHitData&quot;))
      (arg ((name . &quot;search&quot;) (type . &quot;s&quot;) (direction . &quot;in&quot;)))
      (arg ((name . &quot;hit_ids&quot;) (type . &quot;au&quot;) (direction . &quot;in&quot;)))
      (arg ((name . &quot;fields&quot;) (type . &quot;as&quot;) (direction . &quot;in&quot;)))
-     (arg ((name . &quot;hit_data&quot;) (type . &quot;aav&quot;) (direction . &quot;out&quot;)))
-   )
+     (arg ((name . &quot;hit_data&quot;) (type . &quot;aav&quot;) (direction . &quot;out&quot;))))
 </pre></div>
 </dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dsignal_002dnames"></a>Function: <strong>dbus-introspect-get-signal-names</strong> <em>bus service path interface</em></dt>
-<dd><p>Return a list of strings of all signal names of <var>interface</var> of
-<var>service</var> in D-Bus <var>bus</var> at object path <var>path</var>.  Example:
+<dd><p>This function returns a list of strings of all signal names of
+<var>interface</var> of <var>service</var> in D-Bus <var>bus</var> at object path
+<var>path</var>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-signal-names
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot;)
 
 &rArr; (&quot;StateChanged&quot; &quot;SearchDone&quot; &quot;HitsModified&quot;
     &quot;HitsRemoved&quot; &quot;HitsAdded&quot;)
@@ -787,21 +795,21 @@ returned by <code>dbus-introspect-get-method-names</code>.  Example:
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dsignal"></a>Function: <strong>dbus-introspect-get-signal</strong> <em>bus service path interface signal</em></dt>
-<dd><p>This function returns <var>signal</var> of <var>interface</var> as XML element.
-It must be located at <var>service</var> in D-Bus <var>bus</var> at object path
-<var>path</var>.  <var>signal</var> must be a string, element of the list
-returned by <code>dbus-introspect-get-signal-names</code>.  Example:
+<dd><p>This function returns <var>signal</var> of <var>interface</var> as an XML
+element.  It must be located at <var>service</var> in D-Bus <var>bus</var> at
+object path <var>path</var>.  <var>signal</var> must be a string and a member of
+the list returned by <code>dbus-introspect-get-signal-names</code>.
+Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-signal
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot; &quot;HitsAdded&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot; &quot;HitsAdded&quot;)
 
 &rArr; (signal ((name . &quot;HitsAdded&quot;))
      (arg ((name . &quot;search&quot;) (type . &quot;s&quot;)))
-     (arg ((name . &quot;count&quot;) (type . &quot;u&quot;)))
-   )
+     (arg ((name . &quot;count&quot;) (type . &quot;u&quot;))))
 </pre></div>
 </dd></dl>
 
@@ -817,8 +825,8 @@ Next: <a href="#Arguments-and-Signatures" accesskey="n" rel="next">Arguments and
 
 <p>Interfaces can have properties.  These can be exposed via the
 &lsquo;<samp>org.freedesktop.DBus.Properties</samp>&rsquo; interface<a name="DOCF3" href="#FOOT3"><sup>3</sup></a>.
-That is, properties can be retrieved and changed during lifetime of an
-element.
+That is, properties can be retrieved and changed during the lifetime
+of an element.
 </p>
 <p>A generalized interface is
 &lsquo;<samp>org.freedesktop.DBus.Objectmanager</samp>&rsquo;<a name="DOCF4" href="#FOOT4"><sup>4</sup></a>,
@@ -831,13 +839,14 @@ the interface for a given language binding.
 </p>
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dproperty_002dnames"></a>Function: <strong>dbus-introspect-get-property-names</strong> <em>bus service path interface</em></dt>
-<dd><p>Return a list of strings with all property names of <var>interface</var> of
-<var>service</var> in D-Bus <var>bus</var> at object path <var>path</var>.  Example:
+<dd><p>This function returns a list of strings with all property names of
+<var>interface</var> of <var>service</var> in D-Bus <var>bus</var> at object path
+<var>path</var>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-property-names
-  :session &quot;org.kde.kded&quot; &quot;/modules/networkstatus&quot;
-  &quot;org.kde.Solid.Networking.Client&quot;)
+ :session &quot;org.kde.kded&quot; &quot;/modules/networkstatus&quot;
+ &quot;org.kde.Solid.Networking.Client&quot;)
 
 &rArr; (&quot;Status&quot;)
 </pre></div>
@@ -848,26 +857,26 @@ also the &lsquo;<samp>org.freedesktop.DBus.Properties</samp>&rsquo; interface.
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dproperty"></a>Function: <strong>dbus-introspect-get-property</strong> <em>bus service path interface property</em></dt>
-<dd><p>This function returns <var>property</var> of <var>interface</var> as XML element.
-It must be located at <var>service</var> in D-Bus <var>bus</var> at object path
-<var>path</var>.  <var>property</var> must be a string, element of the list
-returned by <code>dbus-introspect-get-property-names</code>.
+<dd><p>This function returns <var>property</var> of <var>interface</var> as an XML
+element.  It must be located at <var>service</var> in D-Bus <var>bus</var> at
+object path <var>path</var>.  <var>property</var> must be a string and a member
+of the list returned by <code>dbus-introspect-get-property-names</code>.
 </p>
 <p>A <var>property</var> value can be retrieved by the function
 <code>dbus-introspect-get-attribute</code>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-property
-  :session &quot;org.kde.kded&quot; &quot;/modules/networkstatus&quot;
-  &quot;org.kde.Solid.Networking.Client&quot; &quot;Status&quot;)
+ :session &quot;org.kde.kded&quot; &quot;/modules/networkstatus&quot;
+ &quot;org.kde.Solid.Networking.Client&quot; &quot;Status&quot;)
 
 &rArr; (property ((access . &quot;read&quot;) (type . &quot;u&quot;) (name . &quot;Status&quot;)))
 
 (dbus-introspect-get-attribute
-  (dbus-introspect-get-property
-    :session &quot;org.kde.kded&quot; &quot;/modules/networkstatus&quot;
-    &quot;org.kde.Solid.Networking.Client&quot; &quot;Status&quot;)
-  &quot;access&quot;)
+ (dbus-introspect-get-property
+  :session &quot;org.kde.kded&quot; &quot;/modules/networkstatus&quot;
+  &quot;org.kde.Solid.Networking.Client&quot; &quot;Status&quot;)
+ &quot;access&quot;)
 
 &rArr; &quot;read&quot;
 </pre></div>
@@ -882,8 +891,8 @@ result can be any valid D-Bus value, or <code>nil</code> if there is no
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-get-property
-  :session &quot;org.kde.kded&quot; &quot;/modules/networkstatus&quot;
-  &quot;org.kde.Solid.Networking.Client&quot; &quot;Status&quot;)
+ :session &quot;org.kde.kded&quot; &quot;/modules/networkstatus&quot;
+ &quot;org.kde.Solid.Networking.Client&quot; &quot;Status&quot;)
 
 &rArr; 4
 </pre></div>
@@ -891,15 +900,15 @@ result can be any valid D-Bus value, or <code>nil</code> if there is no
 
 <dl>
 <dt><a name="index-dbus_002dset_002dproperty"></a>Function: <strong>dbus-set-property</strong> <em>bus service path interface property value</em></dt>
-<dd><p>Set value of <var>property</var> of <var>interface</var> to <var>value</var>.  It
-will be checked at <var>bus</var>, <var>service</var>, <var>path</var>.  When the
-value has been set successful, the result is <var>value</var>.  Otherwise,
-<code>nil</code> is returned.  Example:
+<dd><p>This function sets the value of <var>property</var> of <var>interface</var> to
+<var>value</var>.  It will be checked at <var>bus</var>, <var>service</var>,
+<var>path</var>.  When the value is successfully set, this function returns
+<var>value</var>.  Otherwise, it returns <code>nil</code>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-set-property
-  :session &quot;org.kde.kaccess&quot; &quot;/MainApplication&quot;
-  &quot;com.trolltech.Qt.QApplication&quot; &quot;doubleClickInterval&quot; 500)
+ :session &quot;org.kde.kaccess&quot; &quot;/MainApplication&quot;
+ &quot;com.trolltech.Qt.QApplication&quot; &quot;doubleClickInterval&quot; 500)
 
 &rArr; 500
 </pre></div>
@@ -914,8 +923,8 @@ If there are no properties, <code>nil</code> is returned.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-get-all-properties
-  :session &quot;org.kde.kaccess&quot; &quot;/MainApplication&quot;
-  &quot;com.trolltech.Qt.QApplication&quot;)
+ :session &quot;org.kde.kaccess&quot; &quot;/MainApplication&quot;
+ &quot;com.trolltech.Qt.QApplication&quot;)
 
 &rArr; ((&quot;cursorFlashTime&quot; . 1000) (&quot;doubleClickInterval&quot; . 500)
     (&quot;keyboardInputInterval&quot; . 400) (&quot;wheelScrollLines&quot; . 3)
@@ -931,13 +940,13 @@ If there are no properties, <code>nil</code> is returned.  Example:
 <var>path</var>, and the children of <var>path</var>.  The result is a list of
 objects.  Every object is a cons of an existing path name, and the
 list of available interface objects.  An interface object is another
-cons, which car is the interface name, and the cdr is the list of
+cons, whose car is the interface name and cdr is the list of
 properties as returned by <code>dbus-get-all-properties</code> for that path
-and interface. Example:
+and interface.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-get-all-managed-objects
-  :session &quot;org.gnome.SettingsDaemon&quot; &quot;/&quot;)
+ :session &quot;org.gnome.SettingsDaemon&quot; &quot;/&quot;)
 
 &rArr; ((&quot;/org/gnome/SettingsDaemon/MediaKeys&quot;
      (&quot;org.gnome.SettingsDaemon.MediaKeys&quot;)
@@ -967,32 +976,29 @@ and &lsquo;<samp>org.freedesktop.DBus.Properties.GetAll</samp>&rsquo;, which is 
 properties could be retrieved by the following code:
 </p>
 <div class="lisp">
-<pre class="lisp">(with-current-buffer (switch-to-buffer &quot;*objectmanager*&quot;)
+<pre class="lisp">(let ((result (mapcar (lambda (service)
+                        (cons service
+                              (dbus-get-all-managed-objects
+                               :session service &quot;/&quot;)))
+                      (dbus-list-known-names :session))))
+  (pop-to-buffer &quot;*objectmanager*&quot;)
   (erase-buffer)
-  (let (result)
-    (dolist (service (dbus-list-known-names :session) result)
-      (message &quot;%s&quot; service)
-      (add-to-list
-       'result
-       (cons service
-             (dbus-get-all-managed-objects :session service &quot;/&quot;))))
-    (insert (message &quot;%s&quot; (pp result)))
-    (redisplay t)))
+  (pp result (current-buffer)))
 </pre></div>
 </dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dannotation_002dnames"></a>Function: <strong>dbus-introspect-get-annotation-names</strong> <em>bus service path interface &amp;optional name</em></dt>
-<dd><p>Return a list of all annotation names as list of strings.  If
-<var>name</var> is <code>nil</code>, the annotations are children of
+<dd><p>This function returns a list of all annotation names as list of
+strings.  If <var>name</var> is <code>nil</code>, the annotations are children of
 <var>interface</var>, otherwise <var>name</var> must be a <code>method</code>,
 <code>signal</code>, or <code>property</code> XML element, where the annotations
 belong to.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-annotation-names
-  :session &quot;de.berlios.Pinot&quot; &quot;/de/berlios/Pinot&quot;
-  &quot;de.berlios.Pinot&quot; &quot;GetStatistics&quot;)
+ :session &quot;de.berlios.Pinot&quot; &quot;/de/berlios/Pinot&quot;
+ &quot;de.berlios.Pinot&quot; &quot;GetStatistics&quot;)
 
 &rArr; (&quot;de.berlios.Pinot.GetStatistics&quot;)
 </pre></div>
@@ -1017,29 +1023,30 @@ are
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dannotation"></a>Function: <strong>dbus-introspect-get-annotation</strong> <em>bus service path interface name annotation</em></dt>
-<dd><p>Return annotation <var>ANNOTATION</var> as XML object.  If <var>name</var> is
-<code>nil</code>, <var>ANNOTATION</var> is a child of <var>interface</var>, otherwise
-<var>name</var> must be the name of a <code>method</code>, <code>signal</code>, or
-<code>property</code> XML element, where the <var>ANNOTATION</var> belongs to.
+<dd><p>This function returns <var>annotation</var> as an XML object.  If
+<var>name</var> is <code>nil</code>, <var>annotation</var> is a child of
+<var>interface</var>, otherwise <var>name</var> must be the name of a
+<code>method</code>, <code>signal</code>, or <code>property</code> XML element, where
+the <var>annotation</var> belongs to.
 </p>
 <p>An attribute value can be retrieved by
 <code>dbus-introspect-get-attribute</code>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-annotation
-  :session &quot;de.berlios.Pinot&quot; &quot;/de/berlios/Pinot&quot;
-  &quot;de.berlios.Pinot&quot; &quot;GetStatistics&quot;
-  &quot;de.berlios.Pinot.GetStatistics&quot;)
+ :session &quot;de.berlios.Pinot&quot; &quot;/de/berlios/Pinot&quot;
+ &quot;de.berlios.Pinot&quot; &quot;GetStatistics&quot;
+ &quot;de.berlios.Pinot.GetStatistics&quot;)
 
 &rArr; (annotation ((name . &quot;de.berlios.Pinot.GetStatistics&quot;)
                 (value . &quot;pinotDBus&quot;)))
 
 (dbus-introspect-get-attribute
-  (dbus-introspect-get-annotation
-    :session &quot;de.berlios.Pinot&quot; &quot;/de/berlios/Pinot&quot;
-    &quot;de.berlios.Pinot&quot; &quot;GetStatistics&quot;
-    &quot;de.berlios.Pinot.GetStatistics&quot;)
-  &quot;value&quot;)
+ (dbus-introspect-get-annotation
+  :session &quot;de.berlios.Pinot&quot; &quot;/de/berlios/Pinot&quot;
+  &quot;de.berlios.Pinot&quot; &quot;GetStatistics&quot;
+  &quot;de.berlios.Pinot.GetStatistics&quot;)
+ &quot;value&quot;)
 
 &rArr; &quot;pinotDBus&quot;
 </pre></div>
@@ -1060,32 +1067,34 @@ Previous: <a href="#Properties-and-Annotations" accesskey="p" rel="prev">Propert
 </p>
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dargument_002dnames"></a>Function: <strong>dbus-introspect-get-argument-names</strong> <em>bus service path interface name</em></dt>
-<dd><p>Return a list of all argument names as list of strings.  <var>name</var>
-must be a <code>method</code> or <code>signal</code> XML element.  Example:
+<dd><p>This function returns a list of all argument names as strings.
+<var>name</var> must be a <code>method</code> or <code>signal</code> XML element.
+Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-argument-names
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot; &quot;GetHitData&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot; &quot;GetHitData&quot;)
 
 &rArr; (&quot;search&quot; &quot;hit_ids&quot; &quot;fields&quot; &quot;hit_data&quot;)
 </pre></div>
 
-<p>Argument names are optional; the function can return <code>nil</code>
-therefore, even if the method or signal has arguments.
+<p>Argument names are optional; the function can therefore return
+<code>nil</code>, even if the method or signal has arguments.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dargument"></a>Function: <strong>dbus-introspect-get-argument</strong> <em>bus service path interface name arg</em></dt>
-<dd><p>Return argument <var>ARG</var> as XML object.  <var>name</var>
-must be a <code>method</code> or <code>signal</code> XML element.  Example:
+<dd><p>This function returns the argument <var>arg</var> as an XML object.
+<var>name</var> must be a <code>method</code> or <code>signal</code> XML element.
+Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-argument
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot; &quot;GetHitData&quot; &quot;search&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot; &quot;GetHitData&quot; &quot;search&quot;)
 
 &rArr; (arg ((name . &quot;search&quot;) (type . &quot;s&quot;) (direction . &quot;in&quot;)))
 </pre></div>
@@ -1093,8 +1102,8 @@ must be a <code>method</code> or <code>signal</code> XML element.  Example:
 
 <dl>
 <dt><a name="index-dbus_002dintrospect_002dget_002dsignature"></a>Function: <strong>dbus-introspect-get-signature</strong> <em>bus service path interface name &amp;optional direction</em></dt>
-<dd><p>Return signature of a <code>method</code> or <code>signal</code>, represented by
-<var>name</var>, as string.
+<dd><p>This function returns the signature of a <code>method</code> or
+<code>signal</code>, represented by <var>name</var>, as a string.
 </p>
 <p>If <var>name</var> is a <code>method</code>, <var>direction</var> can be either
 &lsquo;<samp>in</samp>&rsquo; or &lsquo;<samp>out</samp>&rsquo;.  If <var>direction</var> is <code>nil</code>, &lsquo;<samp>in</samp>&rsquo;
@@ -1105,16 +1114,16 @@ non-<code>nil</code>, <var>direction</var> must be &lsquo;<samp>out</samp>&rsquo
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-introspect-get-signature
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot; &quot;GetHitData&quot; &quot;in&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot; &quot;GetHitData&quot; &quot;in&quot;)
 
 &rArr; &quot;sauas&quot;
 
 (dbus-introspect-get-signature
-  :session &quot;org.freedesktop.xesam.searcher&quot;
-  &quot;/org/freedesktop/xesam/searcher/main&quot;
-  &quot;org.freedesktop.xesam.Search&quot; &quot;HitsAdded&quot;)
+ :session &quot;org.freedesktop.xesam.searcher&quot;
+ &quot;/org/freedesktop/xesam/searcher/main&quot;
+ &quot;org.freedesktop.xesam.Search&quot; &quot;HitsAdded&quot;)
 
 &rArr; &quot;su&quot;
 </pre></div>
@@ -1175,30 +1184,27 @@ types are represented by the type symbols <code>:byte</code>,
 <p>Example:
 </p>
 <div class="lisp">
-<pre class="lisp">(dbus-call-method &hellip; <var>NAT-NUMBER</var> <var>STRING</var>)
+<pre class="lisp">(dbus-call-method &hellip; <var>nat-number</var> <var>string</var>)
 </pre></div>
 
 <p>is equivalent to
 </p>
 <div class="lisp">
-<pre class="lisp">(dbus-call-method &hellip; :uint32 <var>NAT-NUMBER</var> :string <var>STRING</var>)
+<pre class="lisp">(dbus-call-method &hellip; :uint32 <var>nat-number</var> :string <var>string</var>)
 </pre></div>
 
 <p>but different to
 </p>
 <div class="lisp">
-<pre class="lisp">(dbus-call-method &hellip; :int32 <var>NAT-NUMBER</var> :signature <var>STRING</var>)
+<pre class="lisp">(dbus-call-method &hellip; :int32 <var>nat-number</var> :signature <var>string</var>)
 </pre></div>
 
 <p>The value for a byte D-Bus type can be any integer in the range 0
 through 255.  If a character is used as argument, modifiers
 represented outside this range are stripped off.  For example,
 <code>:byte ?x</code> is equal to <code>:byte ?\M-x</code>, but it is not equal to
-<code>:byte ?\C-x</code> or <code>:byte ?\M-\C-x</code>.
-</p>
-<p>Signed and unsigned integer D-Bus types expect a corresponding integer
-value.  If the value does not fit Emacs&rsquo;s integer range, it is also
-possible to use an equivalent floating point number.
+<code>:byte ?\C-x</code> or <code>:byte ?\M-\C-x</code>.  Signed and unsigned
+integer D-Bus types expect a corresponding integer value.
 </p>
 <p>A D-Bus compound type is always represented as a list.  The <small>CAR</small>
 of this list can be the type symbol <code>:array</code>, <code>:variant</code>,
@@ -1213,13 +1219,13 @@ D-Bus compound type rules.
 <li> An array must contain only elements of the same D-Bus type.  It
 can be empty.
 
-</li><li> A variant must contain only one single element.
+</li><li> A variant must contain only a single element.
 
-</li><li> A dictionary entry must be element of an array, and it must
+</li><li> A dictionary entry must be an element of an array, and it must
 contain only a key-value pair of two elements, with a basic D-Bus type
 key.
 
-</li><li> There is no restriction for structs.
+</li><li> There are no restrictions for structs.
 </li></ul>
 
 <p>If an empty array needs an element D-Bus type other than string, it
@@ -1229,19 +1235,19 @@ elements of this array.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-call-method
-  :session &quot;org.freedesktop.Notifications&quot;
-  &quot;/org/freedesktop/Notifications&quot;
-  &quot;org.freedesktop.Notifications&quot; &quot;Notify&quot;
-  &quot;GNU Emacs&quot;                 ;; Application name.
-  0                           ;; No replacement of other notifications.
-  &quot;&quot;                          ;; No icon.
-  &quot;Notification summary&quot;      ;; Summary.
-  (format                     ;; Body.
-    &quot;This is a test notification, raised from\n%S&quot; (emacs-version))
-  '(:array)                   ;; No actions (empty array of strings).
-  '(:array :signature &quot;{sv}&quot;) ;; No hints
-                              ;; (empty array of dictionary entries).
-  :int32 -1)                  ;; Default timeout.
+ :session &quot;org.freedesktop.Notifications&quot;
+ &quot;/org/freedesktop/Notifications&quot;
+ &quot;org.freedesktop.Notifications&quot; &quot;Notify&quot;
+ &quot;GNU Emacs&quot;                   ; Application name.
+ 0                             ; No replacement of other notifications.
+ &quot;&quot;                            ; No icon.
+ &quot;Notification summary&quot;        ; Summary.
+ (format                       ; Body.
+  &quot;This is a test notification, raised from\n%S&quot; (emacs-version))
+ '(:array)                     ; No actions (empty array of strings).
+ '(:array :signature &quot;{sv}&quot;) ; No hints
+                               ; (empty array of dictionary entries).
+ :int32 -1)                    ; Default timeout.
 
 &rArr; 3
 </pre></div>
@@ -1249,8 +1255,8 @@ elements of this array.  Example:
 <dl>
 <dt><a name="index-dbus_002dstring_002dto_002dbyte_002darray"></a>Function: <strong>dbus-string-to-byte-array</strong> <em>string</em></dt>
 <dd><p>Sometimes, D-Bus methods require as input parameter an array of bytes,
-instead of a string.  If it is guaranteed, that <var>string</var> is an
-UTF8 string, this function performs the conversion.  Example:
+instead of a string.  If it is guaranteed, that <var>string</var> is a
+UTF-8 string, this function performs the conversion.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-string-to-byte-array &quot;/etc/hosts&quot;)
@@ -1262,10 +1268,10 @@ UTF8 string, this function performs the conversion.  Example:
 
 <dl>
 <dt><a name="index-dbus_002descape_002das_002didentifier"></a>Function: <strong>dbus-escape-as-identifier</strong> <em>string</em></dt>
-<dd><p>Escape an arbitrary <var>string</var> so it follows the rules for a C
-identifier.  The escaped string can be used as object path component,
-interface element component, bus name component or member name in
-D-Bus.
+<dd><p>This function escapes an arbitrary <var>string</var> so it follows the
+rules for a C identifier.  The escaped string can be used as object
+path component, interface element component, bus name component or
+member name in D-Bus.
 </p>
 <p>The escaping consists of replacing all non-alphanumerics, and the
 first character if it&rsquo;s a digit, with an underscore and two
@@ -1294,11 +1300,11 @@ objects.
 <tr><td><pre class="example">DBUS_TYPE_BYTE</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">natural number</pre></td></tr>
 <tr><td><pre class="example">DBUS_TYPE_UINT16</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">natural number</pre></td></tr>
 <tr><td><pre class="example">DBUS_TYPE_INT16</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">integer</pre></td></tr>
-<tr><td><pre class="example">DBUS_TYPE_UINT32</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">natural number or float</pre></td></tr>
-<tr><td><pre class="example">DBUS_TYPE_UNIX_FD</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">natural number or float</pre></td></tr>
-<tr><td><pre class="example">DBUS_TYPE_INT32</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">integer or float</pre></td></tr>
-<tr><td><pre class="example">DBUS_TYPE_UINT64</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">natural number or float</pre></td></tr>
-<tr><td><pre class="example">DBUS_TYPE_INT64</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">integer or float</pre></td></tr>
+<tr><td><pre class="example">DBUS_TYPE_UINT32</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">natural number</pre></td></tr>
+<tr><td><pre class="example">DBUS_TYPE_UNIX_FD</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">natural number</pre></td></tr>
+<tr><td><pre class="example">DBUS_TYPE_INT32</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">integer</pre></td></tr>
+<tr><td><pre class="example">DBUS_TYPE_UINT64</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">natural number</pre></td></tr>
+<tr><td><pre class="example">DBUS_TYPE_INT64</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">integer</pre></td></tr>
 <tr><td><pre class="example">DBUS_TYPE_DOUBLE</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">float</pre></td></tr>
 <tr><td><pre class="example">DBUS_TYPE_STRING</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">string</pre></td></tr>
 <tr><td><pre class="example">DBUS_TYPE_OBJECT_PATH</pre></td><td><pre class="example">&rarr;</pre></td><td><pre class="example">string</pre></td></tr>
@@ -1310,27 +1316,22 @@ objects.
 </table>
 </div>
 
-<p>A float object in case of <code>DBUS_TYPE_UINT32</code>,
-<code>DBUS_TYPE_INT32</code>, <code>DBUS_TYPE_UINT64</code>,
-<code>DBUS_TYPE_INT64</code> and <code>DBUS_TYPE_UNIX_FD</code> is returned, when
-the C value exceeds the Emacs number size range.
-</p>
 <p>The resulting list of the last 4 D-Bus compound types contains as
 elements the elements of the D-Bus container, mapped according to the
 same rules.
 </p>
-<p>The signal <code>PropertyModified</code>, discussed as example in
+<p>The signal <code>PropertyModified</code>, discussed as an example in
 <a href="#Inspection">Inspection</a>, would offer as Lisp data the following object
-(<var>BOOL</var> stands here for either <code>nil</code> or <code>t</code>):
+(<var>bool</var> stands here for either <code>nil</code> or <code>t</code>):
 </p>
 <div class="lisp">
-<pre class="lisp">(<var>INTEGER</var> ((<var>STRING</var> <var>BOOL</var> <var>BOOL</var>) (<var>STRING</var> <var>BOOL</var> <var>BOOL</var>) &hellip;))
+<pre class="lisp">(<var>integer</var> ((<var>string</var> <var>bool</var> <var>bool</var>) (<var>string</var> <var>bool</var> <var>bool</var>) &hellip;))
 </pre></div>
 
 <dl>
 <dt><a name="index-dbus_002dbyte_002darray_002dto_002dstring"></a>Function: <strong>dbus-byte-array-to-string</strong> <em>byte-array &amp;optional multibyte</em></dt>
 <dd><p>If a D-Bus method or signal returns an array of bytes, which are known
-to represent an UTF8 string, this function converts <var>byte-array</var>
+to represent a UTF-8 string, this function converts <var>byte-array</var>
 to the corresponding string.  The string is unibyte encoded, unless
 <var>multibyte</var> is non-<code>nil</code>.  Example:
 </p>
@@ -1343,9 +1344,9 @@ to the corresponding string.  The string is unibyte encoded, unless
 
 <dl>
 <dt><a name="index-dbus_002dunescape_002dfrom_002didentifier"></a>Function: <strong>dbus-unescape-from-identifier</strong> <em>string</em></dt>
-<dd><p>Retrieve the original string from the encoded <var>string</var> as unibyte
-string.  <var>string</var> must have been encoded with
-<code>dbus-escape-as-identifier</code>.  Example:
+<dd><p>This function retrieves the original string from the encoded
+<var>string</var> as a unibyte string.  The value of <var>string</var> must have
+been encoded with <code>dbus-escape-as-identifier</code>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-unescape-from-identifier &quot;_30123abc_5fxyz_01_ff&quot;)
@@ -1359,9 +1360,9 @@ that string:
 </p>
 <div class="lisp">
 <pre class="lisp">(string-equal
-  (dbus-unescape-from-identifier
-    (dbus-escape-as-identifier &quot;Grüß Göttin&quot;))
-  &quot;Grüß Göttin&quot;)
+ (dbus-unescape-from-identifier
+  (dbus-escape-as-identifier &quot;Grüß Göttin&quot;))
+ &quot;Grüß Göttin&quot;)
 
 &rArr; nil
 </pre></div>
@@ -1384,14 +1385,14 @@ Next: <a href="#Asynchronous-Methods" accesskey="n" rel="next">Asynchronous Meth
 <p>Methods can be called synchronously (<em>blocking</em>) or asynchronously
 (<em>non-blocking</em>).
 </p>
-<p>At D-Bus level, a method call consist of two messages: one message
+<p>At the D-Bus level, a method call consist of two messages: one message
 which carries the input parameters to the object owning the method to
 be called, and a reply message returning the resulting output
 parameters from the object.
 </p>
 <dl>
 <dt><a name="index-dbus_002dcall_002dmethod"></a>Function: <strong>dbus-call-method</strong> <em>bus service path interface method &amp;optional :timeout timeout &amp;rest args</em></dt>
-<dd><p>This function calls <var>method</var> on the D-Bus <var>bus</var>.  <var>bus</var> is
+<dd><a name="dbus_002dcall_002dmethod"></a><p>This function calls <var>method</var> on the D-Bus <var>bus</var>.  <var>bus</var> is
 either the symbol <code>:system</code> or the symbol <code>:session</code>.
 </p>
 <p><var>service</var> is the D-Bus service name to be used.  <var>path</var> is the
@@ -1399,12 +1400,13 @@ D-Bus object path, <var>service</var> is registered at.  <var>interface</var> is
 an interface offered by <var>service</var>.  It must provide <var>method</var>.
 </p>
 <p>If the parameter <code>:timeout</code> is given, the following integer
-<var>timeout</var> specifies the maximum number of milliseconds the method
-call must return.  The default value is 25,000.  If the method call
-doesn&rsquo;t return in time, a D-Bus error is raised (see <a href="#Errors-and-Events">Errors and Events</a>).
+<var>timeout</var> specifies the maximum number of milliseconds before the
+method call must return.  The default value is 25,000.  If the method
+call doesn&rsquo;t return in time, a D-Bus error is raised (see <a href="#Errors-and-Events">Errors and Events</a>).
 </p>
-<p>All other arguments args are passed to <var>method</var> as arguments.
-They are converted into D-Bus types as described in <a href="#Type-Conversion">Type Conversion</a>.
+<p>The remaining arguments <var>args</var> are passed to <var>method</var> as
+arguments.  They are converted into D-Bus types as described in
+<a href="#Type-Conversion">Type Conversion</a>.
 </p>
 <p>The function returns the resulting values of <var>method</var> as a list of
 Lisp objects, according to the type conversion rules described in
@@ -1412,9 +1414,9 @@ Lisp objects, according to the type conversion rules described in
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-call-method
-  :session &quot;org.gnome.seahorse&quot; &quot;/org/gnome/seahorse/keys/openpgp&quot;
-  &quot;org.gnome.seahorse.Keys&quot; &quot;GetKeyField&quot;
-  &quot;openpgp:657984B8C7A966DD&quot; &quot;simple-name&quot;)
+ :session &quot;org.gnome.seahorse&quot; &quot;/org/gnome/seahorse/keys/openpgp&quot;
+ &quot;org.gnome.seahorse.Keys&quot; &quot;GetKeyField&quot;
+ &quot;openpgp:657984B8C7A966DD&quot; &quot;simple-name&quot;)
 
 &rArr; (t (&quot;Philip R. Zimmermann&quot;))
 </pre></div>
@@ -1425,10 +1427,10 @@ object.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-call-method
-  :system &quot;org.freedesktop.Hal&quot;
-  &quot;/org/freedesktop/Hal/devices/computer&quot;
-  &quot;org.freedesktop.Hal.Device&quot; &quot;GetPropertyString&quot;
-  &quot;system.kernel.machine&quot;)
+ :system &quot;org.freedesktop.Hal&quot;
+ &quot;/org/freedesktop/Hal/devices/computer&quot;
+ &quot;org.freedesktop.Hal.Device&quot; &quot;GetPropertyString&quot;
+ &quot;system.kernel.machine&quot;)
 
 &rArr; &quot;i686&quot;
 </pre></div>
@@ -1444,17 +1446,17 @@ emulate the <code>lshal</code> command on GNU/Linux systems:
 </p>
 <div class="lisp">
 <pre class="lisp">(dolist (device
-          (dbus-call-method
-            :system &quot;org.freedesktop.Hal&quot;
-            &quot;/org/freedesktop/Hal/Manager&quot;
-            &quot;org.freedesktop.Hal.Manager&quot; &quot;GetAllDevices&quot;))
+         (dbus-call-method
+          :system &quot;org.freedesktop.Hal&quot;
+          &quot;/org/freedesktop/Hal/Manager&quot;
+          &quot;org.freedesktop.Hal.Manager&quot; &quot;GetAllDevices&quot;))
   (message &quot;\nudi = %s&quot; device)
   (dolist (properties
-            (dbus-call-method
-              :system &quot;org.freedesktop.Hal&quot; device
-              &quot;org.freedesktop.Hal.Device&quot; &quot;GetAllProperties&quot;))
+           (dbus-call-method
+            :system &quot;org.freedesktop.Hal&quot; device
+            &quot;org.freedesktop.Hal.Device&quot; &quot;GetAllProperties&quot;))
     (message &quot;  %s = %S&quot;
-             (car properties) (or (caar (cdr properties)) &quot;&quot;))))
+             (car properties) (or (caadr properties) &quot;&quot;))))
 
 -| &quot;udi = /org/freedesktop/Hal/devices/computer
       info.addons = (\&quot;hald-addon-acpi\&quot;)
@@ -1498,32 +1500,34 @@ D-Bus object path, <var>service</var> is registered at.  <var>interface</var> is
 an interface offered by <var>service</var>.  It must provide <var>method</var>.
 </p>
 <p><var>handler</var> is a Lisp function, which is called when the
-corresponding return message has arrived.  If <var>handler</var> is
-<code>nil</code>, no return message will be expected.
+corresponding return message arrives.  If <var>handler</var> is <code>nil</code>,
+no return message will be expected.
 </p>
 <p>If the parameter <code>:timeout</code> is given, the following integer
-<var>timeout</var> specifies the maximum number of milliseconds a reply
-message must arrive.  The default value is 25,000.  If there is no
-reply message in time, a D-Bus error is raised (see <a href="#Errors-and-Events">Errors and Events</a>).
+<var>timeout</var> specifies the maximum number of milliseconds before a
+reply message must arrive.  The default value is 25,000.  If there is
+no reply message in time, a D-Bus error is raised (see <a href="#Errors-and-Events">Errors and Events</a>).
 </p>
-<p>All other arguments args are passed to <var>method</var> as arguments.
-They are converted into D-Bus types as described in <a href="#Type-Conversion">Type Conversion</a>.
+<p>The remaining arguments <var>args</var> are passed to <var>method</var> as
+arguments.  They are converted into D-Bus types as described in
+<a href="#Type-Conversion">Type Conversion</a>.
 </p>
 <p>If <var>handler</var> is a Lisp function, the function returns a key into
 the hash table <code>dbus-registered-objects-table</code>.  The
 corresponding entry in the hash table is removed, when the return
-message has been arrived, and <var>handler</var> is called.  Example:
+message arrives, and <var>handler</var> is called.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-call-method-asynchronously
-  :system &quot;org.freedesktop.Hal&quot;
-  &quot;/org/freedesktop/Hal/devices/computer&quot;
-  &quot;org.freedesktop.Hal.Device&quot; &quot;GetPropertyString&quot; 'message
-  &quot;system.kernel.machine&quot;)
-
-&rArr; (:serial :system 2)
+ :system &quot;org.freedesktop.Hal&quot;
+ &quot;/org/freedesktop/Hal/devices/computer&quot;
+ &quot;org.freedesktop.Hal.Device&quot; &quot;GetPropertyString&quot;
+ (lambda (msg) (message &quot;%s&quot; msg))
+ &quot;system.kernel.machine&quot;)
 
 -| i686
+
+&rArr; (:serial :system 2)
 </pre></div>
 </dd></dl>
 
@@ -1546,7 +1550,8 @@ the following functions:
 </p>
 <dl>
 <dt><a name="index-dbus_002dregister_002dservice"></a>Function: <strong>dbus-register-service</strong> <em>bus service &amp;rest flags</em></dt>
-<dd><p>Register the known name <var>service</var> on D-Bus <var>bus</var>.
+<dd><p>This function registers the known name <var>service</var> on D-Bus
+<var>bus</var>.
 </p>
 <p><var>bus</var> is either the symbol <code>:system</code> or the symbol
 <code>:session</code>.
@@ -1556,36 +1561,41 @@ must be a known name.
 </p>
 <p><var>flags</var> is a subset of the following keywords:
 </p>
-<ul>
-<li> <code>:allow-replacement</code>: Allow another service to become the primary
-owner if requested.
-
-</li><li> <code>:replace-existing</code>: Request to replace the current primary owner.
-
-</li><li> <code>:do-not-queue</code>: If we can not become the primary owner do not
-place us in the queue.
-</li></ul>
+<dl compact="compact">
+<dt><code>:allow-replacement</code></dt>
+<dd><p>Allow another service to become the primary owner if requested.
+</p></dd>
+<dt><code>:replace-existing</code></dt>
+<dd><p>Request to replace the current primary owner.
+</p></dd>
+<dt><code>:do-not-queue</code></dt>
+<dd><p>If we can not become the primary owner do not place us in the queue.
+</p></dd>
+</dl>
 
 <p>One of the following keywords is returned:
 </p>
-<ul>
-<li> <code>:primary-owner</code>: We have become the primary owner of the name
-<var>service</var>.
-
-</li><li> <code>:in-queue</code>: We could not become the primary owner and
-have been placed in the queue.
-
-</li><li> <code>:exists</code>: We already are in the queue.
-
-</li><li> <code>:already-owner</code>: We already are the primary
-owner.
-</li></ul>
+<dl compact="compact">
+<dt><code>:primary-owner</code></dt>
+<dd><p>We have become the primary owner of the name <var>service</var>.
+</p></dd>
+<dt><code>:in-queue</code></dt>
+<dd><p>We could not become the primary owner and have been placed in the
+queue.
+</p></dd>
+<dt><code>:exists</code></dt>
+<dd><p>We already are in the queue.
+</p></dd>
+<dt><code>:already-owner</code></dt>
+<dd><p>We already are the primary owner.
+</p></dd>
+</dl>
 </dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002dunregister_002dservice"></a>Function: <strong>dbus-unregister-service</strong> <em>bus service</em></dt>
-<dd><p>Unregister all objects from D-Bus <var>bus</var>, registered by Emacs for
-<var>service</var>.
+<dd><p>This function unregisters all objects from D-Bus <var>bus</var>, that were
+registered by Emacs for <var>service</var>.
 </p>
 <p><var>bus</var> is either the symbol <code>:system</code> or the symbol
 <code>:session</code>.
@@ -1596,24 +1606,30 @@ D-Bus.
 </p>
 <p>One of the following keywords is returned:
 </p>
-<ul>
-<li> <code>:released</code>: We successfully released the name <var>service</var>.
-</li><li> <code>:non-existent</code>: The name <var>service</var> does not exist on the bus.
-</li><li> <code>:not-owner</code>: We are not an owner of the name <var>service</var>.
-</li></ul>
+<dl compact="compact">
+<dt><code>:released</code></dt>
+<dd><p>We successfully released the name <var>service</var>.
+</p></dd>
+<dt><code>:non-existent</code></dt>
+<dd><p>The name <var>service</var> does not exist on the bus.
+</p></dd>
+<dt><code>:not-owner</code></dt>
+<dd><p>We are not an owner of the name <var>service</var>.
+</p></dd>
+</dl>
 </dd></dl>
 
-<p>When a name has been chosen, Emacs can offer own methods, which can be
-called by other applications.  These methods could be an
+<p>When a name has been chosen, Emacs can offer its own methods, which
+can be called by other applications.  These methods could be an
 implementation of an interface of a well known service, like
 &lsquo;<samp>org.freedesktop.TextEditor</samp>&rsquo;.
 </p>
-<p>It could be also an implementation of an own interface.  In this case,
-the service name must be &lsquo;<samp>org.gnu.Emacs</samp>&rsquo;.  The object path shall
-begin with &lsquo;<samp>/org/gnu/Emacs/<strong>Application</strong></samp>&rsquo;, and the
-interface name shall be <code>org.gnu.Emacs.<strong>Application</strong></code>.
-&lsquo;<samp><strong>Application</strong></samp>&rsquo; is the name of the application which
-provides the interface.
+<p>They could also be an implementation of its own interface.  In this
+case, the service name must be &lsquo;<samp>org.gnu.Emacs</samp>&rsquo;.  The object path
+shall begin with &lsquo;<samp>/org/gnu/Emacs/<var>application</var></samp>&rsquo;, and the
+interface name shall be <code>org.gnu.Emacs.<var>application</var></code>, where
+<var>application</var> is the name of the application which provides the
+interface.
 </p>
 <dl>
 <dt><a name="index-dbus_002dservice_002demacs"></a>Constant: <strong>dbus-service-emacs</strong></dt>
@@ -1639,10 +1655,10 @@ provides the interface.
 <code>:session</code>.
 </p>
 <p><var>service</var> is the D-Bus service name of the D-Bus object
-<var>method</var> is registered for.  It must be a known name (See
+<var>method</var> is registered for.  It must be a known name (see
 discussion of <var>dont-register-service</var> below).
 </p>
-<p><var>path</var> is the D-Bus object path <var>service</var> is registered (See
+<p><var>path</var> is the D-Bus object path <var>service</var> is registered (see
 discussion of <var>dont-register-service</var> below).
 </p>
 <p><var>interface</var> is the interface offered by <var>service</var>.  It must
@@ -1658,8 +1674,8 @@ list can be composed like the input parameters in <a href="#Type-Conversion">Typ
 cons cell, <var>handler</var> can return this object directly, instead of
 returning a list containing the object.
 </p>
-<p>In case <var>handler</var> shall return a reply message with an empty
-argument list, <var>handler</var> must return the symbol <code>:ignore</code>.
+<p>If <var>handler</var> returns a reply message with an empty argument list,
+<var>handler</var> must return the symbol <code>:ignore</code>.
 </p>
 <p>When <var>dont-register-service</var> is non-<code>nil</code>, the known name
 <var>service</var> is not registered.  This means that other D-Bus clients
@@ -1670,7 +1686,7 @@ clients from discovering the still incomplete interface.
 </p>
 <p>The default D-Bus timeout when waiting for a message reply is 25
 seconds.  This value could be even smaller, depending on the calling
-client.  Therefore, <var>handler</var> shall not last longer than
+client.  Therefore, <var>handler</var> should not last longer than
 absolutely necessary.
 </p>
 <p><code>dbus-register-method</code> returns a Lisp object, which can be used
@@ -1679,18 +1695,14 @@ registration for <var>method</var>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(defun my-dbus-method-handler (filename)
-  (let (result)
-    (if (find-file filename)
-        (setq result '(:boolean t))
-      (setq result '(:boolean nil)))
-    result))
-
-&rArr; my-dbus-method-handler
+  (if (find-file filename)
+      '(:boolean t)
+    '(:boolean nil)))
 
 (dbus-register-method
-  :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
-  &quot;org.freedesktop.TextEditor&quot; &quot;OpenFile&quot;
-  'my-dbus-method-handler)
+ :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
+ &quot;org.freedesktop.TextEditor&quot; &quot;OpenFile&quot;
+ #'my-dbus-method-handler)
 
 &rArr; ((:method :session &quot;org.freedesktop.TextEditor&quot; &quot;OpenFile&quot;)
     (&quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
@@ -1698,9 +1710,9 @@ registration for <var>method</var>.  Example:
 </pre></div>
 
 <p>If you invoke the method &lsquo;<samp>org.freedesktop.TextEditor.OpenFile</samp>&rsquo;
-from another D-Bus application with a filename as parameter, the file
+from another D-Bus application with a file name as parameter, the file
 is opened in Emacs, and the method returns either <var>true</var> or
-<var>false</var>, indicating the success of the method.  As test tool one
+<var>false</var>, indicating the success of the method.  As a test tool one
 could use the command line tool <code>dbus-send</code> in a shell:
 </p>
 <div class="example">
@@ -1724,11 +1736,9 @@ could use the command line tool <code>dbus-send</code> in a shell:
       (find-file (car args))
     (error (signal 'dbus-error (cdr err))))
   t)
-
-&rArr; my-dbus-method-handler
 </pre></div>
 
-<p>The test runs then
+<p>The test then runs
 </p>
 <div class="example">
 <pre class="example"># dbus-send --session --print-reply \
@@ -1753,7 +1763,7 @@ could use the command line tool <code>dbus-send</code> in a shell:
 <p><var>service</var> is the D-Bus service name of the D-Bus.  It must be a
 known name.
 </p>
-<p><var>path</var> is the D-Bus object path <var>service</var> is registered (See
+<p><var>path</var> is the D-Bus object path <var>service</var> is registered (see
 discussion of <var>dont-register-service</var> below).
 </p>
 <p><var>interface</var> is the name of the interface used at <var>path</var>,
@@ -1762,7 +1772,7 @@ discussion of <var>dont-register-service</var> below).
 <p><var>access</var> indicates, whether the property can be changed by other
 services via D-Bus.  It must be either the symbol <code>:read</code> or
 <code>:readwrite</code>.  <var>value</var> is the initial value of the property,
-it can be of any valid type (see <code>dbus-call-method</code> for details).
+it can be of any valid type (See <a href="#dbus_002dcall_002dmethod">dbus-call-method</a>, for details).
 </p>
 <p>If <var>property</var> already exists on <var>path</var>, it will be
 overwritten.  For properties with access type <code>:read</code> this is the
@@ -1787,15 +1797,15 @@ clients from discovering the still incomplete interface.
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-register-property
-  :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
-  &quot;org.freedesktop.TextEditor&quot; &quot;name&quot; :read &quot;GNU Emacs&quot;)
+ :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
+ &quot;org.freedesktop.TextEditor&quot; &quot;name&quot; :read &quot;GNU Emacs&quot;)
 
 &rArr; ((:property :session &quot;org.freedesktop.TextEditor&quot; &quot;name&quot;)
     (&quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;))
 
 (dbus-register-property
-  :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
-  &quot;org.freedesktop.TextEditor&quot; &quot;version&quot; :readwrite emacs-version t)
+ :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
+ &quot;org.freedesktop.TextEditor&quot; &quot;version&quot; :readwrite emacs-version t)
 
 &rArr; ((:property :session &quot;org.freedesktop.TextEditor&quot; &quot;version&quot;)
     (&quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;))
@@ -1826,20 +1836,20 @@ possible via the command line tool <code>dbus-send</code> in a shell:
       ]
 </pre></div>
 
-<p>It is also possible, to apply the <code>dbus-get-property</code>,
+<p>It is also possible to apply the <code>dbus-get-property</code>,
 <code>dbus-get-all-properties</code> and <code>dbus-set-property</code> functions
 (see <a href="#Properties-and-Annotations">Properties and Annotations</a>).
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-set-property
-  :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
-  &quot;org.freedesktop.TextEditor&quot; &quot;version&quot; &quot;23.1.50&quot;)
+ :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
+ &quot;org.freedesktop.TextEditor&quot; &quot;version&quot; &quot;23.1.50&quot;)
 
 &rArr; &quot;23.1.50&quot;
 
 (dbus-get-property
-  :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
-  &quot;org.freedesktop.TextEditor&quot; &quot;version&quot;)
+ :session &quot;org.freedesktop.TextEditor&quot; &quot;/org/freedesktop/TextEditor&quot;
+ &quot;org.freedesktop.TextEditor&quot; &quot;version&quot;)
 
 &rArr; &quot;23.1.50&quot;
 </pre></div>
@@ -1847,8 +1857,8 @@ possible via the command line tool <code>dbus-send</code> in a shell:
 
 <dl>
 <dt><a name="index-dbus_002dunregister_002dobject"></a>Function: <strong>dbus-unregister-object</strong> <em>object</em></dt>
-<dd><p>Unregister <var>object</var> from the D-Bus.  <var>object</var> must be the
-result of a preceding <code>dbus-register-method</code>,
+<dd><p>This function unregisters <var>object</var> from the D-Bus.  <var>object</var>
+must be the result of a preceding <code>dbus-register-method</code>,
 <code>dbus-register-property</code> or <code>dbus-register-signal</code> call
 (see <a href="#Signals">Signals</a>).  It returns <code>t</code> if <var>object</var> has been
 unregistered, <code>nil</code> otherwise.
@@ -1883,19 +1893,20 @@ doesn&rsquo;t matter whether another object has registered for <var>signal</var>
 </p>
 <p>Signals can be unicast or broadcast messages.  For broadcast messages,
 <var>service</var> must be <code>nil</code>.  Otherwise, <var>service</var> is the
-D-Bus service name the signal is sent to as unicast
+D-Bus service name the signal is sent to as a unicast
 message.<a name="DOCF6" href="#FOOT6"><sup>6</sup></a>  <var>path</var> is the D-Bus object path
 <var>signal</var> is sent from.  <var>interface</var> is an interface available
 at <var>path</var>.  It must provide <var>signal</var>.
 </p>
-<p>All other arguments args are passed to <var>signal</var> as arguments.
-They are converted into D-Bus types as described in <a href="#Type-Conversion">Type Conversion</a>.  Example:
+<p>The remaining arguments <var>args</var> are passed to <var>signal</var> as
+arguments.  They are converted into D-Bus types as described in
+<a href="#Type-Conversion">Type Conversion</a>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-send-signal
-  :session nil dbus-path-emacs
-  (concat dbus-interface-emacs &quot;.FileManager&quot;) &quot;FileModified&quot;
-  &quot;/home/albinus/.emacs&quot;)
+ :session nil dbus-path-emacs
+ (concat dbus-interface-emacs &quot;.FileManager&quot;) &quot;FileModified&quot;
+ &quot;/home/albinus/.emacs&quot;)
 </pre></div>
 </dd></dl>
 
@@ -1911,11 +1922,11 @@ They are converted into D-Bus types as described in <a href="#Type-Conversion">T
 object.  It can be either a known name or the unique name of the D-Bus
 object sending the signal.  A known name will be mapped onto the
 unique name of the object, owning <var>service</var> at registration time.
-When the corresponding D-Bus object disappears, signals won&rsquo;t be
-received any longer.
+When the corresponding D-Bus object disappears, signals will no longer
+be received.
 </p>
-<p><var>path</var> is the corresponding D-Bus object path, <var>service</var> is
-registered at.  <var>interface</var> is an interface offered by
+<p><var>path</var> is the corresponding D-Bus object path that <var>service</var>
+is registered at.  <var>interface</var> is an interface offered by
 <var>service</var>.  It must provide <var>signal</var>.
 </p>
 <p><var>service</var>, <var>path</var>, <var>interface</var> and <var>signal</var> can be
@@ -1927,30 +1938,35 @@ received.  It must accept as arguments the output parameters
 <var>signal</var> is sending.
 </p>
 <p>The remaining arguments <var>args</var> can be keywords or keyword string
-pairs.<a name="DOCF7" href="#FOOT7"><sup>7</sup></a>  The meaning
-is as follows:
+pairs.<a name="DOCF7" href="#FOOT7"><sup>7</sup></a>  Their
+meaning is as follows:
 </p>
-<ul>
-<li> <code>:argN</code> <var>string</var>:<br>
-<code>:pathN</code> <var>string</var>:<br>
-This stands for the Nth argument of the signal.  <code>:pathN</code>
-arguments can be used for object path wildcard matches as specified by
-D-Bus, while an <code>:argN</code> argument requires an exact match.
-
-</li><li> <code>:arg-namespace</code> <var>string</var>:<br>
-Register for the signals, which first argument defines the service or
-interface namespace <var>string</var>.
-
-</li><li> <code>:path-namespace</code> <var>string</var>:<br>
-Register for the object path namespace <var>string</var>.  All signals sent
+<dl compact="compact">
+<dt><code>:arg<var>n</var> <var>string</var></code></dt>
+<dt><code>:path<var>n</var> <var>string</var></code></dt>
+<dd><p>This stands for the <var>n</var>th argument of the signal.
+<code>:path<var>n</var></code> arguments can be used for object path wildcard
+matches as specified by D-Bus, while an <code>:argN</code> argument requires
+an exact match.
+</p>
+</dd>
+<dt><code>:arg-namespace <var>string</var></code></dt>
+<dd><p>Register for those signals, whose first argument names a service or
+interface within the namespace <var>string</var>.
+</p>
+</dd>
+<dt><code>:path-namespace <var>string</var></code></dt>
+<dd><p>Register for the object path namespace <var>string</var>.  All signals sent
 from an object path, which has <var>string</var> as the preceding string,
 are matched.  This requires <var>path</var> to be <code>nil</code>.
-
-</li><li> <code>:eavesdrop</code>:<br>
-Register for unicast signals which are not directed to the D-Bus
+</p>
+</dd>
+<dt><code>:eavesdrop</code></dt>
+<dd><p>Register for unicast signals which are not directed to the D-Bus
 object Emacs is registered at D-Bus BUS, if the security policy of BUS
 allows this.  Otherwise, this argument is ignored.
-</li></ul>
+</p></dd>
+</dl>
 
 <p><code>dbus-register-signal</code> returns a Lisp object, which can be used
 as argument in <code>dbus-unregister-object</code> for removing the
@@ -1960,12 +1976,10 @@ registration for <var>signal</var>.  Example:
 <pre class="lisp">(defun my-dbus-signal-handler (device)
   (message &quot;Device %s added&quot; device))
 
-&rArr; my-dbus-signal-handler
-
 (dbus-register-signal
-  :system &quot;org.freedesktop.Hal&quot; &quot;/org/freedesktop/Hal/Manager&quot;
-  &quot;org.freedesktop.Hal.Manager&quot; &quot;DeviceAdded&quot;
-  'my-dbus-signal-handler)
+ :system &quot;org.freedesktop.Hal&quot; &quot;/org/freedesktop/Hal/Manager&quot;
+ &quot;org.freedesktop.Hal.Manager&quot; &quot;DeviceAdded&quot;
+ #'my-dbus-signal-handler)
 
 &rArr; ((:signal :system &quot;org.freedesktop.Hal.Manager&quot; &quot;DeviceAdded&quot;)
     (&quot;org.freedesktop.Hal&quot; &quot;/org/freedesktop/Hal/Manager&quot;
@@ -1975,8 +1989,8 @@ registration for <var>signal</var>.  Example:
 <p>As we know from the introspection data of interface
 &lsquo;<samp>org.freedesktop.Hal.Manager</samp>&rsquo;, the signal &lsquo;<samp>DeviceAdded</samp>&rsquo;
 provides one single parameter, which is mapped into a Lisp string.
-The callback function <code>my-dbus-signal-handler</code> must define one
-single string argument therefore.  Plugging an USB device to your
+The callback function <code>my-dbus-signal-handler</code> must therefore
+define a single string argument.  Plugging a USB device into your
 machine, when registered for signal &lsquo;<samp>DeviceAdded</samp>&rsquo;, will show you
 which objects the GNU/Linux <code>hal</code> daemon adds.
 </p>
@@ -1987,7 +2001,7 @@ for a dummy signal, and check the result:
 <div class="lisp">
 <pre class="lisp">(dbus-ignore-errors
   (dbus-register-signal
-    :system nil nil nil nil 'ignore :path-namespace &quot;/invalid/path&quot;))
+   :system nil nil nil nil #'ignore :path-namespace &quot;/invalid/path&quot;))
 
 &rArr; nil
 </pre></div>
@@ -2008,15 +2022,15 @@ Next: <a href="#Errors-and-Events" accesskey="n" rel="next">Errors and Events</a
 
 <p>Until now, we have spoken about the system and the session buses,
 which are the default buses to be connected to.  However, it is
-possible to connect to any bus, from which the address is known.  This
-is a UNIX domain or TCP/IP socket.  Everywhere, where a <var>bus</var> is
-mentioned as argument of a function (the symbol <code>:system</code> or the
-symbol <code>:session</code>), this address can be used instead.  The
-connection to this bus must be initialized first.
+possible to connect to any bus with a known address.  This is a UNIX
+domain or TCP/IP socket.  Everywhere, where a <var>bus</var> is mentioned
+as argument of a function (the symbol <code>:system</code> or the symbol
+<code>:session</code>), this address can be used instead.  The connection to
+this bus must be initialized first.
 </p>
 <dl>
 <dt><a name="index-dbus_002dinit_002dbus"></a>Function: <strong>dbus-init-bus</strong> <em>bus &amp;optional private</em></dt>
-<dd><p>Establish the connection to D-Bus <var>bus</var>.
+<dd><p>This function establishes the connection to D-Bus <var>bus</var>.
 </p>
 <p><var>bus</var> can be either the symbol <code>:system</code> or the symbol
 <code>:session</code>, or it can be a string denoting the address of the
@@ -2024,12 +2038,12 @@ corresponding bus.  For the system and session buses, this function
 is called when loading <samp>dbus.el</samp>, there is no need to call it
 again.
 </p>
-<p>The function returns a number, which counts the connections this Emacs
-session has established to the <var>bus</var> under the same unique name
-(see <code>dbus-get-unique-name</code>).  It depends on the libraries Emacs
-is linked with, and on the environment Emacs is running.  For example,
-if Emacs is linked with the GTK+ toolkit, and it runs in a GTK+-aware
-environment like Gnome, another connection might already be
+<p>The function returns the number of connections this Emacs session has
+established to the <var>bus</var> under the same unique name
+(see <a href="#dbus_002dget_002dunique_002dname">dbus-get-unique-name</a>).  It depends on the libraries Emacs is
+linked with, and on the environment Emacs is running.  For example, if
+Emacs is linked with the GTK+ toolkit, and it runs in a GTK+-aware
+environment like GNOME, another connection might already be
 established.
 </p>
 <p>When <var>private</var> is non-<code>nil</code>, a new connection is established
@@ -2044,9 +2058,9 @@ packages might already use this connection to those buses.
 </p>
 <div class="lisp">
 <pre class="lisp">(setq my-bus
-  (dbus-call-method
-   :session &quot;org.a11y.Bus&quot; &quot;/org/a11y/bus&quot;
-   &quot;org.a11y.Bus&quot; &quot;GetAddress&quot;))
+      (dbus-call-method
+       :session &quot;org.a11y.Bus&quot; &quot;/org/a11y/bus&quot;
+       &quot;org.a11y.Bus&quot; &quot;GetAddress&quot;))
 
 &rArr; &quot;unix:abstract=/tmp/dbus-2yzWHOCdSD,guid=a490dd26625870ca1298b6e10000fd7f&quot;
 
@@ -2061,7 +2075,7 @@ packages might already use this connection to those buses.
 
 &rArr; &quot;:1.19&quot;
 
-;; Open a new connection to the same bus.  This obsoletes the
+;; Open a new connection to the same bus.  This supersedes the
 ;; previous one.
 (dbus-init-bus my-bus 'private)
 
@@ -2072,15 +2086,15 @@ packages might already use this connection to those buses.
 &rArr; &quot;:1.20&quot;
 </pre></div>
 
-<p>D-Bus addresses can specify different transport.  A possible address
-could be based on TCP/IP sockets, see next example.  However, it
-depends on the bus daemon configuration, which transport is supported.
+<p>D-Bus addresses can specify a different transport.  A possible address
+could be based on TCP/IP sockets, see next example.  Which transport
+is supported depends on the bus daemon configuration, however.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002dsetenv"></a>Function: <strong>dbus-setenv</strong> <em>bus variable value</em></dt>
-<dd><p>Set the value of the <var>bus</var> environment variable <var>variable</var> to
-<var>value</var>.
+<dd><p>This function sets the value of the <var>bus</var> environment
+<var>variable</var> to <var>value</var>.
 </p>
 <p><var>bus</var> is either a Lisp symbol, <code>:system</code> or <code>:session</code>,
 or a string denoting the bus address.  Both <var>variable</var> and
@@ -2091,7 +2105,7 @@ function adds to or modifies that environment when activating services.
 </p>
 <p>Some bus instances, such as <code>:system</code>, may disable setting the
 environment.  In such cases, or if this feature is not available in
-older D-Bus versions, a <code>dbus-error</code> error is raised.
+older D-Bus versions, this function signals a <code>dbus-error</code>.
 </p>
 <p>As an example, it might be desirable to start X11 enabled services on
 a remote host&rsquo;s bus on the same X11 server the local Emacs is
@@ -2137,7 +2151,7 @@ Next: <a href="#Index" accesskey="n" rel="next">Index</a>, Previous: <a href="#A
 <code>dbus-register-method</code>, <code>dbus-register-property</code> and
 <code>dbus-register-signal</code> are checked for correct D-Bus types. If
 there is a type mismatch, the Lisp error <code>wrong-type-argument</code>
-<code>D-Bus ARG</code> is raised.
+<code>D-Bus <var>arg</var></code> is raised.
 </p>
 <p>All errors raised by D-Bus are signaled with the error symbol
 <code>dbus-error</code>.  If possible, error messages from D-Bus are
@@ -2190,41 +2204,45 @@ callback function in order to retrieve the information from the event.
 </p>
 <dl>
 <dt><a name="index-dbus_002devent_002dbus_002dname"></a>Function: <strong>dbus-event-bus-name</strong> <em>event</em></dt>
-<dd><p>Returns the bus name <var>event</var> is coming from.
-The result is either the symbol <code>:system</code> or the symbol <code>:session</code>.
+<dd><p>This function returns the bus name <var>event</var> is coming from.  The
+result is either the symbol <code>:system</code> or the symbol
+<code>:session</code>.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002devent_002dmessage_002dtype"></a>Function: <strong>dbus-event-message-type</strong> <em>event</em></dt>
-<dd><p>Returns the message type of the corresponding D-Bus message.  The
-result is a natural number.
+<dd><p>This function returns the message type of the corresponding D-Bus
+message.  The result is a natural number.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002devent_002dserial_002dnumber"></a>Function: <strong>dbus-event-serial-number</strong> <em>event</em></dt>
-<dd><p>Returns the serial number of the corresponding D-Bus message.
-The result is a natural number.
+<dd><p>This function returns the serial number of the corresponding D-Bus
+message.  The result is a natural number.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002devent_002dservice_002dname"></a>Function: <strong>dbus-event-service-name</strong> <em>event</em></dt>
-<dd><p>Returns the unique name of the D-Bus object <var>event</var> is coming from.
+<dd><p>This function returns the unique name of the D-Bus object <var>event</var>
+is coming from.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002devent_002dpath_002dname"></a>Function: <strong>dbus-event-path-name</strong> <em>event</em></dt>
-<dd><p>Returns the object path of the D-Bus object <var>event</var> is coming from.
+<dd><p>This function returns the object path of the D-Bus object <var>event</var>
+is coming from.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002devent_002dinterface_002dname"></a>Function: <strong>dbus-event-interface-name</strong> <em>event</em></dt>
-<dd><p>Returns the interface name of the D-Bus object <var>event</var> is coming from.
+<dd><p>This function returns the interface name of the D-Bus object
+<var>event</var> is coming from.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-dbus_002devent_002dmember_002dname"></a>Function: <strong>dbus-event-member-name</strong> <em>event</em></dt>
-<dd><p>Returns the member name of the D-Bus object <var>event</var> is coming
-from.  It is either a signal name or a method name.
+<dd><p>This function returns the member name of the D-Bus object <var>event</var>
+is coming from.  It is either a signal name or a method name.
 </p></dd></dl>
 
 <p>D-Bus errors are not propagated during event handling, because it is
@@ -2239,7 +2257,7 @@ D-Bus error happens in the event handler.  Every function must accept
 two arguments, the event and the error variable caught in
 <code>condition-case</code> by <code>dbus-error</code>.
 </p>
-<p>Such functions can be used the adapt the error signal to be raised.
+<p>Such functions can be used to adapt the error signal to be raised.
 Example:
 </p>
 <div class="lisp">
@@ -2249,12 +2267,12 @@ Example:
     (message &quot;my-dbus-event-error-handler: %S %S&quot; event error)
     (signal 'file-error (cdr error))))
 
-(add-hook 'dbus-event-error-functions 'my-dbus-event-error-handler)
+(add-hook 'dbus-event-error-functions #'my-dbus-event-error-handler)
 </pre></div>
 </dd></dl>
 
-<p>Hook functions shall take into account, that there might be other
-D-Bus applications running.  Therefore, they shall check carefully,
+<p>Hook functions should take into account that there might be other
+D-Bus applications running.  They should therefore check carefully,
 whether a given D-Bus error is related to them.
 </p>
 
