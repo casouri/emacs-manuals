@@ -97,7 +97,7 @@ similar function to <code>format</code>, except it operates on format
 control strings that use arbitrary specification characters.
 </p>
 <dl>
-<dt><a name="index-format_002dspec"></a>Function: <strong>format-spec</strong> <em>template spec-alist &amp;optional only-present</em></dt>
+<dt><a name="index-format_002dspec"></a>Function: <strong>format-spec</strong> <em>template spec-alist &amp;optional ignore-missing</em></dt>
 <dd><p>This function returns a string produced from the format string
 <var>template</var> according to conversions specified in <var>spec-alist</var>,
 which is an alist (see <a href="Association-Lists.html#Association-Lists">Association Lists</a>) of the form
@@ -126,12 +126,15 @@ used as a basis for all of that character&rsquo;s substitutions.
 the order of associations in <var>spec-alist</var>.
 </li></ul>
 
-<p>The optional argument <var>only-present</var> indicates how to handle
+<p>The optional argument <var>ignore-missing</var> indicates how to handle
 specification characters in <var>template</var> that are not found in
 <var>spec-alist</var>.  If it is <code>nil</code> or omitted, the function
-signals an error.  Otherwise, those format specifications and any
-occurrences of &lsquo;<samp>%%</samp>&rsquo; in <var>template</var> are left verbatim in the
-output, including their text properties, if any.
+signals an error; if it is <code>ignore</code>, those format specifications
+are left verbatim in the output, including their text properties, if
+any; if it is <code>delete</code>, those format specifications are removed
+from the output; any other non-<code>nil</code> value is handled like
+<code>ignore</code>, but any occurrences of &lsquo;<samp>%%</samp>&rsquo; are also left verbatim
+in the output.
 </p></dd></dl>
 
 <p>The syntax of format specifications accepted by <code>format-spec</code> is
@@ -179,7 +182,7 @@ the right rather than the left.
 </dd>
 <dt>&lsquo;<samp>&lt;</samp>&rsquo;</dt>
 <dd><p>This flag causes the substitution to be truncated on the left to the
-given width, if specified.
+given width and precision, if specified.
 </p>
 </dd>
 <dt>&lsquo;<samp>&gt;</samp>&rsquo;</dt>
@@ -200,14 +203,26 @@ given width, if specified.
 lower case) is undefined.
 </p>
 <p>As is the case with <code>format</code>, a format specification can include
-a width, which is a decimal number that appears after any flags.  If a
-substitution contains fewer characters than its specified width, it is
-padded on the left:
+a width, which is a decimal number that appears after any flags, and a
+precision, which is a decimal-point &lsquo;<samp>.</samp>&rsquo; followed by a decimal
+number that appears after any flags and width.
+</p>
+<p>If a substitution contains fewer characters than its specified width,
+it is padded on the left:
 </p>
 <div class="example">
 <pre class="example">(format-spec &quot;%8a is padded on the left with spaces&quot;
              '((?a . &quot;alpha&quot;)))
      &rArr; &quot;   alpha is padded on the left with spaces&quot;
+</pre></div>
+
+<p>If a substitution contains more characters than its specified
+precision, it is truncated on the right:
+</p>
+<div class="example">
+<pre class="example">(format-spec &quot;%.2a is truncated on the right&quot;
+             '((?a . &quot;alpha&quot;)))
+     &rArr; &quot;al is truncated on the right&quot;
 </pre></div>
 
 <p>Here is a more complicated example that combines several
