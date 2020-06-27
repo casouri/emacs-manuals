@@ -513,8 +513,9 @@ which sub-pattern matched and choose among the different sets.
 For example, the following is invalid:
 </p>
 <div class="example">
-<pre class="example">(pcase (read-number &quot;Enter an integer: &quot;)
-  ((or (and (pred evenp)
+<pre class="example">(require 'cl-lib)
+(pcase (read-number &quot;Enter an integer: &quot;)
+  ((or (and (pred cl-evenp)
             e-num)      ; <span class="roman">bind <code>e-num</code> to <var>expval</var></span>
        o-num)           ; <span class="roman">bind <code>o-num</code> to <var>expval</var></span>
    (list e-num o-num)))
@@ -532,9 +533,10 @@ identical in name in all sub-patterns but differing in value.
 Reworking the above example:
 </p>
 <div class="example">
-<pre class="example">(pcase (read-number &quot;Enter an integer: &quot;)
+<pre class="example">(require 'cl-lib)
+(pcase (read-number &quot;Enter an integer: &quot;)
   ((and num                                ; <span class="roman">line 1</span>
-        (or (and (pred evenp)              ; <span class="roman">line 2</span>
+        (or (and (pred cl-evenp)           ; <span class="roman">line 2</span>
                  (let spin 'even))         ; <span class="roman">line 3</span>
             (let spin 'odd)))              ; <span class="roman">line 4</span>
    (list spin num)))                       ; <span class="roman">line 5</span>
