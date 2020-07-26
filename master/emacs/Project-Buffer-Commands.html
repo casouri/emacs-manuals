@@ -21,10 +21,10 @@ developing GNU and promoting software freedom." -->
 <!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Switching Projects (GNU Emacs Manual)</title>
+<title>Project Buffer Commands (GNU Emacs Manual)</title>
 
-<meta name="description" content="Switching Projects (GNU Emacs Manual)">
-<meta name="keywords" content="Switching Projects (GNU Emacs Manual)">
+<meta name="description" content="Project Buffer Commands (GNU Emacs Manual)">
+<meta name="keywords" content="Project Buffer Commands (GNU Emacs Manual)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
@@ -32,8 +32,8 @@ developing GNU and promoting software freedom." -->
 <link href="Key-Index.html#Key-Index" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Projects.html#Projects" rel="up" title="Projects">
-<link href="Change-Log.html#Change-Log" rel="next" title="Change Log">
-<link href="Project-Buffer-Commands.html#Project-Buffer-Commands" rel="prev" title="Project Buffer Commands">
+<link href="Switching-Projects.html#Switching-Projects" rel="next" title="Switching Projects">
+<link href="Project-File-Commands.html#Project-File-Commands" rel="prev" title="Project File Commands">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
@@ -67,36 +67,44 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Switching-Projects"></a>
+<a name="Project-Buffer-Commands"></a>
 <div class="header">
 <p>
-Previous: <a href="Project-Buffer-Commands.html#Project-Buffer-Commands" accesskey="p" rel="prev">Project Buffer Commands</a>, Up: <a href="Projects.html#Projects" accesskey="u" rel="up">Projects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html#Key-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Switching-Projects.html#Switching-Projects" accesskey="n" rel="next">Switching Projects</a>, Previous: <a href="Project-File-Commands.html#Project-File-Commands" accesskey="p" rel="prev">Project File Commands</a>, Up: <a href="Projects.html#Projects" accesskey="u" rel="up">Projects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html#Key-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Switching-Projects-1"></a>
-<h4 class="subsection">28.2.3 Switching Projects</h4>
+<a name="Project-Commands-That-Operate-on-Buffers"></a>
+<h4 class="subsection">28.2.2 Project Commands That Operate on Buffers</h4>
 
 <dl compact="compact">
-<dt><kbd>C-x p p</kbd></dt>
-<dd><p>Run an Emacs command for another project (<code>project-switch-project</code>).
+<dt><kbd>C-x p b</kbd></dt>
+<dd><p>Switch to another buffer belonging to the current project
+(<code>project-switch-to-buffer</code>).
+</p></dd>
+<dt><kbd>C-x p k</kbd></dt>
+<dd><p>Kill all live buffers that belong to the current project
+(<code>project-kill-buffers</code>).
 </p></dd>
 </dl>
 
-<a name="index-project_002dswitch_002dproject"></a>
-<a name="index-project_002dswitch_002dcommands"></a>
-<p>Commands that operate on project files (see <a href="Project-File-Commands.html#Project-File-Commands">Project File Commands</a>) will conveniently prompt you for a project directory when
-no project is current.  When you are inside some project, but you want
-to operate on a different project, use the <kbd>C-x p p</kbd> command
-(<code>project-switch-project</code>).  This command prompts you to choose a
-directory among known project roots, and then displays the menu of
-available commands to operate on the project you choose.  The variable
-<code>project-switch-commands</code> controls which commands are available
-in the menu, and which key invokes each command.
+<a name="index-project_002dswitch_002dto_002dbuffer"></a>
+<p>Working on a project could potentially involve having many buffers
+visiting files that belong to the project, and also buffers that
+belong to the project, but don&rsquo;t visit any files (like the
+<samp>*compilation*</samp> buffer created by <code>project-compile</code>).  The
+command <kbd>C-x p b</kbd> (<code>project-switch-to-buffer</code>) helps you
+switch between buffers that belong to the current project by prompting
+for a buffer to switch and considering only the current project&rsquo;s
+buffers as candidates for completion.
 </p>
-<a name="index-project_002dlist_002dfile"></a>
-<p>The variable <code>project-list-file</code> names the file in which Emacs
-records the list of known projects.  It defaults to the file
-<samp>projects</samp> in <code>user-emacs-directory</code> (see <a href="Find-Init.html#Find-Init">Find Init</a>).
+<a name="index-project_002dkill_002dbuffers"></a>
+<a name="index-project_002dkill_002dbuffers_002dignores"></a>
+<p>When you finish working on the project, you may wish to kill all the
+buffers that belong to the project, to keep your Emacs session
+smaller.  The command <kbd>C-x p k</kbd> (<code>project-kill-buffers</code>)
+accomplishes that: it kills all the buffers that belong to the current
+project, except if <code>project-kill-buffers-ignores</code> tells
+otherwise.
 </p>
 
 
