@@ -148,6 +148,7 @@ ul.no-bullet {list-style: none}
       <li><a name="toc-Running-eshell-on-a-remote-host" href="#Running-eshell-on-a-remote-host">5.5.4 Running <code>eshell</code> on a remote host</a></li>
       <li><a name="toc-Running-a-debugger-on-a-remote-host-1" href="#Running-a-debugger-on-a-remote-host-1">5.5.5 Running a debugger on a remote host</a></li>
       <li><a name="toc-Running-remote-processes-on-MS-Windows-hosts" href="#Running-remote-processes-on-MS-Windows-hosts">5.5.6 Running remote processes on MS Windows hosts</a></li>
+      <li><a name="toc-Improving-performance-of-asynchronous-remote-processes-1" href="#Improving-performance-of-asynchronous-remote-processes-1">5.5.7 Improving performance of asynchronous remote processes</a></li>
     </ul></li>
     <li><a name="toc-Cleanup-remote-connections-1" href="#Cleanup-remote-connections">5.6 Cleanup remote connections</a></li>
     <li><a name="toc-Renaming-remote-files-1" href="#Renaming-remote-files">5.7 Renaming remote files</a></li>
@@ -2350,6 +2351,12 @@ the methods do not set this property except the <samp>sudo</samp> and
 default value is <tt>&quot;/data/local/tmp&quot;</tt> for the <samp>adb</samp> method,
 <tt>&quot;/C$/Temp&quot;</tt> for the <samp>smb</samp> method, and <tt>&quot;/tmp&quot;</tt> otherwise.
 </p>
+</li><li> <tt>&quot;direct-async-process&quot;</tt>
+
+<p>When this property is non-<code>nil</code>, an alternative, more performant
+implementation of <code>make-process</code> and
+<code>start-file-process</code> is applied.  <a href="#Improving-performance-of-asynchronous-remote-processes">Improving performance of asynchronous remote processes</a> for a discussion of constraints.
+</p>
 </li><li> <tt>&quot;posix&quot;</tt>
 
 <p>Connections using the <samp>smb</samp> method check, whether the remote
@@ -2746,10 +2753,9 @@ versions.  If <code>nc</code> refuses the &lsquo;<samp>-p</samp>&rsquo; paramete
 overwrite as follows:
 </p>
 <div class="lisp">
-<pre class="lisp">(add-to-list
- 'tramp-connection-properties
- `(,(regexp-quote &quot;192.168.0.1&quot;)
-   &quot;remote-copy-args&quot; ((&quot;-l&quot;) (&quot;%r&quot;))))
+<pre class="lisp">(add-to-list 'tramp-connection-properties
+             `(,(regexp-quote &quot;192.168.0.1&quot;)
+               &quot;remote-copy-args&quot; ((&quot;-l&quot;) (&quot;%r&quot;))))
 </pre></div>
 
 <p>where &lsquo;<samp>192.168.0.1</samp>&rsquo; is the remote host IP address
@@ -3792,6 +3798,60 @@ shell on a MS Windows host.  To open <code>cmd</code>, set it as follows:
 </pre></div>
 
 
+<a name="Improving-performance-of-asynchronous-remote-processes"></a><a name="Improving-performance-of-asynchronous-remote-processes-1"></a>
+<h4 class="subsection">5.5.7 Improving performance of asynchronous remote processes</h4>
+<a name="index-Asynchronous-remote-processes"></a>
+<a name="index-make_002dprocess"></a>
+<a name="index-start_002dfile_002dprocess"></a>
+
+<p><small>TRAMP</small>&rsquo;s implementation of <code>make-process</code> and
+<code>start-file-process</code> requires a serious overhead for
+initialization, every process invocation.  This is needed for handling
+interactive dialogues when connecting the remote host (like providing
+a password), and initial environment setup.
+</p>
+<p>Sometimes, this is not needed.  Instead of starting a remote shell and
+running the command afterwards, it is sufficient to run the command
+directly.  <small>TRAMP</small> supports this by an alternative
+implementation of <code>make-process</code> and <code>start-file-process</code>.
+This is triggered by the connection property
+<tt>&quot;direct-async-process&quot;</tt>, See <a href="#Predefined-connection-information">Predefined connection information</a>,
+which must be set to a non-<code>nil</code> value.  Example:
+</p>
+<div class="lisp">
+<pre class="lisp">(add-to-list 'tramp-connection-properties
+             (list (regexp-quote &quot;/ssh:user@host:&quot;)
+                   &quot;direct-async-process&quot; t))
+</pre></div>
+
+<p>However, this approach has different limitations:
+</p>
+<ul>
+<li> It works only for connection methods defined in <samp>tramp-sh.el</samp> and
+<samp>tramp-adb.el</samp>.
+
+</li><li> It does not support multi-hop methods.
+
+</li><li> It does not support interactive user authentication, like password
+handling.
+
+</li><li> It does not support a separated error stream.
+
+</li><li> It cannot be killed via <code>interrupt-process</code>.
+
+</li><li> It does not report the remote terminal name via <code>process-tty-name</code>.
+
+</li><li> It does not use <code>tramp-remote-path</code> and
+<code>tramp-remote-process-environment</code>.
+
+</li><li> It does not set environment variable <code>INSIDE_EMACS</code>.
+</li></ul>
+
+<p>In order to gain even more performance, it is recommended to bind
+<code>tramp-verbose</code> to 0 when running <code>make-process</code> or
+<code>start-file-process</code>.
+</p>
+
 <hr>
 <a name="Cleanup-remote-connections"></a>
 <div class="header">
@@ -4778,9 +4838,8 @@ for a more comprehensive example.
 <p>Abbreviation list expansion can be used to reduce typing long file names:
 </p>
 <div class="lisp">
-<pre class="lisp">(add-to-list
- 'directory-abbrev-alist
- '(&quot;^/xy&quot; . &quot;/ssh:news@news.my.domain:/opt/news/etc/&quot;))
+<pre class="lisp">(add-to-list 'directory-abbrev-alist
+             '(&quot;^/xy&quot; . &quot;/ssh:news@news.my.domain:/opt/news/etc/&quot;))
 </pre></div>
 
 <p>The reduced typing: <kbd>C-x C-f /xy <span class="key">RET</span></kbd>.
@@ -5691,6 +5750,8 @@ Next: <a href="#Variable-Index" accesskey="n" rel="next">Variable Index</a>, Pre
 <h2 class="unnumbered">Function Index</h2>
 <table><tr><th valign="top">Jump to: &nbsp; </th><td><a class="summary-letter" href="#Function-Index_fn_letter-M"><b>M</b></a>
  &nbsp; 
+<a class="summary-letter" href="#Function-Index_fn_letter-S"><b>S</b></a>
+ &nbsp; 
 <a class="summary-letter" href="#Function-Index_fn_letter-T"><b>T</b></a>
  &nbsp; 
 </td></tr></table>
@@ -5698,7 +5759,11 @@ Next: <a href="#Variable-Index" accesskey="n" rel="next">Variable Index</a>, Pre
 <tr><td></td><th align="left">Index Entry</th><td>&nbsp;</td><th align="left"> Section</th></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Function-Index_fn_letter-M">M</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-make_002dprocess"><code>make-process</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Remote-processes">Remote processes</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-my_002dtramp_002dparse"><code>my-tramp-parse</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Customizing-Completion">Customizing Completion</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th><a name="Function-Index_fn_letter-S">S</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-start_002dfile_002dprocess"><code>start-file-process</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Remote-processes">Remote processes</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Function-Index_fn_letter-T">T</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tramp_002dbug"><code>tramp-bug</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Bug-Reports">Bug Reports</a></td></tr>
@@ -5725,6 +5790,8 @@ Next: <a href="#Variable-Index" accesskey="n" rel="next">Variable Index</a>, Pre
 <tr><td colspan="4"> <hr></td></tr>
 </table>
 <table><tr><th valign="top">Jump to: &nbsp; </th><td><a class="summary-letter" href="#Function-Index_fn_letter-M"><b>M</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Function-Index_fn_letter-S"><b>S</b></a>
  &nbsp; 
 <a class="summary-letter" href="#Function-Index_fn_letter-T"><b>T</b></a>
  &nbsp; 
@@ -5993,6 +6060,7 @@ Previous: <a href="#Variable-Index" accesskey="p" rel="prev">Variable Index</a>,
 <tr><td></td><td valign="top"><a href="#index-ar-file-archive-suffix"><samp>ar</samp> file archive suffix</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Archive-file-names">Archive file names</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-archive-file-names">archive file names</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Archive-file-names">Archive file names</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-archive-method">archive method</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Archive-file-names">Archive file names</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-Asynchronous-remote-processes">Asynchronous remote processes</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Remote-processes">Remote processes</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-auto_002dsave">auto-save</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Auto_002dsave-and-Backup">Auto-save and Backup</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Concept-Index_cp_letter-B">B</a></th><td></td><td></td></tr>
