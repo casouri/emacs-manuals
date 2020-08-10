@@ -78,13 +78,15 @@ Next: <a href="Interactive-Shell.html#Interactive-Shell" accesskey="n" rel="next
 
 <a name="index-M_002d_0021"></a>
 <a name="index-shell_002dcommand"></a>
+<a name="index-shell_002dcommand_002dbuffer_002dname"></a>
 <p><kbd>M-!</kbd> (<code>shell-command</code>) reads a line of text using the
 minibuffer and executes it as a shell command, in a subshell made just
 for that command.  Standard input for the command comes from the null
 device.  If the shell command produces any output, the output appears
-either in the echo area (if it is short), or in an Emacs buffer named
-<samp>*Shell Command Output*</samp>, displayed in another window (if the
-output is long).  The variables <code>resize-mini-windows</code> and
+either in the echo area (if it is short), or in an Emacs buffer,
+displayed in another window (if the output is long).  The name of
+this buffer is taken from the constant <code>shell-command-buffer-name</code>.
+The variables <code>resize-mini-windows</code> and
 <code>max-mini-window-height</code> (see <a href="Minibuffer-Edit.html#Minibuffer-Edit">Minibuffer Edit</a>) control when
 Emacs should consider the output to be too long for the echo area.
 </p>
@@ -112,15 +114,16 @@ which is impossible to ignore.
 </p>
 <a name="index-M_002d_0026"></a>
 <a name="index-async_002dshell_002dcommand"></a>
+<a name="index-shell_002dcommand_002dbuffer_002dname_002dasync"></a>
 <p>A shell command that ends in &lsquo;<samp>&amp;</samp>&rsquo; is executed
 <em>asynchronously</em>, and you can continue to use Emacs as it runs.
 You can also type <kbd>M-&amp;</kbd> (<code>async-shell-command</code>) to execute a
 shell command asynchronously; this is exactly like calling <kbd>M-!</kbd>
 with a trailing &lsquo;<samp>&amp;</samp>&rsquo;, except that you do not need the &lsquo;<samp>&amp;</samp>&rsquo;.
-The default output buffer for asynchronous shell commands is named
-&lsquo;<samp>*Async Shell Command*</samp>&rsquo;.  Emacs inserts the output into this
-buffer as it comes in, whether or not the buffer is visible in a
-window.
+The constant <code>shell-command-buffer-name-async</code> stores the name
+of the default output buffer for asynchronous shell commands.
+Emacs inserts the output into this buffer as it comes in,
+whether or not the buffer is visible in a window.
 </p>
 <a name="index-async_002dshell_002dcommand_002dbuffer"></a>
 <p>If you want to run more than one asynchronous shell command at the
@@ -158,7 +161,7 @@ old region and replaces it with the output from the shell command.
 see what keys are in the buffer.  If the buffer contains a GnuPG key,
 type <kbd>C-x h M-| gpg <span class="key">RET</span></kbd> to feed the entire buffer contents
 to <code>gpg</code>.  This will output the list of keys to the
-<samp>*Shell Command Output*</samp> buffer.
+buffer whose name is the value of <code>shell-command-buffer-name</code>.
 </p>
 <a name="index-shell_002dfile_002dname"></a>
 <p>The above commands use the shell specified by the variable
