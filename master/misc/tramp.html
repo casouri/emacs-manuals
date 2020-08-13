@@ -3824,18 +3824,20 @@ which must be set to a non-<code>nil</code> value.  Example:
                    &quot;direct-async-process&quot; t))
 </pre></div>
 
-<p>However, this approach has different limitations:
+<p>Using direct asynchronous processes in <small>TRAMP</small> is not possible,
+if the remote host is connected via multiple hops
+(see <a href="#Multi_002dhops">Multi-hops</a>), or the <code>make-process</code> /
+<code>start-file-process</code> call uses a stderr stream.  In this case,
+<small>TRAMP</small> falls back to its classical implementation.
+</p>
+<p>Furthermore, this approach has the following limitations:
 </p>
 <ul>
 <li> It works only for connection methods defined in <samp>tramp-sh.el</samp> and
 <samp>tramp-adb.el</samp>.
 
-</li><li> It does not support multi-hop methods.
-
 </li><li> It does not support interactive user authentication, like password
 handling.
-
-</li><li> It does not support a separated error stream.
 
 </li><li> It cannot be killed via <code>interrupt-process</code>.
 
@@ -3849,7 +3851,10 @@ handling.
 
 <p>In order to gain even more performance, it is recommended to bind
 <code>tramp-verbose</code> to 0 when running <code>make-process</code> or
-<code>start-file-process</code>.
+<code>start-file-process</code>.  Furthermore, you might set
+<code>tramp-use-ssh-controlmaster-options</code> to <code>nil</code> in order to
+bypass <small>TRAMP</small>&rsquo;s handling of the <code>ControlMaster</code> options,
+and use your own settings in <samp>~/.ssh/config</samp>.
 </p>
 
 <hr>
