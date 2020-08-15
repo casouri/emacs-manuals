@@ -119,7 +119,12 @@ instead of running the <code>mouse-save-then-kill</code> command, rebind
 (see <a href="Init-Rebinding.html#Init-Rebinding">Init Rebinding</a>):
 </p>
 <div class="smallexample">
-<pre class="smallexample">(global-set-key [mouse-3] 'mouse-popup-menubar-stuff)
+<pre class="smallexample">(global-set-key [mouse-3]
+  '(menu-item &quot;Menu Bar&quot; ignore
+    :filter (lambda (_)
+              (if (zerop (or (frame-parameter nil 'menu-bar-lines) 0))
+                  (mouse-menu-bar-map)
+                (mouse-menu-major-mode-map)))))
 </pre></div>
 
 
