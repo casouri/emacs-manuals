@@ -171,15 +171,24 @@ the backquote (see <a href="Backquote.html#Backquote">Backquote</a>), but quotes
 
 <dl>
 <dt><a name="index-inline_002dletevals"></a>Macro: <strong>inline-letevals</strong> <em>(bindings&hellip;) body&hellip;</em></dt>
-<dd><p>This is similar to <code>let</code> (see <a href="Local-Variables.html#Local-Variables">Local Variables</a>): it sets up
-local variables as specified by <var>bindings</var>, and then evaluates
-<var>body</var> with those bindings in effect.  Each element of
-<var>bindings</var> should be either a symbol or a list of the form
-<code>(<var>var</var>&nbsp;<var>expr</var>)</code><!-- /@w -->; the result is to evaluate
-<var>expr</var> and bind <var>var</var> to the result.  The tail of
-<var>bindings</var> can be either <code>nil</code> or a symbol which should hold
-a list of arguments, in which case each argument is evaluated, and the
-symbol is bound to the resulting list.
+<dd><p>This provides a convenient way to ensure that the arguments to an
+inlined function are evaluated exactly once, as well as to create
+local variables.
+</p>
+<p>It&rsquo;s similar to <code>let</code> (see <a href="Local-Variables.html#Local-Variables">Local Variables</a>): It sets up local
+variables as specified by <var>bindings</var>, and then evaluates
+<var>body</var> with those bindings in effect.
+</p>
+<p>Each element of <var>bindings</var> should be either a symbol or a list of
+the form <code>(<var>var</var>&nbsp;<var>expr</var>)</code><!-- /@w -->; the result is to evaluate
+<var>expr</var> and bind <var>var</var> to the result.  However, when an element
+of <var>bindings</var> is just a symbol <var>var</var>, the result of evaluating
+<var>var</var> is re-bound to <var>var</var> (which is quite different from the
+way <code>let</code> works).
+</p>
+<p>The tail of <var>bindings</var> can be either <code>nil</code> or a symbol which
+should hold a list of arguments, in which case each argument is
+evaluated, and the symbol is bound to the resulting list.
 </p></dd></dl>
 
 <dl>
