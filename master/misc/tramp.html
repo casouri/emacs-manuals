@@ -421,7 +421,7 @@ example) in the buffer.  If on the other hand, the login name was
 included in the file name portion, <small>TRAMP</small> sends the login name
 followed by a newline.
 
-</li><li> The remote host may then prompt for a password or pass phrase (for
+</li><li> The remote host may then prompt for a password or passphrase (for
 <code>rsh</code> or for <code>telnet</code>).  <small>TRAMP</small> displays the
 password prompt in the minibuffer.  <small>TRAMP</small> then sends whatever
 is entered to the remote host, followed by a newline.
@@ -3826,9 +3826,8 @@ which must be set to a non-<code>nil</code> value.  Example:
 
 <p>Using direct asynchronous processes in <small>TRAMP</small> is not possible,
 if the remote host is connected via multiple hops
-(see <a href="#Multi_002dhops">Multi-hops</a>), or the <code>make-process</code> /
-<code>start-file-process</code> call uses a stderr stream.  In this case,
-<small>TRAMP</small> falls back to its classical implementation.
+(see <a href="#Multi_002dhops">Multi-hops</a>).  In this case, <small>TRAMP</small> falls back to its
+classical implementation.
 </p>
 <p>Furthermore, this approach has the following limitations:
 </p>
@@ -3836,12 +3835,16 @@ if the remote host is connected via multiple hops
 <li> It works only for connection methods defined in <samp>tramp-sh.el</samp> and
 <samp>tramp-adb.el</samp>.
 
-</li><li> It does not support interactive user authentication, like password
-handling.
+</li><li> It does not support interactive user authentication.  With
+<samp>ssh</samp>-based methods, this can be avoided by using a password
+agent like <code>ssh-agent</code>, using public key authentication, or
+using <code>ControlMaster</code> options.
 
 </li><li> It cannot be killed via <code>interrupt-process</code>.
 
 </li><li> It does not report the remote terminal name via <code>process-tty-name</code>.
+
+</li><li> It does not set process property <code>remote-pid</code>.
 
 </li><li> It does not use <code>tramp-remote-path</code> and
 <code>tramp-remote-process-environment</code>.
