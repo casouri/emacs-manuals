@@ -557,11 +557,12 @@ ul.no-bullet {list-style: none}
       <li><a name="toc-Gnus-Cloud-Setup-1" href="#Gnus-Cloud-Setup">10.20.1 Gnus Cloud Setup</a></li>
       <li><a name="toc-Gnus-Cloud-Usage-1" href="#Gnus-Cloud-Usage">10.20.2 Gnus Cloud Usage</a></li>
     </ul></li>
-    <li><a name="toc-Interaction-with-other-modes" href="#Other-modes">10.21 Interaction with other modes</a>
+    <li><a name="toc-D_002dBus-Integration-1" href="#D_002dBus-Integration">10.21 D-Bus Integration</a></li>
+    <li><a name="toc-Interaction-with-other-modes" href="#Other-modes">10.22 Interaction with other modes</a>
     <ul class="no-bullet">
-      <li><a name="toc-Dired" href="#Dired">10.21.1 Dired</a></li>
+      <li><a name="toc-Dired" href="#Dired">10.22.1 Dired</a></li>
     </ul></li>
-    <li><a name="toc-Various-Various-1" href="#Various-Various">10.22 Various Various</a></li>
+    <li><a name="toc-Various-Various-1" href="#Various-Various">10.23 Various Various</a></li>
   </ul></li>
   <li><a name="toc-The-End-1" href="#The-End">11 The End</a></li>
   <li><a name="toc-Appendices-1" href="#Appendices">12 Appendices</a>
@@ -1396,6 +1397,8 @@ Various
 <tr><td align="left" valign="top">&bull; <a href="#The-Gnus-Registry">The Gnus Registry</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A package for tracking messages by Message-ID.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#The-Gnus-Cloud">The Gnus Cloud</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A package for synchronizing Gnus marks.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#D_002dBus-Integration">D-Bus Integration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Closing Gnus servers on system sleep.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Other-modes">Other modes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Interaction with other modes.
 </td></tr>
@@ -25951,6 +25954,8 @@ Next: <a href="#The-End" accesskey="n" rel="next">The End</a>, Previous: <a href
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#The-Gnus-Cloud">The Gnus Cloud</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A package for synchronizing Gnus marks.
 </td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#D_002dBus-Integration">D-Bus Integration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Closing Gnus servers on system sleep.
+</td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Other-modes">Other modes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Interaction with other modes.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Various-Various">Various Various</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Things that are really various.
@@ -30399,7 +30404,7 @@ precious.
 <a name="The-Gnus-Cloud"></a>
 <div class="header">
 <p>
-Next: <a href="#Other-modes" accesskey="n" rel="next">Other modes</a>, Previous: <a href="#The-Gnus-Registry" accesskey="p" rel="prev">The Gnus Registry</a>, Up: <a href="#Various" accesskey="u" rel="up">Various</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#D_002dBus-Integration" accesskey="n" rel="next">D-Bus Integration</a>, Previous: <a href="#The-Gnus-Registry" accesskey="p" rel="prev">The Gnus Registry</a>, Up: <a href="#Various" accesskey="u" rel="up">Various</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="The-Gnus-Cloud-1"></a>
 <h3 class="section">10.20 The Gnus Cloud</h3>
@@ -30516,16 +30521,42 @@ Server buffer (see <a href="#Gnus-Cloud-Setup">Gnus Cloud Setup</a>).
 </p></dd></dl>
 
 <hr>
+<a name="D_002dBus-Integration"></a>
+<div class="header">
+<p>
+Next: <a href="#Other-modes" accesskey="n" rel="next">Other modes</a>, Previous: <a href="#The-Gnus-Cloud" accesskey="p" rel="prev">The Gnus Cloud</a>, Up: <a href="#Various" accesskey="u" rel="up">Various</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="D_002dBus-Integration-1"></a>
+<h3 class="section">10.21 D-Bus Integration</h3>
+<a name="index-dbus"></a>
+<a name="index-D_002dBus"></a>
+<a name="index-gnus_002ddbus"></a>
+<a name="index-system-sleep"></a>
+<a name="index-closing-servers-automatically"></a>
+<a name="index-hung-connections"></a>
+
+<p>When using laptops or other systems that have a sleep or hibernate
+functionality, it&rsquo;s possible for long-running server connections to
+become &ldquo;hung&rdquo;, requiring the user to manually close and re-open the
+connections after the system resumes.  On systems compiled with D-Bus
+support (check the value of <code>(featurep 'dbusbind)</code>), Gnus can
+register a D-Bus signal to automatically close all server connections
+before the system goes to sleep.  To enable this, set
+<code>gnus-dbus-close-on-sleep</code> to a non-nil value.
+</p>
+<p>For more information about D-Bus and Emacs, see <cite><a href="dbus.html#Top">D-Bus integration in Emacs</a></cite>.
+</p>
+<hr>
 <a name="Other-modes"></a>
 <div class="header">
 <p>
-Next: <a href="#Various-Various" accesskey="n" rel="next">Various Various</a>, Previous: <a href="#The-Gnus-Cloud" accesskey="p" rel="prev">The Gnus Cloud</a>, Up: <a href="#Various" accesskey="u" rel="up">Various</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Various-Various" accesskey="n" rel="next">Various Various</a>, Previous: <a href="#D_002dBus-Integration" accesskey="p" rel="prev">D-Bus Integration</a>, Up: <a href="#Various" accesskey="u" rel="up">Various</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Interaction-with-other-modes"></a>
-<h3 class="section">10.21 Interaction with other modes</h3>
+<h3 class="section">10.22 Interaction with other modes</h3>
 
 <a name="Dired"></a>
-<h4 class="subsection">10.21.1 Dired</h4>
+<h4 class="subsection">10.22.1 Dired</h4>
 <a name="index-dired"></a>
 
 <p><code>gnus-dired-minor-mode</code> provides some useful functions for dired
@@ -30563,7 +30594,7 @@ there is no print command, print in a PostScript image.
 Previous: <a href="#Other-modes" accesskey="p" rel="prev">Other modes</a>, Up: <a href="#Various" accesskey="u" rel="up">Various</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Various-Various-1"></a>
-<h3 class="section">10.22 Various Various</h3>
+<h3 class="section">10.23 Various Various</h3>
 <a name="index-mode-lines-1"></a>
 <a name="index-highlights"></a>
 
@@ -38899,6 +38930,7 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-child">child</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Child-Gnusae">Child Gnusae</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-child-1">child</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Terminology">Terminology</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-ClariNet-Briefs">ClariNet Briefs</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Foreign-Groups">Foreign Groups</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-closing-servers-automatically">closing servers automatically</a>:</td><td>&nbsp;</td><td valign="top"><a href="#D_002dBus-Integration">D-Bus Integration</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-cloud">cloud</a>:</td><td>&nbsp;</td><td valign="top"><a href="#The-Gnus-Cloud">The Gnus Cloud</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-cloud_002c-download">cloud, download</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Gnus-Cloud-Usage">Gnus Cloud Usage</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-cloud_002c-download-1">cloud, download</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Gnus-Cloud-Usage">Gnus Cloud Usage</a></td></tr>
@@ -38922,8 +38954,10 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-customizing-threading">customizing threading</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Customizing-Threading">Customizing Threading</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Index_cp_letter-D">D</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-D_002dBus">D-Bus</a>:</td><td>&nbsp;</td><td valign="top"><a href="#D_002dBus-Integration">D-Bus Integration</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-daemons">daemons</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Daemons">Daemons</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-date">date</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Score-File-Format">Score File Format</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-dbus">dbus</a>:</td><td>&nbsp;</td><td valign="top"><a href="#D_002dBus-Integration">D-Bus Integration</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-DCC">DCC</a>:</td><td>&nbsp;</td><td valign="top"><a href="#SpamAssassin">SpamAssassin</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-decays">decays</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Score-Decays">Score Decays</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-decoding-articles">decoding articles</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Decoding-Articles">Decoding Articles</a></td></tr>
@@ -39332,6 +39366,7 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-gnus_002dcurrent_002dhome_002dscore_002dfile"><code>gnus-current-home-score-file</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Home-Score-File">Home Score File</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002dcurrent_002dprefix_002dsymbol"><code>gnus-current-prefix-symbol</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Extended-Interactive">Extended Interactive</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002dcurrent_002dprefix_002dsymbols"><code>gnus-current-prefix-symbols</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Extended-Interactive">Extended Interactive</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-gnus_002ddbus">gnus-dbus</a>:</td><td>&nbsp;</td><td valign="top"><a href="#D_002dBus-Integration">D-Bus Integration</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002ddead_002dsummary_002dmode"><code>gnus-dead-summary-mode</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Exiting-the-Summary-Buffer">Exiting the Summary Buffer</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002ddecay_002dscore"><code>gnus-decay-score</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Score-Decays">Score Decays</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002ddecay_002dscore_002dfunction"><code>gnus-decay-score-function</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Score-Decays">Score Decays</a></td></tr>
@@ -40455,6 +40490,7 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-history-1">history</a>:</td><td>&nbsp;</td><td valign="top"><a href="#History">History</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-HTML"><acronym>HTML</acronym></a>:</td><td>&nbsp;</td><td valign="top"><a href="#HTML">HTML</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-http">http</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Browsing-the-Web">Browsing the Web</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-hung-connections">hung connections</a>:</td><td>&nbsp;</td><td valign="top"><a href="#D_002dBus-Integration">D-Bus Integration</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Index_cp_letter-I">I</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-IDNA">IDNA</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Misc-Article">Misc Article</a></td></tr>
@@ -41129,6 +41165,7 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-sync">sync</a>:</td><td>&nbsp;</td><td valign="top"><a href="#The-Gnus-Cloud">The Gnus Cloud</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-synch">synch</a>:</td><td>&nbsp;</td><td valign="top"><a href="#The-Gnus-Cloud">The Gnus Cloud</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-synchronization">synchronization</a>:</td><td>&nbsp;</td><td valign="top"><a href="#The-Gnus-Cloud">The Gnus Cloud</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-system-sleep">system sleep</a>:</td><td>&nbsp;</td><td valign="top"><a href="#D_002dBus-Integration">D-Bus Integration</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Index_cp_letter-T">T</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-tabbed-interface">tabbed interface</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Tabbed-Interface">Tabbed Interface</a></td></tr>
