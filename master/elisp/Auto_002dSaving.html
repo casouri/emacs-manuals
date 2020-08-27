@@ -109,6 +109,32 @@ non-<code>nil</code> and <code>buffer-saved-size</code> (see below) is non-zero.
 </p></dd></dl>
 
 <dl>
+<dt><a name="index-auto_002dsave_002dfile_002dname_002dtransforms"></a>Variable: <strong>auto-save-file-name-transforms</strong></dt>
+<dd><p>This variable lists transforms to apply to buffer&rsquo;s file name before
+making the auto-save file name.
+</p>
+<p>Each transform is a list of the form <code>(<var>regexp</var>&nbsp;<var>replacement</var>&nbsp;[<var>uniquify</var>])</code><!-- /@w -->.  <var>regexp</var> is a regular
+expression to match against the file name; if it matches,
+<code>replace-match</code> is used to replace the matching part with
+<var>replacement</var>.  If the optional element <var>uniquify</var> is non-nil,
+the auto-save file name is constructed by concatenating the directory
+part of the transformed file name with the buffer&rsquo;s file name in which
+all directory separators were changed to &lsquo;<samp>!</samp>&rsquo; to prevent clashes.
+(This will not work correctly if your filesystem truncates the
+resulting name.)
+</p>
+<p>All the transforms in the list are tried, in the order they are listed.
+When one transform applies, its result is final;
+no further transforms are tried.
+</p>
+<p>The default value is set up to put the auto-save files of remote files
+into the temporary directory (see <a href="Unique-File-Names.html#Unique-File-Names">Unique File Names</a>).
+</p>
+<p>On MS-DOS filesystems without long names this variable is always
+ignored.
+</p></dd></dl>
+
+<dl>
 <dt><a name="index-auto_002dsave_002dfile_002dname_002dp"></a>Function: <strong>auto-save-file-name-p</strong> <em>filename</em></dt>
 <dd><p>This function returns a non-<code>nil</code> value if <var>filename</var> is a
 string that could be the name of an auto-save file.  It assumes
@@ -124,20 +150,7 @@ name.  The argument <var>filename</var> should not contain a directory part.
 </pre><pre class="example">(auto-save-file-name-p &quot;backups.texi&quot;)
      &rArr; nil
 </pre></div>
-
-<p>The standard definition of this function is as follows:
-</p>
-<div class="example">
-<pre class="example">(defun auto-save-file-name-p (filename)
-  &quot;Return non-nil if FILENAME can be yielded by...&quot;
-  (string-match &quot;^#.*#$&quot; filename))
-</pre></div>
-
-<p>This function exists so that you can customize it if you wish to
-change the naming convention for auto-save files.  If you redefine it,
-be sure to redefine the function <code>make-auto-save-file-name</code>
-correspondingly.
-</p></dd></dl>
+</dd></dl>
 
 <dl>
 <dt><a name="index-make_002dauto_002dsave_002dfile_002dname"></a>Function: <strong>make-auto-save-file-name</strong></dt>
@@ -151,28 +164,7 @@ function should check that variable first.
 <pre class="example">(make-auto-save-file-name)
      &rArr; &quot;/xcssun/users/rms/lewis/#backups.texi#&quot;
 </pre></div>
-
-<p>Here is a simplified version of the standard definition of this
-function:
-</p>
-<div class="example">
-<pre class="example">(defun make-auto-save-file-name ()
-  &quot;Return file name to use for auto-saves \
-of current buffer..&quot;
-  (if buffer-file-name
-</pre><pre class="example">      (concat
-       (file-name-directory buffer-file-name)
-       &quot;#&quot;
-       (file-name-nondirectory buffer-file-name)
-       &quot;#&quot;)
-    (expand-file-name
-     (concat &quot;#%&quot; (buffer-name) &quot;#&quot;))))
-</pre></div>
-
-<p>This exists as a separate function so that you can redefine it to
-customize the naming convention for auto-save files.  Be sure to
-change <code>auto-save-file-name-p</code> in a corresponding way.
-</p></dd></dl>
+</dd></dl>
 
 <dl>
 <dt><a name="index-auto_002dsave_002dvisited_002dfile_002dname"></a>User Option: <strong>auto-save-visited-file-name</strong></dt>

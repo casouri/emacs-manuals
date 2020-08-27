@@ -134,13 +134,23 @@ canonical form:
 superroot above the root directory <samp>/</samp>.  On other filesystems,
 <samp>/../</samp> is interpreted exactly the same as <samp>/</samp>.
 </p>
+<p>If a filename must be that of a directory, its expansion must be too.
+For example, if a filename ends in &lsquo;<samp>/</samp>&rsquo; or &lsquo;<samp>/.</samp>&rsquo; or &lsquo;<samp>/..</samp>&rsquo;
+then its expansion ends in &lsquo;<samp>/</samp>&rsquo; so that it cannot be
+misinterpreted as the name of a symbolic link:
+</p>
+<div class="example">
+<pre class="example">(expand-file-name &quot;/a///b//.&quot;)
+     &rArr; &quot;/a/b/&quot;
+</pre></div>
+
 <p>Expanding <samp>.</samp> or the empty string returns the default directory:
 </p>
 <div class="example">
 <pre class="example">(expand-file-name &quot;.&quot; &quot;/usr/spool/&quot;)
-     &rArr; &quot;/usr/spool&quot;
+     &rArr; &quot;/usr/spool/&quot;
 (expand-file-name &quot;&quot; &quot;/usr/spool/&quot;)
-     &rArr; &quot;/usr/spool&quot;
+     &rArr; &quot;/usr/spool/&quot;
 </pre></div>
 
 <p>Note that <code>expand-file-name</code> does <em>not</em> expand environment
