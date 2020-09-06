@@ -363,9 +363,10 @@ ul.no-bullet {list-style: none}
       <li><a name="toc-Mail_002dTo_002dNews-Gateways-1" href="#Mail_002dTo_002dNews-Gateways">7.6.4 Mail-To-News Gateways</a></li>
       <li><a name="toc-The-Empty-Backend-1" href="#The-Empty-Backend">7.6.5 The Empty Backend</a></li>
     </ul></li>
-    <li><a name="toc-Combined-Groups-1" href="#Combined-Groups">7.7 Combined Groups</a>
+    <li><a name="toc-Virtual-Groups-1" href="#Virtual-Groups">7.7 Virtual Groups</a>
     <ul class="no-bullet">
-      <li><a name="toc-Virtual-Groups-1" href="#Virtual-Groups">7.7.1 Virtual Groups</a></li>
+      <li><a name="toc-Select-Groups" href="#Selection-Groups">7.7.1 Select Groups</a></li>
+      <li><a name="toc-Combined-Groups-1" href="#Combined-Groups">7.7.2 Combined Groups</a></li>
     </ul></li>
     <li><a name="toc-Email-Based-Diary-1" href="#Email-Based-Diary">7.8 Email Based Diary</a>
     <ul class="no-bullet">
@@ -1068,7 +1069,7 @@ Select Methods
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Other-Sources">Other Sources</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Reading directories, files.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Combined-Groups">Combined Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining groups into one group.
+<tr><td align="left" valign="top">&bull; <a href="#Virtual-Groups">Virtual Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining articles from multiple sources.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Email-Based-Diary">Email Based Diary</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Using mails to manage diary events in Gnus.
 </td></tr>
@@ -1200,9 +1201,11 @@ Document Groups
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
-Combined Groups
+Virtual Groups
 
-</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Virtual-Groups">Virtual Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining articles from many groups.
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Selection-Groups">Selection Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Articles selected from many places.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Combined-Groups">Combined Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining multiple  groups.
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
@@ -6168,6 +6171,18 @@ the <code>a</code> spec.
 </p></dd>
 <dt>&lsquo;<samp>L</samp>&rsquo;</dt>
 <dd><p>Number of lines in the article.
+</p></dd>
+<dt>&lsquo;<samp>Z</samp>&rsquo;</dt>
+<dd><p>Retrieval Score Value (RSV) of the article; nil if not in an nnselect
+group.
+</p></dd>
+<dt>&lsquo;<samp>G</samp>&rsquo;</dt>
+<dd><p>Originating group name of the article; nil if not in an nnselect
+group.
+</p></dd>
+<dt>&lsquo;<samp>g</samp>&rsquo;</dt>
+<dd><p>Short form of the originating group name of the article; nil if not in
+an nnselect group.
 </p></dd>
 <dt>&lsquo;<samp>c</samp>&rsquo;</dt>
 <dd><p>Number of characters in the article.  This specifier is not supported
@@ -12416,12 +12431,20 @@ article (<code>gnus-summary-refer-references</code>).
 <dd><a name="index-gnus_002dsummary_002drefer_002dthread"></a>
 <a name="index-A-T-_0028Summary_0029"></a>
 <p>Display the full thread where the current article appears
-(<code>gnus-summary-refer-thread</code>).  This command has to fetch all the
-headers in the current group to work, so it usually takes a while.  If
-you do it often, you may consider setting <code>gnus-fetch-old-headers</code>
-to <code>invisible</code> (see <a href="#Filling-In-Threads">Filling In Threads</a>).  This won&rsquo;t have any
-visible effects normally, but it&rsquo;ll make this command work a whole lot
-faster.  Of course, it&rsquo;ll make group entry somewhat slow.
+(<code>gnus-summary-refer-thread</code>). By default this command looks for
+articles only in the current group. Some backends (currently only
+&rsquo;nnimap) know how to find articles in the thread directly. In other
+cases each header in the current group must be fetched and examined,
+so it usually takes a while.  If you do it often, you may consider
+setting <code>gnus-fetch-old-headers</code> to <code>invisible</code>
+(see <a href="#Filling-In-Threads">Filling In Threads</a>).  This won&rsquo;t have any visible effects
+normally, but it&rsquo;ll make this command work a whole lot faster.  Of
+course, it&rsquo;ll make group entry somewhat slow.
+</p>
+<a name="index-gnus_002drefer_002dthread_002duse_002dsearch"></a>
+<p>If <code>gnus-refer-thread-use-search</code> is non-nil then those backends
+that know how to find threads directly will search not just in the
+current group but all groups on the same server.
 </p>
 <a name="index-gnus_002drefer_002dthread_002dlimit"></a>
 <p>The <code>gnus-refer-thread-limit</code> variable says how many old (i.e.,
@@ -12429,6 +12452,15 @@ articles before the first displayed in the current group) headers to
 fetch when doing this command.  The default is 200.  If <code>t</code>, all
 the available headers will be fetched.  This variable can be overridden
 by giving the <kbd>A T</kbd> command a numerical prefix.
+</p>
+<a name="index-gnus_002drefer_002dthread_002dlimit_002dto_002dthread"></a>
+<p>In most cases <code>gnus-refer-thread</code> adds any articles it finds to
+the current summary buffer. (When <code>gnus-refer-thread-use-search</code>
+is true and the initial referral starts from a summary buffer for a
+non-virtual group this may not be possible. In this case a new summary
+buffer is created holding a virtual group with the result of the thread
+search). If <code>gnus-refer-thread-limit-to-thread</code> is non-nil then
+the summary buffer will be limited to articles in the thread.
 </p>
 </dd>
 <dt><kbd>M-^ (Summary)</kbd></dt>
@@ -15596,7 +15628,7 @@ back end just knows this group as &lsquo;<samp>soc.motss</samp>&rsquo;.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Other-Sources" accesskey="6">Other Sources</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Reading directories, files.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Combined-Groups" accesskey="7">Combined Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining groups into one group.
+<tr><td align="left" valign="top">&bull; <a href="#Virtual-Groups" accesskey="7">Virtual Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining articles and groups together.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Email-Based-Diary" accesskey="8">Email Based Diary</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Using mails to manage diary events in Gnus.
 </td></tr>
@@ -20256,7 +20288,7 @@ more useful especially in <code>nnrss</code> groups to display
 <a name="Other-Sources"></a>
 <div class="header">
 <p>
-Next: <a href="#Combined-Groups" accesskey="n" rel="next">Combined Groups</a>, Previous: <a href="#Browsing-the-Web" accesskey="p" rel="prev">Browsing the Web</a>, Up: <a href="#Select-Methods" accesskey="u" rel="up">Select Methods</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Virtual-Groups" accesskey="n" rel="next">Virtual Groups</a>, Previous: <a href="#Browsing-the-Web" accesskey="p" rel="prev">Browsing the Web</a>, Up: <a href="#Select-Methods" accesskey="u" rel="up">Select Methods</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Other-Sources-1"></a>
 <h3 class="section">7.6 Other Sources</h3>
@@ -20826,31 +20858,152 @@ methods, but want to only use secondary ones:
 
 
 <hr>
-<a name="Combined-Groups"></a>
+<a name="Virtual-Groups"></a>
 <div class="header">
 <p>
 Next: <a href="#Email-Based-Diary" accesskey="n" rel="next">Email Based Diary</a>, Previous: <a href="#Other-Sources" accesskey="p" rel="prev">Other Sources</a>, Up: <a href="#Select-Methods" accesskey="u" rel="up">Select Methods</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Combined-Groups-1"></a>
-<h3 class="section">7.7 Combined Groups</h3>
+<a name="Virtual-Groups-1"></a>
+<h3 class="section">7.7 Virtual Groups</h3>
 
-<p>Gnus allows combining a mixture of all the other group types into bigger
-groups.
+<p>Gnus allows combining articles from many sources, and combinations of
+whole groups together into virtual groups.
 </p>
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="#Virtual-Groups" accesskey="1">Virtual Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining articles from many groups.
+<tr><td align="left" valign="top">&bull; <a href="#Selection-Groups" accesskey="1">Selection Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining articles from many groups.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Combined-Groups" accesskey="2">Combined Groups</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Combining  multiple  groups.
 </td></tr>
 </table>
 
 
 <hr>
-<a name="Virtual-Groups"></a>
+<a name="Selection-Groups"></a>
 <div class="header">
 <p>
-Up: <a href="#Combined-Groups" accesskey="u" rel="up">Combined Groups</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Combined-Groups" accesskey="n" rel="next">Combined Groups</a>, Up: <a href="#Virtual-Groups" accesskey="u" rel="up">Virtual Groups</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<a name="Virtual-Groups-1"></a>
-<h4 class="subsection">7.7.1 Virtual Groups</h4>
+<a name="Select-Groups"></a>
+<h4 class="subsection">7.7.1 Select Groups</h4>
+<a name="index-nnselect"></a>
+<a name="index-select-groups"></a>
+<a name="index-selecting-articles-1"></a>
+
+
+<p>Gnus provides the <em>nnselect</em> method for creating virtual groups
+composed of collections of messages, even when these messages come
+from groups that span multiple servers and backends. For the most part
+these virtual groups behave like any other group: messages may be
+threaded, marked, moved, deleted, copied, etc.; groups may be
+ephemeral or persistent; groups may be created via
+<code>gnus-group-make-group</code> or browsed as foreign via
+<code>gnus-group-browse-foreign-server</code>.
+</p>
+<p>The key to using an nnselect group is specifying the messages to
+include. Each nnselect group has a group parameter
+<code>nnselect-specs</code> which is an alist with two elements: a function
+<code>nnselect-function</code>; and arguments <code>nnselect-args</code> to be
+passed to the function, if any.
+</p>
+<p>The function <code>nnselect-function</code> must return a vector. Each
+element of this vector is in turn a 3-element vector corresponding to
+one message. The 3 elements are: the fully-qualified group name; the
+message number; and a &quot;score&quot; that can be used for additional
+sorting. The values for the score are arbitrary, and are not used
+directly by the nnselect method&mdash;they may, for example, all be set to
+100.
+</p>
+<p>Here is an example:
+</p>
+<div class="lisp">
+<pre class="lisp"> (nnselect-specs
+  (nnselect-function . identity)
+  (nnselect-args .
+	 [[&quot;nnimap+work:mail&quot; 595 100]
+	  [&quot;nnimap+home:sent&quot; 223 100]
+          [&quot;nntp+news.gmane.org:gmane.emacs.gnus.general&quot; 23666 100]]))
+</pre></div>
+
+<p>The function is the identity and the argument is just the list of
+messages to include in the virtual group.
+</p>
+<p>Or we may wish to create a group from the results of a search query:
+</p>
+<div class="lisp">
+<pre class="lisp"> (nnselect-specs
+  (nnselect-function . nnir-run-query)
+  (nnselect-args
+   (nnir-query-spec
+    (query . &quot;FLAGGED&quot;)
+    (criteria . &quot;&quot;))
+   (nnir-group-spec
+    (&quot;nnimap:home&quot;)
+    (&quot;nnimap:work&quot;))))
+</pre></div>
+
+<p>This creates a group including all flagged messages from all groups on
+two imap servers, &quot;home&quot; and &quot;work&quot;.
+</p>
+<p>And one last example. Here is a function that runs a search query to
+find all message that have been received recently from certain groups:
+</p>
+<div class="lisp">
+<pre class="lisp">(defun my-recent-email (args)
+  (let ((query-spec
+         (list
+          (cons 'query
+                (format-time-string &quot;SENTSINCE %d-%b-%Y&quot;
+                                    (time-subtract (current-time)
+                                                   (days-to-time (car args)))))
+          (cons 'criteria &quot;&quot;)))
+        (group-spec  (cadr args)))
+    (nnir-run-query   (cons 'nnir-specs
+                            (list (cons 'nnir-query-spec query-spec)
+                                  (cons 'nnir-group-spec group-spec))))))
+</pre></div>
+
+<p>Then an nnselect-specs
+</p>
+<div class="lisp">
+<pre class="lisp"> (nnselect-specs
+  (nnselect-function . my-recent-email)
+  (nnselect-args . (7 ((&quot;nnimap:home&quot;) (&quot;nnimap:work&quot;)))))
+</pre></div>
+
+<p>will provide a group composed of all messages on the home and work
+servers received in the last 7 days.
+</p>
+<p>Refreshing the selection of an nnselect group by running the
+<code>nnselect-function</code> may take a long time to
+complete. Consequently nnselect groups are not refreshed by default
+when <code>gnus-group-get-new-news</code> is invoked. In those cases where
+running the function is not too time-consuming, a non-nil group
+parameter of <code>nnselect-rescan</code> will allow automatic refreshing. A
+refresh can always be invoked manually through
+<code>gnus-group-get-new-news-this-group</code>.
+</p>
+<p>The nnir interface (see <a href="#nnir">nnir</a>) includes engines for searching a
+variety of backends. While the details of each search engine vary, the
+result of an nnir search is always a vector of the sort used by the
+nnselect method, and the results of nnir queries are usually viewed
+using an nnselect group. Indeed the standard search function
+<code>gnus-group-read-ephemeral-search-group</code> just creates an
+ephemeral nnselect group with the appropriate nnir query as the
+<code>nnselect-specs</code>.  nnir originally included both the search
+engines and the glue to connect search results to gnus. Over time this
+glue evolved into the nnselect method. The two had
+a mostly amicable parting so that nnselect could pursue its dream of
+becoming a fully functioning backend, but occasional conflicts may
+still linger.
+</p>
+<hr>
+<a name="Combined-Groups"></a>
+<div class="header">
+<p>
+Previous: <a href="#Selection-Groups" accesskey="p" rel="prev">Selection Groups</a>, Up: <a href="#Virtual-Groups" accesskey="u" rel="up">Virtual Groups</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Combined-Groups-1"></a>
+<h4 class="subsection">7.7.2 Combined Groups</h4>
 <a name="index-nnvirtual"></a>
 <a name="index-virtual-groups"></a>
 <a name="index-merging-groups"></a>
@@ -20939,7 +21092,7 @@ inherited.
 <a name="Email-Based-Diary"></a>
 <div class="header">
 <p>
-Next: <a href="#Gnus-Unplugged" accesskey="n" rel="next">Gnus Unplugged</a>, Previous: <a href="#Combined-Groups" accesskey="p" rel="prev">Combined Groups</a>, Up: <a href="#Select-Methods" accesskey="u" rel="up">Select Methods</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Gnus-Unplugged" accesskey="n" rel="next">Gnus Unplugged</a>, Previous: <a href="#Virtual-Groups" accesskey="p" rel="prev">Virtual Groups</a>, Up: <a href="#Select-Methods" accesskey="u" rel="up">Select Methods</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Email-Based-Diary-1"></a>
 <h3 class="section">7.8 Email Based Diary</h3>
@@ -24688,14 +24841,25 @@ Next: <a href="#Various" accesskey="n" rel="next">Various</a>, Previous: <a href
 <h2 class="chapter">9 Searching</h2>
 <a name="index-searching"></a>
 
-<p>FIXME: Add a brief overview of Gnus search capabilities.  A brief
-comparison of nnir, nnmairix, contrib/gnus-namazu would be nice
-as well.
+<p>FIXME: A brief comparison of nnir, nnmairix, contrib/gnus-namazu would
+be nice.
 </p>
-<p>This chapter describes tools for searching groups and servers for
-articles matching a query and then retrieving those articles.  Gnus
-provides a simpler mechanism for searching through articles in a summary buffer
-to find those matching a pattern. See <a href="#Searching-for-Articles">Searching for Articles</a>.
+<p>Gnus has various ways of finding articles that match certain criteria
+(from a particular author, on a certain subject, etc). The simplest
+method is to enter a group and then either &quot;limit&quot; the summary buffer
+to the desired articles using the limiting commands (See <a href="#Limiting">Limiting</a>),
+or searching through messages in the summary buffer (See <a href="#Searching-for-Articles">Searching for Articles</a>).
+</p>
+<p>Limiting commands and summary buffer searching work on subsets of the
+articles already fetched from the servers, and these commands won’t
+query the server for additional articles.  While simple, these methods
+are therefore inadequate if the desired articles span multiple groups,
+or if the group is so large that fetching all articles is
+impractical. Many backends (such as imap, notmuch, namazu, etc.)
+provide their own facilities to search for articles directly on the
+server and gnus can take advantage of these methods.  This chapter
+describes tools for searching groups and servers for articles matching
+a query.
 </p>
 <table class="menu" border="0" cellspacing="0">
 <tr><td align="left" valign="top">&bull; <a href="#nnir" accesskey="1">nnir</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Searching with various engines.
@@ -24742,7 +24906,7 @@ through mail and news repositories.  Different backends (like
 interface.
 </p>
 <p>The <code>nnimap</code> search engine should work with no configuration.
-Other engines require a local index that needs to be created and
+Other engines may require a local index that needs to be created and
 maintained outside of Gnus.
 </p>
 
@@ -24756,23 +24920,19 @@ Next: <a href="#Setting-up-nnir" accesskey="n" rel="next">Setting up nnir</a>, P
 <h4 class="subsection">9.1.2 Basic Usage</h4>
 
 <p>In the group buffer typing <kbd>G G</kbd> will search the group on the
-current line by calling <code>gnus-group-make-nnir-group</code>.  This prompts
-for a query string, creates an ephemeral <code>nnir</code> group containing
+current line by calling <code>gnus-group-make-search-group</code>.  This prompts
+for a query string, creates an ephemeral <code>nnselect</code> group containing
 the articles that match this query, and takes you to a summary buffer
 showing these articles.  Articles may then be read, moved and deleted
 using the usual commands.
 </p>
-<p>The <code>nnir</code> group made in this way is an <code>ephemeral</code> group,
-and some changes are not permanent: aside from reading, moving, and
-deleting, you can&rsquo;t act on the original article.  But there is an
-alternative: you can <em>warp</em> (i.e., jump) to the original group
-for the article on the current line with <kbd>A W</kbd>, aka
-<code>gnus-warp-to-article</code>.  Even better, the function
-<code>gnus-summary-refer-thread</code>, bound by default in summary buffers
-to <kbd>A T</kbd>, will first warp to the original group before it works
-its magic and includes all the articles in the thread.  From here you
-can read, move and delete articles, but also copy them, alter article
-marks, whatever.  Go nuts.
+<p>The <code>nnselect</code> group made in this way is an <code>ephemeral</code>
+group, and will disappear upon exit from the group.  However changes
+made in the group are permanently reflected in the real groups from
+which the articles are drawn.  It is occasionally convenient to view
+articles found through searching in their original group. You can
+<em>warp</em> (i.e., jump) to the original group for the article on the
+current line with <kbd>A W</kbd>, aka <code>gnus-warp-to-article</code>.
 </p>
 <p>You say you want to search more than just the group on the current line?
 No problem: just process-mark the groups you want to search.  You want
@@ -24780,14 +24940,14 @@ even more?  Calling for an nnir search with the cursor on a topic heading
 will search all the groups under that heading.
 </p>
 <p>Still not enough?  OK, in the server buffer
-<code>gnus-group-make-nnir-group</code> (now bound to <kbd>G</kbd>) will search all
-groups from the server on the current line.  Too much?  Want to ignore
-certain groups when searching, like spam groups?  Just customize
-<code>nnir-ignored-newsgroups</code>.
+<code>gnus-group-make-search-group</code> (now bound to <kbd>G</kbd>) will search
+all groups from the server on the current line.  Too much?  Want to
+ignore certain groups when searching, like spam groups?  Just
+customize <code>nnir-ignored-newsgroups</code>.
 </p>
 <p>One more thing: individual search engines may have special search
 features.  You can access these special features by giving a prefix-arg
-to <code>gnus-group-make-nnir-group</code>.  If you are searching multiple
+to <code>gnus-group-make-search-group</code>.  If you are searching multiple
 groups with different search engines you will be prompted for the
 special search features for each engine separately.
 </p>
@@ -24864,8 +25024,7 @@ variable is set to use the <code>imap</code> engine for all servers using the
 your servers with an <code>nnimap</code> backend you could change this to
 </p>
 <div class="lisp">
-<pre class="lisp">'((nnimap . namazu)
-  (nntp . gmane))
+<pre class="lisp">'((nnimap . namazu))
 </pre></div>
 
 <hr>
@@ -25119,7 +25278,7 @@ Previous: <a href="#The-hyrex-Engine" accesskey="p" rel="prev">The hyrex Engine<
 <dl compact="compact">
 <dt><code>nnir-method-default-engines</code></dt>
 <dd><p>Alist of pairs of server backends and search engines.  The default
-associations are
+association is
 </p><div class="example">
 <pre class="example">(nnimap . imap)
 </pre></div>
@@ -25129,34 +25288,6 @@ associations are
 <dd><p>A regexp to match newsgroups in the active file that should be skipped
 when searching all groups on a server.
 </p>
-</dd>
-<dt><code>nnir-summary-line-format</code></dt>
-<dd><p>The format specification to be used for lines in an nnir summary buffer.
-All the items from <code>gnus-summary-line-format</code> are available, along with
-three items unique to nnir summary buffers:
-</p>
-<div class="example">
-<pre class="example">%Z    Search retrieval score value (integer)
-%G    Article original full group name (string)
-%g    Article original short group name (string)
-</pre></div>
-
-<p>If <code>nil</code> (the default) this will use <code>gnus-summary-line-format</code>.
-</p>
-</dd>
-<dt><code>nnir-retrieve-headers-override-function</code></dt>
-<dd><p>If non-<code>nil</code>, a function that retrieves article headers rather than using
-the gnus built-in function.  This function takes an article list and
-group as arguments and populates the <code>nntp-server-buffer</code> with the
-retrieved headers.  It should then return either &rsquo;nov or &rsquo;headers
-indicating the retrieved header format.  Failure to retrieve headers
-should return <code>nil</code>.
-</p>
-<p>If this variable is <code>nil</code>, or if the provided function returns
-<code>nil</code> for a search result, <code>gnus-retrieve-headers</code> will be
-called instead.&quot;
-</p>
-
 </dd>
 </dl>
 
@@ -39824,6 +39955,8 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-gnus_002drefer_002darticle_002dmethod"><code>gnus-refer-article-method</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-the-Parent">Finding the Parent</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002drefer_002darticle_002dmethod-1"><code>gnus-refer-article-method</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Registry-Article-Refer-Method">Registry Article Refer Method</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002drefer_002dthread_002dlimit"><code>gnus-refer-thread-limit</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-the-Parent">Finding the Parent</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-gnus_002drefer_002dthread_002dlimit_002dto_002dthread"><code>gnus-refer-thread-limit-to-thread</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-the-Parent">Finding the Parent</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-gnus_002drefer_002dthread_002duse_002dsearch"><code>gnus-refer-thread-use-search</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-the-Parent">Finding the Parent</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002dregistry_002dcache_002dfile"><code>gnus-registry-cache-file</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Gnus-Registry-Setup">Gnus Registry Setup</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002dregistry_002ddefault_002dsort_002dfunction"><code>gnus-registry-default-sort-function</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Gnus-Registry-Setup">Gnus Registry Setup</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002dregistry_002dextra_002dentries_002dprecious"><code>gnus-registry-extra-entries-precious</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Store-arbitrary-data">Store arbitrary data</a></td></tr>
@@ -40597,7 +40730,7 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-mbox">mbox</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Document-Groups">Document Groups</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-mbox-folders">mbox folders</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Mail-Folders">Mail Folders</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-menus">menus</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Highlighting-and-Menus">Highlighting and Menus</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-merging-groups">merging groups</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Virtual-Groups">Virtual Groups</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-merging-groups">merging groups</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Combined-Groups">Combined Groups</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-message">message</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Terminology">Terminology</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-Message_002dID">Message-ID</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-the-Parent">Finding the Parent</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-message_002dmail_002dp"><code>message-mail-p</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Posting-Styles">Posting Styles</a></td></tr>
@@ -40816,6 +40949,7 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-nnrss_002dopml_002dexport"><code>nnrss-opml-export</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#RSS">RSS</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nnrss_002dopml_002dimport"><code>nnrss-opml-import</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#RSS">RSS</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nnrss_002duse_002dlocal"><code>nnrss-use-local</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#RSS">RSS</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-nnselect">nnselect</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Selection-Groups">Selection Groups</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nnspool">nnspool</a>:</td><td>&nbsp;</td><td valign="top"><a href="#News-Spool">News Spool</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nnspool_002dactive_002dfile"><code>nnspool-active-file</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#News-Spool">News Spool</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nnspool_002dactive_002dtimes_002dfile"><code>nnspool-active-times-file</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#News-Spool">News Spool</a></td></tr>
@@ -40878,8 +41012,8 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-nntp_002dxover_002dcommands"><code>nntp-xover-commands</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#NNTP">NNTP</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nntp_002dxref_002dnumber_002dis_002devil"><code>nntp-xref-number-is-evil</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#NNTP">NNTP</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-NNTPSERVER">NNTPSERVER</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-the-News">Finding the News</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-nnvirtual">nnvirtual</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Virtual-Groups">Virtual Groups</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-nnvirtual_002dalways_002drescan"><code>nnvirtual-always-rescan</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Virtual-Groups">Virtual Groups</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-nnvirtual">nnvirtual</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Combined-Groups">Combined Groups</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-nnvirtual_002dalways_002drescan"><code>nnvirtual-always-rescan</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Combined-Groups">Combined Groups</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nnweb">nnweb</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Foreign-Groups">Foreign Groups</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nnweb-1">nnweb</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Web-Searches">Web Searches</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-nnweb_002dmax_002dhits"><code>nnweb-max-hits</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Web-Searches">Web Searches</a></td></tr>
@@ -40997,9 +41131,11 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-searching-the-Usenet">searching the Usenet</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Web-Searches">Web Searches</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-secondary">secondary</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Terminology">Terminology</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-sed">sed</a>:</td><td>&nbsp;</td><td valign="top"><a href="#News-Spool">News Spool</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-select-groups">select groups</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Selection-Groups">Selection Groups</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-select-method">select method</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Terminology">Terminology</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-select-methods">select methods</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Select-Methods">Select Methods</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-selecting-articles">selecting articles</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Choosing-Articles">Choosing Articles</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-selecting-articles-1">selecting articles</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Selection-Groups">Selection Groups</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-send-delayed">send delayed</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Delayed-Articles">Delayed Articles</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-sending-mail">sending mail</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Composing-Messages">Composing Messages</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-sent-messages">sent messages</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Archived-Messages">Archived Messages</a></td></tr>
@@ -41235,7 +41371,7 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-viewing-attachments">viewing attachments</a>:</td><td>&nbsp;</td><td valign="top"><a href="#MIME-Commands">MIME Commands</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-viewing-files">viewing files</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Viewing-Files">Viewing Files</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-Vipul_0027s-Razor">Vipul&rsquo;s Razor</a>:</td><td>&nbsp;</td><td valign="top"><a href="#SpamAssassin">SpamAssassin</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-virtual-groups">virtual groups</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Virtual-Groups">Virtual Groups</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-virtual-groups">virtual groups</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Combined-Groups">Combined Groups</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-virtual-server">virtual server</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Terminology">Terminology</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-visible">visible</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Group-Parameters">Group Parameters</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-visible-group-parameter">visible group parameter</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Listing-Groups">Listing Groups</a></td></tr>
