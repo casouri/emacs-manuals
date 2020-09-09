@@ -899,16 +899,17 @@ result can be any valid D-Bus value, or <code>nil</code> if there is no
 </dd></dl>
 
 <dl>
-<dt><a name="index-dbus_002dset_002dproperty"></a>Function: <strong>dbus-set-property</strong> <em>bus service path interface property value</em></dt>
+<dt><a name="index-dbus_002dset_002dproperty"></a>Function: <strong>dbus-set-property</strong> <em>bus service path interface property [type] value</em></dt>
 <dd><p>This function sets the value of <var>property</var> of <var>interface</var> to
 <var>value</var>.  It will be checked at <var>bus</var>, <var>service</var>,
-<var>path</var>.  When the value is successfully set, this function returns
-<var>value</var>.  Otherwise, it returns <code>nil</code>.  Example:
+<var>path</var>.  <var>value</var> can be preceded by a <var>type</var> symbol.  When
+the value is successfully set, this function returns <var>value</var>.
+Otherwise, it returns <code>nil</code>.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-set-property
  :session &quot;org.kde.kaccess&quot; &quot;/MainApplication&quot;
- &quot;com.trolltech.Qt.QApplication&quot; &quot;doubleClickInterval&quot; 500)
+ &quot;com.trolltech.Qt.QApplication&quot; &quot;doubleClickInterval&quot; :uint16 500)
 
 &rArr; 500
 </pre></div>
@@ -1775,7 +1776,7 @@ could be changed like this:
 </dd></dl>
 
 <dl>
-<dt><a name="index-dbus_002dregister_002dproperty"></a>Function: <strong>dbus-register-property</strong> <em>bus service path interface property access value &amp;optional emits-signal dont-register-service</em></dt>
+<dt><a name="index-dbus_002dregister_002dproperty"></a>Function: <strong>dbus-register-property</strong> <em>bus service path interface property access [type] value &amp;optional emits-signal dont-register-service</em></dt>
 <dd><p>With this function, an application declares a <var>property</var> on the D-Bus
 <var>bus</var>.
 </p>
@@ -1793,9 +1794,11 @@ discussion of <var>dont-register-service</var> below).
 </p>
 <p><var>access</var> indicates, whether the property can be changed by other
 services via D-Bus.  It must be either the symbol <code>:read</code>,
-<code>:write</code> or <code>:readwrite</code>.  <var>value</var> is the initial value
-of the property, it can be of any valid type (See <a href="#dbus_002dcall_002dmethod">dbus-call-method</a>,
-for details).
+<code>:write</code> or <code>:readwrite</code>.
+</p>
+<p><var>value</var> is the initial value of the property, it can be of any
+valid type (See <a href="#dbus_002dcall_002dmethod">dbus-call-method</a>, for details).  <var>value</var> can be
+preceded by a <var>type</var> symbol.
 </p>
 <p>If <var>property</var> already exists on <var>path</var>, it will be
 overwritten.  For properties with access type <code>:read</code> this is the

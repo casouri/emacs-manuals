@@ -23697,6 +23697,24 @@ this will match articles that were posted when it was April 1st where
 the article was posted from.  Time zones are such wholesome fun for the
 whole family, eh?)
 </p>
+<p>Finally, two actually useful match types for dates: <code>&lt;</code> and
+<code>&gt;</code>.  These will allow scoring on the relative age (in days) of
+the articles.  Here&rsquo;s an example score file using the method:
+</p>
+<div class="example">
+<pre class="example">((&quot;date&quot;
+  (7 10 nil &lt;)
+  (7 -10 nil &gt;)
+  (14 -10 nil &gt;)))
+</pre></div>
+
+<p>This results in articles less than a week old getting a 10 point
+increase, articles older than a week getting a 10 point decrease, and
+articles older than two weeks getting a cumulative 20 point decrease.
+</p>
+<p>The day can also be a floating point number: To score articles less
+than an hour old, you can say &lsquo;<samp>(0.04 10 nil &lt;)</samp>&rsquo;.
+</p>
 </dd>
 <dt><em>Head, Body, All</em></dt>
 <dd><p>These three match keys use the same match types as the <code>From</code> (etc.)
