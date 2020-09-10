@@ -481,7 +481,6 @@ ul.no-bullet {list-style: none}
       <li><a name="toc-Formatting-Fonts-1" href="#Formatting-Fonts">10.4.5 Formatting Fonts</a></li>
       <li><a name="toc-Positioning-Point-1" href="#Positioning-Point">10.4.6 Positioning Point</a></li>
       <li><a name="toc-Tabulation-1" href="#Tabulation">10.4.7 Tabulation</a></li>
-      <li><a name="toc-Wide-Characters-1" href="#Wide-Characters">10.4.8 Wide Characters</a></li>
     </ul></li>
     <li><a name="toc-Window-Layout-1" href="#Window-Layout">10.5 Window Layout</a>
     <ul class="no-bullet">
@@ -1424,8 +1423,6 @@ Formatting Variables
 <tr><td align="left" valign="top">&bull; <a href="#Positioning-Point">Positioning Point</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Moving point to a position after an operation.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Tabulation">Tabulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Tabulating your output.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Wide-Characters">Wide Characters</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Dealing with wide characters.
 </td></tr>
 <tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
 
@@ -24936,19 +24933,29 @@ Next: <a href="#Setting-up-nnir" accesskey="n" rel="next">Setting up nnir</a>, P
 <h4 class="subsection">9.1.2 Basic Usage</h4>
 
 <p>In the group buffer typing <kbd>G G</kbd> will search the group on the
-current line by calling <code>gnus-group-make-search-group</code>.  This prompts
-for a query string, creates an ephemeral <code>nnselect</code> group containing
-the articles that match this query, and takes you to a summary buffer
-showing these articles.  Articles may then be read, moved and deleted
-using the usual commands.
+current line by calling <code>gnus-group-read-ephemeral-search-group</code>.
+This prompts for a query string, creates an ephemeral <code>nnselect</code>
+group containing the articles that match this query, and takes you to
+a summary buffer showing these articles.   Articles may then be read,
+moved and deleted using the usual commands.
 </p>
-<p>The <code>nnselect</code> group made in this way is an <code>ephemeral</code>
-group, and will disappear upon exit from the group.  However changes
-made in the group are permanently reflected in the real groups from
-which the articles are drawn.  It is occasionally convenient to view
-articles found through searching in their original group.  You can
-<em>warp</em> (i.e., jump) to the original group for the article on the
-current line with <kbd>A W</kbd>, aka <code>gnus-warp-to-article</code>.
+<p>The <code>nnselect</code> group made in this way is <code>ephemeral</code>: it
+will disappear upon exit from the group.  However changes made in the
+group are permanently reflected in the real groups from which the
+articles are drawn.  If you want to create a <em>persistent</em> group
+that sticks around after exit from the summary buffer, you can call
+<code>gnus-group-make-search-group</code> (bound to <kbd>G g</kbd>).
+</p>
+<p>So you just performed a search whose results are so fabulous you
+wished you had done a persistent search rather than an ephemeral one?
+No problem; you can create such a group by calling
+<code>gnus-summary-make-group-from-search</code> (bound to <kbd>C-c C-p</kbd>)
+from the ephemeral summary buffer.
+</p>
+<p>It is occasionally convenient to view articles found through searching
+in their original group.  You can <em>warp</em> (i.e., jump) to the
+original group for the article on the current line with <kbd>A W</kbd>, aka
+<code>gnus-warp-to-article</code>.
 </p>
 <p>You say you want to search more than just the group on the current line?
 No problem: just process-mark the groups you want to search.  You want
@@ -24956,16 +24963,17 @@ even more?  Calling for an nnir search with the cursor on a topic heading
 will search all the groups under that heading.
 </p>
 <p>Still not enough?  OK, in the server buffer
-<code>gnus-group-make-search-group</code> (now bound to <kbd>G</kbd>) will search
-all groups from the server on the current line.  Too much?  Want to
-ignore certain groups when searching, like spam groups?  Just
+<code>gnus-group-read-ephemeral-search-group</code> (now bound to <kbd>G</kbd>)
+will search all groups from the server on the current line.  Too much?
+Want to ignore certain groups when searching, like spam groups?  Just
 customize <code>nnir-ignored-newsgroups</code>.
 </p>
 <p>One more thing: individual search engines may have special search
-features.  You can access these special features by giving a prefix-arg
-to <code>gnus-group-make-search-group</code>.  If you are searching multiple
-groups with different search engines you will be prompted for the
-special search features for each engine separately.
+features.  You can access these special features by giving a
+prefix-arg to <code>gnus-group-read-ephemeral-search-group</code>.  If you
+are searching multiple groups with different search engines you will
+be prompted for the special search features for each engine
+separately.
 </p>
 
 <hr>
@@ -26289,8 +26297,6 @@ lots of percentages everywhere.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Tabulation" accesskey="7">Tabulation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Tabulating your output.
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="#Wide-Characters" accesskey="8">Wide Characters</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Dealing with wide characters.
-</td></tr>
 </table>
 
 <p>Currently Gnus uses the following formatting variables:
@@ -26569,7 +26575,7 @@ place point there.
 <a name="Tabulation"></a>
 <div class="header">
 <p>
-Next: <a href="#Wide-Characters" accesskey="n" rel="next">Wide Characters</a>, Previous: <a href="#Positioning-Point" accesskey="p" rel="prev">Positioning Point</a>, Up: <a href="#Formatting-Variables" accesskey="u" rel="up">Formatting Variables</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="#Positioning-Point" accesskey="p" rel="prev">Positioning Point</a>, Up: <a href="#Formatting-Variables" accesskey="u" rel="up">Formatting Variables</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Tabulation-1"></a>
 <h4 class="subsection">10.4.7 Tabulation</h4>
@@ -26589,29 +26595,6 @@ This is the soft tabulator.
 <p>&lsquo;<samp>%-50=</samp>&rsquo; will insert space characters to pad the line up to column
 50.  If the text is already past column 50, the excess text past column
 50 will be removed.  This is the hard tabulator.
-</p>
-
-<hr>
-<a name="Wide-Characters"></a>
-<div class="header">
-<p>
-Previous: <a href="#Tabulation" accesskey="p" rel="prev">Tabulation</a>, Up: <a href="#Formatting-Variables" accesskey="u" rel="up">Formatting Variables</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<a name="Wide-Characters-1"></a>
-<h4 class="subsection">10.4.8 Wide Characters</h4>
-
-<p>Fixed width fonts in most countries have characters of the same width.
-Some countries, however, use Latin characters mixed with wider
-characters&mdash;most notable East Asian countries.
-</p>
-<p>The problem is that when formatting, Gnus assumes that if a string is 10
-characters wide, it&rsquo;ll be 10 Latin characters wide on the screen.  In
-these countries, that&rsquo;s not true.
-</p>
-<a name="index-gnus_002duse_002dcorrect_002dstring_002dwidths"></a>
-<p>To help fix this, you can set <code>gnus-use-correct-string-widths</code> to
-<code>t</code>.  This makes buffer generation slower, but the results will be
-prettier.  The default value is <code>nil</code>.
 </p>
 
 <hr>
@@ -40505,7 +40488,6 @@ Next: <a href="#Key-Index" accesskey="n" rel="next">Key Index</a>, Previous: <a 
 <tr><td></td><td valign="top"><a href="#index-gnus_002duse_002darticle_002dprefetch"><code>gnus-use-article-prefetch</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Asynchronous-Fetching">Asynchronous Fetching</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002duse_002dbackend_002dmarks"><code>gnus-use-backend-marks</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Startup-Variables">Startup Variables</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002duse_002dcache"><code>gnus-use-cache</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Article-Caching">Article Caching</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-gnus_002duse_002dcorrect_002dstring_002dwidths"><code>gnus-use-correct-string-widths</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Wide-Characters">Wide Characters</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002duse_002dcross_002dreference"><code>gnus-use-cross-reference</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Exiting-the-Summary-Buffer">Exiting the Summary Buffer</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002duse_002ddribble_002dfile"><code>gnus-use-dribble-file</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Auto-Save">Auto Save</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-gnus_002duse_002dfull_002dwindow"><code>gnus-use-full-window</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Window-Layout">Window Layout</a></td></tr>
