@@ -191,27 +191,46 @@ The <kbd>--module-assertions</kbd> command-line option can detect some
 violations of the above requirements.  See <a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Initial-Options.html#Initial-Options">Initial Options</a> in <cite>The GNU Emacs Manual</cite>.
 </p>
 <p>Using the module <acronym>API</acronym>, it is possible to define more complex
-function and data types: interactive functions, inline functions,
-macros, etc.  However, the resulting C code will be cumbersome and
-hard to read.  Therefore, we recommend that you limit the module code
-which creates functions and data structures to the absolute minimum,
-and leave the rest for a Lisp package that will accompany your module,
-because doing these additional tasks in Lisp is much easier, and will
-produce a much more readable code.  For example, given a module
-function <code>module-func</code> defined as above, one way of making an
-interactive command <code>module-cmd</code> based on it is with the
-following simple Lisp wrapper:
+function and data types: inline functions, macros, etc.  However, the
+resulting C code will be cumbersome and hard to read.  Therefore, we
+recommend that you limit the module code which creates functions and
+data structures to the absolute minimum, and leave the rest for a Lisp
+package that will accompany your module, because doing these
+additional tasks in Lisp is much easier, and will produce a much more
+readable code.  For example, given a module function
+<code>module-func</code> defined as above, one way of making a macro
+<code>module-macro</code> based on it is with the following simple Lisp
+wrapper:
 </p>
 <div class="lisp">
-<pre class="lisp">(defun module-cmd (&amp;rest args)
-  &quot;Documentation string for the command.&quot;
-  (interactive <var>spec</var>)
-  (apply 'module-func args))
+<pre class="lisp">(defmacro module-macro (&amp;rest args)
+  &quot;Documentation string for the macro.&quot;
+  (module-func args))
 </pre></div>
 
 <p>The Lisp package which goes with your module could then load the
 module using the <code>load</code> primitive (see <a href="Dynamic-Modules.html#Dynamic-Modules">Dynamic Modules</a>) when
 the package is loaded into Emacs.
+</p>
+<p>By default, module functions created by <code>make_function</code> are not
+interactive.  To make them interactive, you can use the following
+function.
+</p>
+<dl>
+<dt><a name="index-make_005finteractive"></a>Function: <em>void</em> <strong>make_interactive</strong> <em>(emacs_env *<var>env</var>, emacs_value <var>function</var>, emacs_value <var>spec</var>)</em></dt>
+<dd><p>This function, which is available since Emacs 28, makes the function
+<var>function</var> interactive using the interactive specification
+<var>spec</var>.  Emacs interprets <var>spec</var> like the argument to the
+<code>interactive</code> form.  <a href="Using-Interactive.html#Using-Interactive">Using Interactive</a>, and
+see <a href="Interactive-Codes.html#Interactive-Codes">Interactive Codes</a>.  <var>function</var> must be an Emacs module
+function returned by <code>make_function</code>.
+</p></dd></dl>
+
+<p>Note that there is no native module support for retrieving the
+interactive specification of a module function.  Use the function
+<code>interactive-form</code> for that.  <a href="Using-Interactive.html#Using-Interactive">Using Interactive</a>.  It is not
+possible to make a module function non-interactive once you have made
+it interactive using <code>make_interactive</code>.
 </p>
 <a name="Module-Function-Finalizers"></a><p>If you want to run some code when a module function object (i.e., an
 object returned by <code>make_function</code>) is garbage-collected, you can
