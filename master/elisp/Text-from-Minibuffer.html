@@ -271,8 +271,22 @@ and <code>read-string</code> strip all text properties from the minibuffer
 input before returning it.  However,
 <code>read-no-blanks-input</code> (see below), as well as
 <code>read-minibuffer</code> and related functions (see <a href="Object-from-Minibuffer.html#Object-from-Minibuffer">Reading Lisp Objects With the Minibuffer</a>), and all
-functions that do minibuffer input with completion, discard text
-properties unconditionally, regardless of the value of this variable.
+functions that do minibuffer input with completion, remove the <code>face</code>
+property unconditionally, regardless of the value of this variable.
+</p>
+<p>If this variable is non-<code>nil</code>, most text properties on strings
+from the completion table are preserved&mdash;but only on the part of the
+strings that were completed.
+</p>
+<div class="lisp">
+<pre class="lisp">(let ((minibuffer-allow-text-properties t))
+  (completing-read &quot;String: &quot; (list (propertize &quot;foobar&quot; 'data 'zot))))
+=&gt; #(&quot;foobar&quot; 3 6 (data zot))
+</pre></div>
+
+<p>In this example, the user typed &lsquo;<samp>foo</samp>&rsquo; and then hit the <kbd>TAB</kbd>
+key, so the text properties are only preserved on the last three
+characters.
 </p></dd></dl>
 
 <dl>
