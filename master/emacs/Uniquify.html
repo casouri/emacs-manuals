@@ -110,6 +110,17 @@ forward order after the file name, as in &lsquo;<samp>file|top/middle</samp>&rsq
 <code>uniquify-buffer-name-style</code> is set to <code>nil</code>, the buffer
 names simply get &lsquo;<samp>&lt;2&gt;</samp>&rsquo;, &lsquo;<samp>&lt;3&gt;</samp>&rsquo;, etc. appended.
 </p>
+<p>The value of <code>uniquify-buffer-name-style</code> can be set to a
+customized function with two arguments <var>base</var> and
+<var>extra-strings</var> where <var>base</var> is a string and
+<var>extra-strings</var> is a list of strings.  For example the current
+implementation for <code>post-forward-angle-brackets</code> could be:
+</p>
+<div class="example">
+<pre class="example">(defun my-post-forward-angle-brackets (base extra-string)
+  (concat base \&quot;&lt;\&quot; (mapconcat #'identity extra-string \&quot;/\&quot;) \&quot;&gt;\&quot;))
+</pre></div>
+
 <p>Which rule to follow for putting the directory names in the buffer
 name is not very important if you are going to <em>look</em> at the
 buffer names before you type one.  But as an experienced user, if you
