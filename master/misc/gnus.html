@@ -23747,6 +23747,37 @@ key will lead to creation of <samp>ADAPT</samp> files.)
 
 <a name="index-score-file-atoms"></a>
 </dd>
+<dt><code>score-fn</code></dt>
+<dd><p>The value of this entry should be one or more user-defined function
+names in parentheses. Each function will be called in order and the
+returned value is required to be an integer.
+</p>
+<div class="example">
+<pre class="example">(score-fn (custom-scoring))
+</pre></div>
+
+<p>The user-defined function is called with an associative list with the
+keys <code>number subject from date id refs chars lines xref extra</code>
+followed by the article&rsquo;s score before the function is run.
+</p>
+<p>The following (somewhat contrived) example shows how to use a
+user-defined function that increases an article&rsquo;s score by 10 if the
+year of the article&rsquo;s date is also mentioned in its subject.
+</p>
+<div class="example">
+<pre class="example">(defun custom-scoring (article-alist score)
+  (let ((subject (cdr (assoc 'subject article-alist)))
+        (date (cdr (assoc 'date article-alist))))
+    (if (string-match (number-to-string
+                       (nth 5 (parse-time-string date)))
+                      subject)
+        10)))
+</pre></div>
+
+<p><code>score-fn</code> entries are permanent and can only be added or
+modified directly in the <code>SCORE</code> file.
+</p>
+</dd>
 <dt><code>mark</code></dt>
 <dd><p>The value of this entry should be a number.  Any articles with a score
 lower than this number will be marked as read.
