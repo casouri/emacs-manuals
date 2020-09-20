@@ -76,6 +76,7 @@ Next: <a href="Auto-Revert.html#Auto-Revert" accesskey="n" rel="next">Auto Rever
 <a name="Reverting-a-Buffer"></a>
 <h3 class="section">18.4 Reverting a Buffer</h3>
 <a name="index-revert_002dbuffer"></a>
+<a name="index-revert_002dbuffer_002dwith_002dfine_002dgrain"></a>
 <a name="index-drastic-changes"></a>
 <a name="index-reread-a-file"></a>
 
@@ -95,6 +96,19 @@ reverted changes as a single modification to the buffer&rsquo;s undo history
 (see <a href="Undo.html#Undo">Undo</a>).  Thus, after reverting, you can type <kbd>C-/</kbd> or its
 aliases to bring the reverted changes back, if you happen to change
 your mind.
+</p>
+<a name="index-revert_002dbuffer_002dwith_002dfine_002dgrain_002dmax_002dseconds"></a>
+<p>To revert a buffer more conservatively, you can use the command
+<code>revert-buffer-with-fine-grain</code>.  This command acts like
+<code>revert-buffer</code>, but it tries to be as non-destructive as
+possible, making an effort to preserve all markers, properties and
+overlays in the buffer.  Since reverting this way can be very slow
+when you have made a large number of changes, you can modify the
+variable <code>revert-buffer-with-fine-grain-max-seconds</code> to
+specify a maximum amount of seconds that replacing the buffer
+contents this way should take.  Note that it is not ensured that the
+whole execution of <code>revert-buffer-with-fine-grain</code> won&rsquo;t take
+longer than this.
 </p>
 <p>Some kinds of buffers that are not associated with files, such as
 Dired buffers, can also be reverted.  For them, reverting means
