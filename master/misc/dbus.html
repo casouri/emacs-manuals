@@ -886,8 +886,8 @@ of the list returned by <code>dbus-introspect-get-property-names</code>.
 <dt><a name="index-dbus_002dget_002dproperty"></a>Function: <strong>dbus-get-property</strong> <em>bus service path interface property</em></dt>
 <dd><p>This function returns the value of <var>property</var> of <var>interface</var>.
 It will be checked at <var>bus</var>, <var>service</var>, <var>path</var>.  The
-result can be any valid D-Bus value, or <code>nil</code> if there is no
-<var>property</var>.  Example:
+result can be any valid D-Bus value.  If there is no <var>property</var>,
+or <var>property</var> cannot be read, an error is raised.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-get-property
@@ -904,7 +904,7 @@ result can be any valid D-Bus value, or <code>nil</code> if there is no
 <var>value</var>.  It will be checked at <var>bus</var>, <var>service</var>,
 <var>path</var>.  <var>value</var> can be preceded by a <var>type</var> symbol.  When
 the value is successfully set, this function returns <var>value</var>.
-Otherwise, it returns <code>nil</code>.  Example:
+Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-set-property
@@ -917,10 +917,11 @@ Otherwise, it returns <code>nil</code>.  Example:
 
 <dl>
 <dt><a name="index-dbus_002dget_002dall_002dproperties"></a>Function: <strong>dbus-get-all-properties</strong> <em>bus service path interface</em></dt>
-<dd><p>This function returns all properties of <var>interface</var>.  It will be
-checked at <var>bus</var>, <var>service</var>, <var>path</var>.  The result is a list
-of cons.  Every cons contains the name of the property, and its value.
-If there are no properties, <code>nil</code> is returned.  Example:
+<dd><p>This function returns all readable properties of <var>interface</var>.  It
+will be checked at <var>bus</var>, <var>service</var>, <var>path</var>.  The result
+is a list of cons cells.  Every cons cell contains the name of the
+property, and its value.  If there are no properties, <code>nil</code> is
+returned.  Example:
 </p>
 <div class="lisp">
 <pre class="lisp">(dbus-get-all-properties
@@ -939,9 +940,9 @@ If there are no properties, <code>nil</code> is returned.  Example:
 <dt><a name="index-dbus_002dget_002dall_002dmanaged_002dobjects"></a>Function: <strong>dbus-get-all-managed-objects</strong> <em>bus service path</em></dt>
 <dd><p>This function returns all objects at <var>bus</var>, <var>service</var>,
 <var>path</var>, and the children of <var>path</var>.  The result is a list of
-objects.  Every object is a cons of an existing path name, and the
-list of available interface objects.  An interface object is another
-cons, whose car is the interface name and cdr is the list of
+objects.  Every object is a cons cell of an existing path name, and
+the list of available interface objects.  An interface object is
+another cons, whose car is the interface name and cdr is the list of
 properties as returned by <code>dbus-get-all-properties</code> for that path
 and interface.  Example:
 </p>
@@ -1207,6 +1208,12 @@ represented outside this range are stripped off.  For example,
 <code>:byte ?\C-x</code> or <code>:byte ?\M-\C-x</code>.  Signed and unsigned
 integer D-Bus types expect a corresponding integer value.
 </p>
+<p>All basic D-Bus types based on a number are truncated to their type
+range.  For example, <code>:byte 1025</code> is equal to <code>:byte 1</code>.
+</p>
+<p>If typed explicitly, a non-<code>nil</code> boolean value like
+<code>:boolean 'symbol</code> is handled like <code>t</code> or <code>:boolean t</code>.
+</p>
 <p>A D-Bus compound type is always represented as a list.  The <small>CAR</small>
 of this list can be the type symbol <code>:array</code>, <code>:variant</code>,
 <code>:struct</code> or <code>:dict-entry</code>, which would result in a
@@ -1246,7 +1253,7 @@ elements of this array.  Example:
  (format                       ; Body.
   &quot;This is a test notification, raised from\n%S&quot; (emacs-version))
  '(:array)                     ; No actions (empty array of strings).
- '(:array :signature &quot;{sv}&quot;) ; No hints
+ '(:array :signature &quot;{sv}&quot;)   ; No hints
                                ; (empty array of dictionary entries).
  :int32 -1)                    ; Default timeout.
 
@@ -2192,8 +2199,9 @@ appended to the <code>dbus-error</code>.
 <dl>
 <dt><a name="index-dbus_002dignore_002derrors"></a>Special Form: <strong>dbus-ignore-errors</strong> <em>forms&hellip;</em></dt>
 <dd><p>This executes <var>forms</var> exactly like a <code>progn</code>, except that
-<code>dbus-error</code> errors are ignored during the <var>forms</var>.  These
-errors can be made visible when <code>dbus-debug</code> is set to <code>t</code>.
+<code>dbus-error</code> errors are ignored during the <var>forms</var> (the macro
+returns <code>nil</code> then).  These errors can be made visible when
+<code>dbus-debug</code> is set to non-<code>nil</code>.
 </p></dd></dl>
 
 <p>Incoming D-Bus messages are handled as Emacs events, see <a href="http://www.gnu.org/software/emacs/manual/html_mono/elisp.html#Misc-Events">(elisp)Misc
@@ -2279,11 +2287,10 @@ is coming from.
 is coming from.  It is either a signal name or a method name.
 </p></dd></dl>
 
-<a name="index-dbus_002dshow_002ddbus_002derrors"></a>
-<p>D-Bus error messages are not propagated during event handling, because
-it is usually not desired.  D-Bus errors in events can be made visible
-by setting the user option <code>dbus-show-dbus-errors</code> to
-non-<code>nil</code>.  They can also be handled by a hook function.
+<p>D-Bus errors are not propagated during event handling, because it is
+usually not desired.  D-Bus errors in events can be made visible by
+setting the variable <code>dbus-debug</code> to non-<code>nil</code>.  They can
+also be handled by a hook function.
 </p>
 <dl>
 <dt><a name="index-dbus_002devent_002derror_002dfunctions"></a>Variable: <strong>dbus-event-error-functions</strong></dt>
@@ -2408,7 +2415,6 @@ Next: <a href="#GNU-Free-Documentation-License" accesskey="n" rel="next">GNU Fre
 <tr><td></td><td valign="top"><a href="#index-dbus_002dservice_002demacs"><code>dbus-service-emacs</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Register-Objects">Register Objects</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dset_002dproperty"><code>dbus-set-property</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Properties-and-Annotations">Properties and Annotations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dsetenv"><code>dbus-setenv</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Alternative-Buses">Alternative Buses</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-dbus_002dshow_002ddbus_002derrors"><code>dbus-show-dbus-errors</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dstring_002dto_002dbyte_002darray"><code>dbus-string-to-byte-array</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Type-Conversion">Type Conversion</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dunescape_002dfrom_002didentifier"><code>dbus-unescape-from-identifier</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Type-Conversion">Type Conversion</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dunregister_002dobject"><code>dbus-unregister-object</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Register-Objects">Register Objects</a></td></tr>
