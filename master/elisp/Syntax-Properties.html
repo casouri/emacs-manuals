@@ -123,6 +123,15 @@ position before <var>end</var>.  However, it should not call
 <code>syntax-ppss-flush-cache</code>; so, it is not allowed to call
 <code>syntax-ppss</code> on some position and later modify the buffer at an
 earlier position.
+</p>
+<p><strong>Caution:</strong> When this variable is non-<code>nil</code>, Emacs removes
+<code>syntax-table</code> text properties arbitrarily and relies on
+<code>syntax-propertize-function</code> to reapply them.  Thus if this
+facility is used at all, the function must apply <strong>all</strong>
+<code>syntax-table</code> text properties used by the major mode.  In
+particular, Modes derived from a CC Mode mode must not use this
+variable, since CC Mode uses other means to apply and remove these
+text properties.
 </p></dd></dl>
 
 <dl>
