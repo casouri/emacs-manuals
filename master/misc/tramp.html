@@ -1890,7 +1890,7 @@ support this command.
 <a name="Tunneling-with-ssh"></a>
 <h4 class="subsection">4.9.1 Tunneling with ssh</h4>
 
-<p>With ssh, you could use the <code>ProxyCommand</code> entry in
+<p>With <code>ssh</code>, you could use the <samp>ProxyCommand</samp> entry in
 <samp>~/.ssh/config</samp>:
 </p>
 <div class="example">
@@ -2080,8 +2080,8 @@ in such files, it can return host names only.
 <dt><code>tramp-parse-sconfig</code></dt>
 <dd><a name="index-tramp_002dparse_002dsconfig"></a>
 
-<p>This function returns the host nicknames defined by <code>Host</code> entries
-in <samp>~/.ssh/config</samp> style files.
+<p>This function returns the host nicknames defined by <samp>Host</samp>
+entries in <samp>~/.ssh/config</samp> style files.
 </p>
 </dd>
 <dt><code>tramp-parse-shostkeys</code></dt>
@@ -2579,10 +2579,10 @@ example below:
 </pre></div>
 
 <a name="index-password_002dword_002dequivalents"></a>
-<p>This variable is, by default, initialised from
+<p>This user option is, by default, initialised from
 <code>password-word-equivalents</code> when <small>TRAMP</small> is loaded, and it
-is usually more convenient to add new passphrases to that variable
-instead of altering this variable.
+is usually more convenient to add new passphrases to that user option
+instead of altering this user option.
 </p>
 <p>Similar localization may be necessary for handling wrong password
 prompts, for which <small>TRAMP</small> uses <code>tramp-wrong-passwd-regexp</code>.
@@ -3004,7 +3004,7 @@ encrypted files.
 </p>
 <dl>
 <dt><a name="index-tramp_002dcrypt_002dsave_002dencfs_002dconfig_002dremote"></a>User Option: <strong>tramp-crypt-save-encfs-config-remote</strong></dt>
-<dd><p>If this user option is non-nil (the default), the <samp>encfs</samp>
+<dd><p>If this user option is non-<code>nil</code> (the default), the <samp>encfs</samp>
 configuration file <samp>.encfs6.xml</samp> is also kept in the encrypted
 remote directory.  It depends on you, whether you regard the password
 protection of this file as sufficient.  The advantage would be, that
@@ -3486,7 +3486,7 @@ or a string describing the signal, when the process has been
 interrupted.  Since it cannot be determined reliably whether a remote
 process has been interrupted, <code>process-file</code> returns always the
 exit code.  When the user option
-<code>process-file-return-signal-string</code> is non-nil,
+<code>process-file-return-signal-string</code> is non-<code>nil</code>,
 <code>process-file</code> regards all exit codes greater than 128 as an
 indication that the process has been interrupted, and returns a
 respective string.
@@ -3606,8 +3606,8 @@ whatever reason, then replace <code>(getenv &quot;DISPLAY&quot;)</code> with a
 hard-coded, fixed name.  Note that using <code>:0</code> for X11 display name
 here will not work as expected.
 </p>
-<p>An alternate approach is specify <code>ForwardX11 yes</code> or
-<code>ForwardX11Trusted yes</code> in <samp>~/.ssh/config</samp> on the local
+<p>An alternate approach is specify <samp>ForwardX11 yes</samp> or
+<samp>ForwardX11Trusted yes</samp> in <samp>~/.ssh/config</samp> on the local
 host.
 </p>
 
@@ -3673,22 +3673,22 @@ continuous output.
 </p>
 <a name="index-shell_002dfile_002dname"></a>
 <a name="index-shell_002dcommand_002dswitch"></a>
-<p><code>shell-command</code> uses the variables <code>shell-file-name</code> and
-<code>shell-command-switch</code> in order to determine which shell to run.
-For remote hosts, their default values are <samp>/bin/sh</samp> and
-<samp>-c</samp>, respectively (except for the <samp>adb</samp> method, which
-uses <samp>/system/bin/sh</samp>).  Like the variables in the previous
-section, these variables can be changed via connection-local
-variables.
+<p><code>shell-command</code> uses the user option <code>shell-file-name</code> and
+the variable <code>shell-command-switch</code> in order to determine which
+shell to run.  For remote hosts, their default values are
+<samp>/bin/sh</samp> and <samp>-c</samp>, respectively (except for the
+<samp>adb</samp> method, which uses <samp>/system/bin/sh</samp>).  Like the
+variables in the previous section, these variables can be changed via
+connection-local variables.
 </p>
 <a name="index-async_002dshell_002dcommand_002dwidth"></a>
 <a name="index-COLUMNS_002c-environment-variable"></a>
-<p>If Emacs supports the variable <code>async-shell-command-width</code> (since
-Emacs&nbsp;27<!-- /@w -->), <small>TRAMP</small> cares about its value for asynchronous
-shell commands.  It specifies the number of display columns for
-command output.  For synchronous shell commands, a similar effect can
-be achieved by adding the environment variable <code>COLUMNS</code> to
-<code>tramp-remote-process-environment</code>.
+<p>If Emacs supports the user option <code>async-shell-command-width</code>
+(since Emacs&nbsp;27<!-- /@w -->), <small>TRAMP</small> cares about its value for
+asynchronous shell commands.  It specifies the number of display
+columns for command output.  For synchronous shell commands, a similar
+effect can be achieved by adding the environment variable
+<code>COLUMNS</code> to <code>tramp-remote-process-environment</code>.
 </p>
 
 <a name="Running-eshell-on-a-remote-host"></a>
@@ -3844,7 +3844,7 @@ classical implementation.
 </li><li> It does not support interactive user authentication.  With
 <samp>ssh</samp>-based methods, this can be avoided by using a password
 agent like <code>ssh-agent</code>, using public key authentication, or
-using <code>ControlMaster</code> options.
+using <samp>ControlMaster</samp> options.
 
 </li><li> It cannot be killed via <code>interrupt-process</code>.
 
@@ -3862,7 +3862,7 @@ using <code>ControlMaster</code> options.
 <code>tramp-verbose</code> to 0 when running <code>make-process</code> or
 <code>start-file-process</code>.  Furthermore, you might set
 <code>tramp-use-ssh-controlmaster-options</code> to <code>nil</code> in order to
-bypass <small>TRAMP</small>&rsquo;s handling of the <code>ControlMaster</code> options,
+bypass <small>TRAMP</small>&rsquo;s handling of the <samp>ControlMaster</samp> options,
 and use your own settings in <samp>~/.ssh/config</samp>.
 </p>
 
@@ -3954,8 +3954,8 @@ this match is offered as initial value for selection.
 prompted for modification in the minibuffer.  The buffers are marked
 modified, and must be saved explicitly.
 </p>
-<p>If user option <code>tramp-confirm-rename-file-names</code> is nil, changing
-the file name happens without confirmation.  This requires a
+<p>If user option <code>tramp-confirm-rename-file-names</code> is <code>nil</code>,
+changing the file name happens without confirmation.  This requires a
 matching entry in <code>tramp-default-rename-alist</code>.
 </p>
 <p>Remote buffers related to the remote connection identified by
@@ -3996,8 +3996,8 @@ Tramp infers by default, such as &lsquo;<samp>/method:user@host:</samp>&rsquo;).
 name of <code>source</code> when calling <code>tramp-rename-files</code>.
 </p>
 <p><code>source</code> could also be a Lisp form, which will be evaluated.  The
-result must be a string or nil, which is interpreted as a regular
-expression which always matches.
+result must be a string or <code>nil</code>, which is interpreted as a
+regular expression which always matches.
 </p>
 <p>Example entries:
 </p>
@@ -4553,17 +4553,17 @@ with the following command in the <samp>~/.ssh/config</samp>:
 </pre></div>
 
 
-</li><li> <small>TRAMP</small> does not use default <code>ssh</code> <code>ControlPath</code>
+</li><li> <small>TRAMP</small> does not use default <code>ssh</code> <samp>ControlPath</samp>
 
-<p><small>TRAMP</small> overwrites <code>ControlPath</code> settings when initiating
+<p><small>TRAMP</small> overwrites <samp>ControlPath</samp> settings when initiating
 <code>ssh</code> sessions.  <small>TRAMP</small> does this to fend off a stall
 if a master session opened outside the Emacs session is no longer
 open.  That is why <small>TRAMP</small> prompts for the password again even
 if there is an <code>ssh</code> already open.
 </p>
 <a name="index-tramp_002dssh_002dcontrolmaster_002doptions"></a>
-<p>Some <code>ssh</code> versions support a <code>ControlPersist</code> option,
-which allows you to set the <code>ControlPath</code> provided the variable
+<p>Some <code>ssh</code> versions support a <samp>ControlPersist</samp> option,
+which allows you to set the <samp>ControlPath</samp> provided the variable
 <code>tramp-ssh-controlmaster-options</code> is customized as follows:
 </p>
 <div class="lisp">
@@ -4586,11 +4586,15 @@ this <code>nil</code> setting:
 <pre class="lisp">(customize-set-variable 'tramp-use-ssh-controlmaster-options nil)
 </pre></div>
 
+<p>This shall also be set to <code>nil</code> if you use the
+<samp>ProxyCommand</samp> or <samp>ProxyJump</samp> options in your
+<code>ssh</code> configuration.
+</p>
 
 </li><li> On multi-hop connections, <small>TRAMP</small> does not use <code>ssh</code>
-<code>ControlMaster</code>
+<samp>ControlMaster</samp>
 
-<p>In order to use the <code>ControlMaster</code> option, <small>TRAMP</small> must
+<p>In order to use the <samp>ControlMaster</samp> option, <small>TRAMP</small> must
 check whether the <code>ssh</code> client supports this option.  This is
 only possible on the local host, for the first hop.  <small>TRAMP</small>
 does not use this option on proxy hosts.
@@ -4610,7 +4614,7 @@ supported on your proxy host.
 </p>
 
 </li><li> <small>TRAMP</small> does not connect to Samba or MS Windows hosts running
-SMB1 connection protocol.
+SMB1 connection protocol
 
 <a name="index-tramp_002dsmb_002doptions"></a>
 <p>Recent versions of <code>smbclient</code> do not support old connection
@@ -4810,7 +4814,7 @@ file <samp>~/.ssh/config</samp>:
 completion can further reduce key strokes: <kbd>C-x C-f
 /ssh:x <span class="key">TAB</span></kbd>.
 </p>
-</li><li> Use environment variables to expand long strings
+</li><li> Use environment variables to expand long strings:
 
 <p>For long file names, set up environment variables that are expanded in
 the minibuffer.  Environment variables are set either outside Emacs or
