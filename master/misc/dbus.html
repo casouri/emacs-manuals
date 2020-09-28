@@ -93,6 +93,7 @@ ul.no-bullet {list-style: none}
   <li><a name="toc-Sending-and-receiving-signals_002e" href="#Signals">7 Sending and receiving signals.</a></li>
   <li><a name="toc-Alternative-buses-and-environments_002e" href="#Alternative-Buses">8 Alternative buses and environments.</a></li>
   <li><a name="toc-Errors-and-events_002e" href="#Errors-and-Events">9 Errors and events.</a></li>
+  <li><a name="toc-Monitoring-events_002e" href="#Monitoring-Events">10 Monitoring events.</a></li>
   <li><a name="toc-Index-1" href="#Index">Index</a></li>
   <li><a name="toc-GNU-Free-Documentation-License-1" href="#GNU-Free-Documentation-License">Appendix A GNU Free Documentation License</a></li>
 </ul>
@@ -146,6 +147,8 @@ modify this GNU manual.&rdquo;
 <tr><td align="left" valign="top">&bull; <a href="#Alternative-Buses" accesskey="8">Alternative Buses</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Alternative buses and environments.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Errors-and-Events" accesskey="9">Errors and Events</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Errors and events.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Monitoring-Events">Monitoring Events</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Monitoring events.
 </td></tr>
 <tr><td align="left" valign="top">&bull; <a href="#Index">Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Index including concepts, functions, variables.
 </td></tr>
@@ -283,12 +286,13 @@ registered names.  Internally they use the basic interface
 <dl>
 <dt><a name="index-dbus_002dlist_002dactivatable_002dnames"></a>Function: <strong>dbus-list-activatable-names</strong> <em>&amp;optional bus</em></dt>
 <dd><p>This function returns the D-Bus service names, which can be activated
-for <var>bus</var>.  It must be either the symbol <code>:system</code> (the
-default) or the symbol <code>:session</code>.  An activatable service is
+for <var>bus</var>.  It must be either the keyword <code>:system</code> (the
+default) or the keyword <code>:session</code>.  An activatable service is
 described in a service registration file.  Under GNU/Linux, such files
 are located at <samp>/usr/share/dbus-1/system-services/</samp> (for the
 <code>:system</code> bus) or <samp>/usr/share/dbus-1/services/</samp>.  An
-activatable service is not necessarily registered at <var>bus</var> already.
+activatable service is not necessarily registered at <var>bus</var>
+already.
 </p>
 <p>The result is a list of strings, which is <code>nil</code> when there are no
 activatable service names at all.  Example:
@@ -308,7 +312,7 @@ there are no registered service names at all.  Well known names are
 strings like &lsquo;<samp>org.freedesktop.DBus</samp>&rsquo;.  Names starting with
 &lsquo;<samp>:</samp>&rsquo; are unique names for services.
 </p>
-<p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> must be either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p></dd></dl>
 
@@ -319,7 +323,7 @@ known name in <var>bus</var>.  A service has a known name if it doesn&rsquo;t
 start with &lsquo;<samp>:</samp>&rsquo;.  The result is a list of strings, which is
 <code>nil</code> when there are no known names at all.
 </p>
-<p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> must be either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p></dd></dl>
 
@@ -330,7 +334,7 @@ start with &lsquo;<samp>:</samp>&rsquo;.  The result is a list of strings, which
 result is a list of strings, or <code>nil</code> when there are no queued
 names for <var>service</var> at all.
 </p>
-<p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> must be either the keyword <code>:system</code> or the keyword
 <code>:session</code>.  <var>service</var> must be a known service name as
 string.
 </p></dd></dl>
@@ -342,7 +346,7 @@ string.
 owner.  The result is a string, or <code>nil</code> when there is no name
 owner of <var>service</var>.
 </p>
-<p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> must be either the keyword <code>:system</code> or the keyword
 <code>:session</code>.  <var>service</var> must be a known service name as
 string.
 </p></dd></dl>
@@ -354,7 +358,7 @@ registered at D-Bus <var>bus</var>.  If <var>service</var> has not yet started,
 it is autostarted if possible.  The result is either <code>t</code> or
 <code>nil</code>.
 </p>
-<p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> must be either the keyword <code>:system</code> or the keyword
 <code>:session</code>.  <var>service</var> must be a string.  <var>timeout</var>, a
 nonnegative integer, specifies the maximum number of milliseconds
 before <code>dbus-ping</code> must return.  The default value is 25,000.
@@ -382,7 +386,7 @@ it, you can instead write:
 <dd><a name="dbus_002dget_002dunique_002dname"></a><p>This function returns the unique name, under which Emacs is registered
 at D-Bus <var>bus</var>, as a string.
 </p>
-<p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> must be either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p></dd></dl>
 
@@ -506,7 +510,7 @@ must be strings.
 <dd><p>This function returns all interfaces and sub-nodes of <var>service</var>,
 registered at object path <var>path</var> at bus <var>bus</var>.
 </p>
-<p><var>bus</var> must be either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> must be either the keyword <code>:system</code> or the keyword
 <code>:session</code>.  <var>service</var> must be a known service name, and
 <var>path</var> must be a valid object path.  The last two parameters are
 strings.  The result, the introspection data, is a string in XML
@@ -902,8 +906,8 @@ or <var>property</var> cannot be read, an error is raised.  Example:
 <dt><a name="index-dbus_002dset_002dproperty"></a>Function: <strong>dbus-set-property</strong> <em>bus service path interface property [type] value</em></dt>
 <dd><p>This function sets the value of <var>property</var> of <var>interface</var> to
 <var>value</var>.  It will be checked at <var>bus</var>, <var>service</var>,
-<var>path</var>.  <var>value</var> can be preceded by a <var>type</var> symbol.  When
-the value is successfully set, this function returns <var>value</var>.
+<var>path</var>.  <var>value</var> can be preceded by a <var>type</var> keyword.
+When the value is successfully set, this function returns <var>value</var>.
 Example:
 </p>
 <div class="lisp">
@@ -1176,8 +1180,8 @@ applied, when the corresponding D-Bus message is created:
 input parameters.
 </p>
 <p>If it is necessary to use another D-Bus type, a corresponding type
-symbol can be prepended to the corresponding Lisp object.  Basic D-Bus
-types are represented by the type symbols <code>:byte</code>,
+keyword can be prepended to the corresponding Lisp object.  Basic
+D-Bus types are represented by the type keywords <code>:byte</code>,
 <code>:boolean</code>, <code>:int16</code>, <code>:uint16</code>, <code>:int32</code>,
 <code>:uint32</code>, <code>:int64</code>, <code>:uint64</code>, <code>:double</code>,
 <code>:string</code>, <code>:object-path</code>, <code>:signature</code> and
@@ -1216,7 +1220,7 @@ value.  A unix file descriptor is restricted to the values 0&hellip;9.
 <code>:boolean 'symbol</code> is handled like <code>t</code> or <code>:boolean t</code>.
 </p>
 <p>A D-Bus compound type is always represented as a list.  The <small>CAR</small>
-of this list can be the type symbol <code>:array</code>, <code>:variant</code>,
+of this list can be the type keyword <code>:array</code>, <code>:variant</code>,
 <code>:struct</code> or <code>:dict-entry</code>, which would result in a
 corresponding D-Bus container.  <code>:array</code> is optional, because
 this is the default compound D-Bus type for a list.
@@ -1402,7 +1406,7 @@ parameters from the object.
 <dl>
 <dt><a name="index-dbus_002dcall_002dmethod"></a>Function: <strong>dbus-call-method</strong> <em>bus service path interface method &amp;optional :timeout timeout &amp;rest args</em></dt>
 <dd><a name="dbus_002dcall_002dmethod"></a><p>This function calls <var>method</var> on the D-Bus <var>bus</var>.  <var>bus</var> is
-either the symbol <code>:system</code> or the symbol <code>:session</code>.
+either the keyword <code>:system</code> or the keyword <code>:session</code>.
 </p>
 <p><var>service</var> is the D-Bus service name to be used.  <var>path</var> is the
 D-Bus object path, <var>service</var> is registered at.  <var>interface</var> is
@@ -1501,8 +1505,8 @@ Next: <a href="#Register-Objects" accesskey="n" rel="next">Register Objects</a>,
 <dl>
 <dt><a name="index-dbus_002dcall_002dmethod_002dasynchronously"></a>Function: <strong>dbus-call-method-asynchronously</strong> <em>bus service path interface method handler &amp;optional :timeout timeout &amp;rest args</em></dt>
 <dd><p>This function calls <var>method</var> on the D-Bus <var>bus</var>
-asynchronously.  <var>bus</var> is either the symbol <code>:system</code> or the
-symbol <code>:session</code>.
+asynchronously.  <var>bus</var> is either the keyword <code>:system</code> or the
+keyword <code>:session</code>.
 </p>
 <p><var>service</var> is the D-Bus service name to be used.  <var>path</var> is the
 D-Bus object path, <var>service</var> is registered at.  <var>interface</var> is
@@ -1567,7 +1571,7 @@ the following functions:
 <dd><p>This function registers the known name <var>service</var> on D-Bus
 <var>bus</var>.
 </p>
-<p><var>bus</var> is either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> is either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p>
 <p><var>service</var> is the service name to be registered on the D-Bus.  It
@@ -1611,7 +1615,7 @@ queue.
 <dd><p>This function unregisters all objects from D-Bus <var>bus</var>, that were
 registered by Emacs for <var>service</var>.
 </p>
-<p><var>bus</var> is either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> is either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p>
 <p><var>service</var> is the D-Bus service name of the D-Bus.  It must be a
@@ -1665,7 +1669,7 @@ interface.
 <dd><p>With this function, an application registers <var>method</var> on the D-Bus
 <var>bus</var>.
 </p>
-<p><var>bus</var> is either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> is either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p>
 <p><var>service</var> is the D-Bus service name of the D-Bus object
@@ -1689,8 +1693,8 @@ cons cell, <var>handler</var> can return this object directly, instead of
 returning a list containing the object.
 </p>
 <p>If <var>handler</var> returns a reply message with an empty argument list,
-<var>handler</var> must return the symbol <code>:ignore</code> in order
-to distinguish it from <code>nil</code> (the boolean false).
+<var>handler</var> must return the keyword <code>:ignore</code> in order to
+distinguish it from <code>nil</code> (the boolean false).
 </p>
 <p>If <var>handler</var> detects an error, it shall return the list
 <code>(:error <var>error-name</var> <var>error-message</var>)</code>.
@@ -1793,7 +1797,7 @@ could be changed like this:
 <dd><p>With this function, an application declares a <var>property</var> on the D-Bus
 <var>bus</var>.
 </p>
-<p><var>bus</var> is either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> is either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p>
 <p><var>service</var> is the D-Bus service name of the D-Bus.  It must be a
@@ -1806,12 +1810,12 @@ discussion of <var>dont-register-service</var> below).
 <var>property</var> is the name of the property of <var>interface</var>.
 </p>
 <p><var>access</var> indicates, whether the property can be changed by other
-services via D-Bus.  It must be either the symbol <code>:read</code>,
+services via D-Bus.  It must be either the keyword <code>:read</code>,
 <code>:write</code> or <code>:readwrite</code>.
 </p>
 <p><var>value</var> is the initial value of the property, it can be of any
 valid type (See <a href="#dbus_002dcall_002dmethod">dbus-call-method</a>, for details).  <var>value</var> can be
-preceded by a <var>type</var> symbol.
+preceded by a <var>type</var> keyword.
 </p>
 <p>If <var>property</var> already exists on <var>path</var>, it will be
 overwritten.  For properties with access type <code>:read</code> this is the
@@ -1928,7 +1932,7 @@ received by all objects which have registered for such a signal.
 is, that there are no returning output parameters.
 </p>
 <p>The function emits <var>signal</var> on the D-Bus <var>bus</var>.  <var>bus</var> is
-either the symbol <code>:system</code> or the symbol <code>:session</code>.  It
+either the keyword <code>:system</code> or the keyword <code>:session</code>.  It
 doesn&rsquo;t matter whether another object has registered for <var>signal</var>.
 </p>
 <p>Signals can be unicast or broadcast messages.  For broadcast messages,
@@ -1955,7 +1959,7 @@ arguments.  They are converted into D-Bus types as described in
 <dd><p>With this function, an application registers for a signal on the D-Bus
 <var>bus</var>.
 </p>
-<p><var>bus</var> is either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> is either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p>
 <p><var>service</var> is the D-Bus service name used by the sending D-Bus
@@ -2064,7 +2068,7 @@ Next: <a href="#Errors-and-Events" accesskey="n" rel="next">Errors and Events</a
 which are the default buses to be connected to.  However, it is
 possible to connect to any bus with a known address.  This is a UNIX
 domain or TCP/IP socket.  Everywhere, where a <var>bus</var> is mentioned
-as argument of a function (the symbol <code>:system</code> or the symbol
+as argument of a function (the keyword <code>:system</code> or the keyword
 <code>:session</code>), this address can be used instead.  The connection to
 this bus must be initialized first.
 </p>
@@ -2072,11 +2076,10 @@ this bus must be initialized first.
 <dt><a name="index-dbus_002dinit_002dbus"></a>Function: <strong>dbus-init-bus</strong> <em>bus &amp;optional private</em></dt>
 <dd><p>This function establishes the connection to D-Bus <var>bus</var>.
 </p>
-<p><var>bus</var> can be either the symbol <code>:system</code> or the symbol
+<p><var>bus</var> can be either the keyword <code>:system</code> or the keyword
 <code>:session</code>, or it can be a string denoting the address of the
-corresponding bus.  For the system and session buses, this function
-is called when loading <samp>dbus.el</samp>, there is no need to call it
-again.
+corresponding bus.  For the system and session buses, this function is
+called when loading <samp>dbus.el</samp>, there is no need to call it again.
 </p>
 <p>The function returns the number of connections this Emacs session has
 established to the <var>bus</var> under the same unique name
@@ -2088,11 +2091,12 @@ established.
 </p>
 <p>When <var>private</var> is non-<code>nil</code>, a new connection is established
 instead of reusing an existing one.  It results in a new unique name
-at the bus.  This can be used, if it is necessary to distinguish from
-another connection used in the same Emacs process, like the one
-established by GTK+.  It should be used with care for at least the
-<code>:system</code> and <code>:session</code> buses, because other Emacs Lisp
-packages might already use this connection to those buses.
+at the <var>bus</var>.  This can be used, if it is necessary to distinguish
+from another connection used in the same Emacs process, like the one
+established by GTK+.  If <var>bus</var> is the keyword <code>:system</code> or
+the keyword <code>:session</code>, the new private connection is identified
+by the keywords <code>:system-private</code> or <code>:session-private</code>,
+respectively.
 </p>
 <p>Example: You initialize a connection to the AT-SPI bus on your host:
 </p>
@@ -2136,7 +2140,7 @@ is supported depends on the bus daemon configuration, however.
 <dd><p>This function sets the value of the <var>bus</var> environment
 <var>variable</var> to <var>value</var>.
 </p>
-<p><var>bus</var> is either a Lisp symbol, <code>:system</code> or <code>:session</code>,
+<p><var>bus</var> is either a Lisp keyword, <code>:system</code> or <code>:session</code>,
 or a string denoting the bus address.  Both <var>variable</var> and
 <var>value</var> should be strings.
 </p>
@@ -2171,7 +2175,7 @@ running.  This could be achieved by
 <a name="Errors-and-Events"></a>
 <div class="header">
 <p>
-Next: <a href="#Index" accesskey="n" rel="next">Index</a>, Previous: <a href="#Alternative-Buses" accesskey="p" rel="prev">Alternative Buses</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Monitoring-Events" accesskey="n" rel="next">Monitoring Events</a>, Previous: <a href="#Alternative-Buses" accesskey="p" rel="prev">Alternative Buses</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Errors-and-events_002e"></a>
 <h2 class="chapter">9 Errors and events.</h2>
@@ -2210,23 +2214,31 @@ Events</a>.  They are retrieved only, when Emacs runs in
 interactive mode.  The generated event has this form:
 </p>
 <div class="lisp">
-<pre class="lisp">(dbus-event <var>bus</var> <var>type</var> <var>serial</var> <var>service</var> <var>path</var> <var>interface</var> <var>member</var> <var>handler</var>
-        &amp;rest <var>args</var>)
+<pre class="lisp">(dbus-event <var>bus</var> <var>type</var> <var>serial</var> <var>service</var> <var>destination</var> <var>path</var> <var>interface</var> <var>member</var>
+            <var>handler</var> &amp;rest <var>args</var>)
 </pre></div>
 
 <p><var>bus</var> identifies the D-Bus the message is coming from.  It is
-either the symbol <code>:system</code> or the symbol <code>:session</code>.
+either a Lisp keyword, <code>:system</code>, <code>:session</code>,
+<code>:system-private</code> or <code>:session-private</code>, or a string
+denoting the bus address.
 </p>
 <p><var>type</var> is the D-Bus message type which has caused the event.  It
 can be <code>dbus-message-type-invalid</code>,
 <code>dbus-message-type-method-call</code>,
 <code>dbus-message-type-method-return</code>,
 <code>dbus-message-type-error</code>, or <code>dbus-message-type-signal</code>.
-<var>serial</var> is the serial number of the received D-Bus message.
+<var>serial</var> is the serial number of the received D-Bus message,
+unless <var>type</var> is equal <code>dbus-message-type-error</code>.
 </p>
 <p><var>service</var> and <var>path</var> are the unique name and the object path
-of the D-Bus object emitting the message.  <var>interface</var> and
-<var>member</var> denote the message which has been sent.
+of the D-Bus object emitting the message.  <var>destination</var> is the
+D-Bus name the message is dedicated to, or <code>nil</code> in case the
+message is a broadcast signal.
+</p>
+<p><var>interface</var> and <var>member</var> denote the message which has been
+sent.  When <var>type</var> is <code>dbus-message-type-error</code>, <var>member</var>
+is the error name.
 </p>
 <p><var>handler</var> is the callback function which has been registered for
 this message (see <a href="#Signals">Signals</a>).  <var>args</var> are the typed arguments as
@@ -2248,7 +2260,7 @@ callback function in order to retrieve the information from the event.
 <dl>
 <dt><a name="index-dbus_002devent_002dbus_002dname"></a>Function: <strong>dbus-event-bus-name</strong> <em>event</em></dt>
 <dd><p>This function returns the bus name <var>event</var> is coming from.  The
-result is either the symbol <code>:system</code> or the symbol
+result is either the keyword <code>:system</code> or the keyword
 <code>:session</code>.
 </p></dd></dl>
 
@@ -2271,6 +2283,12 @@ is coming from.
 </p></dd></dl>
 
 <dl>
+<dt><a name="index-dbus_002devent_002ddestination_002dname"></a>Function: <strong>dbus-event-destination-name</strong> <em>event</em></dt>
+<dd><p>This function returns the unique name of the D-Bus object <var>event</var>
+is dedicated to.
+</p></dd></dl>
+
+<dl>
 <dt><a name="index-dbus_002devent_002dpath_002dname"></a>Function: <strong>dbus-event-path-name</strong> <em>event</em></dt>
 <dd><p>This function returns the object path of the D-Bus object <var>event</var>
 is coming from.
@@ -2286,6 +2304,18 @@ is coming from.
 <dt><a name="index-dbus_002devent_002dmember_002dname"></a>Function: <strong>dbus-event-member-name</strong> <em>event</em></dt>
 <dd><p>This function returns the member name of the D-Bus object <var>event</var>
 is coming from.  It is either a signal name or a method name.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbus_002devent_002dhandler"></a>Function: <strong>dbus-event-handler</strong> <em>event</em></dt>
+<dd><p>This function returns the handler the D-Bus object <var>event</var> is
+applied with.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-dbus_002devent_002darguments"></a>Function: <strong>dbus-event-arguments</strong> <em>event</em></dt>
+<dd><p>This function returns the arguments the D-Bus object <var>event</var> is
+carrying on.
 </p></dd></dl>
 
 <p>D-Bus errors are not propagated during event handling, because it is
@@ -2320,10 +2350,65 @@ whether a given D-Bus error is related to them.
 </p>
 
 <hr>
+<a name="Monitoring-Events"></a>
+<div class="header">
+<p>
+Next: <a href="#Index" accesskey="n" rel="next">Index</a>, Previous: <a href="#Errors-and-Events" accesskey="p" rel="prev">Errors and Events</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Monitoring-events_002e"></a>
+<h2 class="chapter">10 Monitoring events.</h2>
+<a name="index-monitoring"></a>
+
+<dl>
+<dt><a name="index-dbus_002dregister_002dmonitor"></a>Function: <strong>dbus-register-monitor</strong> <em>bus &amp;optional handler &amp;key type sender destination path interface member</em></dt>
+<dd><p>This function registers <var>handler</var> for monitor events on the D-Bus
+<var>bus</var>.
+</p>
+<p><var>bus</var> is either a Lisp keyword, <code>:system</code> or <code>:session</code>,
+or a string denoting the bus address.
+</p>
+<a name="index-dbus_002dmonitor_002dhandler"></a>
+<p><var>handler</var> is the function to be called when a monitor event
+arrives.  It is called with the &lsquo;args&rsquo; slot of the monitor event,
+which are stripped off the type keywords.  If <var>handler</var> is
+<code>nil</code>, the default handler <code>dbus-monitor-handler</code> is
+applied.  This default handler behaves similar to the
+<code>dbus-monitor</code> program.
+</p>
+<p>The other arguments are keyword-value pairs.  <code>:type <var>type</var></code>
+defines the message type to be monitored.  If given, it must be equal
+one of the strings &lsquo;<samp>method_call</samp>&rsquo;, &lsquo;<samp>method_return</samp>&rsquo;,
+&lsquo;<samp>error</samp>&rsquo; or &lsquo;<samp>signal</samp>&rsquo;.
+</p>
+<p><code>:sender <var>sender</var></code> and <code>:destination <var>destination</var></code>
+are D-Bus names.  They can be unique names, or well-known service
+names.
+</p>
+<p><code>:path <var>path</var></code> is the D-Bus object to be monitored.
+<code>:interface <var>interface</var></code> is the name of an interface, and
+<code>:member <var>member</var></code> is either a method name, a signal name, or
+an error name.
+</p>
+<p>The following form shows all D-Bus events on the session bus in buffer
+&lsquo;<samp>*D-Bus Monitor*</samp>&rsquo;:
+</p>
+<div class="lisp">
+<pre class="lisp">(dbus-register-monitor :session)
+</pre></div>
+
+<p>And this form restricts the monitoring on D-Bus errors:
+</p>
+<div class="lisp">
+<pre class="lisp">(dbus-register-monitor :session nil :type &quot;error&quot;)
+</pre></div>
+</dd></dl>
+
+
+<hr>
 <a name="Index"></a>
 <div class="header">
 <p>
-Next: <a href="#GNU-Free-Documentation-License" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="#Errors-and-Events" accesskey="p" rel="prev">Errors and Events</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#GNU-Free-Documentation-License" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="#Monitoring-Events" accesskey="p" rel="prev">Monitoring Events</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <a name="Index-1"></a>
 <h2 class="unnumbered">Index</h2>
@@ -2367,8 +2452,11 @@ Next: <a href="#GNU-Free-Documentation-License" accesskey="n" rel="next">GNU Fre
 <tr><td></td><td valign="top"><a href="#index-dbus_002dcompiled_002dversion"><code>dbus-compiled-version</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Version">Version</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002ddebug"><code>dbus-debug</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002descape_002das_002didentifier"><code>dbus-escape-as-identifier</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Type-Conversion">Type Conversion</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-dbus_002devent_002darguments"><code>dbus-event-arguments</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002devent_002dbus_002dname"><code>dbus-event-bus-name</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-dbus_002devent_002ddestination_002dname"><code>dbus-event-destination-name</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002devent_002derror_002dfunctions"><code>dbus-event-error-functions</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-dbus_002devent_002dhandler"><code>dbus-event-handler</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002devent_002dinterface_002dname"><code>dbus-event-interface-name</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002devent_002dmember_002dname"><code>dbus-event-member-name</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002devent_002dmessage_002dtype"><code>dbus-event-message-type</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Errors-and-Events">Errors and Events</a></td></tr>
@@ -2405,9 +2493,11 @@ Next: <a href="#GNU-Free-Documentation-License" accesskey="n" rel="next">GNU Fre
 <tr><td></td><td valign="top"><a href="#index-dbus_002dlist_002dknown_002dnames"><code>dbus-list-known-names</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Bus-names">Bus names</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dlist_002dnames"><code>dbus-list-names</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Bus-names">Bus names</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dlist_002dqueued_002downers"><code>dbus-list-queued-owners</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Bus-names">Bus names</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-dbus_002dmonitor_002dhandler"><code>dbus-monitor-handler</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Monitoring-Events">Monitoring Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dpath_002demacs"><code>dbus-path-emacs</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Register-Objects">Register Objects</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dping"><code>dbus-ping</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Bus-names">Bus names</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dregister_002dmethod"><code>dbus-register-method</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Register-Objects">Register Objects</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-dbus_002dregister_002dmonitor"><code>dbus-register-monitor</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Monitoring-Events">Monitoring Events</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dregister_002dproperty"><code>dbus-register-property</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Register-Objects">Register Objects</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dregister_002dservice"><code>dbus-register-service</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Register-Objects">Register Objects</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-dbus_002dregister_002dsignal"><code>dbus-register-signal</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Signals">Signals</a></td></tr>
@@ -2433,6 +2523,7 @@ Next: <a href="#GNU-Free-Documentation-License" accesskey="n" rel="next">GNU Fre
 <tr><td></td><td valign="top"><a href="#index-method-calls_002c-asynchronous">method calls, asynchronous</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Asynchronous-Methods">Asynchronous Methods</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-method-calls_002c-returning">method calls, returning</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Register-Objects">Register Objects</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-method-calls_002c-synchronous">method calls, synchronous</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Synchronous-Methods">Synchronous Methods</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-monitoring">monitoring</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Monitoring-Events">Monitoring Events</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="Index_cp_letter-O">O</a></th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-overview">overview</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Overview">Overview</a></td></tr>
