@@ -96,37 +96,45 @@ if it were displayed in the current buffer and the selected window.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-truncate_002dstring_002dto_002dwidth"></a>Function: <strong>truncate-string-to-width</strong> <em>string width &amp;optional start-column padding ellipsis</em></dt>
-<dd><p>This function returns the part of <var>string</var> that fits within
-<var>width</var> columns, as a new string.
+<dt><a name="index-truncate_002dstring_002dto_002dwidth"></a>Function: <strong>truncate-string-to-width</strong> <em>string width &amp;optional start-column padding ellipsis ellipsis-text-property</em></dt>
+<dd><p>This function returns a new string that is a truncation of <var>string</var>
+which fits within <var>width</var> columns on display.
 </p>
-<p>If <var>string</var> does not reach <var>width</var>, then the result ends where
-<var>string</var> ends.  If one multi-column character in <var>string</var>
-extends across the column <var>width</var>, that character is not included in
-the result.  Thus, the result can fall short of <var>width</var> but cannot
-go beyond it.
+<p>If <var>string</var> is narrower than <var>width</var>, the result is equal to
+<var>string</var>; otherwise excess characters are omitted from the result.
+If a multi-column character in <var>string</var> exceeds the goal
+<var>width</var>, that character is omitted from the result.  Thus, the
+result can sometimes fall short of <var>width</var>, but cannot go beyond
+it.
 </p>
 <p>The optional argument <var>start-column</var> specifies the starting column.
 If this is non-<code>nil</code>, then the first <var>start-column</var> columns of
-the string are omitted from the value.  If one multi-column character in
+the string are omitted from the result.  If one multi-column character in
 <var>string</var> extends across the column <var>start-column</var>, that
-character is not included.
+character is omitted.
 </p>
 <p>The optional argument <var>padding</var>, if non-<code>nil</code>, is a padding
-character added at the beginning and end of the result string, to extend
-it to exactly <var>width</var> columns.  The padding character is used at the
-end of the result if it falls short of <var>width</var>.  It is also used at
-the beginning of the result if one multi-column character in
+character added at the beginning and end of the result string, to
+extend it to exactly <var>width</var> columns.  The padding character is
+appended at the end of the result if it falls short of <var>width</var>, as
+many times as needed to reach <var>width</var>.  It is also prepended at
+the beginning of the result if a multi-column character in
 <var>string</var> extends across the column <var>start-column</var>.
 </p>
-<a name="index-truncate_002dstring_002dellipsis"></a>
 <p>If <var>ellipsis</var> is non-<code>nil</code>, it should be a string which will
-replace the end of <var>string</var> (including any padding) if it extends
-beyond <var>width</var>, unless the display width of <var>string</var> is equal
-to or less than the display width of <var>ellipsis</var>.  If
-<var>ellipsis</var> is non-<code>nil</code> and not a string, it stands for
-the value of the variable <code>truncate-string-ellipsis</code>, or
-to three dots when it&rsquo;s nil.
+replace the end of <var>string</var> when it is truncated.  In this case,
+more charcaters will be removed from <var>string</var> to free enough space
+for <var>ellipsis</var> to fit within <var>width</var> columns.  However, if
+the display width of <var>string</var> is less than the display width of
+<var>ellipsis</var>, <var>ellipsis</var> will not be appended to the result.  If
+<var>ellipsis</var> is non-<code>nil</code> and not a string, it stands for the
+value returned by the function <code>truncate-string-ellipsis</code>,
+described below.
+</p>
+<p>The optional argument <var>ellipsis-text-property</var>, if non-<code>nil</code>,
+means hide the excess parts of <var>string</var> with a <code>display</code> text
+property (see <a href="Display-Property.html#Display-Property">Display Property</a>) showing the ellipsis, instead of
+actually truncating the string.
 </p>
 <div class="example">
 <pre class="example">(truncate-string-to-width &quot;\tab\t&quot; 12 4)
@@ -135,6 +143,17 @@ to three dots when it&rsquo;s nil.
      &rArr; &quot;    ab  &quot;
 </pre></div>
 </dd></dl>
+
+<dl>
+<dt><a name="index-truncate_002dstring_002dellipsis"></a>Function: <strong>truncate-string-ellipsis</strong></dt>
+<dd><p>This function returns the string to be used as an ellipses in
+<code>truncate-string-to-width</code> and other similar contexts.  The value
+is that of the variable <code>truncate-string-ellipsis</code>, if it&rsquo;s
+non-<code>nil</code>, the string with the single character <small>U+2026
+HORIZONTAL ELLIPSIS</small> if that character can be displayed on the
+selected frame, and the string &lsquo;<samp>...</samp>&rsquo; otherwise.
+</p></dd></dl>
+
 
 <p>The following function returns the size in pixels of text as if it were
 displayed in a given window.  This function is used by
