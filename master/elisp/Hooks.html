@@ -76,10 +76,11 @@ Next: <a href="Major-Modes.html#Major-Modes" accesskey="n" rel="next">Major Mode
 <h3 class="section">23.1 Hooks</h3>
 <a name="index-hooks"></a>
 
-<p>A <em>hook</em> is a variable where you can store a function or functions
-to be called on a particular occasion by an existing program.  Emacs
-provides hooks for the sake of customization.  Most often, hooks are set
-up in the init file (see <a href="Init-File.html#Init-File">Init File</a>), but Lisp programs can set them also.
+<p>A <em>hook</em> is a variable where you can store a function or
+functions (see <a href="What-Is-a-Function.html#What-Is-a-Function">What Is a Function</a>) to be called on a particular
+occasion by an existing program.  Emacs provides hooks for the sake of
+customization.  Most often, hooks are set up in the init file
+(see <a href="Init-File.html#Init-File">Init File</a>), but Lisp programs can set them also.
 See <a href="Standard-Hooks.html#Standard-Hooks">Standard Hooks</a>, for a list of some standard hook variables.
 </p>
 <a name="index-normal-hook"></a>
@@ -97,26 +98,36 @@ minor mode functions also run a mode hook at the end.  But hooks are
 used in other contexts too.  For example, the hook <code>suspend-hook</code>
 runs just before Emacs suspends itself (see <a href="Suspending-Emacs.html#Suspending-Emacs">Suspending Emacs</a>).
 </p>
-<p>The recommended way to add a hook function to a hook is by calling
-<code>add-hook</code> (see <a href="Setting-Hooks.html#Setting-Hooks">Setting Hooks</a>).  The hook functions may be any
-of the valid kinds of functions that <code>funcall</code> accepts (see <a href="What-Is-a-Function.html#What-Is-a-Function">What Is a Function</a>).  Most normal hook variables are initially void;
-<code>add-hook</code> knows how to deal with this.  You can add hooks either
-globally or buffer-locally with <code>add-hook</code>.
-</p>
 <a name="index-abnormal-hook"></a>
 <p>If the hook variable&rsquo;s name does not end with &lsquo;<samp>-hook</samp>&rsquo;, that
 indicates it is probably an <em>abnormal hook</em>.  That means the hook
 functions are called with arguments, or their return values are used
 in some way.  The hook&rsquo;s documentation says how the functions are
-called.  You can use <code>add-hook</code> to add a function to an abnormal
-hook, but you must write the function to follow the hook&rsquo;s calling
-convention.  By convention, abnormal hook names end in &lsquo;<samp>-functions</samp>&rsquo;.
+called.  Any functions added to an abnormal hook must follow the
+hook&rsquo;s calling convention.  By convention, abnormal hook names end in
+&lsquo;<samp>-functions</samp>&rsquo;.
 </p>
 <a name="index-single_002dfunction-hook"></a>
-<p>If the variable&rsquo;s name ends in &lsquo;<samp>-function</samp>&rsquo;, then its value is
-just a single function, not a list of functions.  <code>add-hook</code> cannot be
-used to modify such a <em>single function hook</em>, and you have to use
-<code>add-function</code> instead (see <a href="Advising-Functions.html#Advising-Functions">Advising Functions</a>).
+<p>If the name of the variable ends in &lsquo;<samp>-predicate</samp>&rsquo; or
+&lsquo;<samp>-function</samp>&rsquo; (singular) then its value must be a function, not a
+list of functions.  As with abnormal hooks, the expected arguments and
+meaning of the return value vary across such <em>single function
+hooks</em>.  The details are explained in each variable&rsquo;s docstring.
+</p>
+<p>Since hooks (both multi and single function) are variables, their
+values can be modified with <code>setq</code> or temporarily with
+<code>let</code>.  However, it is often useful to add or remove a particular
+function from a hook while preserving any other functions it might
+have.  For multi function hooks, the recommended way of doing this is
+with <code>add-hook</code> and <code>remove-hook</code> (see <a href="Setting-Hooks.html#Setting-Hooks">Setting Hooks</a>).
+Most normal hook variables are initially void; <code>add-hook</code> knows
+how to deal with this.  You can add hooks either globally or
+buffer-locally with <code>add-hook</code>.  For hooks which hold only a
+single function, <code>add-hook</code> is not appropriate, but you can use
+<code>add-function</code> (see <a href="Advising-Functions.html#Advising-Functions">Advising Functions</a>) to combine new
+functions with the hook.  Note that some single function hooks may be
+<code>nil</code> which <code>add-function</code> cannot deal with, so you must
+check for that before calling <code>add-function</code>.
 </p>
 <table class="menu" border="0" cellspacing="0">
 <tr><td align="left" valign="top">&bull; <a href="Running-Hooks.html#Running-Hooks" accesskey="1">Running Hooks</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to run a hook.
