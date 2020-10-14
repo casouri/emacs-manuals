@@ -18006,7 +18006,7 @@ zeros with <kbd>d z</kbd>.  See <a href="#Radix-Modes">Radix Modes</a>.
 </p>
 <a name="index-Word-size-for-binary-operations"></a>
 <p>The Calculator maintains a current <em>word size</em> &lsquo;<samp>w</samp>&rsquo;, an
-arbitrary positive or negative integer.  For a positive word size, all
+arbitrary integer.  For a positive word size, all
 of the binary operations described here operate modulo &lsquo;<samp>2^w</samp>&rsquo;.  In
 particular, negative arguments are converted to positive integers modulo
 &lsquo;<samp>2^w</samp>&rsquo; by all binary functions.
@@ -18018,6 +18018,9 @@ to
 &lsquo;<samp>2^(-w-1)-1</samp>&rsquo;
 inclusive.  Either mode accepts inputs in any range; the sign of
 &lsquo;<samp>w</samp>&rsquo; affects only the results produced.
+</p>
+<p>If the word size is zero, binary operations work on the entire number
+without clipping, as if the word size had been negative infinity.
 </p>
 <a name="index-b-c"></a>
 <a name="index-calc_002dclip"></a>
@@ -18139,6 +18142,10 @@ and &lsquo;<samp>rash</samp>&rsquo; operations is totally independent from wheth
 size is positive or negative.)  With a negative prefix argument, this
 performs a standard left shift.
 </p>
+<p>When the word size is zero, logical and arithmetic shift operations
+are identical: a negative value shifted right remains negative, since
+there is an infinite supply of ones to shift in.
+</p>
 <a name="index-b-t"></a>
 <a name="index-calc_002drotate_002dbinary"></a>
 <a name="index-rot"></a>
@@ -18147,6 +18154,8 @@ number one bit to the left.  The leftmost bit (according to the current
 word size) is dropped off the left and shifted in on the right.  With a
 numeric prefix argument, the number is rotated that many bits to the left
 or right.
+</p>
+<p>Rotation is not possible with a zero word size.
 </p>
 <p>See <a href="#Set-Operations">Set Operations</a>, for the <kbd>b p</kbd> and <kbd>b u</kbd> commands that
 pack and unpack binary integers into sets.  (For example, <kbd>b u</kbd>
