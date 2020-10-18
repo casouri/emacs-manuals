@@ -115,10 +115,11 @@ button.  See <a href="Repeat-Events.html#Repeat-Events">Repeat Events</a>.
 
 <p>To access the contents of a mouse position list in the
 <var>position</var> slot of a click event, you should typically use the
-functions documented in <a href="Accessing-Mouse.html#Accessing-Mouse">Accessing Mouse</a>.  The explicit format of
-the list depends on where the click occurred.  For clicks in the text
-area, mode line, header line, tab line, or in the fringe or marginal
-areas, the mouse position list has the form
+functions documented in <a href="Accessing-Mouse.html#Accessing-Mouse">Accessing Mouse</a>.
+</p>
+<p>The explicit format of the list depends on where the click occurred.
+For clicks in the text area, mode line, header line, tab line, or in
+the fringe or marginal areas, the mouse position list has the form
 </p>
 <div class="example">
 <pre class="example">(<var>window</var> <var>pos-or-area</var> (<var>x</var> . <var>y</var>) <var>timestamp</var>
@@ -262,6 +263,50 @@ the symbols <code>handle</code> (the scroll bar handle), <code>above-handle</cod
 handle), <code>up</code> (the up arrow at one end of the scroll bar), or
 <code>down</code> (the down arrow at one end of the scroll bar).
 </p></dd>
+</dl>
+
+<p>For clicks on the frame&rsquo;s internal border (see <a href="Frame-Layout.html#Frame-Layout">Frame Layout</a>),
+<var>position</var> has this form:
+</p>
+<div class="example">
+<pre class="example"> (<var>frame</var> <var>part</var> (<var>X</var> . <var>Y</var>) <var>timestamp</var>)
+</pre></div>
+
+<dl compact="compact">
+<dt><var>frame</var></dt>
+<dd><p>The frame whose internal border was clicked on.
+</p>
+</dd>
+<dt><var>part</var></dt>
+<dd><p>The part of the internal border which was clicked on.  This can be one
+of the following:
+</p>
+<dl compact="compact">
+<dt><code>nil</code></dt>
+<dd><p>The frame does not have an internal border.  This usually happens on
+text-mode frames.  This can also happen on GUI frames with internal
+border if the frame doesn&rsquo;t have its <code>drag-internal-border</code>
+parameter (see <a href="Mouse-Dragging-Parameters.html#Mouse-Dragging-Parameters">Mouse Dragging Parameters</a>) set to a non-<code>nil</code>
+value.
+</p>
+</dd>
+<dt><code>left-edge</code></dt>
+<dt><code>top-edge</code></dt>
+<dt><code>right-edge</code></dt>
+<dt><code>bottom-edge</code></dt>
+<dd><p>The click was on the corresponding border at an offset of at least one
+canonical character from the border&rsquo;s nearest corner.
+</p>
+</dd>
+<dt><code>top-left-corner</code></dt>
+<dt><code>top-right-corner</code></dt>
+<dt><code>bottom-right-corner</code></dt>
+<dt><code>bottom-left-corner</code></dt>
+<dd><p>The click was on the corresponding corner of the internal border.
+</p></dd>
+</dl>
+
+</dd>
 </dl>
 
 

@@ -109,6 +109,43 @@ you can also add a leading underscore to the variable&rsquo;s name to
 indicate to the compiler that this is a variable known not to
 be used.)
 </p>
+<a name="Cross_002dfile-variable-checking"></a>
+<h4 class="subsubheading">Cross-file variable checking</h4>
+
+<p><strong>Note:</strong> This is an experimental feature that may change or
+disappear without prior notice.
+</p>
+<p>The byte-compiler can also warn about lexical variables that are
+special in other Emacs Lisp files, often indicating a missing
+<code>defvar</code> declaration.  This useful but somewhat specialised check
+requires three steps:
+</p>
+<ol>
+<li> Byte-compile all files whose special variable declarations may be of
+interest, with the environment variable <code>EMACS_GENERATE_DYNVARS</code>
+set to a nonempty string.  These are typically all the files in the
+same package or related packages or Emacs subsystems.  The process
+will generate a file whose name ends in <samp>.dynvars</samp> for each
+compiled Emacs Lisp file.
+
+</li><li> Concatenate the <samp>.dynvars</samp> files into a single file.
+
+</li><li> Byte-compile the files that need to be checked, this time with
+the environment variable <code>EMACS_DYNVARS_FILE</code> set to the name
+of the aggregated file created in step 2.
+</li></ol>
+
+<p>Here is an example illustrating how this could be done, assuming that
+a Unix shell and <code>make</code> are used for byte-compilation:
+</p>
+<div class="example">
+<pre class="example">$ rm *.elc                                # force recompilation
+$ EMACS_GENERATE_DYNVARS=1 make           # generate .dynvars
+$ cat *.dynvars &gt; ~/my.dynvars            # combine .dynvars
+$ rm *.elc                                # force recompilation
+$ EMACS_DYNVARS_FILE=~/my.dynvars make    # perform checks
+</pre></div>
+
 <hr>
 <div class="header">
 <p>
