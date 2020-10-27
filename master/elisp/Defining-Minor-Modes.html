@@ -246,10 +246,11 @@ don&rsquo;t need any.
 <dl>
 <dt><a name="index-define_002dglobalized_002dminor_002dmode"></a>Macro: <strong>define-globalized-minor-mode</strong> <em>global-mode mode turn-on keyword-args&hellip; body&hellip;</em></dt>
 <dd><p>This defines a global toggle named <var>global-mode</var> whose meaning is
-to enable or disable the buffer-local minor mode <var>mode</var> in all
-buffers.  It also executes the <var>body</var> forms.  To turn on the minor
-mode in a buffer, it uses the function <var>turn-on</var>; to turn off the
-minor mode, it calls <var>mode</var> with −1 as argument.
+to enable or disable the buffer-local minor mode <var>mode</var> in all (or
+some; see below) buffers.  It also executes the <var>body</var> forms.  To
+turn on the minor mode in a buffer, it uses the function
+<var>turn-on</var>; to turn off the minor mode, it calls <var>mode</var> with
+−1 as argument.
 </p>
 <p>Globally enabling the mode also affects buffers subsequently created
 by visiting files, and buffers that use a major mode other than
@@ -270,6 +271,38 @@ also define a non-globalized version, so that people can use (or
 disable) it in individual buffers.  This also allows them to disable a
 globally enabled minor mode in a specific major mode, by using that
 mode&rsquo;s hook.
+</p>
+<p>If given a <code>:predicate</code> keyword, a user option called the same as
+the global mode variable, but with <code>-modes</code> instead of
+<code>-mode</code> at the end will be created.  The variable is used as a
+predicate that specifies which major modes the minor mode should be
+activated in.  Valid values include <code>t</code> (use in all major modes,
+<code>nil</code> (use in no major modes), or a list of mode names (or
+<code>(not mode-name ...)</code>) elements (as well as <code>t</code> and
+<code>nil</code>).
+</p>
+<div class="example">
+<pre class="example">(c-mode (not mail-mode message-mode) text-mode)
+</pre></div>
+
+<p>This means &ldquo;use in modes derived from <code>c-mode</code>, and not in
+modes derived from <code>message-mode</code> or <code>mail-mode</code>, but do use
+in modes derived from <code>text-mode</code>, and otherwise no other
+modes&rdquo;.
+</p>
+<div class="example">
+<pre class="example">((not c-mode) t)
+</pre></div>
+
+<p>This means &ldquo;don&rsquo;t use modes derived from <code>c-mode</code>, but use
+everywhere else&rdquo;.
+</p>
+<div class="example">
+<pre class="example">(text-mode)
+</pre></div>
+
+<p>This means &ldquo;use in modes derived from <code>text-mode</code>, but nowhere
+else&rdquo;.  (There&rsquo;s an implicit <code>nil</code> element at the end.)
 </p></dd></dl>
 
 
