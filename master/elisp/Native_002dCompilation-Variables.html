@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.0.50.
+
+Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Native-Compilation Variables (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Native-Compilation Variables (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Native-Compilation Variables (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Native-Compilation.html" rel="up" title="Native Compilation">
+<link href="Debugging.html" rel="next" title="Debugging">
+<link href="Native_002dCompilation-Functions.html" rel="prev" title="Native-Compilation Functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<span id="Native_002dCompilation-Variables"></span><div class="header">
+<p>
+Previous: <a href="Native_002dCompilation-Functions.html" accesskey="p" rel="prev">Native-Compilation Functions</a>, Up: <a href="Native-Compilation.html" accesskey="u" rel="up">Native Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Native_002dCompilation-Variables-1"></span><h3 class="section">18.2 Native-Compilation Variables</h3>
+<span id="index-native_002dcompilation-variables"></span>
+
+<p>This section documents the variables that control
+native-compilation.
+</p>
+<dl>
+<dt id="index-native_002dcomp_002dspeed">User Option: <strong>native-comp-speed</strong></dt>
+<dd><p>This variable specifies the optimization level for native compilation.
+Its value should be a number between −1 and 3.  Values between
+0 and 3 specify the optimization levels equivalent to the
+corresponding compiler <samp>-O0</samp>, <samp>-O1</samp>, etc. command-line
+options of the compiler.  The value −1 means disable
+native-compilation; functions and files will be only byte-compiled.
+The default value is 2.
+</p></dd></dl>
+
+<dl>
+<dt id="index-native_002dcomp_002ddebug">User Option: <strong>native-comp-debug</strong></dt>
+<dd><p>This variable specifies the level of debugging information produced by
+native-compilation.  Its value should be a number between zero and 3,
+with the following meaning:
+</p>
+<dl compact="compact">
+<dt>0</dt>
+<dd><p>No debugging output.  This is the default.
+</p></dd>
+<dt>1</dt>
+<dd><p>Emit debugging symbols with the native code.  This allows easier
+debugging of the native code with debuggers such as <code>gdb</code>.
+</p></dd>
+<dt>2</dt>
+<dd><p>Like 1, and in addition dump pseudo-C code.
+</p></dd>
+<dt>3</dt>
+<dd><p>Like 2, and in addition dump the GCC intermediate passes and
+<samp>libgccjit</samp> log file.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt id="index-native_002dcomp_002dverbose-1">User Option: <strong>native-comp-verbose</strong></dt>
+<dd><p>This variable controls the verbosity of native-compilation by
+suppressing some or all of the log messages emitted by it.  If its
+value is zero, the default, all of the log messages are suppressed.
+Setting it to a value between 1 and 3 will allow logging of the
+messages whose level is above the value.  The values have the
+following interpretations:
+</p>
+<dl compact="compact">
+<dt>0</dt>
+<dd><p>No logging.  This is the default.
+</p></dd>
+<dt>1</dt>
+<dd><p>Log the final <acronym>LIMPLE</acronym> representation of the code.
+</p></dd>
+<dt>2</dt>
+<dd><p>Log the <acronym>LAP</acronym>, the final <acronym>LIMPLE</acronym>, and some additional
+pass info.
+</p></dd>
+<dt>3</dt>
+<dd><p>Maximum verbosity: log everything.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl>
+<dt id="index-native_002dcomp_002dasync_002djobs_002dnumber">User Option: <strong>native-comp-async-jobs-number</strong></dt>
+<dd><p>This variable determines the maximum number of native-compilation
+subprocesses that will be started simultaneously.  It should be a
+non-negative number.  The default value is zero, which means use half
+the number of the CPU execution units, or 1 if the CPU has only one
+execution unit.
+</p></dd></dl>
+
+<dl>
+<dt id="index-native_002dcomp_002dasync_002dreport_002dwarnings_002derrors">User Option: <strong>native-comp-async-report-warnings-errors</strong></dt>
+<dd><p>If this variable&rsquo;s value is non-<code>nil</code>, warnings and errors from
+asynchronous native-compilation subprocesses are reported in the main
+Emacs session in a buffer named <samp>*Warnings*</samp>.  The default value
+<code>t</code> means display the resulting buffer.  To log warnings without
+popping up the <samp>*Warnings*</samp> buffer, set this variable to
+<code>silent</code>.
+</p></dd></dl>
+
+<dl>
+<dt id="index-native_002dcomp_002dasync_002dquery_002don_002dexit">User Option: <strong>native-comp-async-query-on-exit</strong></dt>
+<dd><p>If this variable&rsquo;s value is non-nil, Emacs will query upon exiting
+whether to exit and kill any asynchronous native-compilation
+subprocesses that are still running, thus preventing the corresponding
+<samp>.eln</samp> files from being written.  If the value is <code>nil</code>, the
+default, Emacs will kill these subprocesses without querying.
+</p></dd></dl>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Native_002dCompilation-Functions.html" accesskey="p" rel="prev">Native-Compilation Functions</a>, Up: <a href="Native-Compilation.html" accesskey="u" rel="up">Native Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

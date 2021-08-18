@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.0.50.
+
+Copyright © 1985-1987, 1993-2021 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Bug Reference (GNU Emacs Manual)</title>
+
+<meta name="description" content="Bug Reference (GNU Emacs Manual)">
+<meta name="keywords" content="Bug Reference (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Maintaining.html" rel="up" title="Maintaining">
+<link href="Abbrevs.html" rel="next" title="Abbrevs">
+<link href="Fine-Points-of-Emerge.html" rel="prev" title="Fine Points of Emerge">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<span id="Bug-Reference"></span><div class="header">
+<p>
+Previous: <a href="Emerge.html" accesskey="p" rel="prev">Emerge</a>, Up: <a href="Maintaining.html" accesskey="u" rel="up">Maintaining</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Bug-Reference-1"></span><h3 class="section">28.7 Bug Reference</h3>
+<span id="index-bug-reference"></span>
+
+<p>Most projects with a certain amount of users track bug reports in some
+issue tracking software which assigns each report a unique and short
+number or identifier.  Those are used to reference a given bug, e.g.,
+in a source code comment above the code fixing some bug, in
+documentation files, or in discussions on some mailinglist or IRC
+channel.
+</p>
+<span id="index-bug_002dreference_002dmode"></span>
+<span id="index-bug_002dreference_002dprog_002dmode"></span>
+<p>The minor modes <code>bug-reference-mode</code> and
+<code>bug-reference-prog-mode</code> highlight such bug references and make
+it possible to follow them to the corresponding bug report on the
+project&rsquo;s issue tracker.  <code>bug-reference-prog-mode</code> is a variant
+of <code>bug-reference-mode</code> which highlights bug references only
+inside source code comments and strings.
+</p>
+<span id="index-bug_002dreference_002dbug_002dregexp"></span>
+<span id="index-bug_002dreference_002durl_002dformat"></span>
+<p>For its working, bug reference mode needs to know the syntax of bug
+references (<code>bug-reference-bug-regexp</code>), and the URL of the
+tracker where bug reports can be looked up
+(<code>bug-reference-url-format</code>).  Since those are typically
+different from project to project, it makes sense to specify them in
+see <a href="Directory-Variables.html">Directory Variables</a> or see <a href="File-Variables.html">File Variables</a>.
+</p>
+<p>For example, let&rsquo;s assume in our project, we usually write references
+to bug reports as bug#1234, or Bug-1234 and that this bug&rsquo;s page on
+the issue tracker is <a href="https://project.org/issues/1234">https://project.org/issues/1234</a>, then
+these local variables section would do.
+</p>
+<div class="example">
+<pre class="example">;; Local Variables:
+;; bug-reference-bug-regexp: &quot;\\([Bb]ug[#-]\\)\\([0-9]+\\)&quot;
+;; bug-reference-url-format: &quot;https://project.org/issues/%s&quot;
+;; End:
+</pre></div>
+
+<p>The string captured by the second regexp group in
+<code>bug-reference-bug-regexp</code> is used to replace the <code>%s</code>
+template in the <code>bug-reference-url-format</code>.
+</p>
+<p>Note that <code>bug-reference-url-format</code> may also be a function in
+order to cater for more complex scenarios, e.g., when the part before
+the actual bug number has to be used to distinguish between issues and
+merge requests where each of them has a different URL.
+</p>
+
+<span id="Automatic-Setup"></span><h3 class="heading">Automatic Setup</h3>
+
+<span id="index-bug_002dreference_002dauto_002dsetup_002dfunctions"></span>
+<p>If <code>bug-reference-mode</code> is activated,
+<code>bug-reference-mode-hook</code> has been run and still
+<code>bug-reference-bug-regexp</code>, and <code>bug-reference-url-format</code>
+aren&rsquo;t both set, it&rsquo;ll try to setup suitable values for these two
+variables itself by calling the functions in
+<code>bug-reference-auto-setup-functions</code> one after the other until
+one is able to set the variables.
+</p>
+<span id="index-bug_002dreference_002dsetup_002dfrom_002dvc_002dalist"></span>
+<span id="index-bug_002dreference_002dsetup_002dfrom_002dmail_002dalist"></span>
+<span id="index-bug_002dreference_002dsetup_002dfrom_002dirc_002dalist"></span>
+<p>Right now, there are three types of setup functions.
+</p><ol>
+<li> Setup for version-controlled files configurable by the variable
+<code>bug-reference-setup-from-vc-alist</code>.  The default is able to
+setup GNU projects where <a href="https://debbugs.gnu.org">https://debbugs.gnu.org</a> is used as
+issue tracker and issues are usually referenced as <code>bug#13</code> (but
+many different notations are considered, too), Sourcehut projects
+where issues are referenced using the notation <code>#17</code>, Codeberg
+and Github projects where both bugs and pull requests are referenced
+using the same notation, and GitLab projects where bugs are referenced
+with <code>#17</code>, too, but merge requests use the <code>!18</code> notation.
+
+</li><li> Setup for email guessing from mail folder/mbox names, and mail header
+values configurable by the variable
+<code>bug-reference-setup-from-mail-alist</code>.  The built-in news- and
+mailreader <a href="Gnus.html">Gnus</a> and <a href="Rmail.html">Rmail</a> are supported.
+
+</li><li> Setup for IRC channels configurable by the variable
+<code>bug-reference-setup-from-irc-alist</code>.  The built-in IRC clients
+Rcirc, See <a href="https://www.gnu.org/software/emacs/manual/html_node/rcirc/index.html#Top">Rcirc</a> in <cite>The Rcirc Manual</cite>, and ERC,
+See <a href="https://www.gnu.org/software/emacs/manual/html_node/erc/index.html#Top">ERC</a> in <cite>The ERC Manual</cite>, are supported.
+</li></ol>
+
+<p>For almost all of those modes, it&rsquo;s enough to simply enable
+<code>bug-reference-mode</code>, only Rmail requires a slightly different
+setup.
+</p>
+<div class="example">
+<pre class="example">;; Use VC-based setup if file is under version control.
+(add-hook 'prog-mode-hook #'bug-reference-prog-mode)
+
+;; Gnus (summary &amp; article buffers)
+(add-hook 'gnus-mode-hook #'bug-reference-mode)
+
+;; Rmail
+(add-hook 'rmail-show-message-hook #'bug-reference-mode-force-auto-setup)
+
+;; Rcirc
+(add-hook 'rcirc-mode-hook #'bug-reference-mode)
+
+;; ERC
+(add-hook 'erc-mode-hook #'bug-reference-mode)
+</pre></div>
+
+<p>In the Rmail case, instead of the mode hook, the
+<code>rmail-show-message-hook</code> has to be used in combination with the
+function <code>bug-reference-mode-force-auto-setup</code> which activates
+<code>bug-reference-mode</code> and forces auto-setup.  The reason is that
+with Rmail all messages reside in the same buffer but the setup needs
+to be performed whenever another messages is displayed.
+</p>
+
+<span id="Adding-support-for-third_002dparty-packages"></span><h3 class="heading">Adding support for third-party packages</h3>
+
+<span id="index-bug_002dreference_002dauto_002dsetup_002dfunctions-1"></span>
+<p>Adding support for bug-reference&rsquo; auto-setup is usually quite
+straight-forward: write a setup function of zero arguments which
+gathers the required information (e.g., List-Id/To/From/Cc mail header
+values in the case of a MUA), and then calls one of the following
+helper functions:
+</p><ul>
+<li> <code>bug-reference-maybe-setup-from-vc</code> which does the setup
+according to <code>bug-reference-setup-from-vc-alist</code>,
+
+</li><li> <code>bug-reference-maybe-setup-from-mail</code> which does the setup
+according to <code>bug-reference-setup-from-mail-alist</code>,
+
+</li><li> and <code>bug-reference-maybe-setup-from-irc</code> which does the setup
+according to <code>bug-reference-setup-from-irc-alist</code>.
+</li></ul>
+<p>A setup function should return non-nil if it could setup bug-reference
+mode which is the case if the last thing the function does is calling
+one of the helper functions above.
+</p>
+<p>Finally, the setup function has to be added to
+<code>bug-reference-auto-setup-functions</code>.
+</p>
+<p>Note that these auto-setup functions should check as a first step if
+they are applicable, e.g., by checking the <code>major-mode</code> value.
+</p>
+
+<span id="Integration-with-the-debbugs-package"></span><h3 class="heading">Integration with the debbugs package</h3>
+
+<span id="index-debbugs_002dbrowse_002dmode"></span>
+<p>If your project&rsquo;s issues are tracked on the server
+<a href="https://debbugs.gnu.org">https://debbugs.gnu.org</a>, you can browse and reply to reports
+directly in Emacs using the <code>debbugs</code> package, which can be
+downloaded via the Package Menu (see <a href="Packages.html">Packages</a>).  This package adds
+the minor mode <code>debbugs-browse-mode</code>, which can be activated on
+top of <code>bug-reference-mode</code> and <code>bug-reference-prog-mode</code> as
+follows:
+</p>
+<div class="example">
+<pre class="example">(add-hook 'bug-reference-mode-hook 'debbugs-browse-mode)
+(add-hook 'bug-reference-prog-mode-hook 'debbugs-browse-mode)
+</pre></div>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Emerge.html" accesskey="p" rel="prev">Emerge</a>, Up: <a href="Maintaining.html" accesskey="u" rel="up">Maintaining</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
