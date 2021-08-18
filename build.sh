@@ -53,19 +53,19 @@ build() {
     mv emacs.html "$output"/emacs
     cp "$CSS" "$output"/emacs
 
-    if [ "$version" != "24.3" ] ; then
-        cd "$SRC"/doc/misc
-        make -e HTML_OPTS="--html --no-split --css-ref=./manual.css" html
-        mkdir "$output"/misc
-        mv *.html "$output"/misc
-        cp "$ROOT"/misc-index.html "$output"/misc/index.html
-        cp "$CSS" "$output"/misc
-    fi
+    # if [ "$version" != "24.3" ] ; then
+    #     cd "$SRC"/doc/misc
+    #     make -e HTML_OPTS="--html --no-split --css-ref=./manual.css" html
+    #     mkdir "$output"/misc
+    #     mv *.html "$output"/misc
+    #     cp "$ROOT"/misc-index.html "$output"/misc/index.html
+    #     cp "$CSS" "$output"/misc
+    # fi
 }
 
 download
 
-# build master
+build master
 build 27.2
 build 27.1
 build 26.3
