@@ -16,7 +16,7 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Eval (GNU Emacs Lisp Reference Manual)</title>
@@ -26,33 +26,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Evaluation.html#Evaluation" rel="up" title="Evaluation">
-<link href="Control-Structures.html#Control-Structures" rel="next" title="Control Structures">
-<link href="Backquote.html#Backquote" rel="prev" title="Backquote">
+<link href="Evaluation.html" rel="up" title="Evaluation">
+<link href="Control-Structures.html" rel="next" title="Control Structures">
+<link href="Backquote.html" rel="prev" title="Backquote">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -65,14 +56,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Eval"></a>
-<div class="header">
+<span id="Eval"></span><div class="header">
 <p>
-Previous: <a href="Backquote.html#Backquote" accesskey="p" rel="prev">Backquote</a>, Up: <a href="Evaluation.html#Evaluation" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Backquote.html" accesskey="p" rel="prev">Backquote</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Eval-1"></a>
-<h3 class="section">10.5 Eval</h3>
+<span id="Eval-1"></span><h3 class="section">10.5 Eval</h3>
 
 <p>Most often, forms are evaluated automatically, by virtue of their
 occurrence in a program being run.  On rare occasions, you may need to
@@ -87,7 +76,7 @@ store functions instead that are then passed to <code>funcall</code>.
 </p>
 <p>The functions and variables described in this section evaluate forms,
 specify limits to the evaluation process, or record recently returned
-values.  Loading a file also does evaluation (see <a href="Loading.html#Loading">Loading</a>).
+values.  Loading a file also does evaluation (see <a href="Loading.html">Loading</a>).
 </p>
 <p>It is generally cleaner and more flexible to store a function in a
 data structure, and call it with <code>funcall</code> or <code>apply</code>, than
@@ -96,20 +85,20 @@ functions provides the ability to pass information to them as
 arguments.
 </p>
 <dl>
-<dt><a name="index-eval"></a>Function: <strong>eval</strong> <em>form &amp;optional lexical</em></dt>
+<dt id="index-eval">Function: <strong>eval</strong> <em>form &amp;optional lexical</em></dt>
 <dd><p>This is the basic function for evaluating an expression.  It evaluates
 <var>form</var> in the current environment, and returns the result.  The
 type of the <var>form</var> object determines how it is evaluated.
-See <a href="Forms.html#Forms">Forms</a>.
+See <a href="Forms.html">Forms</a>.
 </p>
 <p>The argument <var>lexical</var> specifies the scoping rule for local
-variables (see <a href="Variable-Scoping.html#Variable-Scoping">Variable Scoping</a>).  If it is omitted or <code>nil</code>,
+variables (see <a href="Variable-Scoping.html">Variable Scoping</a>).  If it is omitted or <code>nil</code>,
 that means to evaluate <var>form</var> using the default dynamic scoping
 rule.  If it is <code>t</code>, that means to use the lexical scoping rule.
 The value of <var>lexical</var> can also be a non-empty alist specifying a
 particular <em>lexical environment</em> for lexical bindings; however,
 this feature is only useful for specialized purposes, such as in Emacs
-Lisp debuggers.  See <a href="Lexical-Binding.html#Lexical-Binding">Lexical Binding</a>.
+Lisp debuggers.  See <a href="Lexical-Binding.html">Lexical Binding</a>.
 </p>
 <p>Since <code>eval</code> is a function, the argument expression that appears
 in a call to <code>eval</code> is evaluated twice: once as preparation before
@@ -134,17 +123,17 @@ Here is an example:
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-eval_002dregion"></a>Command: <strong>eval-region</strong> <em>start end &amp;optional stream read-function</em></dt>
-<dd><a name="Definition-of-eval_002dregion"></a><p>This function evaluates the forms in the current buffer in the region
+<dt id="index-eval_002dregion">Command: <strong>eval-region</strong> <em>start end &amp;optional stream read-function</em></dt>
+<dd><span id="Definition-of-eval_002dregion"></span><p>This function evaluates the forms in the current buffer in the region
 defined by the positions <var>start</var> and <var>end</var>.  It reads forms from
 the region and calls <code>eval</code> on them until the end of the region is
 reached, or until an error is signaled and not handled.
 </p>
 <p>By default, <code>eval-region</code> does not produce any output.  However,
 if <var>stream</var> is non-<code>nil</code>, any output produced by output
-functions (see <a href="Output-Functions.html#Output-Functions">Output Functions</a>), as well as the values that
+functions (see <a href="Output-Functions.html">Output Functions</a>), as well as the values that
 result from evaluating the expressions in the region are printed using
-<var>stream</var>.  See <a href="Output-Streams.html#Output-Streams">Output Streams</a>.
+<var>stream</var>.  See <a href="Output-Streams.html">Output Streams</a>.
 </p>
 <p>If <var>read-function</var> is non-<code>nil</code>, it should be a function,
 which is used instead of <code>read</code> to read expressions one by one.
@@ -157,13 +146,13 @@ to specify this function, but it is more robust to use the
 <p><code>eval-region</code> does not move point.  It always returns <code>nil</code>.
 </p></dd></dl>
 
-<a name="index-evaluation-of-buffer-contents"></a>
+<span id="index-evaluation-of-buffer-contents"></span>
 <dl>
-<dt><a name="index-eval_002dbuffer"></a>Command: <strong>eval-buffer</strong> <em>&amp;optional buffer-or-name stream filename unibyte print</em></dt>
+<dt id="index-eval_002dbuffer">Command: <strong>eval-buffer</strong> <em>&amp;optional buffer-or-name stream filename unibyte print</em></dt>
 <dd><p>This is similar to <code>eval-region</code>, but the arguments provide
 different optional features.  <code>eval-buffer</code> operates on the
 entire accessible portion of buffer <var>buffer-or-name</var>
-(see <a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Narrowing.html#Narrowing">Narrowing</a> in <cite>The GNU Emacs Manual</cite>).
+(see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Narrowing.html#Narrowing">Narrowing</a> in <cite>The GNU Emacs Manual</cite>).
 <var>buffer-or-name</var> can be a buffer, a buffer name (a string), or
 <code>nil</code> (or omitted), which means to use the current buffer.
 <var>stream</var> is used as in <code>eval-region</code>, unless <var>stream</var> is
@@ -171,17 +160,17 @@ entire accessible portion of buffer <var>buffer-or-name</var>
 result from evaluating the expressions are still discarded, but the
 output of the output functions is printed in the echo area.
 <var>filename</var> is the file name to use for <code>load-history</code>
-(see <a href="Unloading.html#Unloading">Unloading</a>), and defaults to <code>buffer-file-name</code>
-(see <a href="Buffer-File-Name.html#Buffer-File-Name">Buffer File Name</a>).  If <var>unibyte</var> is non-<code>nil</code>,
+(see <a href="Unloading.html">Unloading</a>), and defaults to <code>buffer-file-name</code>
+(see <a href="Buffer-File-Name.html">Buffer File Name</a>).  If <var>unibyte</var> is non-<code>nil</code>,
 <code>read</code> converts strings to unibyte whenever possible.
 </p>
-<a name="index-eval_002dcurrent_002dbuffer"></a>
+<span id="index-eval_002dcurrent_002dbuffer"></span>
 <p><code>eval-current-buffer</code> is an alias for this command.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-max_002dlisp_002deval_002ddepth"></a>User Option: <strong>max-lisp-eval-depth</strong></dt>
-<dd><a name="Definition-of-max_002dlisp_002deval_002ddepth"></a><p>This variable defines the maximum depth allowed in calls to <code>eval</code>,
+<dt id="index-max_002dlisp_002deval_002ddepth">User Option: <strong>max-lisp-eval-depth</strong></dt>
+<dd><span id="Definition-of-max_002dlisp_002deval_002ddepth"></span><p>This variable defines the maximum depth allowed in calls to <code>eval</code>,
 <code>apply</code>, and <code>funcall</code> before an error is signaled (with error
 message <code>&quot;Lisp nesting exceeds max-lisp-eval-depth&quot;</code>).
 </p>
@@ -192,9 +181,9 @@ code can cause stack overflow instead.  On some systems, this overflow
 can be handled.  In that case, normal Lisp evaluation is interrupted
 and control is transferred back to the top level command loop
 (<code>top-level</code>).  Note that there is no way to enter Emacs Lisp
-debugger in this situation.  See <a href="Error-Debugging.html#Error-Debugging">Error Debugging</a>.
+debugger in this situation.  See <a href="Error-Debugging.html">Error Debugging</a>.
 </p>
-<a name="index-Lisp-nesting-error"></a>
+<span id="index-Lisp-nesting-error"></span>
 
 <p>The depth limit counts internal uses of <code>eval</code>, <code>apply</code>, and
 <code>funcall</code>, such as for calling the functions mentioned in Lisp
@@ -212,7 +201,7 @@ See <a href="Local-Variables.html#Definition-of-max_002dspecpdl_002dsize">Local 
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-values"></a>Variable: <strong>values</strong></dt>
+<dt id="index-values">Variable: <strong>values</strong></dt>
 <dd><p>The value of this variable is a list of the values returned by all the
 expressions that were read, evaluated, and printed from buffers
 (including the minibuffer) by the standard Emacs commands which do
@@ -253,7 +242,7 @@ particular elements, like this:
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Backquote.html#Backquote" accesskey="p" rel="prev">Backquote</a>, Up: <a href="Evaluation.html#Evaluation" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Backquote.html" accesskey="p" rel="prev">Backquote</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

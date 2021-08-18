@@ -17,7 +17,7 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Hooks (GNU Emacs Manual)</title>
@@ -27,33 +27,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Key-Index.html#Key-Index" rel="index" title="Key Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Variables.html#Variables" rel="up" title="Variables">
-<link href="Locals.html#Locals" rel="next" title="Locals">
-<link href="Examining.html#Examining" rel="prev" title="Examining">
+<link href="Variables.html" rel="up" title="Variables">
+<link href="Locals.html" rel="next" title="Locals">
+<link href="Examining.html" rel="prev" title="Examining">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -65,32 +56,30 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Hooks"></a>
-<div class="header">
+<span id="Hooks"></span><div class="header">
 <p>
-Next: <a href="Locals.html#Locals" accesskey="n" rel="next">Locals</a>, Previous: <a href="Examining.html#Examining" accesskey="p" rel="prev">Examining</a>, Up: <a href="Variables.html#Variables" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html#Key-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Locals.html" accesskey="n" rel="next">Locals</a>, Previous: <a href="Examining.html" accesskey="p" rel="prev">Examining</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Hooks-1"></a>
-<h4 class="subsection">48.2.2 Hooks</h4>
-<a name="index-hook"></a>
-<a name="index-running-a-hook"></a>
+<span id="Hooks-1"></span><h4 class="subsection">48.2.2 Hooks</h4>
+<span id="index-hook"></span>
+<span id="index-running-a-hook"></span>
 
 <p><em>Hooks</em> are an important mechanism for customizing Emacs.  A
 hook is a Lisp variable which holds a list of functions, to be called
 on some well-defined occasion.  (This is called <em>running the
 hook</em>.)  The individual functions in the list are called the <em>hook
 functions</em> of the hook.  For example, the hook <code>kill-emacs-hook</code>
-runs just before exiting Emacs (see <a href="Exiting.html#Exiting">Exiting</a>).
+runs just before exiting Emacs (see <a href="Exiting.html">Exiting</a>).
 </p>
-<a name="index-normal-hook"></a>
+<span id="index-normal-hook"></span>
 <p>Most hooks are <em>normal hooks</em>.  This means that when Emacs runs
 the hook, it calls each hook function in turn, with no arguments.  We
 have made an effort to keep most hooks normal, so that you can use
 them in a uniform way.  Every variable whose name ends in &lsquo;<samp>-hook</samp>&rsquo;
 is a normal hook.
 </p>
-<a name="index-abnormal-hook"></a>
+<span id="index-abnormal-hook"></span>
 <p>A few hooks are <em>abnormal hooks</em>.  Their names end in
 &lsquo;<samp>-functions</samp>&rsquo;, instead of &lsquo;<samp>-hook</samp>&rsquo; (some old code may also use
 the deprecated suffix &lsquo;<samp>-hooks</samp>&rsquo;).  What
@@ -99,14 +88,14 @@ called&mdash;perhaps they are given arguments, or perhaps the values they
 return are used in some way.  For example,
 <code>find-file-not-found-functions</code> is abnormal because as soon as
 one hook function returns a non-<code>nil</code> value, the rest are not
-called at all (see <a href="Visiting.html#Visiting">Visiting</a>).  The documentation of each abnormal
+called at all (see <a href="Visiting.html">Visiting</a>).  The documentation of each abnormal
 hook variable explains how its functions are used.
 </p>
-<a name="index-add_002dhook"></a>
+<span id="index-add_002dhook"></span>
 <p>You can set a hook variable with <code>setq</code> like any other Lisp
 variable, but the recommended way to add a function to a hook (either
 normal or abnormal) is to use <code>add-hook</code>, as shown by the
-following examples.  See <a href="http://www.gnu.org/software/emacs/manual/html_node/elisp/Hooks.html#Hooks">Hooks</a> in <cite>The Emacs Lisp Reference
+following examples.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Hooks.html#Hooks">Hooks</a> in <cite>The Emacs Lisp Reference
 Manual</cite>, for details.
 </p>
 <p>Most major modes run one or more <em>mode hooks</em> as the last step
@@ -120,7 +109,7 @@ other modes based on Text mode:
 </pre></div>
 
 <p>This works by calling <code>auto-fill-mode</code>, which enables the minor
-mode when no argument is supplied (see <a href="Minor-Modes.html#Minor-Modes">Minor Modes</a>).  Next,
+mode when no argument is supplied (see <a href="Minor-Modes.html">Minor Modes</a>).  Next,
 suppose you don&rsquo;t want Auto Fill mode turned on in LaTeX mode,
 which is one of the modes based on Text mode.  You can do this with
 the following additional line:
@@ -130,7 +119,7 @@ the following additional line:
 </pre></div>
 
 <p>Here we have used the special macro <code>lambda</code> to construct an
-anonymous function (see <a href="http://www.gnu.org/software/emacs/manual/html_node/elisp/Lambda-Expressions.html#Lambda-Expressions">Lambda Expressions</a> in <cite>The Emacs Lisp
+anonymous function (see <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Lambda-Expressions.html#Lambda-Expressions">Lambda Expressions</a> in <cite>The Emacs Lisp
 Reference Manual</cite>), which calls <code>auto-fill-mode</code> with an argument
 of <code>-1</code> to disable the minor mode.  Because LaTeX mode runs
 <code>latex-mode-hook</code> after running <code>text-mode-hook</code>, the result
@@ -151,12 +140,12 @@ customize the indentation of C code:
   (lambda () (c-add-style &quot;my-style&quot; my-c-style t)))
 </pre></div>
 
-<a name="index-Prog-mode"></a>
-<a name="index-program-editing-1"></a>
+<span id="index-Prog-mode"></span>
+<span id="index-program-editing-1"></span>
 <p>Major mode hooks also apply to other major modes <em>derived</em> from
-the original mode (see <a href="http://www.gnu.org/software/emacs/manual/html_node/elisp/Derived-Modes.html#Derived-Modes">Derived Modes</a> in <cite>The Emacs Lisp
+the original mode (see <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Derived-Modes.html#Derived-Modes">Derived Modes</a> in <cite>The Emacs Lisp
 Reference Manual</cite>).  For instance, HTML mode is derived from Text mode
-(see <a href="HTML-Mode.html#HTML-Mode">HTML Mode</a>); when HTML mode is enabled, it runs
+(see <a href="HTML-Mode.html">HTML Mode</a>); when HTML mode is enabled, it runs
 <code>text-mode-hook</code> before running <code>html-mode-hook</code>.  This
 provides a convenient way to use a single hook to affect several
 related modes.  In particular, if you want to apply a hook function to
@@ -169,14 +158,14 @@ they are executed does not matter.  Any dependence on the order is
 asking for trouble.  However, the order is predictable: the hook
 functions are executed in the order they appear in the hook.
 </p>
-<a name="index-remove_002dhook"></a>
+<span id="index-remove_002dhook"></span>
 <p>If you play with adding various different versions of a hook
 function by calling <code>add-hook</code> over and over, remember that all
 the versions you added will remain in the hook variable together.  You
 can clear out individual functions by calling <code>remove-hook</code>, or
 do <code>(setq <var>hook-variable</var> nil)</code> to remove everything.
 </p>
-<a name="index-buffer_002dlocal-hooks"></a>
+<span id="index-buffer_002dlocal-hooks"></span>
 <p>If the hook variable is buffer-local, the buffer-local variable will
 be used instead of the global variable.  However, if the buffer-local
 variable contains the element <code>t</code>, the global hook variable will
@@ -185,7 +174,7 @@ be run as well.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Locals.html#Locals" accesskey="n" rel="next">Locals</a>, Previous: <a href="Examining.html#Examining" accesskey="p" rel="prev">Examining</a>, Up: <a href="Variables.html#Variables" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html#Key-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Locals.html" accesskey="n" rel="next">Locals</a>, Previous: <a href="Examining.html" accesskey="p" rel="prev">Examining</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

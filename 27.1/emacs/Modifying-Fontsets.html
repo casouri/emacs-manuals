@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 27.1.
+
+Copyright © 1985-1987, 1993-2020 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Modifying Fontsets (GNU Emacs Manual)</title>
+
+<meta name="description" content="Modifying Fontsets (GNU Emacs Manual)">
+<meta name="keywords" content="Modifying Fontsets (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="International.html" rel="up" title="International">
+<link href="Undisplayable-Characters.html" rel="next" title="Undisplayable Characters">
+<link href="Defining-Fontsets.html" rel="prev" title="Defining Fontsets">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<span id="Modifying-Fontsets"></span><div class="header">
+<p>
+Next: <a href="Undisplayable-Characters.html" accesskey="n" rel="next">Undisplayable Characters</a>, Previous: <a href="Defining-Fontsets.html" accesskey="p" rel="prev">Defining Fontsets</a>, Up: <a href="International.html" accesskey="u" rel="up">International</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Modifying-Fontsets-1"></span><h3 class="section">22.15 Modifying Fontsets</h3>
+<span id="index-fontsets_002c-modifying"></span>
+<span id="index-set_002dfontset_002dfont"></span>
+
+<p>Fontsets do not always have to be created from scratch.  If only
+minor changes are required it may be easier to modify an existing
+fontset, usually &lsquo;<samp>fontset-default</samp>&rsquo;.  Modifying
+&lsquo;<samp>fontset-default</samp>&rsquo; will also affect other fontsets that use it as
+a fallback, so can be an effective way of fixing problems with the
+fonts that Emacs chooses for a particular script.
+</p>
+<p>Fontsets can be modified using the function <code>set-fontset-font</code>,
+specifying a character, a charset, a script, or a range of characters
+to modify the font for, and a font specification for the font to be
+used.  Some examples are:
+</p>
+<div class="example">
+<pre class="example">;; Prefer a big5 font for han characters.
+(set-fontset-font &quot;fontset-default&quot;
+                  'han (font-spec :registry &quot;big5&quot;)
+                  nil 'prepend)
+
+;; Use MyPrivateFont for the Unicode private use area.
+(set-fontset-font &quot;fontset-default&quot;  '(#xe000 . #xf8ff)
+                  &quot;MyPrivateFont&quot;)
+
+;; Use Liberation Mono for latin-3 charset.
+(set-fontset-font &quot;fontset-default&quot; 'iso-8859-3
+                  &quot;Liberation Mono&quot;)
+
+;; Use DejaVu Sans Mono as a fallback in fontset-startup
+;; before resorting to fontset-default.
+(set-fontset-font &quot;fontset-startup&quot; nil &quot;DejaVu Sans Mono&quot;
+                  nil 'append)
+</pre></div>
+
+<p>See <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Fontsets.html#Fontsets">Fontsets</a> in <cite>GNU Emacs Lisp Reference Manual</cite>, for more
+details about using the <code>set-fontset-font</code> function.
+</p>
+<span id="index-script-of-a-character"></span>
+<span id="index-codepoint-of-a-character"></span>
+<p>If you don&rsquo;t know the character&rsquo;s codepoint or the script to which it
+belongs, you can ask Emacs.  With point at the character, type
+<kbd><span class="nolinebreak">C-u</span>&nbsp;<span class="nolinebreak">C-x</span>&nbsp;=</kbd><!-- /@w --> (<code>what-cursor-position</code>), and this
+information, together with much more, will be displayed in the
+<samp>*Help*</samp> buffer that Emacs pops up.  See <a href="Position-Info.html">Position Info</a>.  For
+example, Japanese characters belong to the &lsquo;<samp>kana</samp>&rsquo; script, but
+Japanese text also mixes them with Chinese characters so the following
+uses the &lsquo;<samp>han</samp>&rsquo; script to set up Emacs to use the &lsquo;<samp>Kochi
+Gothic</samp>&rsquo; font for Japanese text:
+</p>
+<div class="example">
+<pre class="example">(set-fontset-font &quot;fontset-default&quot; 'han &quot;Kochi Gothic&quot;)
+</pre></div>
+
+<p><span id="index-CKJ-characters"></span>
+(For convenience, the &lsquo;<samp>han</samp>&rsquo; script in Emacs is set up to support
+all of the Chinese, Japanese, and Korean, a.k.a. <acronym>CJK</acronym>,
+characters, not just Chinese characters.)
+</p>
+<span id="index-script_002drepresentative_002dchars"></span>
+<p>For the list of known scripts, see the variable
+<code>script-representative-chars</code>.
+</p>
+<p>Fontset settings like those above only affect characters that the
+default font doesn&rsquo;t support, so if the &lsquo;<samp>Kochi Gothic</samp>&rsquo; font
+covers Latin characters, it will not be used for displaying Latin
+scripts, since the default font used by Emacs usually covers Basic
+Latin.
+</p>
+<span id="index-ignore-font"></span>
+<span id="index-fonts_002c-how-to-ignore"></span>
+<span id="index-face_002dignored_002dfonts"></span>
+<p>Some fonts installed on your system might be broken, or produce
+unpleasant results for characters for which they are used, and you may
+wish to instruct Emacs to completely ignore them while searching for a
+suitable font required to display a character.  You can do that by
+adding the offending fonts to the value of the variable
+<code>face-ignored-fonts</code>, which is a list.  Here&rsquo;s an example to put
+in your <samp>~/.emacs</samp>:
+</p>
+<div class="example">
+<pre class="example">(add-to-list 'face-ignored-fonts &quot;Some Bad Font&quot;)
+</pre></div>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Undisplayable-Characters.html" accesskey="n" rel="next">Undisplayable Characters</a>, Previous: <a href="Defining-Fontsets.html" accesskey="p" rel="prev">Defining Fontsets</a>, Up: <a href="International.html" accesskey="u" rel="up">International</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

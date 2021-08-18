@@ -16,7 +16,7 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Magic File Names (GNU Emacs Lisp Reference Manual)</title>
@@ -26,33 +26,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Files.html#Files" rel="up" title="Files">
-<link href="Format-Conversion.html#Format-Conversion" rel="next" title="Format Conversion">
-<link href="Create_002fDelete-Dirs.html#Create_002fDelete-Dirs" rel="prev" title="Create/Delete Dirs">
+<link href="Files.html" rel="up" title="Files">
+<link href="Format-Conversion.html" rel="next" title="Format Conversion">
+<link href="Create_002fDelete-Dirs.html" rel="prev" title="Create/Delete Dirs">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -65,27 +56,25 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Magic-File-Names"></a>
-<div class="header">
+<span id="Magic-File-Names"></span><div class="header">
 <p>
-Next: <a href="Format-Conversion.html#Format-Conversion" accesskey="n" rel="next">Format Conversion</a>, Previous: <a href="Create_002fDelete-Dirs.html#Create_002fDelete-Dirs" accesskey="p" rel="prev">Create/Delete Dirs</a>, Up: <a href="Files.html#Files" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Format-Conversion.html" accesskey="n" rel="next">Format Conversion</a>, Previous: <a href="Create_002fDelete-Dirs.html" accesskey="p" rel="prev">Create/Delete Dirs</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Making-Certain-File-Names-_0060_0060Magic_0027_0027"></a>
-<h3 class="section">24.11 Making Certain File Names &ldquo;Magic&rdquo;</h3>
-<a name="index-magic-file-names"></a>
+<span id="Making-Certain-File-Names-_0060_0060Magic_0027_0027"></span><h3 class="section">24.11 Making Certain File Names &ldquo;Magic&rdquo;</h3>
+<span id="index-magic-file-names"></span>
 
 <p>You can implement special handling for certain file names.  This is
 called making those names <em>magic</em>.  The principal use for this
-feature is in implementing access to remote files (see <a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Remote-Files.html#Remote-Files">Remote Files</a> in <cite>The GNU Emacs Manual</cite>).
+feature is in implementing access to remote files (see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Remote-Files.html#Remote-Files">Remote Files</a> in <cite>The GNU Emacs Manual</cite>).
 </p>
 <p>To define a kind of magic file name, you must supply a regular
 expression to define the class of names (all those that match the
 regular expression), plus a handler that implements all the primitive
 Emacs file operations for file names that match.
 </p>
-<a name="index-file-handler"></a>
-<a name="index-file_002dname_002dhandler_002dalist"></a>
+<span id="index-file-handler"></span>
+<span id="index-file_002dname_002dhandler_002dalist"></span>
 <p>The variable <code>file-name-handler-alist</code> holds a list of handlers,
 together with regular expressions that determine when to apply each
 handler.  Each element has this form:
@@ -203,8 +192,8 @@ certain operation, it can reinvoke the primitive, to handle the
 operation in the usual way.  It should always reinvoke the primitive
 for an operation it does not recognize.  Here&rsquo;s one way to do this:
 </p>
-<div class="smallexample">
-<pre class="smallexample">(defun my-file-handler (operation &amp;rest args)
+<div class="example">
+<pre class="example">(defun my-file-handler (operation &amp;rest args)
   ;; <span class="roman">First check for the specific operations</span>
   ;; <span class="roman">that we have special handling for.</span>
   (cond ((eq operation 'insert-file-contents) &hellip;)
@@ -229,7 +218,7 @@ shown above; the details are crucial for proper behavior in the case of
 multiple handlers, and for operations that have two file names that may
 each have handlers.
 </p>
-<a name="index-safe_002dmagic-_0028property_0029"></a>
+<span id="index-safe_002dmagic-_0028property_0029"></span>
 <p>Handlers that don&rsquo;t really do anything special for actual access to the
 file&mdash;such as the ones that implement completion of host names for
 remote file names&mdash;should have a non-<code>nil</code> <code>safe-magic</code>
@@ -239,7 +228,7 @@ file names, by prefixing them with &lsquo;<samp>/:</samp>&rsquo;.  But if the ha
 would be used for them has a non-<code>nil</code> <code>safe-magic</code>
 property, the &lsquo;<samp>/:</samp>&rsquo; is not added.
 </p>
-<a name="index-operations-_0028property_0029"></a>
+<span id="index-operations-_0028property_0029"></span>
 <p>A file name handler can have an <code>operations</code> property to
 declare which operations it handles in a nontrivial way.  If this
 property has a non-<code>nil</code> value, it should be a list of
@@ -257,18 +246,18 @@ handle <code>file-exists-p</code>, then it need not handle <code>load</code>
 nontrivially.
 </p>
 <dl>
-<dt><a name="index-inhibit_002dfile_002dname_002dhandlers"></a>Variable: <strong>inhibit-file-name-handlers</strong></dt>
+<dt id="index-inhibit_002dfile_002dname_002dhandlers">Variable: <strong>inhibit-file-name-handlers</strong></dt>
 <dd><p>This variable holds a list of handlers whose use is presently inhibited
 for a certain operation.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-inhibit_002dfile_002dname_002doperation"></a>Variable: <strong>inhibit-file-name-operation</strong></dt>
+<dt id="index-inhibit_002dfile_002dname_002doperation">Variable: <strong>inhibit-file-name-operation</strong></dt>
 <dd><p>The operation for which certain handlers are presently inhibited.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-find_002dfile_002dname_002dhandler"></a>Function: <strong>find-file-name-handler</strong> <em>file operation</em></dt>
+<dt id="index-find_002dfile_002dname_002dhandler">Function: <strong>find-file-name-handler</strong> <em>file operation</em></dt>
 <dd><p>This function returns the handler function for file name <var>file</var>,
 or <code>nil</code> if there is none.  The argument <var>operation</var> should
 be the operation to be performed on the file&mdash;the value you will pass
@@ -279,7 +268,7 @@ function returns <code>nil</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-file_002dlocal_002dcopy"></a>Function: <strong>file-local-copy</strong> <em>filename</em></dt>
+<dt id="index-file_002dlocal_002dcopy">Function: <strong>file-local-copy</strong> <em>filename</em></dt>
 <dd><p>This function copies file <var>filename</var> to an ordinary non-magic file
 on the local machine, if it isn&rsquo;t on the local machine already.  Magic
 file names should handle the <code>file-local-copy</code> operation if they
@@ -294,7 +283,7 @@ of the local copy file.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-file_002dremote_002dp"></a>Function: <strong>file-remote-p</strong> <em>filename &amp;optional identification connected</em></dt>
+<dt id="index-file_002dremote_002dp">Function: <strong>file-remote-p</strong> <em>filename &amp;optional identification connected</em></dt>
 <dd><p>This function tests whether <var>filename</var> is a remote file.  If
 <var>filename</var> is local (not remote), the return value is <code>nil</code>.
 If <var>filename</var> is indeed remote, the return value is a string that
@@ -326,10 +315,10 @@ making connections when they don&rsquo;t exist.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-unhandled_002dfile_002dname_002ddirectory"></a>Function: <strong>unhandled-file-name-directory</strong> <em>filename</em></dt>
+<dt id="index-unhandled_002dfile_002dname_002ddirectory">Function: <strong>unhandled-file-name-directory</strong> <em>filename</em></dt>
 <dd><p>This function returns the name of a directory that is not magic.  For
 a non-magic <var>filename</var> it returns the corresponding directory name
-(see <a href="Directory-Names.html#Directory-Names">Directory Names</a>).  For a magic <var>filename</var>, it invokes the
+(see <a href="Directory-Names.html">Directory Names</a>).  For a magic <var>filename</var>, it invokes the
 file name handler, which therefore decides what value to return.  If
 <var>filename</var> is not accessible from a local process, then the file
 name handler should indicate that by returning <code>nil</code>.
@@ -340,7 +329,7 @@ is a good way to come up with one.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-remote_002dfile_002dname_002dinhibit_002dcache"></a>User Option: <strong>remote-file-name-inhibit-cache</strong></dt>
+<dt id="index-remote_002dfile_002dname_002dinhibit_002dcache">User Option: <strong>remote-file-name-inhibit-cache</strong></dt>
 <dd><p>The attributes of remote files can be cached for better performance.  If
 they are changed outside of Emacs&rsquo;s control, the cached values become
 invalid, and must be reread.
@@ -370,7 +359,7 @@ between consecutive checks.  For example:
 <hr>
 <div class="header">
 <p>
-Next: <a href="Format-Conversion.html#Format-Conversion" accesskey="n" rel="next">Format Conversion</a>, Previous: <a href="Create_002fDelete-Dirs.html#Create_002fDelete-Dirs" accesskey="p" rel="prev">Create/Delete Dirs</a>, Up: <a href="Files.html#Files" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Format-Conversion.html" accesskey="n" rel="next">Format Conversion</a>, Previous: <a href="Create_002fDelete-Dirs.html" accesskey="p" rel="prev">Create/Delete Dirs</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

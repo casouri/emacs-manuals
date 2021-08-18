@@ -16,7 +16,7 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Void Variables (GNU Emacs Lisp Reference Manual)</title>
@@ -26,33 +26,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Variables.html#Variables" rel="up" title="Variables">
-<link href="Defining-Variables.html#Defining-Variables" rel="next" title="Defining Variables">
-<link href="Local-Variables.html#Local-Variables" rel="prev" title="Local Variables">
+<link href="Variables.html" rel="up" title="Variables">
+<link href="Defining-Variables.html" rel="next" title="Defining Variables">
+<link href="Local-Variables.html" rel="prev" title="Local Variables">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -65,21 +56,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Void-Variables"></a>
-<div class="header">
+<span id="Void-Variables"></span><div class="header">
 <p>
-Next: <a href="Defining-Variables.html#Defining-Variables" accesskey="n" rel="next">Defining Variables</a>, Previous: <a href="Local-Variables.html#Local-Variables" accesskey="p" rel="prev">Local Variables</a>, Up: <a href="Variables.html#Variables" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Defining-Variables.html" accesskey="n" rel="next">Defining Variables</a>, Previous: <a href="Local-Variables.html" accesskey="p" rel="prev">Local Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="When-a-Variable-is-Void"></a>
-<h3 class="section">11.4 When a Variable is Void</h3>
-<a name="index-void_002dvariable-error"></a>
-<a name="index-void-variable"></a>
+<span id="When-a-Variable-is-Void"></span><h3 class="section">11.4 When a Variable is Void</h3>
+<span id="index-void_002dvariable-error"></span>
+<span id="index-void-variable"></span>
 
 <p>We say that a variable is void if its symbol has an unassigned value
-cell (see <a href="Symbol-Components.html#Symbol-Components">Symbol Components</a>).
+cell (see <a href="Symbol-Components.html">Symbol Components</a>).
 </p>
-<p>Under Emacs Lisp&rsquo;s default dynamic scoping rule (see <a href="Variable-Scoping.html#Variable-Scoping">Variable Scoping</a>), the value cell stores the variable&rsquo;s current (local or
+<p>Under Emacs Lisp&rsquo;s default dynamic scoping rule (see <a href="Variable-Scoping.html">Variable Scoping</a>), the value cell stores the variable&rsquo;s current (local or
 global) value.  Note that an unassigned value cell is <em>not</em> the
 same as having <code>nil</code> in the value cell.  The symbol <code>nil</code> is
 a Lisp object and can be the value of a variable, just as any other
@@ -94,7 +83,7 @@ determined by the lexical environment; hence, variables can have local
 values even if their symbols&rsquo; value cells are unassigned.
 </p>
 <dl>
-<dt><a name="index-makunbound"></a>Function: <strong>makunbound</strong> <em>symbol</em></dt>
+<dt id="index-makunbound">Function: <strong>makunbound</strong> <em>symbol</em></dt>
 <dd><p>This function empties out the value cell of <var>symbol</var>, making the
 variable void.  It returns <var>symbol</var>.
 </p>
@@ -106,14 +95,14 @@ unless the reexposed binding is void too.
 </p>
 <p>Here are some examples (assuming dynamic binding is in effect):
 </p>
-<div class="smallexample">
-<pre class="smallexample">(setq x 1)               ; <span class="roman">Put a value in the global binding.</span>
+<div class="example">
+<pre class="example">(setq x 1)               ; <span class="roman">Put a value in the global binding.</span>
      &rArr; 1
 (let ((x 2))             ; <span class="roman">Locally bind it.</span>
   (makunbound 'x)        ; <span class="roman">Void the local binding.</span>
   x)
 error&rarr; Symbol's value as variable is void: x
-</pre><pre class="smallexample">x                        ; <span class="roman">The global binding is unchanged.</span>
+</pre><pre class="example">x                        ; <span class="roman">The global binding is unchanged.</span>
      &rArr; 1
 
 (let ((x 2))             ; <span class="roman">Locally bind it.</span>
@@ -121,9 +110,9 @@ error&rarr; Symbol's value as variable is void: x
     (makunbound 'x)      ; <span class="roman">Void the innermost-local binding.</span>
     x))                  ; <span class="roman">And refer: it&rsquo;s void.</span>
 error&rarr; Symbol's value as variable is void: x
-</pre><pre class="smallexample">
+</pre><pre class="example">
 
-</pre><pre class="smallexample">(let ((x 2))
+</pre><pre class="example">(let ((x 2))
   (let ((x 3))
     (makunbound 'x))     ; <span class="roman">Void inner binding, then remove it.</span>
   x)                     ; <span class="roman">Now outer <code>let</code> binding is visible.</span>
@@ -132,23 +121,23 @@ error&rarr; Symbol's value as variable is void: x
 </dd></dl>
 
 <dl>
-<dt><a name="index-boundp"></a>Function: <strong>boundp</strong> <em>variable</em></dt>
+<dt id="index-boundp">Function: <strong>boundp</strong> <em>variable</em></dt>
 <dd><p>This function returns <code>t</code> if <var>variable</var> (a symbol) is not
 void, and <code>nil</code> if it is void.
 </p>
 <p>Here are some examples (assuming dynamic binding is in effect):
 </p>
-<div class="smallexample">
-<pre class="smallexample">(boundp 'abracadabra)          ; <span class="roman">Starts out void.</span>
+<div class="example">
+<pre class="example">(boundp 'abracadabra)          ; <span class="roman">Starts out void.</span>
      &rArr; nil
-</pre><pre class="smallexample">(let ((abracadabra 5))         ; <span class="roman">Locally bind it.</span>
+</pre><pre class="example">(let ((abracadabra 5))         ; <span class="roman">Locally bind it.</span>
   (boundp 'abracadabra))
      &rArr; t
-</pre><pre class="smallexample">(boundp 'abracadabra)          ; <span class="roman">Still globally void.</span>
+</pre><pre class="example">(boundp 'abracadabra)          ; <span class="roman">Still globally void.</span>
      &rArr; nil
-</pre><pre class="smallexample">(setq abracadabra 5)           ; <span class="roman">Make it globally nonvoid.</span>
+</pre><pre class="example">(setq abracadabra 5)           ; <span class="roman">Make it globally nonvoid.</span>
      &rArr; 5
-</pre><pre class="smallexample">(boundp 'abracadabra)
+</pre><pre class="example">(boundp 'abracadabra)
      &rArr; t
 </pre></div>
 </dd></dl>
@@ -156,7 +145,7 @@ void, and <code>nil</code> if it is void.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Defining-Variables.html#Defining-Variables" accesskey="n" rel="next">Defining Variables</a>, Previous: <a href="Local-Variables.html#Local-Variables" accesskey="p" rel="prev">Local Variables</a>, Up: <a href="Variables.html#Variables" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Defining-Variables.html" accesskey="n" rel="next">Defining Variables</a>, Previous: <a href="Local-Variables.html" accesskey="p" rel="prev">Local Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

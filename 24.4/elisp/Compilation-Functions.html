@@ -16,7 +16,7 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Compilation Functions (GNU Emacs Lisp Reference Manual)</title>
@@ -26,33 +26,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Byte-Compilation.html#Byte-Compilation" rel="up" title="Byte Compilation">
-<link href="Docs-and-Compilation.html#Docs-and-Compilation" rel="next" title="Docs and Compilation">
-<link href="Speed-of-Byte_002dCode.html#Speed-of-Byte_002dCode" rel="prev" title="Speed of Byte-Code">
+<link href="Byte-Compilation.html" rel="up" title="Byte Compilation">
+<link href="Docs-and-Compilation.html" rel="next" title="Docs and Compilation">
+<link href="Speed-of-Byte_002dCode.html" rel="prev" title="Speed of Byte-Code">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -65,15 +56,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Compilation-Functions"></a>
-<div class="header">
+<span id="Compilation-Functions"></span><div class="header">
 <p>
-Next: <a href="Docs-and-Compilation.html#Docs-and-Compilation" accesskey="n" rel="next">Docs and Compilation</a>, Previous: <a href="Speed-of-Byte_002dCode.html#Speed-of-Byte_002dCode" accesskey="p" rel="prev">Speed of Byte-Code</a>, Up: <a href="Byte-Compilation.html#Byte-Compilation" accesskey="u" rel="up">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Docs-and-Compilation.html" accesskey="n" rel="next">Docs and Compilation</a>, Previous: <a href="Speed-of-Byte_002dCode.html" accesskey="p" rel="prev">Speed of Byte-Code</a>, Up: <a href="Byte-Compilation.html" accesskey="u" rel="up">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Byte_002dCompilation-Functions"></a>
-<h3 class="section">16.2 Byte-Compilation Functions</h3>
-<a name="index-compilation-functions"></a>
+<span id="Byte_002dCompilation-Functions"></span><h3 class="section">16.2 Byte-Compilation Functions</h3>
+<span id="index-compilation-functions"></span>
 
 <p>You can byte-compile an individual function or macro definition with
 the <code>byte-compile</code> function.  You can compile a whole file with
@@ -81,36 +70,36 @@ the <code>byte-compile</code> function.  You can compile a whole file with
 <code>byte-recompile-directory</code> or <code>batch-byte-compile</code>.
 </p>
 <p>Sometimes, the byte compiler produces warning and/or error messages
-(see <a href="Compiler-Errors.html#Compiler-Errors">Compiler Errors</a>, for details).  These messages are recorded
+(see <a href="Compiler-Errors.html">Compiler Errors</a>, for details).  These messages are recorded
 in a buffer called <samp>*Compile-Log*</samp>, which uses Compilation mode.
-See <a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Compilation-Mode.html#Compilation-Mode">Compilation Mode</a> in <cite>The GNU Emacs Manual</cite>.
+See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Compilation-Mode.html#Compilation-Mode">Compilation Mode</a> in <cite>The GNU Emacs Manual</cite>.
 </p>
-<a name="index-macro-compilation"></a>
+<span id="index-macro-compilation"></span>
 <p>Be careful when writing macro calls in files that you intend to
 byte-compile.  Since macro calls are expanded when they are compiled,
 the macros need to be loaded into Emacs or the byte compiler will not
 do the right thing.  The usual way to handle this is with
 <code>require</code> forms which specify the files containing the needed
-macro definitions (see <a href="Named-Features.html#Named-Features">Named Features</a>).  Normally, the
+macro definitions (see <a href="Named-Features.html">Named Features</a>).  Normally, the
 byte compiler does not evaluate the code that it is compiling, but it
 handles <code>require</code> forms specially, by loading the specified
 libraries.  To avoid loading the macro definition files when someone
 <em>runs</em> the compiled program, write <code>eval-when-compile</code>
-around the <code>require</code> calls (see <a href="Eval-During-Compile.html#Eval-During-Compile">Eval During Compile</a>).  For
-more details, See <a href="Compiling-Macros.html#Compiling-Macros">Compiling Macros</a>.
+around the <code>require</code> calls (see <a href="Eval-During-Compile.html">Eval During Compile</a>).  For
+more details, See <a href="Compiling-Macros.html">Compiling Macros</a>.
 </p>
 <p>Inline (<code>defsubst</code>) functions are less troublesome; if you
 compile a call to such a function before its definition is known, the
 call will still work right, it will just run slower.
 </p>
 <dl>
-<dt><a name="index-byte_002dcompile"></a>Function: <strong>byte-compile</strong> <em>symbol</em></dt>
+<dt id="index-byte_002dcompile">Function: <strong>byte-compile</strong> <em>symbol</em></dt>
 <dd><p>This function byte-compiles the function definition of <var>symbol</var>,
 replacing the previous definition with the compiled one.  The function
 definition of <var>symbol</var> must be the actual code for the function;
 <code>byte-compile</code> does not handle function indirection.  The return
 value is the byte-code function object which is the compiled
-definition of <var>symbol</var> (see <a href="Byte_002dCode-Objects.html#Byte_002dCode-Objects">Byte-Code Objects</a>).
+definition of <var>symbol</var> (see <a href="Byte_002dCode-Objects.html">Byte-Code Objects</a>).
 </p>
 <div class="example">
 <pre class="example">(defun factorial (integer)
@@ -140,7 +129,7 @@ compiled code but does not store it anywhere.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-compile_002ddefun"></a>Command: <strong>compile-defun</strong> <em>&amp;optional arg</em></dt>
+<dt id="index-compile_002ddefun">Command: <strong>compile-defun</strong> <em>&amp;optional arg</em></dt>
 <dd><p>This command reads the defun containing point, compiles it, and
 evaluates the result.  If you use this on a defun that is actually a
 function definition, the effect is to install a compiled version of that
@@ -152,7 +141,7 @@ in the current buffer after the form it compiled.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-byte_002dcompile_002dfile"></a>Command: <strong>byte-compile-file</strong> <em>filename &amp;optional load</em></dt>
+<dt id="index-byte_002dcompile_002dfile">Command: <strong>byte-compile-file</strong> <em>filename &amp;optional load</em></dt>
 <dd><p>This function compiles a file of Lisp code named <var>filename</var> into a
 file of byte-code.  The output file&rsquo;s name is made by changing the
 &lsquo;<samp>.el</samp>&rsquo; suffix into &lsquo;<samp>.elc</samp>&rsquo;; if <var>filename</var> does not end in
@@ -187,8 +176,8 @@ after compiling it.  Interactively, <var>load</var> is the prefix argument.
 </dd></dl>
 
 <dl>
-<dt><a name="index-byte_002drecompile_002ddirectory"></a>Command: <strong>byte-recompile-directory</strong> <em>directory &amp;optional flag force</em></dt>
-<dd><a name="index-library-compilation"></a>
+<dt id="index-byte_002drecompile_002ddirectory">Command: <strong>byte-recompile-directory</strong> <em>directory &amp;optional flag force</em></dt>
+<dd><span id="index-library-compilation"></span>
 <p>This command recompiles every &lsquo;<samp>.el</samp>&rsquo; file in <var>directory</var> (or
 its subdirectories) that needs recompilation.  A file needs
 recompilation if a &lsquo;<samp>.elc</samp>&rsquo; file exists but is older than the
@@ -210,7 +199,7 @@ and asks about each subdirectory as well.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-batch_002dbyte_002dcompile"></a>Function: <strong>batch-byte-compile</strong> <em>&amp;optional noforce</em></dt>
+<dt id="index-batch_002dbyte_002dcompile">Function: <strong>batch-byte-compile</strong> <em>&amp;optional noforce</em></dt>
 <dd><p>This function runs <code>byte-compile-file</code> on files specified on the
 command line.  This function must be used only in a batch execution of
 Emacs, as it kills Emacs on completion.  An error in one file does not
@@ -229,7 +218,7 @@ files that have an up-to-date &lsquo;<samp>.elc</samp>&rsquo; file.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Docs-and-Compilation.html#Docs-and-Compilation" accesskey="n" rel="next">Docs and Compilation</a>, Previous: <a href="Speed-of-Byte_002dCode.html#Speed-of-Byte_002dCode" accesskey="p" rel="prev">Speed of Byte-Code</a>, Up: <a href="Byte-Compilation.html#Byte-Compilation" accesskey="u" rel="up">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Docs-and-Compilation.html" accesskey="n" rel="next">Docs and Compilation</a>, Previous: <a href="Speed-of-Byte_002dCode.html" accesskey="p" rel="prev">Speed of Byte-Code</a>, Up: <a href="Byte-Compilation.html" accesskey="u" rel="up">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

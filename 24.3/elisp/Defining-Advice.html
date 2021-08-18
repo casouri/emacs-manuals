@@ -16,7 +16,7 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Defining Advice (GNU Emacs Lisp Reference Manual)</title>
@@ -26,33 +26,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Advising-Functions.html#Advising-Functions" rel="up" title="Advising Functions">
-<link href="Around_002dAdvice.html#Around_002dAdvice" rel="next" title="Around-Advice">
-<link href="Simple-Advice.html#Simple-Advice" rel="prev" title="Simple Advice">
+<link href="Advising-Functions.html" rel="up" title="Advising Functions">
+<link href="Around_002dAdvice.html" rel="next" title="Around-Advice">
+<link href="Simple-Advice.html" rel="prev" title="Simple Advice">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -64,22 +55,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Defining-Advice"></a>
-<div class="header">
+<span id="Defining-Advice"></span><div class="header">
 <p>
-Next: <a href="Around_002dAdvice.html#Around_002dAdvice" accesskey="n" rel="next">Around-Advice</a>, Previous: <a href="Simple-Advice.html#Simple-Advice" accesskey="p" rel="prev">Simple Advice</a>, Up: <a href="Advising-Functions.html#Advising-Functions" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Around_002dAdvice.html" accesskey="n" rel="next">Around-Advice</a>, Previous: <a href="Simple-Advice.html" accesskey="p" rel="prev">Simple Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Defining-Advice-1"></a>
-<h3 class="section">17.2 Defining Advice</h3>
-<a name="index-defining-advice"></a>
-<a name="index-advice_002c-defining"></a>
+<span id="Defining-Advice-1"></span><h3 class="section">17.2 Defining Advice</h3>
+<span id="index-defining-advice"></span>
+<span id="index-advice_002c-defining"></span>
 
 <p>To define a piece of advice, use the macro <code>defadvice</code>.  A call
 to <code>defadvice</code> has the following syntax, which is based on the
 syntax of <code>defun</code> and <code>defmacro</code>, but adds more:
 </p>
-<a name="index-defadvice"></a>
+<span id="index-defadvice"></span>
 <div class="example">
 <pre class="example">(defadvice <var>function</var> (<var>class</var> <var>name</var>
                          <span class="roman">[</span><var>position</var><span class="roman">]</span> <span class="roman">[</span><var>arglist</var><span class="roman">]</span>
@@ -97,10 +86,10 @@ special forms.
 <p>In place of the argument list in an ordinary definition, an advice
 definition calls for several different pieces of information.
 </p>
-<a name="index-class-of-advice"></a>
-<a name="index-before_002dadvice"></a>
-<a name="index-after_002dadvice"></a>
-<a name="index-around_002dadvice"></a>
+<span id="index-class-of-advice"></span>
+<span id="index-before_002dadvice"></span>
+<span id="index-after_002dadvice"></span>
+<span id="index-around_002dadvice"></span>
 <p><var>class</var> specifies the <em>class</em> of the advice&mdash;one of <code>before</code>,
 <code>after</code>, or <code>around</code>.  Before-advice runs before the function
 itself; after-advice runs after the function itself; around-advice is
@@ -109,7 +98,7 @@ around-advice can override the return value by setting
 <code>ad-return-value</code>.
 </p>
 <dl>
-<dt><a name="index-ad_002dreturn_002dvalue"></a>Variable: <strong>ad-return-value</strong></dt>
+<dt id="index-ad_002dreturn_002dvalue">Variable: <strong>ad-return-value</strong></dt>
 <dd><p>While advice is executing, after the function&rsquo;s original definition has
 been executed, this variable holds its return value, which will
 ultimately be returned to the caller after finishing all the advice.
@@ -134,7 +123,7 @@ ignored when redefining an existing piece of advice.
 </p>
 <p>The optional <var>arglist</var> can be used to define the argument list for
 the sake of advice.  This becomes the argument list of the combined
-definition that is generated in order to run the advice (see <a href="Combined-Definition.html#Combined-Definition">Combined Definition</a>).  Therefore, the advice expressions can use the argument
+definition that is generated in order to run the advice (see <a href="Combined-Definition.html">Combined Definition</a>).  Therefore, the advice expressions can use the argument
 variables in this list to access argument values.
 </p>
 <p>The argument list used in advice need not be the same as the argument
@@ -143,7 +132,7 @@ that it can handle the ways the function is actually called.  If two
 pieces of advice for a function both specify an argument list, they must
 specify the same argument list.
 </p>
-<p>See <a href="Argument-Access-in-Advice.html#Argument-Access-in-Advice">Argument Access in Advice</a>, for more information about argument
+<p>See <a href="Argument-Access-in-Advice.html">Argument Access in Advice</a>, for more information about argument
 lists and advice, and a more flexible way for advice to access the
 arguments.
 </p>
@@ -158,7 +147,7 @@ advice always take effect the next time you activate advice for the
 function; this flag says to do so, for <var>function</var>, immediately after
 defining this piece of advice.
 </p>
-<a name="index-forward-advice"></a>
+<span id="index-forward-advice"></span>
 <p>This flag has no immediate effect if <var>function</var> itself is not defined yet (a
 situation known as <em>forward advice</em>), because it is impossible to
 activate an undefined function&rsquo;s advice.  However, defining
@@ -169,25 +158,25 @@ activate an undefined function&rsquo;s advice.  However, defining
 <dd><p>Protect this piece of advice against non-local exits and errors in
 preceding code and advice.  Protecting advice places it as a cleanup in
 an <code>unwind-protect</code> form, so that it will execute even if the
-previous code gets an error or uses <code>throw</code>.  See <a href="Cleanups.html#Cleanups">Cleanups</a>.
+previous code gets an error or uses <code>throw</code>.  See <a href="Cleanups.html">Cleanups</a>.
 </p>
 </dd>
 <dt><code>compile</code></dt>
 <dd><p>Compile the combined definition that is used to run the advice.  This
 flag is ignored unless <code>activate</code> is also specified.
-See <a href="Combined-Definition.html#Combined-Definition">Combined Definition</a>.
+See <a href="Combined-Definition.html">Combined Definition</a>.
 </p>
 </dd>
 <dt><code>disable</code></dt>
 <dd><p>Initially disable this piece of advice, so that it will not be used
-unless subsequently explicitly enabled.  See <a href="Enabling-Advice.html#Enabling-Advice">Enabling Advice</a>.
+unless subsequently explicitly enabled.  See <a href="Enabling-Advice.html">Enabling Advice</a>.
 </p>
 </dd>
 <dt><code>preactivate</code></dt>
 <dd><p>Activate advice for <var>function</var> when this <code>defadvice</code> is
 compiled or macroexpanded.  This generates a compiled advised definition
 according to the current advice state, which will be used during
-activation if appropriate.  See <a href="Preactivation.html#Preactivation">Preactivation</a>.
+activation if appropriate.  See <a href="Preactivation.html">Preactivation</a>.
 </p>
 <p>This is useful only if this <code>defadvice</code> is byte-compiled.
 </p></dd>
@@ -215,19 +204,19 @@ All subroutines used by the advice need to be available when the byte
 compiler expands the macro.
 </p>
 <dl>
-<dt><a name="index-ad_002dunadvise"></a>Command: <strong>ad-unadvise</strong> <em>function</em></dt>
+<dt id="index-ad_002dunadvise">Command: <strong>ad-unadvise</strong> <em>function</em></dt>
 <dd><p>This command deletes all pieces of advice from <var>function</var>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-ad_002dunadvise_002dall"></a>Command: <strong>ad-unadvise-all</strong></dt>
+<dt id="index-ad_002dunadvise_002dall">Command: <strong>ad-unadvise-all</strong></dt>
 <dd><p>This command deletes all pieces of advice from all functions.
 </p></dd></dl>
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Around_002dAdvice.html#Around_002dAdvice" accesskey="n" rel="next">Around-Advice</a>, Previous: <a href="Simple-Advice.html#Simple-Advice" accesskey="p" rel="prev">Simple Advice</a>, Up: <a href="Advising-Functions.html#Advising-Functions" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Around_002dAdvice.html" accesskey="n" rel="next">Around-Advice</a>, Previous: <a href="Simple-Advice.html" accesskey="p" rel="prev">Simple Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

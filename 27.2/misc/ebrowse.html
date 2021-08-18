@@ -1,0 +1,2565 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This file documents Ebrowse, a C++ class browser for GNU Emacs.
+
+Copyright (C) 2000-2021 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with the Front-Cover Texts being "A GNU Manual,"
+and with the Back-Cover Texts as in (a) below.  A copy of the license
+is included in the section entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>A Class Browser for C++</title>
+
+<meta name="description" content="A Class Browser for C++">
+<meta name="keywords" content="A Class Browser for C++">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="#Top" rel="start" title="Top">
+<link href="#Concept-Index" rel="index" title="Concept Index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<h1 class="settitle" align="center">A Class Browser for C++</h1>
+
+
+
+
+<span id="SEC_Contents"></span>
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="no-bullet">
+  <li><a id="toc-Introduction" href="#Overview">1 Introduction</a></li>
+  <li><a id="toc-Processing-Source-Files" href="#Generating-browser-files">2 Processing Source Files</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Specifying-Input-Files" href="#Input-files">2.1 Specifying Input Files</a></li>
+    <li><a id="toc-Changing-the-Output-File-Name" href="#Output-file">2.2 Changing the Output File Name</a></li>
+    <li><a id="toc-Structs-and-Unions" href="#Structs-and-unions">2.3 Structs and Unions</a></li>
+    <li><a id="toc-Regular-Expressions" href="#Matching">2.4 Regular Expressions</a></li>
+    <li><a id="toc-Verbose-Mode" href="#Verbosity">2.5 Verbose Mode</a></li>
+  </ul></li>
+  <li><a id="toc-Starting-to-Browse" href="#Loading-a-Tree">3 Starting to Browse</a></li>
+  <li><a id="toc-Tree-Buffers-1" href="#Tree-Buffers">4 Tree Buffers</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Viewing-and-Finding-Class-Declarations" href="#Source-Display">4.1 Viewing and Finding Class Declarations</a></li>
+    <li><a id="toc-Displaying-Members" href="#Member-Display">4.2 Displaying Members</a></li>
+    <li><a id="toc-Finding-a-Class" href="#Go-to-Class">4.3 Finding a Class</a></li>
+    <li><a id="toc-Burying-a-Tree-Buffer" href="#Quitting">4.4 Burying a Tree Buffer</a></li>
+    <li><a id="toc-Displaying-File-Names" href="#File-Name-Display">4.5 Displaying File Names</a></li>
+    <li><a id="toc-Expanding-and-Collapsing-a-Tree" href="#Expanding-and-Collapsing">4.6 Expanding and Collapsing a Tree</a></li>
+    <li><a id="toc-Changing-the-Tree-Indentation" href="#Tree-Indentation">4.7 Changing the Tree Indentation</a></li>
+    <li><a id="toc-Removing-Classes-from-the-Tree" href="#Killing-Classes">4.8 Removing Classes from the Tree</a></li>
+    <li><a id="toc-Saving-a-Tree-1" href="#Saving-a-Tree">4.9 Saving a Tree</a></li>
+    <li><a id="toc-Statistics-1" href="#Statistics">4.10 Statistics</a></li>
+    <li><a id="toc-Marking-Classes-1" href="#Marking-Classes">4.11 Marking Classes</a></li>
+  </ul></li>
+  <li><a id="toc-Member-Buffers-1" href="#Member-Buffers">5 Member Buffers</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Switching-Member-Lists-1" href="#Switching-Member-Lists">5.1 Switching Member Lists</a></li>
+    <li><a id="toc-Finding-and-Viewing-Member-Source" href="#Finding_002fViewing">5.2 Finding and Viewing Member Source</a></li>
+    <li><a id="toc-Display-of-Inherited-Members" href="#Inherited-Members">5.3 Display of Inherited Members</a></li>
+    <li><a id="toc-Searching-Members-1" href="#Searching-Members">5.4 Searching Members</a></li>
+    <li><a id="toc-Switching-to-Tree-Buffer" href="#Switching-to-Tree">5.5 Switching to Tree Buffer</a></li>
+    <li><a id="toc-Filters-1" href="#Filters">5.6 Filters</a></li>
+    <li><a id="toc-Displaying-Member-Attributes" href="#Attributes">5.7 Displaying Member Attributes</a></li>
+    <li><a id="toc-Long-and-Short-Member-Display" href="#Long-and-Short-Display">5.8 Long and Short Member Display</a></li>
+    <li><a id="toc-Display-of-Regular-Expressions" href="#Regexp-Display">5.9 Display of Regular Expressions</a></li>
+    <li><a id="toc-Displaying-Another-Class" href="#Switching-Classes">5.10 Displaying Another Class</a></li>
+    <li><a id="toc-Burying-a-Member-Buffer" href="#Killing_002fBurying">5.11 Burying a Member Buffer</a></li>
+    <li><a id="toc-Setting-the-Column-Width" href="#Column-Width">5.12 Setting the Column Width</a></li>
+    <li><a id="toc-Forced-Redisplay" href="#Redisplay">5.13 Forced Redisplay</a></li>
+    <li><a id="toc-Getting-Help-1" href="#Getting-Help">5.14 Getting Help</a></li>
+  </ul></li>
+  <li><a id="toc-Tags_002dlike-Functions-1" href="#Tags_002dlike-Functions">6 Tags-like Functions</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Finding-and-Viewing-Members" href="#Finding-and-Viewing">6.1 Finding and Viewing Members</a></li>
+    <li><a id="toc-The-Position-Stack" href="#Position-Stack">6.2 The Position Stack</a></li>
+    <li><a id="toc-Searching-and-Replacing" href="#Search-_0026-Replace">6.3 Searching and Replacing</a></li>
+    <li><a id="toc-Members-in-Files-1" href="#Members-in-Files">6.4 Members in Files</a></li>
+    <li><a id="toc-Member-Apropos" href="#Apropos">6.5 Member Apropos</a></li>
+    <li><a id="toc-Symbol-Completion-1" href="#Symbol-Completion">6.6 Symbol Completion</a></li>
+    <li><a id="toc-Quick-Member-Display" href="#Member-Buffer-Display">6.7 Quick Member Display</a></li>
+  </ul></li>
+  <li><a id="toc-GNU-Free-Documentation-License-1" href="#GNU-Free-Documentation-License">Appendix A GNU Free Documentation License</a></li>
+  <li><a id="toc-Concept-Index-1" href="#Concept-Index" rel="index">Concept Index</a></li>
+</ul>
+</div>
+
+
+<span id="Top"></span><div class="header">
+<p>
+Next: <a href="#Overview" accesskey="n" rel="next">Overview</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Ebrowse"></span><h1 class="top">Ebrowse</h1>
+
+<p>You can browse C++ class hierarchies from within Emacs by using
+Ebrowse.
+</p>
+<p>This file documents Ebrowse, a C++ class browser for GNU Emacs.
+</p>
+<p>Copyright &copy; 2000&ndash;2021 Free Software Foundation, Inc.
+</p>
+<blockquote>
+<p>Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with the Front-Cover Texts being &ldquo;A GNU Manual,&rdquo;
+and with the Back-Cover Texts as in (a) below.  A copy of the license
+is included in the section entitled &ldquo;GNU Free Documentation License&rdquo;.
+</p>
+<p>(a) The FSF&rsquo;s Back-Cover Text is: &ldquo;You have the freedom to copy and
+modify this GNU manual.&rdquo;
+</p></blockquote>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Overview" accesskey="1">Overview</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">What is it and how does it work?
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Generating-browser-files" accesskey="2">Generating browser files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to process C++ source files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Loading-a-Tree" accesskey="3">Loading a Tree</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to start browsing
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Tree-Buffers" accesskey="4">Tree Buffers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Traversing class hierarchies
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Member-Buffers" accesskey="5">Member Buffers</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Looking at member information
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Tags_002dlike-Functions" accesskey="6">Tags-like Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Finding members from source files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#GNU-Free-Documentation-License" accesskey="7">GNU Free Documentation License</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The license for this documentation.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Concept-Index" rel="index" accesskey="8">Concept Index</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">An entry for each concept defined
+</td></tr>
+</table>
+
+
+
+
+<hr>
+<span id="Overview"></span><div class="header">
+<p>
+Next: <a href="#Generating-browser-files" accesskey="n" rel="next">Generating browser files</a>, Previous: <a href="#Top" accesskey="p" rel="prev">Top</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Introduction"></span><h2 class="chapter">1 Introduction</h2>
+
+<p>When working in software projects using C++, I frequently missed
+software support for two things:
+</p>
+<ul>
+<li> When you get a new class library, or you have to work on source code you
+haven&rsquo;t written yourself (or written sufficiently long ago), you need a
+tool to let you navigate class hierarchies and investigate
+features of the software.  Without such a tool you often end up
+<code>grep</code>ing through dozens or even hundreds of files.
+
+</li><li> Once you are productive, it would be nice to have a tool that knows your
+sources and can help you while you are editing source code.  Imagine to
+be able to jump to the definition of an identifier while you are
+editing, or something that can complete long identifier names because it
+knows what identifiers are defined in your program&hellip;.
+</li></ul>
+
+<p>The design of Ebrowse reflects these two needs.
+</p>
+<p>How does it work?
+</p>
+<span id="index-parser-for-C_002b_002b-sources"></span>
+<p>A fast parser written in C is used to process C++ source files.
+The parser generates a data base containing information about classes,
+members, global functions, defines, types etc. found in the sources.
+</p>
+<p>The second part of Ebrowse is a Lisp program.  This program reads
+the data base generated by the parser.  It displays its contents in
+various forms and allows you to perform operations on it, or do
+something with the help of the knowledge contained in the data base.
+</p>
+<span id="index-major-modes_002c-of-Ebrowse-buffers"></span>
+<p><em>Navigational</em> use of Ebrowse is centered around two
+types of buffers which define their own major modes:
+</p>
+<span id="index-tree-buffer"></span>
+<p><em>Tree buffers</em> are used to view class hierarchies in tree form.
+They allow you to quickly find classes, find or view class declarations,
+perform operations like query replace on sets of your source files, and
+finally tree buffers are used to produce the second buffer form&mdash;member
+buffers.  See <a href="#Tree-Buffers">Tree Buffers</a>.
+</p>
+<span id="index-member-buffer"></span>
+<p>Members are displayed in <em>member buffers</em>.  Ebrowse
+distinguishes between six different types of members; each type is
+displayed as a member list of its own:
+</p>
+<ul>
+<li> Instance member variables;
+
+</li><li> Instance member functions;
+
+</li><li> Static member variables;
+
+</li><li> Static member functions;
+
+</li><li> Friends/Defines.  The list of defines is contained in the friends
+list of the pseudo-class &lsquo;<samp>*Globals*</samp>&rsquo;;
+
+</li><li> Types (<code>enum</code>s, and <code>typedef</code>s defined with class
+scope).
+</li></ul>
+
+<p>You can switch member buffers from one list to another, or to another
+class.  You can include inherited members in the display, you can set
+filters that remove categories of members from the display, and most
+importantly you can find or view member declarations and definitions
+with a keystroke.  See <a href="#Member-Buffers">Member Buffers</a>.
+</p>
+<p>These two buffer types and the commands they provide support the
+navigational use of the browser.  The second form resembles Emacs&rsquo;s Tags
+package for C and other procedural languages.  Ebrowse&rsquo;s commands of
+this type are not confined to special buffers; they are most often used
+while you are editing your source code.
+</p>
+<p>To list just a subset of what you can use the Tags part of Ebrowse for:
+</p>
+<ul>
+<li> Jump to the definition or declaration of an identifier in your source
+code, with an electric position stack that lets you easily navigate
+back and forth.
+
+</li><li> Complete identifiers in your source with a completion list containing
+identifiers from your source code only.
+
+</li><li> Perform search and query replace operations over some or all of your
+source files.
+
+</li><li> Show all identifiers matching a regular expression&mdash;and jump to one of
+them, if you like.
+</li></ul>
+
+
+
+
+<hr>
+<span id="Generating-browser-files"></span><div class="header">
+<p>
+Next: <a href="#Loading-a-Tree" accesskey="n" rel="next">Loading a Tree</a>, Previous: <a href="#Overview" accesskey="p" rel="prev">Overview</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Processing-Source-Files"></span><h2 class="chapter">2 Processing Source Files</h2>
+
+<span id="index-ebrowse_002c-the-program"></span>
+<span id="index-class-data-base-creation"></span>
+<p>Before you can start browsing a class hierarchy, you must run the parser
+<code>ebrowse</code> on your source files in order to generate a Lisp data
+base describing your program.
+</p>
+<span id="index-command-line-for-ebrowse"></span>
+<p>The operation of <code>ebrowse</code> can be tailored with command line
+options.  Under normal circumstances it suffices to let the parser use
+its default settings.  If you want to do that, call it with a command
+line like:
+</p>
+<div class="example">
+<pre class="example">ebrowse *.h *.cc
+</pre></div>
+
+<p>or, if your shell doesn&rsquo;t allow all the file names to be specified on
+the command line,
+</p>
+<div class="example">
+<pre class="example">ebrowse --files=<var>file</var>
+</pre></div>
+
+<p>where <var>file</var> contains the names of the files to be parsed, one
+per line.
+</p>
+<span id="index-_002d_002dhelp"></span>
+<p>When invoked with option &lsquo;<samp>--help</samp>&rsquo;, <code>ebrowse</code> prints a list of
+available command line options.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Input-files" accesskey="1">Input files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Specifying which files to parse
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Output-file" accesskey="2">Output file</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Changing the output file name
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Structs-and-unions" accesskey="3">Structs and unions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Omitting <code>struct</code>s and <code>union</code>s
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Matching" accesskey="4">Matching</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Setting regular expression lengths
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Verbosity" accesskey="5">Verbosity</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Getting feedback for lengthy operations
+</td></tr>
+</table>
+
+
+
+
+<hr>
+<span id="Input-files"></span><div class="header">
+<p>
+Next: <a href="#Output-file" accesskey="n" rel="next">Output file</a>, Up: <a href="#Generating-browser-files" accesskey="u" rel="up">Generating browser files</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Specifying-Input-Files"></span><h3 class="section">2.1 Specifying Input Files</h3>
+
+<dl compact="compact">
+<dd><span id="index-input-files_002c-for-ebrowse"></span>
+</dd>
+<dt>&lsquo;<samp>file</samp>&rsquo;</dt>
+<dd><p>Each file name on the command line tells <code>ebrowse</code> to parse
+that file.
+</p>
+<span id="index-response-files"></span>
+<span id="index-_002d_002dfiles"></span>
+</dd>
+<dt>&lsquo;<samp>--files=<var>file</var></samp>&rsquo;</dt>
+<dd><p>This command line switch specifies that <var>file</var> contains a list of
+file names to parse.  Each line in <var>file</var> must contain one file
+name.  More than one option of this kind is allowed.  You might, for
+instance, want to use one file for header files, and another for source
+files.
+</p>
+<span id="index-standard-input_002c-specifying-input-files"></span>
+</dd>
+<dt>&lsquo;<samp>standard input</samp>&rsquo;</dt>
+<dd><p>When <code>ebrowse</code> finds no file names on the command line, and no
+&lsquo;<samp>--file</samp>&rsquo; option is specified, it reads file names from standard
+input.  This is sometimes convenient when <code>ebrowse</code> is used as part
+of a command pipe.
+</p>
+<span id="index-_002d_002dsearch_002dpath"></span>
+</dd>
+<dt>&lsquo;<samp>--search-path=<var>paths</var></samp>&rsquo;</dt>
+<dd><p>This option lets you specify search paths for your input files.
+<var>paths</var> is a list of directories, separated by
+either a colon or a semicolon, depending on the operating system.
+</p></dd>
+</dl>
+
+<span id="index-header-files"></span>
+<span id="index-friend-functions"></span>
+<p>It is generally a good idea to specify input files so that header files
+are parsed before source files.  This facilitates the parser&rsquo;s work of
+properly identifying friend functions of a class.
+</p>
+
+
+<hr>
+<span id="Output-file"></span><div class="header">
+<p>
+Next: <a href="#Structs-and-unions" accesskey="n" rel="next">Structs and unions</a>, Previous: <a href="#Input-files" accesskey="p" rel="prev">Input files</a>, Up: <a href="#Generating-browser-files" accesskey="u" rel="up">Generating browser files</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Changing-the-Output-File-Name"></span><h3 class="section">2.2 Changing the Output File Name</h3>
+
+<dl compact="compact">
+<dd><span id="index-output-file-name"></span>
+<span id="index-_002d_002doutput_002dfile"></span>
+<span id="index-BROWSE-file"></span>
+</dd>
+<dt>&lsquo;<samp>--output-file=<var>file</var></samp>&rsquo;</dt>
+<dd><p>This option instructs <code>ebrowse</code> to generate a Lisp data base with
+name <var>file</var>.  By default, the data base is named <samp>BROWSE</samp>, and
+is written in the directory in which <code>ebrowse</code> is invoked.
+</p>
+<p>If you regularly use data base names different from the default, you
+might want to add this to your init file:
+</p>
+<div class="lisp">
+<pre class="lisp">(add-to-list 'auto-mode-alist '(<var>NAME</var> . ebrowse-tree-mode))
+</pre></div>
+
+<p>where <var>NAME</var> is the Lisp data base name you are using.
+</p>
+<span id="index-_002d_002dappend"></span>
+<span id="index-appending-output-to-class-data-base"></span>
+</dd>
+<dt>&lsquo;<samp>--append</samp>&rsquo;</dt>
+<dd><p>By default, each run of <code>ebrowse</code> erases the old contents of the
+output file when writing to it.  You can instruct <code>ebrowse</code> to
+append its output to an existing file produced by <code>ebrowse</code>
+with this command line option.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Structs-and-unions"></span><div class="header">
+<p>
+Next: <a href="#Matching" accesskey="n" rel="next">Matching</a>, Previous: <a href="#Output-file" accesskey="p" rel="prev">Output file</a>, Up: <a href="#Generating-browser-files" accesskey="u" rel="up">Generating browser files</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Structs-and-Unions"></span><h3 class="section">2.3 Structs and Unions</h3>
+<span id="index-structs"></span>
+<span id="index-unions"></span>
+
+<dl compact="compact">
+<dd><span id="index-_002d_002dno_002dstructs_002dor_002dunions"></span>
+</dd>
+<dt>&lsquo;<samp>--no-structs-or-unions</samp>&rsquo;</dt>
+<dd><p>This switch suppresses all classes in the data base declared as
+<code>struct</code> or <code>union</code> in the output.
+</p>
+<p>This is mainly useful when you are converting an existing
+C program to C++, and do not want to see the old C structs in a class
+tree.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Matching"></span><div class="header">
+<p>
+Next: <a href="#Verbosity" accesskey="n" rel="next">Verbosity</a>, Previous: <a href="#Structs-and-unions" accesskey="p" rel="prev">Structs and unions</a>, Up: <a href="#Generating-browser-files" accesskey="u" rel="up">Generating browser files</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Regular-Expressions"></span><h3 class="section">2.4 Regular Expressions</h3>
+
+<span id="index-regular-expressions_002c-recording"></span>
+<p>The parser <code>ebrowse</code> normally writes regular expressions to its
+output file that help the Lisp part of Ebrowse to find functions,
+variables etc. in their source files.
+</p>
+<p>You can instruct <code>ebrowse</code> to omit these regular expressions by
+calling it with the command line switch &lsquo;<samp>--no-regexps</samp>&rsquo;.
+</p>
+<p>When you do this, the Lisp part of Ebrowse tries to guess, from member
+or class names, suitable regular expressions to locate that class or
+member in source files.  This works fine in most cases, but the
+automatic generation of regular expressions can be too weak if unusual
+coding styles are used.
+</p>
+<dl compact="compact">
+<dd><span id="index-_002d_002dno_002dregexps"></span>
+</dd>
+<dt>&lsquo;<samp>--no-regexps</samp>&rsquo;</dt>
+<dd><p>This option turns off regular expression recording.
+</p>
+<span id="index-_002d_002dmin_002dregexp_002dlength"></span>
+<span id="index-minimum-regexp-length-for-recording"></span>
+</dd>
+<dt>&lsquo;<samp>--min-regexp-length=<var>n</var></samp>&rsquo;</dt>
+<dd><p>The number <var>n</var> following this option specifies the minimum length of
+the regular expressions recorded to match class and member declarations
+and definitions.  The default value is set at compilation time of
+<code>ebrowse</code>.
+</p>
+<p>The smaller the minimum length, the higher the probability that
+Ebrowse will find a wrong match.  The larger the value, the
+larger the output file and therefore the memory consumption once the
+file is read from Emacs.
+</p>
+<span id="index-_002d_002dmax_002dregexp_002dlength"></span>
+<span id="index-maximum-regexp-length-for-recording"></span>
+</dd>
+<dt>&lsquo;<samp>--max-regexp-length=<var>n</var></samp>&rsquo;</dt>
+<dd><p>The number following this option specifies the maximum length of the
+regular expressions used to match class and member declarations and
+definitions.  The default value is set at compilation time of
+<code>ebrowse</code>.
+</p>
+<p>The larger the maximum length, the higher the probability that the
+browser will find a correct match, but the larger the value the larger
+the output file and therefore the memory consumption once the data is
+read.  As a second effect, the larger the regular expression, the higher
+the probability that it will no longer match after editing the file.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Verbosity"></span><div class="header">
+<p>
+Previous: <a href="#Matching" accesskey="p" rel="prev">Matching</a>, Up: <a href="#Generating-browser-files" accesskey="u" rel="up">Generating browser files</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Verbose-Mode"></span><h3 class="section">2.5 Verbose Mode</h3>
+<span id="index-verbose-operation"></span>
+
+<dl compact="compact">
+<dd><span id="index-_002d_002dverbose"></span>
+</dd>
+<dt>&lsquo;<samp>--verbose</samp>&rsquo;</dt>
+<dd><p>When this option is specified on the command line, <code>ebrowse</code> prints
+a period for each file parsed, and it displays a &lsquo;<samp>+</samp>&rsquo; for each
+class written to the output file.
+</p>
+<span id="index-_002d_002dvery_002dverbose"></span>
+</dd>
+<dt>&lsquo;<samp>--very-verbose</samp>&rsquo;</dt>
+<dd><p>This option makes <code>ebrowse</code> print out the names of the files and
+the names of the classes seen.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Loading-a-Tree"></span><div class="header">
+<p>
+Next: <a href="#Tree-Buffers" accesskey="n" rel="next">Tree Buffers</a>, Previous: <a href="#Generating-browser-files" accesskey="p" rel="prev">Generating browser files</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Starting-to-Browse"></span><h2 class="chapter">3 Starting to Browse</h2>
+<span id="index-loading"></span>
+<span id="index-browsing"></span>
+
+<p>You start browsing a class hierarchy parsed by <code>ebrowse</code> by just
+finding the <samp>BROWSE</samp> file with <kbd>C-x C-f</kbd>.
+</p>
+<p>An example of a tree buffer display is shown below.
+</p>
+<div class="example">
+<pre class="example">|  Collection
+|    IndexedCollection
+|      Array
+|        FixedArray
+|    Set
+|    Dictionary
+</pre></div>
+
+<span id="index-mouse-highlight-in-tree-buffers"></span>
+<p>When you run Emacs on a display which supports colors and the mouse, you
+will notice that certain areas in the tree buffer are highlighted
+when you move the mouse over them.  This highlight marks mouse-sensitive
+regions in the buffer.  Please notice the help strings in the echo area
+when the mouse moves over a sensitive region.
+</p>
+<span id="index-context-menu"></span>
+<p>A click with <kbd>mouse-3</kbd> on a mouse-sensitive region opens a context
+menu.  In addition to this, each buffer also has a buffer-specific menu
+that is opened with a click with <kbd>mouse-3</kbd> somewhere in the buffer
+where no highlight is displayed.
+</p>
+
+
+
+<hr>
+<span id="Tree-Buffers"></span><div class="header">
+<p>
+Next: <a href="#Member-Buffers" accesskey="n" rel="next">Member Buffers</a>, Previous: <a href="#Loading-a-Tree" accesskey="p" rel="prev">Loading a Tree</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Tree-Buffers-1"></span><h2 class="chapter">4 Tree Buffers</h2>
+<span id="index-tree-buffer-mode"></span>
+<span id="index-class-trees"></span>
+
+<p>Class trees are displayed in <em>tree buffers</em> which install their own
+major mode.  Most Emacs keys work in tree buffers in the usual way,
+e.g., you can move around in the buffer with the usual <kbd>C-f</kbd>,
+<kbd>C-v</kbd> etc., or you can search with <kbd>C-s</kbd>.
+</p>
+<p>Tree-specific commands are bound to simple keystrokes, similar to
+<code>Gnus</code>.  You can take a look at the key bindings by entering
+<kbd>?</kbd> which calls <code>M-x describe-mode</code> in both tree and member
+buffers.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Source-Display" accesskey="1">Source Display</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Viewing and finding a class declaration
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Member-Display" accesskey="2">Member Display</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Showing members, switching to member buffers
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Go-to-Class" accesskey="3">Go to Class</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Finding a class
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Quitting" accesskey="4">Quitting</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Discarding and burying the tree buffer
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#File-Name-Display" accesskey="5">File Name Display</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Showing file names in the tree
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Expanding-and-Collapsing" accesskey="6">Expanding and Collapsing</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Expanding and collapsing branches
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Tree-Indentation" accesskey="7">Tree Indentation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Changing the tree indentation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Killing-Classes" accesskey="8">Killing Classes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Removing class from the tree
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Saving-a-Tree" accesskey="9">Saving a Tree</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Saving a modified tree
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Statistics">Statistics</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Displaying class tree statistics
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Marking-Classes">Marking Classes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Marking and unmarking classes
+</td></tr>
+</table>
+
+
+
+<hr>
+<span id="Source-Display"></span><div class="header">
+<p>
+Next: <a href="#Member-Display" accesskey="n" rel="next">Member Display</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Viewing-and-Finding-Class-Declarations"></span><h3 class="section">4.1 Viewing and Finding Class Declarations</h3>
+<span id="index-viewing_002c-class"></span>
+<span id="index-finding-a-class"></span>
+<span id="index-class-declaration"></span>
+
+<p>You can view or find a class declaration when the cursor is on a class
+name.
+</p>
+<dl compact="compact">
+<dt><kbd><span class="key">SPC</span></kbd></dt>
+<dd><p>This command views the class declaration if the database
+contains information about it.  If you don&rsquo;t parse the entire source
+you are working on, some classes will only be known to exist but the
+location of their declarations and definitions will not be known.
+</p>
+</dd>
+<dt><kbd><span class="key">RET</span></kbd></dt>
+<dd><p>Works like <kbd><span class="key">SPC</span></kbd>, except that it finds the class
+declaration rather than viewing it, so that it is ready for
+editing.
+</p></dd>
+</dl>
+
+<p>The same functionality is available from the menu opened with
+<kbd>mouse-3</kbd> on the class name.
+</p>
+
+
+
+<hr>
+<span id="Member-Display"></span><div class="header">
+<p>
+Next: <a href="#Go-to-Class" accesskey="n" rel="next">Go to Class</a>, Previous: <a href="#Source-Display" accesskey="p" rel="prev">Source Display</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Displaying-Members"></span><h3 class="section">4.2 Displaying Members</h3>
+<span id="index-_002aMembers_002a-buffer"></span>
+<span id="index-_002aGlobals_002a"></span>
+<span id="index-freezing-a-member-buffer"></span>
+<span id="index-member-lists_002c-in-tree-buffers"></span>
+
+<p>Ebrowse distinguishes six different kinds of members, each of
+which is displayed as a separate <em>member list</em>: instance variables,
+instance functions, static variables, static functions, friend
+functions, and types.
+</p>
+<p>Each of these lists can be displayed in a member buffer with a command
+starting with <kbd>L</kbd> when the cursor is on a class name.  By default,
+there is only one member buffer named <em>*Members*</em> that is reused
+each time you display a member list&mdash;this has proven to be more
+practical than to clutter up the buffer list with dozens of member
+buffers.
+</p>
+<p>If you want to display more than one member list at a time you can
+<em>freeze</em> its member buffer. Freezing a member buffer prevents it
+from being overwritten the next time you display a member list. You can
+toggle this buffer status at any time.
+</p>
+<p>Every member list display command in the tree buffer can be used with a
+prefix argument (<kbd>C-u</kbd>).  Without a prefix argument, the command will
+pop to a member buffer displaying the member list.  With prefix argument,
+the member buffer will additionally be <em>frozen</em>.
+</p>
+<dl compact="compact">
+<dd><span id="index-instance-member-variables_002c-list"></span>
+</dd>
+<dt><kbd>L v</kbd></dt>
+<dd><p>This command displays the list of instance member variables.
+</p>
+<span id="index-static-variables_002c-list"></span>
+</dd>
+<dt><kbd>L V</kbd></dt>
+<dd><p>Display the list of static variables.
+</p>
+<span id="index-friend-functions_002c-list"></span>
+</dd>
+<dt><kbd>L d</kbd></dt>
+<dd><p>Display the list of friend functions.  This list is used for defines if
+you are viewing the class &lsquo;<samp>*Globals*</samp>&rsquo; which is a place holder for
+global symbols.
+</p>
+<span id="index-member-functions_002c-list"></span>
+</dd>
+<dt><kbd>L f</kbd></dt>
+<dd><p>Display the list of member functions.
+</p>
+<span id="index-static-member-functions_002c-list"></span>
+</dd>
+<dt><kbd>L F</kbd></dt>
+<dd><p>Display the list of static member functions.
+</p>
+<span id="index-types_002c-list"></span>
+</dd>
+<dt><kbd>L t</kbd></dt>
+<dd><p>Display a list of types.
+</p></dd>
+</dl>
+
+<p>These lists are also available from the class&rsquo; context menu invoked with
+<kbd>mouse-3</kbd> on the class name.
+</p>
+
+
+
+<hr>
+<span id="Go-to-Class"></span><div class="header">
+<p>
+Next: <a href="#Quitting" accesskey="n" rel="next">Quitting</a>, Previous: <a href="#Member-Display" accesskey="p" rel="prev">Member Display</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Finding-a-Class"></span><h3 class="section">4.3 Finding a Class</h3>
+<span id="index-locate-class"></span>
+<span id="index-expanding-branches"></span>
+<span id="index-class-location"></span>
+
+<dl compact="compact">
+<dd><span id="index-search-for-class"></span>
+</dd>
+<dt><kbd>/</kbd></dt>
+<dd><p>This command reads a class name from the minibuffer with completion and
+positions the cursor on the class in the class tree.
+</p>
+<p>If the branch of the class tree containing the class searched for is
+currently collapsed, the class itself and all its base classes are
+recursively made visible.  (See also <a href="#Expanding-and-Collapsing">Expanding and Collapsing</a>.)
+</p>
+<p>This function is also available from the tree buffer&rsquo;s context menu.
+</p>
+</dd>
+<dt><kbd>n</kbd></dt>
+<dd><p>Repeat the last search done with <kbd>/</kbd>.  Each tree buffer has its own
+local copy of the regular expression last searched in it.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Quitting"></span><div class="header">
+<p>
+Next: <a href="#File-Name-Display" accesskey="n" rel="next">File Name Display</a>, Previous: <a href="#Go-to-Class" accesskey="p" rel="prev">Go to Class</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Burying-a-Tree-Buffer"></span><h3 class="section">4.4 Burying a Tree Buffer</h3>
+<span id="index-burying-tree-buffer"></span>
+
+<dl compact="compact">
+<dt><kbd>q</kbd></dt>
+<dd><p>Is a synonym for <kbd>M-x bury-buffer</kbd>.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="File-Name-Display"></span><div class="header">
+<p>
+Next: <a href="#Expanding-and-Collapsing" accesskey="n" rel="next">Expanding and Collapsing</a>, Previous: <a href="#Quitting" accesskey="p" rel="prev">Quitting</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Displaying-File-Names"></span><h3 class="section">4.5 Displaying File Names</h3>
+
+<dl compact="compact">
+<dd><span id="index-file-names-in-tree-buffers"></span>
+</dd>
+<dt><kbd>T f</kbd></dt>
+<dd><p>This command toggles the display of file names in a tree buffer.  If
+file name display is switched on, the names of the files containing the
+class declaration are shown to the right of the class names.  If the
+file is not known, the string &lsquo;<samp>unknown</samp>&rsquo; is displayed.
+</p>
+<p>This command is also provided in the tree buffer&rsquo;s context menu.
+</p>
+</dd>
+<dt><kbd>s</kbd></dt>
+<dd><p>Display file names for the current line, or for the number of lines
+given by a prefix argument.
+</p></dd>
+</dl>
+
+<p>Here is an example of a tree buffer with file names displayed.
+</p>
+<div class="example">
+<pre class="example">|  Collection           (unknown)
+|    IndexedCollection  (indexedcltn.h)
+|      Array            (array.h)
+|        FixedArray     (fixedarray.h)
+|    Set                (set.h)
+|    Dictionary         (dict.h)
+</pre></div>
+
+
+<hr>
+<span id="Expanding-and-Collapsing"></span><div class="header">
+<p>
+Next: <a href="#Tree-Indentation" accesskey="n" rel="next">Tree Indentation</a>, Previous: <a href="#File-Name-Display" accesskey="p" rel="prev">File Name Display</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Expanding-and-Collapsing-a-Tree"></span><h3 class="section">4.6 Expanding and Collapsing a Tree</h3>
+<span id="index-expand-tree-branch"></span>
+<span id="index-collapse-tree-branch"></span>
+<span id="index-branches-of-class-tree"></span>
+<span id="index-class-tree_002c-collapse-or-expand"></span>
+
+<p>You can expand and collapse parts of a tree to reduce the complexity of
+large class hierarchies.  Expanding or collapsing branches of a tree has
+no impact on the functionality of other commands, like <kbd>/</kbd>.  (See
+also <a href="#Go-to-Class">Go to Class</a>.)
+</p>
+<p>Collapsed branches are indicated with an ellipsis following the class
+name like in the example below.
+</p>
+<div class="example">
+<pre class="example">|  Collection
+|    IndexedCollection...
+|    Set
+|    Dictionary
+</pre></div>
+
+<dl compact="compact">
+<dt><kbd>-</kbd></dt>
+<dd><p>This command collapses the branch of the tree starting at the class the
+cursor is on.
+</p>
+</dd>
+<dt><kbd>+</kbd></dt>
+<dd><p>This command expands the branch of the tree starting at the class the
+cursor is on.  Both commands for collapsing and expanding branches are
+also available from the class&rsquo; object menu.
+</p>
+</dd>
+<dt><kbd>*</kbd></dt>
+<dd><p>This command expands all collapsed branches in the tree.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Tree-Indentation"></span><div class="header">
+<p>
+Next: <a href="#Killing-Classes" accesskey="n" rel="next">Killing Classes</a>, Previous: <a href="#Expanding-and-Collapsing" accesskey="p" rel="prev">Expanding and Collapsing</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Changing-the-Tree-Indentation"></span><h3 class="section">4.7 Changing the Tree Indentation</h3>
+<span id="index-tree-indentation"></span>
+<span id="index-indentation-of-the-tree"></span>
+
+<dl compact="compact">
+<dt><kbd>T w</kbd></dt>
+<dd><p>This command reads a new indentation width from the minibuffer and
+redisplays the tree buffer with the new indentation  It is also
+available from the tree buffer&rsquo;s context menu.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Killing-Classes"></span><div class="header">
+<p>
+Next: <a href="#Saving-a-Tree" accesskey="n" rel="next">Saving a Tree</a>, Previous: <a href="#Tree-Indentation" accesskey="p" rel="prev">Tree Indentation</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Removing-Classes-from-the-Tree"></span><h3 class="section">4.8 Removing Classes from the Tree</h3>
+<span id="index-killing-classes"></span>
+<span id="index-class_002c-remove-from-tree"></span>
+
+<dl compact="compact">
+<dt><kbd>C-k</kbd></dt>
+<dd><p>This command removes the class the cursor is on and all its derived
+classes from the tree.  The user is asked for confirmation before the
+deletion is actually performed.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Saving-a-Tree"></span><div class="header">
+<p>
+Next: <a href="#Statistics" accesskey="n" rel="next">Statistics</a>, Previous: <a href="#Killing-Classes" accesskey="p" rel="prev">Killing Classes</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Saving-a-Tree-1"></span><h3 class="section">4.9 Saving a Tree</h3>
+<span id="index-save-tree-to-a-file"></span>
+<span id="index-tree_002c-save-to-a-file"></span>
+<span id="index-class-tree_002c-save-to-a-file"></span>
+
+<dl compact="compact">
+<dt><kbd>C-x C-s</kbd></dt>
+<dd><p>This command writes a class tree to the file from which it was read.
+This is useful after classes have been deleted from a tree.
+</p>
+</dd>
+<dt><kbd>C-x C-w</kbd></dt>
+<dd><p>Writes the tree to a file whose name is read from the minibuffer.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Statistics"></span><div class="header">
+<p>
+Next: <a href="#Marking-Classes" accesskey="n" rel="next">Marking Classes</a>, Previous: <a href="#Saving-a-Tree" accesskey="p" rel="prev">Saving a Tree</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Statistics-1"></span><h3 class="section">4.10 Statistics</h3>
+<span id="index-statistics-for-a-tree"></span>
+<span id="index-tree-statistics"></span>
+<span id="index-class-statistics"></span>
+
+<dl compact="compact">
+<dt><kbd>x</kbd></dt>
+<dd><p>Display statistics for the tree, like number of classes in it, number of
+member functions, etc.  This command can also be found in the buffer&rsquo;s
+context menu.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Marking-Classes"></span><div class="header">
+<p>
+Previous: <a href="#Statistics" accesskey="p" rel="prev">Statistics</a>, Up: <a href="#Tree-Buffers" accesskey="u" rel="up">Tree Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Marking-Classes-1"></span><h3 class="section">4.11 Marking Classes</h3>
+<span id="index-marking-classes"></span>
+<span id="index-operations-on-marked-classes"></span>
+
+<p>Classes can be marked for operations similar to the standard Emacs
+commands <kbd>M-x tags-search</kbd> and <kbd>M-x tags-query-replace</kbd> (see
+also See <a href="#Tags_002dlike-Functions">Tags-like Functions</a>.)
+</p>
+<dl compact="compact">
+<dd><span id="index-toggle-mark"></span>
+</dd>
+<dt><kbd>M t</kbd></dt>
+<dd><p>Toggle the mark of the line point is in or for as many lines as given by
+a prefix command.  This command can also be found in the class&rsquo; context
+menu.
+</p>
+<span id="index-unmark-all"></span>
+</dd>
+<dt><kbd>M a</kbd></dt>
+<dd><p>Unmark all classes.  With prefix argument <kbd>C-u</kbd>, mark all classes in
+the tree. Since this command operates on the whole buffer, it can also be
+found in the buffer&rsquo;s object menu.
+</p></dd>
+</dl>
+
+<p>Marked classes are displayed with an <code>&gt;</code> in column one of the tree
+display, like in the following example
+</p>
+<div class="example">
+<pre class="example">|&gt; Collection
+|    IndexedCollection...
+|&gt;   Set
+|    Dictionary
+</pre></div>
+
+
+
+
+
+<hr>
+<span id="Member-Buffers"></span><div class="header">
+<p>
+Next: <a href="#Tags_002dlike-Functions" accesskey="n" rel="next">Tags-like Functions</a>, Previous: <a href="#Tree-Buffers" accesskey="p" rel="prev">Tree Buffers</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Member-Buffers-1"></span><h2 class="chapter">5 Member Buffers</h2>
+<span id="index-members"></span>
+<span id="index-member-buffer-mode"></span>
+
+<span id="index-class-members_002c-types"></span>
+<span id="index-types-of-class-members"></span>
+<p><em>Member buffers</em> are used to operate on lists of members of a class.
+Ebrowse distinguishes six kinds of lists:
+</p>
+<ul>
+<li> Instance variables (normal member variables);
+</li><li> Instance functions (normal member functions);
+</li><li> Static variables;
+</li><li> Static member functions;
+</li><li> Friend functions;
+</li><li> Types (<code>enum</code>s and <code>typedef</code>s defined with class scope.
+Nested classes will be shown in the class tree like normal classes.
+</li></ul>
+
+<p>Like tree buffers, member buffers install their own major mode.  Also
+like in tree buffers, menus are provided for certain areas in the
+buffer: members, classes, and the buffer itself.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Switching-Member-Lists" accesskey="1">Switching Member Lists</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Choosing which members to display
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Finding_002fViewing" accesskey="2">Finding/Viewing</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Modifying source code
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Inherited-Members" accesskey="3">Inherited Members</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Display of Inherited Members
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Searching-Members" accesskey="4">Searching Members</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Finding members in member buffer
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Switching-to-Tree" accesskey="5">Switching to Tree</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Going back to the tree buffer
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Filters" accesskey="6">Filters</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Selective member display
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Attributes" accesskey="7">Attributes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Display of <code>virtual</code> etc.
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Long-and-Short-Display" accesskey="8">Long and Short Display</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Comprehensive and verbose display
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Regexp-Display" accesskey="9">Regexp Display</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Showing matching regular expressions
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Switching-Classes">Switching Classes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Displaying another class
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Killing_002fBurying">Killing/Burying</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Getting rid of the member buffer
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Column-Width">Column Width</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Display style
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Redisplay">Redisplay</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Redrawing the member list
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Getting-Help">Getting Help</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to get help for key bindings
+</td></tr>
+</table>
+
+
+
+
+<hr>
+<span id="Switching-Member-Lists"></span><div class="header">
+<p>
+Next: <a href="#Finding_002fViewing" accesskey="n" rel="next">Finding/Viewing</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Switching-Member-Lists-1"></span><h3 class="section">5.1 Switching Member Lists</h3>
+<span id="index-member-lists_002c-in-member-buffers"></span>
+<span id="index-static-members"></span>
+<span id="index-friends"></span>
+<span id="index-types"></span>
+<span id="index-defines"></span>
+
+<dl compact="compact">
+<dd><span id="index-next-member-list"></span>
+</dd>
+<dt><kbd>L n</kbd></dt>
+<dd><p>This command switches the member buffer display to the next member list.
+</p>
+<span id="index-previous-member-list"></span>
+</dd>
+<dt><kbd>L p</kbd></dt>
+<dd><p>This command switches the member buffer display to the previous member
+list.
+</p>
+</dd>
+<dt><kbd>L f</kbd></dt>
+<dd><p>Switch to the list of member functions.
+</p>
+<span id="index-static"></span>
+</dd>
+<dt><kbd>L F</kbd></dt>
+<dd><p>Switch to the list of static member functions.
+</p>
+</dd>
+<dt><kbd>L v</kbd></dt>
+<dd><p>Switch to the list of member variables.
+</p>
+</dd>
+<dt><kbd>L V</kbd></dt>
+<dd><p>Switch to the list of static member variables.
+</p>
+</dd>
+<dt><kbd>L d</kbd></dt>
+<dd><p>Switch to the list of friends or defines.
+</p>
+</dd>
+<dt><kbd>L t</kbd></dt>
+<dd><p>Switch to the list of types.
+</p></dd>
+</dl>
+
+<p>Both commands cycle through the member list.
+</p>
+<p>Most of the commands are also available from the member buffer&rsquo;s
+context menu.
+</p>
+
+
+
+<hr>
+<span id="Finding_002fViewing"></span><div class="header">
+<p>
+Next: <a href="#Inherited-Members" accesskey="n" rel="next">Inherited Members</a>, Previous: <a href="#Switching-Member-Lists" accesskey="p" rel="prev">Switching Member Lists</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Finding-and-Viewing-Member-Source"></span><h3 class="section">5.2 Finding and Viewing Member Source</h3>
+<span id="index-finding-members_002c-in-member-buffers"></span>
+<span id="index-viewing-members_002c-in-member-buffers"></span>
+<span id="index-member-definitions_002c-in-member-buffers"></span>
+<span id="index-member-declarations_002c-in-member-buffers"></span>
+<span id="index-definition-of-a-member_002c-in-member-buffers"></span>
+<span id="index-declaration-of-a-member_002c-in-member-buffers"></span>
+
+<dl compact="compact">
+<dt><kbd><span class="key">RET</span></kbd></dt>
+<dd><p>This command finds the definition of the member the cursor is on.
+Finding involves roughly the same as the standard Emacs tags facility
+does&mdash;loading the file and searching for a regular expression matching
+the member.
+</p>
+</dd>
+<dt><kbd>f</kbd></dt>
+<dd><p>This command finds the declaration of the member the cursor is on.
+</p>
+</dd>
+<dt><kbd><span class="key">SPC</span></kbd></dt>
+<dd><p>This is the same command as <kbd><span class="key">RET</span></kbd>, but views the member definition
+instead of finding the member&rsquo;s source file.
+</p>
+</dd>
+<dt><kbd>v</kbd></dt>
+<dd><p>This is the same command as <kbd>f</kbd>, but views the member&rsquo;s declaration
+instead of finding the file the declaration is in.
+</p></dd>
+</dl>
+
+<p>You can install a hook function to perform actions after a member or
+class declaration or definition has been found, or when it is not found.
+</p>
+<p>All the commands described above can also be found in the context menu
+displayed when clicking <kbd>mouse-2</kbd> on a member name.
+</p>
+
+
+
+<hr>
+<span id="Inherited-Members"></span><div class="header">
+<p>
+Next: <a href="#Searching-Members" accesskey="n" rel="next">Searching Members</a>, Previous: <a href="#Finding_002fViewing" accesskey="p" rel="prev">Finding/Viewing</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Display-of-Inherited-Members"></span><h3 class="section">5.3 Display of Inherited Members</h3>
+<span id="index-superclasses_002c-members"></span>
+<span id="index-base-classes_002c-members"></span>
+<span id="index-inherited-members"></span>
+
+<dl compact="compact">
+<dt><kbd>D b</kbd></dt>
+<dd><p>This command toggles the display of inherited members in the member
+buffer.  This is also in the buffer&rsquo;s context menu.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Searching-Members"></span><div class="header">
+<p>
+Next: <a href="#Switching-to-Tree" accesskey="n" rel="next">Switching to Tree</a>, Previous: <a href="#Inherited-Members" accesskey="p" rel="prev">Inherited Members</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Searching-Members-1"></span><h3 class="section">5.4 Searching Members</h3>
+<span id="index-searching-members"></span>
+
+<dl compact="compact">
+<dt><kbd>G v</kbd></dt>
+<dd><p>Position the cursor on a member whose name is read from the minibuffer;
+only members shown in the current member buffer appear in the completion
+list.
+</p>
+</dd>
+<dt><kbd>G m</kbd></dt>
+<dd><p>Like the above command, but all members for the current class appear in
+the completion list.  If necessary, the current member list is switched
+to the one containing the member.
+</p>
+<p>With a prefix argument (<kbd>C-u</kbd>), all members in the class tree,
+i.e., all members the browser knows about appear in the completion
+list.  The member display will be switched to the class and member list
+containing the member.
+</p>
+</dd>
+<dt><kbd>G n</kbd></dt>
+<dd><p>Repeat the last member search.
+</p></dd>
+</dl>
+
+<p>Look into the buffer&rsquo;s context menu for a convenient way to do this with
+a mouse.
+</p>
+
+
+<hr>
+<span id="Switching-to-Tree"></span><div class="header">
+<p>
+Next: <a href="#Filters" accesskey="n" rel="next">Filters</a>, Previous: <a href="#Searching-Members" accesskey="p" rel="prev">Searching Members</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Switching-to-Tree-Buffer"></span><h3 class="section">5.5 Switching to Tree Buffer</h3>
+<span id="index-tree-buffer_002c-switch-to"></span>
+<span id="index-buffer-switching"></span>
+<span id="index-switching-buffers"></span>
+
+<dl compact="compact">
+<dt><kbd><span class="key">TAB</span></kbd></dt>
+<dd><p>Pop up the tree buffer to which the member buffer belongs.
+</p>
+</dd>
+<dt><kbd>t</kbd></dt>
+<dd><p>Do the same as <tt class="key">TAB</tt> but also position the cursor on the class
+displayed in the member buffer.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Filters"></span><div class="header">
+<p>
+Next: <a href="#Attributes" accesskey="n" rel="next">Attributes</a>, Previous: <a href="#Switching-to-Tree" accesskey="p" rel="prev">Switching to Tree</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Filters-1"></span><h3 class="section">5.6 Filters</h3>
+<span id="index-filters"></span>
+
+<dl compact="compact">
+<dd><span id="index-public-members"></span>
+</dd>
+<dt><kbd>F a u</kbd></dt>
+<dd><p>This command toggles the display of <code>public</code> members.  The
+&lsquo;<samp>a</samp>&rsquo; stands for &ldquo;access&rdquo;.
+</p>
+<span id="index-protected-members"></span>
+</dd>
+<dt><kbd>F a o</kbd></dt>
+<dd><p>This command toggles the display of <code>protected</code> members.
+</p>
+<span id="index-private-members"></span>
+</dd>
+<dt><kbd>F a i</kbd></dt>
+<dd><p>This command toggles the display of <code>private</code> members.
+</p>
+<span id="index-virtual-members"></span>
+</dd>
+<dt><kbd>F v</kbd></dt>
+<dd><p>This command toggles the display of <code>virtual</code> members.
+</p>
+<span id="index-inline-members"></span>
+</dd>
+<dt><kbd>F i</kbd></dt>
+<dd><p>This command toggles the display of <code>inline</code> members.
+</p>
+<span id="index-const-members"></span>
+</dd>
+<dt><kbd>F c</kbd></dt>
+<dd><p>This command toggles the display of <code>const</code> members.
+</p>
+<span id="index-pure-virtual-members"></span>
+</dd>
+<dt><kbd>F p</kbd></dt>
+<dd><p>This command toggles the display of pure virtual members.
+</p>
+<span id="index-remove-filters"></span>
+</dd>
+<dt><kbd>F r</kbd></dt>
+<dd><p>This command removes all filters.
+</p></dd>
+</dl>
+
+<p>These commands are also found in the buffer&rsquo;s context menu.
+</p>
+
+
+
+<hr>
+<span id="Attributes"></span><div class="header">
+<p>
+Next: <a href="#Long-and-Short-Display" accesskey="n" rel="next">Long and Short Display</a>, Previous: <a href="#Filters" accesskey="p" rel="prev">Filters</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Displaying-Member-Attributes"></span><h3 class="section">5.7 Displaying Member Attributes</h3>
+<span id="index-attributes"></span>
+<span id="index-member-attribute-display"></span>
+
+<dl compact="compact">
+<dt><kbd>D a</kbd></dt>
+<dd><p>Toggle the display of member attributes (default is on).
+</p>
+<p>The nine member attributes Ebrowse knows about are displayed
+as a list a single-characters flags enclosed in angle brackets in front
+the of the member&rsquo;s name.  A &lsquo;<samp>-</samp>&rsquo; at a given position means that
+the attribute is false.  The list of attributes from left to right is
+</p>
+<dl compact="compact">
+<dd><span id="index-template-attribute"></span>
+</dd>
+<dt>&lsquo;<samp>T</samp>&rsquo;</dt>
+<dd><p>The member is a template.
+</p>
+<span id="index-extern-_0022C_0022-attribute"></span>
+</dd>
+<dt>&lsquo;<samp>C</samp>&rsquo;</dt>
+<dd><p>The member is declared <code>extern &quot;C&quot;</code>.
+</p>
+<span id="index-virtual-attribute"></span>
+</dd>
+<dt>&lsquo;<samp>v</samp>&rsquo;</dt>
+<dd><p>Means the member is declared <code>virtual</code>.
+</p>
+<span id="index-inline"></span>
+</dd>
+<dt>&lsquo;<samp>i</samp>&rsquo;</dt>
+<dd><p>The member is declared <code>inline</code>.
+</p>
+<span id="index-const-attribute"></span>
+</dd>
+<dt>&lsquo;<samp>c</samp>&rsquo;</dt>
+<dd><p>The member is <code>const</code>.
+</p>
+<span id="index-pure-virtual-function-attribute"></span>
+</dd>
+<dt>&lsquo;<samp>0</samp>&rsquo;</dt>
+<dd><p>The member is a pure virtual function.
+</p>
+<span id="index-mutable-attribute"></span>
+</dd>
+<dt>&lsquo;<samp>m</samp>&rsquo;</dt>
+<dd><p>The member is declared <code>mutable</code>.
+</p>
+<span id="index-explicit-attribute"></span>
+</dd>
+<dt>&lsquo;<samp>e</samp>&rsquo;</dt>
+<dd><p>The member is declared <code>explicit</code>.
+</p>
+</dd>
+<dt>&lsquo;<samp>t</samp>&rsquo;</dt>
+<dd><p>The member is a function with a throw list.
+</p></dd>
+</dl>
+</dd>
+</dl>
+
+<p>This command is also in the buffer&rsquo;s context menu.
+</p>
+
+
+<hr>
+<span id="Long-and-Short-Display"></span><div class="header">
+<p>
+Next: <a href="#Regexp-Display" accesskey="n" rel="next">Regexp Display</a>, Previous: <a href="#Attributes" accesskey="p" rel="prev">Attributes</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Long-and-Short-Member-Display"></span><h3 class="section">5.8 Long and Short Member Display</h3>
+<span id="index-display-form"></span>
+<span id="index-long-display"></span>
+<span id="index-short-display"></span>
+
+<dl compact="compact">
+<dt><kbd>D l</kbd></dt>
+<dd><p>This command toggles the member buffer between short and long display
+form.  The short display form displays member names, only:
+</p>
+<div class="example">
+<pre class="example">| isEmpty        contains       hasMember      create
+| storeSize      hash           isEqual        restoreGuts
+| saveGuts
+</pre></div>
+
+<p>The long display shows one member per line with member name and regular
+expressions matching the member (if known):
+</p>
+<div class="example">
+<pre class="example">| isEmpty               Bool isEmpty () const...
+| hash                  unsigned hash () const...
+| isEqual               int isEqual (...
+</pre></div>
+
+<p>Regular expressions will only be displayed when the Lisp database has
+not been produced with the <code>ebrowse</code> option &lsquo;<samp>--no-regexps</samp>&rsquo;.
+See <a href="#Matching">Regular Expressions</a>.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Regexp-Display"></span><div class="header">
+<p>
+Next: <a href="#Switching-Classes" accesskey="n" rel="next">Switching Classes</a>, Previous: <a href="#Long-and-Short-Display" accesskey="p" rel="prev">Long and Short Display</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Display-of-Regular-Expressions"></span><h3 class="section">5.9 Display of Regular Expressions</h3>
+<span id="index-regular-expression-display"></span>
+
+<dl compact="compact">
+<dt><kbd>D r</kbd></dt>
+<dd><p>This command toggles the long display form from displaying the regular
+expressions matching the member declarations to those expressions
+matching member definitions.
+</p></dd>
+</dl>
+
+<p>Regular expressions will only be displayed when the Lisp database has
+not been produced with the <code>ebrowse</code> option &lsquo;<samp>--no-regexps</samp>&rsquo;,
+see <a href="#Matching">Regular Expressions</a>.
+</p>
+
+
+
+<hr>
+<span id="Switching-Classes"></span><div class="header">
+<p>
+Next: <a href="#Killing_002fBurying" accesskey="n" rel="next">Killing/Burying</a>, Previous: <a href="#Regexp-Display" accesskey="p" rel="prev">Regexp Display</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Displaying-Another-Class"></span><h3 class="section">5.10 Displaying Another Class</h3>
+<span id="index-base-class_002c-display"></span>
+<span id="index-derived-class_002c-display"></span>
+<span id="index-superclass_002c-display"></span>
+<span id="index-subclass_002c-display"></span>
+<span id="index-class-display"></span>
+
+<dl compact="compact">
+<dt><kbd>C c</kbd></dt>
+<dd><p>This command lets you switch the member buffer to another class.  It
+reads the name of the new class from the minibuffer with completion.
+</p>
+</dd>
+<dt><kbd>C b</kbd></dt>
+<dd><p>This is the same command as <kbd>C c</kbd> but restricts the classes shown in
+the completion list to immediate base classes, only.  If only one base
+class exists, this one is immediately shown in the minibuffer.
+</p>
+</dd>
+<dt><kbd>C d</kbd></dt>
+<dd><p>Same as <kbd>C b</kbd>, but for derived classes.
+</p>
+</dd>
+<dt><kbd>C p</kbd></dt>
+<dd><p>Switch to the previous class in the class hierarchy on the same level as
+the class currently displayed.
+</p>
+</dd>
+<dt><kbd>C n</kbd></dt>
+<dd><p>Switch to the next sibling of the class in the class tree.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Killing_002fBurying"></span><div class="header">
+<p>
+Next: <a href="#Column-Width" accesskey="n" rel="next">Column Width</a>, Previous: <a href="#Switching-Classes" accesskey="p" rel="prev">Switching Classes</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Burying-a-Member-Buffer"></span><h3 class="section">5.11 Burying a Member Buffer</h3>
+<span id="index-burying-member-buffers"></span>
+
+<dl compact="compact">
+<dt><kbd>q</kbd></dt>
+<dd><p>This command is a synonym for <kbd>M-x bury-buffer</kbd>.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Column-Width"></span><div class="header">
+<p>
+Next: <a href="#Redisplay" accesskey="n" rel="next">Redisplay</a>, Previous: <a href="#Killing_002fBurying" accesskey="p" rel="prev">Killing/Burying</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Setting-the-Column-Width"></span><h3 class="section">5.12 Setting the Column Width</h3>
+<span id="index-column-width"></span>
+<span id="index-member-indentation"></span>
+<span id="index-indentation_002c-member"></span>
+
+<dl compact="compact">
+<dt><kbd>D w</kbd></dt>
+<dd><p>This command sets the column width depending on the display form used
+(long or short display).
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Redisplay"></span><div class="header">
+<p>
+Next: <a href="#Getting-Help" accesskey="n" rel="next">Getting Help</a>, Previous: <a href="#Column-Width" accesskey="p" rel="prev">Column Width</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Forced-Redisplay"></span><h3 class="section">5.13 Forced Redisplay</h3>
+<span id="index-redisplay-of-member-buffers"></span>
+
+<dl compact="compact">
+<dt><kbd>C-l</kbd></dt>
+<dd><p>This command forces a redisplay of the member buffer.  If the width
+of the window displaying the member buffer is changed this command
+redraws the member list with the appropriate column widths and number of
+columns.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Getting-Help"></span><div class="header">
+<p>
+Previous: <a href="#Redisplay" accesskey="p" rel="prev">Redisplay</a>, Up: <a href="#Member-Buffers" accesskey="u" rel="up">Member Buffers</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Getting-Help-1"></span><h3 class="section">5.14 Getting Help</h3>
+<span id="index-help"></span>
+
+<dl compact="compact">
+<dt><kbd>?</kbd></dt>
+<dd><p>This key is bound to <code>describe-mode</code>.
+</p></dd>
+</dl>
+
+
+
+
+
+<hr>
+<span id="Tags_002dlike-Functions"></span><div class="header">
+<p>
+Next: <a href="#GNU-Free-Documentation-License" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="#Member-Buffers" accesskey="p" rel="prev">Member Buffers</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Tags_002dlike-Functions-1"></span><h2 class="chapter">6 Tags-like Functions</h2>
+
+<p>Ebrowse provides tags functions similar to those of the standard
+Emacs Tags facility, but better suited to the needs of C++ programmers.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Finding-and-Viewing" accesskey="1">Finding and Viewing</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Going to a member declaration/definition
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Position-Stack" accesskey="2">Position Stack</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Moving to previous locations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Search-_0026-Replace" accesskey="3">Search &amp; Replace</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Searching and replacing over class tree files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Members-in-Files" accesskey="4">Members in Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Listing all members in a given file
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Apropos" accesskey="5">Apropos</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Listing members matching a regular expression
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Symbol-Completion" accesskey="6">Symbol Completion</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Completing names while editing
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Member-Buffer-Display" accesskey="7">Member Buffer Display</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Quickly display a member buffer for some
+                            identifier
+</td></tr>
+</table>
+
+
+
+<hr>
+<span id="Finding-and-Viewing"></span><div class="header">
+<p>
+Next: <a href="#Position-Stack" accesskey="n" rel="next">Position Stack</a>, Up: <a href="#Tags_002dlike-Functions" accesskey="u" rel="up">Tags-like Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Finding-and-Viewing-Members"></span><h3 class="section">6.1 Finding and Viewing Members</h3>
+<span id="index-finding-class-member_002c-in-C_002b_002b-source"></span>
+<span id="index-viewing-class-member_002c-in-C_002b_002b-source"></span>
+<span id="index-tags"></span>
+<span id="index-member-definition_002c-finding_002c-in-C_002b_002b-source"></span>
+<span id="index-member-declaration_002c-finding_002c-in-C_002b_002b-source"></span>
+
+<p>The functions in this section are similar to those described in
+<a href="#Source-Display">Source Display</a>, and also in <a href="#Finding_002fViewing">Finding/Viewing</a>, except that
+they work in a C++ source buffer, not in member and tree buffers created
+by Ebrowse.
+</p>
+<dl compact="compact">
+<dt><kbd>C-c C-m f</kbd></dt>
+<dd><p>Find the definition of the member around point.  If you invoke this
+function with a prefix argument, the declaration is searched.
+</p>
+<p>If more than one class contains a member with the given name you can
+select the class with completion.  If there is a scope declaration in
+front of the member name, this class name is used as initial input for
+the completion.
+</p>
+</dd>
+<dt><kbd>C-c C-m F</kbd></dt>
+<dd><p>Find the declaration of the member around point.
+</p>
+</dd>
+<dt><kbd>C-c C-m v</kbd></dt>
+<dd><p>View the definition of the member around point.
+</p>
+</dd>
+<dt><kbd>C-c C-m V</kbd></dt>
+<dd><p>View the declaration of the member around point.
+</p>
+</dd>
+<dt><kbd>C-c C-m 4 f</kbd></dt>
+<dd><p>Find a member&rsquo;s definition in another window.
+</p>
+</dd>
+<dt><kbd>C-c C-m 4 F</kbd></dt>
+<dd><p>Find a member&rsquo;s declaration in another window.
+</p>
+</dd>
+<dt><kbd>C-c C-m 4 v</kbd></dt>
+<dd><p>View a member&rsquo;s definition in another window.
+</p>
+</dd>
+<dt><kbd>C-c C-m 4 V</kbd></dt>
+<dd><p>View a member&rsquo;s declaration in another window.
+</p>
+</dd>
+<dt><kbd>C-c C-m 5 f</kbd></dt>
+<dd><p>Find a member&rsquo;s definition in another frame.
+</p>
+</dd>
+<dt><kbd>C-c C-m 5 F</kbd></dt>
+<dd><p>Find a member&rsquo;s declaration in another frame.
+</p>
+</dd>
+<dt><kbd>C-c C-m 5 v</kbd></dt>
+<dd><p>View a member&rsquo;s definition in another frame.
+</p>
+</dd>
+<dt><kbd>C-c C-m 5 V</kbd></dt>
+<dd><p>View a member&rsquo;s declaration in another frame.
+</p></dd>
+</dl>
+
+
+
+<hr>
+<span id="Position-Stack"></span><div class="header">
+<p>
+Next: <a href="#Search-_0026-Replace" accesskey="n" rel="next">Search &amp; Replace</a>, Previous: <a href="#Finding-and-Viewing" accesskey="p" rel="prev">Finding and Viewing</a>, Up: <a href="#Tags_002dlike-Functions" accesskey="u" rel="up">Tags-like Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="The-Position-Stack"></span><h3 class="section">6.2 The Position Stack</h3>
+<span id="index-position-stack"></span>
+
+<p>When jumping to a member declaration or definition with one of
+Ebrowse&rsquo;s commands, the position from where you performed the
+jump and the position where you jumped to are recorded in a
+<em>position stack</em>.  There are several ways in which you can quickly
+move to positions in the stack:
+</p>
+<dl compact="compact">
+<dd><span id="index-return-to-original-position"></span>
+</dd>
+<dt><kbd>C-c C-m -</kbd></dt>
+<dd><p>This command sets point to the previous position in the position stack.
+Directly after you performed a jump, this will put you back to the
+position where you came from.
+</p>
+<p>The stack is not popped, i.e., you can always switch back and forth
+between positions in the stack.  To avoid letting the stack grow to
+infinite size there is a maximum number of positions defined.  When this
+number is reached, older positions are discarded when new positions are
+pushed on the stack.
+</p>
+</dd>
+<dt><kbd>C-c C-m +</kbd></dt>
+<dd><p>This command moves forward in the position stack, setting point to
+the next position stored in the position stack.
+</p>
+</dd>
+<dt><kbd>C-c C-m p</kbd></dt>
+<dd><p>Displays an electric buffer showing all positions saved in the stack.
+You can select a position by pressing <kbd><span class="key">SPC</span></kbd> in a line.  You can
+view a position with <kbd>v</kbd>.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Search-_0026-Replace"></span><div class="header">
+<p>
+Next: <a href="#Members-in-Files" accesskey="n" rel="next">Members in Files</a>, Previous: <a href="#Position-Stack" accesskey="p" rel="prev">Position Stack</a>, Up: <a href="#Tags_002dlike-Functions" accesskey="u" rel="up">Tags-like Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Searching-and-Replacing"></span><h3 class="section">6.3 Searching and Replacing</h3>
+<span id="index-searching-multiple-C_002b_002b-files"></span>
+<span id="index-replacing-in-multiple-C_002b_002b-files"></span>
+<span id="index-restart-tags_002doperation"></span>
+
+<p>Ebrowse allows you to perform operations on all or a subset of the files
+mentioned in a class tree.  When you invoke one of the following
+functions and more than one class tree is loaded, you must choose a
+class tree to use from an electric tree menu.  If the selected tree
+contains marked classes, the following commands operate on the files
+mentioned in the marked classes only.  Otherwise all files in the class
+tree are used.
+</p>
+<dl compact="compact">
+<dt><kbd>C-c C-m s</kbd></dt>
+<dd><p>This function performs a regular expression search in the chosen set of
+files.
+</p>
+</dd>
+<dt><kbd>C-c C-m u</kbd></dt>
+<dd><p>This command performs a search for calls of a given member which is
+selected in the usual way with completion.
+</p>
+</dd>
+<dt><kbd>C-c C-m %</kbd></dt>
+<dd><p>Perform a query replace over the set of files.
+</p>
+</dd>
+<dt><kbd>C-c C-m ,</kbd></dt>
+<dd><p>All three operations above stop when finding a match.  You can restart
+the operation with this command.
+</p>
+</dd>
+<dt><kbd>C-c C-m n</kbd></dt>
+<dd><p>This restarts the last tags operation with the next file in the list.
+</p></dd>
+</dl>
+
+
+
+
+<hr>
+<span id="Members-in-Files"></span><div class="header">
+<p>
+Next: <a href="#Apropos" accesskey="n" rel="next">Apropos</a>, Previous: <a href="#Search-_0026-Replace" accesskey="p" rel="prev">Search &amp; Replace</a>, Up: <a href="#Tags_002dlike-Functions" accesskey="u" rel="up">Tags-like Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Members-in-Files-1"></span><h3 class="section">6.4 Members in Files</h3>
+<span id="index-files"></span>
+<span id="index-members-in-file_002c-listing"></span>
+<span id="index-list-class-members-in-a-file"></span>
+<span id="index-file_002c-members"></span>
+
+<p>The command <kbd>C-c C-m l</kbd>, lists all members in a given file.  The file
+name is read from the minibuffer with completion.
+</p>
+
+
+
+<hr>
+<span id="Apropos"></span><div class="header">
+<p>
+Next: <a href="#Symbol-Completion" accesskey="n" rel="next">Symbol Completion</a>, Previous: <a href="#Members-in-Files" accesskey="p" rel="prev">Members in Files</a>, Up: <a href="#Tags_002dlike-Functions" accesskey="u" rel="up">Tags-like Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Member-Apropos"></span><h3 class="section">6.5 Member Apropos</h3>
+<span id="index-apropos-on-class-members"></span>
+<span id="index-members_002c-matching-regexp"></span>
+
+<p>The command <kbd>C-c C-m a</kbd> can be used to display all members matching a
+given regular expression.  This command can be very useful if you
+remember only part of a member name, and not its beginning.
+</p>
+<p>A special buffer is popped up containing all identifiers matching the
+regular expression, and what kind of symbol it is (e.g., a member
+function, or a type).  You can then switch to this buffer, and use the
+command <kbd>C-c C-m f</kbd>, for example, to jump to a specific member.
+</p>
+
+
+
+<hr>
+<span id="Symbol-Completion"></span><div class="header">
+<p>
+Next: <a href="#Member-Buffer-Display" accesskey="n" rel="next">Member Buffer Display</a>, Previous: <a href="#Apropos" accesskey="p" rel="prev">Apropos</a>, Up: <a href="#Tags_002dlike-Functions" accesskey="u" rel="up">Tags-like Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Symbol-Completion-1"></span><h3 class="section">6.6 Symbol Completion</h3>
+<span id="index-completion"></span>
+<span id="index-symbol-completion"></span>
+
+<p>The command <kbd>C-c C-m <span class="key">TAB</span></kbd> completes the symbol in front of point.
+</p>
+
+
+
+<hr>
+<span id="Member-Buffer-Display"></span><div class="header">
+<p>
+Previous: <a href="#Symbol-Completion" accesskey="p" rel="prev">Symbol Completion</a>, Up: <a href="#Tags_002dlike-Functions" accesskey="u" rel="up">Tags-like Functions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Quick-Member-Display"></span><h3 class="section">6.7 Quick Member Display</h3>
+<span id="index-member-buffer_002c-for-member-at-point"></span>
+
+<p>You can quickly display a member buffer containing the member the cursor
+in on with the command <kbd>C-c C-m m</kbd>.
+</p>
+
+<hr>
+<span id="GNU-Free-Documentation-License"></span><div class="header">
+<p>
+Next: <a href="#Concept-Index" accesskey="n" rel="next">Concept Index</a>, Previous: <a href="#Tags_002dlike-Functions" accesskey="p" rel="prev">Tags-like Functions</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="GNU-Free-Documentation-License-1"></span><h2 class="appendix">Appendix A GNU Free Documentation License</h2>
+<div align="center">Version 1.3, 3 November 2008
+</div>
+
+<div class="display">
+<pre class="display">Copyright &copy; 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+<a href="https://fsf.org/">https://fsf.org/</a>
+
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+</pre></div>
+
+<ol start="0">
+<li> PREAMBLE
+
+<p>The purpose of this License is to make a manual, textbook, or other
+functional and useful document <em>free</em> in the sense of freedom: to
+assure everyone the effective freedom to copy and redistribute it,
+with or without modifying it, either commercially or noncommercially.
+Secondarily, this License preserves for the author and publisher a way
+to get credit for their work, while not being considered responsible
+for modifications made by others.
+</p>
+<p>This License is a kind of &ldquo;copyleft&rdquo;, which means that derivative
+works of the document must themselves be free in the same sense.  It
+complements the GNU General Public License, which is a copyleft
+license designed for free software.
+</p>
+<p>We have designed this License in order to use it for manuals for free
+software, because free software needs free documentation: a free
+program should come with manuals providing the same freedoms that the
+software does.  But this License is not limited to software manuals;
+it can be used for any textual work, regardless of subject matter or
+whether it is published as a printed book.  We recommend this License
+principally for works whose purpose is instruction or reference.
+</p>
+</li><li> APPLICABILITY AND DEFINITIONS
+
+<p>This License applies to any manual or other work, in any medium, that
+contains a notice placed by the copyright holder saying it can be
+distributed under the terms of this License.  Such a notice grants a
+world-wide, royalty-free license, unlimited in duration, to use that
+work under the conditions stated herein.  The &ldquo;Document&rdquo;, below,
+refers to any such manual or work.  Any member of the public is a
+licensee, and is addressed as &ldquo;you&rdquo;.  You accept the license if you
+copy, modify or distribute the work in a way requiring permission
+under copyright law.
+</p>
+<p>A &ldquo;Modified Version&rdquo; of the Document means any work containing the
+Document or a portion of it, either copied verbatim, or with
+modifications and/or translated into another language.
+</p>
+<p>A &ldquo;Secondary Section&rdquo; is a named appendix or a front-matter section
+of the Document that deals exclusively with the relationship of the
+publishers or authors of the Document to the Document&rsquo;s overall
+subject (or to related matters) and contains nothing that could fall
+directly within that overall subject.  (Thus, if the Document is in
+part a textbook of mathematics, a Secondary Section may not explain
+any mathematics.)  The relationship could be a matter of historical
+connection with the subject or with related matters, or of legal,
+commercial, philosophical, ethical or political position regarding
+them.
+</p>
+<p>The &ldquo;Invariant Sections&rdquo; are certain Secondary Sections whose titles
+are designated, as being those of Invariant Sections, in the notice
+that says that the Document is released under this License.  If a
+section does not fit the above definition of Secondary then it is not
+allowed to be designated as Invariant.  The Document may contain zero
+Invariant Sections.  If the Document does not identify any Invariant
+Sections then there are none.
+</p>
+<p>The &ldquo;Cover Texts&rdquo; are certain short passages of text that are listed,
+as Front-Cover Texts or Back-Cover Texts, in the notice that says that
+the Document is released under this License.  A Front-Cover Text may
+be at most 5 words, and a Back-Cover Text may be at most 25 words.
+</p>
+<p>A &ldquo;Transparent&rdquo; copy of the Document means a machine-readable copy,
+represented in a format whose specification is available to the
+general public, that is suitable for revising the document
+straightforwardly with generic text editors or (for images composed of
+pixels) generic paint programs or (for drawings) some widely available
+drawing editor, and that is suitable for input to text formatters or
+for automatic translation to a variety of formats suitable for input
+to text formatters.  A copy made in an otherwise Transparent file
+format whose markup, or absence of markup, has been arranged to thwart
+or discourage subsequent modification by readers is not Transparent.
+An image format is not Transparent if used for any substantial amount
+of text.  A copy that is not &ldquo;Transparent&rdquo; is called &ldquo;Opaque&rdquo;.
+</p>
+<p>Examples of suitable formats for Transparent copies include plain
+ASCII without markup, Texinfo input format, LaTeX input
+format, SGML or XML using a publicly available
+DTD, and standard-conforming simple HTML,
+PostScript or PDF designed for human modification.  Examples
+of transparent image formats include PNG, XCF and
+JPG.  Opaque formats include proprietary formats that can be
+read and edited only by proprietary word processors, SGML or
+XML for which the DTD and/or processing tools are
+not generally available, and the machine-generated HTML,
+PostScript or PDF produced by some word processors for
+output purposes only.
+</p>
+<p>The &ldquo;Title Page&rdquo; means, for a printed book, the title page itself,
+plus such following pages as are needed to hold, legibly, the material
+this License requires to appear in the title page.  For works in
+formats which do not have any title page as such, &ldquo;Title Page&rdquo; means
+the text near the most prominent appearance of the work&rsquo;s title,
+preceding the beginning of the body of the text.
+</p>
+<p>The &ldquo;publisher&rdquo; means any person or entity that distributes copies
+of the Document to the public.
+</p>
+<p>A section &ldquo;Entitled XYZ&rdquo; means a named subunit of the Document whose
+title either is precisely XYZ or contains XYZ in parentheses following
+text that translates XYZ in another language.  (Here XYZ stands for a
+specific section name mentioned below, such as &ldquo;Acknowledgements&rdquo;,
+&ldquo;Dedications&rdquo;, &ldquo;Endorsements&rdquo;, or &ldquo;History&rdquo;.)  To &ldquo;Preserve the Title&rdquo;
+of such a section when you modify the Document means that it remains a
+section &ldquo;Entitled XYZ&rdquo; according to this definition.
+</p>
+<p>The Document may include Warranty Disclaimers next to the notice which
+states that this License applies to the Document.  These Warranty
+Disclaimers are considered to be included by reference in this
+License, but only as regards disclaiming warranties: any other
+implication that these Warranty Disclaimers may have is void and has
+no effect on the meaning of this License.
+</p>
+</li><li> VERBATIM COPYING
+
+<p>You may copy and distribute the Document in any medium, either
+commercially or noncommercially, provided that this License, the
+copyright notices, and the license notice saying this License applies
+to the Document are reproduced in all copies, and that you add no other
+conditions whatsoever to those of this License.  You may not use
+technical measures to obstruct or control the reading or further
+copying of the copies you make or distribute.  However, you may accept
+compensation in exchange for copies.  If you distribute a large enough
+number of copies you must also follow the conditions in section 3.
+</p>
+<p>You may also lend copies, under the same conditions stated above, and
+you may publicly display copies.
+</p>
+</li><li> COPYING IN QUANTITY
+
+<p>If you publish printed copies (or copies in media that commonly have
+printed covers) of the Document, numbering more than 100, and the
+Document&rsquo;s license notice requires Cover Texts, you must enclose the
+copies in covers that carry, clearly and legibly, all these Cover
+Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
+the back cover.  Both covers must also clearly and legibly identify
+you as the publisher of these copies.  The front cover must present
+the full title with all words of the title equally prominent and
+visible.  You may add other material on the covers in addition.
+Copying with changes limited to the covers, as long as they preserve
+the title of the Document and satisfy these conditions, can be treated
+as verbatim copying in other respects.
+</p>
+<p>If the required texts for either cover are too voluminous to fit
+legibly, you should put the first ones listed (as many as fit
+reasonably) on the actual cover, and continue the rest onto adjacent
+pages.
+</p>
+<p>If you publish or distribute Opaque copies of the Document numbering
+more than 100, you must either include a machine-readable Transparent
+copy along with each Opaque copy, or state in or with each Opaque copy
+a computer-network location from which the general network-using
+public has access to download using public-standard network protocols
+a complete Transparent copy of the Document, free of added material.
+If you use the latter option, you must take reasonably prudent steps,
+when you begin distribution of Opaque copies in quantity, to ensure
+that this Transparent copy will remain thus accessible at the stated
+location until at least one year after the last time you distribute an
+Opaque copy (directly or through your agents or retailers) of that
+edition to the public.
+</p>
+<p>It is requested, but not required, that you contact the authors of the
+Document well before redistributing any large number of copies, to give
+them a chance to provide you with an updated version of the Document.
+</p>
+</li><li> MODIFICATIONS
+
+<p>You may copy and distribute a Modified Version of the Document under
+the conditions of sections 2 and 3 above, provided that you release
+the Modified Version under precisely this License, with the Modified
+Version filling the role of the Document, thus licensing distribution
+and modification of the Modified Version to whoever possesses a copy
+of it.  In addition, you must do these things in the Modified Version:
+</p>
+<ol type="A" start="1">
+<li> Use in the Title Page (and on the covers, if any) a title distinct
+from that of the Document, and from those of previous versions
+(which should, if there were any, be listed in the History section
+of the Document).  You may use the same title as a previous version
+if the original publisher of that version gives permission.
+
+</li><li> List on the Title Page, as authors, one or more persons or entities
+responsible for authorship of the modifications in the Modified
+Version, together with at least five of the principal authors of the
+Document (all of its principal authors, if it has fewer than five),
+unless they release you from this requirement.
+
+</li><li> State on the Title page the name of the publisher of the
+Modified Version, as the publisher.
+
+</li><li> Preserve all the copyright notices of the Document.
+
+</li><li> Add an appropriate copyright notice for your modifications
+adjacent to the other copyright notices.
+
+</li><li> Include, immediately after the copyright notices, a license notice
+giving the public permission to use the Modified Version under the
+terms of this License, in the form shown in the Addendum below.
+
+</li><li> Preserve in that license notice the full lists of Invariant Sections
+and required Cover Texts given in the Document&rsquo;s license notice.
+
+</li><li> Include an unaltered copy of this License.
+
+</li><li> Preserve the section Entitled &ldquo;History&rdquo;, Preserve its Title, and add
+to it an item stating at least the title, year, new authors, and
+publisher of the Modified Version as given on the Title Page.  If
+there is no section Entitled &ldquo;History&rdquo; in the Document, create one
+stating the title, year, authors, and publisher of the Document as
+given on its Title Page, then add an item describing the Modified
+Version as stated in the previous sentence.
+
+</li><li> Preserve the network location, if any, given in the Document for
+public access to a Transparent copy of the Document, and likewise
+the network locations given in the Document for previous versions
+it was based on.  These may be placed in the &ldquo;History&rdquo; section.
+You may omit a network location for a work that was published at
+least four years before the Document itself, or if the original
+publisher of the version it refers to gives permission.
+
+</li><li> For any section Entitled &ldquo;Acknowledgements&rdquo; or &ldquo;Dedications&rdquo;, Preserve
+the Title of the section, and preserve in the section all the
+substance and tone of each of the contributor acknowledgements and/or
+dedications given therein.
+
+</li><li> Preserve all the Invariant Sections of the Document,
+unaltered in their text and in their titles.  Section numbers
+or the equivalent are not considered part of the section titles.
+
+</li><li> Delete any section Entitled &ldquo;Endorsements&rdquo;.  Such a section
+may not be included in the Modified Version.
+
+</li><li> Do not retitle any existing section to be Entitled &ldquo;Endorsements&rdquo; or
+to conflict in title with any Invariant Section.
+
+</li><li> Preserve any Warranty Disclaimers.
+</li></ol>
+
+<p>If the Modified Version includes new front-matter sections or
+appendices that qualify as Secondary Sections and contain no material
+copied from the Document, you may at your option designate some or all
+of these sections as invariant.  To do this, add their titles to the
+list of Invariant Sections in the Modified Version&rsquo;s license notice.
+These titles must be distinct from any other section titles.
+</p>
+<p>You may add a section Entitled &ldquo;Endorsements&rdquo;, provided it contains
+nothing but endorsements of your Modified Version by various
+parties&mdash;for example, statements of peer review or that the text has
+been approved by an organization as the authoritative definition of a
+standard.
+</p>
+<p>You may add a passage of up to five words as a Front-Cover Text, and a
+passage of up to 25 words as a Back-Cover Text, to the end of the list
+of Cover Texts in the Modified Version.  Only one passage of
+Front-Cover Text and one of Back-Cover Text may be added by (or
+through arrangements made by) any one entity.  If the Document already
+includes a cover text for the same cover, previously added by you or
+by arrangement made by the same entity you are acting on behalf of,
+you may not add another; but you may replace the old one, on explicit
+permission from the previous publisher that added the old one.
+</p>
+<p>The author(s) and publisher(s) of the Document do not by this License
+give permission to use their names for publicity for or to assert or
+imply endorsement of any Modified Version.
+</p>
+</li><li> COMBINING DOCUMENTS
+
+<p>You may combine the Document with other documents released under this
+License, under the terms defined in section 4 above for modified
+versions, provided that you include in the combination all of the
+Invariant Sections of all of the original documents, unmodified, and
+list them all as Invariant Sections of your combined work in its
+license notice, and that you preserve all their Warranty Disclaimers.
+</p>
+<p>The combined work need only contain one copy of this License, and
+multiple identical Invariant Sections may be replaced with a single
+copy.  If there are multiple Invariant Sections with the same name but
+different contents, make the title of each such section unique by
+adding at the end of it, in parentheses, the name of the original
+author or publisher of that section if known, or else a unique number.
+Make the same adjustment to the section titles in the list of
+Invariant Sections in the license notice of the combined work.
+</p>
+<p>In the combination, you must combine any sections Entitled &ldquo;History&rdquo;
+in the various original documents, forming one section Entitled
+&ldquo;History&rdquo;; likewise combine any sections Entitled &ldquo;Acknowledgements&rdquo;,
+and any sections Entitled &ldquo;Dedications&rdquo;.  You must delete all
+sections Entitled &ldquo;Endorsements.&rdquo;
+</p>
+</li><li> COLLECTIONS OF DOCUMENTS
+
+<p>You may make a collection consisting of the Document and other documents
+released under this License, and replace the individual copies of this
+License in the various documents with a single copy that is included in
+the collection, provided that you follow the rules of this License for
+verbatim copying of each of the documents in all other respects.
+</p>
+<p>You may extract a single document from such a collection, and distribute
+it individually under this License, provided you insert a copy of this
+License into the extracted document, and follow this License in all
+other respects regarding verbatim copying of that document.
+</p>
+</li><li> AGGREGATION WITH INDEPENDENT WORKS
+
+<p>A compilation of the Document or its derivatives with other separate
+and independent documents or works, in or on a volume of a storage or
+distribution medium, is called an &ldquo;aggregate&rdquo; if the copyright
+resulting from the compilation is not used to limit the legal rights
+of the compilation&rsquo;s users beyond what the individual works permit.
+When the Document is included in an aggregate, this License does not
+apply to the other works in the aggregate which are not themselves
+derivative works of the Document.
+</p>
+<p>If the Cover Text requirement of section 3 is applicable to these
+copies of the Document, then if the Document is less than one half of
+the entire aggregate, the Document&rsquo;s Cover Texts may be placed on
+covers that bracket the Document within the aggregate, or the
+electronic equivalent of covers if the Document is in electronic form.
+Otherwise they must appear on printed covers that bracket the whole
+aggregate.
+</p>
+</li><li> TRANSLATION
+
+<p>Translation is considered a kind of modification, so you may
+distribute translations of the Document under the terms of section 4.
+Replacing Invariant Sections with translations requires special
+permission from their copyright holders, but you may include
+translations of some or all Invariant Sections in addition to the
+original versions of these Invariant Sections.  You may include a
+translation of this License, and all the license notices in the
+Document, and any Warranty Disclaimers, provided that you also include
+the original English version of this License and the original versions
+of those notices and disclaimers.  In case of a disagreement between
+the translation and the original version of this License or a notice
+or disclaimer, the original version will prevail.
+</p>
+<p>If a section in the Document is Entitled &ldquo;Acknowledgements&rdquo;,
+&ldquo;Dedications&rdquo;, or &ldquo;History&rdquo;, the requirement (section 4) to Preserve
+its Title (section 1) will typically require changing the actual
+title.
+</p>
+</li><li> TERMINATION
+
+<p>You may not copy, modify, sublicense, or distribute the Document
+except as expressly provided under this License.  Any attempt
+otherwise to copy, modify, sublicense, or distribute it is void, and
+will automatically terminate your rights under this License.
+</p>
+<p>However, if you cease all violation of this License, then your license
+from a particular copyright holder is reinstated (a) provisionally,
+unless and until the copyright holder explicitly and finally
+terminates your license, and (b) permanently, if the copyright holder
+fails to notify you of the violation by some reasonable means prior to
+60 days after the cessation.
+</p>
+<p>Moreover, your license from a particular copyright holder is
+reinstated permanently if the copyright holder notifies you of the
+violation by some reasonable means, this is the first time you have
+received notice of violation of this License (for any work) from that
+copyright holder, and you cure the violation prior to 30 days after
+your receipt of the notice.
+</p>
+<p>Termination of your rights under this section does not terminate the
+licenses of parties who have received copies or rights from you under
+this License.  If your rights have been terminated and not permanently
+reinstated, receipt of a copy of some or all of the same material does
+not give you any rights to use it.
+</p>
+</li><li> FUTURE REVISIONS OF THIS LICENSE
+
+<p>The Free Software Foundation may publish new, revised versions
+of the GNU Free Documentation License from time to time.  Such new
+versions will be similar in spirit to the present version, but may
+differ in detail to address new problems or concerns.  See
+<a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.
+</p>
+<p>Each version of the License is given a distinguishing version number.
+If the Document specifies that a particular numbered version of this
+License &ldquo;or any later version&rdquo; applies to it, you have the option of
+following the terms and conditions either of that specified version or
+of any later version that has been published (not as a draft) by the
+Free Software Foundation.  If the Document does not specify a version
+number of this License, you may choose any version ever published (not
+as a draft) by the Free Software Foundation.  If the Document
+specifies that a proxy can decide which future versions of this
+License can be used, that proxy&rsquo;s public statement of acceptance of a
+version permanently authorizes you to choose that version for the
+Document.
+</p>
+</li><li> RELICENSING
+
+<p>&ldquo;Massive Multiauthor Collaboration Site&rdquo; (or &ldquo;MMC Site&rdquo;) means any
+World Wide Web server that publishes copyrightable works and also
+provides prominent facilities for anybody to edit those works.  A
+public wiki that anybody can edit is an example of such a server.  A
+&ldquo;Massive Multiauthor Collaboration&rdquo; (or &ldquo;MMC&rdquo;) contained in the
+site means any set of copyrightable works thus published on the MMC
+site.
+</p>
+<p>&ldquo;CC-BY-SA&rdquo; means the Creative Commons Attribution-Share Alike 3.0
+license published by Creative Commons Corporation, a not-for-profit
+corporation with a principal place of business in San Francisco,
+California, as well as future copyleft versions of that license
+published by that same organization.
+</p>
+<p>&ldquo;Incorporate&rdquo; means to publish or republish a Document, in whole or
+in part, as part of another Document.
+</p>
+<p>An MMC is &ldquo;eligible for relicensing&rdquo; if it is licensed under this
+License, and if all works that were first published under this License
+somewhere other than this MMC, and subsequently incorporated in whole
+or in part into the MMC, (1) had no cover texts or invariant sections,
+and (2) were thus incorporated prior to November 1, 2008.
+</p>
+<p>The operator of an MMC Site may republish an MMC contained in the site
+under CC-BY-SA on the same site at any time before August 1, 2009,
+provided the MMC is eligible for relicensing.
+</p>
+</li></ol>
+
+<span id="ADDENDUM_003a-How-to-use-this-License-for-your-documents"></span><h3 class="heading">ADDENDUM: How to use this License for your documents</h3>
+
+<p>To use this License in a document you have written, include a copy of
+the License in the document and put the following copyright and
+license notices just after the title page:
+</p>
+<div class="example">
+<pre class="example">  Copyright (C)  <var>year</var>  <var>your name</var>.
+  Permission is granted to copy, distribute and/or modify this document
+  under the terms of the GNU Free Documentation License, Version 1.3
+  or any later version published by the Free Software Foundation;
+  with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+  Texts.  A copy of the license is included in the section entitled ``GNU
+  Free Documentation License''.
+</pre></div>
+
+<p>If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts,
+replace the &ldquo;with&hellip;Texts.&rdquo; line with this:
+</p>
+<div class="example">
+<pre class="example">    with the Invariant Sections being <var>list their titles</var>, with
+    the Front-Cover Texts being <var>list</var>, and with the Back-Cover Texts
+    being <var>list</var>.
+</pre></div>
+
+<p>If you have Invariant Sections without Cover Texts, or some other
+combination of the three, merge those two alternatives to suit the
+situation.
+</p>
+<p>If your document contains nontrivial examples of program code, we
+recommend releasing these examples in parallel under your choice of
+free software license, such as the GNU General Public License,
+to permit their use in free software.
+</p>
+
+
+<hr>
+<span id="Concept-Index"></span><div class="header">
+<p>
+Previous: <a href="#GNU-Free-Documentation-License" accesskey="p" rel="prev">GNU Free Documentation License</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Concept-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<span id="Concept-Index-1"></span><h2 class="unnumbered">Concept Index</h2>
+<table><tr><th valign="top">Jump to: &nbsp; </th><td><a class="summary-letter" href="#Concept-Index_cp_symbol-1"><b>*</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_symbol-2"><b>-</b></a>
+ &nbsp; 
+<br>
+<a class="summary-letter" href="#Concept-Index_cp_letter-A"><b>A</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-B"><b>B</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-C"><b>C</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-D"><b>D</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-F"><b>F</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-H"><b>H</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-I"><b>I</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-K"><b>K</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-L"><b>L</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-M"><b>M</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-N"><b>N</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-O"><b>O</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-R"><b>R</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-S"><b>S</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-T"><b>T</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-U"><b>U</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-V"><b>V</b></a>
+ &nbsp; 
+</td></tr></table>
+<table class="index-cp" border="0">
+<tr><td></td><th align="left">Index Entry</th><td>&nbsp;</td><th align="left"> Section</th></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_symbol-1">*</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002aGlobals_002a">&lsquo;<samp>*Globals*</samp>&rsquo;</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002aMembers_002a-buffer"><samp>*Members*</samp> buffer</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_symbol-2">-</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dappend"><code>--append</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Output-file">Output file</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dfiles"><code>--files</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Input-files">Input files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dhelp"><code>--help</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Generating-browser-files">Generating browser files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dmax_002dregexp_002dlength"><code>--max-regexp-length</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Matching">Matching</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dmin_002dregexp_002dlength"><code>--min-regexp-length</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Matching">Matching</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dregexps"><code>--no-regexps</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Matching">Matching</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dno_002dstructs_002dor_002dunions"><code>--no-structs-or-unions</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Structs-and-unions">Structs and unions</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002doutput_002dfile"><code>--output-file</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Output-file">Output file</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dsearch_002dpath"><code>--search-path</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Input-files">Input files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dverbose"><code>--verbose</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Verbosity">Verbosity</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_002d_002dvery_002dverbose"><code>--very-verbose</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Verbosity">Verbosity</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-A">A</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-appending-output-to-class-data-base">appending output to class data base</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Output-file">Output file</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-apropos-on-class-members">apropos on class members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Apropos">Apropos</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-attributes">attributes</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-B">B</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-base-class_002c-display">base class, display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Classes">Switching Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-base-classes_002c-members">base classes, members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Inherited-Members">Inherited Members</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-branches-of-class-tree">branches of class tree</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Expanding-and-Collapsing">Expanding and Collapsing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-BROWSE-file"><samp>BROWSE</samp> file</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Output-file">Output file</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-browsing">browsing</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Loading-a-Tree">Loading a Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-buffer-switching">buffer switching</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-to-Tree">Switching to Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-burying-member-buffers">burying member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Killing_002fBurying">Killing/Burying</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-burying-tree-buffer">burying tree buffer</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Quitting">Quitting</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-C">C</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-data-base-creation">class data base creation</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Generating-browser-files">Generating browser files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-declaration">class declaration</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Source-Display">Source Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-display">class display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Classes">Switching Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-location">class location</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Go-to-Class">Go to Class</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-members_002c-types">class members, types</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Buffers">Member Buffers</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-statistics">class statistics</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Statistics">Statistics</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-tree_002c-collapse-or-expand">class tree, collapse or expand</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Expanding-and-Collapsing">Expanding and Collapsing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-tree_002c-save-to-a-file">class tree, save to a file</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Saving-a-Tree">Saving a Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class-trees">class trees</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Tree-Buffers">Tree Buffers</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-class_002c-remove-from-tree">class, remove from tree</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Killing-Classes">Killing Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-collapse-tree-branch">collapse tree branch</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Expanding-and-Collapsing">Expanding and Collapsing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-column-width">column width</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Column-Width">Column Width</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-command-line-for-ebrowse">command line for <code>ebrowse</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Generating-browser-files">Generating browser files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-completion">completion</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Symbol-Completion">Symbol Completion</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-const-attribute"><code>const</code> attribute</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-const-members"><code>const</code> members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-context-menu">context menu</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Loading-a-Tree">Loading a Tree</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-D">D</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-declaration-of-a-member_002c-in-member-buffers">declaration of a member, in member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding_002fViewing">Finding/Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-defines">defines</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Member-Lists">Switching Member Lists</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-definition-of-a-member_002c-in-member-buffers">definition of a member, in member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding_002fViewing">Finding/Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-derived-class_002c-display">derived class, display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Classes">Switching Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-display-form">display form</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Long-and-Short-Display">Long and Short Display</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-E">E</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-ebrowse_002c-the-program"><code>ebrowse</code>, the program</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Generating-browser-files">Generating browser files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-expand-tree-branch">expand tree branch</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Expanding-and-Collapsing">Expanding and Collapsing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-expanding-branches">expanding branches</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Go-to-Class">Go to Class</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-explicit-attribute"><code>explicit</code> attribute</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-extern-_0022C_0022-attribute"><code>extern &quot;C&quot;</code> attribute</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-F">F</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-file-names-in-tree-buffers">file names in tree buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#File-Name-Display">File Name Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-file_002c-members">file, members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Members-in-Files">Members in Files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-files">files</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Members-in-Files">Members in Files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-filters">filters</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-finding-a-class">finding a class</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Source-Display">Source Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-finding-class-member_002c-in-C_002b_002b-source">finding class member, in C++ source</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-and-Viewing">Finding and Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-finding-members_002c-in-member-buffers">finding members, in member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding_002fViewing">Finding/Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-freezing-a-member-buffer">freezing a member buffer</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-friend-functions">friend functions</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Input-files">Input files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-friend-functions_002c-list">friend functions, list</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-friends">friends</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Member-Lists">Switching Member Lists</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-H">H</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-header-files">header files</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Input-files">Input files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-help">help</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Getting-Help">Getting Help</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-I">I</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-indentation-of-the-tree">indentation of the tree</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Tree-Indentation">Tree Indentation</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-indentation_002c-member">indentation, member</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Column-Width">Column Width</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-inherited-members">inherited members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Inherited-Members">Inherited Members</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-inline"><code>inline</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-inline-members"><code>inline</code> members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-input-files_002c-for-ebrowse">input files, for <code>ebrowse</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Input-files">Input files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-instance-member-variables_002c-list">instance member variables, list</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-K">K</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-killing-classes">killing classes</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Killing-Classes">Killing Classes</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-L">L</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-list-class-members-in-a-file">list class members in a file</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Members-in-Files">Members in Files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-loading">loading</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Loading-a-Tree">Loading a Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-locate-class">locate class</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Go-to-Class">Go to Class</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-long-display">long display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Long-and-Short-Display">Long and Short Display</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-M">M</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-major-modes_002c-of-Ebrowse-buffers">major modes, of Ebrowse buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Overview">Overview</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-marking-classes">marking classes</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Marking-Classes">Marking Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-maximum-regexp-length-for-recording">maximum regexp length for recording</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Matching">Matching</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-attribute-display">member attribute display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-buffer">member buffer</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Overview">Overview</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-buffer-mode">member buffer mode</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Buffers">Member Buffers</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-buffer_002c-for-member-at-point">member buffer, for member at point</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Buffer-Display">Member Buffer Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-declaration_002c-finding_002c-in-C_002b_002b-source">member declaration, finding, in C++ source</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-and-Viewing">Finding and Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-declarations_002c-in-member-buffers">member declarations, in member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding_002fViewing">Finding/Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-definition_002c-finding_002c-in-C_002b_002b-source">member definition, finding, in C++ source</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-and-Viewing">Finding and Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-definitions_002c-in-member-buffers">member definitions, in member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding_002fViewing">Finding/Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-functions_002c-list">member functions, list</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-indentation">member indentation</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Column-Width">Column Width</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-lists_002c-in-member-buffers">member lists, in member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Member-Lists">Switching Member Lists</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-member-lists_002c-in-tree-buffers">member lists, in tree buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-members">members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Buffers">Member Buffers</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-members-in-file_002c-listing">members in file, listing</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Members-in-Files">Members in Files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-members_002c-matching-regexp">members, matching regexp</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Apropos">Apropos</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-minimum-regexp-length-for-recording">minimum regexp length for recording</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Matching">Matching</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-mouse-highlight-in-tree-buffers">mouse highlight in tree buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Loading-a-Tree">Loading a Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-mutable-attribute"><code>mutable</code> attribute</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-N">N</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-next-member-list">next member list</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Member-Lists">Switching Member Lists</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-O">O</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-operations-on-marked-classes">operations on marked classes</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Marking-Classes">Marking Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-output-file-name">output file name</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Output-file">Output file</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-P">P</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-parser-for-C_002b_002b-sources">parser for C++ sources</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Overview">Overview</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-position-stack">position stack</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Position-Stack">Position Stack</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-previous-member-list">previous member list</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Member-Lists">Switching Member Lists</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-private-members"><code>private</code> members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-protected-members"><code>protected</code> members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-public-members"><code>public</code> members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-pure-virtual-function-attribute">pure virtual function attribute</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-pure-virtual-members">pure virtual members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-R">R</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-redisplay-of-member-buffers">redisplay of member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Redisplay">Redisplay</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-regular-expression-display">regular expression display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Regexp-Display">Regexp Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-regular-expressions_002c-recording">regular expressions, recording</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Matching">Matching</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-remove-filters">remove filters</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-replacing-in-multiple-C_002b_002b-files">replacing in multiple C++ files</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Search-_0026-Replace">Search &amp; Replace</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-response-files">response files</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Input-files">Input files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-restart-tags_002doperation">restart tags-operation</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Search-_0026-Replace">Search &amp; Replace</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-return-to-original-position">return to original position</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Position-Stack">Position Stack</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-S">S</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-save-tree-to-a-file">save tree to a file</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Saving-a-Tree">Saving a Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-search-for-class">search for class</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Go-to-Class">Go to Class</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-searching-members">searching members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Searching-Members">Searching Members</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-searching-multiple-C_002b_002b-files">searching multiple C++ files</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Search-_0026-Replace">Search &amp; Replace</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-short-display">short display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Long-and-Short-Display">Long and Short Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-standard-input_002c-specifying-input-files">standard input, specifying input files</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Input-files">Input files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-static">static</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Member-Lists">Switching Member Lists</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-static-member-functions_002c-list">static member functions, list</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-static-members">static members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Member-Lists">Switching Member Lists</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-static-variables_002c-list">static variables, list</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-statistics-for-a-tree">statistics for a tree</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Statistics">Statistics</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-structs">structs</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Structs-and-unions">Structs and unions</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-subclass_002c-display">subclass, display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Classes">Switching Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-superclass_002c-display">superclass, display</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Classes">Switching Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-superclasses_002c-members">superclasses, members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Inherited-Members">Inherited Members</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-switching-buffers">switching buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-to-Tree">Switching to Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-symbol-completion">symbol completion</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Symbol-Completion">Symbol Completion</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-T">T</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tags">tags</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-and-Viewing">Finding and Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-template-attribute"><code>template</code> attribute</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-toggle-mark">toggle mark</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Marking-Classes">Marking Classes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tree-buffer">tree buffer</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Overview">Overview</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tree-buffer-mode">tree buffer mode</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Tree-Buffers">Tree Buffers</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tree-buffer_002c-switch-to">tree buffer, switch to</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-to-Tree">Switching to Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tree-indentation">tree indentation</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Tree-Indentation">Tree Indentation</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tree-statistics">tree statistics</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Statistics">Statistics</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-tree_002c-save-to-a-file">tree, save to a file</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Saving-a-Tree">Saving a Tree</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-types">types</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Switching-Member-Lists">Switching Member Lists</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-types-of-class-members">types of class members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Buffers">Member Buffers</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-types_002c-list">types, list</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Member-Display">Member Display</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-U">U</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-unions">unions</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Structs-and-unions">Structs and unions</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-unmark-all">unmark all</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Marking-Classes">Marking Classes</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+<tr><th id="Concept-Index_cp_letter-V">V</th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="#index-verbose-operation">verbose operation</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Verbosity">Verbosity</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-viewing-class-member_002c-in-C_002b_002b-source">viewing class member, in C++ source</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding-and-Viewing">Finding and Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-viewing-members_002c-in-member-buffers">viewing members, in member buffers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Finding_002fViewing">Finding/Viewing</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-viewing_002c-class">viewing, class</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Source-Display">Source Display</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-virtual-attribute"><code>virtual</code> attribute</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Attributes">Attributes</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-virtual-members"><code>virtual</code> members</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Filters">Filters</a></td></tr>
+<tr><td colspan="4"> <hr></td></tr>
+</table>
+<table><tr><th valign="top">Jump to: &nbsp; </th><td><a class="summary-letter" href="#Concept-Index_cp_symbol-1"><b>*</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_symbol-2"><b>-</b></a>
+ &nbsp; 
+<br>
+<a class="summary-letter" href="#Concept-Index_cp_letter-A"><b>A</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-B"><b>B</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-C"><b>C</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-D"><b>D</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-F"><b>F</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-H"><b>H</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-I"><b>I</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-K"><b>K</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-L"><b>L</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-M"><b>M</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-N"><b>N</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-O"><b>O</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-R"><b>R</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-S"><b>S</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-T"><b>T</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-U"><b>U</b></a>
+ &nbsp; 
+<a class="summary-letter" href="#Concept-Index_cp_letter-V"><b>V</b></a>
+ &nbsp; 
+</td></tr></table>
+
+<hr>
+
+
+
+</body>
+</html>

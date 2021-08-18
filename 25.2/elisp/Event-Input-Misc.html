@@ -16,7 +16,7 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Event Input Misc (GNU Emacs Lisp Reference Manual)</title>
@@ -26,33 +26,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Reading-Input.html#Reading-Input" rel="up" title="Reading Input">
-<link href="Special-Events.html#Special-Events" rel="next" title="Special Events">
-<link href="Quoted-Character-Input.html#Quoted-Character-Input" rel="prev" title="Quoted Character Input">
+<link href="Reading-Input.html" rel="up" title="Reading Input">
+<link href="Special-Events.html" rel="next" title="Special Events">
+<link href="Quoted-Character-Input.html" rel="prev" title="Quoted Character Input">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -65,23 +56,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Event-Input-Misc"></a>
-<div class="header">
+<span id="Event-Input-Misc"></span><div class="header">
 <p>
-Previous: <a href="Quoted-Character-Input.html#Quoted-Character-Input" accesskey="p" rel="prev">Quoted Character Input</a>, Up: <a href="Reading-Input.html#Reading-Input" accesskey="u" rel="up">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Quoted-Character-Input.html" accesskey="p" rel="prev">Quoted Character Input</a>, Up: <a href="Reading-Input.html" accesskey="u" rel="up">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Miscellaneous-Event-Input-Features"></a>
-<h4 class="subsection">20.8.6 Miscellaneous Event Input Features</h4>
+<span id="Miscellaneous-Event-Input-Features"></span><h4 class="subsection">20.8.6 Miscellaneous Event Input Features</h4>
 
 <p>This section describes how to peek ahead at events without using
 them up, how to check for pending input, and how to discard pending
-input.  See also the function <code>read-passwd</code> (see <a href="Reading-a-Password.html#Reading-a-Password">Reading a Password</a>).
+input.  See also the function <code>read-passwd</code> (see <a href="Reading-a-Password.html">Reading a Password</a>).
 </p>
 <dl>
-<dt><a name="index-unread_002dcommand_002devents"></a>Variable: <strong>unread-command-events</strong></dt>
-<dd><a name="index-next-input"></a>
-<a name="index-peeking-at-input"></a>
+<dt id="index-unread_002dcommand_002devents">Variable: <strong>unread-command-events</strong></dt>
+<dd><span id="index-next-input"></span>
+<span id="index-peeking-at-input"></span>
 <p>This variable holds a list of events waiting to be read as command
 input.  The events are used in the order they appear in the list, and
 removed one by one as they are used.
@@ -91,7 +80,7 @@ and then decides not to use it.  Storing the event in this variable
 causes it to be processed normally, by the command loop or by the
 functions to read command input.
 </p>
-<a name="index-prefix-argument-unreading"></a>
+<span id="index-prefix-argument-unreading"></span>
 <p>For example, the function that implements numeric prefix arguments reads
 any number of digits.  When it finds a non-digit event, it must unread
 the event so that it can be read normally by the command loop.
@@ -114,14 +103,14 @@ forces <var>event</var> to be added to the current command&rsquo;s key sequence.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-listify_002dkey_002dsequence"></a>Function: <strong>listify-key-sequence</strong> <em>key</em></dt>
+<dt id="index-listify_002dkey_002dsequence">Function: <strong>listify-key-sequence</strong> <em>key</em></dt>
 <dd><p>This function converts the string or vector <var>key</var> to a list of
 individual events, which you can put in <code>unread-command-events</code>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-input_002dpending_002dp"></a>Function: <strong>input-pending-p</strong> <em>&amp;optional check-timers</em></dt>
-<dd><a name="index-waiting-for-command-key-input"></a>
+<dt id="index-input_002dpending_002dp">Function: <strong>input-pending-p</strong> <em>&amp;optional check-timers</em></dt>
+<dd><span id="index-waiting-for-command-key-input"></span>
 <p>This function determines whether any command input is currently
 available to be read.  It returns immediately, with value <code>t</code> if
 there is available input, <code>nil</code> otherwise.  On rare occasions it
@@ -129,11 +118,11 @@ may return <code>t</code> when no input is available.
 </p>
 <p>If the optional argument <var>check-timers</var> is non-<code>nil</code>, then if
 no input is available, Emacs runs any timers which are ready.
-See <a href="Timers.html#Timers">Timers</a>.
+See <a href="Timers.html">Timers</a>.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-last_002dinput_002devent"></a>Variable: <strong>last-input-event</strong></dt>
+<dt id="index-last_002dinput_002devent">Variable: <strong>last-input-event</strong></dt>
 <dd><p>This variable records the last terminal input event read, whether
 as part of a command or explicitly by a Lisp program.
 </p>
@@ -153,7 +142,7 @@ this expression) remains the value of <code>last-command-event</code>.
 </dd></dl>
 
 <dl>
-<dt><a name="index-while_002dno_002dinput"></a>Macro: <strong>while-no-input</strong> <em>body&hellip;</em></dt>
+<dt id="index-while_002dno_002dinput">Macro: <strong>while-no-input</strong> <em>body&hellip;</em></dt>
 <dd><p>This construct runs the <var>body</var> forms and returns the value of the
 last one&mdash;but only if no input arrives.  If any input arrives during
 the execution of the <var>body</var> forms, it aborts them (working much
@@ -177,10 +166,10 @@ like this:
 </dd></dl>
 
 <dl>
-<dt><a name="index-discard_002dinput"></a>Function: <strong>discard-input</strong></dt>
-<dd><a name="index-flushing-input"></a>
-<a name="index-discarding-input"></a>
-<a name="index-keyboard-macro_002c-terminating"></a>
+<dt id="index-discard_002dinput">Function: <strong>discard-input</strong></dt>
+<dd><span id="index-flushing-input"></span>
+<span id="index-discarding-input"></span>
+<span id="index-keyboard-macro_002c-terminating"></span>
 <p>This function discards the contents of the terminal input buffer and
 cancels any keyboard macro that might be in the process of definition.
 It returns <code>nil</code>.
@@ -200,7 +189,7 @@ during the sleep.
 <hr>
 <div class="header">
 <p>
-Previous: <a href="Quoted-Character-Input.html#Quoted-Character-Input" accesskey="p" rel="prev">Quoted Character Input</a>, Up: <a href="Reading-Input.html#Reading-Input" accesskey="u" rel="up">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Quoted-Character-Input.html" accesskey="p" rel="prev">Quoted Character Input</a>, Up: <a href="Reading-Input.html" accesskey="u" rel="up">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

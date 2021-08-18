@@ -16,7 +16,7 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Syntax Basics (GNU Emacs Lisp Reference Manual)</title>
@@ -26,33 +26,24 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
-<link href="index.html#Top" rel="start" title="Top">
-<link href="Index.html#Index" rel="index" title="Index">
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
-<link href="Syntax-Tables.html#Syntax-Tables" rel="up" title="Syntax Tables">
-<link href="Syntax-Descriptors.html#Syntax-Descriptors" rel="next" title="Syntax Descriptors">
-<link href="Syntax-Tables.html#Syntax-Tables" rel="prev" title="Syntax Tables">
+<link href="Syntax-Tables.html" rel="up" title="Syntax Tables">
+<link href="Syntax-Descriptors.html" rel="next" title="Syntax Descriptors">
+<link href="Syntax-Tables.html" rel="prev" title="Syntax Tables">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -64,31 +55,29 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Syntax-Basics"></a>
-<div class="header">
+<span id="Syntax-Basics"></span><div class="header">
 <p>
-Next: <a href="Syntax-Descriptors.html#Syntax-Descriptors" accesskey="n" rel="next">Syntax Descriptors</a>, Up: <a href="Syntax-Tables.html#Syntax-Tables" accesskey="u" rel="up">Syntax Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Syntax-Descriptors.html" accesskey="n" rel="next">Syntax Descriptors</a>, Up: <a href="Syntax-Tables.html" accesskey="u" rel="up">Syntax Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<a name="Syntax-Table-Concepts"></a>
-<h3 class="section">35.1 Syntax Table Concepts</h3>
+<span id="Syntax-Table-Concepts"></span><h3 class="section">35.1 Syntax Table Concepts</h3>
 
 <p>A syntax table is a data structure which can be used to look up the
 <em>syntax class</em> and other syntactic properties of each character.
 Syntax tables are used by Lisp programs for scanning and moving across
 text.
 </p>
-<p>Internally, a syntax table is a char-table (see <a href="Char_002dTables.html#Char_002dTables">Char-Tables</a>).
+<p>Internally, a syntax table is a char-table (see <a href="Char_002dTables.html">Char-Tables</a>).
 The element at index <var>c</var> describes the character with code
 <var>c</var>; its value is a cons cell which specifies the syntax of the
-character in question.  See <a href="Syntax-Table-Internals.html#Syntax-Table-Internals">Syntax Table Internals</a>, for details.
+character in question.  See <a href="Syntax-Table-Internals.html">Syntax Table Internals</a>, for details.
 However, instead of using <code>aset</code> and <code>aref</code> to modify and
 inspect syntax table contents, you should usually use the higher-level
 functions <code>char-syntax</code> and <code>modify-syntax-entry</code>, which are
-described in <a href="Syntax-Table-Functions.html#Syntax-Table-Functions">Syntax Table Functions</a>.
+described in <a href="Syntax-Table-Functions.html">Syntax Table Functions</a>.
 </p>
 <dl>
-<dt><a name="index-syntax_002dtable_002dp"></a>Function: <strong>syntax-table-p</strong> <em>object</em></dt>
+<dt id="index-syntax_002dtable_002dp">Function: <strong>syntax-table-p</strong> <em>object</em></dt>
 <dd><p>This function returns <code>t</code> if <var>object</var> is a syntax table.
 </p></dd></dl>
 
@@ -104,21 +93,21 @@ the syntax table used by Emacs Lisp mode, and
 Changing a major mode&rsquo;s syntax table alters the syntax in all of that
 mode&rsquo;s buffers, as well as in any buffers subsequently put in that
 mode.  Occasionally, several similar modes share one syntax table.
-See <a href="Example-Major-Modes.html#Example-Major-Modes">Example Major Modes</a>, for an example of how to set up a syntax
+See <a href="Example-Major-Modes.html">Example Major Modes</a>, for an example of how to set up a syntax
 table.
 </p>
-<a name="index-standard-syntax-table"></a>
-<a name="index-inheritance_002c-syntax-table"></a>
+<span id="index-standard-syntax-table"></span>
+<span id="index-inheritance_002c-syntax-table"></span>
 <p>A syntax table can <em>inherit</em> from another syntax table, which is
 called its <em>parent syntax table</em>.  A syntax table can leave the
 syntax class of some characters unspecified, by giving them the
 &ldquo;inherit&rdquo; syntax class; such a character then acquires the syntax
-class specified by the parent syntax table (see <a href="Syntax-Class-Table.html#Syntax-Class-Table">Syntax Class Table</a>).  Emacs defines a <em>standard syntax table</em>, which is the
+class specified by the parent syntax table (see <a href="Syntax-Class-Table.html">Syntax Class Table</a>).  Emacs defines a <em>standard syntax table</em>, which is the
 default parent syntax table, and is also the syntax table used by
 Fundamental mode.
 </p>
 <dl>
-<dt><a name="index-standard_002dsyntax_002dtable"></a>Function: <strong>standard-syntax-table</strong></dt>
+<dt id="index-standard_002dsyntax_002dtable">Function: <strong>standard-syntax-table</strong></dt>
 <dd><p>This function returns the standard syntax table, which is the syntax
 table used in Fundamental mode.
 </p></dd></dl>
@@ -131,7 +120,7 @@ leave this feature out of Emacs Lisp for simplicity.)
 <hr>
 <div class="header">
 <p>
-Next: <a href="Syntax-Descriptors.html#Syntax-Descriptors" accesskey="n" rel="next">Syntax Descriptors</a>, Up: <a href="Syntax-Tables.html#Syntax-Tables" accesskey="u" rel="up">Syntax Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html#Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Syntax-Descriptors.html" accesskey="n" rel="next">Syntax Descriptors</a>, Up: <a href="Syntax-Tables.html" accesskey="u" rel="up">Syntax Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
