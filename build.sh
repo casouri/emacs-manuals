@@ -65,7 +65,7 @@ build() {
 
 download
 
-build master
+# build master
 build 27.2
 build 27.1
 build 26.3
