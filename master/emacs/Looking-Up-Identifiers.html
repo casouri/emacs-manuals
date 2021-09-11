@@ -102,31 +102,15 @@ the definition of a specific identifier.
 <span id="index-M_002d_002e"></span>
 <span id="index-xref_002dfind_002ddefinitions"></span>
 <span id="index-xref_002dprompt_002dfor_002didentifier"></span>
-<p><kbd>M-.</kbd> (<code>xref-find-definitions</code>) shows the definitions of
+<p><kbd>M-.</kbd> (<code>xref-find-definitions</code>) shows the definition of
 the identifier at point.  With a prefix argument, or if there&rsquo;s no
 identifier at point, it prompts for the identifier.  (If you want it
 to always prompt, customize <code>xref-prompt-for-identifier</code> to
 <code>t</code>.)
 </p>
-<span id="index-xref_002dauto_002djump_002dto_002dfirst_002ddefinition"></span>
-<p>If the specified identifier has only one definition, the command jumps
-to it.  If the identifier has more than one possible definition (e.g.,
-in an object-oriented language, or if there&rsquo;s a function and a
-variable by the same name), the command shows the candidate
-definitions in the <samp>*xref*</samp> buffer, together with the files in
-which these definitions are found.  Selecting one of these candidates
-by typing <kbd><span class="key">RET</span></kbd> or clicking <kbd>mouse-2</kbd> will pop a buffer
-showing the corresponding definition.  If the value of the variable
-<code>xref-auto-jump-to-first-definition</code> is <code>move</code>, the first
-of these candidates is automatically selected, and if it&rsquo;s <code>t</code> or
-<code>show</code>, the first candidate is automatically shown; <code>t</code> also
-selects the window showing the first candidate.  The default value is
-<code>nil</code>, which just shows the candidates in the <samp>*xref*</samp>
-buffer, but doesn&rsquo;t select any of them.
-</p>
-<p>When entering the identifier argument to <kbd>M-.</kbd>, the usual
-minibuffer completion commands can be used (see <a href="Completion.html">Completion</a>), with
-the known identifier names as completion candidates.
+<p>When entering the identifier argument to <kbd>M-.</kbd>, you can use the
+usual minibuffer completion commands (see <a href="Completion.html">Completion</a>), with the
+known identifier names being the completion candidates.
 </p>
 <span id="index-C_002dx-4-_002e"></span>
 <span id="index-xref_002dfind_002ddefinitions_002dother_002dwindow"></span>
@@ -144,23 +128,40 @@ former is <kbd><span class="nolinebreak">C-x</span>&nbsp;4&nbsp;.</kbd><!-- /@w 
 or around the place of a mouse event.  This command is intended to be
 bound to a mouse event, such as <kbd>C-M-mouse-1</kbd>, for example.
 </p>
-<span id="index-xref_002dfind_002dapropos"></span>
 <span id="index-C_002dM_002d_002e"></span>
-<p>The command <kbd>C-M-.</kbd> (<code>xref-find-apropos</code>) finds the
-definitions of one or more identifiers that match a specified regular
-expression.  It is just like <kbd>M-.</kbd> except that it does regexp
+<span id="index-xref_002dfind_002dapropos"></span>
+<span id="index-tags_002dapropos_002dadditional_002dactions"></span>
+<p>The command <kbd>C-M-.</kbd> (<code>xref-find-apropos</code>) is like
+<code>apropos</code> for tags (see <a href="Apropos.html">Apropos</a>).  It displays a list of
+identifiers in the selected tags table whose names match the specified
+<var>regexp</var>.  This is just like <kbd>M-.</kbd>, except that it does regexp
 matching of identifiers instead of matching symbol names as fixed
-strings.
+strings.  By default, the command pops up the <samp>*xref*</samp> buffer,
+like <kbd>M-.</kbd>, but you can display additional output by customizing
+the variable <code>tags-apropos-additional-actions</code>; see its
+documentation for details.
 </p>
-<p>When any of the above commands finds more than one definition, it
-presents the <samp>*xref*</samp> buffer showing the definition candidates.
-In that buffer, you have several specialized commands, described in
-<a href="Xref-Commands.html">Xref Commands</a>.
+<span id="index-xref_002dauto_002djump_002dto_002dfirst_002ddefinition"></span>
+<p>If any of the above commands finds more than one matching
+definition, it by default pops up the <samp>*xref*</samp> buffer showing the
+matching candidates.  (<kbd>C-M-.</kbd> <em>always</em> pops up the
+<samp>*xref*</samp> buffer if it finds at least one match.)  The candidates
+are normally shown in that buffer as the name of a file and the
+matching identifier(s) in that file.  In that buffer, you can select
+any of the candidates for display, and you have several additional
+commands, described in <a href="Xref-Commands.html">Xref Commands</a>.  However, if the value of
+the variable <code>xref-auto-jump-to-first-definition</code> is <code>move</code>,
+the first of these candidates is automatically selected in the
+<samp>*xref*</samp> buffer, and if it&rsquo;s <code>t</code> or <code>show</code>, the first
+candidate is automatically shown in its own window; <code>t</code> also
+selects the window showing the first candidate.  The default value is
+<code>nil</code>, which just shows the candidates in the <samp>*xref*</samp>
+buffer, but doesn&rsquo;t select any of them.
 </p>
 <span id="index-M_002d_002c"></span>
 <span id="index-xref_002dpop_002dmarker_002dstack"></span>
 <span id="index-xref_002dmarker_002dring_002dlength"></span>
-<p>To go back to places <em>from where</em> you found the definition,
+<p>To go back to places <em>from where</em> you&rsquo;ve displayed the definition,
 use <kbd>M-,</kbd> (<code>xref-pop-marker-stack</code>).  It jumps back to the
 point of the last invocation of <kbd>M-.</kbd>.  Thus you can find and
 examine the definition of something with <kbd>M-.</kbd> and then return to
