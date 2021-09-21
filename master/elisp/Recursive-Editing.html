@@ -99,17 +99,19 @@ commands.
 <span id="index-exit-recursive-editing"></span>
 <span id="index-aborting"></span>
 <p>To invoke a recursive editing level, call the function
-<code>recursive-edit</code>.  This function contains the command loop; it also
-contains a call to <code>catch</code> with tag <code>exit</code>, which makes it
-possible to exit the recursive editing level by throwing to <code>exit</code>
-(see <a href="Catch-and-Throw.html">Catch and Throw</a>).  If you throw a <code>nil</code> value, then
-<code>recursive-edit</code> returns normally to the function that called it.
-The command <kbd>C-M-c</kbd> (<code>exit-recursive-edit</code>) does this.
-Throwing a <code>t</code> value causes <code>recursive-edit</code> to quit, so that
-control returns to the command loop one level up.  This is called
-<em>aborting</em>, and is done by <kbd>C-]</kbd> (<code>abort-recursive-edit</code>).
-You can also throw a function value.  In that case,
+<code>recursive-edit</code>.  This function contains the command loop; it
+also contains a call to <code>catch</code> with tag <code>exit</code>, which makes
+it possible to exit the recursive editing level by throwing to
+<code>exit</code> (see <a href="Catch-and-Throw.html">Catch and Throw</a>).  Throwing a <code>t</code> value
+causes <code>recursive-edit</code> to quit, so that control returns to the
+command loop one level up.  This is called <em>aborting</em>, and is done
+by <kbd>C-]</kbd> (<code>abort-recursive-edit</code>).  Similarly, you can throw
+a string value to make <code>recursive-edit</code> signal an error, printing
+this string as the message.  If you throw a function,
 <code>recursive-edit</code> will call it without arguments before returning.
+Throwing any other value, will make <code>recursive-edit</code> return
+normally to the function that called it.  The command <kbd>C-M-c</kbd>
+(<code>exit-recursive-edit</code>) does this.
 </p>
 <p>Most applications should not use recursive editing, except as part of
 using the minibuffer.  Usually it is more convenient for the user if you
