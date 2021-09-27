@@ -65,12 +65,17 @@ Next: <a href="Extending-Rx.html" accesskey="n" rel="next">Extending Rx</a>, Pre
 <span id="Functions-and-macros-using-rx-regexps"></span><h4 class="subsubsection">35.3.3.2 Functions and macros using <code>rx</code> regexps</h4>
 
 <dl>
-<dt id="index-rx-1">Macro: <strong>rx</strong> <em>rx-expr&hellip;</em></dt>
-<dd><p>Translate the <var>rx-expr</var>s to a string regexp, as if they were the
+<dt id="index-rx-1">Macro: <strong>rx</strong> <em>rx-form&hellip;</em></dt>
+<dd><p>Translate the <var>rx-form</var>s to a string regexp, as if they were the
 body of a <code>(seq &hellip;)</code> form.  The <code>rx</code> macro expands to a
 string constant, or, if <code>literal</code> or <code>regexp</code> forms are
-used, a Lisp expression that evaluates to a string.
-</p></dd></dl>
+used, a Lisp expression that evaluates to a string.  Example:
+</p>
+<div class="example">
+<pre class="example">(rx (+ alpha) &quot;=&quot; (+ digit))
+  &rArr; &quot;[[:alpha:]]+=[[:digit:]]+&quot;
+</pre></div>
+</dd></dl>
 
 <dl>
 <dt id="index-rx_002dto_002dstring">Function: <strong>rx-to-string</strong> <em>rx-expr &amp;optional no-group</em></dt>
@@ -78,7 +83,13 @@ used, a Lisp expression that evaluates to a string.
 If <var>no-group</var> is absent or nil, bracket the result in a
 non-capturing group, &lsquo;<samp>\(?:&hellip;\)</samp>&rsquo;, if necessary to ensure that
 a postfix operator appended to it will apply to the whole expression.
+Example:
 </p>
+<div class="example">
+<pre class="example">(rx-to-string '(seq (+ alpha) &quot;=&quot; (+ digit)) t)
+  &rArr; &quot;[[:alpha:]]+=[[:digit:]]+&quot;
+</pre></div>
+
 <p>Arguments to <code>literal</code> and <code>regexp</code> forms in <var>rx-expr</var>
 must be string literals.
 </p></dd></dl>
