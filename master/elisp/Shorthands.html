@@ -63,63 +63,65 @@ Previous: <a href="Symbol-Properties.html" accesskey="p" rel="prev">Symbol Prope
 </div>
 <hr>
 <span id="Shorthands-1"></span><h3 class="section">9.5 Shorthands</h3>
-<span id="index-shorthands-1"></span>
+<span id="index-shorthands"></span>
 <span id="index-symbolic-shorthands"></span>
+<span id="index-namespacing"></span>
+<span id="index-namespaces"></span>
 
-<p><em>Shorthands</em>, sometimes known as &quot;renamed symbols&quot;, are symbolic
-forms found in Lisp source.  They&rsquo;re just like regular symbolic forms,
-except that when the Lisp reader encounters them, it produces symbols
-which have a different and usually longer <em>print name</em>
-(see <a href="Symbol-Components.html">Symbol Components</a>).
+<p>The symbol <em>shorthands</em>, sometimes known as &ldquo;renamed symbols&rdquo;, are
+symbolic forms found in Lisp source.  They&rsquo;re just like regular
+symbolic forms, except that when the Lisp reader encounters them, it
+produces symbols which have a different and usually longer <em>print
+name</em> (see <a href="Symbol-Components.html">Symbol Components</a>).
 </p>
 <p>It is useful to think of shorthands as <em>abbreviating</em> the full
-names of intended symbols.  Despite this, do not confuse with the
+names of intended symbols.  Despite this, do not confuse shorthands with the
 Abbrev system see <a href="Abbrevs.html">Abbrevs</a>.
 </p>
 <span id="index-namespace-etiquette"></span>
-<p>Shorthands make Emacs Lisp&rsquo;s namespacing etiquette easier to work
+<p>Shorthands make Emacs Lisp&rsquo;s <em>namespacing etiquette</em> easier to work
 with.  Since all symbols are stored in a single obarray
 (see <a href="Creating-Symbols.html">Creating Symbols</a>), programmers commonly prefix each symbol
 name with the name of the library where it originates.  For example,
 the functions <code>text-property-search-forward</code> and
 <code>text-property-search-backward</code> both belong to the
-<code>text-property-search.el</code> library (see <a href="Loading.html">Loading</a>).  By properly
+<samp>text-property-search.el</samp> library (see <a href="Loading.html">Loading</a>).  By properly
 prefixing symbol names, one effectively prevents clashes between
-similarly named symbols which belong to different libraries and do
+similarly named symbols which belong to different libraries and thus do
 different things.  However, this practice commonly originates very
-long symbols names, which are bothersome to type and read after a
-while.
+long symbols names, which are inconvenient to type and read after a
+while.  Shorthands solve these issues in a clean way.
 </p>
 <dl>
 <dt id="index-elisp_002dshorthands">Variable: <strong>elisp-shorthands</strong></dt>
-<dd><p>This variable is an alist whose elements have the form
+<dd><p>This variable&rsquo;s value is an alist whose elements have the form
 <code>(<var>shorthand-prefix</var> . <var>longhand-prefix</var>)</code>.  Each element
 instructs the Lisp reader to read every symbol form which starts with
 <var>shorthand-prefix</var> as if it started with <var>longhand-prefix</var>
 instead.
 </p>
-<p>This variable may only be set file-locally (see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/File-Variables.html#File-Variables">Local Variables in Files</a> in <cite>The GNU Emacs Manual</cite>).
+<p>This variable may only be set in file-local variables (see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/File-Variables.html#File-Variables">Local Variables in Files</a> in <cite>The GNU Emacs Manual</cite>).
 </p></dd></dl>
 
-<p>Take this excerpt from following example of a hypothetical string
+<p>Here&rsquo;s an example of shorthands usage in a hypothetical string
 manipulating library <samp>some-nice-string-utils.el</samp>.
 </p>
-<div class="example">
-<pre class="example">(defun some-nice-string-utils-split (separator s &amp;optional omit-nulls)
-  &quot;A match-data saving variation on `split-string'.&quot;
+<div class="lisp">
+<pre class="lisp">(defun some-nice-string-utils-split (separator s &amp;optional omit-nulls)
+  &quot;A match-data saving variant of `split-string'.&quot;
   (save-match-data (split-string s separator omit-nulls)))
 
 (defun some-nice-string-utils-lines (s)
-  &quot;Split string S into a list of strings on newline characters.&quot;
+  &quot;Split string S at newline characters into a list of strings.&quot;
   (some-nice-string-utils-split &quot;\\(\r\n\\|[\n\r]\\)&quot; s))
 </pre></div>
 
 <p>As can be seen, it&rsquo;s quite tedious to read or develop this code since
-the symbol names to type are so long.  We can use shorthands to good
-effect here.
+the symbol names to type are so long.  We can use shorthands to
+alleviate that.
 </p>
-<div class="example">
-<pre class="example">(defun snu-split (separator s &amp;optional omit-nulls)
+<div class="lisp">
+<pre class="lisp">(defun snu-split (separator s &amp;optional omit-nulls)
   &quot;A match-data saving variation on `split-string'.&quot;
   (save-match-data (split-string s separator omit-nulls)))
 
@@ -133,7 +135,7 @@ effect here.
 </pre></div>
 
 <p>Even though the two excerpts look different, they are quite identical
-after Lisp reader is done with them.  Both will lead to the very same
+after the Lisp reader processes them.  Both will lead to the very same
 symbols being interned (see <a href="Creating-Symbols.html">Creating Symbols</a>).  Thus loading or
 byte-compiling any of the two files has equivalent results.  The
 shorthands <code>snu-split</code> and <code>snu-lines</code> used in the second
@@ -146,9 +148,9 @@ under point in the echo area.
 that multiple libraries depending on
 <samp>some-nice-string-utils-lines.el</samp> refer to the same symbols under
 <em>different</em> shorthands, or not using shorthands at all.  In the
-next example, the <samp>my-tricks.el</samp> library refers to symbol
-aforementioned symbol <code>some-nice-string-utils-lines</code> using the
-<code>sns-</code> prefix.
+next example, the <samp>my-tricks.el</samp> library refers to the
+symbol <code>some-nice-string-utils-lines</code> using the
+<code>sns-</code> prefix instead of <code>snu-</code>.
 </p>
 <div class="example">
 <pre class="example">(defun t-reverse-lines (s) (string-join (reverse (sns-lines s)) &quot;\n&quot;)
