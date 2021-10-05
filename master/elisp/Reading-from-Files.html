@@ -100,7 +100,16 @@ In this case, <var>visit</var> must be <code>nil</code>.  For example,
 <pre class="example">(insert-file-contents filename nil 0 500)
 </pre></div>
 
-<p>inserts the first 500 characters of a file.
+<p>inserts the characters coded by the first 500 bytes of a file.
+</p>
+<p>If <var>beg</var> or <var>end</var> happens to be in the middle of a character&rsquo;s
+multibyte sequence, Emacs&rsquo;s character code conversion will insert one
+or more eight-bit characters (a.k.a. &ldquo;raw bytes&rdquo;)
+(see <a href="Character-Sets.html">Character Sets</a>) into the buffer.  If you want to read part of
+a file this way, we recommend to bind <code>coding-system-for-read</code> to
+a suitable value around the call to this function (see <a href="Specifying-Coding-Systems.html">Specifying Coding Systems</a>), and to write Lisp code which will check for raw
+bytes at the boundaries, read the entire sequence of these bytes, and
+convert them back to valid characters.
 </p>
 <p>If the argument <var>replace</var> is non-<code>nil</code>, it means to replace the
 contents of the buffer (actually, just the accessible portion) with the
@@ -115,10 +124,11 @@ with <code>insert-file-contents</code>, as long as <var>replace</var> and
 
 <dl>
 <dt id="index-insert_002dfile_002dcontents_002dliterally">Function: <strong>insert-file-contents-literally</strong> <em>filename &amp;optional visit beg end replace</em></dt>
-<dd><p>This function works like <code>insert-file-contents</code> except that it
-does not run <code>after-insert-file-functions</code>, and does not do
-format decoding, character code conversion, automatic uncompression,
-and so on.
+<dd><p>This function works like <code>insert-file-contents</code> except that each
+byte in the file is handled separately, being converted into an
+eight-bit character if needed.  It does not run
+<code>after-insert-file-functions</code>, and does not do format decoding,
+character code conversion, automatic uncompression, and so on.
 </p></dd></dl>
 
 <p>If you want to pass a file name to another process so that another

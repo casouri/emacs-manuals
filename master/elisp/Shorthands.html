@@ -93,7 +93,7 @@ long symbols names, which are inconvenient to type and read after a
 while.  Shorthands solve these issues in a clean way.
 </p>
 <dl>
-<dt id="index-elisp_002dshorthands">Variable: <strong>elisp-shorthands</strong></dt>
+<dt id="index-read_002dsymbol_002dshorthands">Variable: <strong>read-symbol-shorthands</strong></dt>
 <dd><p>This variable&rsquo;s value is an alist whose elements have the form
 <code>(<var>shorthand-prefix</var> . <var>longhand-prefix</var>)</code>.  Each element
 instructs the Lisp reader to read every symbol form which starts with
@@ -130,7 +130,7 @@ alleviate that.
   (snu-split &quot;\\(\r\n\\|[\n\r]\\)&quot; s))
 
 ;; Local Variables:
-;; elisp-shorthands: ((&quot;snu-&quot; . &quot;some-nice-string-utils-&quot;))
+;; read-symbol-shorthands: ((&quot;snu-&quot; . &quot;some-nice-string-utils-&quot;))
 ;; End:
 </pre></div>
 
@@ -144,20 +144,20 @@ by moving point to the location where the shorthands are used and
 waiting for ElDoc (see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Lisp-Doc.html#Lisp-Doc">Local Variables in Files</a> in <cite>The GNU Emacs Manual</cite>) to hint at the true full name of the symbol
 under point in the echo area.
 </p>
-<p>Since <code>elisp-shorthands</code> is a file-local variable, it is possible
-that multiple libraries depending on
+<p>Since <code>read-symbol-shorthands</code> is a file-local variable, it is
+possible that multiple libraries depending on
 <samp>some-nice-string-utils-lines.el</samp> refer to the same symbols under
 <em>different</em> shorthands, or not using shorthands at all.  In the
-next example, the <samp>my-tricks.el</samp> library refers to the
-symbol <code>some-nice-string-utils-lines</code> using the
-<code>sns-</code> prefix instead of <code>snu-</code>.
+next example, the <samp>my-tricks.el</samp> library refers to the symbol
+<code>some-nice-string-utils-lines</code> using the <code>sns-</code> prefix
+instead of <code>snu-</code>.
 </p>
 <div class="example">
 <pre class="example">(defun t-reverse-lines (s) (string-join (reverse (sns-lines s)) &quot;\n&quot;)
 
 ;; Local Variables:
-;; elisp-shorthands: ((&quot;t-&quot; . &quot;my-tricks-&quot;)
-;;                    (&quot;sns-&quot; . &quot;some-nice-string-utils-&quot;))
+;; read-symbol-shorthands: ((&quot;t-&quot; . &quot;my-tricks-&quot;)
+;;                          (&quot;sns-&quot; . &quot;some-nice-string-utils-&quot;))
 ;; End:
 </pre></div>
 <hr>

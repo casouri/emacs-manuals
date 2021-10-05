@@ -175,6 +175,103 @@ changing an entry in <code>ctl-x-map</code>, and this has the effect of
 changing the bindings of both <kbd>C-p C-f</kbd> and <kbd>C-x C-f</kbd> in the
 default global map.
 </p>
+<dl>
+<dt id="index-define_002dkeymap">Function: <strong>define-keymap</strong> <em>&amp;key options... &amp;rest pairs...</em></dt>
+<dd><p><code>define-key</code> is the general work horse for defining a key in a
+keymap.  When writing modes, however, you frequently have to bind a
+large number of keys at once, and using <code>define-key</code> on them all
+can be tedious and error-prone.  Instead you can use
+<code>define-keymap</code>, which creates a keymaps and binds a number of
+keys.  Here&rsquo;s a very basic example:
+</p>
+<div class="lisp">
+<pre class="lisp">(define-keymap
+  &quot;n&quot; #'forward-line
+  &quot;f&quot; #'previous-line)
+</pre></div>
+
+<p>This function creates a new sparse keymap, defines the two keystrokes
+in <var>pairs</var>, and returns the new keymap.
+</p>
+<p><var>pairs</var> is a list of alternating key bindings and key definitions,
+as accepted by <code>define-key</code>.  In addition the key can be the
+special symbol <code>:menu</code>, in which case the definition should be a
+menu definition as accepted by <code>easy-menu-define</code> (see <a href="Easy-Menu.html">Easy Menu</a>).  Here&rsquo;s a brief example:
+</p>
+<div class="lisp">
+<pre class="lisp">(define-keymap :full t
+  &quot;g&quot; #'eww-reload
+  :menu '(&quot;Eww&quot;
+          [&quot;Exit&quot; quit-window t]
+          [&quot;Reload&quot; eww-reload t]))
+</pre></div>
+
+<p>A number of keywords can be used before the key/definition pairs to
+changes features of the new keymap.  If the keyword is missing, the
+default value for the feature is <code>nil</code>.  Here&rsquo;s a list of the
+available keywords:
+</p>
+<dl compact="compact">
+<dt><code>:full</code></dt>
+<dd><p>If non-<code>nil</code>, create a chartable keymap (as from
+<code>make-keymap</code>) instead of a sparse keymap (as from
+<code>make-sparse-keymap</code> (see <a href="Creating-Keymaps.html">Creating Keymaps</a>).  A sparse keymap
+is the default.
+</p>
+</dd>
+<dt><code>:parent</code></dt>
+<dd><p>If non-<code>nil</code>, this should be a keymap to use as the parent
+(see <a href="Inheritance-and-Keymaps.html">Inheritance and Keymaps</a>).
+</p>
+</dd>
+<dt><code>:keymap</code></dt>
+<dd><p>If non-<code>nil</code>, this should be a keymap.  Instead of creating a new
+keymap, this keymap is modified instead.
+</p>
+</dd>
+<dt><code>:suppress</code></dt>
+<dd><p>If non-<code>nil</code>, the keymap will be suppressed with
+<code>suppress-keymap</code> (see <a href="#Changing-Key-Bindings">Changing Key Bindings</a>).  If
+<code>nodigits</code>, treat digits like other chars.
+</p>
+</dd>
+<dt><code>:name</code></dt>
+<dd><p>If non-<code>nil</code>, this should be a string to use as the menu for the
+keymap if you use it as a menu with <code>x-popup-menu</code> (see <a href="Pop_002dUp-Menus.html">Pop-Up Menus</a>).
+</p>
+</dd>
+<dt><code>:prefix</code></dt>
+<dd><p>If non-<code>nil</code>, this should be a symbol to be used as a prefix
+command (see <a href="Prefix-Keys.html">Prefix Keys</a>).  If this is the case, this symbol is
+returned by <code>define-keymap</code> instead of the map itself.
+</p></dd>
+</dl>
+
+</dd></dl>
+
+<dl>
+<dt id="index-defvar_002dkeymap">Macro: <strong>defvar-keymap</strong> <em>name options &amp;rest defs</em></dt>
+<dd><p>By far, the most common thing to do with a keymap is to bind it to a
+variable.  This is what virtually all modes do&mdash;a mode called
+<code>foo</code> almost always has a variable called <code>foo-mode-map</code>.
+</p>
+<p>This macro defines <var>name</var> as a variable, and passes <var>options</var>
+and <var>defs</var> to <code>define-keymap</code>, and uses the result as the
+default value for the variable.
+</p>
+<p><var>options</var> is like the keywords in <code>define-keymap</code>, but adds a
+<code>:doc</code> keyword that says what the doc string for the <var>name</var>
+variable should be.
+</p>
+<p>Here&rsquo;s an example:
+</p>
+<div class="lisp">
+<pre class="lisp">(defvar-keymap eww-textarea-map (:parent text-mode-map)
+  &quot;\r&quot; #'forward-line
+  [?\t] #'shr-next-link)
+</pre></div>
+</dd></dl>
+
 <p>The function <code>substitute-key-definition</code> scans a keymap for
 keys that have a certain binding and rebinds them with a different
 binding.  Another feature which is cleaner and can often produce the
