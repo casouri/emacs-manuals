@@ -153,9 +153,9 @@ frame.
 selected, if the window chosen by <code>display-buffer</code> is displayed
 there.  Primarily affected by this are
 <code>display-buffer-use-some-frame</code> and
-<code>display-buffer-reuse-window</code>.
-<code>display-buffer-pop-up-frame</code> should be affected as well, but
-there is no guarantee that the window manager will comply.
+<code>display-buffer-reuse-window</code>.  Ideally,
+<code>display-buffer-pop-up-frame</code> should be affected as well, but there
+is no guarantee that the window manager will comply.
 </p>
 <span id="index-window_002dparameters_002c-a-buffer-display-action-alist-entry"></span>
 </dd>
@@ -200,8 +200,8 @@ root window.
 </li><li> If the value specifies a function, that function is called with one
 argument&mdash;the chosen window.  The function is supposed to adjust the
 height of the window; its return value is ignored.  Suitable functions
-are <code>shrink-window-if-larger-than-buffer</code> and
-<code>fit-window-to-buffer</code>, see <a href="Resizing-Windows.html">Resizing Windows</a>.
+are <code>fit-window-to-buffer</code> and
+<code>shrink-window-if-larger-than-buffer</code>, see <a href="Resizing-Windows.html">Resizing Windows</a>.
 </li></ul>
 
 <p>By convention, the height of the chosen window is adjusted only if the
@@ -232,10 +232,29 @@ argument&mdash;the chosen window.  The function is supposed to adjust the
 width of the window; its return value is ignored.
 </li></ul>
 
-<p>By convention, the width of the chosen window is adjusted only if the
-window is part of a horizontal combination (see <a href="Windows-and-Frames.html">Windows and Frames</a>) to avoid changing the width of other, unrelated windows.
-Also, this entry should be processed under only certain conditions
-which are specified right below this list.
+<span id="index-window_002dsize_002c-a-buffer-display-action-alist-entry"></span>
+</dd>
+<dt><code>window-size</code></dt>
+<dd><p>This entry is a combination of the two preceding ones and can be used to
+adjust the chosen window&rsquo;s height and width.  Since windows can be
+resized in one direction only without affecting other windows,
+<code>window-size</code> is effective only to set up the size of a window
+appearing alone on a frame.  The value can be one of the following:
+</p>
+<ul>
+<li> <code>nil</code> means to leave the size of the chosen window alone.
+
+</li><li> A cons cell of two integers specifies the desired total width and height
+of the chosen window in lines and columns.  It&rsquo;s effect is to adjust the
+size of the frame accordingly.
+
+</li><li> If the value specifies a function, that function is called with one
+argument&mdash;the chosen window.  The function is supposed to adjust the
+size of the window&rsquo;s frame; its return value is ignored.
+</li></ul>
+
+<p>This entry should be processed under only certain conditions which are
+specified right below this list.
 </p>
 <span id="index-dedicated_002c-a-buffer-display-action-alist-entry"></span>
 </dd>
@@ -345,7 +364,15 @@ the window was created earlier by <code>display-buffer</code> to show the
 buffer and never was used to show another buffer until it was reused
 by the current invocation of <code>display-buffer</code>.
 </p>
-
+<p>If no <code>window-height</code>, <code>window-width</code> or <code>window-size</code>
+entry was specified, the window may still be resized automatically when
+the buffer is temporary and <code>temp-buffer-resize-mode</code> has been
+enabled, <a href="Temporary-Displays.html">Temporary Displays</a>.  In that case, the <small>CDR</small> of a
+<code>window-height</code>, <code>window-width</code> or <code>window-size</code> entry
+can be used to inhibit or override the default behavior of
+<code>temp-buffer-resize-mode</code> for specific buffers or invocations of
+<code>display-buffer</code>.
+</p>
 <hr>
 <div class="header">
 <p>
