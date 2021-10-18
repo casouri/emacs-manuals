@@ -80,25 +80,51 @@ follow the Emacs conventions for use of various keys (see <a href="Key-Binding-C
 </p>
 <span id="index-meta-character-key-constants"></span>
 <span id="index-control-character-key-constants"></span>
-<p>In writing the key sequence to rebind, it is good to use the special
-escape sequences for control and meta characters (see <a href="String-Type.html">String Type</a>).
-The syntax &lsquo;<samp>\C-</samp>&rsquo; means that the following character is a control
-character and &lsquo;<samp>\M-</samp>&rsquo; means that the following character is a meta
-character.  Thus, the string <code>&quot;\M-x&quot;</code> is read as containing a
-single <kbd>M-x</kbd>, <code>&quot;\C-f&quot;</code> is read as containing a single
-<kbd>C-f</kbd>, and <code>&quot;\M-\C-x&quot;</code> and <code>&quot;\C-\M-x&quot;</code> are both read as
-containing a single <kbd>C-M-x</kbd>.  You can also use this escape syntax in
-vectors, as well as others that aren&rsquo;t allowed in strings; one example
-is &lsquo;<samp>[?\C-\H-x home]</samp>&rsquo;.  See <a href="Character-Type.html">Character Type</a>.
+<p><code>define-key</code> (and other functions that are used to rebind keys)
+understand a number of different syntaxes for the keys.
 </p>
-<p>The key definition and lookup functions accept an alternate syntax for
-event types in a key sequence that is a vector: you can use a list
-containing modifier names plus one base event (a character or function
-key name).  For example, <code>(control ?a)</code> is equivalent to
-<code>?\C-a</code> and <code>(hyper control left)</code> is equivalent to
-<code>C-H-left</code>.  One advantage of such lists is that the precise
-numeric codes for the modifier bits don&rsquo;t appear in compiled files.
+<dl compact="compact">
+<dt>A vector containing a single string.</dt>
+<dd><p>This is the preferred way to represent a key sequence.  Here&rsquo;s a
+couple of examples:
 </p>
+<div class="example">
+<pre class="example">[&quot;C-c M-f&quot;]
+[&quot;S-&lt;home&gt;&quot;]
+</pre></div>
+
+<p>The syntax is the same as the one used by Emacs when displaying key
+bindings, for instance in &lsquo;<samp>*Help*</samp>&rsquo; buffers and help texts.
+</p>
+<p>If the syntax isn&rsquo;t valid, an error will be raised when running
+<code>define-key</code>, or when byte-compiling code that has these calls.
+</p>
+</dd>
+<dt>A vector containing lists of keys.</dt>
+<dd><p>You can use a list containing modifier names plus one base event (a
+character or function key name).  For example, <code>[(control ?a)
+(meta b)]</code> is equivalent to <kbd>C-a M-b</kbd> and <code>[(hyper control
+left)]</code> is equivalent to <kbd>C-H-left</kbd>.
+</p>
+</dd>
+<dt>A string with control and meta characters.</dt>
+<dd><p>Internally, key sequences are often represented as strings using the
+special escape sequences for control and meta characters
+(see <a href="String-Type.html">String Type</a>), but this representation can also be used by
+users when rebinding keys.  A string like <code>&quot;\M-x&quot;</code> is read as
+containing a single <kbd>M-x</kbd>, <code>&quot;\C-f&quot;</code> is read as containing a
+single <kbd>C-f</kbd>, and <code>&quot;\M-\C-x&quot;</code> and <code>&quot;\C-\M-x&quot;</code> are both
+read as containing a single <kbd>C-M-x</kbd>.
+</p>
+</dd>
+<dt>a vector of characters.</dt>
+<dd><p>This is the other internal representation of key sequences, and
+supports a fuller range of modifiers than the string representation.
+One example is &lsquo;<samp>[?\C-\H-x home]</samp>&rsquo;, which represents the <kbd>C-H-x
+home</kbd> key sequence.  See <a href="Character-Type.html">Character Type</a>.
+</p></dd>
+</dl>
+
 <p>The functions below signal an error if <var>keymap</var> is not a keymap,
 or if <var>key</var> is not a string or vector representing a key sequence.
 You can use event types (symbols) as shorthand for events that are
@@ -137,14 +163,14 @@ bindings in it:
 <div class="example">
 <pre class="example">(setq map (make-sparse-keymap))
     &rArr; (keymap)
-</pre><pre class="example">(define-key map &quot;\C-f&quot; 'forward-char)
+</pre><pre class="example">(define-key map [&quot;C-f&quot;] 'forward-char)
     &rArr; forward-char
 </pre><pre class="example">map
     &rArr; (keymap (6 . forward-char))
 </pre><pre class="example">
 
 </pre><pre class="example">;; <span class="roman">Build sparse submap for <kbd>C-x</kbd> and bind <kbd>f</kbd> in that.</span>
-(define-key map (kbd &quot;C-x f&quot;) 'forward-word)
+(define-key map [&quot;C-x f&quot;] 'forward-word)
     &rArr; forward-word
 </pre><pre class="example">map
 &rArr; (keymap
@@ -154,13 +180,13 @@ bindings in it:
 </pre><pre class="example">
 
 </pre><pre class="example">;; <span class="roman">Bind <kbd>C-p</kbd> to the <code>ctl-x-map</code>.</span>
-(define-key map (kbd &quot;C-p&quot;) ctl-x-map)
+(define-key map [&quot;C-p&quot;] ctl-x-map)
 ;; <code>ctl-x-map</code>
 &rArr; [nil &hellip; find-file &hellip; backward-kill-sentence]
 </pre><pre class="example">
 
 </pre><pre class="example">;; <span class="roman">Bind <kbd>C-f</kbd> to <code>foo</code> in the <code>ctl-x-map</code>.</span>
-(define-key map (kbd &quot;C-p C-f&quot;) 'foo)
+(define-key map [&quot;C-p C-f&quot;] 'foo)
 &rArr; 'foo
 </pre><pre class="example">map
 &rArr; (keymap     ; <span class="roman">Note <code>foo</code> in <code>ctl-x-map</code>.</span>
@@ -187,7 +213,8 @@ keys.  Here&rsquo;s a very basic example:
 <div class="lisp">
 <pre class="lisp">(define-keymap
   &quot;n&quot; #'forward-line
-  &quot;f&quot; #'previous-line)
+  &quot;f&quot; #'previous-line
+  [&quot;C-c C-c&quot;] #'quit-window)
 </pre></div>
 
 <p>This function creates a new sparse keymap, defines the two keystrokes
