@@ -28,6 +28,7 @@ config() {
 build() {
     cd "$SRC"
     local version=$1
+    git stash
     if [ "$version" = master ]; then
         git checkout master
     else
