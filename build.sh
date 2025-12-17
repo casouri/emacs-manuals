@@ -66,6 +66,14 @@ build() {
 download
 
 build master
+build 30.2
+build 30.1
+build 29.4
+build 29.3
+build 29.2
+build 29.1
+build 28.2
+build 28.1
 build 27.2
 build 27.1
 build 26.3
