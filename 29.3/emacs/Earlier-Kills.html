@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.3.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Earlier Kills (GNU Emacs Manual)</title>
+
+<meta name="description" content="Earlier Kills (GNU Emacs Manual)">
+<meta name="keywords" content="Earlier Kills (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Yanking.html" rel="up" title="Yanking">
+<link href="Appending-Kills.html" rel="next" title="Appending Kills">
+<link href="Kill-Ring.html" rel="prev" title="Kill Ring">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Earlier-Kills">
+<div class="nav-panel">
+<p>
+Next: <a href="Appending-Kills.html" accesskey="n" rel="next">Appending Kills</a>, Previous: <a href="Kill-Ring.html" accesskey="p" rel="prev">The Kill Ring</a>, Up: <a href="Yanking.html" accesskey="u" rel="up">Yanking</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Yanking-Earlier-Kills"><span>13.2.2 Yanking Earlier Kills<a class="copiable-link" href="#Yanking-Earlier-Kills"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-yanking-previous-kills"></a>
+
+<p>As explained in <a class="ref" href="Yanking.html">Yanking</a>, you can use a numeric argument to
+<kbd class="kbd">C-y</kbd> to yank text that is no longer the most recent kill.  This
+is useful if you remember which kill ring entry you want.  If you
+don&rsquo;t, you can use the <kbd class="kbd">M-y</kbd> (<code class="code">yank-pop</code>) command to cycle
+through the possibilities or to select one of the earlier kills.
+</p>
+<a class="index-entry-id" id="index-M_002dy"></a>
+<a class="index-entry-id" id="index-yank_002dpop"></a>
+<p>If the previous command was a yank command, <kbd class="kbd">M-y</kbd> takes the text
+that was yanked and replaces it with the text from an earlier kill.
+So, to recover the text of the next-to-the-last kill, first use
+<kbd class="kbd">C-y</kbd> to yank the last kill, and then use <kbd class="kbd">M-y</kbd> to replace it
+with the previous kill.  This works only after a <kbd class="kbd">C-y</kbd>
+or another <kbd class="kbd">M-y</kbd>.  (If <kbd class="kbd">M-y</kbd> is invoked after some other
+command, it works differently, see below.)
+</p>
+<p>You can understand this operation mode of <kbd class="kbd">M-y</kbd> in terms of a
+last-yank pointer which points at an entry in the kill ring.  Each
+time you kill, the last-yank pointer moves to the newly made entry at
+the front of the ring.  <kbd class="kbd">C-y</kbd> yanks the entry which the last-yank
+pointer points to.  <kbd class="kbd">M-y</kbd> after a <kbd class="kbd">C-y</kbd> or another <kbd class="kbd">M-y</kbd>
+moves the last-yank pointer to the previous entry, and the text in the
+buffer changes to match.  Enough <kbd class="kbd">M-y</kbd> commands one after another
+can move the pointer to any entry in the ring, so you can get any
+entry into the buffer.  Eventually the pointer reaches the end of the
+ring; the next <kbd class="kbd">M-y</kbd> loops back around to the first entry again.
+</p>
+<p><kbd class="kbd">M-y</kbd> moves the last-yank pointer around the ring, but it does
+not change the order of the entries in the ring, which always runs from
+the most recent kill at the front to the oldest one still remembered.
+</p>
+<p>When used after <kbd class="kbd">C-y</kbd> or <kbd class="kbd">M-y</kbd>, <kbd class="kbd">M-y</kbd> can take a numeric
+argument, which tells it how many entries to advance the last-yank
+pointer by.  A negative argument moves the pointer toward the front of
+the ring; from the front of the ring, it moves around to the last
+entry and continues forward from there.
+</p>
+<p>Once the text you are looking for is brought into the buffer, you
+can stop doing <kbd class="kbd">M-y</kbd> commands and the last yanked text will stay
+there.  It&rsquo;s just a copy of the kill ring entry, so editing it in the
+buffer does not change what&rsquo;s in the ring.  As long as no new killing
+is done, the last-yank pointer remains at the same place in the kill
+ring, so repeating <kbd class="kbd">C-y</kbd> will yank another copy of the same
+previous kill.
+</p>
+<p>When you call <kbd class="kbd">C-y</kbd> with a numeric argument, that also sets the
+last-yank pointer to the entry that it yanks.
+</p>
+<p>You can also invoke <kbd class="kbd">M-y</kbd> after a command that is not a yank
+command.  In that case, <kbd class="kbd">M-y</kbd> prompts you in the minibuffer for
+one of the previous kills.  You can use the minibuffer history
+commands (see <a class="pxref" href="Minibuffer-History.html">Minibuffer History</a>) to navigate or search through
+the entries in the kill ring until you find the one you want to
+reinsert.  Or you can use completion commands (see <a class="pxref" href="Completion-Commands.html">Completion Commands</a>) to complete on an entry from the list of entries in the
+kill ring or pop up the <samp class="file">*Completions*</samp> buffer with the candidate
+entries from which you can choose.  After selecting the kill-ring
+entry, you can optionally edit it in the minibuffer.  Finally, type
+<kbd class="kbd">RET</kbd> to exit the minibuffer and insert the text of the selected
+kill-ring entry.  Like in case of <kbd class="kbd">M-y</kbd> after another yank
+command, the last-yank pointer is left pointing at the text you just
+yanked, whether it is one of the previous kills or an entry from the
+kill-ring that you edited before inserting it.  (In the latter case,
+the edited entry is added to the front of the kill-ring.)  So here,
+too, typing <kbd class="kbd">C-y</kbd> will yank another copy of the text just
+inserted.
+</p>
+<p>When invoked with a plain prefix argument (<kbd class="kbd">C-u M-y</kbd>) after a
+command that is not a yank command, <kbd class="kbd">M-y</kbd> leaves the cursor in
+front of the inserted text, and sets the mark at the end, like
+<kbd class="kbd">C-y</kbd> does.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Appending-Kills.html">Appending Kills</a>, Previous: <a href="Kill-Ring.html">The Kill Ring</a>, Up: <a href="Yanking.html">Yanking</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.2.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Bitwise Operations (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Bitwise Operations (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Rounding-Operations.html" rel="prev" title="Rounding Operations">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,38 +50,39 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Bitwise-Operations"></span><div class="header">
+<div class="section-level-extent" id="Bitwise-Operations">
+<div class="nav-panel">
 <p>
-Next: <a href="Math-Functions.html" accesskey="n" rel="next">Math Functions</a>, Previous: <a href="Rounding-Operations.html" accesskey="p" rel="prev">Rounding Operations</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Math-Functions.html" accesskey="n" rel="next">Standard Mathematical Functions</a>, Previous: <a href="Rounding-Operations.html" accesskey="p" rel="prev">Rounding Operations</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Bitwise-Operations-on-Integers"></span><h3 class="section">3.8 Bitwise Operations on Integers</h3>
-<span id="index-bitwise-arithmetic"></span>
-<span id="index-logical-arithmetic"></span>
+<h3 class="section" id="Bitwise-Operations-on-Integers"><span>3.8 Bitwise Operations on Integers<a class="copiable-link" href="#Bitwise-Operations-on-Integers"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-bitwise-arithmetic"></a>
+<a class="index-entry-id" id="index-logical-arithmetic"></a>
 
 <p>In a computer, an integer is represented as a binary number, a
-sequence of <em>bits</em> (digits which are either zero or one).
+sequence of <em class="dfn">bits</em> (digits which are either zero or one).
 Conceptually the bit sequence is infinite on the left, with the
 most-significant bits being all zeros or all ones.  A bitwise
 operation acts on the individual bits of such a sequence.  For example,
-<em>shifting</em> moves the whole sequence left or right one or more places,
+<em class="dfn">shifting</em> moves the whole sequence left or right one or more places,
 reproducing the same pattern moved over.
 </p>
 <p>The bitwise operations in Emacs Lisp apply only to integers.
 </p>
-<dl>
-<dt id="index-ash">Function: <strong>ash</strong> <em>integer1 count</em></dt>
-<dd><span id="index-arithmetic-shift"></span>
-<p><code>ash</code> (<em>arithmetic shift</em>) shifts the bits in <var>integer1</var>
-to the left <var>count</var> places, or to the right if <var>count</var> is
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ash"><span class="category-def">Function: </span><span><strong class="def-name">ash</strong> <var class="def-var-arguments">integer1 count</var><a class="copiable-link" href="#index-ash"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-arithmetic-shift"></a>
+<p><code class="code">ash</code> (<em class="dfn">arithmetic shift</em>) shifts the bits in <var class="var">integer1</var>
+to the left <var class="var">count</var> places, or to the right if <var class="var">count</var> is
 negative.  Left shifts introduce zero bits on the right; right shifts
 discard the rightmost bits.  Considered as an integer operation,
-<code>ash</code> multiplies <var>integer1</var> by
-2**<var>count</var>,
+<code class="code">ash</code> multiplies <var class="var">integer1</var> by
+2**<var class="var">count</var>,
 and then converts the result to an integer by rounding downward, toward
 minus infinity.
 </p>
-<p>Here are examples of <code>ash</code>, shifting a pattern of bits one place
+<p>Here are examples of <code class="code">ash</code>, shifting a pattern of bits one place
 to the left and to the right.  These examples show only the low-order
 bits of the binary pattern; leading bits all agree with the
 highest-order bit shown.  As you can see, shifting left by one is
@@ -96,80 +90,80 @@ equivalent to multiplying by two, whereas shifting right by one is
 equivalent to dividing by two and then rounding toward minus infinity.
 </p>
 <div class="example">
-<pre class="example">(ash 7 1) &rArr; 14
-;; <span class="roman">Decimal 7 becomes decimal 14.</span>
-&hellip;000111
+<div class="group"><pre class="example-preformatted">(ash 7 1) &rArr; 14
+;; <span class="r">Decimal 7 becomes decimal 14.</span>
+...000111
      &rArr;
-&hellip;001110
-</pre><pre class="example">
+...001110
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(ash 7 -1) &rArr; 3
-&hellip;000111
+</pre><div class="group"><pre class="example-preformatted">(ash 7 -1) &rArr; 3
+...000111
      &rArr;
-&hellip;000011
-</pre><pre class="example">
+...000011
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(ash -7 1) &rArr; -14
-&hellip;111001
+</pre><div class="group"><pre class="example-preformatted">(ash -7 1) &rArr; -14
+...111001
      &rArr;
-&hellip;110010
-</pre><pre class="example">
+...110010
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(ash -7 -1) &rArr; -4
-&hellip;111001
+</pre><div class="group"><pre class="example-preformatted">(ash -7 -1) &rArr; -4
+...111001
      &rArr;
-&hellip;111100
-</pre></div>
+...111100
+</pre></div></div>
 
 <p>Here are examples of shifting left or right by two bits:
 </p>
-<div class="example">
-<pre class="example">                  ;  <span class="roman">       binary values</span>
-(ash 5 2)         ;   5  =  <span class="roman">&hellip;000101</span>
-     &rArr; 20         ;      =  <span class="roman">&hellip;010100</span>
-(ash -5 2)        ;  -5  =  <span class="roman">&hellip;111011</span>
-     &rArr; -20        ;      =  <span class="roman">&hellip;101100</span>
-</pre><pre class="example">(ash 5 -2)
-     &rArr; 1          ;      =  <span class="roman">&hellip;000001</span>
-</pre><pre class="example">(ash -5 -2)
-     &rArr; -2         ;      =  <span class="roman">&hellip;111110</span>
-</pre></div>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">                  ;  <span class="r">       binary values</span>
+(ash 5 2)         ;   5  =  <span class="r">...000101</span>
+     &rArr; 20         ;      =  <span class="r">...010100</span>
+(ash -5 2)        ;  -5  =  <span class="r">...111011</span>
+     &rArr; -20        ;      =  <span class="r">...101100</span>
+</pre></div><div class="group"><pre class="example-preformatted">(ash 5 -2)
+     &rArr; 1          ;      =  <span class="r">...000001</span>
+</pre></div><div class="group"><pre class="example-preformatted">(ash -5 -2)
+     &rArr; -2         ;      =  <span class="r">...111110</span>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-lsh">Function: <strong>lsh</strong> <em>integer1 count</em></dt>
-<dd><span id="index-logical-shift"></span>
-<p><code>lsh</code>, which is an abbreviation for <em>logical shift</em>, shifts the
-bits in <var>integer1</var> to the left <var>count</var> places, or to the right
-if <var>count</var> is negative, bringing zeros into the vacated bits.  If
-<var>count</var> is negative, then <var>integer1</var> must be either a fixnum
-or a positive bignum, and <code>lsh</code> treats a negative fixnum as if it
-were unsigned by subtracting twice <code>most-negative-fixnum</code> before
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-lsh"><span class="category-def">Function: </span><span><strong class="def-name">lsh</strong> <var class="def-var-arguments">integer1 count</var><a class="copiable-link" href="#index-lsh"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-logical-shift"></a>
+<p><code class="code">lsh</code>, which is an abbreviation for <em class="dfn">logical shift</em>, shifts the
+bits in <var class="var">integer1</var> to the left <var class="var">count</var> places, or to the right
+if <var class="var">count</var> is negative, bringing zeros into the vacated bits.  If
+<var class="var">count</var> is negative, then <var class="var">integer1</var> must be either a fixnum
+or a positive bignum, and <code class="code">lsh</code> treats a negative fixnum as if it
+were unsigned by subtracting twice <code class="code">most-negative-fixnum</code> before
 shifting, producing a nonnegative result.  This quirky behavior dates
-back to when Emacs supported only fixnums; nowadays <code>ash</code> is a
+back to when Emacs supported only fixnums; nowadays <code class="code">ash</code> is a
 better choice.
 </p>
-<p>As <code>lsh</code> behaves like <code>ash</code> except when <var>integer1</var> and
-<var>count1</var> are both negative, the following examples focus on these
+<p>As <code class="code">lsh</code> behaves like <code class="code">ash</code> except when <var class="var">integer1</var> and
+<var class="var">count1</var> are both negative, the following examples focus on these
 exceptional cases.  These examples assume 30-bit fixnums.
 </p>
-<div class="example">
-<pre class="example">                 ; <span class="roman">     binary values</span>
-(ash -7 -1)      ; -7 = <span class="roman">&hellip;111111111111111111111111111001</span>
-     &rArr; -4        ;    = <span class="roman">&hellip;111111111111111111111111111100</span>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">                 ; <span class="r">     binary values</span>
+(ash -7 -1)      ; -7 = <span class="r">...111111111111111111111111111001</span>
+     &rArr; -4        ;    = <span class="r">...111111111111111111111111111100</span>
 (lsh -7 -1)
-     &rArr; 536870908 ;    = <span class="roman">&hellip;011111111111111111111111111100</span>
-</pre><pre class="example">(ash -5 -2)      ; -5 = <span class="roman">&hellip;111111111111111111111111111011</span>
-     &rArr; -2        ;    = <span class="roman">&hellip;111111111111111111111111111110</span>
+     &rArr; 536870908 ;    = <span class="r">...011111111111111111111111111100</span>
+</pre></div><div class="group"><pre class="example-preformatted">(ash -5 -2)      ; -5 = <span class="r">...111111111111111111111111111011</span>
+     &rArr; -2        ;    = <span class="r">...111111111111111111111111111110</span>
 (lsh -5 -2)
-     &rArr; 268435454 ;    = <span class="roman">&hellip;001111111111111111111111111110</span>
-</pre></div>
+     &rArr; 268435454 ;    = <span class="r">...001111111111111111111111111110</span>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-logand">Function: <strong>logand</strong> <em>&amp;rest ints-or-markers</em></dt>
-<dd><p>This function returns the bitwise AND of the arguments: the <var>n</var>th
-bit is 1 in the result if, and only if, the <var>n</var>th bit is 1 in all
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-logand"><span class="category-def">Function: </span><span><strong class="def-name">logand</strong> <var class="def-var-arguments">&amp;rest ints-or-markers</var><a class="copiable-link" href="#index-logand"> &para;</a></span></dt>
+<dd><p>This function returns the bitwise AND of the arguments: the <var class="var">n</var>th
+bit is 1 in the result if, and only if, the <var class="var">n</var>th bit is 1 in all
 the arguments.
 </p>
 <p>For example, using 4-bit binary numbers, the bitwise AND of 13 and
@@ -182,119 +176,120 @@ the arguments, so the rightmost two bits of the returned value are both 0.
 <p>Therefore,
 </p>
 <div class="example">
-<pre class="example">(logand 13 12)
+<div class="group"><pre class="example-preformatted">(logand 13 12)
      &rArr; 12
-</pre></div>
+</pre></div></div>
 
-<p>If <code>logand</code> is not passed any argument, it returns a value of
-−1.  This number is an identity element for <code>logand</code>
+<p>If <code class="code">logand</code> is not passed any argument, it returns a value of
+&minus;1.  This number is an identity element for <code class="code">logand</code>
 because its binary representation consists entirely of ones.  If
-<code>logand</code> is passed just one argument, it returns that argument.
+<code class="code">logand</code> is passed just one argument, it returns that argument.
 </p>
-<div class="example">
-<pre class="example">                   ; <span class="roman">       binary values</span>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">                   ; <span class="r">       binary values</span>
 
-(logand 14 13)     ; 14  =  <span class="roman">&hellip;001110</span>
-                   ; 13  =  <span class="roman">&hellip;001101</span>
-     &rArr; 12         ; 12  =  <span class="roman">&hellip;001100</span>
-</pre><pre class="example">
+(logand 14 13)     ; 14  =  <span class="r">...001110</span>
+                   ; 13  =  <span class="r">...001101</span>
+     &rArr; 12         ; 12  =  <span class="r">...001100</span>
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(logand 14 13 4)   ; 14  =  <span class="roman">&hellip;001110</span>
-                   ; 13  =  <span class="roman">&hellip;001101</span>
-                   ;  4  =  <span class="roman">&hellip;000100</span>
-     &rArr; 4          ;  4  =  <span class="roman">&hellip;000100</span>
-</pre><pre class="example">
+</pre><div class="group"><pre class="example-preformatted">(logand 14 13 4)   ; 14  =  <span class="r">...001110</span>
+                   ; 13  =  <span class="r">...001101</span>
+                   ;  4  =  <span class="r">...000100</span>
+     &rArr; 4          ;  4  =  <span class="r">...000100</span>
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(logand)
-     &rArr; -1         ; -1  =  <span class="roman">&hellip;111111</span>
-</pre></div>
+</pre><div class="group"><pre class="example-preformatted">(logand)
+     &rArr; -1         ; -1  =  <span class="r">...111111</span>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-logior">Function: <strong>logior</strong> <em>&amp;rest ints-or-markers</em></dt>
-<dd><p>This function returns the bitwise inclusive OR of its arguments: the <var>n</var>th
-bit is 1 in the result if, and only if, the <var>n</var>th bit is 1 in at
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-logior"><span class="category-def">Function: </span><span><strong class="def-name">logior</strong> <var class="def-var-arguments">&amp;rest ints-or-markers</var><a class="copiable-link" href="#index-logior"> &para;</a></span></dt>
+<dd><p>This function returns the bitwise inclusive OR of its arguments: the <var class="var">n</var>th
+bit is 1 in the result if, and only if, the <var class="var">n</var>th bit is 1 in at
 least one of the arguments.  If there are no arguments, the result is 0,
-which is an identity element for this operation.  If <code>logior</code> is
+which is an identity element for this operation.  If <code class="code">logior</code> is
 passed just one argument, it returns that argument.
 </p>
-<div class="example">
-<pre class="example">                   ; <span class="roman">       binary values</span>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">                   ; <span class="r">       binary values</span>
 
-(logior 12 5)      ; 12  =  <span class="roman">&hellip;001100</span>
-                   ;  5  =  <span class="roman">&hellip;000101</span>
-     &rArr; 13         ; 13  =  <span class="roman">&hellip;001101</span>
-</pre><pre class="example">
+(logior 12 5)      ; 12  =  <span class="r">...001100</span>
+                   ;  5  =  <span class="r">...000101</span>
+     &rArr; 13         ; 13  =  <span class="r">...001101</span>
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(logior 12 5 7)    ; 12  =  <span class="roman">&hellip;001100</span>
-                   ;  5  =  <span class="roman">&hellip;000101</span>
-                   ;  7  =  <span class="roman">&hellip;000111</span>
-     &rArr; 15         ; 15  =  <span class="roman">&hellip;001111</span>
-</pre></div>
+</pre><div class="group"><pre class="example-preformatted">(logior 12 5 7)    ; 12  =  <span class="r">...001100</span>
+                   ;  5  =  <span class="r">...000101</span>
+                   ;  7  =  <span class="r">...000111</span>
+     &rArr; 15         ; 15  =  <span class="r">...001111</span>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-logxor">Function: <strong>logxor</strong> <em>&amp;rest ints-or-markers</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-logxor"><span class="category-def">Function: </span><span><strong class="def-name">logxor</strong> <var class="def-var-arguments">&amp;rest ints-or-markers</var><a class="copiable-link" href="#index-logxor"> &para;</a></span></dt>
 <dd><p>This function returns the bitwise exclusive OR of its arguments: the
-<var>n</var>th bit is 1 in the result if, and only if, the <var>n</var>th bit is
+<var class="var">n</var>th bit is 1 in the result if, and only if, the <var class="var">n</var>th bit is
 1 in an odd number of the arguments.  If there are no arguments, the
 result is 0, which is an identity element for this operation.  If
-<code>logxor</code> is passed just one argument, it returns that argument.
+<code class="code">logxor</code> is passed just one argument, it returns that argument.
 </p>
-<div class="example">
-<pre class="example">                   ; <span class="roman">       binary values</span>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">                   ; <span class="r">       binary values</span>
 
-(logxor 12 5)      ; 12  =  <span class="roman">&hellip;001100</span>
-                   ;  5  =  <span class="roman">&hellip;000101</span>
-     &rArr; 9          ;  9  =  <span class="roman">&hellip;001001</span>
-</pre><pre class="example">
+(logxor 12 5)      ; 12  =  <span class="r">...001100</span>
+                   ;  5  =  <span class="r">...000101</span>
+     &rArr; 9          ;  9  =  <span class="r">...001001</span>
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(logxor 12 5 7)    ; 12  =  <span class="roman">&hellip;001100</span>
-                   ;  5  =  <span class="roman">&hellip;000101</span>
-                   ;  7  =  <span class="roman">&hellip;000111</span>
-     &rArr; 14         ; 14  =  <span class="roman">&hellip;001110</span>
-</pre></div>
+</pre><div class="group"><pre class="example-preformatted">(logxor 12 5 7)    ; 12  =  <span class="r">...001100</span>
+                   ;  5  =  <span class="r">...000101</span>
+                   ;  7  =  <span class="r">...000111</span>
+     &rArr; 14         ; 14  =  <span class="r">...001110</span>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-lognot">Function: <strong>lognot</strong> <em>integer</em></dt>
-<dd><p>This function returns the bitwise complement of its argument: the <var>n</var>th
-bit is one in the result if, and only if, the <var>n</var>th bit is zero in
-<var>integer</var>, and vice-versa.  The result equals −1 −
-<var>integer</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-lognot"><span class="category-def">Function: </span><span><strong class="def-name">lognot</strong> <var class="def-var-arguments">integer</var><a class="copiable-link" href="#index-lognot"> &para;</a></span></dt>
+<dd><p>This function returns the bitwise complement of its argument: the <var class="var">n</var>th
+bit is one in the result if, and only if, the <var class="var">n</var>th bit is zero in
+<var class="var">integer</var>, and vice-versa.  The result equals &minus;1 &minus;
+<var class="var">integer</var>.
 </p>
 <div class="example">
-<pre class="example">(lognot 5)
+<pre class="example-preformatted">(lognot 5)
      &rArr; -6
-;;  5  =  <span class="roman">&hellip;000101</span>
-;; <span class="roman">becomes</span>
-;; -6  =  <span class="roman">&hellip;111010</span>
+;;  5  =  <span class="r">...000101</span>
+;; <span class="r">becomes</span>
+;; -6  =  <span class="r">...111010</span>
 </pre></div>
 </dd></dl>
 
-<span id="index-popcount"></span>
-<span id="index-Hamming-weight"></span>
-<span id="index-counting-set-bits"></span>
-<dl>
-<dt id="index-logcount">Function: <strong>logcount</strong> <em>integer</em></dt>
-<dd><p>This function returns the <em>Hamming weight</em> of <var>integer</var>: the
-number of ones in the binary representation of <var>integer</var>.
-If <var>integer</var> is negative, it returns the number of zero bits in
+<a class="index-entry-id" id="index-popcount"></a>
+<a class="index-entry-id" id="index-Hamming-weight"></a>
+<a class="index-entry-id" id="index-counting-set-bits"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-logcount"><span class="category-def">Function: </span><span><strong class="def-name">logcount</strong> <var class="def-var-arguments">integer</var><a class="copiable-link" href="#index-logcount"> &para;</a></span></dt>
+<dd><p>This function returns the <em class="dfn">Hamming weight</em> of <var class="var">integer</var>: the
+number of ones in the binary representation of <var class="var">integer</var>.
+If <var class="var">integer</var> is negative, it returns the number of zero bits in
 its two&rsquo;s complement binary representation.  The result is always
 nonnegative.
 </p>
 <div class="example">
-<pre class="example">(logcount 43)     ;  43 = <span class="roman">&hellip;000101011</span>
+<pre class="example-preformatted">(logcount 43)     ;  43 = <span class="r">...000101011</span>
      &rArr; 4
-(logcount -43)    ; -43 = <span class="roman">&hellip;111010101</span>
+(logcount -43)    ; -43 = <span class="r">...111010101</span>
      &rArr; 3
 </pre></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Math-Functions.html" accesskey="n" rel="next">Math Functions</a>, Previous: <a href="Rounding-Operations.html" accesskey="p" rel="prev">Rounding Operations</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Math-Functions.html">Standard Mathematical Functions</a>, Previous: <a href="Rounding-Operations.html">Rounding Operations</a>, Up: <a href="Numbers.html">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Displaying Buffers in Side Windows (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Displaying Buffers in Side Windows (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Displaying Buffers in Side Windows (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Side-Windows.html" rel="up" title="Side Windows">
+<link href="Side-Window-Options-and-Functions.html" rel="next" title="Side Window Options and Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Displaying-Buffers-in-Side-Windows">
+<div class="nav-panel">
+<p>
+Next: <a href="Side-Window-Options-and-Functions.html" accesskey="n" rel="next">Side Window Options and Functions</a>, Up: <a href="Side-Windows.html" accesskey="u" rel="up">Side Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Displaying-Buffers-in-Side-Windows-1"><span>29.17.1 Displaying Buffers in Side Windows<a class="copiable-link" href="#Displaying-Buffers-in-Side-Windows-1"> &para;</a></span></h4>
+
+<p>The following action function for <code class="code">display-buffer</code> (see <a class="pxref" href="Buffer-Display-Action-Functions.html">Action Functions for Buffer Display</a>) creates or reuses a side window for
+displaying the specified buffer.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002din_002dside_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-in-side-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002din_002dside_002dwindow"> &para;</a></span></dt>
+<dd><p>This function displays <var class="var">buffer</var> in a side window of the selected
+frame.  It returns the window used for displaying <var class="var">buffer</var>,
+<code class="code">nil</code> if no such window can be found or created.
+</p>
+<p><var class="var">alist</var> is an association list of symbols and values as for
+<code class="code">display-buffer</code>.  The following symbols in <var class="var">alist</var> are special
+for this function:
+</p>
+<dl class="table">
+<dt><code class="code">side</code></dt>
+<dd><p>Denotes the side of the frame where the window shall be located.  Valid
+values are <code class="code">left</code>, <code class="code">top</code>, <code class="code">right</code> and <code class="code">bottom</code>.  If
+unspecified, the window is located at the bottom of the frame.
+</p>
+</dd>
+<dt><code class="code">slot</code></dt>
+<dd><p>Denotes a slot at the specified side where to locate the window.  A
+value of zero means to preferably position the window in the middle of
+the specified side.  A negative value means to use a slot preceding
+(that is, above or on the left of) the middle slot.  A positive value
+means to use a slot following (that is, below or on the right of) the
+middle slot.  Hence, all windows on a specific side are ordered by their
+<code class="code">slot</code> value.  If unspecified, the window is located in the middle
+of the specified side.
+</p>
+</dd>
+<dt><code class="code">dedicated</code></dt>
+<dd><p>The dedicated flag (see <a class="pxref" href="Dedicated-Windows.html">Dedicated Windows</a>) has a slightly different
+meaning for side windows.  When a side window is created, that flag is
+set to the value <code class="code">side</code> to prevent <code class="code">display-buffer</code> to use the
+window in other action functions.  Its value persists across invocations
+of <code class="code">quit-window</code>, <code class="code">kill-buffer</code>, <code class="code">previous-buffer</code> and
+<code class="code">next-buffer</code>.
+</p>
+<p>In particular, these commands will refrain from showing, in a side
+window, buffers that have not been displayed in that window before.
+They will also refrain from having a normal, non-side window show a
+buffer that has been already displayed in a side window.  A notable
+exception to the latter rule occurs when an application, after
+displaying a buffer, resets that buffer’s local variables.  To override
+these rules and always delete a side window with <code class="code">quit-window</code> or
+<code class="code">kill-buffer</code>, and eventually prevent the use of
+<code class="code">previous-buffer</code> and <code class="code">next-buffer</code>, set this value to
+<code class="code">t</code> or specify a value via <code class="code">display-buffer-mark-dedicated</code>.
+</p></dd>
+</dl>
+
+<p>If you specify the same slot on the same side for two or more different
+buffers, the buffer displayed last is shown in the corresponding window.
+Hence, slots can be used for sharing the same side window between
+buffers.
+</p>
+<p>This function installs the <code class="code">window-side</code> and <code class="code">window-slot</code>
+parameters (see <a class="pxref" href="Window-Parameters.html">Window Parameters</a>) and makes them persistent.  It
+does not install any other window parameters unless they have been
+explicitly provided via a <code class="code">window-parameters</code> entry in <var class="var">alist</var>.
+</p></dd></dl>
+
+<p>By default, side windows cannot be split via <code class="code">split-window</code>
+(see <a class="pxref" href="Splitting-Windows.html">Splitting Windows</a>).  Also, a side window is not reused or
+split by any buffer display action (see <a class="pxref" href="Buffer-Display-Action-Functions.html">Action Functions for Buffer Display</a>) unless it is explicitly specified as target of that
+action.  Note also that <code class="code">delete-other-windows</code> cannot make a side
+window the only window on its frame (see <a class="pxref" href="Deleting-Windows.html">Deleting Windows</a>).
+</p>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Side-Window-Options-and-Functions.html">Side Window Options and Functions</a>, Up: <a href="Side-Windows.html">Side Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

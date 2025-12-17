@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Quitting Windows (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Quitting Windows (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Dedicated-Windows.html" rel="prev" title="Dedicated Windows">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,134 +48,135 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Quitting-Windows"></span><div class="header">
+<div class="section-level-extent" id="Quitting-Windows">
+<div class="nav-panel">
 <p>
-Next: <a href="Window-Point.html" accesskey="n" rel="next">Window Point</a>, Previous: <a href="Dedicated-Windows.html" accesskey="p" rel="prev">Dedicated Windows</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Window-Point.html" accesskey="n" rel="next">Windows and Point</a>, Previous: <a href="Dedicated-Windows.html" accesskey="p" rel="prev">Dedicated Windows</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Quitting-Windows-1"></span><h3 class="section">27.18 Quitting Windows</h3>
+<h3 class="section" id="Quitting-Windows-1"><span>27.18 Quitting Windows<a class="copiable-link" href="#Quitting-Windows-1"> &para;</a></span></h3>
 
 <p>When you want to get rid of a window used for displaying a buffer, you
-can call <code>delete-window</code> or <code>delete-windows-on</code>
-(see <a href="Deleting-Windows.html">Deleting Windows</a>) to remove that window from its frame.  If the
+can call <code class="code">delete-window</code> or <code class="code">delete-windows-on</code>
+(see <a class="pxref" href="Deleting-Windows.html">Deleting Windows</a>) to remove that window from its frame.  If the
 buffer is shown on a separate frame, you might want to call
-<code>delete-frame</code> (see <a href="Deleting-Frames.html">Deleting Frames</a>) instead.  If, on the other
+<code class="code">delete-frame</code> (see <a class="pxref" href="Deleting-Frames.html">Deleting Frames</a>) instead.  If, on the other
 hand, a window has been reused for displaying the buffer, you might
 prefer showing the buffer previously shown in that window, by calling the
-function <code>switch-to-prev-buffer</code> (see <a href="Window-History.html">Window History</a>).
-Finally, you might want to either bury (see <a href="Buffer-List.html">Buffer List</a>) or kill
-(see <a href="Killing-Buffers.html">Killing Buffers</a>) the window&rsquo;s buffer.
+function <code class="code">switch-to-prev-buffer</code> (see <a class="pxref" href="Window-History.html">Window History</a>).
+Finally, you might want to either bury (see <a class="pxref" href="Buffer-List.html">The Buffer List</a>) or kill
+(see <a class="pxref" href="Killing-Buffers.html">Killing Buffers</a>) the window&rsquo;s buffer.
 </p>
 <p>The following command uses information on how the window for
 displaying the buffer was obtained in the first place, thus attempting
 to automate the above decisions for you.
 </p>
-<dl>
-<dt id="index-quit_002dwindow">Command: <strong>quit-window</strong> <em>&amp;optional kill window</em></dt>
-<dd><p>This command quits <var>window</var> and buries its buffer.  The argument
-<var>window</var> must be a live window and defaults to the selected one.
-With prefix argument <var>kill</var> non-<code>nil</code>, it kills the buffer
-instead of burying it.  It calls the function <code>quit-restore-window</code>
+<dl class="first-deffn">
+<dt class="deffn" id="index-quit_002dwindow"><span class="category-def">Command: </span><span><strong class="def-name">quit-window</strong> <var class="def-var-arguments">&amp;optional kill window</var><a class="copiable-link" href="#index-quit_002dwindow"> &para;</a></span></dt>
+<dd><p>This command quits <var class="var">window</var> and buries its buffer.  The argument
+<var class="var">window</var> must be a live window and defaults to the selected one.
+With prefix argument <var class="var">kill</var> non-<code class="code">nil</code>, it kills the buffer
+instead of burying it.  It calls the function <code class="code">quit-restore-window</code>
 described next to deal with the window and its buffer.
 </p></dd></dl>
 
-<dl>
-<dt id="index-quit_002drestore_002dwindow">Function: <strong>quit-restore-window</strong> <em>&amp;optional window bury-or-kill</em></dt>
-<dd><p>This function handles <var>window</var> and its buffer after quitting.  The
-optional argument <var>window</var> must be a live window and defaults to
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-quit_002drestore_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">quit-restore-window</strong> <var class="def-var-arguments">&amp;optional window bury-or-kill</var><a class="copiable-link" href="#index-quit_002drestore_002dwindow"> &para;</a></span></dt>
+<dd><p>This function handles <var class="var">window</var> and its buffer after quitting.  The
+optional argument <var class="var">window</var> must be a live window and defaults to
 the selected one. The function&rsquo;s behavior is determined by the four
-elements of the <code>quit-restore</code> window parameter (see <a href="Window-Parameters.html">Window Parameters</a>), which is set to nil afterwards.
+elements of the <code class="code">quit-restore</code> window parameter (see <a class="pxref" href="Window-Parameters.html">Window Parameters</a>), which is set to nil afterwards.
 </p>
 <p>The window is deleted entirely if: 1) the first element of the
-<code>quit-restore</code> parameter is one of &rsquo;window or &rsquo;frame, 2) the
+<code class="code">quit-restore</code> parameter is one of &rsquo;window or &rsquo;frame, 2) the
 window has no history of previously-displayed buffers, and 3) the
 displayed buffer matches the one in the fourth element of the
-<code>quit-restore</code> parameter.  If <var>window</var> is the
+<code class="code">quit-restore</code> parameter.  If <var class="var">window</var> is the
 only window on its frame and there are other frames on the frame&rsquo;s
-terminal, the value of the optional argument <var>bury-or-kill</var>
-determines how to proceed with the window.  If <var>bury-or-kill</var>
-equals <code>kill</code>, the frame is deleted unconditionally.  Otherwise,
+terminal, the value of the optional argument <var class="var">bury-or-kill</var>
+determines how to proceed with the window.  If <var class="var">bury-or-kill</var>
+equals <code class="code">kill</code>, the frame is deleted unconditionally.  Otherwise,
 the fate of the frame is determined by calling
-<code>frame-auto-hide-function</code> (see below) with that frame as sole
+<code class="code">frame-auto-hide-function</code> (see below) with that frame as sole
 argument.
 </p>
-<p>If the third element of the <code>quit-restore</code> parameter is a list of
-buffer, window start (see <a href="Window-Start-and-End.html">Window Start and End</a>), and point
-(see <a href="Window-Point.html">Window Point</a>), and that buffer is still live, the buffer will
+<p>If the third element of the <code class="code">quit-restore</code> parameter is a list of
+buffer, window start (see <a class="pxref" href="Window-Start-and-End.html">The Window Start and End Positions</a>), and point
+(see <a class="pxref" href="Window-Point.html">Windows and Point</a>), and that buffer is still live, the buffer will
 be displayed, and start and point set accordingly.  If, in addition,
-<var>window</var>&rsquo;s buffer was temporarily resized, this function will also
-try to restore the original height of <var>window</var>.
+<var class="var">window</var>&rsquo;s buffer was temporarily resized, this function will also
+try to restore the original height of <var class="var">window</var>.
 </p>
-<p>Otherwise, if <var>window</var> was previously used for displaying other
-buffers (see <a href="Window-History.html">Window History</a>), the most recent buffer in that
+<p>Otherwise, if <var class="var">window</var> was previously used for displaying other
+buffers (see <a class="pxref" href="Window-History.html">Window History</a>), the most recent buffer in that
 history will be displayed.
 </p>
-<p>The optional argument <var>bury-or-kill</var> specifies how to deal with
-<var>window</var>&rsquo;s buffer.  The following values are handled:
+<p>The optional argument <var class="var">bury-or-kill</var> specifies how to deal with
+<var class="var">window</var>&rsquo;s buffer.  The following values are handled:
 </p>
-<dl compact="compact">
-<dt><code>nil</code></dt>
+<dl class="table">
+<dt><code class="code">nil</code></dt>
 <dd><p>This means to not deal with the buffer in any particular way.  As a
-consequence, if <var>window</var> is not deleted, invoking
-<code>switch-to-prev-buffer</code> will usually show the buffer again.
+consequence, if <var class="var">window</var> is not deleted, invoking
+<code class="code">switch-to-prev-buffer</code> will usually show the buffer again.
 </p>
 </dd>
-<dt><code>append</code></dt>
-<dd><p>This means that if <var>window</var> is not deleted, its buffer is moved to
-the end of <var>window</var>&rsquo;s list of previous buffers, so it&rsquo;s less likely
-that a future invocation of <code>switch-to-prev-buffer</code> will switch to
+<dt><code class="code">append</code></dt>
+<dd><p>This means that if <var class="var">window</var> is not deleted, its buffer is moved to
+the end of <var class="var">window</var>&rsquo;s list of previous buffers, so it&rsquo;s less likely
+that a future invocation of <code class="code">switch-to-prev-buffer</code> will switch to
 it.  Also, it moves the buffer to the end of the frame&rsquo;s buffer list.
 </p>
 </dd>
-<dt><code>bury</code></dt>
-<dd><p>This means that if <var>window</var> is not deleted, its buffer is removed
-from <var>window</var>&rsquo;s list of previous buffers.  Also, it moves the buffer
+<dt><code class="code">bury</code></dt>
+<dd><p>This means that if <var class="var">window</var> is not deleted, its buffer is removed
+from <var class="var">window</var>&rsquo;s list of previous buffers.  Also, it moves the buffer
 to the end of the frame&rsquo;s buffer list.  This value provides the most
-reliable remedy to not have <code>switch-to-prev-buffer</code> switch to this
+reliable remedy to not have <code class="code">switch-to-prev-buffer</code> switch to this
 buffer again without killing the buffer.
 </p>
 </dd>
-<dt><code>kill</code></dt>
-<dd><p>This means to kill <var>window</var>&rsquo;s buffer.
+<dt><code class="code">kill</code></dt>
+<dd><p>This means to kill <var class="var">window</var>&rsquo;s buffer.
 </p></dd>
 </dl>
 
-<p>Typically, the display routines run by <code>display-buffer</code> will set
-the <code>quit-restore</code> window parameter correctly.  It&rsquo;s also
+<p>Typically, the display routines run by <code class="code">display-buffer</code> will set
+the <code class="code">quit-restore</code> window parameter correctly.  It&rsquo;s also
 possible to set it manually, using the following code for displaying
-<var>buffer</var> in <var>window</var>:
+<var class="var">buffer</var> in <var class="var">window</var>:
 </p>
 <div class="example">
-<pre class="example">(display-buffer-record-window type window buffer)
+<div class="group"><pre class="example-preformatted">(display-buffer-record-window type window buffer)
 
 (set-window-buffer window buffer)
 
 (set-window-prev-buffers window nil)
-</pre></div>
+</pre></div></div>
 
 <p>Setting the window history to nil ensures that a future call to
-<code>quit-window</code> can delete the window altogether.
+<code class="code">quit-window</code> can delete the window altogether.
 </p>
 </dd></dl>
 
 <p>The following option specifies how to deal with a frame containing just
 one window that should be either quit, or whose buffer should be buried.
 </p>
-<dl>
-<dt id="index-frame_002dauto_002dhide_002dfunction">User Option: <strong>frame-auto-hide-function</strong></dt>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-frame_002dauto_002dhide_002dfunction"><span class="category-def">User Option: </span><span><strong class="def-name">frame-auto-hide-function</strong><a class="copiable-link" href="#index-frame_002dauto_002dhide_002dfunction"> &para;</a></span></dt>
 <dd><p>The function specified by this option is called to automatically hide
 frames.  This function is called with one argument&mdash;a frame.
 </p>
-<p>The function specified here is called by <code>bury-buffer</code>
-(see <a href="Buffer-List.html">Buffer List</a>) when the selected window is dedicated and shows
-the buffer to bury.  It is also called by <code>quit-restore-window</code>
+<p>The function specified here is called by <code class="code">bury-buffer</code>
+(see <a class="pxref" href="Buffer-List.html">The Buffer List</a>) when the selected window is dedicated and shows
+the buffer to bury.  It is also called by <code class="code">quit-restore-window</code>
 (see above) when the frame of the window to quit has been specially
 created for displaying that window&rsquo;s buffer and the buffer is not
 killed.
 </p>
-<p>The default is to call <code>iconify-frame</code> (see <a href="Visibility-of-Frames.html">Visibility of Frames</a>).  Alternatively, you may specify either <code>delete-frame</code>
-(see <a href="Deleting-Frames.html">Deleting Frames</a>) to remove the frame from its display,
-<code>ignore</code> to leave the frame unchanged, or any other function that
+<p>The default is to call <code class="code">iconify-frame</code> (see <a class="pxref" href="Visibility-of-Frames.html">Visibility of Frames</a>).  Alternatively, you may specify either <code class="code">delete-frame</code>
+(see <a class="pxref" href="Deleting-Frames.html">Deleting Frames</a>) to remove the frame from its display,
+<code class="code">ignore</code> to leave the frame unchanged, or any other function that
 can take a frame as its sole argument.
 </p>
 <p>Note that the function specified by this option is called only if the
@@ -192,10 +185,11 @@ other frame on the same terminal.
 </p></dd></dl>
 
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Window-Point.html" accesskey="n" rel="next">Window Point</a>, Previous: <a href="Dedicated-Windows.html" accesskey="p" rel="prev">Dedicated Windows</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Window-Point.html">Windows and Point</a>, Previous: <a href="Dedicated-Windows.html">Dedicated Windows</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

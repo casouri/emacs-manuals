@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Mouse Menus (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Mouse Menus (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Menu-Keymaps.html" rel="up" title="Menu Keymaps">
 <link href="Keyboard-Menus.html" rel="next" title="Keyboard Menus">
-<link href="Alias-Menu-Items.html" rel="prev" title="Alias Menu Items">
+<link href="Defining-Menus.html" rel="prev" title="Defining Menus">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,16 +46,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Mouse-Menus"></span><div class="header">
+<div class="subsection-level-extent" id="Mouse-Menus">
+<div class="nav-panel">
 <p>
-Next: <a href="Keyboard-Menus.html" accesskey="n" rel="next">Keyboard Menus</a>, Previous: <a href="Defining-Menus.html" accesskey="p" rel="prev">Defining Menus</a>, Up: <a href="Menu-Keymaps.html" accesskey="u" rel="up">Menu Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Keyboard-Menus.html" accesskey="n" rel="next">Menus and the Keyboard</a>, Previous: <a href="Defining-Menus.html" accesskey="p" rel="prev">Defining Menus</a>, Up: <a href="Menu-Keymaps.html" accesskey="u" rel="up">Menu Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Menus-and-the-Mouse"></span><h4 class="subsection">22.17.2 Menus and the Mouse</h4>
+<h4 class="subsection" id="Menus-and-the-Mouse"><span>22.17.2 Menus and the Mouse<a class="copiable-link" href="#Menus-and-the-Mouse"> &para;</a></span></h4>
 
 <p>The usual way to make a menu keymap produce a menu is to make it the
 definition of a prefix key.  (A Lisp program can explicitly pop up a
-menu and receive the user&rsquo;s choice&mdash;see <a href="Pop_002dUp-Menus.html">Pop-Up Menus</a>.)
+menu and receive the user&rsquo;s choice&mdash;see <a class="ref" href="Pop_002dUp-Menus.html">Pop-Up Menus</a>.)
 </p>
 <p>If the prefix key ends with a mouse event, Emacs handles the menu keymap
 by popping up a visible menu, so that the user can select a choice with
@@ -77,9 +68,9 @@ multiple levels or comes from the menu bar.)
 <p>It&rsquo;s often best to use a button-down event to trigger the menu.  Then
 the user can select a menu item by releasing the button.
 </p>
-<span id="index-submenu"></span>
+<a class="index-entry-id" id="index-submenu"></a>
 <p>If the menu keymap contains a binding to a nested keymap, the nested
-keymap specifies a <em>submenu</em>.  There will be a menu item, labeled
+keymap specifies a <em class="dfn">submenu</em>.  There will be a menu item, labeled
 by the nested keymap&rsquo;s item string, and clicking on this item
 automatically pops up the specified submenu.  As a special exception,
 if the menu keymap contains a single nested keymap and no other menu
@@ -91,17 +82,18 @@ terminals, submenus are not supported.  Each nested keymap is shown as
 a menu item, but clicking on it does not automatically pop up the
 submenu.  If you wish to imitate the effect of submenus, you can do
 that by giving a nested keymap an item string which starts with
-&lsquo;<samp>@</samp>&rsquo;.  This causes Emacs to display the nested keymap using a
-separate <em>menu pane</em>; the rest of the item string after the
-&lsquo;<samp>@</samp>&rsquo; is the pane label.  If Emacs is compiled without X toolkit
+&lsquo;<samp class="samp">@</samp>&rsquo;.  This causes Emacs to display the nested keymap using a
+separate <em class="dfn">menu pane</em>; the rest of the item string after the
+&lsquo;<samp class="samp">@</samp>&rsquo; is the pane label.  If Emacs is compiled without X toolkit
 support, or if a menu is displayed on a text terminal, menu panes are
-not used; in that case, a &lsquo;<samp>@</samp>&rsquo; at the beginning of an item string
+not used; in that case, a &lsquo;<samp class="samp">@</samp>&rsquo; at the beginning of an item string
 is omitted when the menu label is displayed, and has no other effect.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Keyboard-Menus.html" accesskey="n" rel="next">Keyboard Menus</a>, Previous: <a href="Defining-Menus.html" accesskey="p" rel="prev">Defining Menus</a>, Up: <a href="Menu-Keymaps.html" accesskey="u" rel="up">Menu Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Keyboard-Menus.html">Menus and the Keyboard</a>, Previous: <a href="Defining-Menus.html">Defining Menus</a>, Up: <a href="Menu-Keymaps.html">Menu Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

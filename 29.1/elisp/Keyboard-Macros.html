@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Keyboard Macros (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Keyboard Macros (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Keyboard Macros (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Command-Loop.html" rel="up" title="Command Loop">
+<link href="Command-History.html" rel="prev" title="Command History">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Keyboard-Macros">
+<div class="nav-panel">
+<p>
+Previous: <a href="Command-History.html" accesskey="p" rel="prev">Command History</a>, Up: <a href="Command-Loop.html" accesskey="u" rel="up">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Keyboard-Macros-1"><span>22.16 Keyboard Macros<a class="copiable-link" href="#Keyboard-Macros-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-keyboard-macros"></a>
+
+<p>A <em class="dfn">keyboard macro</em> is a canned sequence of input events that can
+be considered a command and made the definition of a key.  The Lisp
+representation of a keyboard macro is a string or vector containing the
+events.  Don&rsquo;t confuse keyboard macros with Lisp macros
+(see <a class="pxref" href="Macros.html">Macros</a>).
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-execute_002dkbd_002dmacro"><span class="category-def">Function: </span><span><strong class="def-name">execute-kbd-macro</strong> <var class="def-var-arguments">kbdmacro &amp;optional count loopfunc</var><a class="copiable-link" href="#index-execute_002dkbd_002dmacro"> &para;</a></span></dt>
+<dd><p>This function executes <var class="var">kbdmacro</var> as a sequence of events.  If
+<var class="var">kbdmacro</var> is a string or vector, then the events in it are executed
+exactly as if they had been input by the user.  The sequence is
+<em class="emph">not</em> expected to be a single key sequence; normally a keyboard
+macro definition consists of several key sequences concatenated.
+</p>
+<p>If <var class="var">kbdmacro</var> is a symbol, then its function definition is used in
+place of <var class="var">kbdmacro</var>.  If that is another symbol, this process repeats.
+Eventually the result should be a string or vector.  If the result is
+not a symbol, string, or vector, an error is signaled.
+</p>
+<p>The argument <var class="var">count</var> is a repeat count; <var class="var">kbdmacro</var> is executed that
+many times.  If <var class="var">count</var> is omitted or <code class="code">nil</code>, <var class="var">kbdmacro</var> is
+executed once.  If it is 0, <var class="var">kbdmacro</var> is executed over and over until it
+encounters an error or a failing search.
+</p>
+<p>If <var class="var">loopfunc</var> is non-<code class="code">nil</code>, it is a function that is called,
+without arguments, prior to each iteration of the macro.  If
+<var class="var">loopfunc</var> returns <code class="code">nil</code>, then this stops execution of the macro.
+</p>
+<p>See <a class="xref" href="Reading-One-Event.html">Reading One Event</a>, for an example of using <code class="code">execute-kbd-macro</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-executing_002dkbd_002dmacro"><span class="category-def">Variable: </span><span><strong class="def-name">executing-kbd-macro</strong><a class="copiable-link" href="#index-executing_002dkbd_002dmacro"> &para;</a></span></dt>
+<dd><p>This variable contains the string or vector that defines the keyboard
+macro that is currently executing.  It is <code class="code">nil</code> if no macro is
+currently executing.  A command can test this variable so as to behave
+differently when run from an executing macro.  Do not set this variable
+yourself.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-defining_002dkbd_002dmacro"><span class="category-def">Variable: </span><span><strong class="def-name">defining-kbd-macro</strong><a class="copiable-link" href="#index-defining_002dkbd_002dmacro"> &para;</a></span></dt>
+<dd><p>This variable is non-<code class="code">nil</code> if and only if a keyboard macro is
+being defined.  A command can test this variable so as to behave
+differently while a macro is being defined.  The value is
+<code class="code">append</code> while appending to the definition of an existing macro.
+The commands <code class="code">start-kbd-macro</code>, <code class="code">kmacro-start-macro</code> and
+<code class="code">end-kbd-macro</code> set this variable&mdash;do not set it yourself.
+</p>
+<p>The variable is always local to the current terminal and cannot be
+buffer-local.  See <a class="xref" href="Multiple-Terminals.html">Multiple Terminals</a>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-last_002dkbd_002dmacro"><span class="category-def">Variable: </span><span><strong class="def-name">last-kbd-macro</strong><a class="copiable-link" href="#index-last_002dkbd_002dmacro"> &para;</a></span></dt>
+<dd><p>This variable is the definition of the most recently defined keyboard
+macro.  Its value is a string or vector, or <code class="code">nil</code>.
+</p>
+<p>The variable is always local to the current terminal and cannot be
+buffer-local.  See <a class="xref" href="Multiple-Terminals.html">Multiple Terminals</a>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-kbd_002dmacro_002dtermination_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">kbd-macro-termination-hook</strong><a class="copiable-link" href="#index-kbd_002dmacro_002dtermination_002dhook"> &para;</a></span></dt>
+<dd><p>This normal hook is run when a keyboard macro terminates, regardless
+of what caused it to terminate (reaching the macro end or an error
+which ended the macro prematurely).
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Command-History.html">Command History</a>, Up: <a href="Command-Loop.html">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

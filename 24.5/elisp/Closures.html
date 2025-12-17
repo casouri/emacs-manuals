@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Closures (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Closures (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Function-Cells.html" rel="prev" title="Function Cells">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,22 +48,23 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Closures"></span><div class="header">
+<div class="section-level-extent" id="Closures">
+<div class="nav-panel">
 <p>
-Next: <a href="Advising-Functions.html" accesskey="n" rel="next">Advising Functions</a>, Previous: <a href="Function-Cells.html" accesskey="p" rel="prev">Function Cells</a>, Up: <a href="Functions.html" accesskey="u" rel="up">Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Advising-Functions.html" accesskey="n" rel="next">Advising Emacs Lisp Functions</a>, Previous: <a href="Function-Cells.html" accesskey="p" rel="prev">Accessing Function Cell Contents</a>, Up: <a href="Functions.html" accesskey="u" rel="up">Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Closures-1"></span><h3 class="section">12.9 Closures</h3>
+<h3 class="section" id="Closures-1"><span>12.9 Closures<a class="copiable-link" href="#Closures-1"> &para;</a></span></h3>
 
-<p>As explained in <a href="Variable-Scoping.html">Variable Scoping</a>, Emacs can optionally enable
+<p>As explained in <a class="ref" href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a>, Emacs can optionally enable
 lexical binding of variables.  When lexical binding is enabled, any
-named function that you create (e.g., with <code>defun</code>), as well as
-any anonymous function that you create using the <code>lambda</code> macro
-or the <code>function</code> special form or the <code>#'</code> syntax
-(see <a href="Anonymous-Functions.html">Anonymous Functions</a>), is automatically converted into a
-<em>closure</em>.
+named function that you create (e.g., with <code class="code">defun</code>), as well as
+any anonymous function that you create using the <code class="code">lambda</code> macro
+or the <code class="code">function</code> special form or the <code class="code">#'</code> syntax
+(see <a class="pxref" href="Anonymous-Functions.html">Anonymous Functions</a>), is automatically converted into a
+<em class="dfn">closure</em>.
 </p>
-<span id="index-closure"></span>
+<a class="index-entry-id" id="index-closure"></a>
 <p>A closure is a function that also carries a record of the lexical
 environment that existed when the function was defined.  When it is
 invoked, any lexical variable references within its definition use the
@@ -79,15 +72,15 @@ retained lexical environment.  In all other respects, closures behave
 much like ordinary functions; in particular, they can be called in the
 same way as ordinary functions.
 </p>
-<p>See <a href="Lexical-Binding.html">Lexical Binding</a>, for an example of using a closure.
+<p>See <a class="xref" href="Lexical-Binding.html">Lexical Binding</a>, for an example of using a closure.
 </p>
 <p>Currently, an Emacs Lisp closure object is represented by a list
-with the symbol <code>closure</code> as the first element, a list
+with the symbol <code class="code">closure</code> as the first element, a list
 representing the lexical environment as the second element, and the
 argument list and body forms as the remaining elements:
 </p>
 <div class="example">
-<pre class="example">;; <span class="roman">lexical binding is enabled.</span>
+<pre class="example-preformatted">;; <span class="r">lexical binding is enabled.</span>
 (lambda (x) (* x x))
      &rArr; (closure (t) (x) (* x x))
 </pre></div>
@@ -97,6 +90,7 @@ argument list and body forms as the remaining elements:
 implementation detail.  For this reason, we recommend against directly
 examining or altering the structure of closure objects.
 </p>
+</div>
 
 
 

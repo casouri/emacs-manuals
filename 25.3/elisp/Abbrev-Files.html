@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Abbrev Files (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Abbrev Files (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Defining-Abbrevs.html" rel="prev" title="Defining Abbrevs">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,73 +47,75 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Abbrev-Files"></span><div class="header">
+<div class="section-level-extent" id="Abbrev-Files">
+<div class="nav-panel">
 <p>
-Next: <a href="Abbrev-Expansion.html" accesskey="n" rel="next">Abbrev Expansion</a>, Previous: <a href="Defining-Abbrevs.html" accesskey="p" rel="prev">Defining Abbrevs</a>, Up: <a href="Abbrevs.html" accesskey="u" rel="up">Abbrevs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Abbrev-Expansion.html" accesskey="n" rel="next">Looking Up and Expanding Abbreviations</a>, Previous: <a href="Defining-Abbrevs.html" accesskey="p" rel="prev">Defining Abbrevs</a>, Up: <a href="Abbrevs.html" accesskey="u" rel="up">Abbrevs and Abbrev Expansion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Saving-Abbrevs-in-Files"></span><h3 class="section">35.3 Saving Abbrevs in Files</h3>
-<span id="index-save-abbrevs-in-files"></span>
+<h3 class="section" id="Saving-Abbrevs-in-Files"><span>35.3 Saving Abbrevs in Files<a class="copiable-link" href="#Saving-Abbrevs-in-Files"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-save-abbrevs-in-files"></a>
 
 <p>A file of saved abbrev definitions is actually a file of Lisp code.
 The abbrevs are saved in the form of a Lisp program to define the same
 abbrev tables with the same contents.  Therefore, you can load the file
-with <code>load</code> (see <a href="How-Programs-Do-Loading.html">How Programs Do Loading</a>).  However, the
-function <code>quietly-read-abbrev-file</code> is provided as a more
+with <code class="code">load</code> (see <a class="pxref" href="How-Programs-Do-Loading.html">How Programs Do Loading</a>).  However, the
+function <code class="code">quietly-read-abbrev-file</code> is provided as a more
 convenient interface.  Emacs automatically calls this function at
 startup.
 </p>
-<p>User-level facilities such as <code>save-some-buffers</code> can save
+<p>User-level facilities such as <code class="code">save-some-buffers</code> can save
 abbrevs in a file automatically, under the control of variables
 described here.
 </p>
-<dl>
-<dt id="index-abbrev_002dfile_002dname">User Option: <strong>abbrev-file-name</strong></dt>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-abbrev_002dfile_002dname"><span class="category-def">User Option: </span><span><strong class="def-name">abbrev-file-name</strong><a class="copiable-link" href="#index-abbrev_002dfile_002dname"> &para;</a></span></dt>
 <dd><p>This is the default file name for reading and saving abbrevs.  By
-default, Emacs will look for <samp>~/.emacs.d/abbrev_defs</samp>, and, if
-not found, for <samp>~/.abbrev_defs</samp>; if neither file exists, Emacs
-will create <samp>~/.emacs.d/abbrev_defs</samp>.
+default, Emacs will look for <samp class="file">~/.emacs.d/abbrev_defs</samp>, and, if
+not found, for <samp class="file">~/.abbrev_defs</samp>; if neither file exists, Emacs
+will create <samp class="file">~/.emacs.d/abbrev_defs</samp>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-quietly_002dread_002dabbrev_002dfile">Function: <strong>quietly-read-abbrev-file</strong> <em>&amp;optional filename</em></dt>
-<dd><p>This function reads abbrev definitions from a file named <var>filename</var>,
-previously written with <code>write-abbrev-file</code>.  If <var>filename</var> is
-omitted or <code>nil</code>, the file specified in <code>abbrev-file-name</code> is
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-quietly_002dread_002dabbrev_002dfile"><span class="category-def">Function: </span><span><strong class="def-name">quietly-read-abbrev-file</strong> <var class="def-var-arguments">&amp;optional filename</var><a class="copiable-link" href="#index-quietly_002dread_002dabbrev_002dfile"> &para;</a></span></dt>
+<dd><p>This function reads abbrev definitions from a file named <var class="var">filename</var>,
+previously written with <code class="code">write-abbrev-file</code>.  If <var class="var">filename</var> is
+omitted or <code class="code">nil</code>, the file specified in <code class="code">abbrev-file-name</code> is
 used.
 </p>
 <p>As the name implies, this function does not display any messages.
 </p></dd></dl>
 
-<dl>
-<dt id="index-save_002dabbrevs">User Option: <strong>save-abbrevs</strong></dt>
-<dd><p>A non-<code>nil</code> value for <code>save-abbrevs</code> means that Emacs should
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-save_002dabbrevs"><span class="category-def">User Option: </span><span><strong class="def-name">save-abbrevs</strong><a class="copiable-link" href="#index-save_002dabbrevs"> &para;</a></span></dt>
+<dd><p>A non-<code class="code">nil</code> value for <code class="code">save-abbrevs</code> means that Emacs should
 offer to save abbrevs (if any have changed) when files are saved.  If
-the value is <code>silently</code>, Emacs saves the abbrevs without asking
-the user.  <code>abbrev-file-name</code> specifies the file to save the
-abbrevs in.  The default value is <code>t</code>.
+the value is <code class="code">silently</code>, Emacs saves the abbrevs without asking
+the user.  <code class="code">abbrev-file-name</code> specifies the file to save the
+abbrevs in.  The default value is <code class="code">t</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-abbrevs_002dchanged">Variable: <strong>abbrevs-changed</strong></dt>
-<dd><p>This variable is set non-<code>nil</code> by defining or altering any
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-abbrevs_002dchanged"><span class="category-def">Variable: </span><span><strong class="def-name">abbrevs-changed</strong><a class="copiable-link" href="#index-abbrevs_002dchanged"> &para;</a></span></dt>
+<dd><p>This variable is set non-<code class="code">nil</code> by defining or altering any
 abbrevs (except system abbrevs).  This serves as a flag for various
 Emacs commands to offer to save your abbrevs.
 </p></dd></dl>
 
-<dl>
-<dt id="index-write_002dabbrev_002dfile">Command: <strong>write-abbrev-file</strong> <em>&amp;optional filename</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-write_002dabbrev_002dfile"><span class="category-def">Command: </span><span><strong class="def-name">write-abbrev-file</strong> <var class="def-var-arguments">&amp;optional filename</var><a class="copiable-link" href="#index-write_002dabbrev_002dfile"> &para;</a></span></dt>
 <dd><p>Save all abbrev definitions (except system abbrevs), for all abbrev
-tables listed in <code>abbrev-table-name-list</code>, in the file
-<var>filename</var>, in the form of a Lisp program that when loaded will
-define the same abbrevs.  If <var>filename</var> is <code>nil</code> or omitted,
-<code>abbrev-file-name</code> is used.  This function returns <code>nil</code>.
+tables listed in <code class="code">abbrev-table-name-list</code>, in the file
+<var class="var">filename</var>, in the form of a Lisp program that when loaded will
+define the same abbrevs.  If <var class="var">filename</var> is <code class="code">nil</code> or omitted,
+<code class="code">abbrev-file-name</code> is used.  This function returns <code class="code">nil</code>.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Abbrev-Expansion.html" accesskey="n" rel="next">Abbrev Expansion</a>, Previous: <a href="Defining-Abbrevs.html" accesskey="p" rel="prev">Defining Abbrevs</a>, Up: <a href="Abbrevs.html" accesskey="u" rel="up">Abbrevs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Abbrev-Expansion.html">Looking Up and Expanding Abbreviations</a>, Previous: <a href="Defining-Abbrevs.html">Defining Abbrevs</a>, Up: <a href="Abbrevs.html">Abbrevs and Abbrev Expansion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

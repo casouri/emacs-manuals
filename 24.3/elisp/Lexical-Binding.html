@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Lexical Binding (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Lexical Binding (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Dynamic-Binding-Tips.html" rel="prev" title="Dynamic Binding Tips">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,65 +47,66 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Lexical-Binding"></span><div class="header">
+<div class="subsection-level-extent" id="Lexical-Binding">
+<div class="nav-panel">
 <p>
-Next: <a href="Using-Lexical-Binding.html" accesskey="n" rel="next">Using Lexical Binding</a>, Previous: <a href="Dynamic-Binding-Tips.html" accesskey="p" rel="prev">Dynamic Binding Tips</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Variable Scoping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Using-Lexical-Binding.html" accesskey="n" rel="next">Using Lexical Binding</a>, Previous: <a href="Dynamic-Binding-Tips.html" accesskey="p" rel="prev">Proper Use of Dynamic Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Lexical-Binding-1"></span><h4 class="subsection">11.9.3 Lexical Binding</h4>
+<h4 class="subsection" id="Lexical-Binding-1"><span>11.9.3 Lexical Binding<a class="copiable-link" href="#Lexical-Binding-1"> &para;</a></span></h4>
 
 <p>Optionally, you can create lexical bindings in Emacs Lisp.  A
-lexically bound variable has <em>lexical scope</em>, meaning that any
+lexically bound variable has <em class="dfn">lexical scope</em>, meaning that any
 reference to the variable must be located textually within the binding
 construct.
 </p>
 <p>Here is an example
-(see <a href="Using-Lexical-Binding.html">Using Lexical Binding</a>, for how to actually enable lexical binding):
+(see <a class="pxref" href="Using-Lexical-Binding.html">Using Lexical Binding</a>, for how to actually enable lexical binding):
 </p>
 <div class="example">
-<pre class="example">(let ((x 1))    ; <span class="roman"><code>x</code> is lexically bound.</span>
+<div class="group"><pre class="example-preformatted">(let ((x 1))    ; <span class="r"><code class="code">x</code> is lexically bound.</span>
   (+ x 3))
      &rArr; 4
 
 (defun getx ()
-  x)            ; <span class="roman"><code>x</code> is used &ldquo;free&rdquo; in this function.</span>
+  x)            ; <span class="r"><code class="code">x</code> is used &ldquo;free&rdquo; in this function.</span>
 
-(let ((x 1))    ; <span class="roman"><code>x</code> is lexically bound.</span>
+(let ((x 1))    ; <span class="r"><code class="code">x</code> is lexically bound.</span>
   (getx))
 error&rarr; Symbol's value as variable is void: x
-</pre></div>
+</pre></div></div>
 
-<p>Here, the variable <code>x</code> has no global value.  When it is lexically
-bound within a <code>let</code> form, it can be used in the textual confines
-of that <code>let</code> form.  But it can <em>not</em> be used from within a
-<code>getx</code> function called from the <code>let</code> form, since the
-function definition of <code>getx</code> occurs outside the <code>let</code> form
+<p>Here, the variable <code class="code">x</code> has no global value.  When it is lexically
+bound within a <code class="code">let</code> form, it can be used in the textual confines
+of that <code class="code">let</code> form.  But it can <em class="emph">not</em> be used from within a
+<code class="code">getx</code> function called from the <code class="code">let</code> form, since the
+function definition of <code class="code">getx</code> occurs outside the <code class="code">let</code> form
 itself.
 </p>
-<span id="index-lexical-environment"></span>
+<a class="index-entry-id" id="index-lexical-environment"></a>
 <p>Here is how lexical binding works.  Each binding construct defines a
-<em>lexical environment</em>, specifying the symbols that are bound
+<em class="dfn">lexical environment</em>, specifying the symbols that are bound
 within the construct and their local values.  When the Lisp evaluator
 wants the current value of a variable, it looks first in the lexical
 environment; if the variable is not specified in there, it looks in
 the symbol&rsquo;s value cell, where the dynamic value is stored.
 </p>
-<span id="index-closures_002c-example-of-using"></span>
+<a class="index-entry-id" id="index-closures_002c-example-of-using"></a>
 <p>Lexical bindings have indefinite extent.  Even after a binding
 construct has finished executing, its lexical environment can be
-&ldquo;kept around&rdquo; in Lisp objects called <em>closures</em>.  A closure is
+&ldquo;kept around&rdquo; in Lisp objects called <em class="dfn">closures</em>.  A closure is
 created when you define a named or anonymous function with lexical
-binding enabled.  See <a href="Closures.html">Closures</a>, for details.
+binding enabled.  See <a class="xref" href="Closures.html">Closures</a>, for details.
 </p>
 <p>When a closure is called as a function, any lexical variable
 references within its definition use the retained lexical environment.
 Here is an example:
 </p>
 <div class="example">
-<pre class="example">(defvar my-ticker nil)   ; <span class="roman">We will use this dynamically bound</span>
-                         ; <span class="roman">variable to store a closure.</span>
+<pre class="example-preformatted">(defvar my-ticker nil)   ; <span class="r">We will use this dynamically bound</span>
+                         ; <span class="r">variable to store a closure.</span>
 
-(let ((x 0))             ; <span class="roman"><code>x</code> is lexically bound.</span>
+(let ((x 0))             ; <span class="r"><code class="code">x</code> is lexically bound.</span>
   (setq my-ticker (lambda ()
                     (setq x (1+ x)))))
     &rArr; (closure ((x . 0) t) ()
@@ -128,23 +121,23 @@ Here is an example:
 (funcall my-ticker)
     &rArr; 3
 
-x                        ; <span class="roman">Note that <code>x</code> has no global value.</span>
+x                        ; <span class="r">Note that <code class="code">x</code> has no global value.</span>
 error&rarr; Symbol's value as variable is void: x
 </pre></div>
 
-<p>The <code>let</code> binding defines a lexical environment in which the
-variable <code>x</code> is locally bound to 0.  Within this binding
-construct, we define a lambda expression which increments <code>x</code> by
+<p>The <code class="code">let</code> binding defines a lexical environment in which the
+variable <code class="code">x</code> is locally bound to 0.  Within this binding
+construct, we define a lambda expression which increments <code class="code">x</code> by
 one and returns the incremented value.  This lambda expression is
 automatically turned into a closure, in which the lexical environment
-lives on even after the <code>let</code> binding construct has exited.  Each
-time we evaluate the closure, it increments <code>x</code>, using the
-binding of <code>x</code> in that lexical environment.
+lives on even after the <code class="code">let</code> binding construct has exited.  Each
+time we evaluate the closure, it increments <code class="code">x</code>, using the
+binding of <code class="code">x</code> in that lexical environment.
 </p>
-<p>Note that functions like <code>symbol-value</code>, <code>boundp</code>, and
-<code>set</code> only retrieve or modify a variable&rsquo;s dynamic binding
+<p>Note that functions like <code class="code">symbol-value</code>, <code class="code">boundp</code>, and
+<code class="code">set</code> only retrieve or modify a variable&rsquo;s dynamic binding
 (i.e., the contents of its symbol&rsquo;s value cell).  Also, the code in
-the body of a <code>defun</code> or <code>defmacro</code> cannot refer to
+the body of a <code class="code">defun</code> or <code class="code">defmacro</code> cannot refer to
 surrounding lexical variables.
 </p>
 <p>Currently, lexical binding is not much used within the Emacs
@@ -154,10 +147,11 @@ Emacs Lisp code that makes use of lexical binding is likely to run
 faster in future Emacs versions.  Such code is also much more friendly
 to concurrency, which we want to add to Emacs in the near future.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Using-Lexical-Binding.html" accesskey="n" rel="next">Using Lexical Binding</a>, Previous: <a href="Dynamic-Binding-Tips.html" accesskey="p" rel="prev">Dynamic Binding Tips</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Variable Scoping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Using-Lexical-Binding.html">Using Lexical Binding</a>, Previous: <a href="Dynamic-Binding-Tips.html">Proper Use of Dynamic Binding</a>, Up: <a href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

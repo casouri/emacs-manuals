@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Finding All Frames (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Finding All Frames (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Finding All Frames (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Frames.html" rel="up" title="Frames">
+<link href="Minibuffers-and-Frames.html" rel="next" title="Minibuffers and Frames">
+<link href="Deleting-Frames.html" rel="prev" title="Deleting Frames">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Finding-All-Frames">
+<div class="nav-panel">
+<p>
+Next: <a href="Minibuffers-and-Frames.html" accesskey="n" rel="next">Minibuffers and Frames</a>, Previous: <a href="Deleting-Frames.html" accesskey="p" rel="prev">Deleting Frames</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Finding-All-Frames-1"><span>30.8 Finding All Frames<a class="copiable-link" href="#Finding-All-Frames-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-frames_002c-scanning-all"></a>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-frame_002dlist"><span class="category-def">Function: </span><span><strong class="def-name">frame-list</strong><a class="copiable-link" href="#index-frame_002dlist"> &para;</a></span></dt>
+<dd><p>This function returns a list of all the live frames, i.e., those that
+have not been deleted.  It is analogous to <code class="code">buffer-list</code> for
+buffers, and includes frames on all terminals.  The list that you get
+is newly created, so modifying the list doesn&rsquo;t have any effect on the
+internals of Emacs.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-visible_002dframe_002dlist"><span class="category-def">Function: </span><span><strong class="def-name">visible-frame-list</strong><a class="copiable-link" href="#index-visible_002dframe_002dlist"> &para;</a></span></dt>
+<dd><p>This function returns a list of just the currently visible frames.
+See <a class="xref" href="Visibility-of-Frames.html">Visibility of Frames</a>.  Frames on text terminals always count as
+visible, even though only the selected one is actually displayed.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-frame_002dlist_002dz_002dorder"><span class="category-def">Function: </span><span><strong class="def-name">frame-list-z-order</strong> <var class="def-var-arguments">&amp;optional display</var><a class="copiable-link" href="#index-frame_002dlist_002dz_002dorder"> &para;</a></span></dt>
+<dd><p>This function returns a list of Emacs&rsquo; frames, in Z (stacking) order
+(see <a class="pxref" href="Raising-and-Lowering.html">Raising, Lowering and Restacking Frames</a>).  The optional argument <var class="var">display</var>
+specifies which display to poll.  <var class="var">display</var> should be either a frame
+or a display name (a string).  If omitted or <code class="code">nil</code>, that stands for
+the selected frame&rsquo;s display.  It returns <code class="code">nil</code> if <var class="var">display</var>
+contains no Emacs frame.
+</p>
+<p>Frames are listed from topmost (first) to bottommost (last).  As a
+special case, if <var class="var">display</var> is non-<code class="code">nil</code> and specifies a live
+frame, it returns the child frames of that frame in Z (stacking) order.
+</p>
+<p>This function is not meaningful on text terminals.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-next_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">next-frame</strong> <var class="def-var-arguments">&amp;optional frame minibuf</var><a class="copiable-link" href="#index-next_002dframe"> &para;</a></span></dt>
+<dd><p>This function lets you cycle conveniently through all the frames on a
+specific terminal from an arbitrary starting point.  It returns the
+frame following <var class="var">frame</var>, in the list of all live frames, on
+<var class="var">frame</var>&rsquo;s terminal.  The argument <var class="var">frame</var> must specify a live
+frame and defaults to the selected frame.  It never returns a frame
+whose <code class="code">no-other-frame</code> parameter (see <a class="pxref" href="Frame-Interaction-Parameters.html">Frame Interaction Parameters</a>) is non-<code class="code">nil</code>.
+</p>
+<p>The second argument, <var class="var">minibuf</var>, says which frames to consider when
+deciding what the next frame should be:
+</p>
+<dl class="table">
+<dt><code class="code">nil</code></dt>
+<dd><p>Consider all frames except minibuffer-only frames.
+</p></dd>
+<dt><code class="code">visible</code></dt>
+<dd><p>Consider only visible frames.
+</p></dd>
+<dt>0</dt>
+<dd><p>Consider only visible or iconified frames.
+</p></dd>
+<dt>a window</dt>
+<dd><p>Consider only the frames using that particular window as their
+minibuffer window.
+</p></dd>
+<dt>anything else</dt>
+<dd><p>Consider all frames.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-previous_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">previous-frame</strong> <var class="def-var-arguments">&amp;optional frame minibuf</var><a class="copiable-link" href="#index-previous_002dframe"> &para;</a></span></dt>
+<dd><p>Like <code class="code">next-frame</code>, but cycles through all frames in the opposite
+direction.
+</p></dd></dl>
+
+<p>See also <code class="code">next-window</code> and <code class="code">previous-window</code>, in <a class="ref" href="Cyclic-Window-Ordering.html">Cyclic Ordering of Windows</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Minibuffers-and-Frames.html">Minibuffers and Frames</a>, Previous: <a href="Deleting-Frames.html">Deleting Frames</a>, Up: <a href="Frames.html">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

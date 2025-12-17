@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>GUD Customization (GNU Emacs Manual)</title>
+
+<meta name="description" content="GUD Customization (GNU Emacs Manual)">
+<meta name="keywords" content="GUD Customization (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Debuggers.html" rel="up" title="Debuggers">
+<link href="GDB-Graphical-Interface.html" rel="next" title="GDB Graphical Interface">
+<link href="Commands-of-GUD.html" rel="prev" title="Commands of GUD">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="GUD-Customization">
+<div class="nav-panel">
+<p>
+Next: <a href="GDB-Graphical-Interface.html" accesskey="n" rel="next">GDB Graphical Interface</a>, Previous: <a href="Commands-of-GUD.html" accesskey="p" rel="prev">Commands of GUD</a>, Up: <a href="Debuggers.html" accesskey="u" rel="up">Running Debuggers Under Emacs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="GUD-Customization-1"><span>28.6.4 GUD Customization<a class="copiable-link" href="#GUD-Customization-1"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-gdb_002dmode_002dhook"></a>
+<a class="index-entry-id" id="index-dbx_002dmode_002dhook"></a>
+<a class="index-entry-id" id="index-sdb_002dmode_002dhook"></a>
+<a class="index-entry-id" id="index-xdb_002dmode_002dhook"></a>
+<a class="index-entry-id" id="index-perldb_002dmode_002dhook"></a>
+<a class="index-entry-id" id="index-pdb_002dmode_002dhook"></a>
+<a class="index-entry-id" id="index-jdb_002dmode_002dhook"></a>
+<a class="index-entry-id" id="index-guiler_002dmode_002dhook"></a>
+<p>On startup, GUD runs one of the following hooks:
+<code class="code">gdb-mode-hook</code>, if you are using GDB; <code class="code">dbx-mode-hook</code>, if
+you are using DBX; <code class="code">sdb-mode-hook</code>, if you are using SDB;
+<code class="code">xdb-mode-hook</code>, if you are using XDB; <code class="code">guiler-mode-hook</code>
+for Guile REPL debugging; <code class="code">perldb-mode-hook</code>, for Perl debugging
+mode; <code class="code">pdb-mode-hook</code>, for PDB; <code class="code">jdb-mode-hook</code>, for JDB.
+See <a class="xref" href="Hooks.html">Hooks</a>.
+</p>
+<p>The <code class="code">gud-def</code> Lisp macro (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Macros.html#Defining-Macros">Defining Macros</a> in <cite class="cite">the
+Emacs Lisp Reference Manual</cite>) provides a convenient way to define an
+Emacs command that sends a particular command string to the debugger,
+and set up a key binding for in the GUD interaction buffer:
+</p>
+<a class="index-entry-id" id="index-gud_002ddef"></a>
+<div class="example">
+<pre class="example-preformatted">(gud-def <var class="var">function</var> <var class="var">cmdstring</var> <var class="var">binding</var> <var class="var">docstring</var>)
+</pre></div>
+
+<p>This defines a command named <var class="var">function</var> which sends
+<var class="var">cmdstring</var> to the debugger process, and gives it the documentation
+string <var class="var">docstring</var>.  You can then use the command <var class="var">function</var> in any
+buffer.  If <var class="var">binding</var> is non-<code class="code">nil</code>, <code class="code">gud-def</code> also binds
+the command to <kbd class="kbd">C-c <var class="var">binding</var></kbd> in the GUD buffer&rsquo;s mode and to
+<kbd class="kbd">C-x C-a <var class="var">binding</var></kbd> generally.
+</p>
+<p>The command string <var class="var">cmdstring</var> may contain certain
+&lsquo;<samp class="samp">%</samp>&rsquo;-sequences that stand for data to be filled in at the time
+<var class="var">function</var> is called:
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">%f</samp>&rsquo;</dt>
+<dd><p>The name of the current source file.  If the current buffer is the GUD
+buffer, then the current source file is the file that the program
+stopped in.
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">%l</samp>&rsquo;</dt>
+<dd><p>The number of the current source line.  If the current buffer is the GUD
+buffer, then the current source line is the line that the program
+stopped in.
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">%e</samp>&rsquo;</dt>
+<dd><p>In transient-mark-mode the text in the region, if it is active.
+Otherwise the text of the C lvalue or function-call expression at or
+adjacent to point.
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">%a</samp>&rsquo;</dt>
+<dd><p>The text of the hexadecimal address at or adjacent to point.
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">%p</samp>&rsquo;</dt>
+<dd><p>The numeric argument of the called function, as a decimal number.  If
+the command is used without a numeric argument, &lsquo;<samp class="samp">%p</samp>&rsquo; stands for the
+empty string.
+</p>
+<p>If you don&rsquo;t use &lsquo;<samp class="samp">%p</samp>&rsquo; in the command string, the command you define
+ignores any numeric argument.
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">%d</samp>&rsquo;</dt>
+<dd><p>The name of the directory of the current source file.
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">%c</samp>&rsquo;</dt>
+<dd><p>Fully qualified class name derived from the expression surrounding point
+(jdb only).
+</p></dd>
+</dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="GDB-Graphical-Interface.html">GDB Graphical Interface</a>, Previous: <a href="Commands-of-GUD.html">Commands of GUD</a>, Up: <a href="Debuggers.html">Running Debuggers Under Emacs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

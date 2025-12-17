@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Functions (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Functions (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="What-Is-a-Function.html" rel="next" title="What Is a Function">
-<link href="Adding-Generalized-Variables.html" rel="prev" title="Adding Generalized Variables">
+<link href="Macros.html" rel="next" title="Macros">
+<link href="Variables.html" rel="prev" title="Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,60 +47,38 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Functions"></span><div class="header">
+<div class="chapter-level-extent" id="Functions">
+<div class="nav-panel">
 <p>
-Next: <a href="Macros.html" accesskey="n" rel="next">Macros</a>, Previous: <a href="Variables.html" accesskey="p" rel="prev">Variables</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Macros.html" accesskey="n" rel="next">Macros</a>, Previous: <a href="Variables.html" accesskey="p" rel="prev">Variables</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Functions-1"></span><h2 class="chapter">13 Functions</h2>
+<h2 class="chapter" id="Functions-1"><span>13 Functions<a class="copiable-link" href="#Functions-1"> &para;</a></span></h2>
 
 <p>A Lisp program is composed mainly of Lisp functions.  This chapter
 explains what functions are, how they accept arguments, and how to
 define them.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="What-Is-a-Function.html" accesskey="1">What Is a Function</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Lisp functions vs. primitives; terminology.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Lambda-Expressions.html" accesskey="2">Lambda Expressions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How functions are expressed as Lisp objects.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Function-Names.html" accesskey="3">Function Names</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A symbol can serve as the name of a function.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Defining-Functions.html" accesskey="4">Defining Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Lisp expressions for defining functions.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Calling-Functions.html" accesskey="5">Calling Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to use an existing function.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Mapping-Functions.html" accesskey="6">Mapping Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Applying a function to each element of a list, etc.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Anonymous-Functions.html" accesskey="7">Anonymous Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Lambda expressions are functions with no names.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Generic-Functions.html" accesskey="8">Generic Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Polymorphism, Emacs-style.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Function-Cells.html" accesskey="9">Function Cells</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Accessing or setting the function definition
-                            of a symbol.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Closures.html">Closures</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions that enclose a lexical environment.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Advising-Functions.html">Advising Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Adding to the definition of a function.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Obsolete-Functions.html">Obsolete Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Declaring functions obsolete.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Inline-Functions.html">Inline Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions that the compiler will expand inline.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Declare-Form.html">Declare Form</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Adding additional information about a function.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Declaring-Functions.html">Declaring Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Telling the compiler that a function is defined.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Function-Safety.html">Function Safety</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Determining whether a function is safe to call.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Related-Topics.html">Related Topics</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Cross-references to specific Lisp primitives
-                            that have a special bearing on how functions work.
-</td></tr>
-</table>
 
-<hr>
-<div class="header">
-<p>
-Next: <a href="Macros.html" accesskey="n" rel="next">Macros</a>, Previous: <a href="Variables.html" accesskey="p" rel="prev">Variables</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+<ul class="mini-toc">
+<li><a href="What-Is-a-Function.html" accesskey="1">What Is a Function?</a></li>
+<li><a href="Lambda-Expressions.html" accesskey="2">Lambda Expressions</a></li>
+<li><a href="Function-Names.html" accesskey="3">Naming a Function</a></li>
+<li><a href="Defining-Functions.html" accesskey="4">Defining Functions</a></li>
+<li><a href="Calling-Functions.html" accesskey="5">Calling Functions</a></li>
+<li><a href="Mapping-Functions.html" accesskey="6">Mapping Functions</a></li>
+<li><a href="Anonymous-Functions.html" accesskey="7">Anonymous Functions</a></li>
+<li><a href="Generic-Functions.html" accesskey="8">Generic Functions</a></li>
+<li><a href="Function-Cells.html" accesskey="9">Accessing Function Cell Contents</a></li>
+<li><a href="Closures.html">Closures</a></li>
+<li><a href="Advising-Functions.html">Advising Emacs Lisp Functions</a></li>
+<li><a href="Obsolete-Functions.html">Declaring Functions Obsolete</a></li>
+<li><a href="Inline-Functions.html">Inline Functions</a></li>
+<li><a href="Declare-Form.html">The <code class="code">declare</code> Form</a></li>
+<li><a href="Declaring-Functions.html">Telling the Compiler that a Function is Defined</a></li>
+<li><a href="Function-Safety.html">Determining whether a Function is Safe to Call</a></li>
+<li><a href="Related-Topics.html">Other Topics Related to Functions</a></li>
+</ul>
 </div>
 
 

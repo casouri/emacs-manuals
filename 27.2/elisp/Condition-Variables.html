@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.2.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Condition Variables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Condition Variables (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Mutexes.html" rel="prev" title="Mutexes">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,14 +49,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Condition-Variables"></span><div class="header">
+<div class="section-level-extent" id="Condition-Variables">
+<div class="nav-panel">
 <p>
 Next: <a href="The-Thread-List.html" accesskey="n" rel="next">The Thread List</a>, Previous: <a href="Mutexes.html" accesskey="p" rel="prev">Mutexes</a>, Up: <a href="Threads.html" accesskey="u" rel="up">Threads</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Condition-Variables-1"></span><h3 class="section">37.3 Condition Variables</h3>
+<h3 class="section" id="Condition-Variables-1"><span>37.3 Condition Variables<a class="copiable-link" href="#Condition-Variables-1"> &para;</a></span></h3>
 
-<p>A <em>condition variable</em> is a way for a thread to block until some
+<p>A <em class="dfn">condition variable</em> is a way for a thread to block until some
 event occurs.  A thread can wait on a condition variable, to be woken
 up when some other thread notifies the condition.
 </p>
@@ -74,7 +67,7 @@ acquired, and then a waiting thread must loop, testing the condition
 and waiting on the condition variable.  For example:
 </p>
 <div class="example">
-<pre class="example">(with-mutex mutex
+<pre class="example-preformatted">(with-mutex mutex
   (while (not global-variable)
     (condition-wait cond-var)))
 </pre></div>
@@ -87,67 +80,68 @@ The typical, and best, approach is to acquire the mutex, make the
 changes associated with this condition, and then notify it:
 </p>
 <div class="example">
-<pre class="example">(with-mutex mutex
+<pre class="example-preformatted">(with-mutex mutex
   (setq global-variable (some-computation))
   (condition-notify cond-var))
 </pre></div>
 
-<dl>
-<dt id="index-make_002dcondition_002dvariable">Function: <strong>make-condition-variable</strong> <em>mutex &amp;optional name</em></dt>
-<dd><p>Make a new condition variable associated with <var>mutex</var>.  If
-<var>name</var> is specified, it is a name given to the condition variable.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dcondition_002dvariable"><span class="category-def">Function: </span><span><strong class="def-name">make-condition-variable</strong> <var class="def-var-arguments">mutex &amp;optional name</var><a class="copiable-link" href="#index-make_002dcondition_002dvariable"> &para;</a></span></dt>
+<dd><p>Make a new condition variable associated with <var class="var">mutex</var>.  If
+<var class="var">name</var> is specified, it is a name given to the condition variable.
 It must be a string.  The name is for debugging purposes only; it has
 no meaning to Emacs.
 </p></dd></dl>
 
-<dl>
-<dt id="index-condition_002dvariable_002dp">Function: <strong>condition-variable-p</strong> <em>object</em></dt>
-<dd><p>This function returns <code>t</code> if <var>object</var> represents a condition
-variable, <code>nil</code> otherwise.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-condition_002dvariable_002dp"><span class="category-def">Function: </span><span><strong class="def-name">condition-variable-p</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-condition_002dvariable_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">object</var> represents a condition
+variable, <code class="code">nil</code> otherwise.
 </p></dd></dl>
 
-<dl>
-<dt id="index-condition_002dwait">Function: <strong>condition-wait</strong> <em>cond</em></dt>
-<dd><p>Wait for another thread to notify <var>cond</var>, a condition variable.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-condition_002dwait"><span class="category-def">Function: </span><span><strong class="def-name">condition-wait</strong> <var class="def-var-arguments">cond</var><a class="copiable-link" href="#index-condition_002dwait"> &para;</a></span></dt>
+<dd><p>Wait for another thread to notify <var class="var">cond</var>, a condition variable.
 This function will block until the condition is notified, or until a
-signal is delivered to this thread using <code>thread-signal</code>.
+signal is delivered to this thread using <code class="code">thread-signal</code>.
 </p>
-<p>It is an error to call <code>condition-wait</code> without holding the
+<p>It is an error to call <code class="code">condition-wait</code> without holding the
 condition&rsquo;s associated mutex.
 </p>
-<p><code>condition-wait</code> releases the associated mutex while waiting.
+<p><code class="code">condition-wait</code> releases the associated mutex while waiting.
 This allows other threads to acquire the mutex in order to notify the
 condition.
 </p></dd></dl>
 
-<dl>
-<dt id="index-condition_002dnotify">Function: <strong>condition-notify</strong> <em>cond &amp;optional all</em></dt>
-<dd><p>Notify <var>cond</var>.  The mutex with <var>cond</var> must be held before
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-condition_002dnotify"><span class="category-def">Function: </span><span><strong class="def-name">condition-notify</strong> <var class="def-var-arguments">cond &amp;optional all</var><a class="copiable-link" href="#index-condition_002dnotify"> &para;</a></span></dt>
+<dd><p>Notify <var class="var">cond</var>.  The mutex with <var class="var">cond</var> must be held before
 calling this.  Ordinarily a single waiting thread is woken by
-<code>condition-notify</code>; but if <var>all</var> is not <code>nil</code>, then all
-threads waiting on <var>cond</var> are notified.
+<code class="code">condition-notify</code>; but if <var class="var">all</var> is not <code class="code">nil</code>, then all
+threads waiting on <var class="var">cond</var> are notified.
 </p>
-<p><code>condition-notify</code> releases the associated mutex while waiting.
+<p><code class="code">condition-notify</code> releases the associated mutex while waiting.
 This allows other threads to acquire the mutex in order to wait on the
 condition.
 </p></dd></dl>
 
-<dl>
-<dt id="index-condition_002dname">Function: <strong>condition-name</strong> <em>cond</em></dt>
-<dd><p>Return the name of <var>cond</var>, as passed to
-<code>make-condition-variable</code>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-condition_002dname"><span class="category-def">Function: </span><span><strong class="def-name">condition-name</strong> <var class="def-var-arguments">cond</var><a class="copiable-link" href="#index-condition_002dname"> &para;</a></span></dt>
+<dd><p>Return the name of <var class="var">cond</var>, as passed to
+<code class="code">make-condition-variable</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-condition_002dmutex">Function: <strong>condition-mutex</strong> <em>cond</em></dt>
-<dd><p>Return the mutex associated with <var>cond</var>.  Note that the associated
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-condition_002dmutex"><span class="category-def">Function: </span><span><strong class="def-name">condition-mutex</strong> <var class="def-var-arguments">cond</var><a class="copiable-link" href="#index-condition_002dmutex"> &para;</a></span></dt>
+<dd><p>Return the mutex associated with <var class="var">cond</var>.  Note that the associated
 mutex cannot be changed.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="The-Thread-List.html" accesskey="n" rel="next">The Thread List</a>, Previous: <a href="Mutexes.html" accesskey="p" rel="prev">Mutexes</a>, Up: <a href="Threads.html" accesskey="u" rel="up">Threads</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="The-Thread-List.html">The Thread List</a>, Previous: <a href="Mutexes.html">Mutexes</a>, Up: <a href="Threads.html">Threads</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.1.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Windows Keyboard (GNU Emacs Manual)</title>
+
+<meta name="description" content="Windows Keyboard (GNU Emacs Manual)">
+<meta name="keywords" content="Windows Keyboard (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Microsoft-Windows.html" rel="up" title="Microsoft Windows">
+<link href="Windows-Mouse.html" rel="next" title="Windows Mouse">
+<link href="Windows-HOME.html" rel="prev" title="Windows HOME">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Windows-Keyboard">
+<div class="nav-panel">
+<p>
+Next: <a href="Windows-Mouse.html" accesskey="n" rel="next">Mouse Usage on MS-Windows</a>, Previous: <a href="Windows-HOME.html" accesskey="p" rel="prev">HOME and Startup Directories on MS-Windows</a>, Up: <a href="Microsoft-Windows.html" accesskey="u" rel="up">Emacs and Microsoft Windows/MS-DOS</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Keyboard-Usage-on-MS_002dWindows"><span>G.6 Keyboard Usage on MS-Windows<a class="copiable-link" href="#Keyboard-Usage-on-MS_002dWindows"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-keyboard_002c-MS_002dWindows"></a>
+
+<p>This section describes the Windows-specific features related to
+keyboard input in Emacs.
+</p>
+<a class="index-entry-id" id="index-MS_002dWindows-keyboard-shortcuts"></a>
+<p>Many key combinations (known as &ldquo;keyboard shortcuts&rdquo;) that have
+conventional uses in MS-Windows programs conflict with traditional
+Emacs key bindings.  (These Emacs key bindings were established years
+before Microsoft was founded.)  Examples of conflicts include
+<kbd class="kbd">C-c</kbd>, <kbd class="kbd">C-x</kbd>, <kbd class="kbd">C-z</kbd>, and <kbd class="kbd">C-a</kbd>.
+You can redefine some of them with meanings more like the MS-Windows
+meanings by enabling CUA Mode (see <a class="pxref" href="CUA-Bindings.html">CUA Bindings</a>).  Another
+optional feature which will make Emacs behave like other Windows
+applications is Delete Selection mode (see <a class="pxref" href="Using-Region.html">Operating on the Region</a>).
+</p>
+<a class="index-entry-id" id="index-w32_002dalt_002dis_002dmeta"></a>
+<a class="index-entry-id" id="index-Alt-key-_0028MS_002dWindows_0029"></a>
+<p>By default, the key labeled <kbd class="key">Alt</kbd> is mapped as the <kbd class="key">Meta</kbd>
+key.  If you wish it to produce the <code class="code">Alt</code> modifier instead, set
+the variable <code class="code">w32-alt-is-meta</code> to a <code class="code">nil</code> value.
+</p>
+<a class="index-entry-id" id="index-w32_002dregister_002dhot_002dkey"></a>
+<a class="index-entry-id" id="index-w32_002dunregister_002dhot_002dkey"></a>
+<p>MS-Windows reserves certain key combinations, such as
+<kbd class="kbd"><kbd class="key">Alt</kbd>-<kbd class="key">TAB</kbd></kbd> and a number of Windows key combinations,
+for its own use.  These key combinations are intercepted by the system
+before Emacs can see them.  Also, on Windows 10, all Windows key
+combinations are reserved by the system in such a way that they are
+never propagated to applications, even if the system does not
+currently define a hotkey on the specific combination.  You can use
+the <code class="code">w32-register-hot-key</code> function to allow a key sequence to be
+seen by Emacs instead of being grabbed by Windows.  When registered as
+a hot key, the key combination is pulled out of the system&rsquo;s input
+queue before it is handled by Windows, effectively overriding the
+special meaning of that key sequence for Windows.  The override is
+only effective when Emacs is active; with other applications on the
+foreground the keys behave normally.
+</p>
+<p>The argument to <code class="code">w32-register-hot-key</code> must be a single key with a
+single modifier, in vector form that would be acceptable to
+<code class="code">define-key</code>.  The control and shift modifiers have no effect on the
+argument.  The meta modifier is interpreted as the <kbd class="key">Alt</kbd> key if
+<code class="code">w32-alt-is-meta</code> is <code class="code">t</code> (the default), and the super and hyper
+modifiers are interpreted according to the bindings of
+<code class="code">w32-lwindow-modifier</code> and <code class="code">w32-rwindow-modifier</code>.  Additionally, a
+modifier with the trailing dash but with no key indicates that all
+Windows defined hotkeys for that modifier are to be overridden in the
+favor of Emacs.
+</p>
+<a class="index-entry-id" id="index-M_002dTAB_002c-_0028MS_002dWindows_0029"></a>
+<a class="index-entry-id" id="index-M_002dTAB-vs-Alt_002dTAB-_0028MS_002dWindows_0029"></a>
+<a class="index-entry-id" id="index-Alt_002dTAB-vs-M_002dTAB-_0028MS_002dWindows_0029"></a>
+<p>For example, <code class="code">(w32-register-hot-key [M-tab])</code> lets you use
+<kbd class="kbd">M-<kbd class="key">TAB</kbd></kbd> normally in Emacs; for instance, to complete the
+word or symbol at point at top level, or to complete the current
+search string against previously sought strings during incremental
+search.  <code class="code">(w32-register-hot-key [s-])</code> with
+<code class="code">w32-lwindow-modifier</code> bound to <code class="code">super</code> disables all the
+Windows&rsquo; own Windows key based shortcuts.<a class="footnote" id="DOCF26" href="#FOOT26"><sup>26</sup></a>
+</p>
+<p>Note that <code class="code">w32-register-hot-key</code> checks the
+<code class="code">w32-[lr]window-modifier</code> values at the time of the function
+call.  Thus, you can set <code class="code">w32-lwindow-modifier</code> as <code class="code">super</code>,
+then call <code class="code">(w32-register-hot-key [s-r])</code>, and finally set
+<code class="code">w32-rwindow-modifier</code> as <code class="code">super</code> as well.  The result is
+that the left Windows key together with <kbd class="kbd">R</kbd> invokes whichever
+function you have bound for the combination in Emacs, and the right
+Windows key and <kbd class="kbd">R</kbd> opens the Windows <code class="code">Run</code> dialog.
+</p>
+<p>The hotkey registrations always also include all the shift and
+control modifier combinations for the given hotkey; that is,
+registering <kbd class="kbd">s-a</kbd> as a hotkey gives you <kbd class="kbd">S-s-a</kbd>,
+<kbd class="kbd">C-s-a</kbd> and <kbd class="kbd">C-S-s-a</kbd> as well.
+</p>
+<p>On Windows 98 and ME, the hotkey registration is more restricted.
+The desired hotkey must always be fully specified, and
+<code class="code">w32-phantom-key-code</code> can be customized to achieve desired
+results.
+</p>
+<p>The function <code class="code">w32-unregister-hot-key</code> reverses the effect of
+<code class="code">w32-register-hot-key</code> for its argument key sequence.
+</p>
+<a class="index-entry-id" id="index-w32_002dcapslock_002dis_002dshiftlock"></a>
+<p>By default, the <kbd class="key">CapsLock</kbd> key only affects normal character
+keys (it converts lower-case characters to their upper-case
+variants).  However, if you set the variable
+<code class="code">w32-capslock-is-shiftlock</code> to a non-<code class="code">nil</code> value, the
+<kbd class="key">CapsLock</kbd> key will affect non-character keys as well, as if you
+pressed the <kbd class="key">SHIFT</kbd> key while typing the non-character key.
+</p>
+<a class="index-entry-id" id="index-w32_002denable_002dcaps_002dlock"></a>
+<p>If the variable <code class="code">w32-enable-caps-lock</code> is set to a <code class="code">nil</code>
+value, the <kbd class="key">CapsLock</kbd> key produces the symbol <code class="code">capslock</code>
+instead of the shifted version of typed keys.  The default value is
+<code class="code">t</code>.
+</p>
+<a class="index-entry-id" id="index-w32_002denable_002dnum_002dlock"></a>
+<a class="index-entry-id" id="index-keypad-keys-_0028MS_002dWindows_0029"></a>
+<p>Similarly, if <code class="code">w32-enable-num-lock</code> is <code class="code">nil</code>, the
+<kbd class="key">NumLock</kbd> key will produce the symbol <code class="code">kp-numlock</code>.  The
+default is <code class="code">t</code>, which causes <kbd class="key">NumLock</kbd> to work as expected:
+toggle the meaning of the keys on the numeric keypad.
+</p>
+<a class="index-entry-id" id="index-w32_002dapps_002dmodifier"></a>
+<p>The variable <code class="code">w32-apps-modifier</code> controls the effect of the
+<kbd class="key">Apps</kbd> key (usually located between the right <kbd class="key">Alt</kbd> and the
+right <kbd class="key">Ctrl</kbd> keys).  Its value can be one of the symbols
+<code class="code">hyper</code>, <code class="code">super</code>, <code class="code">meta</code>, <code class="code">alt</code>, <code class="code">control</code>,
+or <code class="code">shift</code> for the respective modifier, or <code class="code">nil</code> to appear
+as the key <code class="code">apps</code>.  The default is <code class="code">nil</code>.
+</p>
+<a class="index-entry-id" id="index-w32_002dlwindow_002dmodifier"></a>
+<a class="index-entry-id" id="index-w32_002drwindow_002dmodifier"></a>
+<a class="index-entry-id" id="index-w32_002dscroll_002dlock_002dmodifier"></a>
+<p>The variable <code class="code">w32-lwindow-modifier</code> determines the effect of
+the left Windows key (usually labeled with <kbd class="key">start</kbd> and the Windows
+logo).  If its value is <code class="code">nil</code> (the default), the key will produce
+the symbol <code class="code">lwindow</code>.  Setting it to one of the symbols
+<code class="code">hyper</code>, <code class="code">super</code>, <code class="code">meta</code>, <code class="code">alt</code>, <code class="code">control</code>,
+or <code class="code">shift</code> will produce the respective modifier.  A similar
+variable <code class="code">w32-rwindow-modifier</code> controls the effect of the right
+Windows key, and <code class="code">w32-scroll-lock-modifier</code> does the same for the
+<kbd class="key">ScrLock</kbd> key.  If these variables are set to <code class="code">nil</code>, the
+right Windows key produces the symbol <code class="code">rwindow</code> and <kbd class="key">ScrLock</kbd>
+produces the symbol <code class="code">scroll</code>.  If you want <kbd class="key">ScrLock</kbd> to
+produce the same effect as in other applications, i.e. toggle the
+Scroll Lock <abbr class="acronym">LED</abbr> indication on the keyboard, set
+<code class="code">w32-scroll-lock-modifier</code> to <code class="code">t</code> or any non-<code class="code">nil</code>
+value other than the above modifier symbols.
+</p>
+<a class="index-entry-id" id="index-w32_002dpass_002dalt_002dto_002dsystem"></a>
+<a class="index-entry-id" id="index-Windows-system-menu"></a>
+<a class="index-entry-id" id="index-Alt-key-invokes-menu-_0028Windows_0029"></a>
+<p>Emacs compiled as a native Windows application normally turns off
+the Windows feature that tapping the <kbd class="key">Alt</kbd> key invokes the Windows
+menu.  The reason is that the <kbd class="key">Alt</kbd> serves as <kbd class="key">Meta</kbd> in Emacs.
+When using Emacs, users often press the <kbd class="key">Meta</kbd> key temporarily and
+then change their minds; if this has the effect of bringing up the
+Windows menu, it alters the meaning of subsequent commands.  Many
+users find this frustrating.
+</p>
+<p>You can re-enable Windows&rsquo;s default handling of tapping the <kbd class="key">Alt</kbd>
+key by setting <code class="code">w32-pass-alt-to-system</code> to a non-<code class="code">nil</code>
+value.
+</p>
+<a class="index-entry-id" id="index-w32_002dpass_002dlwindow_002dto_002dsystem"></a>
+<a class="index-entry-id" id="index-w32_002dpass_002drwindow_002dto_002dsystem"></a>
+<p>The variables <code class="code">w32-pass-lwindow-to-system</code> and
+<code class="code">w32-pass-rwindow-to-system</code> determine whether the respective
+keys are passed to Windows or swallowed by Emacs.  If the value is
+<code class="code">nil</code>, the respective key is silently swallowed by Emacs,
+otherwise it is passed to Windows.  The default is <code class="code">t</code> for both
+of these variables.  Passing each of these keys to Windows produces
+its normal effect: for example, <kbd class="kbd"><kbd class="key">Lwindow</kbd></kbd> opens the
+<code class="code">Start</code> menu, etc.
+</p>
+<a class="index-entry-id" id="index-w32_002drecognize_002daltgr"></a>
+<a class="index-entry-id" id="index-AltGr-_0028MS_002dWindows_0029"></a>
+<a class="index-entry-id" id="index-AltGr-key-_0028MS_002dWindows_0029"></a>
+<p>The variable <code class="code">w32-recognize-altgr</code> controls whether the
+<kbd class="key">AltGr</kbd> key (if it exists on your keyboard), or its equivalent,
+the combination of the right <kbd class="key">Alt</kbd> and left <kbd class="key">Ctrl</kbd> keys
+pressed together, is recognized as the <kbd class="key">AltGr</kbd> key.  The default
+is <code class="code">t</code>, which means these keys produce <code class="code">AltGr</code>; setting it
+to <code class="code">nil</code> causes <kbd class="key">AltGr</kbd> or the equivalent key combination to
+be interpreted as the combination of <kbd class="key">Ctrl</kbd> and <kbd class="key">Meta</kbd>
+modifiers.
+</p>
+<a class="index-entry-id" id="index-IME_002c-MS_002dWindows"></a>
+<a class="index-entry-id" id="index-w32_002dset_002dime_002dopen_002dstatus"></a>
+<p>Some versions of MS-Windows, typically East Asian localized Windows,
+enable the Input Method Manager (<abbr class="acronym">IMM</abbr>) that allows
+applications to communicate with the Input Method Editor
+(<abbr class="acronym">IME</abbr>), the native Windows input method service.  Emacs uses
+the <abbr class="acronym">IME</abbr> when available to allow users to input East Asian
+non-<abbr class="acronym">ASCII</abbr> characters, similarly to Emacs&rsquo;s built-in input
+methods (see <a class="pxref" href="Input-Methods.html">Input Methods</a>).  However, in some situations the
+<abbr class="acronym">IME</abbr> can get in the way if it interprets simple
+<abbr class="acronym">ASCII</abbr> keys you input as part of a key sequence that
+designates a non-<abbr class="acronym">ASCII</abbr> character.  The <abbr class="acronym">IME</abbr> can be
+temporarily turned off and then on again by using the
+<code class="code">w32-set-ime-open-status</code> function.
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT26" href="#DOCF26">(26)</a></h5>
+<p>There is one known
+exception: The combination <kbd class="kbd"><kbd class="key">Windows</kbd>-L</kbd> that locks the
+workstation is handled by the system on a lower level.  For this
+reason, <code class="code">w32-register-hot-key</code> cannot override this key
+combination - it always locks the computer.</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Windows-Mouse.html">Mouse Usage on MS-Windows</a>, Previous: <a href="Windows-HOME.html">HOME and Startup Directories on MS-Windows</a>, Up: <a href="Microsoft-Windows.html">Emacs and Microsoft Windows/MS-DOS</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

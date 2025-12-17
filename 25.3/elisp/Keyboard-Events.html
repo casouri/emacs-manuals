@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Keyboard Events (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Keyboard Events (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Input-Events.html" rel="up" title="Input Events">
 <link href="Function-Keys.html" rel="next" title="Function Keys">
-<link href="Input-Events.html" rel="prev" title="Input Events">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,26 +47,27 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Keyboard-Events"></span><div class="header">
+<div class="subsection-level-extent" id="Keyboard-Events">
+<div class="nav-panel">
 <p>
 Next: <a href="Function-Keys.html" accesskey="n" rel="next">Function Keys</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Keyboard-Events-1"></span><h4 class="subsection">20.7.1 Keyboard Events</h4>
-<span id="index-keyboard-events"></span>
+<h4 class="subsection" id="Keyboard-Events-1"><span>20.7.1 Keyboard Events<a class="copiable-link" href="#Keyboard-Events-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-keyboard-events"></a>
 
 <p>There are two kinds of input you can get from the keyboard: ordinary
 keys, and function keys.  Ordinary keys correspond to characters; the
 events they generate are represented in Lisp as characters.  The event
 type of a character event is the character itself (an integer); see
-<a href="Classifying-Events.html">Classifying Events</a>.
+<a class="ref" href="Classifying-Events.html">Classifying Events</a>.
 </p>
-<span id="index-modifier-bits-_0028of-input-character_0029"></span>
-<span id="index-basic-code-_0028of-input-character_0029"></span>
-<p>An input character event consists of a <em>basic code</em> between 0 and
-524287, plus any or all of these <em>modifier bits</em>:
+<a class="index-entry-id" id="index-modifier-bits-_0028of-input-character_0029"></a>
+<a class="index-entry-id" id="index-basic-code-_0028of-input-character_0029"></a>
+<p>An input character event consists of a <em class="dfn">basic code</em> between 0 and
+524287, plus any or all of these <em class="dfn">modifier bits</em>:
 </p>
-<dl compact="compact">
+<dl class="table">
 <dt>meta</dt>
 <dd><p>The
 2**27
@@ -86,39 +78,39 @@ typed with the meta key held down.
 <dt>control</dt>
 <dd><p>The
 2**26
-bit in the character code indicates a non-<acronym>ASCII</acronym>
+bit in the character code indicates a non-<abbr class="acronym">ASCII</abbr>
 control character.
 </p>
-<p><small>ASCII</small> control characters such as <kbd>C-a</kbd> have special basic
+<p><small class="sc">ASCII</small> control characters such as <kbd class="kbd">C-a</kbd> have special basic
 codes of their own, so Emacs needs no special bit to indicate them.
-Thus, the code for <kbd>C-a</kbd> is just 1.
+Thus, the code for <kbd class="kbd">C-a</kbd> is just 1.
 </p>
-<p>But if you type a control combination not in <acronym>ASCII</acronym>, such as
-<kbd>%</kbd> with the control key, the numeric value you get is the code
-for <kbd>%</kbd> plus
+<p>But if you type a control combination not in <abbr class="acronym">ASCII</abbr>, such as
+<kbd class="kbd">%</kbd> with the control key, the numeric value you get is the code
+for <kbd class="kbd">%</kbd> plus
 2**26
-(assuming the terminal supports non-<acronym>ASCII</acronym>
+(assuming the terminal supports non-<abbr class="acronym">ASCII</abbr>
 control characters).
 </p>
 </dd>
 <dt>shift</dt>
 <dd><p>The
 2**25
-bit in the character code indicates an <acronym>ASCII</acronym> control
+bit in the character code indicates an <abbr class="acronym">ASCII</abbr> control
 character typed with the shift key held down.
 </p>
 <p>For letters, the basic code itself indicates upper versus lower case;
 for digits and punctuation, the shift key selects an entirely different
 character with a different basic code.  In order to keep within the
-<acronym>ASCII</acronym> character set whenever possible, Emacs avoids using the
+<abbr class="acronym">ASCII</abbr> character set whenever possible, Emacs avoids using the
 2**25
 bit for those characters.
 </p>
-<p>However, <acronym>ASCII</acronym> provides no way to distinguish <kbd>C-A</kbd> from
-<kbd>C-a</kbd>, so Emacs uses the
+<p>However, <abbr class="acronym">ASCII</abbr> provides no way to distinguish <kbd class="kbd">C-A</kbd> from
+<kbd class="kbd">C-a</kbd>, so Emacs uses the
 2**25
-bit in <kbd>C-A</kbd> and not in
-<kbd>C-a</kbd>.
+bit in <kbd class="kbd">C-A</kbd> and not in
+<kbd class="kbd">C-a</kbd>.
 </p>
 </dd>
 <dt>hyper</dt>
@@ -139,25 +131,26 @@ typed with the super key held down.
 <dd><p>The
 2**22
 bit in the character code indicates a character typed with the alt key
-held down.  (The key labeled <tt class="key">Alt</tt> on most keyboards is actually
+held down.  (The key labeled <kbd class="key">Alt</kbd> on most keyboards is actually
 treated as the meta key, not this.)
 </p></dd>
 </dl>
 
 <p>It is best to avoid mentioning specific bit numbers in your program.
 To test the modifier bits of a character, use the function
-<code>event-modifiers</code> (see <a href="Classifying-Events.html">Classifying Events</a>).  When making key
+<code class="code">event-modifiers</code> (see <a class="pxref" href="Classifying-Events.html">Classifying Events</a>).  When making key
 bindings, you can use the read syntax for characters with modifier bits
-(&lsquo;<samp>\C-</samp>&rsquo;, &lsquo;<samp>\M-</samp>&rsquo;, and so on).  For making key bindings with
-<code>define-key</code>, you can use lists such as <code>(control hyper ?x)</code> to
-specify the characters (see <a href="Changing-Key-Bindings.html">Changing Key Bindings</a>).  The function
-<code>event-convert-list</code> converts such a list into an event type
-(see <a href="Classifying-Events.html">Classifying Events</a>).
+(&lsquo;<samp class="samp">\C-</samp>&rsquo;, &lsquo;<samp class="samp">\M-</samp>&rsquo;, and so on).  For making key bindings with
+<code class="code">define-key</code>, you can use lists such as <code class="code">(control hyper ?x)</code> to
+specify the characters (see <a class="pxref" href="Changing-Key-Bindings.html">Changing Key Bindings</a>).  The function
+<code class="code">event-convert-list</code> converts such a list into an event type
+(see <a class="pxref" href="Classifying-Events.html">Classifying Events</a>).
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Function-Keys.html" accesskey="n" rel="next">Function Keys</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Function-Keys.html">Function Keys</a>, Up: <a href="Input-Events.html">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

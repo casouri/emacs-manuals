@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Button Buffer Commands (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Button Buffer Commands (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Button Buffer Commands (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Buttons.html" rel="up" title="Buttons">
+<link href="Manipulating-Buttons.html" rel="prev" title="Manipulating Buttons">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Button-Buffer-Commands">
+<div class="nav-panel">
+<p>
+Previous: <a href="Manipulating-Buttons.html" accesskey="p" rel="prev">Manipulating Buttons</a>, Up: <a href="Buttons.html" accesskey="u" rel="up">Buttons</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Button-Buffer-Commands-1"><span>41.20.5 Button Buffer Commands<a class="copiable-link" href="#Button-Buffer-Commands-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-button-buffer-commands"></a>
+
+<p>These are commands and functions for locating and operating on
+buttons in an Emacs buffer.
+</p>
+<a class="index-entry-id" id="index-buffer_002dbutton_002dmap"></a>
+<p><code class="code">push-button</code> is the command that a user uses to actually push
+a button, and is bound by default in the button itself to <kbd class="key">RET</kbd>
+and to <kbd class="key">mouse-2</kbd> using a local keymap in the button&rsquo;s overlay or
+text properties.  Commands that are useful outside the buttons itself,
+such as <code class="code">forward-button</code> and <code class="code">backward-button</code> are
+additionally available in the keymap stored in
+<code class="code">button-buffer-map</code>; a mode which uses buttons may want to use
+<code class="code">button-buffer-map</code> as a parent keymap for its keymap.
+Alternatively, the <code class="code">button-mode</code> can be switched on for much the
+same effect: It&rsquo;s a minor mode that does nothing else than install
+<code class="code">button-buffer-map</code> as a minor mode keymap.
+</p>
+<p>If the button has a non-<code class="code">nil</code> <code class="code">follow-link</code> property, and
+<code class="code">mouse-1-click-follows-link</code> is set, a quick <kbd class="key">mouse-1</kbd> click
+will also activate the <code class="code">push-button</code> command.
+See <a class="xref" href="Clickable-Text.html">Defining Clickable Text</a>.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-push_002dbutton"><span class="category-def">Command: </span><span><strong class="def-name">push-button</strong> <var class="def-var-arguments">&amp;optional pos use-mouse-action</var><a class="copiable-link" href="#index-push_002dbutton"> &para;</a></span></dt>
+<dd><p>Perform the action specified by a button at location <var class="var">pos</var>.
+<var class="var">pos</var> may be either a buffer position or a mouse-event.  If
+<var class="var">use-mouse-action</var> is non-<code class="code">nil</code>, or <var class="var">pos</var> is a
+mouse-event (see <a class="pxref" href="Mouse-Events.html">Mouse Events</a>), try to invoke the button&rsquo;s
+<code class="code">mouse-action</code> property instead of <code class="code">action</code>; if the button
+has no <code class="code">mouse-action</code> property, use <code class="code">action</code> as normal.
+<var class="var">pos</var> defaults to point, except when <code class="code">push-button</code> is invoked
+interactively as the result of a mouse-event, in which case, the mouse
+event&rsquo;s position is used.  If there&rsquo;s no button at <var class="var">pos</var>, do
+nothing and return <code class="code">nil</code>, otherwise return <code class="code">t</code>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-forward_002dbutton"><span class="category-def">Command: </span><span><strong class="def-name">forward-button</strong> <var class="def-var-arguments">n &amp;optional wrap display-message no-error</var><a class="copiable-link" href="#index-forward_002dbutton"> &para;</a></span></dt>
+<dd><p>Move to the <var class="var">n</var>th next button, or <var class="var">n</var>th previous button if
+<var class="var">n</var> is negative.  If <var class="var">n</var> is zero, move to the start of any
+button at point.  If <var class="var">wrap</var> is non-<code class="code">nil</code>, moving past either
+end of the buffer continues from the other end.  If
+<var class="var">display-message</var> is non-<code class="code">nil</code>, the button&rsquo;s help-echo string
+is displayed.  Any button with a non-<code class="code">nil</code> <code class="code">skip</code> property
+is skipped over.  Returns the button found, and signals an error if no
+buttons can be found.  If <var class="var">no-error</var> is non-<code class="code">nil</code>, return <code class="code">nil</code>
+instead of signaling the error.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-backward_002dbutton"><span class="category-def">Command: </span><span><strong class="def-name">backward-button</strong> <var class="def-var-arguments">n &amp;optional wrap display-message no-error</var><a class="copiable-link" href="#index-backward_002dbutton"> &para;</a></span></dt>
+<dd><p>Move to the <var class="var">n</var>th previous button, or <var class="var">n</var>th next button if
+<var class="var">n</var> is negative.  If <var class="var">n</var> is zero, move to the start of any
+button at point.  If <var class="var">wrap</var> is non-<code class="code">nil</code>, moving past either
+end of the buffer continues from the other end.  If
+<var class="var">display-message</var> is non-<code class="code">nil</code>, the button&rsquo;s help-echo string
+is displayed.  Any button with a non-<code class="code">nil</code> <code class="code">skip</code> property
+is skipped over.  Returns the button found, and signals an error if no
+buttons can be found.  If <var class="var">no-error</var> is non-<code class="code">nil</code>, return <code class="code">nil</code>
+instead of signaling the error.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-next_002dbutton"><span class="category-def">Function: </span><span><strong class="def-name">next-button</strong> <var class="def-var-arguments">pos &amp;optional count-current</var><a class="copiable-link" href="#index-next_002dbutton"> &para;</a></span></dt>
+<dt class="deffnx defunx-alias-deffnx def-cmd-deffn" id="index-previous_002dbutton"><span class="category-def">Function: </span><span><strong class="def-name">previous-button</strong> <var class="def-var-arguments">pos &amp;optional count-current</var><a class="copiable-link" href="#index-previous_002dbutton"> &para;</a></span></dt>
+<dd><p>Return the next button after (for <code class="code">next-button</code>) or before (for
+<code class="code">previous-button</code>) position <var class="var">pos</var> in the current buffer.  If
+<var class="var">count-current</var> is non-<code class="code">nil</code>, count any button at <var class="var">pos</var>
+in the search, instead of starting at the next button.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Manipulating-Buttons.html">Manipulating Buttons</a>, Up: <a href="Buttons.html">Buttons</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

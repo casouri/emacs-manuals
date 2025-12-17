@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.2.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Clipboard (GNU Emacs Manual)</title>
+
+<meta name="description" content="Clipboard (GNU Emacs Manual)">
+<meta name="keywords" content="Clipboard (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Cut-and-Paste.html" rel="up" title="Cut and Paste">
+<link href="Primary-Selection.html" rel="next" title="Primary Selection">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Clipboard">
+<div class="nav-panel">
+<p>
+Next: <a href="Primary-Selection.html" accesskey="n" rel="next">Cut and Paste with Other Window Applications</a>, Up: <a href="Cut-and-Paste.html" accesskey="u" rel="up">&ldquo;Cut and Paste&rdquo; Operations on Graphical Displays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Using-the-Clipboard"><span>12.3.1 Using the Clipboard<a class="copiable-link" href="#Using-the-Clipboard"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-clipboard"></a>
+
+<p>The <em class="dfn">clipboard</em> is the facility that most graphical applications
+use for &ldquo;cutting and pasting&rdquo;.  When the clipboard exists, the kill
+and yank commands in Emacs make use of it.
+</p>
+<p>When you kill some text with a command such as <kbd class="kbd">C-w</kbd>
+(<code class="code">kill-region</code>), or copy it to the kill ring with a command such
+as <kbd class="kbd">M-w</kbd> (<code class="code">kill-ring-save</code>), that text is also put in the
+clipboard.
+</p>
+<a class="index-entry-id" id="index-save_002dinterprogram_002dpaste_002dbefore_002dkill"></a>
+<p>When an Emacs kill command puts text in the clipboard, the existing
+clipboard contents are normally lost.  Optionally, Emacs can save the
+existing clipboard contents to the kill ring, preventing you from
+losing the old clipboard data.  If
+<code class="code">save-interprogram-paste-before-kill</code> changed to a number, then
+this data is copied over if it&rsquo;s smaller (in characters) than this
+number.  If this variable is any other non-<code class="code">nil</code> value, it&rsquo;s
+always copied over&mdash;at the risk of high memory consumption if that
+data turns out to be large.
+</p>
+<p>Yank commands, such as <kbd class="kbd">C-y</kbd> (<code class="code">yank</code>), also use the
+clipboard.  If another application &ldquo;owns&rdquo; the clipboard&mdash;i.e., if
+you cut or copied text there more recently than your last kill command
+in Emacs&mdash;then Emacs yanks from the clipboard instead of the kill
+ring.
+</p>
+<a class="index-entry-id" id="index-yank_002dpop_002dchange_002dselection"></a>
+<p>Normally, rotating the kill ring with <kbd class="kbd">M-y</kbd> (<code class="code">yank-pop</code>)
+does not alter the clipboard.  However, if you change
+<code class="code">yank-pop-change-selection</code> to <code class="code">t</code>, then <kbd class="kbd">M-y</kbd> saves the
+new yank to the clipboard.
+</p>
+<a class="index-entry-id" id="index-select_002denable_002dclipboard"></a>
+<p>To prevent kill and yank commands from accessing the clipboard,
+change the variable <code class="code">select-enable-clipboard</code> to <code class="code">nil</code>.
+</p>
+<a class="index-entry-id" id="index-clipboard-manager"></a>
+<a class="index-entry-id" id="index-x_002dselect_002denable_002dclipboard_002dmanager"></a>
+<p>Many X desktop environments support a feature called the
+<em class="dfn">clipboard manager</em>.  If you exit Emacs while it is the current
+&ldquo;owner&rdquo; of the clipboard data, and there is a clipboard manager
+running, Emacs transfers the clipboard data to the clipboard manager
+so that it is not lost.  In some circumstances, this may cause a delay
+when exiting Emacs; if you wish to prevent Emacs from transferring
+data to the clipboard manager, change the variable
+<code class="code">x-select-enable-clipboard-manager</code> to <code class="code">nil</code>.
+</p>
+<p>Since strings containing NUL bytes are usually truncated when passed
+through the clipboard, Emacs replaces such characters with &ldquo;\0&rdquo;
+before transferring them to the system&rsquo;s clipboard.
+</p>
+<a class="index-entry-id" id="index-select_002denable_002dprimary"></a>
+<a class="index-entry-id" id="index-clipboard_002dkill_002dregion"></a>
+<a class="index-entry-id" id="index-clipboard_002dkill_002dring_002dsave"></a>
+<a class="index-entry-id" id="index-clipboard_002dyank"></a>
+<p>Prior to Emacs 24, the kill and yank commands used the primary
+selection (see <a class="pxref" href="Primary-Selection.html">Cut and Paste with Other Window Applications</a>), not the clipboard.  If you
+prefer this behavior, change <code class="code">select-enable-clipboard</code> to
+<code class="code">nil</code>, <code class="code">select-enable-primary</code> to <code class="code">t</code>, and
+<code class="code">mouse-drag-copy-region</code> to <code class="code">t</code>.  In this case, you can use
+the following commands to act explicitly on the clipboard:
+<code class="code">clipboard-kill-region</code> kills the region and saves it to the
+clipboard; <code class="code">clipboard-kill-ring-save</code> copies the region to the
+kill ring and saves it to the clipboard; and <code class="code">clipboard-yank</code>
+yanks the contents of the clipboard at point.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Primary-Selection.html">Cut and Paste with Other Window Applications</a>, Up: <a href="Cut-and-Paste.html">&ldquo;Cut and Paste&rdquo; Operations on Graphical Displays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

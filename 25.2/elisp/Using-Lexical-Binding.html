@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Using Lexical Binding (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Using Lexical Binding (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Variable-Scoping.html" rel="up" title="Variable Scoping">
-<link href="Buffer_002dLocal-Variables.html" rel="next" title="Buffer-Local Variables">
 <link href="Lexical-Binding.html" rel="prev" title="Lexical Binding">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,47 +46,48 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Using-Lexical-Binding"></span><div class="header">
+<div class="subsection-level-extent" id="Using-Lexical-Binding">
+<div class="nav-panel">
 <p>
-Previous: <a href="Lexical-Binding.html" accesskey="p" rel="prev">Lexical Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Variable Scoping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Lexical-Binding.html" accesskey="p" rel="prev">Lexical Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Using-Lexical-Binding-1"></span><h4 class="subsection">11.9.4 Using Lexical Binding</h4>
+<h4 class="subsection" id="Using-Lexical-Binding-1"><span>11.9.4 Using Lexical Binding<a class="copiable-link" href="#Using-Lexical-Binding-1"> &para;</a></span></h4>
 
 <p>When loading an Emacs Lisp file or evaluating a Lisp buffer, lexical
-binding is enabled if the buffer-local variable <code>lexical-binding</code>
-is non-<code>nil</code>:
+binding is enabled if the buffer-local variable <code class="code">lexical-binding</code>
+is non-<code class="code">nil</code>:
 </p>
-<dl>
-<dt id="index-lexical_002dbinding">Variable: <strong>lexical-binding</strong></dt>
-<dd><p>If this buffer-local variable is non-<code>nil</code>, Emacs Lisp files and
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-lexical_002dbinding"><span class="category-def">Variable: </span><span><strong class="def-name">lexical-binding</strong><a class="copiable-link" href="#index-lexical_002dbinding"> &para;</a></span></dt>
+<dd><p>If this buffer-local variable is non-<code class="code">nil</code>, Emacs Lisp files and
 buffers are evaluated using lexical binding instead of dynamic
 binding.  (However, special variables are still dynamically bound; see
-below.)  If <code>nil</code>, dynamic binding is used for all local
+below.)  If <code class="code">nil</code>, dynamic binding is used for all local
 variables.  This variable is typically set for a whole Emacs Lisp
-file, as a file local variable (see <a href="File-Local-Variables.html">File Local Variables</a>).
+file, as a file local variable (see <a class="pxref" href="File-Local-Variables.html">File Local Variables</a>).
 Note that unlike other such variables, this one must be set in the
 first line of a file.
 </p></dd></dl>
 
-<p>When evaluating Emacs Lisp code directly using an <code>eval</code> call,
-lexical binding is enabled if the <var>lexical</var> argument to
-<code>eval</code> is non-<code>nil</code>.  See <a href="Eval.html">Eval</a>.
+<p>When evaluating Emacs Lisp code directly using an <code class="code">eval</code> call,
+lexical binding is enabled if the <var class="var">lexical</var> argument to
+<code class="code">eval</code> is non-<code class="code">nil</code>.  See <a class="xref" href="Eval.html">Eval</a>.
 </p>
-<span id="index-special-variables"></span>
+<a class="index-entry-id" id="index-special-variables"></a>
 <p>Even when lexical binding is enabled, certain variables will
-continue to be dynamically bound.  These are called <em>special
-variables</em>.  Every variable that has been defined with <code>defvar</code>,
-<code>defcustom</code> or <code>defconst</code> is a special variable
-(see <a href="Defining-Variables.html">Defining Variables</a>).  All other variables are subject to
+continue to be dynamically bound.  These are called <em class="dfn">special
+variables</em>.  Every variable that has been defined with <code class="code">defvar</code>,
+<code class="code">defcustom</code> or <code class="code">defconst</code> is a special variable
+(see <a class="pxref" href="Defining-Variables.html">Defining Global Variables</a>).  All other variables are subject to
 lexical binding.
 </p>
-<dl>
-<dt id="index-special_002dvariable_002dp">Function: <strong>special-variable-p</strong> <em>symbol</em></dt>
-<dd><p>This function returns non-<code>nil</code> if <var>symbol</var> is a special
-variable (i.e., it has a <code>defvar</code>, <code>defcustom</code>, or
-<code>defconst</code> variable definition).  Otherwise, the return value is
-<code>nil</code>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-special_002dvariable_002dp"><span class="category-def">Function: </span><span><strong class="def-name">special-variable-p</strong> <var class="def-var-arguments">symbol</var><a class="copiable-link" href="#index-special_002dvariable_002dp"> &para;</a></span></dt>
+<dd><p>This function returns non-<code class="code">nil</code> if <var class="var">symbol</var> is a special
+variable (i.e., it has a <code class="code">defvar</code>, <code class="code">defcustom</code>, or
+<code class="code">defconst</code> variable definition).  Otherwise, the return value is
+<code class="code">nil</code>.
 </p></dd></dl>
 
 <p>The use of a special variable as a formal argument in a function is
@@ -105,19 +96,19 @@ binding mode is enabled (it may use lexical binding sometimes, and
 dynamic binding other times).
 </p>
 <p>Converting an Emacs Lisp program to lexical binding is easy.  First,
-add a file-local variable setting of <code>lexical-binding</code> to
-<code>t</code> in the header line of the Emacs Lisp source file (see <a href="File-Local-Variables.html">File Local Variables</a>).  Second, check that every variable in the program
+add a file-local variable setting of <code class="code">lexical-binding</code> to
+<code class="code">t</code> in the header line of the Emacs Lisp source file (see <a class="pxref" href="File-Local-Variables.html">File Local Variables</a>).  Second, check that every variable in the program
 which needs to be dynamically bound has a variable definition, so that
 it is not inadvertently bound lexically.
 </p>
-<span id="index-free-variable"></span>
-<span id="index-unused-lexical-variable"></span>
+<a class="index-entry-id" id="index-free-variable"></a>
+<a class="index-entry-id" id="index-unused-lexical-variable"></a>
 <p>A simple way to find out which variables need a variable definition
-is to byte-compile the source file.  See <a href="Byte-Compilation.html">Byte Compilation</a>.  If a
-non-special variable is used outside of a <code>let</code> form, the
+is to byte-compile the source file.  See <a class="xref" href="Byte-Compilation.html">Byte Compilation</a>.  If a
+non-special variable is used outside of a <code class="code">let</code> form, the
 byte-compiler will warn about reference or assignment to a free
 variable.  If a non-special variable is bound but not used within a
-<code>let</code> form, the byte-compiler will warn about an unused lexical
+<code class="code">let</code> form, the byte-compiler will warn about an unused lexical
 variable.  The byte-compiler will also issue a warning if you use a
 special variable as a function argument.
 </p>
@@ -126,10 +117,11 @@ a variable name that start with an underscore.  The byte-compiler
 interprets this as an indication that this is a variable known not to
 be used.)
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Lexical-Binding.html" accesskey="p" rel="prev">Lexical Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Variable Scoping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Lexical-Binding.html">Lexical Binding</a>, Up: <a href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

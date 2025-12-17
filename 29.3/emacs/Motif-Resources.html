@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.3.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Motif Resources (GNU Emacs Manual)</title>
+
+<meta name="description" content="Motif Resources (GNU Emacs Manual)">
+<meta name="keywords" content="Motif Resources (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="X-Resources.html" rel="up" title="X Resources">
+<link href="GTK-resources.html" rel="next" title="GTK resources">
+<link href="Lucid-Resources.html" rel="prev" title="Lucid Resources">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="appendixsec-level-extent" id="Motif-Resources">
+<div class="nav-panel">
+<p>
+Next: <a href="GTK-resources.html" accesskey="n" rel="next">GTK+ resources</a>, Previous: <a href="Lucid-Resources.html" accesskey="p" rel="prev">Lucid Menu And Dialog X Resources</a>, Up: <a href="X-Resources.html" accesskey="u" rel="up">X Options and Resources</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="appendixsec" id="Motif-Menu-X-Resources"><span>D.4 Motif Menu X Resources<a class="copiable-link" href="#Motif-Menu-X-Resources"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-Menu-X-Resources-_0028Motif-widgets_0029"></a>
+<a class="index-entry-id" id="index-Motif-Widget-X-Resources"></a>
+
+<p>If Emacs is compiled with the X toolkit support using Motif or
+LessTif widgets, you can use X resources to customize the appearance
+of the menu bar (see <a class="pxref" href="Menu-Bar.html">The Menu Bar</a>), pop-up menus, and dialog boxes
+(see <a class="pxref" href="Dialog-Boxes.html">Using Dialog Boxes</a>).  However, the resources are organized
+differently from Lucid widgets.
+</p>
+<p>The resource names for the menu bar are in the &lsquo;<samp class="samp">pane.menubar</samp>&rsquo;
+class, and they must be specified in this form:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Emacs.pane.menubar.<var class="var">subwidget</var>.<var class="var">resource</var>: <var class="var">value</var>
+</pre></div>
+
+<p>For pop-up menus, the resources are in the &lsquo;<samp class="samp">menu*</samp>&rsquo; class, instead
+of &lsquo;<samp class="samp">pane.menubar</samp>&rsquo;.  For dialog boxes, they are in &lsquo;<samp class="samp">dialog</samp>&rsquo;.
+In each case, each individual menu string is a subwidget; the
+subwidget&rsquo;s name is the same as the menu item string.  For example,
+the &lsquo;<samp class="samp">File</samp>&rsquo; menu in the menu bar is a subwidget named
+&lsquo;<samp class="samp">emacs.pane.menubar.File</samp>&rsquo;.
+</p>
+<p>Typically, you want to specify the same resources for the whole menu
+bar.  To do this, use &lsquo;<samp class="samp">*</samp>&rsquo; instead of a specific subwidget name.
+For example, to specify the font &lsquo;<samp class="samp">8x16</samp>&rsquo; for all menu bar items,
+including submenus, write this:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Emacs.pane.menubar.*.fontList: 8x16
+</pre></div>
+
+<p>Each item in a submenu also has its own name for X resources; for
+example, the &lsquo;<samp class="samp">File</samp>&rsquo; submenu has an item named &lsquo;<samp class="samp">Save (current
+buffer)</samp>&rsquo;.  A resource specification for a submenu item looks like
+this:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Emacs.pane.menubar.popup_*.<var class="var">menu</var>.<var class="var">item</var>.<var class="var">resource</var>: <var class="var">value</var>
+</pre></div>
+
+<p>For example, here&rsquo;s how to specify the font for the &lsquo;<samp class="samp">Save (current
+buffer)</samp>&rsquo; item:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Emacs.pane.menubar.popup_*.File.Save (current buffer).fontList: 8x16
+</pre></div>
+
+<p>For an item in a second-level submenu, such as &lsquo;<samp class="samp">Complete Word</samp>&rsquo;
+under &lsquo;<samp class="samp">Spell Checking</samp>&rsquo; under &lsquo;<samp class="samp">Tools</samp>&rsquo;, the resource fits this
+template:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Emacs.pane.menubar.popup_*.popup_*.<var class="var">menu</var>.<var class="var">resource</var>: <var class="var">value</var>
+</pre></div>
+
+<p>For example,
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Emacs.pane.menubar.popup_*.popup_*.Spell Checking.Complete Word: <var class="var">value</var>
+</pre></div>
+
+<p>(This should be one long line.)
+</p>
+<p>If you want the submenu items to look different from the menu bar
+itself, you must first specify the resource for all of them, then
+override the value for submenus alone.  Here is an example:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">Emacs.pane.menubar.*.fontList: 9x18
+Emacs.pane.menubar.popup_*.fontList: 8x16
+</pre></div>
+
+<p>To specify resources for the LessTif file-selection box, use
+&lsquo;<samp class="samp">fsb*</samp>&rsquo;, like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">Emacs.fsb*.fontList: 8x16
+</pre></div>
+
+<p>Here is a list of resources for LessTif menu bars and pop-up menus:
+</p>
+<dl class="table">
+<dt><code class="code">armColor</code></dt>
+<dd><p>The color to show in an armed button.
+</p></dd>
+<dt><code class="code">fontList</code></dt>
+<dd><p>The font to use.
+</p></dd>
+<dt><code class="code">marginBottom</code></dt>
+<dt><code class="code">marginHeight</code></dt>
+<dt><code class="code">marginLeft</code></dt>
+<dt><code class="code">marginRight</code></dt>
+<dt><code class="code">marginTop</code></dt>
+<dt><code class="code">marginWidth</code></dt>
+<dd><p>Amount of space to leave around the item, within the border.
+</p></dd>
+<dt><code class="code">borderWidth</code></dt>
+<dd><p>The width of the border around the menu item, on all sides.
+</p></dd>
+<dt><code class="code">shadowThickness</code></dt>
+<dd><p>The width of the border shadow.
+</p></dd>
+<dt><code class="code">bottomShadowColor</code></dt>
+<dd><p>The color for the border shadow, on the bottom and the right.
+</p></dd>
+<dt><code class="code">topShadowColor</code></dt>
+<dd><p>The color for the border shadow, on the top and the left.
+</p></dd>
+</dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="GTK-resources.html">GTK+ resources</a>, Previous: <a href="Lucid-Resources.html">Lucid Menu And Dialog X Resources</a>, Up: <a href="X-Resources.html">X Options and Resources</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

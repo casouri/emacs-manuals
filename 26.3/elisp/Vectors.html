@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Vectors (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Vectors (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Array-Functions.html" rel="prev" title="Array Functions">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,46 +47,48 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Vectors"></span><div class="header">
+<div class="section-level-extent" id="Vectors">
+<div class="nav-panel">
 <p>
-Next: <a href="Vector-Functions.html" accesskey="n" rel="next">Vector Functions</a>, Previous: <a href="Array-Functions.html" accesskey="p" rel="prev">Array Functions</a>, Up: <a href="Sequences-Arrays-Vectors.html" accesskey="u" rel="up">Sequences Arrays Vectors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Vector-Functions.html" accesskey="n" rel="next">Functions for Vectors</a>, Previous: <a href="Array-Functions.html" accesskey="p" rel="prev">Functions that Operate on Arrays</a>, Up: <a href="Sequences-Arrays-Vectors.html" accesskey="u" rel="up">Sequences, Arrays, and Vectors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Vectors-1"></span><h3 class="section">6.4 Vectors</h3>
-<span id="index-vector-_0028type_0029"></span>
+<h3 class="section" id="Vectors-1"><span>6.4 Vectors<a class="copiable-link" href="#Vectors-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-vector-_0028type_0029"></a>
 
-<p>A <em>vector</em> is a general-purpose array whose elements can be any
+<p>A <em class="dfn">vector</em> is a general-purpose array whose elements can be any
 Lisp objects.  (By contrast, the elements of a string can only be
-characters.  See <a href="Strings-and-Characters.html">Strings and Characters</a>.)  Vectors are used in
-Emacs for many purposes: as key sequences (see <a href="Key-Sequences.html">Key Sequences</a>), as
-symbol-lookup tables (see <a href="Creating-Symbols.html">Creating Symbols</a>), as part of the
-representation of a byte-compiled function (see <a href="Byte-Compilation.html">Byte Compilation</a>),
+characters.  See <a class="xref" href="Strings-and-Characters.html">Strings and Characters</a>.)  Vectors are used in
+Emacs for many purposes: as key sequences (see <a class="pxref" href="Key-Sequences.html">Key Sequences</a>), as
+symbol-lookup tables (see <a class="pxref" href="Creating-Symbols.html">Creating and Interning Symbols</a>), as part of the
+representation of a byte-compiled function (see <a class="pxref" href="Byte-Compilation.html">Byte Compilation</a>),
 and more.
 </p>
 <p>Like other arrays, vectors use zero-origin indexing: the first
 element has index 0.
 </p>
 <p>Vectors are printed with square brackets surrounding the elements.
-Thus, a vector whose elements are the symbols <code>a</code>, <code>b</code> and
-<code>a</code> is printed as <code>[a b a]</code>.  You can write vectors in the
+Thus, a vector whose elements are the symbols <code class="code">a</code>, <code class="code">b</code> and
+<code class="code">a</code> is printed as <code class="code">[a b a]</code>.  You can write vectors in the
 same way in Lisp input.
 </p>
 <p>A vector, like a string or a number, is considered a constant for
 evaluation: the result of evaluating it is the same vector.  This does
 not evaluate or even examine the elements of the vector.
-See <a href="Self_002dEvaluating-Forms.html">Self-Evaluating Forms</a>.
+See <a class="xref" href="Self_002dEvaluating-Forms.html">Self-Evaluating Forms</a>.
 </p>
 <p>Here are examples illustrating these principles:
 </p>
 <div class="example">
-<pre class="example">(setq avector [1 two '(three) &quot;four&quot; [five]])
+<div class="group"><pre class="example-preformatted">(setq avector [1 two '(three) &quot;four&quot; [five]])
      &rArr; [1 two (quote (three)) &quot;four&quot; [five]]
 (eval avector)
      &rArr; [1 two (quote (three)) &quot;four&quot; [five]]
 (eq avector (eval avector))
      &rArr; t
-</pre></div>
+</pre></div></div>
 
+</div>
 
 
 

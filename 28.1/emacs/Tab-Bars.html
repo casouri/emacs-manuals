@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.1.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Tab Bars (GNU Emacs Manual)</title>
+
+<meta name="description" content="Tab Bars (GNU Emacs Manual)">
+<meta name="keywords" content="Tab Bars (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Frames.html" rel="up" title="Frames">
+<link href="Dialog-Boxes.html" rel="next" title="Dialog Boxes">
+<link href="Tool-Bars.html" rel="prev" title="Tool Bars">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Tab-Bars">
+<div class="nav-panel">
+<p>
+Next: <a href="Dialog-Boxes.html" accesskey="n" rel="next">Using Dialog Boxes</a>, Previous: <a href="Tool-Bars.html" accesskey="p" rel="prev">Tool Bars</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames and Graphical Displays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Tab-Bars-1"><span>21.17 Tab Bars<a class="copiable-link" href="#Tab-Bars-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-tab-bar-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Tab-Bar"></a>
+<a class="index-entry-id" id="index-tabs_002c-on-the-Tab-Bar"></a>
+
+<p>On graphical displays and on text terminals, Emacs can optionally
+display a <em class="dfn">Tab Bar</em> at the top of each frame, just below the menu
+bar (see <a class="pxref" href="Menu-Bars.html">Menu Bars</a>) and above or below the tool bar (see <a class="pxref" href="Tool-Bars.html">Tool Bars</a>) depending on the variable <code class="code">tab-bar-position</code>.
+The Tab Bar is a row of <em class="dfn">tabs</em>&mdash;buttons that you can click to
+switch between window configurations.
+</p>
+<p>Each tab on the Tab Bar represents a named persistent window
+configuration of its frame, i.e., how that frame is partitioned into
+windows and which buffer is displayed in each window.  The tab&rsquo;s name
+is composed from the list of names of buffers shown in windows of that
+window configuration.  Clicking on the tab switches to the window
+configuration recorded by the tab; it is a configuration of windows
+and buffers which was previously used in the frame when that tab was
+the current tab.
+</p>
+<p>If you are using the desktop library to save and restore your
+sessions (see <a class="pxref" href="Saving-Emacs-Sessions.html">Saving Emacs Sessions</a>), the tabs from the Tab Bar are
+recorded in the desktop file, together with their associated window
+configurations, and will be available after restoring the session.
+</p>
+<p>Note that the Tab Bar is different from the Tab Line (see <a class="pxref" href="Tab-Line.html">Window Tab Line</a>).
+Whereas tabs on the Tab Line at the top of each window are used to
+switch between buffers in the window, tabs on the Tab Bar at the top
+of each frame are used to switch between window configurations
+containing several windows showing one or more buffers.
+</p>
+<a class="index-entry-id" id="index-tab_002dbar_002dmode"></a>
+<p>To toggle the use of Tab Bars, type <kbd class="kbd">M-x tab-bar-mode</kbd>.  This
+command applies to all frames, including frames yet to be created.  To
+control the use of tab bars at startup, customize the variable
+<code class="code">tab-bar-mode</code> and save your customization.
+</p>
+<a class="index-entry-id" id="index-tab_002dbar_002dshow"></a>
+<p>The variable <code class="code">tab-bar-show</code> controls whether the Tab Bar mode
+is turned on automatically.  If the value is <code class="code">t</code>, then
+<code class="code">tab-bar-mode</code> is enabled when using the commands that create new
+tabs.  The value <code class="code">1</code> hides the tab bar when it has only one tab,
+and shows it again when more tabs are created.  More generally, a
+value that is a non-negative integer causes the Tab Bar to be
+displayed only if the number of tabs is greater than that integer.
+The value <code class="code">nil</code> always keeps the Tab Bar hidden; in this case
+it&rsquo;s still possible to switch between named window configurations
+without displaying the Tab Bar by using <kbd class="kbd">M-x tab-next</kbd>, <kbd class="kbd">M-x
+tab-switcher</kbd>, and other commands that provide completion on tab
+names.  Also it&rsquo;s possible to create and close tabs without the Tab
+Bar by using commands <kbd class="kbd">M-x tab-new</kbd>, <kbd class="kbd">M-x tab-close</kbd>, etc.
+</p>
+<p>Note that a numerical value of <code class="code">tab-bar-show</code> can cause the Tab
+Bar to be displayed on some frames, but not on others, depending on
+the number of tabs created on each frame.
+</p>
+<a class="index-entry-id" id="index-toggle_002dframe_002dtab_002dbar"></a>
+<p>To toggle the use of the Tab Bar only on the selected frame, type
+<kbd class="kbd">M-x toggle-frame-tab-bar</kbd>.  This command allows to enable the
+display of the Tab Bar on some frames and disable it on others,
+regardless of the values of <code class="code">tab-bar-mode</code> and <code class="code">tab-bar-show</code>.
+</p>
+<a class="index-entry-id" id="index-C_002dx-t"></a>
+<p>The prefix key <kbd class="kbd">C-x t</kbd> is analogous to <kbd class="kbd">C-x 5</kbd>.
+Whereas each <kbd class="kbd">C-x 5</kbd> command pops up a buffer in a different frame
+(see <a class="pxref" href="Creating-Frames.html">Creating Frames</a>), the <kbd class="kbd">C-x t</kbd> commands use a different
+tab with a different window configuration in the selected frame.
+</p>
+<p>The various <kbd class="kbd">C-x t</kbd> commands differ in how they find or create the
+buffer to select.  The following commands can be used to select a buffer
+in a new tab:
+</p>
+<dl class="table">
+<dt><a class="index-entry-id" id="index-tab_002dnew"></a>
+<a class="index-entry-id" id="index-tab_002dbar_002dtab_002dname_002dfunction"></a>
+<a id="index-C_002dx-t-2"></a><span><kbd class="kbd">C-x t 2</kbd><a class="copiable-link" href="#index-C_002dx-t-2"> &para;</a></span></dt>
+<dd><p>Add a new tab (<code class="code">tab-new</code>).  You can control the choice of the
+buffer displayed in a new tab by customizing the variable
+<code class="code">tab-bar-new-tab-choice</code>.  You can control the names given by
+default to new tabs by customizing the variable
+<code class="code">tab-bar-tab-name-function</code>.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-switch_002dto_002dbuffer_002dother_002dtab"></a>
+<a id="index-C_002dx-t-b"></a><span><kbd class="kbd">C-x t b <var class="var">bufname</var> <kbd class="key">RET</kbd></kbd><a class="copiable-link" href="#index-C_002dx-t-b"> &para;</a></span></dt>
+<dd><p>Select buffer <var class="var">bufname</var> in another tab.  This runs
+<code class="code">switch-to-buffer-other-tab</code>.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-find_002dfile_002dother_002dtab"></a>
+<a id="index-C_002dx-t-f"></a><span><kbd class="kbd">C-x t f <var class="var">filename</var> <kbd class="key">RET</kbd></kbd><a class="copiable-link" href="#index-C_002dx-t-f"> &para;</a></span></dt>
+<dd><p>Visit the file <var class="var">filename</var> (see <a class="pxref" href="Visiting.html">Visiting Files</a>) and select its buffer
+in another tab.  This runs <code class="code">find-file-other-tab</code>.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-dired_002dother_002dtab"></a>
+<a id="index-C_002dx-t-d"></a><span><kbd class="kbd">C-x t d <var class="var">directory</var> <kbd class="key">RET</kbd></kbd><a class="copiable-link" href="#index-C_002dx-t-d"> &para;</a></span></dt>
+<dd><p>Edit the specified <var class="var">directory</var> (see <a class="pxref" href="Dired.html">Dired, the Directory Editor</a>) in another tab.
+This runs <code class="code">dired-other-tab</code>.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-other_002dtab_002dprefix"></a>
+<a id="index-C_002dx-t-t"></a><span><kbd class="kbd">C-x t t</kbd><a class="copiable-link" href="#index-C_002dx-t-t"> &para;</a></span></dt>
+<dd><p>This is a prefix command (<code class="code">other-tab-prefix</code>) that affects the
+next command invoked immediately after this prefix command.  It
+requests the buffer displayed by the next command to be shown in
+another tab.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-tab_002dbar_002dnew_002dtab_002dchoice"></a>
+<p>By default, a new tab starts with the buffer that was
+current before calling the command that adds a new tab.
+To start a new tab with other buffers, customize the variable
+<code class="code">tab-bar-new-tab-choice</code>.
+</p>
+<a class="index-entry-id" id="index-tab_002dbar_002dnew_002dtab_002dto"></a>
+<p>The variable <code class="code">tab-bar-new-tab-to</code> defines where to place a new tab.
+By default, a new tab is added on the right side of the current tab.
+</p>
+<p>The following commands can be used to delete tabs:
+</p>
+<dl class="table">
+<dt><a class="index-entry-id" id="index-tab_002dclose"></a>
+<a class="index-entry-id" id="index-tab_002dbar_002dclose_002dlast_002dtab_002dchoice"></a>
+<a id="index-C_002dx-t-0"></a><span><kbd class="kbd">C-x t 0</kbd><a class="copiable-link" href="#index-C_002dx-t-0"> &para;</a></span></dt>
+<dd><p>Close the selected tab (<code class="code">tab-close</code>).  This has no effect if there
+is only one tab, unless the variable <code class="code">tab-bar-close-last-tab-choice</code>
+is customized to a non-default value.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-tab_002dclose_002dother"></a>
+<a id="index-C_002dx-t-1"></a><span><kbd class="kbd">C-x t 1</kbd><a class="copiable-link" href="#index-C_002dx-t-1"> &para;</a></span></dt>
+<dd><p>Close all tabs, except the selected tab, on the selected frame.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-tab_002dbar_002dclose_002dtab_002dselect"></a>
+<p>The variable <code class="code">tab-bar-close-tab-select</code> defines what tab to
+select after closing the current tab.  By default, it selects
+a recently used tab.
+</p>
+<a class="index-entry-id" id="index-tab_002dundo"></a>
+<p>The command <code class="code">tab-undo</code> restores the last closed tab.
+</p>
+<p>The following commands can be used to switch between tabs:
+</p>
+<dl class="table">
+<dt><a class="index-entry-id" id="index-C_002dTAB-1"></a>
+<a class="index-entry-id" id="index-tab_002dnext"></a>
+<a id="index-C_002dx-t-o"></a><span><kbd class="kbd">C-x t o</kbd><a class="copiable-link" href="#index-C_002dx-t-o"> &para;</a></span></dt>
+<dt><kbd class="kbd">C-<kbd class="key">TAB</kbd></kbd></dt>
+<dd><p>Switch to the next tab (<code class="code">tab-next</code>).  If you repeat this command,
+it cycles through all the tabs on the selected frame.  With a positive
+numeric argument <var class="var">n</var>, it switches to the <var class="var">n</var>th next tab; with
+a negative argument &minus;<var class="var">n</var>, it switches back to the <var class="var">n</var>th
+previous tab.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-tab_002dprevious"></a>
+<a id="index-S_002dC_002dTAB"></a><span><kbd class="kbd">S-C-<kbd class="key">TAB</kbd></kbd><a class="copiable-link" href="#index-S_002dC_002dTAB"> &para;</a></span></dt>
+<dd><p>Switch to the previous tab (<code class="code">tab-previous</code>).  With a positive
+numeric argument <var class="var">n</var>, it switches to the <var class="var">n</var>th previous tab;
+with a negative argument &minus;<var class="var">n</var>, it switches to the
+<var class="var">n</var>th next tab.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-tab_002dswitch"></a>
+<a id="index-C_002dx-t-RET"></a><span><kbd class="kbd">C-x t <kbd class="key">RET</kbd> <var class="var">tabname</var> <kbd class="key">RET</kbd></kbd><a class="copiable-link" href="#index-C_002dx-t-RET"> &para;</a></span></dt>
+<dd><p>Switch to the tab by its name (<code class="code">tab-switch</code>), with completion on
+all tab names.  The default value and the &ldquo;future history&rdquo; of tab
+names is sorted by recency, so you can use <kbd class="kbd">M-n</kbd>
+(<code class="code">next-history-element</code>) to get the name of the last visited tab,
+the second last, and so on.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-M_002d1_002c-tab-bar"></a>
+<a class="index-entry-id" id="index-tab_002dselect"></a>
+<a class="index-entry-id" id="index-tab_002dbar_002dselect_002dtab_002dmodifiers"></a>
+<a class="index-entry-id" id="index-tab_002dbar_002dtab_002dhints"></a>
+<a id="index-C_002d1_002c-tab-bar"></a><span><kbd class="kbd"><var class="var">modifier</var>-<var class="var">tab-number</var></kbd><a class="copiable-link" href="#index-C_002d1_002c-tab-bar"> &para;</a></span></dt>
+<dd><p>Switch to the tab by its number <var class="var">tab-number</var> (<code class="code">tab-select</code>).
+After customizing the variable <code class="code">tab-bar-select-tab-modifiers</code> to
+specify one or more <var class="var">modifier</var> keys, you can select a tab by its
+ordinal number using one of the specified modifiers in combination
+with the tab number to select.  The number 9 can be used to select the
+last tab. You can select any modifiers supported by Emacs,
+see <a class="pxref" href="Modifier-Keys.html">Modifier Keys</a>.  To display the tab number alongside the tab
+name, you can customize another variable <code class="code">tab-bar-tab-hints</code>.
+This will help you decide which numerical key to press to select the
+tab by its number.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-M_002d9_002c-tab-bar"></a>
+<a class="index-entry-id" id="index-tab_002dlast"></a>
+<a id="index-C_002d9_002c-tab-bar"></a><span><kbd class="kbd"><var class="var">modifier</var>-<kbd class="kbd">9</kbd></kbd><a class="copiable-link" href="#index-C_002d9_002c-tab-bar"> &para;</a></span></dt>
+<dd><p>Switch to the last tab (<code class="code">tab-last</code>).  The key combination is
+the modifier key defined by <code class="code">tab-bar-select-tab-modifiers</code> and
+the key <kbd class="kbd">9</kbd>.  With a numeric argument <var class="var">n</var>, switch to the
+<var class="var">n</var>th last tab.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-M_002d0_002c-tab-bar"></a>
+<a class="index-entry-id" id="index-tab_002drecent"></a>
+<a id="index-C_002d0_002c-tab-bar"></a><span><kbd class="kbd"><var class="var">modifier</var>-<kbd class="kbd">0</kbd></kbd><a class="copiable-link" href="#index-C_002d0_002c-tab-bar"> &para;</a></span></dt>
+<dd><p>Switch to the recent tab (<code class="code">tab-recent</code>).  The key combination is
+the modifier key defined by <code class="code">tab-bar-select-tab-modifiers</code> and
+the key <kbd class="kbd">0</kbd>.  With a numeric argument <var class="var">n</var>, switch to the
+<var class="var">n</var>th recent tab.
+</p></dd>
+</dl>
+
+<p>The following commands can be used to operate on tabs:
+</p>
+<dl class="table">
+<dt><a class="index-entry-id" id="index-tab_002drename"></a>
+<a id="index-C_002dx-t-r"></a><span><kbd class="kbd">C-x t r <var class="var">tabname</var> <kbd class="key">RET</kbd></kbd><a class="copiable-link" href="#index-C_002dx-t-r"> &para;</a></span></dt>
+<dd><p>Rename the current tab to <var class="var">tabname</var> (<code class="code">tab-rename</code>).
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-tab_002dmove"></a>
+<a id="index-C_002dx-t-m"></a><span><kbd class="kbd">C-x t m</kbd><a class="copiable-link" href="#index-C_002dx-t-m"> &para;</a></span></dt>
+<dd><p>Move the current tab one position to the right (<code class="code">tab-move</code>).
+With a positive numeric argument <var class="var">n</var>, move it that many positions
+to the right; with a negative argument &minus;<var class="var">n</var>, move it
+<var class="var">n</var> positions to the left.
+</p></dd>
+</dl>
+
+<p>You can use the mouse to operate on tabs.  Clicking <kbd class="kbd">mouse-2</kbd>
+closes the tab.  Clicking <kbd class="kbd">mouse-3</kbd> pops up the context menu with
+the items that operate on the clicked tab.  Dragging the tab with
+<kbd class="kbd">mouse-1</kbd> moves it to another position on the tab bar.  Mouse
+wheel scrolling switches to the next or previous tab.  Holding down
+the <kbd class="key">SHIFT</kbd> key during scrolling moves the tab to the left or right.
+</p>
+<a class="index-entry-id" id="index-tab_002dbar_002dhistory_002dmode"></a>
+<p>You can enable <code class="code">tab-bar-history-mode</code> to remember window
+configurations used in every tab, and later restore them.
+</p>
+<dl class="table">
+<dt><a id="index-tab_002dbar_002dhistory_002dback"></a><span><kbd class="kbd">M-x tab-bar-history-back</kbd><a class="copiable-link" href="#index-tab_002dbar_002dhistory_002dback"> &para;</a></span></dt>
+<dd><p>Restore a previous window configuration used in the current tab.
+This navigates back in the history of window configurations.
+</p>
+</dd>
+<dt><a id="index-tab_002dbar_002dhistory_002dforward"></a><span><kbd class="kbd">M-x tab-bar-history-forward</kbd><a class="copiable-link" href="#index-tab_002dbar_002dhistory_002dforward"> &para;</a></span></dt>
+<dd><p>Cancel restoration of the previous window configuration.
+This moves forward in the history of window configurations.
+</p></dd>
+</dl>
+
+<p>It&rsquo;s possible to customize the items displayed on the tab bar
+by the user option <code class="code">tab-bar-format</code>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dialog-Boxes.html">Using Dialog Boxes</a>, Previous: <a href="Tool-Bars.html">Tool Bars</a>, Up: <a href="Frames.html">Frames and Graphical Displays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Deferred Eval (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Deferred Eval (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Evaluation.html" rel="up" title="Evaluation">
-<link href="Control-Structures.html" rel="next" title="Control Structures">
 <link href="Eval.html" rel="prev" title="Eval">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,88 +48,89 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Deferred-Eval"></span><div class="header">
+<div class="section-level-extent" id="Deferred-Eval">
+<div class="nav-panel">
 <p>
 Previous: <a href="Eval.html" accesskey="p" rel="prev">Eval</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Deferred-and-Lazy-Evaluation"></span><h3 class="section">10.6 Deferred and Lazy Evaluation</h3>
+<h3 class="section" id="Deferred-and-Lazy-Evaluation"><span>10.6 Deferred and Lazy Evaluation<a class="copiable-link" href="#Deferred-and-Lazy-Evaluation"> &para;</a></span></h3>
 
-<span id="index-deferred-evaluation"></span>
-<span id="index-lazy-evaluation"></span>
+<a class="index-entry-id" id="index-deferred-evaluation"></a>
+<a class="index-entry-id" id="index-lazy-evaluation"></a>
 
 
 <p>Sometimes it is useful to delay the evaluation of an expression, for
 example if you want to avoid performing a time-consuming calculation
 if it turns out that the result is not needed in the future of the
-program.  The <samp>thunk</samp> library provides the following functions
-and macros to support such <em>deferred evaluation</em>:
+program.  The <samp class="file">thunk</samp> library provides the following functions
+and macros to support such <em class="dfn">deferred evaluation</em>:
 </p>
-<span id="index-thunk"></span>
-<dl>
-<dt id="index-thunk_002ddelay">Macro: <strong>thunk-delay</strong> <em>forms&hellip;</em></dt>
-<dd><p>Return a <em>thunk</em> for evaluating the <var>forms</var>.  A thunk is a
-closure (see <a href="Closures.html">Closures</a>) that inherits the lexical environment of the
-<code>thunk-delay</code> call.  Using this macro requires
-<code>lexical-binding</code>.
+<a class="index-entry-id" id="index-thunk"></a>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-thunk_002ddelay"><span class="category-def">Macro: </span><span><strong class="def-name">thunk-delay</strong> <var class="def-var-arguments">forms&hellip;</var><a class="copiable-link" href="#index-thunk_002ddelay"> &para;</a></span></dt>
+<dd><p>Return a <em class="dfn">thunk</em> for evaluating the <var class="var">forms</var>.  A thunk is a
+closure (see <a class="pxref" href="Closures.html">Closures</a>) that inherits the lexical environment of the
+<code class="code">thunk-delay</code> call.  Using this macro requires
+<code class="code">lexical-binding</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-thunk_002dforce">Function: <strong>thunk-force</strong> <em>thunk</em></dt>
-<dd><p>Force <var>thunk</var> to perform the evaluation of the forms specified in
-the <code>thunk-delay</code> that created the thunk.  The result of the
-evaluation of the last form is returned.  The <var>thunk</var> also
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-thunk_002dforce"><span class="category-def">Function: </span><span><strong class="def-name">thunk-force</strong> <var class="def-var-arguments">thunk</var><a class="copiable-link" href="#index-thunk_002dforce"> &para;</a></span></dt>
+<dd><p>Force <var class="var">thunk</var> to perform the evaluation of the forms specified in
+the <code class="code">thunk-delay</code> that created the thunk.  The result of the
+evaluation of the last form is returned.  The <var class="var">thunk</var> also
 &ldquo;remembers&rdquo; that it has been forced: Any further calls of
-<code>thunk-force</code> with the same <var>thunk</var> will just return the same
+<code class="code">thunk-force</code> with the same <var class="var">thunk</var> will just return the same
 result without evaluating the forms again.
 </p></dd></dl>
 
-<dl>
-<dt id="index-thunk_002dlet">Macro: <strong>thunk-let</strong> <em>(bindings&hellip;) forms&hellip;</em></dt>
-<dd><p>This macro is analogous to <code>let</code> but creates &ldquo;lazy&rdquo; variable
-bindings.  Any binding has the form <code>(<var>symbol</var>&nbsp;<var><span class="nolinebreak">value-form</span></var>)</code><!-- /@w -->.  Unlike <code>let</code>, the evaluation of any
-<var>value-form</var> is deferred until the binding of the according
-<var>symbol</var> is used for the first time when evaluating the
-<var>forms</var>.  Any <var>value-form</var> is evaluated at most once.  Using
-this macro requires <code>lexical-binding</code>.
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-thunk_002dlet"><span class="category-def">Macro: </span><span><strong class="def-name">thunk-let</strong> <var class="def-var-arguments">(bindings&hellip;) forms&hellip;</var><a class="copiable-link" href="#index-thunk_002dlet"> &para;</a></span></dt>
+<dd><p>This macro is analogous to <code class="code">let</code> but creates &ldquo;lazy&rdquo; variable
+bindings.  Any binding has the form <code class="code">(<var class="var">symbol</var>&nbsp;<var class="var">value-form</var>)</code><!-- /@w -->.  Unlike <code class="code">let</code>, the evaluation of any
+<var class="var">value-form</var> is deferred until the binding of the according
+<var class="var">symbol</var> is used for the first time when evaluating the
+<var class="var">forms</var>.  Any <var class="var">value-form</var> is evaluated at most once.  Using
+this macro requires <code class="code">lexical-binding</code>.
 </p></dd></dl>
 
 <p>Example:
 </p>
 <div class="example">
-<pre class="example">(defun f (number)
+<div class="group"><pre class="example-preformatted">(defun f (number)
   (thunk-let ((derived-number
               (progn (message &quot;Calculating 1 plus 2 times %d&quot; number)
                      (1+ (* 2 number)))))
     (if (&gt; number 10)
         derived-number
       number)))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(f 5)
+</pre><div class="group"><pre class="example-preformatted">(f 5)
 &rArr; 5
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(f 12)
-⊣ Calculating 1 plus 2 times 12
+</pre><div class="group"><pre class="example-preformatted">(f 12)
+-| Calculating 1 plus 2 times 12
 &rArr; 25
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
 </pre></div>
 
 <p>Because of the special nature of lazily bound variables, it is an error
-to set them (e.g. with <code>setq</code>).
+to set them (e.g. with <code class="code">setq</code>).
 </p>
 
-<dl>
-<dt id="index-thunk_002dlet_002a">Macro: <strong>thunk-let*</strong> <em>(bindings&hellip;) forms&hellip;</em></dt>
-<dd><p>This is like <code>thunk-let</code> but any expression in <var>bindings</var> is allowed
-to refer to preceding bindings in this <code>thunk-let*</code> form.  Using
-this macro requires <code>lexical-binding</code>.
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-thunk_002dlet_002a"><span class="category-def">Macro: </span><span><strong class="def-name">thunk-let*</strong> <var class="def-var-arguments">(bindings&hellip;) forms&hellip;</var><a class="copiable-link" href="#index-thunk_002dlet_002a"> &para;</a></span></dt>
+<dd><p>This is like <code class="code">thunk-let</code> but any expression in <var class="var">bindings</var> is allowed
+to refer to preceding bindings in this <code class="code">thunk-let*</code> form.  Using
+this macro requires <code class="code">lexical-binding</code>.
 </p></dd></dl>
 
 <div class="example">
-<pre class="example">(thunk-let* ((x (prog2 (message &quot;Calculating x...&quot;)
+<div class="group"><pre class="example-preformatted">(thunk-let* ((x (prog2 (message &quot;Calculating x...&quot;)
                     (+ 1 1)
                   (message &quot;Finished calculating x&quot;)))
              (y (prog2 (message &quot;Calculating y...&quot;)
@@ -152,29 +144,30 @@ this macro requires <code>lexical-binding</code>.
                   (message &quot;Finished calculating a&quot;))))
   (* z x))
 
-⊣ Calculating z...
-⊣ Calculating y...
-⊣ Calculating x...
-⊣ Finished calculating x
-⊣ Finished calculating y
-⊣ Finished calculating z
+-| Calculating z...
+-| Calculating y...
+-| Calculating x...
+-| Finished calculating x
+-| Finished calculating y
+-| Finished calculating z
 &rArr; 8
 
-</pre></div>
+</pre></div></div>
 
-<p><code>thunk-let</code> and <code>thunk-let*</code> use thunks implicitly: their
+<p><code class="code">thunk-let</code> and <code class="code">thunk-let*</code> use thunks implicitly: their
 expansion creates helper symbols and binds them to thunks wrapping the
 binding expressions.  All references to the original variables in the
-body <var>forms</var> are then replaced by an expression that calls
-<code>thunk-force</code> with the according helper variable as the argument.
-So, any code using <code>thunk-let</code> or <code>thunk-let*</code> could be
+body <var class="var">forms</var> are then replaced by an expression that calls
+<code class="code">thunk-force</code> with the according helper variable as the argument.
+So, any code using <code class="code">thunk-let</code> or <code class="code">thunk-let*</code> could be
 rewritten to use thunks, but in many cases using these macros results
 in nicer code than using thunks explicitly.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Eval.html" accesskey="p" rel="prev">Eval</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Eval.html">Eval</a>, Up: <a href="Evaluation.html">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

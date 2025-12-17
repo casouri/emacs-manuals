@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>String Search (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="String Search (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Searching-and-Matching.html" rel="up" title="Searching and Matching">
 <link href="Searching-and-Case.html" rel="next" title="Searching and Case">
-<link href="Searching-and-Matching.html" rel="prev" title="Searching and Matching">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,163 +47,165 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="String-Search"></span><div class="header">
+<div class="section-level-extent" id="String-Search">
+<div class="nav-panel">
 <p>
 Next: <a href="Searching-and-Case.html" accesskey="n" rel="next">Searching and Case</a>, Up: <a href="Searching-and-Matching.html" accesskey="u" rel="up">Searching and Matching</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Searching-for-Strings"></span><h3 class="section">33.1 Searching for Strings</h3>
-<span id="index-string-search"></span>
+<h3 class="section" id="Searching-for-Strings"><span>33.1 Searching for Strings<a class="copiable-link" href="#Searching-for-Strings"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-string-search"></a>
 
 <p>These are the primitive functions for searching through the text in a
 buffer.  They are meant for use in programs, but you may call them
 interactively.  If you do so, they prompt for the search string; the
-arguments <var>limit</var> and <var>noerror</var> are <code>nil</code>, and <var>repeat</var>
-is 1.  For more details on interactive searching, see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Search.html#Search">Searching and Replacement</a> in <cite>The GNU Emacs Manual</cite>.
+arguments <var class="var">limit</var> and <var class="var">noerror</var> are <code class="code">nil</code>, and <var class="var">repeat</var>
+is 1.  For more details on interactive searching, see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Search.html#Search">Searching and Replacement</a> in <cite class="cite">The GNU Emacs Manual</cite>.
 </p>
 <p>These search functions convert the search string to multibyte if the
 buffer is multibyte; they convert the search string to unibyte if the
-buffer is unibyte.  See <a href="Text-Representations.html">Text Representations</a>.
+buffer is unibyte.  See <a class="xref" href="Text-Representations.html">Text Representations</a>.
 </p>
-<dl>
-<dt id="index-search_002dforward">Command: <strong>search-forward</strong> <em>string &amp;optional limit noerror repeat</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-search_002dforward"><span class="category-def">Command: </span><span><strong class="def-name">search-forward</strong> <var class="def-var-arguments">string &amp;optional limit noerror repeat</var><a class="copiable-link" href="#index-search_002dforward"> &para;</a></span></dt>
 <dd><p>This function searches forward from point for an exact match for
-<var>string</var>.  If successful, it sets point to the end of the occurrence
+<var class="var">string</var>.  If successful, it sets point to the end of the occurrence
 found, and returns the new value of point.  If no match is found, the
-value and side effects depend on <var>noerror</var> (see below).
+value and side effects depend on <var class="var">noerror</var> (see below).
 </p>
 <p>In the following example, point is initially at the beginning of the
-line.  Then <code>(search-forward &quot;fox&quot;)</code> moves point after the last
-letter of &lsquo;<samp>fox</samp>&rsquo;:
+line.  Then <code class="code">(search-forward &quot;fox&quot;)</code> moves point after the last
+letter of &lsquo;<samp class="samp">fox</samp>&rsquo;:
 </p>
 <div class="example">
-<pre class="example">---------- Buffer: foo ----------
+<div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
 &lowast;The quick brown fox jumped over the lazy dog.
 ---------- Buffer: foo ----------
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(search-forward &quot;fox&quot;)
+</pre><div class="group"><pre class="example-preformatted">(search-forward &quot;fox&quot;)
      &rArr; 20
 
 ---------- Buffer: foo ----------
 The quick brown fox&lowast; jumped over the lazy dog.
 ---------- Buffer: foo ----------
-</pre></div>
+</pre></div></div>
 
-<p>The argument <var>limit</var> specifies the bound to the search, and should
+<p>The argument <var class="var">limit</var> specifies the bound to the search, and should
 be a position in the current buffer.  No match extending after
-that position is accepted.  If <var>limit</var> is omitted or <code>nil</code>, it
+that position is accepted.  If <var class="var">limit</var> is omitted or <code class="code">nil</code>, it
 defaults to the end of the accessible portion of the buffer.
 </p>
-<span id="index-search_002dfailed"></span>
+<a class="index-entry-id" id="index-search_002dfailed"></a>
 <p>What happens when the search fails depends on the value of
-<var>noerror</var>.  If <var>noerror</var> is <code>nil</code>, a <code>search-failed</code>
-error is signaled.  If <var>noerror</var> is <code>t</code>, <code>search-forward</code>
-returns <code>nil</code> and does nothing.  If <var>noerror</var> is neither
-<code>nil</code> nor <code>t</code>, then <code>search-forward</code> moves point to the
-upper bound and returns <code>nil</code>.
+<var class="var">noerror</var>.  If <var class="var">noerror</var> is <code class="code">nil</code>, a <code class="code">search-failed</code>
+error is signaled.  If <var class="var">noerror</var> is <code class="code">t</code>, <code class="code">search-forward</code>
+returns <code class="code">nil</code> and does nothing.  If <var class="var">noerror</var> is neither
+<code class="code">nil</code> nor <code class="code">t</code>, then <code class="code">search-forward</code> moves point to the
+upper bound and returns <code class="code">nil</code>.
 </p>
-<p>The argument <var>noerror</var> only affects valid searches which fail to
+<p>The argument <var class="var">noerror</var> only affects valid searches which fail to
 find a match.  Invalid arguments cause errors regardless of
-<var>noerror</var>.
+<var class="var">noerror</var>.
 </p>
-<p>If <var>repeat</var> is a positive number <var>n</var>, it serves as a repeat
-count: the search is repeated <var>n</var> times, each time starting at the
+<p>If <var class="var">repeat</var> is a positive number <var class="var">n</var>, it serves as a repeat
+count: the search is repeated <var class="var">n</var> times, each time starting at the
 end of the previous time&rsquo;s match.  If these successive searches
 succeed, the function succeeds, moving point and returning its new
 value.  Otherwise the search fails, with results depending on the
-value of <var>noerror</var>, as described above.  If <var>repeat</var> is a
-negative number -<var>n</var>, it serves as a repeat count of <var>n</var> for a
+value of <var class="var">noerror</var>, as described above.  If <var class="var">repeat</var> is a
+negative number -<var class="var">n</var>, it serves as a repeat count of <var class="var">n</var> for a
 search in the opposite (backward) direction.
 </p></dd></dl>
 
-<dl>
-<dt id="index-search_002dbackward">Command: <strong>search-backward</strong> <em>string &amp;optional limit noerror repeat</em></dt>
-<dd><p>This function searches backward from point for <var>string</var>.  It is
-like <code>search-forward</code>, except that it searches backwards rather
+<dl class="first-deffn">
+<dt class="deffn" id="index-search_002dbackward"><span class="category-def">Command: </span><span><strong class="def-name">search-backward</strong> <var class="def-var-arguments">string &amp;optional limit noerror repeat</var><a class="copiable-link" href="#index-search_002dbackward"> &para;</a></span></dt>
+<dd><p>This function searches backward from point for <var class="var">string</var>.  It is
+like <code class="code">search-forward</code>, except that it searches backwards rather
 than forwards.  Backward searches leave point at the beginning of the
 match.
 </p></dd></dl>
 
-<dl>
-<dt id="index-word_002dsearch_002dforward">Command: <strong>word-search-forward</strong> <em>string &amp;optional limit noerror repeat</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-word_002dsearch_002dforward"><span class="category-def">Command: </span><span><strong class="def-name">word-search-forward</strong> <var class="def-var-arguments">string &amp;optional limit noerror repeat</var><a class="copiable-link" href="#index-word_002dsearch_002dforward"> &para;</a></span></dt>
 <dd><p>This function searches forward from point for a &ldquo;word&rdquo; match for
-<var>string</var>.  If it finds a match, it sets point to the end of the
+<var class="var">string</var>.  If it finds a match, it sets point to the end of the
 match found, and returns the new value of point.
 </p>
-<p>Word matching regards <var>string</var> as a sequence of words, disregarding
+<p>Word matching regards <var class="var">string</var> as a sequence of words, disregarding
 punctuation that separates them.  It searches the buffer for the same
 sequence of words.  Each word must be distinct in the buffer (searching
-for the word &lsquo;<samp>ball</samp>&rsquo; does not match the word &lsquo;<samp>balls</samp>&rsquo;), but the
-details of punctuation and spacing are ignored (searching for &lsquo;<samp>ball
-boy</samp>&rsquo; does match &lsquo;<samp>ball.  Boy!</samp>&rsquo;).
+for the word &lsquo;<samp class="samp">ball</samp>&rsquo; does not match the word &lsquo;<samp class="samp">balls</samp>&rsquo;), but the
+details of punctuation and spacing are ignored (searching for &lsquo;<samp class="samp">ball
+boy</samp>&rsquo; does match &lsquo;<samp class="samp">ball.  Boy!</samp>&rsquo;).
 </p>
 <p>In this example, point is initially at the beginning of the buffer; the
-search leaves it between the &lsquo;<samp>y</samp>&rsquo; and the &lsquo;<samp>!</samp>&rsquo;.
+search leaves it between the &lsquo;<samp class="samp">y</samp>&rsquo; and the &lsquo;<samp class="samp">!</samp>&rsquo;.
 </p>
 <div class="example">
-<pre class="example">---------- Buffer: foo ----------
+<div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
 &lowast;He said &quot;Please!  Find
 the ball boy!&quot;
 ---------- Buffer: foo ----------
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(word-search-forward &quot;Please find the ball, boy.&quot;)
+</pre><div class="group"><pre class="example-preformatted">(word-search-forward &quot;Please find the ball, boy.&quot;)
      &rArr; 39
 
 ---------- Buffer: foo ----------
 He said &quot;Please!  Find
 the ball boy&lowast;!&quot;
 ---------- Buffer: foo ----------
-</pre></div>
+</pre></div></div>
 
-<p>If <var>limit</var> is non-<code>nil</code>, it must be a position in the current
+<p>If <var class="var">limit</var> is non-<code class="code">nil</code>, it must be a position in the current
 buffer; it specifies the upper bound to the search.  The match found
 must not extend after that position.
 </p>
-<p>If <var>noerror</var> is <code>nil</code>, then <code>word-search-forward</code> signals
-an error if the search fails.  If <var>noerror</var> is <code>t</code>, then it
-returns <code>nil</code> instead of signaling an error.  If <var>noerror</var> is
-neither <code>nil</code> nor <code>t</code>, it moves point to <var>limit</var> (or the
-end of the accessible portion of the buffer) and returns <code>nil</code>.
+<p>If <var class="var">noerror</var> is <code class="code">nil</code>, then <code class="code">word-search-forward</code> signals
+an error if the search fails.  If <var class="var">noerror</var> is <code class="code">t</code>, then it
+returns <code class="code">nil</code> instead of signaling an error.  If <var class="var">noerror</var> is
+neither <code class="code">nil</code> nor <code class="code">t</code>, it moves point to <var class="var">limit</var> (or the
+end of the accessible portion of the buffer) and returns <code class="code">nil</code>.
 </p>
-<p>If <var>repeat</var> is non-<code>nil</code>, then the search is repeated that many
+<p>If <var class="var">repeat</var> is non-<code class="code">nil</code>, then the search is repeated that many
 times.  Point is positioned at the end of the last match.
 </p>
-<span id="index-word_002dsearch_002dregexp"></span>
-<p>Internally, <code>word-search-forward</code> and related functions use the
-function <code>word-search-regexp</code> to convert <var>string</var> to a
+<a class="index-entry-id" id="index-word_002dsearch_002dregexp"></a>
+<p>Internally, <code class="code">word-search-forward</code> and related functions use the
+function <code class="code">word-search-regexp</code> to convert <var class="var">string</var> to a
 regular expression that ignores punctuation.
 </p></dd></dl>
 
-<dl>
-<dt id="index-word_002dsearch_002dforward_002dlax">Command: <strong>word-search-forward-lax</strong> <em>string &amp;optional limit noerror repeat</em></dt>
-<dd><p>This command is identical to <code>word-search-forward</code>, except that
-the beginning or the end of <var>string</var> need not match a word
-boundary, unless <var>string</var> begins or ends in whitespace.
-For instance, searching for &lsquo;<samp>ball boy</samp>&rsquo; matches &lsquo;<samp>ball boyee</samp>&rsquo;,
-but does not match &lsquo;<samp>balls boy</samp>&rsquo;.
+<dl class="first-deffn">
+<dt class="deffn" id="index-word_002dsearch_002dforward_002dlax"><span class="category-def">Command: </span><span><strong class="def-name">word-search-forward-lax</strong> <var class="def-var-arguments">string &amp;optional limit noerror repeat</var><a class="copiable-link" href="#index-word_002dsearch_002dforward_002dlax"> &para;</a></span></dt>
+<dd><p>This command is identical to <code class="code">word-search-forward</code>, except that
+the beginning or the end of <var class="var">string</var> need not match a word
+boundary, unless <var class="var">string</var> begins or ends in whitespace.
+For instance, searching for &lsquo;<samp class="samp">ball boy</samp>&rsquo; matches &lsquo;<samp class="samp">ball boyee</samp>&rsquo;,
+but does not match &lsquo;<samp class="samp">balls boy</samp>&rsquo;.
 </p></dd></dl>
 
-<dl>
-<dt id="index-word_002dsearch_002dbackward">Command: <strong>word-search-backward</strong> <em>string &amp;optional limit noerror repeat</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-word_002dsearch_002dbackward"><span class="category-def">Command: </span><span><strong class="def-name">word-search-backward</strong> <var class="def-var-arguments">string &amp;optional limit noerror repeat</var><a class="copiable-link" href="#index-word_002dsearch_002dbackward"> &para;</a></span></dt>
 <dd><p>This function searches backward from point for a word match to
-<var>string</var>.  This function is just like <code>word-search-forward</code>
+<var class="var">string</var>.  This function is just like <code class="code">word-search-forward</code>
 except that it searches backward and normally leaves point at the
 beginning of the match.
 </p></dd></dl>
 
-<dl>
-<dt id="index-word_002dsearch_002dbackward_002dlax">Command: <strong>word-search-backward-lax</strong> <em>string &amp;optional limit noerror repeat</em></dt>
-<dd><p>This command is identical to <code>word-search-backward</code>, except that
-the beginning or the end of <var>string</var> need not match a word
-boundary, unless <var>string</var> begins or ends in whitespace.
+<dl class="first-deffn">
+<dt class="deffn" id="index-word_002dsearch_002dbackward_002dlax"><span class="category-def">Command: </span><span><strong class="def-name">word-search-backward-lax</strong> <var class="def-var-arguments">string &amp;optional limit noerror repeat</var><a class="copiable-link" href="#index-word_002dsearch_002dbackward_002dlax"> &para;</a></span></dt>
+<dd><p>This command is identical to <code class="code">word-search-backward</code>, except that
+the beginning or the end of <var class="var">string</var> need not match a word
+boundary, unless <var class="var">string</var> begins or ends in whitespace.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Searching-and-Case.html" accesskey="n" rel="next">Searching and Case</a>, Up: <a href="Searching-and-Matching.html" accesskey="u" rel="up">Searching and Matching</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Searching-and-Case.html">Searching and Case</a>, Up: <a href="Searching-and-Matching.html">Searching and Matching</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

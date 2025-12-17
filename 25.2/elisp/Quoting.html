@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Quoting (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Quoting (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Evaluation.html" rel="up" title="Evaluation">
 <link href="Backquote.html" rel="next" title="Backquote">
-<link href="Autoloading.html" rel="prev" title="Autoloading">
+<link href="Forms.html" rel="prev" title="Forms">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,54 +48,56 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Quoting"></span><div class="header">
+<div class="section-level-extent" id="Quoting">
+<div class="nav-panel">
 <p>
-Next: <a href="Backquote.html" accesskey="n" rel="next">Backquote</a>, Previous: <a href="Forms.html" accesskey="p" rel="prev">Forms</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Backquote.html" accesskey="n" rel="next">Backquote</a>, Previous: <a href="Forms.html" accesskey="p" rel="prev">Kinds of Forms</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Quoting-1"></span><h3 class="section">9.3 Quoting</h3>
+<h3 class="section" id="Quoting-1"><span>9.3 Quoting<a class="copiable-link" href="#Quoting-1"> &para;</a></span></h3>
 
-<p>The special form <code>quote</code> returns its single argument, as written,
+<p>The special form <code class="code">quote</code> returns its single argument, as written,
 without evaluating it.  This provides a way to include constant symbols
 and lists, which are not self-evaluating objects, in a program.  (It is
 not necessary to quote self-evaluating objects such as numbers, strings,
 and vectors.)
 </p>
-<dl>
-<dt id="index-quote">Special Form: <strong>quote</strong> <em>object</em></dt>
-<dd><p>This special form returns <var>object</var>, without evaluating it.
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-quote"><span class="category-def">Special Form: </span><span><strong class="def-name">quote</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-quote"> &para;</a></span></dt>
+<dd><p>This special form returns <var class="var">object</var>, without evaluating it.
 </p></dd></dl>
 
-<span id="index-_0027-for-quoting"></span>
-<span id="index-quoting-using-apostrophe"></span>
-<span id="index-apostrophe-for-quoting"></span>
-<p>Because <code>quote</code> is used so often in programs, Lisp provides a
-convenient read syntax for it.  An apostrophe character (&lsquo;<samp>'</samp>&rsquo;)
+<a class="index-entry-id" id="index-_0027-for-quoting"></a>
+<a class="index-entry-id" id="index-quoting-using-apostrophe"></a>
+<a class="index-entry-id" id="index-apostrophe-for-quoting"></a>
+<p>Because <code class="code">quote</code> is used so often in programs, Lisp provides a
+convenient read syntax for it.  An apostrophe character (&lsquo;<samp class="samp">'</samp>&rsquo;)
 followed by a Lisp object (in read syntax) expands to a list whose first
-element is <code>quote</code>, and whose second element is the object.  Thus,
-the read syntax <code>'x</code> is an abbreviation for <code>(quote x)</code>.
+element is <code class="code">quote</code>, and whose second element is the object.  Thus,
+the read syntax <code class="code">'x</code> is an abbreviation for <code class="code">(quote x)</code>.
 </p>
-<p>Here are some examples of expressions that use <code>quote</code>:
+<p>Here are some examples of expressions that use <code class="code">quote</code>:
 </p>
 <div class="example">
-<pre class="example">(quote (+ 1 2))
+<div class="group"><pre class="example-preformatted">(quote (+ 1 2))
      &rArr; (+ 1 2)
-</pre><pre class="example">(quote foo)
+</pre></div><div class="group"><pre class="example-preformatted">(quote foo)
      &rArr; foo
-</pre><pre class="example">'foo
+</pre></div><div class="group"><pre class="example-preformatted">'foo
      &rArr; foo
-</pre><pre class="example">''foo
+</pre></div><div class="group"><pre class="example-preformatted">''foo
      &rArr; (quote foo)
-</pre><pre class="example">'(quote foo)
+</pre></div><div class="group"><pre class="example-preformatted">'(quote foo)
      &rArr; (quote foo)
-</pre><pre class="example">['foo]
+</pre></div><div class="group"><pre class="example-preformatted">['foo]
      &rArr; [(quote foo)]
-</pre></div>
+</pre></div></div>
 
-<p>Other quoting constructs include <code>function</code> (see <a href="Anonymous-Functions.html">Anonymous Functions</a>), which causes an anonymous lambda expression written in Lisp
-to be compiled, and &lsquo;<samp>`</samp>&rsquo; (see <a href="Backquote.html">Backquote</a>), which is used to quote
+<p>Other quoting constructs include <code class="code">function</code> (see <a class="pxref" href="Anonymous-Functions.html">Anonymous Functions</a>), which causes an anonymous lambda expression written in Lisp
+to be compiled, and &lsquo;<samp class="samp">`</samp>&rsquo; (see <a class="pxref" href="Backquote.html">Backquote</a>), which is used to quote
 only part of a list, while computing and substituting other parts.
 </p>
+</div>
 
 
 

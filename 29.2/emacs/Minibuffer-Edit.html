@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.2.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Minibuffer Edit (GNU Emacs Manual)</title>
+
+<meta name="description" content="Minibuffer Edit (GNU Emacs Manual)">
+<meta name="keywords" content="Minibuffer Edit (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Minibuffer.html" rel="up" title="Minibuffer">
+<link href="Completion.html" rel="next" title="Completion">
+<link href="Minibuffer-File.html" rel="prev" title="Minibuffer File">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Minibuffer-Edit">
+<div class="nav-panel">
+<p>
+Next: <a href="Completion.html" accesskey="n" rel="next">Completion</a>, Previous: <a href="Minibuffer-File.html" accesskey="p" rel="prev">Minibuffers for File Names</a>, Up: <a href="Minibuffer.html" accesskey="u" rel="up">The Minibuffer</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Editing-in-the-Minibuffer"><span>9.3 Editing in the Minibuffer<a class="copiable-link" href="#Editing-in-the-Minibuffer"> &para;</a></span></h3>
+
+<p>The minibuffer is an Emacs buffer, albeit a peculiar one, and the
+usual Emacs commands are available for editing the argument text.
+(The prompt, however, is <em class="dfn">read-only</em>, and cannot be changed.)
+</p>
+<p>Since <kbd class="key">RET</kbd> in the minibuffer submits the argument, you can&rsquo;t
+use it to insert a newline.  You can do that with <kbd class="kbd">C-q C-j</kbd>, which
+inserts a <kbd class="kbd">C-j</kbd> control character, which is formally equivalent to
+a newline character (see <a class="pxref" href="Inserting-Text.html">Inserting Text</a>).  Alternatively, you can
+use the <kbd class="kbd">C-o</kbd> (<code class="code">open-line</code>) command (see <a class="pxref" href="Blank-Lines.html">Blank Lines</a>).
+</p>
+<p>Inside a minibuffer, the keys <kbd class="key">TAB</kbd>, <kbd class="key">SPC</kbd>, and <kbd class="kbd">?</kbd> are
+often bound to <em class="dfn">completion commands</em>, which allow you to easily
+fill in the desired text without typing all of it.  See <a class="xref" href="Completion.html">Completion</a>.
+As with <kbd class="key">RET</kbd>, you can use <kbd class="kbd">C-q</kbd> to insert a <kbd class="key">TAB</kbd>,
+<kbd class="key">SPC</kbd>, or &lsquo;<samp class="samp">?</samp>&rsquo; character.  If you want to make <kbd class="key">SPC</kbd> and
+<kbd class="key">?</kbd> insert normally instead of starting completion, you can put
+the following in your init file:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(keymap-unset minibuffer-local-completion-map &quot;SPC&quot;)
+(keymap-unset minibuffer-local-completion-map &quot;?&quot;)
+</pre></div>
+
+<p>For convenience, <kbd class="kbd">C-a</kbd> (<code class="code">move-beginning-of-line</code>) in a
+minibuffer moves point to the beginning of the argument text, not the
+beginning of the prompt.  For example, this allows you to erase the
+entire argument with <kbd class="kbd">C-a C-k</kbd>.
+</p>
+<a class="index-entry-id" id="index-height-of-minibuffer"></a>
+<a class="index-entry-id" id="index-size-of-minibuffer"></a>
+<a class="index-entry-id" id="index-growing-minibuffer"></a>
+<a class="index-entry-id" id="index-resizing-minibuffer"></a>
+<p>When the minibuffer is active, the echo area is treated much like an
+ordinary Emacs window.  For instance, you can switch to another window
+(with <kbd class="kbd">C-x o</kbd>), edit text there, then return to the minibuffer
+window to finish the argument.  You can even kill text in another
+window, return to the minibuffer window, and yank the text into the
+argument.  There are some restrictions on the minibuffer window,
+however: for instance, you cannot split it.  See <a class="xref" href="Windows.html">Multiple Windows</a>.
+</p>
+<a class="index-entry-id" id="index-resize_002dmini_002dwindows"></a>
+<p>Normally, the minibuffer window occupies a single screen line.
+However, if you add two or more lines&rsquo; worth of text into the
+minibuffer, it expands automatically to accommodate the text.  The
+variable <code class="code">resize-mini-windows</code> controls the resizing of the
+minibuffer.  The default value is <code class="code">grow-only</code>, which means the
+behavior we have just described.  If the value is <code class="code">t</code>, the
+minibuffer window will also shrink automatically if you remove some
+lines of text from the minibuffer, down to a minimum of one screen
+line.  If the value is <code class="code">nil</code>, the minibuffer window never changes
+size automatically, but you can use the usual window-resizing commands
+on it (see <a class="pxref" href="Windows.html">Multiple Windows</a>).
+</p>
+<a class="index-entry-id" id="index-max_002dmini_002dwindow_002dheight"></a>
+<p>The variable <code class="code">max-mini-window-height</code> controls the maximum
+height for resizing the minibuffer window.  A floating-point number
+specifies a fraction of the frame&rsquo;s height; an integer specifies the
+maximum number of lines; <code class="code">nil</code> means do not resize the minibuffer
+window automatically.  The default value is 0.25.
+</p>
+<p>The <kbd class="kbd">C-M-v</kbd> command in the minibuffer scrolls the help text from
+commands that display help text of any sort in another window.  You
+can also scroll the help text with <kbd class="kbd">M-<kbd class="key">PageUp</kbd></kbd> and
+<kbd class="kbd">M-<kbd class="key">PageDown</kbd></kbd> (or, equivalently, <kbd class="kbd">M-<kbd class="key">prior</kbd></kbd> and
+<kbd class="kbd">M-<kbd class="key">next</kbd></kbd>).  This is especially useful with long lists of
+possible completions.  See <a class="xref" href="Other-Window.html">Using Other Windows</a>.
+</p>
+<a class="index-entry-id" id="index-enable_002drecursive_002dminibuffers"></a>
+<a class="index-entry-id" id="index-minibuffer_002ddepth_002dindicate_002dmode"></a>
+<p>Emacs normally disallows most commands that use the minibuffer while
+the minibuffer is active.  To allow such commands in the minibuffer,
+set the variable <code class="code">enable-recursive-minibuffers</code> to <code class="code">t</code>.
+You might need also to enable <code class="code">minibuffer-depth-indicate-mode</code>
+to show the current recursion depth in the minibuffer prompt
+on recursive use of the minibuffer.
+</p>
+<p>When active, the minibuffer is usually in <code class="code">minibuffer-mode</code>.
+This is an internal Emacs mode without any special features.
+</p>
+<a class="index-entry-id" id="index-minibuffer_002dinactive_002dmode"></a>
+<p>When not active, the minibuffer is in <code class="code">minibuffer-inactive-mode</code>,
+and clicking <kbd class="kbd">mouse-1</kbd> there shows the <samp class="file">*Messages*</samp> buffer.
+If you use a dedicated frame for minibuffers, Emacs also recognizes
+certain keys there, for example, <kbd class="kbd">n</kbd> to make a new frame.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Completion.html">Completion</a>, Previous: <a href="Minibuffer-File.html">Minibuffers for File Names</a>, Up: <a href="Minibuffer.html">The Minibuffer</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 26.1.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Basic Minibuffer (GNU Emacs Manual)</title>
 
 <meta name="description" content="Basic Minibuffer (GNU Emacs Manual)">
@@ -27,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Minibuffer.html" rel="up" title="Minibuffer">
 <link href="Minibuffer-File.html" rel="next" title="Minibuffer File">
-<link href="Minibuffer.html" rel="prev" title="Minibuffer">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,45 +48,46 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Basic-Minibuffer"></span><div class="header">
+<div class="section-level-extent" id="Basic-Minibuffer">
+<div class="nav-panel">
 <p>
-Next: <a href="Minibuffer-File.html" accesskey="n" rel="next">Minibuffer File</a>, Up: <a href="Minibuffer.html" accesskey="u" rel="up">Minibuffer</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Minibuffer-File.html" accesskey="n" rel="next">Minibuffers for File Names</a>, Up: <a href="Minibuffer.html" accesskey="u" rel="up">The Minibuffer</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Using-the-Minibuffer"></span><h3 class="section">8.1 Using the Minibuffer</h3>
+<h3 class="section" id="Using-the-Minibuffer"><span>8.1 Using the Minibuffer<a class="copiable-link" href="#Using-the-Minibuffer"> &para;</a></span></h3>
 
-<span id="index-prompt"></span>
+<a class="index-entry-id" id="index-prompt"></a>
 <p>When the minibuffer is in use, it appears in the echo area, with a
-cursor.  The minibuffer starts with a <em>prompt</em>, usually ending
+cursor.  The minibuffer starts with a <em class="dfn">prompt</em>, usually ending
 with a colon.  The prompt states what kind of input is expected, and
 how it will be used.  The prompt is highlighted using the
-<code>minibuffer-prompt</code> face (see <a href="Faces.html">Faces</a>).
+<code class="code">minibuffer-prompt</code> face (see <a class="pxref" href="Faces.html">Text Faces</a>).
 </p>
 <p>The simplest way to enter a minibuffer argument is to type the text,
-then <tt class="key">RET</tt> to submit the argument and exit the minibuffer.
-Alternatively, you can type <kbd>C-g</kbd> to exit the minibuffer by
-canceling the command asking for the argument (see <a href="Quitting.html">Quitting</a>).
+then <kbd class="key">RET</kbd> to submit the argument and exit the minibuffer.
+Alternatively, you can type <kbd class="kbd">C-g</kbd> to exit the minibuffer by
+canceling the command asking for the argument (see <a class="pxref" href="Quitting.html">Quitting and Aborting</a>).
 </p>
-<span id="index-default-argument"></span>
-<p>Sometimes, the prompt shows a <em>default argument</em>, inside
+<a class="index-entry-id" id="index-default-argument"></a>
+<p>Sometimes, the prompt shows a <em class="dfn">default argument</em>, inside
 parentheses before the colon.  This default will be used as the
-argument if you just type <tt class="key">RET</tt>.  For example, commands that read
+argument if you just type <kbd class="key">RET</kbd>.  For example, commands that read
 buffer names usually show a buffer name as the default; you can type
-<tt class="key">RET</tt> to operate on that default buffer.
+<kbd class="key">RET</kbd> to operate on that default buffer.
 </p>
-<span id="index-Minibuffer-Electric-Default-mode"></span>
-<span id="index-mode_002c-Minibuffer-Electric-Default"></span>
-<span id="index-minibuffer_002delectric_002ddefault_002dmode"></span>
-<span id="index-minibuffer_002deldef_002dshorten_002ddefault"></span>
+<a class="index-entry-id" id="index-Minibuffer-Electric-Default-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Minibuffer-Electric-Default"></a>
+<a class="index-entry-id" id="index-minibuffer_002delectric_002ddefault_002dmode"></a>
+<a class="index-entry-id" id="index-minibuffer_002deldef_002dshorten_002ddefault"></a>
 <p>If you enable Minibuffer Electric Default mode, a global minor mode,
 Emacs hides the default argument as soon as you modify the contents of
-the minibuffer (since typing <tt class="key">RET</tt> would no longer submit that
+the minibuffer (since typing <kbd class="key">RET</kbd> would no longer submit that
 default).  If you ever bring back the original minibuffer text, the
 prompt again shows the default.  Furthermore, if you change the
-variable <code>minibuffer-eldef-shorten-default</code> to a non-<code>nil</code>
-value, the default argument is displayed as &lsquo;<samp>[<var>default-arg</var>]</samp>&rsquo;
-instead of &lsquo;<samp>(default <var>default-arg</var>)</samp>&rsquo;, saving some screen
-space.  To enable this minor mode, type <kbd>M-x
+variable <code class="code">minibuffer-eldef-shorten-default</code> to a non-<code class="code">nil</code>
+value, the default argument is displayed as &lsquo;<samp class="samp">[<var class="var">default-arg</var>]</samp>&rsquo;
+instead of &lsquo;<samp class="samp">(default <var class="var">default-arg</var>)</samp>&rsquo;, saving some screen
+space.  To enable this minor mode, type <kbd class="kbd">M-x
 minibuffer-electric-default-mode</kbd>.
 </p>
 <p>Since the minibuffer appears in the echo area, it can conflict with
@@ -105,10 +97,11 @@ the minibuffer for a few seconds, or until you type something; then
 the minibuffer comes back.  While the minibuffer is in use, Emacs does
 not echo keystrokes.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Minibuffer-File.html" accesskey="n" rel="next">Minibuffer File</a>, Up: <a href="Minibuffer.html" accesskey="u" rel="up">Minibuffer</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Minibuffer-File.html">Minibuffers for File Names</a>, Up: <a href="Minibuffer.html">The Minibuffer</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

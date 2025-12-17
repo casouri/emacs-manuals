@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Eval During Expansion (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Eval During Expansion (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Surprising-Local-Vars.html" rel="prev" title="Surprising Local Vars">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,16 +48,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Eval-During-Expansion"></span><div class="header">
+<div class="subsection-level-extent" id="Eval-During-Expansion">
+<div class="nav-panel">
 <p>
-Next: <a href="Repeated-Expansion.html" accesskey="n" rel="next">Repeated Expansion</a>, Previous: <a href="Surprising-Local-Vars.html" accesskey="p" rel="prev">Surprising Local Vars</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Problems with Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Repeated-Expansion.html" accesskey="n" rel="next">How Many Times is the Macro Expanded?</a>, Previous: <a href="Surprising-Local-Vars.html" accesskey="p" rel="prev">Local Variables in Macro Expansions</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Common Problems Using Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Evaluating-Macro-Arguments-in-Expansion"></span><h4 class="subsection">13.5.4 Evaluating Macro Arguments in Expansion</h4>
+<h4 class="subsection" id="Evaluating-Macro-Arguments-in-Expansion"><span>13.5.4 Evaluating Macro Arguments in Expansion<a class="copiable-link" href="#Evaluating-Macro-Arguments-in-Expansion"> &para;</a></span></h4>
 
 <p>Another problem can happen if the macro definition itself
 evaluates any of the macro argument expressions, such as by calling
-<code>eval</code> (see <a href="Eval.html">Eval</a>).  If the argument is supposed to refer to the
+<code class="code">eval</code> (see <a class="pxref" href="Eval.html">Eval</a>).  If the argument is supposed to refer to the
 user&rsquo;s variables, you may have trouble if the user happens to use a
 variable with the same name as one of the macro arguments.  Inside the
 macro body, the macro argument binding is the most local binding of this
@@ -73,39 +66,40 @@ variable, so any references inside the form being evaluated do refer to
 it.  Here is an example:
 </p>
 <div class="example">
-<pre class="example">(defmacro foo (a)
+<div class="group"><pre class="example-preformatted">(defmacro foo (a)
   (list 'setq (eval a) t))
-</pre><pre class="example">(setq x 'b)
+</pre></div><div class="group"><pre class="example-preformatted">(setq x 'b)
 (foo x) &rarr; (setq b t)
-     &rArr; t                  ; <span class="roman">and <code>b</code> has been set.</span>
-;; <span class="roman">but</span>
+     &rArr; t                  ; <span class="r">and <code class="code">b</code> has been set.</span>
+;; <span class="r">but</span>
 (setq a 'c)
 (foo a) &rarr; (setq a t)
-     &rArr; t                  ; <span class="roman">but this set <code>a</code>, not <code>c</code>.</span>
+     &rArr; t                  ; <span class="r">but this set <code class="code">a</code>, not <code class="code">c</code>.</span>
 
-</pre></div>
+</pre></div></div>
 
-<p>It makes a difference whether the user&rsquo;s variable is named <code>a</code> or
-<code>x</code>, because <code>a</code> conflicts with the macro argument variable
-<code>a</code>.
+<p>It makes a difference whether the user&rsquo;s variable is named <code class="code">a</code> or
+<code class="code">x</code>, because <code class="code">a</code> conflicts with the macro argument variable
+<code class="code">a</code>.
 </p>
-<p>Another problem with calling <code>eval</code> in a macro definition is that
+<p>Another problem with calling <code class="code">eval</code> in a macro definition is that
 it probably won&rsquo;t do what you intend in a compiled program.  The
 byte compiler runs macro definitions while compiling the program, when
 the program&rsquo;s own computations (which you might have wished to access
-with <code>eval</code>) don&rsquo;t occur and its local variable bindings don&rsquo;t
+with <code class="code">eval</code>) don&rsquo;t occur and its local variable bindings don&rsquo;t
 exist.
 </p>
-<p>To avoid these problems, <strong>don&rsquo;t evaluate an argument expression
+<p>To avoid these problems, <strong class="strong">don&rsquo;t evaluate an argument expression
 while computing the macro expansion</strong>.  Instead, substitute the
 expression into the macro expansion, so that its value will be computed
 as part of executing the expansion.  This is how the other examples in
 this chapter work.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Repeated-Expansion.html" accesskey="n" rel="next">Repeated Expansion</a>, Previous: <a href="Surprising-Local-Vars.html" accesskey="p" rel="prev">Surprising Local Vars</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Problems with Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Repeated-Expansion.html">How Many Times is the Macro Expanded?</a>, Previous: <a href="Surprising-Local-Vars.html">Local Variables in Macro Expansions</a>, Up: <a href="Problems-with-Macros.html">Common Problems Using Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

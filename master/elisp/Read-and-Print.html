@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Read and Print (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Read and Print (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Streams-Intro.html" rel="next" title="Streams Intro">
-<link href="Profiling.html" rel="prev" title="Profiling">
+<link href="Minibuffers.html" rel="next" title="Minibuffers">
+<link href="Debugging.html" rel="prev" title="Debugging">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,36 +47,33 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Read-and-Print"></span><div class="header">
+<div class="chapter-level-extent" id="Read-and-Print">
+<div class="nav-panel">
 <p>
-Next: <a href="Minibuffers.html" accesskey="n" rel="next">Minibuffers</a>, Previous: <a href="Debugging.html" accesskey="p" rel="prev">Debugging</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Minibuffers.html" accesskey="n" rel="next">Minibuffers</a>, Previous: <a href="Debugging.html" accesskey="p" rel="prev">Debugging Lisp Programs</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Reading-and-Printing-Lisp-Objects"></span><h2 class="chapter">20 Reading and Printing Lisp Objects</h2>
+<h2 class="chapter" id="Reading-and-Printing-Lisp-Objects"><span>20 Reading and Printing Lisp Objects<a class="copiable-link" href="#Reading-and-Printing-Lisp-Objects"> &para;</a></span></h2>
 
-<p><em>Printing</em> and <em>reading</em> are the operations of converting Lisp
+<p><em class="dfn">Printing</em> and <em class="dfn">reading</em> are the operations of converting Lisp
 objects to textual form and vice versa.  They use the printed
-representations and read syntax described in <a href="Lisp-Data-Types.html">Lisp Data Types</a>.
+representations and read syntax described in <a class="ref" href="Lisp-Data-Types.html">Lisp Data Types</a>.
 </p>
 <p>This chapter describes the Lisp functions for reading and printing.
-It also describes <em>streams</em>, which specify where to get the text (if
+It also describes <em class="dfn">streams</em>, which specify where to get the text (if
 reading) or where to put it (if printing).
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Streams-Intro.html" accesskey="1">Streams Intro</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Overview of streams, reading and printing.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Input-Streams.html" accesskey="2">Input Streams</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Various data types that can be used as input streams.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Input-Functions.html" accesskey="3">Input Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions to read Lisp objects from text.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Output-Streams.html" accesskey="4">Output Streams</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Various data types that can be used as output streams.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Output-Functions.html" accesskey="5">Output Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions to print Lisp objects as text.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Output-Variables.html" accesskey="6">Output Variables</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Variables that control what the printing functions do.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Streams-Intro.html" accesskey="1">Introduction to Reading and Printing</a></li>
+<li><a href="Input-Streams.html" accesskey="2">Input Streams</a></li>
+<li><a href="Input-Functions.html" accesskey="3">Input Functions</a></li>
+<li><a href="Output-Streams.html" accesskey="4">Output Streams</a></li>
+<li><a href="Output-Functions.html" accesskey="5">Output Functions</a></li>
+<li><a href="Output-Variables.html" accesskey="6">Variables Affecting Output</a></li>
+<li><a href="Output-Overrides.html" accesskey="7">Overriding Output Variables</a></li>
+</ul>
+</div>
 
 
 

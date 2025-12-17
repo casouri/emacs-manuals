@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 26.1.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Window Choice (GNU Emacs Manual)</title>
 
 <meta name="description" content="Window Choice (GNU Emacs Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Displaying-Buffers.html" rel="up" title="Displaying Buffers">
 <link href="Temporary-Displays.html" rel="next" title="Temporary Displays">
-<link href="Displaying-Buffers.html" rel="prev" title="Displaying Buffers">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,76 +49,78 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Window-Choice"></span><div class="header">
+<div class="subsection-level-extent" id="Window-Choice">
+<div class="nav-panel">
 <p>
-Next: <a href="Temporary-Displays.html" accesskey="n" rel="next">Temporary Displays</a>, Up: <a href="Displaying-Buffers.html" accesskey="u" rel="up">Displaying Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Temporary-Displays.html" accesskey="n" rel="next">Displaying non-editable buffers.</a>, Up: <a href="Displaying-Buffers.html" accesskey="u" rel="up">Displaying a Buffer in a Window</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="How-display_002dbuffer-works"></span><h4 class="subsection">20.6.1 How <code>display-buffer</code> works</h4>
-<span id="index-display_002dbuffer_002c-detailed-description"></span>
+<h4 class="subsection" id="How-display_002dbuffer-works"><span>20.6.1 How <code class="code">display-buffer</code> works<a class="copiable-link" href="#How-display_002dbuffer-works"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-display_002dbuffer_002c-detailed-description"></a>
 
-<p>The <code>display-buffer</code> command (as well as commands that call it
+<p>The <code class="code">display-buffer</code> command (as well as commands that call it
 internally) chooses a window to display by following the steps given
-below.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Choosing-Window.html#Choosing-Window">Choosing a Window for Display</a> in <cite>The Emacs Lisp Reference Manual</cite>, for details about how to alter this
+below.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Choosing-Window.html#Choosing-Window">Choosing a Window for Display</a> in <cite class="cite">The Emacs Lisp Reference Manual</cite>, for details about how to alter this
 sequence of steps.
 </p>
-<ul>
-<li> <span id="index-same_002dwindow_002dbuffer_002dnames"></span>
-<span id="index-same_002dwindow_002dregexps"></span>
+<ul class="itemize mark-bullet">
+<li><a class="index-entry-id" id="index-same_002dwindow_002dbuffer_002dnames"></a>
+<a class="index-entry-id" id="index-same_002dwindow_002dregexps"></a>
 First, check if the buffer should be displayed in the selected window
 regardless of other considerations.  You can tell Emacs to do this by
 adding the desired buffer&rsquo;s name to the list
-<code>same-window-buffer-names</code>, or adding a matching regular
-expression to the list <code>same-window-regexps</code>.  By default, these
-variables are <code>nil</code>, so this step is skipped.
+<code class="code">same-window-buffer-names</code>, or adding a matching regular
+expression to the list <code class="code">same-window-regexps</code>.  By default, these
+variables are <code class="code">nil</code>, so this step is skipped.
 
-</li><li> Otherwise, if the buffer is already displayed in an existing window,
+</li><li>Otherwise, if the buffer is already displayed in an existing window,
 reuse that window.  Normally, only windows on the selected frame
 are considered, but windows on other frames are also reusable if you
-change <code>pop-up-frames</code> (see below) to <code>t</code>.
+change <code class="code">pop-up-frames</code> (see below) to <code class="code">t</code>.
 
-</li><li> <span id="index-pop_002dup_002dframes"></span>
+</li><li><a class="index-entry-id" id="index-pop_002dup_002dframes"></a>
 Otherwise, optionally create a new frame and display the buffer there.
 By default, this step is skipped.  To enable it, change the variable
-<code>pop-up-frames</code> to a non-<code>nil</code> value.  The special value
-<code>graphic-only</code> means to do this only on graphical displays.
+<code class="code">pop-up-frames</code> to a non-<code class="code">nil</code> value.  The special value
+<code class="code">graphic-only</code> means to do this only on graphical displays.
 
-</li><li> Otherwise, try to create a new window by splitting a window on the
+</li><li>Otherwise, try to create a new window by splitting a window on the
 selected frame, and display the buffer in that new window.
 
-<span id="index-split_002dheight_002dthreshold"></span>
-<span id="index-split_002dwidth_002dthreshold"></span>
+<a class="index-entry-id" id="index-split_002dheight_002dthreshold"></a>
+<a class="index-entry-id" id="index-split_002dwidth_002dthreshold"></a>
 <p>The split can be either vertical or horizontal, depending on the
-variables <code>split-height-threshold</code> and
-<code>split-width-threshold</code>.  These variables should have integer
-values.  If <code>split-height-threshold</code> is smaller than the chosen
+variables <code class="code">split-height-threshold</code> and
+<code class="code">split-width-threshold</code>.  These variables should have integer
+values.  If <code class="code">split-height-threshold</code> is smaller than the chosen
 window&rsquo;s height, the split puts the new window below.  Otherwise, if
-<code>split-width-threshold</code> is smaller than the window&rsquo;s width, the
+<code class="code">split-width-threshold</code> is smaller than the window&rsquo;s width, the
 split puts the new window on the right.  If neither condition holds,
 Emacs tries to split so that the new window is below&mdash;but only if the
 window was not split before (to avoid excessive splitting).
 </p>
-</li><li> Otherwise, display the buffer in a window previously showing it.
+</li><li>Otherwise, display the buffer in a window previously showing it.
 Normally, only windows on the selected frame are considered, but if
-<code>pop-up-frames</code> is non-<code>nil</code> the window may be also on another
+<code class="code">pop-up-frames</code> is non-<code class="code">nil</code> the window may be also on another
 frame.
 
-</li><li> Otherwise, display the buffer in an existing window on the selected
+</li><li>Otherwise, display the buffer in an existing window on the selected
 frame.
 
-</li><li> If all the above methods fail for whatever reason, create a new frame
+</li><li>If all the above methods fail for whatever reason, create a new frame
 and display the buffer there.
 </li></ul>
 
 <p>A more advanced and flexible way to customize the behavior of
-<code>display-buffer</code> is by using the option <code>display-buffer-alist</code>
+<code class="code">display-buffer</code> is by using the option <code class="code">display-buffer-alist</code>
 mentioned in the next section.
 </p>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Temporary-Displays.html" accesskey="n" rel="next">Temporary Displays</a>, Up: <a href="Displaying-Buffers.html" accesskey="u" rel="up">Displaying Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Temporary-Displays.html">Displaying non-editable buffers.</a>, Up: <a href="Displaying-Buffers.html">Displaying a Buffer in a Window</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

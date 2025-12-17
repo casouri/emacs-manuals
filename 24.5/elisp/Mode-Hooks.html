@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Mode Hooks (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Mode Hooks (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Basic-Major-Modes.html" rel="prev" title="Basic Major Modes">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,77 +47,79 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Mode-Hooks"></span><div class="header">
+<div class="subsection-level-extent" id="Mode-Hooks">
+<div class="nav-panel">
 <p>
-Next: <a href="Tabulated-List-Mode.html" accesskey="n" rel="next">Tabulated List Mode</a>, Previous: <a href="Basic-Major-Modes.html" accesskey="p" rel="prev">Basic Major Modes</a>, Up: <a href="Major-Modes.html" accesskey="u" rel="up">Major Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Tabulated-List-Mode.html" accesskey="n" rel="next">Tabulated List mode</a>, Previous: <a href="Basic-Major-Modes.html" accesskey="p" rel="prev">Basic Major Modes</a>, Up: <a href="Major-Modes.html" accesskey="u" rel="up">Major Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Mode-Hooks-1"></span><h4 class="subsection">22.2.6 Mode Hooks</h4>
+<h4 class="subsection" id="Mode-Hooks-1"><span>22.2.6 Mode Hooks<a class="copiable-link" href="#Mode-Hooks-1"> &para;</a></span></h4>
 
 <p>Every major mode command should finish by running the mode-independent
-normal hook <code>change-major-mode-after-body-hook</code>, its mode hook,
-and the normal hook <code>after-change-major-mode-hook</code>.
-It does this by calling <code>run-mode-hooks</code>.  If the major mode is a
+normal hook <code class="code">change-major-mode-after-body-hook</code>, its mode hook,
+and the normal hook <code class="code">after-change-major-mode-hook</code>.
+It does this by calling <code class="code">run-mode-hooks</code>.  If the major mode is a
 derived mode, that is if it calls another major mode (the parent mode)
-in its body, it should do this inside <code>delay-mode-hooks</code> so that
+in its body, it should do this inside <code class="code">delay-mode-hooks</code> so that
 the parent won&rsquo;t run these hooks itself.  Instead, the derived mode&rsquo;s
-call to <code>run-mode-hooks</code> runs the parent&rsquo;s mode hook too.
-See <a href="Major-Mode-Conventions.html">Major Mode Conventions</a>.
+call to <code class="code">run-mode-hooks</code> runs the parent&rsquo;s mode hook too.
+See <a class="xref" href="Major-Mode-Conventions.html">Major Mode Conventions</a>.
 </p>
-<p>Emacs versions before Emacs 22 did not have <code>delay-mode-hooks</code>.
-Versions before 24 did not have <code>change-major-mode-after-body-hook</code>.
-When user-implemented major modes do not use <code>run-mode-hooks</code> and
+<p>Emacs versions before Emacs 22 did not have <code class="code">delay-mode-hooks</code>.
+Versions before 24 did not have <code class="code">change-major-mode-after-body-hook</code>.
+When user-implemented major modes do not use <code class="code">run-mode-hooks</code> and
 have not been updated to use these newer features, they won&rsquo;t entirely
 follow these conventions: they may run the parent&rsquo;s mode hook too early,
-or fail to run <code>after-change-major-mode-hook</code>.  If you encounter
+or fail to run <code class="code">after-change-major-mode-hook</code>.  If you encounter
 such a major mode, please correct it to follow these conventions.
 </p>
-<p>When you defined a major mode using <code>define-derived-mode</code>, it
+<p>When you defined a major mode using <code class="code">define-derived-mode</code>, it
 automatically makes sure these conventions are followed.  If you
-define a major mode &ldquo;by hand&rdquo;, not using <code>define-derived-mode</code>,
+define a major mode &ldquo;by hand&rdquo;, not using <code class="code">define-derived-mode</code>,
 use the following functions to handle these conventions automatically.
 </p>
-<dl>
-<dt id="index-run_002dmode_002dhooks">Function: <strong>run-mode-hooks</strong> <em>&amp;rest hookvars</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-run_002dmode_002dhooks"><span class="category-def">Function: </span><span><strong class="def-name">run-mode-hooks</strong> <var class="def-var-arguments">&amp;rest hookvars</var><a class="copiable-link" href="#index-run_002dmode_002dhooks"> &para;</a></span></dt>
 <dd><p>Major modes should run their mode hook using this function.  It is
-similar to <code>run-hooks</code> (see <a href="Hooks.html">Hooks</a>), but it also runs
-<code>change-major-mode-after-body-hook</code> and
-<code>after-change-major-mode-hook</code>.
+similar to <code class="code">run-hooks</code> (see <a class="pxref" href="Hooks.html">Hooks</a>), but it also runs
+<code class="code">change-major-mode-after-body-hook</code> and
+<code class="code">after-change-major-mode-hook</code>.
 </p>
 <p>When this function is called during the execution of a
-<code>delay-mode-hooks</code> form, it does not run the hooks immediately.
-Instead, it arranges for the next call to <code>run-mode-hooks</code> to run
+<code class="code">delay-mode-hooks</code> form, it does not run the hooks immediately.
+Instead, it arranges for the next call to <code class="code">run-mode-hooks</code> to run
 them.
 </p></dd></dl>
 
-<dl>
-<dt id="index-delay_002dmode_002dhooks">Macro: <strong>delay-mode-hooks</strong> <em>body&hellip;</em></dt>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-delay_002dmode_002dhooks"><span class="category-def">Macro: </span><span><strong class="def-name">delay-mode-hooks</strong> <var class="def-var-arguments">body&hellip;</var><a class="copiable-link" href="#index-delay_002dmode_002dhooks"> &para;</a></span></dt>
 <dd><p>When one major mode command calls another, it should do so inside of
-<code>delay-mode-hooks</code>.
+<code class="code">delay-mode-hooks</code>.
 </p>
-<p>This macro executes <var>body</var>, but tells all <code>run-mode-hooks</code>
-calls during the execution of <var>body</var> to delay running their hooks.
+<p>This macro executes <var class="var">body</var>, but tells all <code class="code">run-mode-hooks</code>
+calls during the execution of <var class="var">body</var> to delay running their hooks.
 The hooks will actually run during the next call to
-<code>run-mode-hooks</code> after the end of the <code>delay-mode-hooks</code>
+<code class="code">run-mode-hooks</code> after the end of the <code class="code">delay-mode-hooks</code>
 construct.
 </p></dd></dl>
 
-<dl>
-<dt id="index-change_002dmajor_002dmode_002dafter_002dbody_002dhook">Variable: <strong>change-major-mode-after-body-hook</strong></dt>
-<dd><p>This is a normal hook run by <code>run-mode-hooks</code>.  It is run before
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-change_002dmajor_002dmode_002dafter_002dbody_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">change-major-mode-after-body-hook</strong><a class="copiable-link" href="#index-change_002dmajor_002dmode_002dafter_002dbody_002dhook"> &para;</a></span></dt>
+<dd><p>This is a normal hook run by <code class="code">run-mode-hooks</code>.  It is run before
 the mode hooks.
 </p></dd></dl>
 
-<dl>
-<dt id="index-after_002dchange_002dmajor_002dmode_002dhook">Variable: <strong>after-change-major-mode-hook</strong></dt>
-<dd><p>This is a normal hook run by <code>run-mode-hooks</code>.  It is run at the
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-after_002dchange_002dmajor_002dmode_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">after-change-major-mode-hook</strong><a class="copiable-link" href="#index-after_002dchange_002dmajor_002dmode_002dhook"> &para;</a></span></dt>
+<dd><p>This is a normal hook run by <code class="code">run-mode-hooks</code>.  It is run at the
 very end of every properly-written major mode command.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Tabulated-List-Mode.html" accesskey="n" rel="next">Tabulated List Mode</a>, Previous: <a href="Basic-Major-Modes.html" accesskey="p" rel="prev">Basic Major Modes</a>, Up: <a href="Major-Modes.html" accesskey="u" rel="up">Major Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Tabulated-List-Mode.html">Tabulated List mode</a>, Previous: <a href="Basic-Major-Modes.html">Basic Major Modes</a>, Up: <a href="Major-Modes.html">Major Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

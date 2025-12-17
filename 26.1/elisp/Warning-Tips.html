@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Warning Tips (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Warning Tips (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Compilation-Tips.html" rel="prev" title="Compilation Tips">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,46 +48,47 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Warning-Tips"></span><div class="header">
+<div class="section-level-extent" id="Warning-Tips">
+<div class="nav-panel">
 <p>
-Next: <a href="Documentation-Tips.html" accesskey="n" rel="next">Documentation Tips</a>, Previous: <a href="Compilation-Tips.html" accesskey="p" rel="prev">Compilation Tips</a>, Up: <a href="Tips.html" accesskey="u" rel="up">Tips</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Documentation-Tips.html" accesskey="n" rel="next">Tips for Documentation Strings</a>, Previous: <a href="Compilation-Tips.html" accesskey="p" rel="prev">Tips for Making Compiled Code Fast</a>, Up: <a href="Tips.html" accesskey="u" rel="up">Tips and Conventions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Tips-for-Avoiding-Compiler-Warnings"></span><h3 class="section">D.5 Tips for Avoiding Compiler Warnings</h3>
-<span id="index-byte-compiler-warnings_002c-how-to-avoid"></span>
+<h3 class="section" id="Tips-for-Avoiding-Compiler-Warnings"><span>D.5 Tips for Avoiding Compiler Warnings<a class="copiable-link" href="#Tips-for-Avoiding-Compiler-Warnings"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-byte-compiler-warnings_002c-how-to-avoid"></a>
 
-<ul>
-<li> Try to avoid compiler warnings about undefined free variables, by adding
-dummy <code>defvar</code> definitions for these variables, like this:
+<ul class="itemize mark-bullet">
+<li>Try to avoid compiler warnings about undefined free variables, by adding
+dummy <code class="code">defvar</code> definitions for these variables, like this:
 
 <div class="example">
-<pre class="example">(defvar foo)
+<pre class="example-preformatted">(defvar foo)
 </pre></div>
 
 <p>Such a definition has no effect except to tell the compiler
-not to warn about uses of the variable <code>foo</code> in this file.
+not to warn about uses of the variable <code class="code">foo</code> in this file.
 </p>
-</li><li> Similarly, to avoid a compiler warning about an undefined function
-that you know <em>will</em> be defined, use a <code>declare-function</code>
-statement (see <a href="Declaring-Functions.html">Declaring Functions</a>).
+</li><li>Similarly, to avoid a compiler warning about an undefined function
+that you know <em class="emph">will</em> be defined, use a <code class="code">declare-function</code>
+statement (see <a class="pxref" href="Declaring-Functions.html">Telling the Compiler that a Function is Defined</a>).
 
-</li><li> If you use many functions, macros, and variables from a certain file,
-you can add a <code>require</code> (see <a href="Named-Features.html">require</a>) for
+</li><li>If you use many functions, macros, and variables from a certain file,
+you can add a <code class="code">require</code> (see <a class="pxref" href="Named-Features.html">require</a>) for
 that package to avoid compilation warnings for them, like this:
 
 <div class="example">
-<pre class="example">(require 'foo)
+<pre class="example-preformatted">(require 'foo)
 </pre></div>
 
 <p>If you need only macros from some file, you can require it only at
-compile time (see <a href="Eval-During-Compile.html">Eval During Compile</a>).  For instance,
+compile time (see <a class="pxref" href="Eval-During-Compile.html">Evaluation During Compilation</a>).  For instance,
 </p>
 <div class="example">
-<pre class="example">(eval-when-compile
+<pre class="example-preformatted">(eval-when-compile
   (require 'foo))
 </pre></div>
 
-</li><li> If you bind a variable in one function, and use it or set it in
+</li><li>If you bind a variable in one function, and use it or set it in
 another function, the compiler warns about the latter function unless
 the variable has a definition.  But adding a definition would be
 unclean if the variable has a short name, since Lisp packages should
@@ -103,15 +96,16 @@ not define short variable names.  The right thing to do is to rename
 this variable to start with the name prefix used for the other
 functions and variables in your package.
 
-</li><li> The last resort for avoiding a warning, when you want to do something
+</li><li>The last resort for avoiding a warning, when you want to do something
 that is usually a mistake but you know is not a mistake in your usage,
-is to put it inside <code>with-no-warnings</code>.  See <a href="Compiler-Errors.html">Compiler Errors</a>.
+is to put it inside <code class="code">with-no-warnings</code>.  See <a class="xref" href="Compiler-Errors.html">Compiler Errors</a>.
 </li></ul>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Documentation-Tips.html" accesskey="n" rel="next">Documentation Tips</a>, Previous: <a href="Compilation-Tips.html" accesskey="p" rel="prev">Compilation Tips</a>, Up: <a href="Tips.html" accesskey="u" rel="up">Tips</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Documentation-Tips.html">Tips for Documentation Strings</a>, Previous: <a href="Compilation-Tips.html">Tips for Making Compiled Code Fast</a>, Up: <a href="Tips.html">Tips and Conventions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

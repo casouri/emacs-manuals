@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Searching and Matching (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Searching and Matching (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="String-Search.html" rel="next" title="String Search">
-<link href="Locales.html" rel="prev" title="Locales">
+<link href="Syntax-Tables.html" rel="next" title="Syntax Tables">
+<link href="Non_002dASCII-Characters.html" rel="prev" title="Non-ASCII Characters">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,44 +46,37 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Searching-and-Matching"></span><div class="header">
+<div class="chapter-level-extent" id="Searching-and-Matching">
+<div class="nav-panel">
 <p>
-Next: <a href="Syntax-Tables.html" accesskey="n" rel="next">Syntax Tables</a>, Previous: <a href="Non_002dASCII-Characters.html" accesskey="p" rel="prev">Non-ASCII Characters</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Syntax-Tables.html" accesskey="n" rel="next">Syntax Tables</a>, Previous: <a href="Non_002dASCII-Characters.html" accesskey="p" rel="prev">Non-<abbr class="acronym">ASCII</abbr> Characters</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Searching-and-Matching-1"></span><h2 class="chapter">33 Searching and Matching</h2>
-<span id="index-searching"></span>
+<h2 class="chapter" id="Searching-and-Matching-1"><span>33 Searching and Matching<a class="copiable-link" href="#Searching-and-Matching-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-searching"></a>
 
 <p>GNU Emacs provides two ways to search through a buffer for specified
 text: exact string searches and regular expression searches.  After a
-regular expression search, you can examine the <em>match data</em> to
+regular expression search, you can examine the <em class="dfn">match data</em> to
 determine which text matched the whole regular expression or various
 portions of it.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="String-Search.html" accesskey="1">String Search</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Search for an exact match.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Searching-and-Case.html" accesskey="2">Searching and Case</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Case-independent or case-significant searching.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Regular-Expressions.html" accesskey="3">Regular Expressions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Describing classes of strings.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Regexp-Search.html" accesskey="4">Regexp Search</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Searching for a match for a regexp.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="POSIX-Regexps.html" accesskey="5">POSIX Regexps</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Searching POSIX-style for the longest match.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Match-Data.html" accesskey="6">Match Data</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Finding out which part of the text matched,
-                            after a string or regexp search.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Search-and-Replace.html" accesskey="7">Search and Replace</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Commands that loop, searching and replacing.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Standard-Regexps.html" accesskey="8">Standard Regexps</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Useful regexps for finding sentences, pages,...
-</td></tr>
-</table>
 
-<p>The &lsquo;<samp>skip-chars&hellip;</samp>&rsquo; functions also perform a kind of searching.
-See <a href="Skipping-Characters.html">Skipping Characters</a>.  To search for changes in character
-properties, see <a href="Property-Search.html">Property Search</a>.
+<p>The &lsquo;<samp class="samp">skip-chars&hellip;</samp>&rsquo; functions also perform a kind of searching.
+See <a class="xref" href="Skipping-Characters.html">Skipping Characters</a>.  To search for changes in character
+properties, see <a class="ref" href="Property-Search.html">Text Property Search Functions</a>.
 </p>
+<ul class="mini-toc">
+<li><a href="String-Search.html" accesskey="1">Searching for Strings</a></li>
+<li><a href="Searching-and-Case.html" accesskey="2">Searching and Case</a></li>
+<li><a href="Regular-Expressions.html" accesskey="3">Regular Expressions</a></li>
+<li><a href="Regexp-Search.html" accesskey="4">Regular Expression Searching</a></li>
+<li><a href="POSIX-Regexps.html" accesskey="5">POSIX Regular Expression Searching</a></li>
+<li><a href="Match-Data.html" accesskey="6">The Match Data</a></li>
+<li><a href="Search-and-Replace.html" accesskey="7">Search and Replace</a></li>
+<li><a href="Standard-Regexps.html" accesskey="8">Standard Regular Expressions Used in Editing</a></li>
+</ul>
+</div>
 
 
 

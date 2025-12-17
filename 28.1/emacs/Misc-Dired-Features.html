@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.1.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Misc Dired Features (GNU Emacs Manual)</title>
+
+<meta name="description" content="Misc Dired Features (GNU Emacs Manual)">
+<meta name="keywords" content="Misc Dired Features (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Dired.html" rel="up" title="Dired">
+<link href="Image_002dDired.html" rel="prev" title="Image-Dired">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Misc-Dired-Features">
+<div class="nav-panel">
+<p>
+Previous: <a href="Image_002dDired.html" accesskey="p" rel="prev">Viewing Image Thumbnails in Dired</a>, Up: <a href="Dired.html" accesskey="u" rel="up">Dired, the Directory Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Other-Dired-Features"><span>30.19 Other Dired Features<a class="copiable-link" href="#Other-Dired-Features"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-_002b-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-dired_002dcreate_002ddirectory"></a>
+<p>The command <kbd class="kbd">+</kbd> (<code class="code">dired-create-directory</code>) reads a
+directory&rsquo;s name, and creates that directory.  It signals an error if
+the directory already exists.
+</p>
+<a class="index-entry-id" id="index-dired_002dcreate_002dempty_002dfile"></a>
+<p>The command (<code class="code">dired-create-empty-file</code>) reads a
+file name, and creates that file.  It signals an error if
+the file already exists.
+</p>
+<a class="index-entry-id" id="index-searching-multiple-files-via-Dired"></a>
+<a class="index-entry-id" id="index-M_002ds-a-C_002ds-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-M_002ds-a-M_002dC_002ds-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-dired_002ddo_002disearch"></a>
+<a class="index-entry-id" id="index-dired_002ddo_002disearch_002dregexp"></a>
+<p>The command <kbd class="kbd">M-s a C-s</kbd> (<code class="code">dired-do-isearch</code>) begins a
+multi-file incremental search on the marked files.  If a search
+fails at the end of a file, typing <kbd class="kbd">C-s</kbd> advances to the next
+marked file and repeats the search; at the end of the last marked
+file, the search wraps around to the first marked file.  The command
+<kbd class="kbd">M-s a M-C-s</kbd> (<code class="code">dired-do-isearch-regexp</code>) does the same with
+a regular expression search.  See <a class="xref" href="Repeat-Isearch.html">Repeating Incremental Search</a>, for information
+about search repetition.
+</p>
+<a class="index-entry-id" id="index-adding-to-the-kill-ring-in-Dired"></a>
+<a class="index-entry-id" id="index-w-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-dired_002dcopy_002dfilename_002das_002dkill"></a>
+<p>The command <kbd class="kbd">w</kbd> (<code class="code">dired-copy-filename-as-kill</code>) puts the
+names of the marked (or next <var class="var">n</var>) files into the kill ring, as if
+you had killed them with <kbd class="kbd">C-w</kbd>.  The names are separated by a
+space.
+</p>
+<p>With a zero prefix argument, this uses the absolute file name of
+each marked file.  With just <kbd class="kbd">C-u</kbd> as the prefix argument, it uses
+file names relative to the Dired buffer&rsquo;s default directory.  (This
+can still contain slashes if in a subdirectory.)  As a special case,
+if point is on a directory header line, <kbd class="kbd">w</kbd> gives you the absolute
+name of that directory.  Any prefix argument or marked files are
+ignored in this case.
+</p>
+<p>The main purpose of this command is so that you can yank the file
+names into arguments for other Emacs commands.  It also displays what
+it added to the kill ring, so you can use it to display the list of
+currently marked files in the echo area.
+</p>
+<a class="index-entry-id" id="index-W-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-browse_002durl_002dof_002ddired_002dfile"></a>
+<p>If you have an HTML file in the file listing, it can be useful to
+view that file with a browser.  The <kbd class="kbd">W</kbd>
+(<code class="code">browse-url-of-dired-file</code>) command will use the standard
+configured browser to view that file.
+</p>
+<a class="index-entry-id" id="index-_0028-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-dired_002dhide_002ddetails_002dmode"></a>
+<a class="index-entry-id" id="index-dired_002dhide_002ddetails_002dhide_002dsymlink_002dtargets"></a>
+<a class="index-entry-id" id="index-dired_002dhide_002ddetails_002dhide_002dinformation_002dlines"></a>
+<a class="index-entry-id" id="index-hiding-details-in-Dired"></a>
+<p>The command <kbd class="kbd">(</kbd> (<code class="code">dired-hide-details-mode</code>) toggles whether
+details, such as ownership or file permissions, are visible in the
+current Dired buffer.  By default, it also hides the targets of
+symbolic links, and all lines other than the header line and
+file/directory listings.  To change this, customize the options
+<code class="code">dired-hide-details-hide-symlink-targets</code> and
+<code class="code">dired-hide-details-hide-information-lines</code>, respectively.
+</p>
+<a class="index-entry-id" id="index-Dired-and-version-control"></a>
+<p>If the directory you are visiting is under version control
+(see <a class="pxref" href="Version-Control.html">Version Control</a>), then the normal VC diff and log commands
+will operate on the selected files.
+</p>
+<a class="index-entry-id" id="index-dired_002dcompare_002ddirectories"></a>
+<p>The command <kbd class="kbd">M-x dired-compare-directories</kbd> is used to compare
+the current Dired buffer with another directory.  It marks all the files
+that differ between the two directories.  It puts these marks
+in all Dired buffers where these files are listed, which of course includes
+the current buffer.
+</p>
+<p>The default comparison method (used if you type <kbd class="key">RET</kbd> at the
+prompt) is to compare just the file names&mdash;file names differ if
+they do not appear in the other directory.  You can specify
+more stringent comparisons by entering a Lisp expression, which can
+refer to the variables <code class="code">size1</code> and <code class="code">size2</code>, the respective
+file sizes; <code class="code">mtime1</code> and <code class="code">mtime2</code>, the last modification
+times in seconds, as floating point numbers; and <code class="code">fa1</code> and
+<code class="code">fa2</code>, the respective file attribute lists (as returned by the
+function <code class="code">file-attributes</code>).  This expression is evaluated for
+each pair of like-named files, and files differ if the expression&rsquo;s
+value is non-<code class="code">nil</code>.
+</p>
+<p>For instance, the sequence <kbd class="kbd">M-x dired-compare-directories
+<kbd class="key">RET</kbd> (&gt; mtime1 mtime2) <kbd class="key">RET</kbd></kbd> marks files newer in this
+directory than in the other, and marks files older in the other
+directory than in this one.  It also marks files with no counterpart,
+in both directories, as always.
+</p>
+<a class="index-entry-id" id="index-drag-and-drop_002c-Dired"></a>
+<p>On the X Window System, Emacs supports the drag and drop
+protocol.  You can drag a file object from another program, and drop
+it onto a Dired buffer; this either moves, copies, or creates a link
+to the file in that directory.  Precisely which action is taken is
+determined by the originating program.  Dragging files out of a Dired
+buffer is currently not supported.
+</p></div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Image_002dDired.html">Viewing Image Thumbnails in Dired</a>, Up: <a href="Dired.html">Dired, the Directory Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

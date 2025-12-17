@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Low-Level Kill Ring (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Low-Level Kill Ring (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Low-Level Kill Ring (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="The-Kill-Ring.html" rel="up" title="The Kill Ring">
+<link href="Internals-of-Kill-Ring.html" rel="next" title="Internals of Kill Ring">
+<link href="Yank-Commands.html" rel="prev" title="Yank Commands">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Low_002dLevel-Kill-Ring">
+<div class="nav-panel">
+<p>
+Next: <a href="Internals-of-Kill-Ring.html" accesskey="n" rel="next">Internals of the Kill Ring</a>, Previous: <a href="Yank-Commands.html" accesskey="p" rel="prev">Functions for Yanking</a>, Up: <a href="The-Kill-Ring.html" accesskey="u" rel="up">The Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Low_002dLevel-Kill-Ring-1"><span>33.8.5 Low-Level Kill Ring<a class="copiable-link" href="#Low_002dLevel-Kill-Ring-1"> &para;</a></span></h4>
+
+<p>These functions and variables provide access to the kill ring at a
+lower level, but are still convenient for use in Lisp programs,
+because they take care of interaction with window system selections
+(see <a class="pxref" href="Window-System-Selections.html">Window System Selections</a>).
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-current_002dkill"><span class="category-def">Function: </span><span><strong class="def-name">current-kill</strong> <var class="def-var-arguments">n &amp;optional do-not-move</var><a class="copiable-link" href="#index-current_002dkill"> &para;</a></span></dt>
+<dd><p>The function <code class="code">current-kill</code> rotates the yanking pointer, which
+designates the front of the kill ring, by <var class="var">n</var> places (from newer
+kills to older ones), and returns the text at that place in the ring.
+</p>
+<p>If the optional second argument <var class="var">do-not-move</var> is non-<code class="code">nil</code>,
+then <code class="code">current-kill</code> doesn&rsquo;t alter the yanking pointer; it just
+returns the <var class="var">n</var>th kill, counting from the current yanking pointer.
+</p>
+<p>If <var class="var">n</var> is zero, indicating a request for the latest kill,
+<code class="code">current-kill</code> calls the value of
+<code class="code">interprogram-paste-function</code> (documented below) before
+consulting the kill ring.  If that value is a function and calling it
+returns a string or a list of several strings, <code class="code">current-kill</code>
+pushes the strings onto the kill ring and returns the first string.
+It also sets the yanking pointer to point to the kill-ring entry of
+the first string returned by <code class="code">interprogram-paste-function</code>,
+regardless of the value of <var class="var">do-not-move</var>.  Otherwise,
+<code class="code">current-kill</code> does not treat a zero value for <var class="var">n</var> specially:
+it returns the entry pointed at by the yanking pointer and does not
+move the yanking pointer.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-kill_002dnew"><span class="category-def">Function: </span><span><strong class="def-name">kill-new</strong> <var class="def-var-arguments">string &amp;optional replace</var><a class="copiable-link" href="#index-kill_002dnew"> &para;</a></span></dt>
+<dd><p>This function pushes the text <var class="var">string</var> onto the kill ring and
+makes the yanking pointer point to it.  It discards the oldest entry
+if appropriate.  It also invokes the values of
+<code class="code">interprogram-paste-function</code> (subject to
+the user option <code class="code">save-interprogram-paste-before-kill</code>)
+and <code class="code">interprogram-cut-function</code> (see below).
+</p>
+<p>If <var class="var">replace</var> is non-<code class="code">nil</code>, then <code class="code">kill-new</code> replaces the
+first element of the kill ring with <var class="var">string</var>, rather than pushing
+<var class="var">string</var> onto the kill ring.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-kill_002dappend"><span class="category-def">Function: </span><span><strong class="def-name">kill-append</strong> <var class="def-var-arguments">string before-p</var><a class="copiable-link" href="#index-kill_002dappend"> &para;</a></span></dt>
+<dd><p>This function appends the text <var class="var">string</var> to the first entry in the
+kill ring and makes the yanking pointer point to the combined entry.
+Normally <var class="var">string</var> goes at the end of the entry, but if
+<var class="var">before-p</var> is non-<code class="code">nil</code>, it goes at the beginning.  This
+function calls <code class="code">kill-new</code> as a subroutine, thus causing the
+values of <code class="code">interprogram-cut-function</code> and possibly
+<code class="code">interprogram-paste-function</code> (see below) to be invoked by
+extension.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-interprogram_002dpaste_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">interprogram-paste-function</strong><a class="copiable-link" href="#index-interprogram_002dpaste_002dfunction"> &para;</a></span></dt>
+<dd><p>This variable provides a way of transferring killed text from other
+programs, when you are using a window system.  Its value should be
+<code class="code">nil</code> or a function of no arguments.
+</p>
+<p>If the value is a function, <code class="code">current-kill</code> calls it to get the
+most recent kill.  If the function returns a non-<code class="code">nil</code> value,
+then that value is used as the most recent kill.  If it returns
+<code class="code">nil</code>, then the front of the kill ring is used.
+</p>
+<p>To facilitate support for window systems that support multiple
+selections, this function may also return a list of strings.  In that
+case, the first string is used as the most recent kill, and all
+the other strings are pushed onto the kill ring, for easy access by
+<code class="code">yank-pop</code>.
+</p>
+<p>The normal use of this function is to get the window system&rsquo;s
+clipboard as the most recent kill, even if the selection belongs to
+another application.  See <a class="xref" href="Window-System-Selections.html">Window System Selections</a>.  However, if
+the clipboard contents come from the current Emacs session, this
+function should return <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-interprogram_002dcut_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">interprogram-cut-function</strong><a class="copiable-link" href="#index-interprogram_002dcut_002dfunction"> &para;</a></span></dt>
+<dd><p>This variable provides a way of communicating killed text to other
+programs, when you are using a window system.  Its value should be
+<code class="code">nil</code> or a function of one required argument.
+</p>
+<p>If the value is a function, <code class="code">kill-new</code> and <code class="code">kill-append</code> call
+it with the new first element of the kill ring as the argument.
+</p>
+<p>The normal use of this function is to put newly killed text in the
+window system&rsquo;s clipboard.  See <a class="xref" href="Window-System-Selections.html">Window System Selections</a>.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Internals-of-Kill-Ring.html">Internals of the Kill Ring</a>, Previous: <a href="Yank-Commands.html">Functions for Yanking</a>, Up: <a href="The-Kill-Ring.html">The Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

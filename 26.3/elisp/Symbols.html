@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Symbols (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Symbols (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Symbol-Components.html" rel="next" title="Symbol Components">
-<link href="Other-Hash.html" rel="prev" title="Other Hash">
+<link href="Evaluation.html" rel="next" title="Evaluation">
+<link href="Hash-Tables.html" rel="prev" title="Hash Tables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,43 +47,39 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Symbols"></span><div class="header">
+<div class="chapter-level-extent" id="Symbols">
+<div class="nav-panel">
 <p>
-Next: <a href="Evaluation.html" accesskey="n" rel="next">Evaluation</a>, Previous: <a href="Hash-Tables.html" accesskey="p" rel="prev">Hash Tables</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Evaluation.html" accesskey="n" rel="next">Evaluation</a>, Previous: <a href="Hash-Tables.html" accesskey="p" rel="prev">Hash Tables</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Symbols-1"></span><h2 class="chapter">9 Symbols</h2>
-<span id="index-symbol"></span>
+<h2 class="chapter" id="Symbols-1"><span>9 Symbols<a class="copiable-link" href="#Symbols-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-symbol"></a>
 
-<p>A <em>symbol</em> is an object with a unique name.  This chapter
+<p>A <em class="dfn">symbol</em> is an object with a unique name.  This chapter
 describes symbols, their components, their property lists, and how they
 are created and interned.  Separate chapters describe the use of symbols
-as variables and as function names; see <a href="Variables.html">Variables</a>, and
-<a href="Functions.html">Functions</a>.  For the precise read syntax for symbols, see
-<a href="Symbol-Type.html">Symbol Type</a>.
+as variables and as function names; see <a class="ref" href="Variables.html">Variables</a>, and
+<a class="ref" href="Functions.html">Functions</a>.  For the precise read syntax for symbols, see
+<a class="ref" href="Symbol-Type.html">Symbol Type</a>.
 </p>
 <p>You can test whether an arbitrary Lisp object is a symbol with
-<code>symbolp</code>:
+<code class="code">symbolp</code>:
 </p>
-<dl>
-<dt id="index-symbolp">Function: <strong>symbolp</strong> <em>object</em></dt>
-<dd><p>This function returns <code>t</code> if <var>object</var> is a symbol, <code>nil</code>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-symbolp"><span class="category-def">Function: </span><span><strong class="def-name">symbolp</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-symbolp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">object</var> is a symbol, <code class="code">nil</code>
 otherwise.
 </p></dd></dl>
 
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Symbol-Components.html" accesskey="1">Symbol Components</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Symbols have names, values, function definitions
-                               and property lists.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Definitions.html" accesskey="2">Definitions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A definition says how a symbol will be used.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Creating-Symbols.html" accesskey="3">Creating Symbols</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How symbols are kept unique.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Symbol-Properties.html" accesskey="4">Symbol Properties</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Each symbol has a property list
-                               for recording miscellaneous information.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Symbol-Components.html" accesskey="1">Symbol Components</a></li>
+<li><a href="Definitions.html" accesskey="2">Defining Symbols</a></li>
+<li><a href="Creating-Symbols.html" accesskey="3">Creating and Interning Symbols</a></li>
+<li><a href="Symbol-Properties.html" accesskey="4">Symbol Properties</a></li>
+</ul>
+</div>
 
 
 

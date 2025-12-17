@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Char Classes (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Char Classes (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Char Classes (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Syntax-of-Regexps.html" rel="up" title="Syntax of Regexps">
+<link href="Regexp-Backslash.html" rel="next" title="Regexp Backslash">
+<link href="Regexp-Special.html" rel="prev" title="Regexp Special">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Char-Classes">
+<div class="nav-panel">
+<p>
+Next: <a href="Regexp-Backslash.html" accesskey="n" rel="next">Backslash Constructs in Regular Expressions</a>, Previous: <a href="Regexp-Special.html" accesskey="p" rel="prev">Special Characters in Regular Expressions</a>, Up: <a href="Syntax-of-Regexps.html" accesskey="u" rel="up">Syntax of Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Character-Classes"><span>35.3.1.2 Character Classes<a class="copiable-link" href="#Character-Classes"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-character-classes-in-regexp"></a>
+<a class="index-entry-id" id="index-ascii-character-class_002c-regexp"></a>
+<a class="index-entry-id" id="index-alnum-character-class_002c-regexp"></a>
+<a class="index-entry-id" id="index-alpha-character-class_002c-regexp"></a>
+<a class="index-entry-id" id="index-xdigit-character-class_002c-regexp"></a>
+
+<p>Below is a table of the classes you can use in a bracket expression
+(see <a class="pxref" href="Regexp-Special.html">bracket expression</a>), and what they mean.
+Note that the &lsquo;<samp class="samp">[</samp>&rsquo; and &lsquo;<samp class="samp">]</samp>&rsquo; characters that enclose the class
+name are part of the name, so a regular expression using these classes
+needs one more pair of brackets.  For example, a regular expression
+matching a sequence of one or more letters and digits would be
+&lsquo;<samp class="samp">[[:alnum:]]+</samp>&rsquo;, not &lsquo;<samp class="samp">[:alnum:]+</samp>&rsquo;.
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">[:ascii:]</samp>&rsquo;</dt>
+<dd><p>This matches any <abbr class="acronym">ASCII</abbr> character (codes 0&ndash;127).
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:alnum:]</samp>&rsquo;</dt>
+<dd><p>This matches any letter or digit.  For multibyte characters, it
+matches characters whose Unicode &lsquo;<samp class="samp">general-category</samp>&rsquo; property
+(see <a class="pxref" href="Character-Properties.html">Character Properties</a>) indicates they are alphabetic or
+decimal number characters.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:alpha:]</samp>&rsquo;</dt>
+<dd><p>This matches any letter.  For multibyte characters, it matches
+characters whose Unicode &lsquo;<samp class="samp">general-category</samp>&rsquo; property
+(see <a class="pxref" href="Character-Properties.html">Character Properties</a>) indicates they are alphabetic
+characters.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:blank:]</samp>&rsquo;</dt>
+<dd><p>This matches horizontal whitespace, as defined by Annex C of the
+Unicode Technical Standard #18.  In particular, it matches spaces,
+tabs, and other characters whose Unicode &lsquo;<samp class="samp">general-category</samp>&rsquo;
+property (see <a class="pxref" href="Character-Properties.html">Character Properties</a>) indicates they are spacing
+separators.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:cntrl:]</samp>&rsquo;</dt>
+<dd><p>This matches any character whose code is in the range 0&ndash;31.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:digit:]</samp>&rsquo;</dt>
+<dd><p>This matches &lsquo;<samp class="samp">0</samp>&rsquo; through &lsquo;<samp class="samp">9</samp>&rsquo;.  Thus, &lsquo;<samp class="samp">[-+[:digit:]]</samp>&rsquo;
+matches any digit, as well as &lsquo;<samp class="samp">+</samp>&rsquo; and &lsquo;<samp class="samp">-</samp>&rsquo;.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:graph:]</samp>&rsquo;</dt>
+<dd><p>This matches graphic characters&mdash;everything except spaces,
+<abbr class="acronym">ASCII</abbr> and non-<abbr class="acronym">ASCII</abbr> control characters,
+surrogates, and codepoints unassigned by Unicode, as indicated by the
+Unicode &lsquo;<samp class="samp">general-category</samp>&rsquo; property (see <a class="pxref" href="Character-Properties.html">Character Properties</a>).
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:lower:]</samp>&rsquo;</dt>
+<dd><p>This matches any lower-case letter, as determined by the current case
+table (see <a class="pxref" href="Case-Tables.html">The Case Table</a>).  If <code class="code">case-fold-search</code> is
+non-<code class="code">nil</code>, this also matches any upper-case letter.  Note that a
+buffer can have its own local case table different from the default
+one.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:multibyte:]</samp>&rsquo;</dt>
+<dd><p>This matches any multibyte character (see <a class="pxref" href="Text-Representations.html">Text Representations</a>).
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:nonascii:]</samp>&rsquo;</dt>
+<dd><p>This matches any non-<abbr class="acronym">ASCII</abbr> character.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:print:]</samp>&rsquo;</dt>
+<dd><p>This matches any printing character&mdash;either spaces or graphic
+characters matched by &lsquo;<samp class="samp">[:graph:]</samp>&rsquo;.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:punct:]</samp>&rsquo;</dt>
+<dd><p>This matches any punctuation character.  (At present, for multibyte
+characters, it matches anything that has non-word syntax, and thus its
+exact definition can vary from one major mode to another, since the
+syntax of a character depends on the major mode.)
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:space:]</samp>&rsquo;</dt>
+<dd><p>This matches any character that has whitespace syntax
+(see <a class="pxref" href="Syntax-Class-Table.html">Table of Syntax Classes</a>).  Note that the syntax of a character,
+and thus which characters are considered &ldquo;whitespace&rdquo;,
+depends on the major mode.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:unibyte:]</samp>&rsquo;</dt>
+<dd><p>This matches any unibyte character (see <a class="pxref" href="Text-Representations.html">Text Representations</a>).
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:upper:]</samp>&rsquo;</dt>
+<dd><p>This matches any upper-case letter, as determined by the current case
+table (see <a class="pxref" href="Case-Tables.html">The Case Table</a>).  If <code class="code">case-fold-search</code> is
+non-<code class="code">nil</code>, this also matches any lower-case letter.  Note that a
+buffer can have its own local case table different from the default
+one.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:word:]</samp>&rsquo;</dt>
+<dd><p>This matches any character that has word syntax (see <a class="pxref" href="Syntax-Class-Table.html">Table of Syntax Classes</a>).  Note that the syntax of a character, and thus which
+characters are considered &ldquo;word-constituent&rdquo;, depends on the major
+mode.
+</p></dd>
+<dt>&lsquo;<samp class="samp">[:xdigit:]</samp>&rsquo;</dt>
+<dd><p>This matches the hexadecimal digits: &lsquo;<samp class="samp">0</samp>&rsquo; through &lsquo;<samp class="samp">9</samp>&rsquo;, &lsquo;<samp class="samp">a</samp>&rsquo;
+through &lsquo;<samp class="samp">f</samp>&rsquo; and &lsquo;<samp class="samp">A</samp>&rsquo; through &lsquo;<samp class="samp">F</samp>&rsquo;.
+</p></dd>
+</dl>
+
+<p>The classes &lsquo;<samp class="samp">[:space:]</samp>&rsquo;, &lsquo;<samp class="samp">[:word:]</samp>&rsquo; and &lsquo;<samp class="samp">[:punct:]</samp>&rsquo; use
+the syntax-table of the current buffer but not any overriding syntax
+text properties (see <a class="pxref" href="Syntax-Properties.html">Syntax Properties</a>).
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Regexp-Backslash.html">Backslash Constructs in Regular Expressions</a>, Previous: <a href="Regexp-Special.html">Special Characters in Regular Expressions</a>, Up: <a href="Syntax-of-Regexps.html">Syntax of Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

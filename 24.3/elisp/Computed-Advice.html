@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Computed Advice (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Computed Advice (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Around_002dAdvice.html" rel="prev" title="Around-Advice">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,55 +47,62 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Computed-Advice"></span><div class="header">
+<div class="section-level-extent" id="Computed-Advice">
+<div class="nav-panel">
 <p>
-Next: <a href="Activation-of-Advice.html" accesskey="n" rel="next">Activation of Advice</a>, Previous: <a href="Around_002dAdvice.html" accesskey="p" rel="prev">Around-Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Activation-of-Advice.html" accesskey="n" rel="next">Activation of Advice</a>, Previous: <a href="Around_002dAdvice.html" accesskey="p" rel="prev">Around-Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Computed-Advice-1"></span><h3 class="section">17.4 Computed Advice</h3>
+<h3 class="section" id="Computed-Advice-1"><span>17.4 Computed Advice<a class="copiable-link" href="#Computed-Advice-1"> &para;</a></span></h3>
 
-<p>The macro <code>defadvice</code> resembles <code>defun</code> in that the code for
+<p>The macro <code class="code">defadvice</code> resembles <code class="code">defun</code> in that the code for
 the advice, and all other information about it, are explicitly stated in
 the source code.  You can also create advice whose details are computed,
-using the function <code>ad-add-advice</code>.
+using the function <code class="code">ad-add-advice</code>.
 </p>
-<dl>
-<dt id="index-ad_002dadd_002dadvice">Function: <strong>ad-add-advice</strong> <em>function advice class position</em></dt>
-<dd><p>Calling <code>ad-add-advice</code> adds <var>advice</var> as a piece of advice to
-<var>function</var> in class <var>class</var>.  The argument <var>advice</var> has
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ad_002dadd_002dadvice"><span class="category-def">Function: </span><span><strong class="def-name">ad-add-advice</strong> <var class="def-var-arguments">function advice class position</var><a class="copiable-link" href="#index-ad_002dadd_002dadvice"> &para;</a></span></dt>
+<dd><p>Calling <code class="code">ad-add-advice</code> adds <var class="var">advice</var> as a piece of advice to
+<var class="var">function</var> in class <var class="var">class</var>.  The argument <var class="var">advice</var> has
 this form:
 </p>
 <div class="example">
-<pre class="example">(<var>name</var> <var>protected</var> <var>enabled</var> <var>definition</var>)
+<pre class="example-preformatted">(<var class="var">name</var> <var class="var">protected</var> <var class="var">enabled</var> <var class="var">definition</var>)
 </pre></div>
 
-<p>Here, <var>protected</var> and <var>enabled</var> are flags; if <var>protected</var>
-is non-<code>nil</code>, the advice is protected against non-local exits
-(see <a href="Defining-Advice.html">Defining Advice</a>), and if <var>enabled</var> is <code>nil</code> the
-advice is initially disabled (see <a href="Enabling-Advice.html">Enabling Advice</a>).
-<var>definition</var> should have the form
+<p>Here, <var class="var">protected</var> and <var class="var">enabled</var> are flags; if <var class="var">protected</var>
+is non-<code class="code">nil</code>, the advice is protected against non-local exits
+(see <a class="pxref" href="Defining-Advice.html">Defining Advice</a>), and if <var class="var">enabled</var> is <code class="code">nil</code> the
+advice is initially disabled (see <a class="pxref" href="Enabling-Advice.html">Enabling and Disabling Advice</a>).
+<var class="var">definition</var> should have the form
 </p>
 <div class="example">
-<pre class="example">(advice . <var>lambda</var>)
+<pre class="example-preformatted">(advice . <var class="var">lambda</var>)
 </pre></div>
 
-<p>where <var>lambda</var> is a lambda expression; this lambda expression is
-called in order to perform the advice.  See <a href="Lambda-Expressions.html">Lambda Expressions</a>.
+<p>where <var class="var">lambda</var> is a lambda expression; this lambda expression is
+called in order to perform the advice.  See <a class="xref" href="Lambda-Expressions.html">Lambda Expressions</a>.
 </p>
-<p>If the <var>function</var> argument to <code>ad-add-advice</code> already has one
-or more pieces of advice in the specified <var>class</var>, then
-<var>position</var> specifies where in the list to put the new piece of
-advice.  The value of <var>position</var> can either be <code>first</code>,
-<code>last</code>, or a number (counting from 0 at the beginning of the
+<p>If the <var class="var">function</var> argument to <code class="code">ad-add-advice</code> already has one
+or more pieces of advice in the specified <var class="var">class</var>, then
+<var class="var">position</var> specifies where in the list to put the new piece of
+advice.  The value of <var class="var">position</var> can either be <code class="code">first</code>,
+<code class="code">last</code>, or a number (counting from 0 at the beginning of the
 list).  Numbers outside the range are mapped to the beginning or the
-end of the range, whichever is closer.  The <var>position</var> value is
+end of the range, whichever is closer.  The <var class="var">position</var> value is
 ignored when redefining an existing piece of advice.
 </p>
-<p>If <var>function</var> already has a piece of <var>advice</var> with the same
+<p>If <var class="var">function</var> already has a piece of <var class="var">advice</var> with the same
 name, then the position argument is ignored and the old advice is
 replaced with the new one.
 </p></dd></dl>
 
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Activation-of-Advice.html">Activation of Advice</a>, Previous: <a href="Around_002dAdvice.html">Around-Advice</a>, Up: <a href="Advising-Functions.html">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

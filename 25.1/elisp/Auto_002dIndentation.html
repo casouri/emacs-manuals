@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Auto-Indentation (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Auto-Indentation (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Modes.html" rel="up" title="Modes">
-<link href="SMIE.html" rel="next" title="SMIE">
-<link href="Region-to-Refontify.html" rel="prev" title="Region to Refontify">
+<link href="Desktop-Save-Mode.html" rel="next" title="Desktop Save Mode">
+<link href="Font-Lock-Mode.html" rel="prev" title="Font Lock Mode">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,26 +46,27 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Auto_002dIndentation"></span><div class="header">
+<div class="section-level-extent" id="Auto_002dIndentation">
+<div class="nav-panel">
 <p>
-Next: <a href="Desktop-Save-Mode.html" accesskey="n" rel="next">Desktop Save Mode</a>, Previous: <a href="Font-Lock-Mode.html" accesskey="p" rel="prev">Font Lock Mode</a>, Up: <a href="Modes.html" accesskey="u" rel="up">Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Desktop-Save-Mode.html" accesskey="n" rel="next">Desktop Save Mode</a>, Previous: <a href="Font-Lock-Mode.html" accesskey="p" rel="prev">Font Lock Mode</a>, Up: <a href="Modes.html" accesskey="u" rel="up">Major and Minor Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Automatic-Indentation-of-code"></span><h3 class="section">22.7 Automatic Indentation of code</h3>
+<h3 class="section" id="Automatic-Indentation-of-code"><span>22.7 Automatic Indentation of code<a class="copiable-link" href="#Automatic-Indentation-of-code"> &para;</a></span></h3>
 
 <p>For programming languages, an important feature of a major mode is to
 provide automatic indentation.  There are two parts: one is to decide what
 is the right indentation of a line, and the other is to decide when to
 reindent a line.  By default, Emacs reindents a line whenever you
-type a character in <code>electric-indent-chars</code>, which by default only
-includes Newline.  Major modes can add chars to <code>electric-indent-chars</code>
+type a character in <code class="code">electric-indent-chars</code>, which by default only
+includes Newline.  Major modes can add chars to <code class="code">electric-indent-chars</code>
 according to the syntax of the language.
 </p>
 <p>Deciding what is the right indentation is controlled in Emacs by
-<code>indent-line-function</code> (see <a href="Mode_002dSpecific-Indent.html">Mode-Specific Indent</a>).  For some modes,
-the <em>right</em> indentation cannot be known reliably, typically because
+<code class="code">indent-line-function</code> (see <a class="pxref" href="Mode_002dSpecific-Indent.html">Indentation Controlled by Major Mode</a>).  For some modes,
+the <em class="emph">right</em> indentation cannot be known reliably, typically because
 indentation is significant so several indentations are valid but with different
-meanings.  In that case, the mode should set <code>electric-indent-inhibit</code> to
+meanings.  In that case, the mode should set <code class="code">electric-indent-inhibit</code> to
 make sure the line is not constantly re-indented against the user&rsquo;s wishes.
 </p>
 <p>Writing a good indentation function can be difficult and to a large extent it
@@ -117,15 +108,15 @@ so if your language seems somewhat similar to one of those languages,
 you might try to use that engine.  Another one is SMIE which takes an approach in the spirit
 of Lisp sexps and adapts it to non-Lisp languages.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="SMIE.html" accesskey="1">SMIE</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A simple minded indentation engine.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="SMIE.html" accesskey="1">Simple Minded Indentation Engine</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Desktop-Save-Mode.html" accesskey="n" rel="next">Desktop Save Mode</a>, Previous: <a href="Font-Lock-Mode.html" accesskey="p" rel="prev">Font Lock Mode</a>, Up: <a href="Modes.html" accesskey="u" rel="up">Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Desktop-Save-Mode.html">Desktop Save Mode</a>, Previous: <a href="Font-Lock-Mode.html">Font Lock Mode</a>, Up: <a href="Modes.html">Major and Minor Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

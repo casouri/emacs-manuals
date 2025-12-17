@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Creating Buffers (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Creating Buffers (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Buffer-List.html" rel="prev" title="Buffer List">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,77 +48,79 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Creating-Buffers"></span><div class="header">
+<div class="section-level-extent" id="Creating-Buffers">
+<div class="nav-panel">
 <p>
-Next: <a href="Killing-Buffers.html" accesskey="n" rel="next">Killing Buffers</a>, Previous: <a href="Buffer-List.html" accesskey="p" rel="prev">Buffer List</a>, Up: <a href="Buffers.html" accesskey="u" rel="up">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Killing-Buffers.html" accesskey="n" rel="next">Killing Buffers</a>, Previous: <a href="Buffer-List.html" accesskey="p" rel="prev">The Buffer List</a>, Up: <a href="Buffers.html" accesskey="u" rel="up">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Creating-Buffers-1"></span><h3 class="section">27.9 Creating Buffers</h3>
-<span id="index-creating-buffers"></span>
-<span id="index-buffers_002c-creating"></span>
+<h3 class="section" id="Creating-Buffers-1"><span>27.9 Creating Buffers<a class="copiable-link" href="#Creating-Buffers-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-creating-buffers"></a>
+<a class="index-entry-id" id="index-buffers_002c-creating"></a>
 
 <p>This section describes the two primitives for creating buffers.
-<code>get-buffer-create</code> creates a buffer if it finds no existing buffer
-with the specified name; <code>generate-new-buffer</code> always creates a new
+<code class="code">get-buffer-create</code> creates a buffer if it finds no existing buffer
+with the specified name; <code class="code">generate-new-buffer</code> always creates a new
 buffer and gives it a unique name.
 </p>
 <p>Other functions you can use to create buffers include
-<code>with-output-to-temp-buffer</code> (see <a href="Temporary-Displays.html">Temporary Displays</a>) and
-<code>create-file-buffer</code> (see <a href="Visiting-Files.html">Visiting Files</a>).  Starting a
-subprocess can also create a buffer (see <a href="Processes.html">Processes</a>).
+<code class="code">with-output-to-temp-buffer</code> (see <a class="pxref" href="Temporary-Displays.html">Temporary Displays</a>) and
+<code class="code">create-file-buffer</code> (see <a class="pxref" href="Visiting-Files.html">Visiting Files</a>).  Starting a
+subprocess can also create a buffer (see <a class="pxref" href="Processes.html">Processes</a>).
 </p>
-<dl>
-<dt id="index-get_002dbuffer_002dcreate">Function: <strong>get-buffer-create</strong> <em>buffer-or-name</em></dt>
-<dd><p>This function returns a buffer named <var>buffer-or-name</var>.  The buffer
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-get_002dbuffer_002dcreate"><span class="category-def">Function: </span><span><strong class="def-name">get-buffer-create</strong> <var class="def-var-arguments">buffer-or-name</var><a class="copiable-link" href="#index-get_002dbuffer_002dcreate"> &para;</a></span></dt>
+<dd><p>This function returns a buffer named <var class="var">buffer-or-name</var>.  The buffer
 returned does not become the current buffer&mdash;this function does not
 change which buffer is current.
 </p>
-<p><var>buffer-or-name</var> must be either a string or an existing buffer.  If
+<p><var class="var">buffer-or-name</var> must be either a string or an existing buffer.  If
 it is a string and a live buffer with that name already exists,
-<code>get-buffer-create</code> returns that buffer.  If no such buffer exists,
-it creates a new buffer.  If <var>buffer-or-name</var> is a buffer instead of
+<code class="code">get-buffer-create</code> returns that buffer.  If no such buffer exists,
+it creates a new buffer.  If <var class="var">buffer-or-name</var> is a buffer instead of
 a string, it is returned as given, even if it is dead.
 </p>
 <div class="example">
-<pre class="example">(get-buffer-create &quot;foo&quot;)
+<div class="group"><pre class="example-preformatted">(get-buffer-create &quot;foo&quot;)
      &rArr; #&lt;buffer foo&gt;
-</pre></div>
+</pre></div></div>
 
 <p>The major mode for a newly created buffer is set to Fundamental mode.
-(The default value of the variable <code>major-mode</code> is handled at a higher
-level; see <a href="Auto-Major-Mode.html">Auto Major Mode</a>.)  If the name begins with a space, the
-buffer initially disables undo information recording (see <a href="Undo.html">Undo</a>).
+(The default value of the variable <code class="code">major-mode</code> is handled at a higher
+level; see <a class="ref" href="Auto-Major-Mode.html">How Emacs Chooses a Major Mode</a>.)  If the name begins with a space, the
+buffer initially disables undo information recording (see <a class="pxref" href="Undo.html">Undo</a>).
 </p></dd></dl>
 
-<dl>
-<dt id="index-generate_002dnew_002dbuffer">Function: <strong>generate-new-buffer</strong> <em>name</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-generate_002dnew_002dbuffer"><span class="category-def">Function: </span><span><strong class="def-name">generate-new-buffer</strong> <var class="def-var-arguments">name</var><a class="copiable-link" href="#index-generate_002dnew_002dbuffer"> &para;</a></span></dt>
 <dd><p>This function returns a newly created, empty buffer, but does not make
-it current.  The name of the buffer is generated by passing <var>name</var>
-to the function <code>generate-new-buffer-name</code> (see <a href="Buffer-Names.html">Buffer Names</a>).  Thus, if there is no buffer named <var>name</var>, then that is
+it current.  The name of the buffer is generated by passing <var class="var">name</var>
+to the function <code class="code">generate-new-buffer-name</code> (see <a class="pxref" href="Buffer-Names.html">Buffer Names</a>).  Thus, if there is no buffer named <var class="var">name</var>, then that is
 the name of the new buffer; if that name is in use, a suffix of the
-form &lsquo;<samp>&lt;<var>n</var>&gt;</samp>&rsquo;, where <var>n</var> is an integer, is appended to
-<var>name</var>.
+form &lsquo;<samp class="samp">&lt;<var class="var">n</var>&gt;</samp>&rsquo;, where <var class="var">n</var> is an integer, is appended to
+<var class="var">name</var>.
 </p>
-<p>An error is signaled if <var>name</var> is not a string.
+<p>An error is signaled if <var class="var">name</var> is not a string.
 </p>
 <div class="example">
-<pre class="example">(generate-new-buffer &quot;bar&quot;)
+<div class="group"><pre class="example-preformatted">(generate-new-buffer &quot;bar&quot;)
      &rArr; #&lt;buffer bar&gt;
-</pre><pre class="example">(generate-new-buffer &quot;bar&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(generate-new-buffer &quot;bar&quot;)
      &rArr; #&lt;buffer bar&lt;2&gt;&gt;
-</pre><pre class="example">(generate-new-buffer &quot;bar&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(generate-new-buffer &quot;bar&quot;)
      &rArr; #&lt;buffer bar&lt;3&gt;&gt;
-</pre></div>
+</pre></div></div>
 
 <p>The major mode for the new buffer is set to Fundamental mode.  The default
-value of the variable <code>major-mode</code> is handled at a higher level.
-See <a href="Auto-Major-Mode.html">Auto Major Mode</a>.
+value of the variable <code class="code">major-mode</code> is handled at a higher level.
+See <a class="xref" href="Auto-Major-Mode.html">How Emacs Chooses a Major Mode</a>.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Killing-Buffers.html" accesskey="n" rel="next">Killing Buffers</a>, Previous: <a href="Buffer-List.html" accesskey="p" rel="prev">Buffer List</a>, Up: <a href="Buffers.html" accesskey="u" rel="up">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Killing-Buffers.html">Killing Buffers</a>, Previous: <a href="Buffer-List.html">The Buffer List</a>, Up: <a href="Buffers.html">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Conditionals (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Conditionals (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,21 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Control-Structures.html" rel="up" title="Control Structures">
-<link href="Pattern-matching-case-statement.html" rel="next" title="Pattern matching case statement">
+<link href="Combining-Conditions.html" rel="next" title="Combining Conditions">
 <link href="Sequencing.html" rel="prev" title="Sequencing">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,157 +49,158 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Conditionals"></span><div class="header">
+<div class="section-level-extent" id="Conditionals">
+<div class="nav-panel">
 <p>
-Next: <a href="Combining-Conditions.html" accesskey="n" rel="next">Combining Conditions</a>, Previous: <a href="Sequencing.html" accesskey="p" rel="prev">Sequencing</a>, Up: <a href="Control-Structures.html" accesskey="u" rel="up">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Combining-Conditions.html" accesskey="n" rel="next">Constructs for Combining Conditions</a>, Previous: <a href="Sequencing.html" accesskey="p" rel="prev">Sequencing</a>, Up: <a href="Control-Structures.html" accesskey="u" rel="up">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Conditionals-1"></span><h3 class="section">10.2 Conditionals</h3>
-<span id="index-conditional-evaluation"></span>
+<h3 class="section" id="Conditionals-1"><span>10.2 Conditionals<a class="copiable-link" href="#Conditionals-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-conditional-evaluation"></a>
 
 <p>Conditional control structures choose among alternatives.  Emacs Lisp
-has four conditional forms: <code>if</code>, which is much the same as in
-other languages; <code>when</code> and <code>unless</code>, which are variants of
-<code>if</code>; and <code>cond</code>, which is a generalized case statement.
+has four conditional forms: <code class="code">if</code>, which is much the same as in
+other languages; <code class="code">when</code> and <code class="code">unless</code>, which are variants of
+<code class="code">if</code>; and <code class="code">cond</code>, which is a generalized case statement.
 </p>
-<dl>
-<dt id="index-if">Special Form: <strong>if</strong> <em>condition then-form else-forms&hellip;</em></dt>
-<dd><p><code>if</code> chooses between the <var>then-form</var> and the <var>else-forms</var>
-based on the value of <var>condition</var>.  If the evaluated <var>condition</var> is
-non-<code>nil</code>, <var>then-form</var> is evaluated and the result returned.
-Otherwise, the <var>else-forms</var> are evaluated in textual order, and the
-value of the last one is returned.  (The <var>else</var> part of <code>if</code> is
-an example of an implicit <code>progn</code>.  See <a href="Sequencing.html">Sequencing</a>.)
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-if"><span class="category-def">Special Form: </span><span><strong class="def-name">if</strong> <var class="def-var-arguments">condition then-form else-forms&hellip;</var><a class="copiable-link" href="#index-if"> &para;</a></span></dt>
+<dd><p><code class="code">if</code> chooses between the <var class="var">then-form</var> and the <var class="var">else-forms</var>
+based on the value of <var class="var">condition</var>.  If the evaluated <var class="var">condition</var> is
+non-<code class="code">nil</code>, <var class="var">then-form</var> is evaluated and the result returned.
+Otherwise, the <var class="var">else-forms</var> are evaluated in textual order, and the
+value of the last one is returned.  (The <var class="var">else</var> part of <code class="code">if</code> is
+an example of an implicit <code class="code">progn</code>.  See <a class="xref" href="Sequencing.html">Sequencing</a>.)
 </p>
-<p>If <var>condition</var> has the value <code>nil</code>, and no <var>else-forms</var> are
-given, <code>if</code> returns <code>nil</code>.
+<p>If <var class="var">condition</var> has the value <code class="code">nil</code>, and no <var class="var">else-forms</var> are
+given, <code class="code">if</code> returns <code class="code">nil</code>.
 </p>
-<p><code>if</code> is a special form because the branch that is not selected is
+<p><code class="code">if</code> is a special form because the branch that is not selected is
 never evaluated&mdash;it is ignored.  Thus, in this example,
-<code>true</code> is not printed because <code>print</code> is never called:
+<code class="code">true</code> is not printed because <code class="code">print</code> is never called:
 </p>
 <div class="example">
-<pre class="example">(if nil
+<div class="group"><pre class="example-preformatted">(if nil
     (print 'true)
   'very-false)
 &rArr; very-false
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-when">Macro: <strong>when</strong> <em>condition then-forms&hellip;</em></dt>
-<dd><p>This is a variant of <code>if</code> where there are no <var>else-forms</var>,
-and possibly several <var>then-forms</var>.  In particular,
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-when"><span class="category-def">Macro: </span><span><strong class="def-name">when</strong> <var class="def-var-arguments">condition then-forms&hellip;</var><a class="copiable-link" href="#index-when"> &para;</a></span></dt>
+<dd><p>This is a variant of <code class="code">if</code> where there are no <var class="var">else-forms</var>,
+and possibly several <var class="var">then-forms</var>.  In particular,
 </p>
 <div class="example">
-<pre class="example">(when <var>condition</var> <var>a</var> <var>b</var> <var>c</var>)
+<pre class="example-preformatted">(when <var class="var">condition</var> <var class="var">a</var> <var class="var">b</var> <var class="var">c</var>)
 </pre></div>
 
 <p>is entirely equivalent to
 </p>
 <div class="example">
-<pre class="example">(if <var>condition</var> (progn <var>a</var> <var>b</var> <var>c</var>) nil)
+<pre class="example-preformatted">(if <var class="var">condition</var> (progn <var class="var">a</var> <var class="var">b</var> <var class="var">c</var>) nil)
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-unless">Macro: <strong>unless</strong> <em>condition forms&hellip;</em></dt>
-<dd><p>This is a variant of <code>if</code> where there is no <var>then-form</var>:
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-unless"><span class="category-def">Macro: </span><span><strong class="def-name">unless</strong> <var class="def-var-arguments">condition forms&hellip;</var><a class="copiable-link" href="#index-unless"> &para;</a></span></dt>
+<dd><p>This is a variant of <code class="code">if</code> where there is no <var class="var">then-form</var>:
 </p>
 <div class="example">
-<pre class="example">(unless <var>condition</var> <var>a</var> <var>b</var> <var>c</var>)
+<pre class="example-preformatted">(unless <var class="var">condition</var> <var class="var">a</var> <var class="var">b</var> <var class="var">c</var>)
 </pre></div>
 
 <p>is entirely equivalent to
 </p>
 <div class="example">
-<pre class="example">(if <var>condition</var> nil
-   <var>a</var> <var>b</var> <var>c</var>)
+<pre class="example-preformatted">(if <var class="var">condition</var> nil
+   <var class="var">a</var> <var class="var">b</var> <var class="var">c</var>)
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-cond">Special Form: <strong>cond</strong> <em>clause&hellip;</em></dt>
-<dd><p><code>cond</code> chooses among an arbitrary number of alternatives.  Each
-<var>clause</var> in the <code>cond</code> must be a list.  The <small>CAR</small> of this
-list is the <var>condition</var>; the remaining elements, if any, the
-<var>body-forms</var>.  Thus, a clause looks like this:
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-cond"><span class="category-def">Special Form: </span><span><strong class="def-name">cond</strong> <var class="def-var-arguments">clause&hellip;</var><a class="copiable-link" href="#index-cond"> &para;</a></span></dt>
+<dd><p><code class="code">cond</code> chooses among an arbitrary number of alternatives.  Each
+<var class="var">clause</var> in the <code class="code">cond</code> must be a list.  The <small class="sc">CAR</small> of this
+list is the <var class="var">condition</var>; the remaining elements, if any, the
+<var class="var">body-forms</var>.  Thus, a clause looks like this:
 </p>
 <div class="example">
-<pre class="example">(<var>condition</var> <var>body-forms</var>&hellip;)
+<pre class="example-preformatted">(<var class="var">condition</var> <var class="var">body-forms</var>...)
 </pre></div>
 
-<p><code>cond</code> tries the clauses in textual order, by evaluating the
-<var>condition</var> of each clause.  If the value of <var>condition</var> is
-non-<code>nil</code>, the clause &ldquo;succeeds&rdquo;; then <code>cond</code> evaluates its
-<var>body-forms</var>, and returns the value of the last of <var>body-forms</var>.
+<p><code class="code">cond</code> tries the clauses in textual order, by evaluating the
+<var class="var">condition</var> of each clause.  If the value of <var class="var">condition</var> is
+non-<code class="code">nil</code>, the clause &ldquo;succeeds&rdquo;; then <code class="code">cond</code> evaluates its
+<var class="var">body-forms</var>, and returns the value of the last of <var class="var">body-forms</var>.
 Any remaining clauses are ignored.
 </p>
-<p>If the value of <var>condition</var> is <code>nil</code>, the clause &ldquo;fails&rdquo;, so
-the <code>cond</code> moves on to the following clause, trying its <var>condition</var>.
+<p>If the value of <var class="var">condition</var> is <code class="code">nil</code>, the clause &ldquo;fails&rdquo;, so
+the <code class="code">cond</code> moves on to the following clause, trying its <var class="var">condition</var>.
 </p>
 <p>A clause may also look like this:
 </p>
 <div class="example">
-<pre class="example">(<var>condition</var>)
+<pre class="example-preformatted">(<var class="var">condition</var>)
 </pre></div>
 
-<p>Then, if <var>condition</var> is non-<code>nil</code> when tested, the <code>cond</code>
-form returns the value of <var>condition</var>.
+<p>Then, if <var class="var">condition</var> is non-<code class="code">nil</code> when tested, the <code class="code">cond</code>
+form returns the value of <var class="var">condition</var>.
 </p>
-<p>If every <var>condition</var> evaluates to <code>nil</code>, so that every clause
-fails, <code>cond</code> returns <code>nil</code>.
+<p>If every <var class="var">condition</var> evaluates to <code class="code">nil</code>, so that every clause
+fails, <code class="code">cond</code> returns <code class="code">nil</code>.
 </p>
 <p>The following example has four clauses, which test for the cases where
-the value of <code>x</code> is a number, string, buffer and symbol,
+the value of <code class="code">x</code> is a number, string, buffer and symbol,
 respectively:
 </p>
 <div class="example">
-<pre class="example">(cond ((numberp x) x)
+<div class="group"><pre class="example-preformatted">(cond ((numberp x) x)
       ((stringp x) x)
       ((bufferp x)
-       (setq temporary-hack x) ; <span class="roman">multiple body-forms</span>
-       (buffer-name x))        ; <span class="roman">in one clause</span>
+       (setq temporary-hack x) ; <span class="r">multiple body-forms</span>
+       (buffer-name x))        ; <span class="r">in one clause</span>
       ((symbolp x) (symbol-value x)))
-</pre></div>
+</pre></div></div>
 
 <p>Often we want to execute the last clause whenever none of the previous
-clauses was successful.  To do this, we use <code>t</code> as the
-<var>condition</var> of the last clause, like this: <code>(t
-<var>body-forms</var>)</code>.  The form <code>t</code> evaluates to <code>t</code>, which is
-never <code>nil</code>, so this clause never fails, provided the <code>cond</code>
+clauses was successful.  To do this, we use <code class="code">t</code> as the
+<var class="var">condition</var> of the last clause, like this: <code class="code">(t
+<var class="var">body-forms</var>)</code>.  The form <code class="code">t</code> evaluates to <code class="code">t</code>, which is
+never <code class="code">nil</code>, so this clause never fails, provided the <code class="code">cond</code>
 gets to it at all.  For example:
 </p>
 <div class="example">
-<pre class="example">(setq a 5)
+<div class="group"><pre class="example-preformatted">(setq a 5)
 (cond ((eq a 'hack) 'foo)
       (t &quot;default&quot;))
 &rArr; &quot;default&quot;
-</pre></div>
+</pre></div></div>
 
-<p>This <code>cond</code> expression returns <code>foo</code> if the value of <code>a</code>
-is <code>hack</code>, and returns the string <code>&quot;default&quot;</code> otherwise.
+<p>This <code class="code">cond</code> expression returns <code class="code">foo</code> if the value of <code class="code">a</code>
+is <code class="code">hack</code>, and returns the string <code class="code">&quot;default&quot;</code> otherwise.
 </p></dd></dl>
 
-<p>Any conditional construct can be expressed with <code>cond</code> or with
-<code>if</code>.  Therefore, the choice between them is a matter of style.
+<p>Any conditional construct can be expressed with <code class="code">cond</code> or with
+<code class="code">if</code>.  Therefore, the choice between them is a matter of style.
 For example:
 </p>
 <div class="example">
-<pre class="example">(if <var>a</var> <var>b</var> <var>c</var>)
+<div class="group"><pre class="example-preformatted">(if <var class="var">a</var> <var class="var">b</var> <var class="var">c</var>)
 &equiv;
-(cond (<var>a</var> <var>b</var>) (t <var>c</var>))
-</pre></div>
+(cond (<var class="var">a</var> <var class="var">b</var>) (t <var class="var">c</var>))
+</pre></div></div>
 
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Pattern-matching-case-statement.html" accesskey="1">Pattern matching case statement</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Pattern-matching-case-statement.html" accesskey="1">Pattern matching case statement</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Combining-Conditions.html" accesskey="n" rel="next">Combining Conditions</a>, Previous: <a href="Sequencing.html" accesskey="p" rel="prev">Sequencing</a>, Up: <a href="Control-Structures.html" accesskey="u" rel="up">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Combining-Conditions.html">Constructs for Combining Conditions</a>, Previous: <a href="Sequencing.html">Sequencing</a>, Up: <a href="Control-Structures.html">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

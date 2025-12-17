@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Evaluation (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Evaluation (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Intro-Eval.html" rel="next" title="Intro Eval">
-<link href="Shorthands.html" rel="prev" title="Shorthands">
+<link href="Control-Structures.html" rel="next" title="Control Structures">
+<link href="Symbols.html" rel="prev" title="Symbols">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,40 +47,36 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Evaluation"></span><div class="header">
+<div class="chapter-level-extent" id="Evaluation">
+<div class="nav-panel">
 <p>
-Next: <a href="Control-Structures.html" accesskey="n" rel="next">Control Structures</a>, Previous: <a href="Symbols.html" accesskey="p" rel="prev">Symbols</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Control-Structures.html" accesskey="n" rel="next">Control Structures</a>, Previous: <a href="Symbols.html" accesskey="p" rel="prev">Symbols</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Evaluation-1"></span><h2 class="chapter">10 Evaluation</h2>
-<span id="index-evaluation"></span>
-<span id="index-interpreter"></span>
-<span id="index-interpreter-1"></span>
-<span id="index-value-of-expression"></span>
+<h2 class="chapter" id="Evaluation-1"><span>10 Evaluation<a class="copiable-link" href="#Evaluation-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-evaluation"></a>
+<a class="index-entry-id" id="index-interpreter"></a>
+<a class="index-entry-id" id="index-interpreter-1"></a>
+<a class="index-entry-id" id="index-value-of-expression"></a>
 
-<p>The <em>evaluation</em> of expressions in Emacs Lisp is performed by the
-<em>Lisp interpreter</em>&mdash;a program that receives a Lisp object as input
-and computes its <em>value as an expression</em>.  How it does this depends
+<p>The <em class="dfn">evaluation</em> of expressions in Emacs Lisp is performed by the
+<em class="dfn">Lisp interpreter</em>&mdash;a program that receives a Lisp object as input
+and computes its <em class="dfn">value as an expression</em>.  How it does this depends
 on the data type of the object, according to rules described in this
 chapter.  The interpreter runs automatically to evaluate portions of
 your program, but can also be called explicitly via the Lisp primitive
-function <code>eval</code>.
+function <code class="code">eval</code>.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Intro-Eval.html" accesskey="1">Intro Eval</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Evaluation in the scheme of things.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Forms.html" accesskey="2">Forms</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How various sorts of objects are evaluated.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Quoting.html" accesskey="3">Quoting</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Avoiding evaluation (to put constants in the program).
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Backquote.html" accesskey="4">Backquote</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Easier construction of list structure.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Eval.html" accesskey="5">Eval</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to invoke the Lisp interpreter explicitly.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Deferred-Eval.html" accesskey="6">Deferred Eval</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Deferred and lazy evaluation of forms.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Intro-Eval.html" accesskey="1">Introduction to Evaluation</a></li>
+<li><a href="Forms.html" accesskey="2">Kinds of Forms</a></li>
+<li><a href="Quoting.html" accesskey="3">Quoting</a></li>
+<li><a href="Backquote.html" accesskey="4">Backquote</a></li>
+<li><a href="Eval.html" accesskey="5">Eval</a></li>
+<li><a href="Deferred-Eval.html" accesskey="6">Deferred and Lazy Evaluation</a></li>
+</ul>
+</div>
 
 
 

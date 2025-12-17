@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.2.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Movemail (GNU Emacs Manual)</title>
+
+<meta name="description" content="Movemail (GNU Emacs Manual)">
+<meta name="keywords" content="Movemail (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Rmail.html" rel="up" title="Rmail">
+<link href="Remote-Mailboxes.html" rel="next" title="Remote Mailboxes">
+<link href="Rmail-Rot13.html" rel="prev" title="Rmail Rot13">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Movemail">
+<div class="nav-panel">
+<p>
+Next: <a href="Remote-Mailboxes.html" accesskey="n" rel="next">Retrieving Mail from Remote Mailboxes</a>, Previous: <a href="Rmail-Rot13.html" accesskey="p" rel="prev">Reading Rot13 Messages</a>, Up: <a href="Rmail.html" accesskey="u" rel="up">Reading Mail with Rmail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="movemail-program"><span>34.18 <code class="command">movemail</code> program<a class="copiable-link" href="#movemail-program"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-movemail-program"></a>
+
+<p>Rmail uses the <code class="command">movemail</code> program to move mail from your inbox to
+your Rmail file (see <a class="pxref" href="Rmail-Inbox.html">Rmail Files and Inboxes</a>).  When loaded for the first time,
+Rmail attempts to locate the <code class="command">movemail</code> program and determine its
+version.  There are two versions of the <code class="command">movemail</code> program: the
+GNU Mailutils version (see <a data-manual="mailutils" href="https://www.gnu.org/software/mailutils/manual/html_node/movemail.html#movemail">movemail</a> in <cite class="cite">GNU mailutils</cite>),
+and an Emacs-specific version that is built and installed unless Emacs
+was configured <samp class="option">--with-mailutils</samp> in effect.
+The two <code class="command">movemail</code> versions support the same
+command line syntax and the same basic subset of options.  However, the
+Mailutils version offers additional features and is more secure.
+</p>
+<p>The Emacs version of <code class="command">movemail</code> can retrieve mail from the
+usual Unix mailbox formats.  <strong class="strong">Warning</strong>: Although it can also use the POP3
+protocol, this is not recommended because it does not support POP3 via
+encrypted TLS channels.
+</p>
+<p>The Mailutils version is able to handle a wide set of mailbox
+formats, such as plain Unix mailboxes, <code class="code">maildir</code> and <code class="code">MH</code>
+mailboxes, etc.  It is able to access remote mailboxes using the POP3
+or IMAP4 protocol, and can retrieve mail from them using a TLS
+encrypted channel.  It also accepts mailbox arguments in <abbr class="acronym">URL</abbr>
+form.  The detailed description of mailbox <abbr class="acronym">URL</abbr>s can be found
+in <a data-manual="mailutils" href="https://www.gnu.org/software/mailutils/manual/html_node/URL.html#URL">URL</a> in <cite class="cite">Mailbox URL Formats</cite>.  In short, a
+<abbr class="acronym">URL</abbr> is:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted"><var class="var">proto</var>://[<var class="var">user</var>[:<var class="var">password</var>]@]<var class="var">host-or-file-name</var>[:<var class="var">port</var>]
+</pre></div>
+
+<p>where square brackets denote optional elements.
+</p>
+<dl class="table">
+<dt><var class="var">proto</var></dt>
+<dd><p>Specifies the <em class="dfn">mailbox protocol</em>, or <em class="dfn">format</em> to
+use.  The exact semantics of the rest of <abbr class="acronym">URL</abbr> elements depends
+on the actual value of <var class="var">proto</var> (see below).
+</p>
+</dd>
+<dt><var class="var">user</var></dt>
+<dd><p>User name to access the remote mailbox.
+</p>
+</dd>
+<dt><var class="var">password</var></dt>
+<dd><p>User password to access the remote mailbox.
+</p>
+</dd>
+<dt><var class="var">host-or-file-name</var></dt>
+<dd><p>Hostname of the remote server for remote mailboxes or file name of a
+local mailbox.
+</p>
+</dd>
+<dt><var class="var">port</var></dt>
+<dd><p>Optional port number, if not the default for that protocol.
+</p></dd>
+</dl>
+
+<p><var class="var">proto</var> can be one of:
+</p>
+<dl class="table">
+<dt><code class="code">mbox</code></dt>
+<dd><p>Usual Unix mailbox format.  In this case, <var class="var">user</var>, <var class="var">pass</var> and
+<var class="var">port</var> are not used, and <var class="var">host-or-file-name</var> denotes the file
+name of the mailbox file, e.g., <code class="code">mbox:///var/spool/mail/smith</code>.
+</p>
+</dd>
+<dt><code class="code">mh</code></dt>
+<dd><p>A local mailbox in the <abbr class="acronym">MH</abbr> format.  <var class="var">user</var>, <var class="var">pass</var>
+and <var class="var">port</var> are not used.  <var class="var">host-or-file-name</var> denotes the name
+of <abbr class="acronym">MH</abbr> folder, e.g., <code class="code">mh:///Mail/inbox</code>.
+</p>
+</dd>
+<dt><code class="code">maildir</code></dt>
+<dd><p>A local mailbox in the <abbr class="acronym">maildir</abbr> format.  <var class="var">user</var>,
+<var class="var">pass</var> and <var class="var">port</var> are not used, and <var class="var">host-or-file-name</var>
+denotes the name of <code class="code">maildir</code> mailbox, e.g.,
+<code class="code">maildir:///mail/inbox</code>.
+</p>
+</dd>
+<dt><code class="code">file</code></dt>
+<dd><p>Any local file in mailbox format.  Its actual format is detected
+automatically by <code class="command">movemail</code>.
+</p>
+</dd>
+<dt><code class="code">pop</code></dt>
+<dt><code class="code">pops</code></dt>
+<dd><p>A remote mailbox to be accessed via POP3 protocol.  <var class="var">user</var>
+specifies the remote user name to use, <var class="var">pass</var> may be used to
+specify the user password, <var class="var">host-or-file-name</var> is the name or IP
+address of the remote mail server to connect to, and <var class="var">port</var> is the
+port number; e.g., <code class="code">pop://smith:guessme@remote.server.net:995</code>.
+If the server supports it, <code class="command">movemail</code> tries to use an
+encrypted connection&mdash;use the &lsquo;<samp class="samp">pops</samp>&rsquo; form to require one.
+</p>
+</dd>
+<dt><code class="code">imap</code></dt>
+<dt><code class="code">imaps</code></dt>
+<dd><p>A remote mailbox to be accessed via IMAP4 protocol.  <var class="var">user</var>
+specifies the remote user name to use, <var class="var">pass</var> may be used to
+specify the user password, <var class="var">host-or-file-name</var> is the name or IP
+address of the remote mail server to connect to, and <var class="var">port</var> is the
+port number; e.g., <code class="code">imap://smith:guessme@remote.server.net:993</code>.
+If the server supports it, <code class="command">movemail</code> tries to use an
+encrypted connection&mdash;use the &lsquo;<samp class="samp">imaps</samp>&rsquo; form to require one.
+</p></dd>
+</dl>
+
+<p>Alternatively, you can specify the file name of the mailbox to use.
+This is equivalent to specifying the &lsquo;<samp class="samp">file</samp>&rsquo; protocol:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">/var/spool/mail/<var class="var">user</var> &equiv; file:///var/spool/mail/<var class="var">user</var>
+</pre></div>
+
+<a class="index-entry-id" id="index-rmail_002dmovemail_002dprogram"></a>
+<a class="index-entry-id" id="index-rmail_002dmovemail_002dsearch_002dpath"></a>
+<p>The variable <code class="code">rmail-movemail-program</code> controls which version of
+<code class="command">movemail</code> to use.  If that is a string, it specifies the
+absolute file name of the <code class="command">movemail</code> executable.  If it is
+<code class="code">nil</code>, Rmail searches for <code class="command">movemail</code> in the directories
+listed in <code class="code">rmail-movemail-search-path</code>, then in <code class="code">exec-path</code>
+(see <a class="pxref" href="Shell.html">Running Shell Commands from Emacs</a>), then in <code class="code">exec-directory</code>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Remote-Mailboxes.html">Retrieving Mail from Remote Mailboxes</a>, Previous: <a href="Rmail-Rot13.html">Reading Rot13 Messages</a>, Up: <a href="Rmail.html">Reading Mail with Rmail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

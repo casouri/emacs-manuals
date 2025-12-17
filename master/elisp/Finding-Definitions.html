@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 31.0.50.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Finding Definitions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Finding Definitions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Finding Definitions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Defining-Functions.html" rel="up" title="Defining Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Finding-Definitions">
+<div class="nav-panel">
+<p>
+Up: <a href="Defining-Functions.html" accesskey="u" rel="up">Defining Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Finding-Definitions-1"><span>13.4.1 Finding Definitions<a class="copiable-link" href="#Finding-Definitions-1"> &para;</a></span></h4>
+
+<p>Tools such as Emacs&rsquo;s built-in help command <kbd class="kbd">C-h f</kbd> (see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Help.html#Help">Help</a> in <cite class="cite">The GNU Emacs Manual</cite>) can find the definition site of functions
+and other Lisp objects in the source code.  To do this, they use the
+variable <code class="code">find-function-regexp-alist</code>.
+</p>
+<a class="index-entry-id" id="index-find_002dfunction_002dregexp_002dalist"></a>
+<p>The alist <code class="code">find-function-regexp-alist</code> associates object types with
+a regexp or a function that finds the definition of that object in its
+source file.  Each element&rsquo;s <code class="code">car</code> is a symbol that describes the
+type of object, or <code class="code">nil</code>, which means a function defined with
+<code class="code">defun</code>.  Each element&rsquo;s <code class="code">cdr</code> can be one of the following:
+</p>
+<ul class="itemize mark-bullet">
+<li>A symbol whose value is a string interpreted as a regexp.
+</li><li>A symbol naming a function that can find the definition.
+</li><li>A cons cell where the <code class="code">car</code> is a regexp (or function that returns
+one) and the <code class="code">cdr</code> is <em class="dfn">form-matcher</em>: a function that creates a
+matcher for macro-expanded forms.
+</li></ul>
+
+<p>A regexp string is actually a format string, and <code class="code">%s</code> will be
+substituted with the name of the symbol we are looking for.
+</p>
+<p>A function will be called with one argument, the (symbol for) the object
+we are searching for.
+</p>
+<p>The form-matcher function in a cons cell value is called with one
+argument (the symbol being sought) and should return a function; that
+function should take a form and return non-<code class="code">nil</code> if the form
+defines the sought symbol.  This is useful for finding definitions that
+are created by expansion of macros.
+</p>
+<a class="index-entry-id" id="index-definition_002dname-_0028symbol-property_0029"></a>
+<p>If the function to be found is defined by a macro, it may be hard for
+Emacs to find the definition site in the source code.  A macro call may
+have an unexpected look to it, and <code class="code">find-function-regexp-alist</code>
+will fail to identify the definition.
+</p>
+<p>For example, a <code class="code">define-derived-mode</code> (see <a class="pxref" href="Derived-Modes.html">Defining Derived Modes</a>) might
+define a mode-specific function or a variable implicitly; or your Lisp
+program might generate a run-time call to <code class="code">defun</code> to define a
+function.  In these and similar cases, the <code class="code">definition-name</code>
+property of the symbol should be another symbol whose definition can be
+found by textual search and whose code defines the original symbol.  In
+the example with <code class="code">define-derived-mode</code>, the value of this property
+of the functions and variables it defines should be the mode symbol.
+</p>
+<a class="index-entry-id" id="index-find_002dfunction_002dtype_002dalist-_0028symbol-property_0029"></a>
+<p>In some cases, the definition cannot be found by looking for the
+definition of another symbol.  For example, a test file might use a
+macro to generate calls to <code class="code">ert-deftest</code> (see <a data-manual="ert" href="https://www.gnu.org/software/emacs/manual/html_node/ert/How-to-Write-Tests.html#How-to-Write-Tests">How to Write
+Tests</a> in <cite class="cite">ERT: Emacs Lisp Regression Testing</cite>) where the code is
+boiler plate and only varying data need to be passed in.  In such cases,
+the <code class="code">find-function-type-alist</code> property of the symbol can be an
+alist that augments <code class="code">find-function-regexp-alist</code> telling how to
+find the definition of symbols of this type.
+</p>
+<p>The <code class="code">find-function-regexp-alist</code> property is most easily maintained
+with the convenience function <code class="code">find-function-update-type-alist</code>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-find_002dfunction_002dupdate_002dtype_002dalist"><span class="category-def">Function: </span><span><strong class="def-name">find-function-update-type-alist</strong> <var class="def-var-arguments">symbol type variable</var><a class="copiable-link" href="#index-find_002dfunction_002dupdate_002dtype_002dalist"> &para;</a></span></dt>
+<dd><p>Update property <code class="code">find-function-type-alist</code> of <var class="var">symbol</var> with
+a new element containing key <var class="var">type</var> and value <var class="var">variable</var>.
+</p></dd></dl>
+
+<p>In the example of a macro defining calls to <code class="code">ert-deftest</code>,
+the macro could put the property <code class="code">find-function-type-alist</code> on each
+test defined, associating <code class="code">ert--test</code> (the internal type of ERT
+tests) with the name of a regexp or function that can find the correct
+macro call.  The file defining the macro would also have to provide that
+definition-finding function or regexp.
+Here is an example using a function to find the definition:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defmacro define-foo-test (data)
+  &quot;Define a test of the foo system using DATA.&quot;
+  (declare (debug (&amp;rest sexp)))
+  (let ((test-name (intern (concat ...))))
+    `(progn
+       (find-function-update-type-alist
+        ',test-name 'ert--test 'foo-find-test-def-function)
+       (ert-deftest ,test-name ()
+         ,(concat &quot;Test foo with &quot; ...)
+         ...))))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(defun foo-find-test-def-function (test-name)
+  &quot;Search for the `define-foo-test' call defining TEST-NAME.
+Return non-nil if the definition is found.&quot;
+  (let ((regexp ...))
+    (re-search-forward regexp nil t)))
+</pre></div></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Up: <a href="Defining-Functions.html">Defining Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

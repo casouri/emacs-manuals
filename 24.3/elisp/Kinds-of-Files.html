@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Kinds of Files (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Kinds of Files (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Testing-Accessibility.html" rel="prev" title="Testing Accessibility">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,92 +47,94 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Kinds-of-Files"></span><div class="header">
+<div class="subsection-level-extent" id="Kinds-of-Files">
+<div class="nav-panel">
 <p>
 Next: <a href="Truenames.html" accesskey="n" rel="next">Truenames</a>, Previous: <a href="Testing-Accessibility.html" accesskey="p" rel="prev">Testing Accessibility</a>, Up: <a href="Information-about-Files.html" accesskey="u" rel="up">Information about Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Distinguishing-Kinds-of-Files"></span><h4 class="subsection">25.6.2 Distinguishing Kinds of Files</h4>
+<h4 class="subsection" id="Distinguishing-Kinds-of-Files"><span>25.6.2 Distinguishing Kinds of Files<a class="copiable-link" href="#Distinguishing-Kinds-of-Files"> &para;</a></span></h4>
 
 <p>This section describes how to distinguish various kinds of files, such
 as directories, symbolic links, and ordinary files.
 </p>
-<dl>
-<dt id="index-file_002dsymlink_002dp">Function: <strong>file-symlink-p</strong> <em>filename</em></dt>
-<dd><span id="index-file-symbolic-links"></span>
-<p>If the file <var>filename</var> is a symbolic link, the
-<code>file-symlink-p</code> function returns the (non-recursive) link target
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dsymlink_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-symlink-p</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-file_002dsymlink_002dp"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-file-symbolic-links"></a>
+<p>If the file <var class="var">filename</var> is a symbolic link, the
+<code class="code">file-symlink-p</code> function returns the (non-recursive) link target
 as a string.  (Determining the file name that the link points to from
 the target is nontrivial.)  First, this function recursively follows
 symbolic links at all levels of parent directories.
 </p>
-<p>If the file <var>filename</var> is not a symbolic link (or there is no such file),
-<code>file-symlink-p</code> returns <code>nil</code>.
+<p>If the file <var class="var">filename</var> is not a symbolic link (or there is no such file),
+<code class="code">file-symlink-p</code> returns <code class="code">nil</code>.
 </p>
 <div class="example">
-<pre class="example">(file-symlink-p &quot;foo&quot;)
+<div class="group"><pre class="example-preformatted">(file-symlink-p &quot;foo&quot;)
      &rArr; nil
-</pre><pre class="example">(file-symlink-p &quot;sym-link&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-symlink-p &quot;sym-link&quot;)
      &rArr; &quot;foo&quot;
-</pre><pre class="example">(file-symlink-p &quot;sym-link2&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-symlink-p &quot;sym-link2&quot;)
      &rArr; &quot;sym-link&quot;
-</pre><pre class="example">(file-symlink-p &quot;/bin&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-symlink-p &quot;/bin&quot;)
      &rArr; &quot;/pub/bin&quot;
-</pre></div>
+</pre></div></div>
 
 </dd></dl>
 
 <p>The next two functions recursively follow symbolic links at
-all levels for <var>filename</var>.
+all levels for <var class="var">filename</var>.
 </p>
-<dl>
-<dt id="index-file_002ddirectory_002dp">Function: <strong>file-directory-p</strong> <em>filename</em></dt>
-<dd><p>This function returns <code>t</code> if <var>filename</var> is the name of an
-existing directory, <code>nil</code> otherwise.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002ddirectory_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-directory-p</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-file_002ddirectory_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">filename</var> is the name of an
+existing directory, <code class="code">nil</code> otherwise.
 </p>
 <div class="example">
-<pre class="example">(file-directory-p &quot;~rms&quot;)
+<div class="group"><pre class="example-preformatted">(file-directory-p &quot;~rms&quot;)
      &rArr; t
-</pre><pre class="example">(file-directory-p &quot;~rms/lewis/files.texi&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-directory-p &quot;~rms/lewis/files.texi&quot;)
      &rArr; nil
-</pre><pre class="example">(file-directory-p &quot;~rms/lewis/no-such-file&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-directory-p &quot;~rms/lewis/no-such-file&quot;)
      &rArr; nil
-</pre><pre class="example">(file-directory-p &quot;$HOME&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-directory-p &quot;$HOME&quot;)
      &rArr; nil
-</pre><pre class="example">(file-directory-p
+</pre></div><div class="group"><pre class="example-preformatted">(file-directory-p
  (substitute-in-file-name &quot;$HOME&quot;))
      &rArr; t
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-file_002dregular_002dp">Function: <strong>file-regular-p</strong> <em>filename</em></dt>
-<dd><p>This function returns <code>t</code> if the file <var>filename</var> exists and is
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dregular_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-regular-p</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-file_002dregular_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if the file <var class="var">filename</var> exists and is
 a regular file (not a directory, named pipe, terminal, or
 other I/O device).
 </p></dd></dl>
 
-<dl>
-<dt id="index-file_002dequal_002dp">Function: <strong>file-equal-p</strong> <em>file1 file2</em></dt>
-<dd><p>This function returns <code>t</code> if the files <var>file1</var> and
-<var>file2</var> name the same file.  If <var>file1</var> or <var>file2</var> does
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dequal_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-equal-p</strong> <var class="def-var-arguments">file1 file2</var><a class="copiable-link" href="#index-file_002dequal_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if the files <var class="var">file1</var> and
+<var class="var">file2</var> name the same file.  If <var class="var">file1</var> or <var class="var">file2</var> does
 not exist, the return value is unspecified.
 </p></dd></dl>
 
-<dl>
-<dt id="index-file_002din_002ddirectory_002dp">Function: <strong>file-in-directory-p</strong> <em>file dir</em></dt>
-<dd><p>This function returns <code>t</code> if <var>file</var> is a file in directory
-<var>dir</var>, or in a subdirectory of <var>dir</var>.  It also returns
-<code>t</code> if <var>file</var> and <var>dir</var> are the same directory.  It
-compares the <code>file-truename</code> values of the two directories
-(see <a href="Truenames.html">Truenames</a>).  If <var>dir</var> does not name an existing
-directory, the return value is <code>nil</code>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002din_002ddirectory_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-in-directory-p</strong> <var class="def-var-arguments">file dir</var><a class="copiable-link" href="#index-file_002din_002ddirectory_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">file</var> is a file in directory
+<var class="var">dir</var>, or in a subdirectory of <var class="var">dir</var>.  It also returns
+<code class="code">t</code> if <var class="var">file</var> and <var class="var">dir</var> are the same directory.  It
+compares the <code class="code">file-truename</code> values of the two directories
+(see <a class="pxref" href="Truenames.html">Truenames</a>).  If <var class="var">dir</var> does not name an existing
+directory, the return value is <code class="code">nil</code>.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Truenames.html" accesskey="n" rel="next">Truenames</a>, Previous: <a href="Testing-Accessibility.html" accesskey="p" rel="prev">Testing Accessibility</a>, Up: <a href="Information-about-Files.html" accesskey="u" rel="up">Information about Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Truenames.html">Truenames</a>, Previous: <a href="Testing-Accessibility.html">Testing Accessibility</a>, Up: <a href="Information-about-Files.html">Information about Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

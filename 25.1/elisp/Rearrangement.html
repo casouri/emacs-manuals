@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Rearrangement (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Rearrangement (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Modifying-Lists.html" rel="up" title="Modifying Lists">
-<link href="Sets-And-Lists.html" rel="next" title="Sets And Lists">
 <link href="Setcdr.html" rel="prev" title="Setcdr">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,90 +48,92 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Rearrangement"></span><div class="header">
+<div class="subsection-level-extent" id="Rearrangement">
+<div class="nav-panel">
 <p>
-Previous: <a href="Setcdr.html" accesskey="p" rel="prev">Setcdr</a>, Up: <a href="Modifying-Lists.html" accesskey="u" rel="up">Modifying Lists</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Setcdr.html" accesskey="p" rel="prev">Altering the CDR of a List</a>, Up: <a href="Modifying-Lists.html" accesskey="u" rel="up">Modifying Existing List Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Functions-that-Rearrange-Lists"></span><h4 class="subsection">5.6.3 Functions that Rearrange Lists</h4>
-<span id="index-rearrangement-of-lists"></span>
-<span id="index-reordering_002c-of-elements-in-lists"></span>
-<span id="index-modification-of-lists"></span>
+<h4 class="subsection" id="Functions-that-Rearrange-Lists"><span>5.6.3 Functions that Rearrange Lists<a class="copiable-link" href="#Functions-that-Rearrange-Lists"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-rearrangement-of-lists"></a>
+<a class="index-entry-id" id="index-reordering_002c-of-elements-in-lists"></a>
+<a class="index-entry-id" id="index-modification-of-lists"></a>
 
 <p>Here are some functions that rearrange lists destructively by
-modifying the <small>CDR</small>s of their component cons cells.  These functions
+modifying the <small class="sc">CDR</small>s of their component cons cells.  These functions
 are destructive because they chew up the original lists passed
 to them as arguments, relinking their cons cells to form a new list that
 is the returned value.
 </p>
-<p>See <code>delq</code>, in <a href="Sets-And-Lists.html">Sets And Lists</a>, for another function
+<p>See <code class="code">delq</code>, in <a class="ref" href="Sets-And-Lists.html">Using Lists as Sets</a>, for another function
 that modifies cons cells.
 </p>
-<dl>
-<dt id="index-nconc">Function: <strong>nconc</strong> <em>&amp;rest lists</em></dt>
-<dd><span id="index-concatenating-lists"></span>
-<span id="index-joining-lists"></span>
-<p>This function returns a list containing all the elements of <var>lists</var>.
-Unlike <code>append</code> (see <a href="Building-Lists.html">Building Lists</a>), the <var>lists</var> are
-<em>not</em> copied.  Instead, the last <small>CDR</small> of each of the
-<var>lists</var> is changed to refer to the following list.  The last of the
-<var>lists</var> is not altered.  For example:
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-nconc"><span class="category-def">Function: </span><span><strong class="def-name">nconc</strong> <var class="def-var-arguments">&amp;rest lists</var><a class="copiable-link" href="#index-nconc"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-concatenating-lists"></a>
+<a class="index-entry-id" id="index-joining-lists"></a>
+<p>This function returns a list containing all the elements of <var class="var">lists</var>.
+Unlike <code class="code">append</code> (see <a class="pxref" href="Building-Lists.html">Building Cons Cells and Lists</a>), the <var class="var">lists</var> are
+<em class="emph">not</em> copied.  Instead, the last <small class="sc">CDR</small> of each of the
+<var class="var">lists</var> is changed to refer to the following list.  The last of the
+<var class="var">lists</var> is not altered.  For example:
 </p>
 <div class="example">
-<pre class="example">(setq x '(1 2 3))
+<div class="group"><pre class="example-preformatted">(setq x '(1 2 3))
      &rArr; (1 2 3)
-</pre><pre class="example">(nconc x '(4 5))
+</pre></div><div class="group"><pre class="example-preformatted">(nconc x '(4 5))
      &rArr; (1 2 3 4 5)
-</pre><pre class="example">x
+</pre></div><div class="group"><pre class="example-preformatted">x
      &rArr; (1 2 3 4 5)
-</pre></div>
+</pre></div></div>
 
-<p>Since the last argument of <code>nconc</code> is not itself modified, it is
-reasonable to use a constant list, such as <code>'(4 5)</code>, as in the
+<p>Since the last argument of <code class="code">nconc</code> is not itself modified, it is
+reasonable to use a constant list, such as <code class="code">'(4 5)</code>, as in the
 above example.  For the same reason, the last argument need not be a
 list:
 </p>
 <div class="example">
-<pre class="example">(setq x '(1 2 3))
+<div class="group"><pre class="example-preformatted">(setq x '(1 2 3))
      &rArr; (1 2 3)
-</pre><pre class="example">(nconc x 'z)
+</pre></div><div class="group"><pre class="example-preformatted">(nconc x 'z)
      &rArr; (1 2 3 . z)
-</pre><pre class="example">x
+</pre></div><div class="group"><pre class="example-preformatted">x
      &rArr; (1 2 3 . z)
-</pre></div>
+</pre></div></div>
 
 <p>However, the other arguments (all but the last) must be lists.
 </p>
 <p>A common pitfall is to use a quoted constant list as a non-last
-argument to <code>nconc</code>.  If you do this, your program will change
+argument to <code class="code">nconc</code>.  If you do this, your program will change
 each time you run it!  Here is what happens:
 </p>
-<div class="example">
-<pre class="example">(defun add-foo (x)            ; <span class="roman">We want this function to add</span>
-  (nconc '(foo) x))           ;   <span class="roman"><code>foo</code> to the front of its arg.</span>
-</pre><pre class="example">
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun add-foo (x)            ; <span class="r">We want this function to add</span>
+  (nconc '(foo) x))           ;   <span class="r"><code class="code">foo</code> to the front of its arg.</span>
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(symbol-function 'add-foo)
+</pre><div class="group"><pre class="example-preformatted">(symbol-function 'add-foo)
      &rArr; (lambda (x) (nconc (quote (foo)) x))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(setq xx (add-foo '(1 2)))    ; <span class="roman">It seems to work.</span>
+</pre><div class="group"><pre class="example-preformatted">(setq xx (add-foo '(1 2)))    ; <span class="r">It seems to work.</span>
      &rArr; (foo 1 2)
-</pre><pre class="example">(setq xy (add-foo '(3 4)))    ; <span class="roman">What happened?</span>
+</pre></div><div class="group"><pre class="example-preformatted">(setq xy (add-foo '(3 4)))    ; <span class="r">What happened?</span>
      &rArr; (foo 1 2 3 4)
-</pre><pre class="example">(eq xx xy)
+</pre></div><div class="group"><pre class="example-preformatted">(eq xx xy)
      &rArr; t
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(symbol-function 'add-foo)
+</pre><div class="group"><pre class="example-preformatted">(symbol-function 'add-foo)
      &rArr; (lambda (x) (nconc (quote (foo 1 2 3 4) x)))
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Setcdr.html" accesskey="p" rel="prev">Setcdr</a>, Up: <a href="Modifying-Lists.html" accesskey="u" rel="up">Modifying Lists</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Setcdr.html">Altering the CDR of a List</a>, Up: <a href="Modifying-Lists.html">Modifying Existing List Structure</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

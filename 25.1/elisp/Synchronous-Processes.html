@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Synchronous Processes (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Synchronous Processes (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,12 @@ developing GNU and promoting software freedom." -->
 <link href="Shell-Arguments.html" rel="prev" title="Shell Arguments">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,50 +50,51 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Synchronous-Processes"></span><div class="header">
+<div class="section-level-extent" id="Synchronous-Processes">
+<div class="nav-panel">
 <p>
-Next: <a href="Asynchronous-Processes.html" accesskey="n" rel="next">Asynchronous Processes</a>, Previous: <a href="Shell-Arguments.html" accesskey="p" rel="prev">Shell Arguments</a>, Up: <a href="Processes.html" accesskey="u" rel="up">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Asynchronous-Processes.html" accesskey="n" rel="next">Creating an Asynchronous Process</a>, Previous: <a href="Shell-Arguments.html" accesskey="p" rel="prev">Shell Arguments</a>, Up: <a href="Processes.html" accesskey="u" rel="up">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Creating-a-Synchronous-Process"></span><h3 class="section">36.3 Creating a Synchronous Process</h3>
-<span id="index-synchronous-subprocess"></span>
+<h3 class="section" id="Creating-a-Synchronous-Process"><span>36.3 Creating a Synchronous Process<a class="copiable-link" href="#Creating-a-Synchronous-Process"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-synchronous-subprocess"></a>
 
-<p>After a <em>synchronous process</em> is created, Emacs waits for the
+<p>After a <em class="dfn">synchronous process</em> is created, Emacs waits for the
 process to terminate before continuing.  Starting Dired on GNU or
-Unix<a id="DOCF18" href="#FOOT18"><sup>18</sup></a> is an example of this: it
-runs <code>ls</code> in a synchronous process, then modifies the output
+Unix<a class="footnote" id="DOCF18" href="#FOOT18"><sup>18</sup></a> is an example of this: it
+runs <code class="code">ls</code> in a synchronous process, then modifies the output
 slightly.  Because the process is synchronous, the entire directory
 listing arrives in the buffer before Emacs tries to do anything with it.
 </p>
 <p>While Emacs waits for the synchronous subprocess to terminate, the
-user can quit by typing <kbd>C-g</kbd>.  The first <kbd>C-g</kbd> tries to kill
-the subprocess with a <code>SIGINT</code> signal; but it waits until the
+user can quit by typing <kbd class="kbd">C-g</kbd>.  The first <kbd class="kbd">C-g</kbd> tries to kill
+the subprocess with a <code class="code">SIGINT</code> signal; but it waits until the
 subprocess actually terminates before quitting.  If during that time the
-user types another <kbd>C-g</kbd>, that kills the subprocess instantly with
-<code>SIGKILL</code> and quits immediately (except on MS-DOS, where killing
-other processes doesn&rsquo;t work).  See <a href="Quitting.html">Quitting</a>.
+user types another <kbd class="kbd">C-g</kbd>, that kills the subprocess instantly with
+<code class="code">SIGKILL</code> and quits immediately (except on MS-DOS, where killing
+other processes doesn&rsquo;t work).  See <a class="xref" href="Quitting.html">Quitting</a>.
 </p>
 <p>The synchronous subprocess functions return an indication of how the
 process terminated.
 </p>
 <p>The output from a synchronous subprocess is generally decoded using a
 coding system, much like text read from a file.  The input sent to a
-subprocess by <code>call-process-region</code> is encoded using a coding
-system, much like text written into a file.  See <a href="Coding-Systems.html">Coding Systems</a>.
+subprocess by <code class="code">call-process-region</code> is encoded using a coding
+system, much like text written into a file.  See <a class="xref" href="Coding-Systems.html">Coding Systems</a>.
 </p>
-<dl>
-<dt id="index-call_002dprocess">Function: <strong>call-process</strong> <em>program &amp;optional infile destination display &amp;rest args</em></dt>
-<dd><p>This function calls <var>program</var> and waits for it to finish.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-call_002dprocess"><span class="category-def">Function: </span><span><strong class="def-name">call-process</strong> <var class="def-var-arguments">program &amp;optional infile destination display &amp;rest args</var><a class="copiable-link" href="#index-call_002dprocess"> &para;</a></span></dt>
+<dd><p>This function calls <var class="var">program</var> and waits for it to finish.
 </p>
 <p>The current working directory of the subprocess is
-<code>default-directory</code>.
+<code class="code">default-directory</code>.
 </p>
-<p>The standard input for the new process comes from file <var>infile</var> if
-<var>infile</var> is not <code>nil</code>, and from the null device otherwise.
-The argument <var>destination</var> says where to put the process output.
+<p>The standard input for the new process comes from file <var class="var">infile</var> if
+<var class="var">infile</var> is not <code class="code">nil</code>, and from the null device otherwise.
+The argument <var class="var">destination</var> says where to put the process output.
 Here are the possibilities:
 </p>
-<dl compact="compact">
+<dl class="table">
 <dt>a buffer</dt>
 <dd><p>Insert the output in that buffer, before point.  This includes both the
 standard output stream and the standard error stream of the process.
@@ -109,16 +104,16 @@ standard output stream and the standard error stream of the process.
 <dd><p>Insert the output in a buffer with that name, before point.
 </p>
 </dd>
-<dt><code>t</code></dt>
+<dt><code class="code">t</code></dt>
 <dd><p>Insert the output in the current buffer, before point.
 </p>
 </dd>
-<dt><code>nil</code></dt>
+<dt><code class="code">nil</code></dt>
 <dd><p>Discard the output.
 </p>
 </dd>
 <dt>0</dt>
-<dd><p>Discard the output, and return <code>nil</code> immediately without waiting
+<dd><p>Discard the output, and return <code class="code">nil</code> immediately without waiting
 for the subprocess to finish.
 </p>
 <p>In this case, the process is not truly synchronous, since it can run in
@@ -130,17 +125,17 @@ function returns.
 work there.
 </p>
 </dd>
-<dt><code>(:file <var>file-name</var>)</code></dt>
+<dt><code class="code">(:file <var class="var">file-name</var>)</code></dt>
 <dd><p>Send the output to the file name specified, overwriting it if it
 already exists.
 </p>
 </dd>
-<dt><code>(<var>real-destination</var> <var>error-destination</var>)</code></dt>
+<dt><code class="code">(<var class="var">real-destination</var> <var class="var">error-destination</var>)</code></dt>
 <dd><p>Keep the standard output stream separate from the standard error stream;
-deal with the ordinary output as specified by <var>real-destination</var>,
-and dispose of the error output according to <var>error-destination</var>.
-If <var>error-destination</var> is <code>nil</code>, that means to discard the
-error output, <code>t</code> means mix it with the ordinary output, and a
+deal with the ordinary output as specified by <var class="var">real-destination</var>,
+and dispose of the error output according to <var class="var">error-destination</var>.
+If <var class="var">error-destination</var> is <code class="code">nil</code>, that means to discard the
+error output, <code class="code">t</code> means mix it with the ordinary output, and a
 string specifies a file name to redirect error output into.
 </p>
 <p>You can&rsquo;t directly specify a buffer to put the error output in; that is
@@ -150,228 +145,229 @@ buffer when the subprocess finishes.
 </p></dd>
 </dl>
 
-<p>If <var>display</var> is non-<code>nil</code>, then <code>call-process</code> redisplays
+<p>If <var class="var">display</var> is non-<code class="code">nil</code>, then <code class="code">call-process</code> redisplays
 the buffer as output is inserted.  (However, if the coding system chosen
-for decoding output is <code>undecided</code>, meaning deduce the encoding
+for decoding output is <code class="code">undecided</code>, meaning deduce the encoding
 from the actual data, then redisplay sometimes cannot continue once
-non-<acronym>ASCII</acronym> characters are encountered.  There are fundamental
-reasons why it is hard to fix this; see <a href="Output-from-Processes.html">Output from Processes</a>.)
+non-<abbr class="acronym">ASCII</abbr> characters are encountered.  There are fundamental
+reasons why it is hard to fix this; see <a class="ref" href="Output-from-Processes.html">Receiving Output from Processes</a>.)
 </p>
-<p>Otherwise the function <code>call-process</code> does no redisplay, and the
+<p>Otherwise the function <code class="code">call-process</code> does no redisplay, and the
 results become visible on the screen only when Emacs redisplays that
 buffer in the normal course of events.
 </p>
-<p>The remaining arguments, <var>args</var>, are strings that specify command
+<p>The remaining arguments, <var class="var">args</var>, are strings that specify command
 line arguments for the program.  Each string is passed to
-<var>program</var> as a separate argument.
+<var class="var">program</var> as a separate argument.
 </p>
-<p>The value returned by <code>call-process</code> (unless you told it not to
+<p>The value returned by <code class="code">call-process</code> (unless you told it not to
 wait) indicates the reason for process termination.  A number gives the
 exit status of the subprocess; 0 means success, and any other value
 means failure.  If the process terminated with a signal,
-<code>call-process</code> returns a string describing the signal.  If you
-told <code>call-process</code> not to wait, it returns <code>nil</code>.
+<code class="code">call-process</code> returns a string describing the signal.  If you
+told <code class="code">call-process</code> not to wait, it returns <code class="code">nil</code>.
 </p>
-<p>In the examples below, the buffer &lsquo;<samp>foo</samp>&rsquo; is current.
+<p>In the examples below, the buffer &lsquo;<samp class="samp">foo</samp>&rsquo; is current.
 </p>
-<div class="example">
-<pre class="example">(call-process &quot;pwd&quot; nil t)
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(call-process &quot;pwd&quot; nil t)
      &rArr; 0
 
 ---------- Buffer: foo ----------
 /home/lewis/manual
 ---------- Buffer: foo ----------
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(call-process &quot;grep&quot; nil &quot;bar&quot; nil &quot;lewis&quot; &quot;/etc/passwd&quot;)
+</pre><div class="group"><pre class="example-preformatted">(call-process &quot;grep&quot; nil &quot;bar&quot; nil &quot;lewis&quot; &quot;/etc/passwd&quot;)
      &rArr; 0
 
 ---------- Buffer: bar ----------
 lewis:x:1001:1001:Bil Lewis,,,,:/home/lewis:/bin/bash
 
 ---------- Buffer: bar ----------
-</pre></div>
+</pre></div></div>
 
-<p>Here is an example of the use of <code>call-process</code>, as used to
-be found in the definition of the <code>insert-directory</code> function:
+<p>Here is an example of the use of <code class="code">call-process</code>, as used to
+be found in the definition of the <code class="code">insert-directory</code> function:
 </p>
-<div class="example">
-<pre class="example">(call-process insert-directory-program nil t nil switches
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(call-process insert-directory-program nil t nil switches
               (if full-directory-p
                   (concat (file-name-as-directory file) &quot;.&quot;)
                 file))
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-process_002dfile">Function: <strong>process-file</strong> <em>program &amp;optional infile buffer display &amp;rest args</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-process_002dfile"><span class="category-def">Function: </span><span><strong class="def-name">process-file</strong> <var class="def-var-arguments">program &amp;optional infile buffer display &amp;rest args</var><a class="copiable-link" href="#index-process_002dfile"> &para;</a></span></dt>
 <dd><p>This function processes files synchronously in a separate process.  It
-is similar to <code>call-process</code>, but may invoke a file handler based
-on the value of the variable <code>default-directory</code>, which specifies
+is similar to <code class="code">call-process</code>, but may invoke a file handler based
+on the value of the variable <code class="code">default-directory</code>, which specifies
 the current working directory of the subprocess.
 </p>
 <p>The arguments are handled in almost the same way as for
-<code>call-process</code>, with the following differences:
+<code class="code">call-process</code>, with the following differences:
 </p>
 <p>Some file handlers may not support all combinations and forms of the
-arguments <var>infile</var>, <var>buffer</var>, and <var>display</var>.  For example,
-some file handlers might behave as if <var>display</var> were <code>nil</code>,
+arguments <var class="var">infile</var>, <var class="var">buffer</var>, and <var class="var">display</var>.  For example,
+some file handlers might behave as if <var class="var">display</var> were <code class="code">nil</code>,
 regardless of the value actually passed.  As another example, some
 file handlers might not support separating standard output and error
-output by way of the <var>buffer</var> argument.
+output by way of the <var class="var">buffer</var> argument.
 </p>
 <p>If a file handler is invoked, it determines the program to run based
-on the first argument <var>program</var>.  For instance, suppose that a
+on the first argument <var class="var">program</var>.  For instance, suppose that a
 handler for remote files is invoked.  Then the path that is used for
-searching for the program might be different from <code>exec-path</code>.
+searching for the program might be different from <code class="code">exec-path</code>.
 </p>
-<p>The second argument <var>infile</var> may invoke a file handler.  The file
+<p>The second argument <var class="var">infile</var> may invoke a file handler.  The file
 handler could be different from the handler chosen for the
-<code>process-file</code> function itself.  (For example,
-<code>default-directory</code> could be on one remote host, and
-<var>infile</var> on a different remote host.  Or <code>default-directory</code>
-could be non-special, whereas <var>infile</var> is on a remote host.)
+<code class="code">process-file</code> function itself.  (For example,
+<code class="code">default-directory</code> could be on one remote host, and
+<var class="var">infile</var> on a different remote host.  Or <code class="code">default-directory</code>
+could be non-special, whereas <var class="var">infile</var> is on a remote host.)
 </p>
-<p>If <var>buffer</var> is a list of the form <code>(<var>real-destination</var>
-<var>error-destination</var>)</code>, and <var>error-destination</var> names a file,
-then the same remarks as for <var>infile</var> apply.
+<p>If <var class="var">buffer</var> is a list of the form <code class="code">(<var class="var">real-destination</var>
+<var class="var">error-destination</var>)</code>, and <var class="var">error-destination</var> names a file,
+then the same remarks as for <var class="var">infile</var> apply.
 </p>
-<p>The remaining arguments (<var>args</var>) will be passed to the process
+<p>The remaining arguments (<var class="var">args</var>) will be passed to the process
 verbatim.  Emacs is not involved in processing file names that are
-present in <var>args</var>.  To avoid confusion, it may be best to avoid
-absolute file names in <var>args</var>, but rather to specify all file
-names as relative to <code>default-directory</code>.  The function
-<code>file-relative-name</code> is useful for constructing such relative
+present in <var class="var">args</var>.  To avoid confusion, it may be best to avoid
+absolute file names in <var class="var">args</var>, but rather to specify all file
+names as relative to <code class="code">default-directory</code>.  The function
+<code class="code">file-relative-name</code> is useful for constructing such relative
 file names.
 </p></dd></dl>
 
-<dl>
-<dt id="index-process_002dfile_002dside_002deffects">Variable: <strong>process-file-side-effects</strong></dt>
-<dd><p>This variable indicates whether a call of <code>process-file</code> changes
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-process_002dfile_002dside_002deffects"><span class="category-def">Variable: </span><span><strong class="def-name">process-file-side-effects</strong><a class="copiable-link" href="#index-process_002dfile_002dside_002deffects"> &para;</a></span></dt>
+<dd><p>This variable indicates whether a call of <code class="code">process-file</code> changes
 remote files.
 </p>
-<p>By default, this variable is always set to <code>t</code>, meaning that a
-call of <code>process-file</code> could potentially change any file on a
-remote host.  When set to <code>nil</code>, a file handler could optimize
+<p>By default, this variable is always set to <code class="code">t</code>, meaning that a
+call of <code class="code">process-file</code> could potentially change any file on a
+remote host.  When set to <code class="code">nil</code>, a file handler could optimize
 its behavior with respect to remote file attribute caching.
 </p>
 <p>You should only ever change this variable with a let-binding; never
-with <code>setq</code>.
+with <code class="code">setq</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-call_002dprocess_002dregion">Function: <strong>call-process-region</strong> <em>start end program &amp;optional delete destination display &amp;rest args</em></dt>
-<dd><p>This function sends the text from <var>start</var> to <var>end</var> as
-standard input to a process running <var>program</var>.  It deletes the text
-sent if <var>delete</var> is non-<code>nil</code>; this is useful when
-<var>destination</var> is <code>t</code>, to insert the output in the current
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-call_002dprocess_002dregion"><span class="category-def">Function: </span><span><strong class="def-name">call-process-region</strong> <var class="def-var-arguments">start end program &amp;optional delete destination display &amp;rest args</var><a class="copiable-link" href="#index-call_002dprocess_002dregion"> &para;</a></span></dt>
+<dd><p>This function sends the text from <var class="var">start</var> to <var class="var">end</var> as
+standard input to a process running <var class="var">program</var>.  It deletes the text
+sent if <var class="var">delete</var> is non-<code class="code">nil</code>; this is useful when
+<var class="var">destination</var> is <code class="code">t</code>, to insert the output in the current
 buffer in place of the input.
 </p>
-<p>The arguments <var>destination</var> and <var>display</var> control what to do
+<p>The arguments <var class="var">destination</var> and <var class="var">display</var> control what to do
 with the output from the subprocess, and whether to update the display
 as it comes in.  For details, see the description of
-<code>call-process</code>, above.  If <var>destination</var> is the integer 0,
-<code>call-process-region</code> discards the output and returns <code>nil</code>
+<code class="code">call-process</code>, above.  If <var class="var">destination</var> is the integer 0,
+<code class="code">call-process-region</code> discards the output and returns <code class="code">nil</code>
 immediately, without waiting for the subprocess to finish (this only
 works if asynchronous subprocesses are supported; i.e., not on MS-DOS).
 </p>
-<p>The remaining arguments, <var>args</var>, are strings that specify command
+<p>The remaining arguments, <var class="var">args</var>, are strings that specify command
 line arguments for the program.
 </p>
-<p>The return value of <code>call-process-region</code> is just like that of
-<code>call-process</code>: <code>nil</code> if you told it to return without
+<p>The return value of <code class="code">call-process-region</code> is just like that of
+<code class="code">call-process</code>: <code class="code">nil</code> if you told it to return without
 waiting; otherwise, a number or string which indicates how the
 subprocess terminated.
 </p>
-<p>In the following example, we use <code>call-process-region</code> to run the
-<code>cat</code> utility, with standard input being the first five characters
-in buffer &lsquo;<samp>foo</samp>&rsquo; (the word &lsquo;<samp>input</samp>&rsquo;).  <code>cat</code> copies its
+<p>In the following example, we use <code class="code">call-process-region</code> to run the
+<code class="code">cat</code> utility, with standard input being the first five characters
+in buffer &lsquo;<samp class="samp">foo</samp>&rsquo; (the word &lsquo;<samp class="samp">input</samp>&rsquo;).  <code class="code">cat</code> copies its
 standard input into its standard output.  Since the argument
-<var>destination</var> is <code>t</code>, this output is inserted in the current
+<var class="var">destination</var> is <code class="code">t</code>, this output is inserted in the current
 buffer.
 </p>
-<div class="example">
-<pre class="example">---------- Buffer: foo ----------
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
 input&lowast;
 ---------- Buffer: foo ----------
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(call-process-region 1 6 &quot;cat&quot; nil t)
+</pre><div class="group"><pre class="example-preformatted">(call-process-region 1 6 &quot;cat&quot; nil t)
      &rArr; 0
 
 ---------- Buffer: foo ----------
 inputinput&lowast;
 ---------- Buffer: foo ----------
-</pre></div>
+</pre></div></div>
 
-<p>For example, the <code>shell-command-on-region</code> command uses
-<code>call-process-region</code> in a manner similar to this:
+<p>For example, the <code class="code">shell-command-on-region</code> command uses
+<code class="code">call-process-region</code> in a manner similar to this:
 </p>
-<div class="example">
-<pre class="example">(call-process-region
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(call-process-region
  start end
- shell-file-name      ; <span class="roman">name of program</span>
- nil                  ; <span class="roman">do not delete region</span>
- buffer               ; <span class="roman">send output to <code>buffer</code></span>
- nil                  ; <span class="roman">no redisplay during output</span>
- &quot;-c&quot; command)        ; <span class="roman">arguments for the shell</span>
-</pre></div>
+ shell-file-name      ; <span class="r">name of program</span>
+ nil                  ; <span class="r">do not delete region</span>
+ buffer               ; <span class="r">send output to <code class="code">buffer</code></span>
+ nil                  ; <span class="r">no redisplay during output</span>
+ &quot;-c&quot; command)        ; <span class="r">arguments for the shell</span>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-call_002dprocess_002dshell_002dcommand">Function: <strong>call-process-shell-command</strong> <em>command &amp;optional infile destination display</em></dt>
-<dd><p>This function executes the shell command <var>command</var> synchronously.
-The other arguments are handled as in <code>call-process</code>.  An old
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-call_002dprocess_002dshell_002dcommand"><span class="category-def">Function: </span><span><strong class="def-name">call-process-shell-command</strong> <var class="def-var-arguments">command &amp;optional infile destination display</var><a class="copiable-link" href="#index-call_002dprocess_002dshell_002dcommand"> &para;</a></span></dt>
+<dd><p>This function executes the shell command <var class="var">command</var> synchronously.
+The other arguments are handled as in <code class="code">call-process</code>.  An old
 calling convention allowed passing any number of additional arguments
-after <var>display</var>, which were concatenated to <var>command</var>; this is
+after <var class="var">display</var>, which were concatenated to <var class="var">command</var>; this is
 still supported, but strongly discouraged.
 </p></dd></dl>
 
-<dl>
-<dt id="index-process_002dfile_002dshell_002dcommand">Function: <strong>process-file-shell-command</strong> <em>command &amp;optional infile destination display</em></dt>
-<dd><p>This function is like <code>call-process-shell-command</code>, but uses
-<code>process-file</code> internally.  Depending on <code>default-directory</code>,
-<var>command</var> can be executed also on remote hosts.  An old calling
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-process_002dfile_002dshell_002dcommand"><span class="category-def">Function: </span><span><strong class="def-name">process-file-shell-command</strong> <var class="def-var-arguments">command &amp;optional infile destination display</var><a class="copiable-link" href="#index-process_002dfile_002dshell_002dcommand"> &para;</a></span></dt>
+<dd><p>This function is like <code class="code">call-process-shell-command</code>, but uses
+<code class="code">process-file</code> internally.  Depending on <code class="code">default-directory</code>,
+<var class="var">command</var> can be executed also on remote hosts.  An old calling
 convention allowed passing any number of additional arguments after
-<var>display</var>, which were concatenated to <var>command</var>; this is still
+<var class="var">display</var>, which were concatenated to <var class="var">command</var>; this is still
 supported, but strongly discouraged.
 </p></dd></dl>
 
-<dl>
-<dt id="index-shell_002dcommand_002dto_002dstring">Function: <strong>shell-command-to-string</strong> <em>command</em></dt>
-<dd><p>This function executes <var>command</var> (a string) as a shell command,
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-shell_002dcommand_002dto_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">shell-command-to-string</strong> <var class="def-var-arguments">command</var><a class="copiable-link" href="#index-shell_002dcommand_002dto_002dstring"> &para;</a></span></dt>
+<dd><p>This function executes <var class="var">command</var> (a string) as a shell command,
 then returns the command&rsquo;s output as a string.
 </p></dd></dl>
 
 
-<dl>
-<dt id="index-process_002dlines">Function: <strong>process-lines</strong> <em>program &amp;rest args</em></dt>
-<dd><p>This function runs <var>program</var>, waits for it to finish, and returns
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-process_002dlines"><span class="category-def">Function: </span><span><strong class="def-name">process-lines</strong> <var class="def-var-arguments">program &amp;rest args</var><a class="copiable-link" href="#index-process_002dlines"> &para;</a></span></dt>
+<dd><p>This function runs <var class="var">program</var>, waits for it to finish, and returns
 its output as a list of strings.  Each string in the list holds a
 single line of text output by the program; the end-of-line characters
-are stripped from each line.  The arguments beyond <var>program</var>,
-<var>args</var>, are strings that specify command-line arguments with which
+are stripped from each line.  The arguments beyond <var class="var">program</var>,
+<var class="var">args</var>, are strings that specify command-line arguments with which
 to run the program.
 </p>
-<p>If <var>program</var> exits with a non-zero exit status, this function
+<p>If <var class="var">program</var> exits with a non-zero exit status, this function
 signals an error.
 </p>
-<p>This function works by calling <code>call-process</code>, so program output
-is decoded in the same way as for <code>call-process</code>.
+<p>This function works by calling <code class="code">call-process</code>, so program output
+is decoded in the same way as for <code class="code">call-process</code>.
 </p></dd></dl>
 
-<div class="footnote">
+</div>
+<div class="footnotes-segment">
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h5><a id="FOOT18" href="#DOCF18">(18)</a></h3>
+<h5 class="footnote-body-heading"><a id="FOOT18" href="#DOCF18">(18)</a></h5>
 <p>On other systems, Emacs uses a Lisp emulation of
-<code>ls</code>; see <a href="Contents-of-Directories.html">Contents of Directories</a>.</p>
+<code class="code">ls</code>; see <a class="ref" href="Contents-of-Directories.html">Contents of Directories</a>.</p>
 </div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Asynchronous-Processes.html" accesskey="n" rel="next">Asynchronous Processes</a>, Previous: <a href="Shell-Arguments.html" accesskey="p" rel="prev">Shell Arguments</a>, Up: <a href="Processes.html" accesskey="u" rel="up">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Asynchronous-Processes.html">Creating an Asynchronous Process</a>, Previous: <a href="Shell-Arguments.html">Shell Arguments</a>, Up: <a href="Processes.html">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

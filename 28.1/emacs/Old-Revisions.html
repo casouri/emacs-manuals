@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.1.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Old Revisions (GNU Emacs Manual)</title>
+
+<meta name="description" content="Old Revisions (GNU Emacs Manual)">
+<meta name="keywords" content="Old Revisions (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Version-Control.html" rel="up" title="Version Control">
+<link href="VC-Change-Log.html" rel="next" title="VC Change Log">
+<link href="Registering.html" rel="prev" title="Registering">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Old-Revisions">
+<div class="nav-panel">
+<p>
+Next: <a href="VC-Change-Log.html" accesskey="n" rel="next">VC Change Log</a>, Previous: <a href="Registering.html" accesskey="p" rel="prev">Registering a File for Version Control</a>, Up: <a href="Version-Control.html" accesskey="u" rel="up">Version Control</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Examining-And-Comparing-Old-Revisions"><span>28.1.6 Examining And Comparing Old Revisions<a class="copiable-link" href="#Examining-And-Comparing-Old-Revisions"> &para;</a></span></h4>
+
+<dl class="table">
+<dt><kbd class="kbd">C-x v =</kbd></dt>
+<dd><p>Compare the work files in the current VC fileset with the versions you
+started from (<code class="code">vc-diff</code>).  With a prefix argument, prompt for two
+revisions of the current VC fileset and compare them.  You can also
+call this command from a Dired buffer (see <a class="pxref" href="Dired.html">Dired, the Directory Editor</a>).
+</p>
+</dd>
+<dt><kbd class="kbd">M-x vc-ediff</kbd></dt>
+<dd><p>Like <kbd class="kbd">C-x v =</kbd>, but using Ediff.  See <a data-manual="ediff" href="https://www.gnu.org/software/emacs/manual/html_node/ediff/index.html#Top">Ediff</a> in <cite class="cite">The
+Ediff Manual</cite>.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v D</kbd></dt>
+<dd><p>Compare the entire working tree to the revision you started from
+(<code class="code">vc-root-diff</code>).  With a prefix argument, prompt for two
+revisions and compare their trees.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v ~</kbd></dt>
+<dd><p>Prompt for a revision of the current file, and visit it in a separate
+buffer (<code class="code">vc-revision-other-window</code>).
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v g</kbd></dt>
+<dd><p>Display an annotated version of the current file: for each line, show
+the latest revision in which it was modified (<code class="code">vc-annotate</code>).
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-vc_002ddiff"></a>
+<a class="index-entry-id" id="index-C_002dx-v-_003d"></a>
+<p><kbd class="kbd">C-x v =</kbd> (<code class="code">vc-diff</code>) displays a <em class="dfn">diff</em> which compares
+each work file in the current VC fileset to the version(s) from which
+you started editing.  The diff is displayed in another window, in a
+Diff mode buffer (see <a class="pxref" href="Diff-Mode.html">Diff Mode</a>) named <samp class="file">*vc-diff*</samp>.  The
+usual Diff mode commands are available in this buffer.  In particular,
+the <kbd class="kbd">g</kbd> (<code class="code">revert-buffer</code>) command performs the file
+comparison again, generating a new diff.
+</p>
+<a class="index-entry-id" id="index-C_002du-C_002dx-v-_003d"></a>
+<p>To compare two arbitrary revisions of the current VC fileset, call
+<code class="code">vc-diff</code> with a prefix argument: <kbd class="kbd">C-u C-x v =</kbd>.  This
+prompts for two revision IDs (see <a class="pxref" href="VCS-Concepts.html">Concepts of Version Control</a>), and displays a
+diff between those versions of the fileset.  This will not work
+reliably for multi-file VC filesets, if the version control system is
+file-based rather than changeset-based (e.g., CVS), since then
+revision IDs for different files would not be related in any
+meaningful way.
+</p>
+<p>Instead of the revision ID, some version control systems let you
+specify revisions in other formats.  For instance, under Bazaar you
+can enter &lsquo;<samp class="samp">date:yesterday</samp>&rsquo; for the argument to <kbd class="kbd">C-u C-x v =</kbd>
+(and related commands) to specify the first revision committed after
+yesterday.  See the documentation of the version control system for
+details.
+</p>
+<p>If you invoke <kbd class="kbd">C-x v =</kbd> or <kbd class="kbd">C-u C-x v =</kbd> from a Dired buffer
+(see <a class="pxref" href="Dired.html">Dired, the Directory Editor</a>), the file listed on the current line is treated as the
+current VC fileset.
+</p>
+<a class="index-entry-id" id="index-vc_002dediff"></a>
+<p><kbd class="kbd">M-x vc-ediff</kbd> works like <kbd class="kbd">C-x v =</kbd>, except that it uses an
+Ediff session.  See <a data-manual="ediff" href="https://www.gnu.org/software/emacs/manual/html_node/ediff/index.html#Top">Ediff</a> in <cite class="cite">The Ediff Manual</cite>.
+</p>
+<a class="index-entry-id" id="index-vc_002droot_002ddiff"></a>
+<a class="index-entry-id" id="index-C_002dx-v-D"></a>
+<p><kbd class="kbd">C-x v D</kbd> (<code class="code">vc-root-diff</code>) is similar to <kbd class="kbd">C-x v =</kbd>, but
+it displays the changes in the entire current working tree (i.e., the
+working tree containing the current VC fileset).  If you invoke this
+command from a Dired buffer, it applies to the working tree containing
+the directory.
+</p>
+<a class="index-entry-id" id="index-vc_002droot_002dversion_002ddiff"></a>
+<a class="index-entry-id" id="index-C_002du-C_002dx-v-D"></a>
+<p>To compare two arbitrary revisions of the whole trees, call
+<code class="code">vc-root-diff</code> with a prefix argument: <kbd class="kbd">C-u C-x v D</kbd>.  This
+prompts for two revision IDs (see <a class="pxref" href="VCS-Concepts.html">Concepts of Version Control</a>), and displays a
+diff between those versions of the entire version-controlled directory
+trees (RCS, SCCS, CVS, and SRC do not support this feature).
+</p>
+<a class="index-entry-id" id="index-vc_002ddiff_002dswitches"></a>
+<p>You can customize the <code class="command">diff</code> options that <kbd class="kbd">C-x v =</kbd> and
+<kbd class="kbd">C-x v D</kbd> use for generating diffs.  The options used are taken
+from the first non-<code class="code">nil</code> value amongst the variables
+<code class="code">vc-<var class="var">backend</var>-diff-switches</code>, <code class="code">vc-diff-switches</code>, and
+<code class="code">diff-switches</code> (see <a class="pxref" href="Comparing-Files.html">Comparing Files</a>), in that order.  Here,
+<var class="var">backend</var> stands for the relevant version control system,
+e.g., <code class="code">bzr</code> for Bazaar.  Since <code class="code">nil</code> means to check the
+next variable in the sequence, either of the first two may use the
+value <code class="code">t</code> to mean no switches at all.  Most of the
+<code class="code">vc-<var class="var">backend</var>-diff-switches</code> variables default to <code class="code">nil</code>,
+but some default to <code class="code">t</code>; these are for version control systems
+whose <code class="code">diff</code> implementations do not accept common diff options,
+such as Subversion.
+</p>
+<a class="index-entry-id" id="index-vc_002drevision_002dother_002dwindow"></a>
+<a class="index-entry-id" id="index-C_002dx-v-_007e"></a>
+<p>To directly examine an older version of a file, visit the work file
+and type <kbd class="kbd">C-x v ~ <var class="var">revision</var> <kbd class="key">RET</kbd></kbd>
+(<code class="code">vc-revision-other-window</code>).  This retrieves the file version
+corresponding to <var class="var">revision</var>, saves it to
+<samp class="file"><var class="var">filename</var>.~<var class="var">revision</var>~</samp>, and visits it in a separate
+window.
+</p>
+<a class="index-entry-id" id="index-vc_002dannotate"></a>
+<a class="index-entry-id" id="index-vc_002dannotate_002dbackground_002dmode"></a>
+<a class="index-entry-id" id="index-C_002dx-v-g"></a>
+<p>Many version control systems allow you to view files <em class="dfn">annotated</em>
+with per-line revision information, by typing <kbd class="kbd">C-x v g</kbd>
+(<code class="code">vc-annotate</code>).  This creates a new &ldquo;annotate&rdquo; buffer
+displaying the file&rsquo;s text, with each line colored to show how old it
+is.  Red text is new, blue is old, and intermediate colors indicate
+intermediate ages.  By default, the color is scaled over the full
+range of ages, such that the oldest changes are blue, and the newest
+changes are red.  If the variable <code class="code">vc-annotate-background-mode</code>
+is non-<code class="code">nil</code>, the colors expressing the age of each line are
+applied to the background color, leaving the foreground at its default
+color.
+</p>
+<p>When you give a prefix argument to this command, Emacs reads two
+arguments using the minibuffer: the revision to display and annotate
+(instead of the current file contents), and the time span in days the
+color range should cover.
+</p>
+<p>From the &ldquo;annotate&rdquo; buffer, these and other color scaling options are
+available from the &lsquo;<samp class="samp">VC-Annotate</samp>&rsquo; menu.  In this buffer, you can
+also use the following keys to browse the annotations of past revisions,
+view diffs, or view log entries:
+</p>
+<dl class="table">
+<dt><kbd class="kbd">p</kbd></dt>
+<dd><p>Annotate the previous revision, i.e., the revision before the one
+currently annotated.  A numeric prefix argument is a repeat count, so
+<kbd class="kbd">C-u 10 p</kbd> would take you back 10 revisions.
+</p>
+</dd>
+<dt><kbd class="kbd">n</kbd></dt>
+<dd><p>Annotate the next revision, i.e., the revision after the one
+currently annotated.  A numeric prefix argument is a repeat count.
+</p>
+</dd>
+<dt><kbd class="kbd">j</kbd></dt>
+<dd><p>Annotate the revision indicated by the current line.
+</p>
+</dd>
+<dt><kbd class="kbd">a</kbd></dt>
+<dd><p>Annotate the revision before the one indicated by the current line.
+This is useful to see the state the file was in before the change on
+the current line was made.
+</p>
+</dd>
+<dt><kbd class="kbd">f</kbd></dt>
+<dd><p>Show in a buffer the file revision indicated by the current line.
+</p>
+</dd>
+<dt><kbd class="kbd">d</kbd></dt>
+<dd><p>Display the diff between the current line&rsquo;s revision and the previous
+revision.  This is useful to see what the current line&rsquo;s revision
+actually changed in the file.
+</p>
+</dd>
+<dt><kbd class="kbd">D</kbd></dt>
+<dd><p>Display the diff between the current line&rsquo;s revision and the previous
+revision for all files in the changeset (for VC systems that support
+changesets).  This is useful to see what the current line&rsquo;s revision
+actually changed in the tree.
+</p>
+</dd>
+<dt><kbd class="kbd">l</kbd></dt>
+<dd><p>Show the log of the current line&rsquo;s revision.  This is useful to see
+the author&rsquo;s description of the changes in the revision on the current
+line.
+</p>
+</dd>
+<dt><kbd class="kbd">w</kbd></dt>
+<dd><p>Annotate the working revision&mdash;the one you are editing.  If you used
+<kbd class="kbd">p</kbd> and <kbd class="kbd">n</kbd> to browse to other revisions, use this key to
+return to your working revision.
+</p>
+</dd>
+<dt><kbd class="kbd">v</kbd></dt>
+<dd><p>Toggle the annotation visibility.  This is useful for looking just at
+the file contents without distraction from the annotations.
+</p></dd>
+</dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="VC-Change-Log.html">VC Change Log</a>, Previous: <a href="Registering.html">Registering a File for Version Control</a>, Up: <a href="Version-Control.html">Version Control</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

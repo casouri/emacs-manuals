@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SMIE Indentation (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="SMIE Indentation (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="SMIE-Tricks.html" rel="prev" title="SMIE Tricks">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,13 +47,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="SMIE-Indentation"></span><div class="header">
+<div class="subsubsection-level-extent" id="SMIE-Indentation">
+<div class="nav-panel">
 <p>
-Next: <a href="SMIE-Indentation-Helpers.html" accesskey="n" rel="next">SMIE Indentation Helpers</a>, Previous: <a href="SMIE-Tricks.html" accesskey="p" rel="prev">SMIE Tricks</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">SMIE</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="SMIE-Indentation-Helpers.html" accesskey="n" rel="next">Helper Functions for Indentation Rules</a>, Previous: <a href="SMIE-Tricks.html" accesskey="p" rel="prev">Living With a Weak Parser</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">Simple Minded Indentation Engine</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Specifying-Indentation-Rules"></span><h4 class="subsubsection">22.7.1.6 Specifying Indentation Rules</h4>
-<span id="index-indentation-rules_002c-SMIE"></span>
+<h4 class="subsubsection" id="Specifying-Indentation-Rules"><span>22.7.1.6 Specifying Indentation Rules<a class="copiable-link" href="#Specifying-Indentation-Rules"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-indentation-rules_002c-SMIE"></a>
 
 <p>Based on the provided grammar, SMIE will be able to provide automatic
 indentation without any extra effort.  But in practice, this default
@@ -71,7 +63,7 @@ tweak it in many different cases.
 </p>
 <p>SMIE indentation is based on the idea that indentation rules should be
 as local as possible.  To this end, it relies on the idea of
-<em>virtual</em> indentation, which is the indentation that a particular
+<em class="emph">virtual</em> indentation, which is the indentation that a particular
 program point would have if it were at the beginning of a line.
 Of course, if that program point is indeed at the beginning of a line,
 its virtual indentation is its current indentation.  But if not, then
@@ -79,60 +71,61 @@ SMIE uses the indentation algorithm to compute the virtual indentation
 of that point.  Now in practice, the virtual indentation of a program
 point does not have to be identical to the indentation it would have if
 we inserted a newline before it.  To see how this works, the SMIE rule
-for indentation after a <code>{</code> in C does not care whether the
-<code>{</code> is standing on a line of its own or is at the end of the
+for indentation after a <code class="code">{</code> in C does not care whether the
+<code class="code">{</code> is standing on a line of its own or is at the end of the
 preceding line.  Instead, these different cases are handled in the
-indentation rule that decides how to indent before a <code>{</code>.
+indentation rule that decides how to indent before a <code class="code">{</code>.
 </p>
-<p>Another important concept is the notion of <em>parent</em>: The
-<em>parent</em> of a token, is the head token of the nearest enclosing
-syntactic construct.  For example, the parent of an <code>else</code> is the
-<code>if</code> to which it belongs, and the parent of an <code>if</code>, in turn,
+<p>Another important concept is the notion of <em class="emph">parent</em>: The
+<em class="emph">parent</em> of a token, is the head token of the nearest enclosing
+syntactic construct.  For example, the parent of an <code class="code">else</code> is the
+<code class="code">if</code> to which it belongs, and the parent of an <code class="code">if</code>, in turn,
 is the lead token of the surrounding construct.  The command
-<code>backward-sexp</code> jumps from a token to its parent, but there are
-some caveats: for <em>openers</em> (tokens which start a construct, like
-<code>if</code>), you need to start with point before the token, while for
+<code class="code">backward-sexp</code> jumps from a token to its parent, but there are
+some caveats: for <em class="emph">openers</em> (tokens which start a construct, like
+<code class="code">if</code>), you need to start with point before the token, while for
 others you need to start with point after the token.
-<code>backward-sexp</code> stops with point before the parent token if that is
-the <em>opener</em> of the token of interest, and otherwise it stops with
+<code class="code">backward-sexp</code> stops with point before the parent token if that is
+the <em class="emph">opener</em> of the token of interest, and otherwise it stops with
 point after the parent token.
 </p>
 <p>SMIE indentation rules are specified using a function that takes two
-arguments <var>method</var> and <var>arg</var> where the meaning of <var>arg</var> and the
-expected return value depend on <var>method</var>.
+arguments <var class="var">method</var> and <var class="var">arg</var> where the meaning of <var class="var">arg</var> and the
+expected return value depend on <var class="var">method</var>.
 </p>
-<p><var>method</var> can be:
-</p><ul>
-<li> <code>:after</code>, in which case <var>arg</var> is a token and the function
-should return the <var>offset</var> to use for indentation after <var>arg</var>.
-</li><li> <code>:before</code>, in which case <var>arg</var> is a token and the function
-should return the <var>offset</var> to use to indent <var>arg</var> itself.
-</li><li> <code>:elem</code>, in which case the function should return either the offset
-to use to indent function arguments (if <var>arg</var> is the symbol
-<code>arg</code>) or the basic indentation step (if <var>arg</var> is the symbol
-<code>basic</code>).
-</li><li> <code>:list-intro</code>, in which case <var>arg</var> is a token and the function
-should return non-<code>nil</code> if the token is followed by a list of
+<p><var class="var">method</var> can be:
+</p><ul class="itemize mark-bullet">
+<li><code class="code">:after</code>, in which case <var class="var">arg</var> is a token and the function
+should return the <var class="var">offset</var> to use for indentation after <var class="var">arg</var>.
+</li><li><code class="code">:before</code>, in which case <var class="var">arg</var> is a token and the function
+should return the <var class="var">offset</var> to use to indent <var class="var">arg</var> itself.
+</li><li><code class="code">:elem</code>, in which case the function should return either the offset
+to use to indent function arguments (if <var class="var">arg</var> is the symbol
+<code class="code">arg</code>) or the basic indentation step (if <var class="var">arg</var> is the symbol
+<code class="code">basic</code>).
+</li><li><code class="code">:list-intro</code>, in which case <var class="var">arg</var> is a token and the function
+should return non-<code class="code">nil</code> if the token is followed by a list of
 expressions (not separated by any token) rather than an expression.
 </li></ul>
 
-<p>When <var>arg</var> is a token, the function is called with point just before
-that token.  A return value of <code>nil</code> always means to fallback on the
-default behavior, so the function should return <code>nil</code> for arguments it
+<p>When <var class="var">arg</var> is a token, the function is called with point just before
+that token.  A return value of <code class="code">nil</code> always means to fallback on the
+default behavior, so the function should return <code class="code">nil</code> for arguments it
 does not expect.
 </p>
-<p><var>offset</var> can be:
-</p><ul>
-<li> <code>nil</code>: use the default indentation rule.
-</li><li> <code>(column . <var>column</var>)</code>: indent to column <var>column</var>.
-</li><li> <var>number</var>: offset by <var>number</var>, relative to a base token which is
-the current token for <code>:after</code> and its parent for <code>:before</code>.
+<p><var class="var">offset</var> can be:
+</p><ul class="itemize mark-bullet">
+<li><code class="code">nil</code>: use the default indentation rule.
+</li><li><code class="code">(column . <var class="var">column</var>)</code>: indent to column <var class="var">column</var>.
+</li><li><var class="var">number</var>: offset by <var class="var">number</var>, relative to a base token which is
+the current token for <code class="code">:after</code> and its parent for <code class="code">:before</code>.
 </li></ul>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="SMIE-Indentation-Helpers.html" accesskey="n" rel="next">SMIE Indentation Helpers</a>, Previous: <a href="SMIE-Tricks.html" accesskey="p" rel="prev">SMIE Tricks</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">SMIE</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="SMIE-Indentation-Helpers.html">Helper Functions for Indentation Rules</a>, Previous: <a href="SMIE-Tricks.html">Living With a Weak Parser</a>, Up: <a href="SMIE.html">Simple Minded Indentation Engine</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

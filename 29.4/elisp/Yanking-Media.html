@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Yanking Media (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Yanking Media (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Yanking Media (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Frames.html" rel="up" title="Frames">
+<link href="Drag-and-Drop.html" rel="next" title="Drag and Drop">
+<link href="Window-System-Selections.html" rel="prev" title="Window System Selections">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Yanking-Media">
+<div class="nav-panel">
+<p>
+Next: <a href="Drag-and-Drop.html" accesskey="n" rel="next">Drag and Drop</a>, Previous: <a href="Window-System-Selections.html" accesskey="p" rel="prev">Window System Selections</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Yanking-Media-1"><span>30.21 Yanking Media<a class="copiable-link" href="#Yanking-Media-1"> &para;</a></span></h3>
+
+<p>If you choose, for instance, &ldquo;Copy Image&rdquo; in a web browser, that
+image is put onto the clipboard, and Emacs can access it via
+<code class="code">gui-get-selection</code>.  But in general, inserting image data into
+an arbitrary buffer isn&rsquo;t very useful&mdash;you can&rsquo;t really do much with
+it by default.
+</p>
+<p>So Emacs has a system to let modes register handlers for these
+&ldquo;complicated&rdquo; selections.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-yank_002dmedia_002dhandler"><span class="category-def">Function: </span><span><strong class="def-name">yank-media-handler</strong> <var class="def-var-arguments">types handler</var><a class="copiable-link" href="#index-yank_002dmedia_002dhandler"> &para;</a></span></dt>
+<dd><p><var class="var">types</var> can be a <abbr class="acronym">MIME</abbr> media type symbol, a regexp to
+match these, or a list of these symbols and regexps.  For instance:
+</p>
+<div class="example">
+<pre class="example-preformatted">(yank-media-handler 'text/html #'my-html-handler)
+(yank-media-handler &quot;image/.*&quot; #'my-image-handler)
+</pre></div>
+
+<p>A mode can register as many handlers as required.
+</p>
+<p>The <var class="var">handler</var> function is called with two parameters: The
+<abbr class="acronym">MIME</abbr> media type symbol and the data (as a string).  The
+handler should then insert the object into the buffer, or save it, or
+do whatever is appropriate for the mode.
+</p></dd></dl>
+
+<p>The <code class="code">yank-media</code> command will consult the registered handlers in
+the current buffer, compare that with the available media types on the
+clipboard, and then pass on the matching selection to the handler (if
+any).  If there&rsquo;s more than one matching selection, the user is
+queried first.
+</p>
+<p>The <code class="code">yank-media-types</code> command can be used to explore the
+clipboard/primary selection.  It lists all the media types that are
+currently available, and can be handy when creating handlers&mdash;to see
+what data is actually available.  Some applications put a surprising
+amount of different data types on the clipboard.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Drag-and-Drop.html">Drag and Drop</a>, Previous: <a href="Window-System-Selections.html">Window System Selections</a>, Up: <a href="Frames.html">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

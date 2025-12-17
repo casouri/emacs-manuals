@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Command Overview (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Command Overview (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Command Overview (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Command-Loop.html" rel="up" title="Command Loop">
+<link href="Defining-Commands.html" rel="next" title="Defining Commands">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Command-Overview">
+<div class="nav-panel">
+<p>
+Next: <a href="Defining-Commands.html" accesskey="n" rel="next">Defining Commands</a>, Up: <a href="Command-Loop.html" accesskey="u" rel="up">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Command-Loop-Overview"><span>22.1 Command Loop Overview<a class="copiable-link" href="#Command-Loop-Overview"> &para;</a></span></h3>
+
+<p>The first thing the command loop must do is read a key sequence,
+which is a sequence of input events that translates into a command.
+It does this by calling the function <code class="code">read-key-sequence</code>.  Lisp
+programs can also call this function (see <a class="pxref" href="Key-Sequence-Input.html">Key Sequence Input</a>).
+They can also read input at a lower level with <code class="code">read-key</code> or
+<code class="code">read-event</code> (see <a class="pxref" href="Reading-One-Event.html">Reading One Event</a>), or discard pending
+input with <code class="code">discard-input</code> (see <a class="pxref" href="Event-Input-Misc.html">Miscellaneous Event Input Features</a>).
+</p>
+<p>The key sequence is translated into a command through the currently
+active keymaps.  See <a class="xref" href="Key-Lookup.html">Key Lookup</a>, for information on how this is done.
+The result should be a keyboard macro or an interactively callable
+function.  If the key is <kbd class="kbd">M-x</kbd>, then it reads the name of another
+command, which it then calls.  This is done by the command
+<code class="code">execute-extended-command</code> (see <a class="pxref" href="Interactive-Call.html">Interactive Call</a>).
+</p>
+<p>Prior to executing the command, Emacs runs <code class="code">undo-boundary</code> to
+create an undo boundary.  See <a class="xref" href="Maintaining-Undo.html">Maintaining Undo Lists</a>.
+</p>
+<p>To execute a command, Emacs first reads its arguments by calling
+<code class="code">command-execute</code> (see <a class="pxref" href="Interactive-Call.html">Interactive Call</a>).  For commands
+written in Lisp, the <code class="code">interactive</code> specification says how to read
+the arguments.  This may use the prefix argument (see <a class="pxref" href="Prefix-Command-Arguments.html">Prefix Command Arguments</a>) or may read with prompting in the minibuffer
+(see <a class="pxref" href="Minibuffers.html">Minibuffers</a>).  For example, the command <code class="code">find-file</code> has
+an <code class="code">interactive</code> specification which says to read a file name
+using the minibuffer.  The function body of <code class="code">find-file</code> does not
+use the minibuffer, so if you call <code class="code">find-file</code> as a function from
+Lisp code, you must supply the file name string as an ordinary Lisp
+function argument.
+</p>
+<p>If the command is a keyboard macro (i.e., a string or vector),
+Emacs executes it using <code class="code">execute-kbd-macro</code> (see <a class="pxref" href="Keyboard-Macros.html">Keyboard Macros</a>).
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-pre_002dcommand_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">pre-command-hook</strong><a class="copiable-link" href="#index-pre_002dcommand_002dhook"> &para;</a></span></dt>
+<dd><p>This normal hook is run by the editor command loop before it executes
+each command.  At that time, <code class="code">this-command</code> contains the command
+that is about to run, and <code class="code">last-command</code> describes the previous
+command.  See <a class="xref" href="Command-Loop-Info.html">Information from the Command Loop</a>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-post_002dcommand_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">post-command-hook</strong><a class="copiable-link" href="#index-post_002dcommand_002dhook"> &para;</a></span></dt>
+<dd><p>This normal hook is run by the editor command loop after it executes
+each command (including commands terminated prematurely by quitting or
+by errors).  At that time, <code class="code">this-command</code> refers to the command
+that just ran, and <code class="code">last-command</code> refers to the command before
+that.
+</p>
+<p>This hook is also run when Emacs first enters the command loop (at
+which point <code class="code">this-command</code> and <code class="code">last-command</code> are both
+<code class="code">nil</code>).
+</p></dd></dl>
+
+<p>Quitting is suppressed while running <code class="code">pre-command-hook</code> and
+<code class="code">post-command-hook</code>.  If an error happens while executing one of
+these hooks, it does not terminate execution of the hook; instead
+the error is silenced and the function in which the error occurred
+is removed from the hook.
+</p>
+<p>A request coming into the Emacs server (see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server">Emacs Server</a> in <cite class="cite">The GNU Emacs Manual</cite>) runs these two hooks just as a keyboard
+command does.
+</p>
+<p>Note that, when the buffer text includes very long lines, these two
+hooks are called as if they were in a <code class="code">with-restriction</code> form
+(see <a class="pxref" href="Narrowing.html">Narrowing</a>), with a
+<code class="code">long-line-optimizations-in-command-hooks</code> label and with the
+buffer narrowed to a portion around point.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Defining-Commands.html">Defining Commands</a>, Up: <a href="Command-Loop.html">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

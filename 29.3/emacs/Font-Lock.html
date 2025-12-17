@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.3.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Font Lock (GNU Emacs Manual)</title>
+
+<meta name="description" content="Font Lock (GNU Emacs Manual)">
+<meta name="keywords" content="Font Lock (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Highlight-Interactively.html" rel="next" title="Highlight Interactively">
+<link href="Text-Scale.html" rel="prev" title="Text Scale">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Font-Lock">
+<div class="nav-panel">
+<p>
+Next: <a href="Highlight-Interactively.html" accesskey="n" rel="next">Interactive Highlighting</a>, Previous: <a href="Text-Scale.html" accesskey="p" rel="prev">Text Scale</a>, Up: <a href="Display.html" accesskey="u" rel="up">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Font-Lock-mode"><span>15.13 Font Lock mode<a class="copiable-link" href="#Font-Lock-mode"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-Font-Lock-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Font-Lock"></a>
+<a class="index-entry-id" id="index-syntax-highlighting-and-coloring"></a>
+
+<p>Font Lock mode is a minor mode, always local to a particular buffer,
+which assigns faces to (or <em class="dfn">fontifies</em>) the text in the buffer.
+Each buffer&rsquo;s major mode tells Font Lock mode which text to fontify;
+for instance, programming language modes fontify syntactically
+relevant constructs like comments, strings, and function names.
+</p>
+<a class="index-entry-id" id="index-font_002dlock_002dmode"></a>
+<p>Font Lock mode is enabled by default in major modes that support it.
+To toggle it in the current buffer, type <kbd class="kbd">M-x font-lock-mode</kbd>.  A
+positive numeric argument unconditionally enables Font Lock mode, and
+a negative or zero argument disables it.
+</p>
+<a class="index-entry-id" id="index-global_002dfont_002dlock_002dmode"></a>
+<a class="index-entry-id" id="index-global_002dfont_002dlock_002dmode-1"></a>
+<p>Type <kbd class="kbd">M-x global-font-lock-mode</kbd> to toggle Font Lock mode in all
+buffers.  To impose this setting for future Emacs sessions, customize
+the variable <code class="code">global-font-lock-mode</code> (see <a class="pxref" href="Easy-Customization.html">Easy Customization Interface</a>), or add the following line to your init file:
+</p>
+<div class="example">
+<pre class="example-preformatted">(global-font-lock-mode 0)
+</pre></div>
+
+<p>If you have disabled Global Font Lock mode, you can still enable Font
+Lock for specific major modes by adding the function
+<code class="code">font-lock-mode</code> to the mode hooks (see <a class="pxref" href="Hooks.html">Hooks</a>).  For example,
+to enable Font Lock mode for editing C files, you can do this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(add-hook 'c-mode-hook 'font-lock-mode)
+</pre></div>
+
+<p>Font Lock mode uses several specifically named faces to do its job,
+including <code class="code">font-lock-string-face</code>, <code class="code">font-lock-comment-face</code>,
+and others.  The easiest way to find them all is to use <kbd class="kbd">M-x
+customize-group <kbd class="key">RET</kbd> font-lock-faces <kbd class="key">RET</kbd></kbd>.  You can then
+use that customization buffer to customize the appearance of these
+faces.  See <a class="xref" href="Face-Customization.html">Customizing Faces</a>.
+</p>
+<a class="index-entry-id" id="index-just_002din_002dtime-_0028JIT_0029-font_002dlock"></a>
+<a class="index-entry-id" id="index-background-syntax-highlighting"></a>
+<p>Fontifying very large buffers can take a long time.  To avoid large
+delays when a file is visited, Emacs initially fontifies only the
+visible portion of a buffer.  As you scroll through the buffer, each
+portion that becomes visible is fontified as soon as it is displayed;
+this type of Font Lock is called <em class="dfn">Just-In-Time</em> (or <em class="dfn">JIT</em>)
+Lock.  You can control how JIT Lock behaves, including telling it to
+perform fontification while idle, by customizing variables in the
+customization group &lsquo;<samp class="samp">jit-lock</samp>&rsquo;.  See <a class="xref" href="Specific-Customization.html">Customizing Specific Items</a>.
+</p>
+<p>The information that major modes use for determining which parts of
+buffer text to fontify and what faces to use can be based on several
+different ways of analyzing the text:
+</p>
+<ul class="itemize mark-bullet">
+<li>Search for keywords and other textual patterns based on regular
+expressions (see <a class="pxref" href="Regexp-Search.html">Regular Expression Search</a>).
+
+</li><li>Find syntactically distinct parts of text based on built-in syntax
+tables (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Tables.html#Syntax-Tables">Syntax Tables</a> in <cite class="cite">The Emacs Lisp Reference
+Manual</cite>).
+
+</li><li>Use syntax tree produced by a full-blown parser, via a special-purpose
+library, such as the tree-sitter library (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Parsing-Program-Source.html#Parsing-Program-Source">Parsing Program
+Source</a> in <cite class="cite">The Emacs Lisp Reference Manual</cite>), or an external
+program.
+</li></ul>
+
+
+<ul class="mini-toc">
+<li><a href="Traditional-Font-Lock.html" accesskey="1">Traditional Font Lock</a></li>
+<li><a href="Parser_002dbased-Font-Lock.html" accesskey="2">Parser-based Font Lock</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Highlight-Interactively.html">Interactive Highlighting</a>, Previous: <a href="Text-Scale.html">Text Scale</a>, Up: <a href="Display.html">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

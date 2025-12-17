@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Display Margins (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Display Margins (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Display-Property.html" rel="up" title="Display Property">
-<link href="Images.html" rel="next" title="Images">
 <link href="Other-Display-Specs.html" rel="prev" title="Other Display Specs">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,42 +46,43 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Display-Margins"></span><div class="header">
+<div class="subsection-level-extent" id="Display-Margins">
+<div class="nav-panel">
 <p>
-Previous: <a href="Other-Display-Specs.html" accesskey="p" rel="prev">Other Display Specs</a>, Up: <a href="Display-Property.html" accesskey="u" rel="up">Display Property</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Other-Display-Specs.html" accesskey="p" rel="prev">Other Display Specifications</a>, Up: <a href="Display-Property.html" accesskey="u" rel="up">The <code class="code">display</code> Property</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Displaying-in-the-Margins"></span><h4 class="subsection">39.16.5 Displaying in the Margins</h4>
-<span id="index-display-margins"></span>
-<span id="index-margins_002c-display"></span>
+<h4 class="subsection" id="Displaying-in-the-Margins"><span>39.16.5 Displaying in the Margins<a class="copiable-link" href="#Displaying-in-the-Margins"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-display-margins"></a>
+<a class="index-entry-id" id="index-margins_002c-display"></a>
 
-<p>A buffer can have blank areas called <em>display margins</em> on the
+<p>A buffer can have blank areas called <em class="dfn">display margins</em> on the
 left and on the right.  Ordinary text never appears in these areas,
 but you can put things into the display margins using the
-<code>display</code> property.  There is currently no way to make text or
+<code class="code">display</code> property.  There is currently no way to make text or
 images in the margin mouse-sensitive.
 </p>
 <p>The way to display something in the margins is to specify it in a
-margin display specification in the <code>display</code> property of some
+margin display specification in the <code class="code">display</code> property of some
 text.  This is a replacing display specification, meaning that the
 text you put it on does not get displayed; the margin display appears,
 but that text does not.
 </p>
-<p>A margin display specification looks like <code>((margin
-right-margin) <var>spec</var>)</code> or <code>((margin left-margin) <var>spec</var>)</code>.
-Here, <var>spec</var> is another display specification that says what to
+<p>A margin display specification looks like <code class="code">((margin
+right-margin) <var class="var">spec</var>)</code> or <code class="code">((margin left-margin) <var class="var">spec</var>)</code>.
+Here, <var class="var">spec</var> is another display specification that says what to
 display in the margin.  Typically it is a string of text to display,
 or an image descriptor.
 </p>
-<p>To display something in the margin <em>in association with</em>
+<p>To display something in the margin <em class="emph">in association with</em>
 certain buffer text, without altering or preventing the display of
-that text, put a <code>before-string</code> property on the text and put the
+that text, put a <code class="code">before-string</code> property on the text and put the
 margin display specification on the contents of the before-string.
 </p>
 <p>Note that if the string to be displayed in the margin doesn&rsquo;t
 specify a face, its face is determined using the same rules and
 priorities as it is for strings displayed in the text area
-(see <a href="Displaying-Faces.html">Displaying Faces</a>).  If this results in undesirable
+(see <a class="pxref" href="Displaying-Faces.html">Displaying Faces</a>).  If this results in undesirable
 &ldquo;leaking&rdquo; of faces into the margin, make sure the string has an
 explicit face specified for it.
 </p>
@@ -99,54 +90,55 @@ explicit face specified for it.
 them a nonzero width.  The usual way to do that is to set these
 variables:
 </p>
-<dl>
-<dt id="index-left_002dmargin_002dwidth">Variable: <strong>left-margin-width</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-left_002dmargin_002dwidth"><span class="category-def">Variable: </span><span><strong class="def-name">left-margin-width</strong><a class="copiable-link" href="#index-left_002dmargin_002dwidth"> &para;</a></span></dt>
 <dd><p>This variable specifies the width of the left margin, in character
 cell (a.k.a. &ldquo;column&rdquo;) units.  It is buffer-local in all buffers.
-A value of <code>nil</code> means no left marginal area.
+A value of <code class="code">nil</code> means no left marginal area.
 </p></dd></dl>
 
-<dl>
-<dt id="index-right_002dmargin_002dwidth">Variable: <strong>right-margin-width</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-right_002dmargin_002dwidth"><span class="category-def">Variable: </span><span><strong class="def-name">right-margin-width</strong><a class="copiable-link" href="#index-right_002dmargin_002dwidth"> &para;</a></span></dt>
 <dd><p>This variable specifies the width of the right margin, in character
-cell units.  It is buffer-local in all buffers.  A value of <code>nil</code>
+cell units.  It is buffer-local in all buffers.  A value of <code class="code">nil</code>
 means no right marginal area.
 </p></dd></dl>
 
 <p>Setting these variables does not immediately affect the window.  These
 variables are checked when a new buffer is displayed in the window.
 Thus, you can make changes take effect by calling
-<code>set-window-buffer</code>.
+<code class="code">set-window-buffer</code>.
 </p>
 <p>You can also set the margin widths immediately.
 </p>
-<dl>
-<dt id="index-set_002dwindow_002dmargins">Function: <strong>set-window-margins</strong> <em>window left &amp;optional right</em></dt>
-<dd><p>This function specifies the margin widths for window <var>window</var>, in
-character cell units.  The argument <var>left</var> controls the left
-margin, and <var>right</var> controls the right margin (default <code>0</code>).
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dwindow_002dmargins"><span class="category-def">Function: </span><span><strong class="def-name">set-window-margins</strong> <var class="def-var-arguments">window left &amp;optional right</var><a class="copiable-link" href="#index-set_002dwindow_002dmargins"> &para;</a></span></dt>
+<dd><p>This function specifies the margin widths for window <var class="var">window</var>, in
+character cell units.  The argument <var class="var">left</var> controls the left
+margin, and <var class="var">right</var> controls the right margin (default <code class="code">0</code>).
 </p>
-<p>If <var>window</var> is not large enough to accommodate margins of the
-desired width, this leaves the margins of <var>window</var> unchanged.
+<p>If <var class="var">window</var> is not large enough to accommodate margins of the
+desired width, this leaves the margins of <var class="var">window</var> unchanged.
 </p>
 <p>The values specified here may be later overridden by invoking
-<code>set-window-buffer</code> (see <a href="Buffers-and-Windows.html">Buffers and Windows</a>) on <var>window</var>
-with its <var>keep-margins</var> argument <code>nil</code> or omitted.
+<code class="code">set-window-buffer</code> (see <a class="pxref" href="Buffers-and-Windows.html">Buffers and Windows</a>) on <var class="var">window</var>
+with its <var class="var">keep-margins</var> argument <code class="code">nil</code> or omitted.
 </p></dd></dl>
 
-<dl>
-<dt id="index-window_002dmargins">Function: <strong>window-margins</strong> <em>&amp;optional window</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dmargins"><span class="category-def">Function: </span><span><strong class="def-name">window-margins</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dmargins"> &para;</a></span></dt>
 <dd><p>This function returns the width of the left and right margins of
-<var>window</var> as a cons cell of the form <code>(<var>left</var>&nbsp;.&nbsp;<var>right</var>)</code><!-- /@w -->.  If one of the two marginal areas does not exist,
-its width is returned as <code>nil</code>; if neither of the two margins exist,
-the function returns <code>(nil)</code>.  If <var>window</var> is <code>nil</code>, the
+<var class="var">window</var> as a cons cell of the form <code class="code">(<var class="var">left</var>&nbsp;.&nbsp;<var class="var">right</var>)</code><!-- /@w -->.  If one of the two marginal areas does not exist,
+its width is returned as <code class="code">nil</code>; if neither of the two margins exist,
+the function returns <code class="code">(nil)</code>.  If <var class="var">window</var> is <code class="code">nil</code>, the
 selected window is used.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Other-Display-Specs.html" accesskey="p" rel="prev">Other Display Specs</a>, Up: <a href="Display-Property.html" accesskey="u" rel="up">Display Property</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Other-Display-Specs.html">Other Display Specifications</a>, Up: <a href="Display-Property.html">The <code class="code">display</code> Property</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,10 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
-updated for Emacs version 29.0.50.
+updated for Emacs version 31.0.50.
 
-Copyright © 1985-1987, 1993-2021 Free Software Foundation,
-Inc.
+Copyright © 1985-2025 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -18,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Flymake (GNU Emacs Manual)</title>
 
 <meta name="description" content="Flymake (GNU Emacs Manual)">
@@ -28,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -36,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Grep-Searching.html" rel="prev" title="Grep Searching">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,35 +49,38 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Flymake"></span><div class="header">
+<div class="section-level-extent" id="Flymake">
+<div class="nav-panel">
 <p>
-Next: <a href="Debuggers.html" accesskey="n" rel="next">Debuggers</a>, Previous: <a href="Grep-Searching.html" accesskey="p" rel="prev">Grep Searching</a>, Up: <a href="Building.html" accesskey="u" rel="up">Building</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Debuggers.html" accesskey="n" rel="next">Running Debuggers Under Emacs</a>, Previous: <a href="Grep-Searching.html" accesskey="p" rel="prev">Searching with Grep under Emacs</a>, Up: <a href="Building.html" accesskey="u" rel="up">Compiling and Testing Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Finding-Syntax-Errors-On-The-Fly"></span><h3 class="section">27.5 Finding Syntax Errors On The Fly</h3>
-<span id="index-checking-syntax"></span>
+<h3 class="section" id="Finding-Syntax-Errors-On-The-Fly"><span>29.5 Finding Syntax Errors On The Fly<a class="copiable-link" href="#Finding-Syntax-Errors-On-The-Fly"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-checking-syntax"></a>
 
 <p>Flymake mode is a minor mode that performs on-the-fly syntax
 checking for many programming and markup languages, including C, C++,
 Perl, HTML, and TeX/LaTeX.  It is somewhat analogous to Flyspell
 mode, which performs spell checking for ordinary human languages in a
-similar fashion (see <a href="Spelling.html">Spelling</a>).  As you edit a file, Flymake mode
+similar fashion (see <a class="pxref" href="Spelling.html">Checking and Correcting Spelling</a>).  As you edit a file, Flymake mode
 runs an appropriate syntax checking tool in the background, using a
 temporary copy of the buffer.  It then parses the error and warning
 messages, and highlights the erroneous lines in the buffer.  The
 syntax checking tool used depends on the language; for example, for
 C/C++ files this is usually the C compiler.  Flymake can also use
-build tools such as <code>make</code> for checking complicated projects.
+build tools such as <code class="code">make</code> for checking complicated projects.
 </p>
-<p>To enable Flymake mode, type <kbd>M-x flymake-mode</kbd>.  You can jump
-to the errors that it finds by using <kbd>M-x flymake-goto-next-error</kbd>
-and <kbd>M-x flymake-goto-prev-error</kbd>.  To display any error messages
-associated with the current line, type <kbd>M-x
-flymake-display-err-menu-for-current-line</kbd>.
+<p>To enable Flymake mode, type <kbd class="kbd">M-x flymake-mode</kbd>.  You can jump
+to the errors that it finds by using <kbd class="kbd">M-x&nbsp;flymake-goto-next-error</kbd><!-- /@w --> and <kbd class="kbd">M-x&nbsp;flymake-goto-prev-error</kbd><!-- /@w -->.
+To display a detailed overview of the diagnostics for the current
+buffer, use the command <kbd class="kbd">M-x&nbsp;flymake-show-buffer-diagnostics</kbd><!-- /@w -->;
+to display a similar overview of diagnostics for the entire project
+(see <a class="pxref" href="Projects.html">Working with Projects</a>), use <kbd class="kbd">M-x&nbsp;flymake-show-project-diagnostics</kbd><!-- /@w -->.
 </p>
 <p>For more details about using Flymake,
-see <a href="https://www.gnu.org/software/emacs/manual/html_node/flymake/index.html#Top">Flymake</a> in <cite>The Flymake Manual</cite>.
+see <a data-manual="flymake" href="https://www.gnu.org/software/emacs/manual/html_node/flymake/index.html#Top">Flymake</a> in <cite class="cite">The Flymake Manual</cite>.
 </p>
+</div>
 
 
 

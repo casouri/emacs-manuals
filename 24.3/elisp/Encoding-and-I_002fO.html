@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Encoding and I/O (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Encoding and I/O (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Coding-System-Basics.html" rel="prev" title="Coding System Basics">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,99 +47,101 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Encoding-and-I_002fO"></span><div class="header">
+<div class="subsection-level-extent" id="Encoding-and-I_002fO">
+<div class="nav-panel">
 <p>
-Next: <a href="Lisp-and-Coding-Systems.html" accesskey="n" rel="next">Lisp and Coding Systems</a>, Previous: <a href="Coding-System-Basics.html" accesskey="p" rel="prev">Coding System Basics</a>, Up: <a href="Coding-Systems.html" accesskey="u" rel="up">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Lisp-and-Coding-Systems.html" accesskey="n" rel="next">Coding Systems in Lisp</a>, Previous: <a href="Coding-System-Basics.html" accesskey="p" rel="prev">Basic Concepts of Coding Systems</a>, Up: <a href="Coding-Systems.html" accesskey="u" rel="up">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Encoding-and-I_002fO-1"></span><h4 class="subsection">33.9.2 Encoding and I/O</h4>
+<h4 class="subsection" id="Encoding-and-I_002fO-1"><span>33.9.2 Encoding and I/O<a class="copiable-link" href="#Encoding-and-I_002fO-1"> &para;</a></span></h4>
 
 <p>The principal purpose of coding systems is for use in reading and
-writing files.  The function <code>insert-file-contents</code> uses a coding
-system to decode the file data, and <code>write-region</code> uses one to
+writing files.  The function <code class="code">insert-file-contents</code> uses a coding
+system to decode the file data, and <code class="code">write-region</code> uses one to
 encode the buffer contents.
 </p>
 <p>You can specify the coding system to use either explicitly
-(see <a href="Specifying-Coding-Systems.html">Specifying Coding Systems</a>), or implicitly using a default
-mechanism (see <a href="Default-Coding-Systems.html">Default Coding Systems</a>).  But these methods may not
+(see <a class="pxref" href="Specifying-Coding-Systems.html">Specifying a Coding System for One Operation</a>), or implicitly using a default
+mechanism (see <a class="pxref" href="Default-Coding-Systems.html">Default Coding Systems</a>).  But these methods may not
 completely specify what to do.  For example, they may choose a coding
-system such as <code>undefined</code> which leaves the character code
+system such as <code class="code">undefined</code> which leaves the character code
 conversion to be determined from the data.  In these cases, the I/O
 operation finishes the job of choosing a coding system.  Very often
 you will want to find out afterwards which coding system was chosen.
 </p>
-<dl>
-<dt id="index-buffer_002dfile_002dcoding_002dsystem">Variable: <strong>buffer-file-coding-system</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-buffer_002dfile_002dcoding_002dsystem"><span class="category-def">Variable: </span><span><strong class="def-name">buffer-file-coding-system</strong><a class="copiable-link" href="#index-buffer_002dfile_002dcoding_002dsystem"> &para;</a></span></dt>
 <dd><p>This buffer-local variable records the coding system used for saving the
-buffer and for writing part of the buffer with <code>write-region</code>.  If
+buffer and for writing part of the buffer with <code class="code">write-region</code>.  If
 the text to be written cannot be safely encoded using the coding system
 specified by this variable, these operations select an alternative
-encoding by calling the function <code>select-safe-coding-system</code>
-(see <a href="User_002dChosen-Coding-Systems.html">User-Chosen Coding Systems</a>).  If selecting a different encoding
+encoding by calling the function <code class="code">select-safe-coding-system</code>
+(see <a class="pxref" href="User_002dChosen-Coding-Systems.html">User-Chosen Coding Systems</a>).  If selecting a different encoding
 requires to ask the user to specify a coding system,
-<code>buffer-file-coding-system</code> is updated to the newly selected coding
+<code class="code">buffer-file-coding-system</code> is updated to the newly selected coding
 system.
 </p>
-<p><code>buffer-file-coding-system</code> does <em>not</em> affect sending text
+<p><code class="code">buffer-file-coding-system</code> does <em class="emph">not</em> affect sending text
 to a subprocess.
 </p></dd></dl>
 
-<dl>
-<dt id="index-save_002dbuffer_002dcoding_002dsystem">Variable: <strong>save-buffer-coding-system</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-save_002dbuffer_002dcoding_002dsystem"><span class="category-def">Variable: </span><span><strong class="def-name">save-buffer-coding-system</strong><a class="copiable-link" href="#index-save_002dbuffer_002dcoding_002dsystem"> &para;</a></span></dt>
 <dd><p>This variable specifies the coding system for saving the buffer (by
-overriding <code>buffer-file-coding-system</code>).  Note that it is not used
-for <code>write-region</code>.
+overriding <code class="code">buffer-file-coding-system</code>).  Note that it is not used
+for <code class="code">write-region</code>.
 </p>
 <p>When a command to save the buffer starts out to use
-<code>buffer-file-coding-system</code> (or <code>save-buffer-coding-system</code>),
+<code class="code">buffer-file-coding-system</code> (or <code class="code">save-buffer-coding-system</code>),
 and that coding system cannot handle
 the actual text in the buffer, the command asks the user to choose
-another coding system (by calling <code>select-safe-coding-system</code>).
+another coding system (by calling <code class="code">select-safe-coding-system</code>).
 After that happens, the command also updates
-<code>buffer-file-coding-system</code> to represent the coding system that
+<code class="code">buffer-file-coding-system</code> to represent the coding system that
 the user specified.
 </p></dd></dl>
 
-<dl>
-<dt id="index-last_002dcoding_002dsystem_002dused">Variable: <strong>last-coding-system-used</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-last_002dcoding_002dsystem_002dused"><span class="category-def">Variable: </span><span><strong class="def-name">last-coding-system-used</strong><a class="copiable-link" href="#index-last_002dcoding_002dsystem_002dused"> &para;</a></span></dt>
 <dd><p>I/O operations for files and subprocesses set this variable to the
 coding system name that was used.  The explicit encoding and decoding
-functions (see <a href="Explicit-Encoding.html">Explicit Encoding</a>) set it too.
+functions (see <a class="pxref" href="Explicit-Encoding.html">Explicit Encoding and Decoding</a>) set it too.
 </p>
-<p><strong>Warning:</strong> Since receiving subprocess output sets this variable,
+<p><strong class="strong">Warning:</strong> Since receiving subprocess output sets this variable,
 it can change whenever Emacs waits; therefore, you should copy the
 value shortly after the function call that stores the value you are
 interested in.
 </p></dd></dl>
 
-<p>The variable <code>selection-coding-system</code> specifies how to encode
-selections for the window system.  See <a href="Window-System-Selections.html">Window System Selections</a>.
+<p>The variable <code class="code">selection-coding-system</code> specifies how to encode
+selections for the window system.  See <a class="xref" href="Window-System-Selections.html">Window System Selections</a>.
 </p>
-<dl>
-<dt id="index-file_002dname_002dcoding_002dsystem">Variable: <strong>file-name-coding-system</strong></dt>
-<dd><p>The variable <code>file-name-coding-system</code> specifies the coding
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-file_002dname_002dcoding_002dsystem"><span class="category-def">Variable: </span><span><strong class="def-name">file-name-coding-system</strong><a class="copiable-link" href="#index-file_002dname_002dcoding_002dsystem"> &para;</a></span></dt>
+<dd><p>The variable <code class="code">file-name-coding-system</code> specifies the coding
 system to use for encoding file names.  Emacs encodes file names using
 that coding system for all file operations.  If
-<code>file-name-coding-system</code> is <code>nil</code>, Emacs uses a default
+<code class="code">file-name-coding-system</code> is <code class="code">nil</code>, Emacs uses a default
 coding system determined by the selected language environment.  In the
-default language environment, any non-<acronym>ASCII</acronym> characters in
+default language environment, any non-<abbr class="acronym">ASCII</abbr> characters in
 file names are not encoded specially; they appear in the file system
 using the internal Emacs representation.
 </p></dd></dl>
 
-<p><strong>Warning:</strong> if you change <code>file-name-coding-system</code> (or
+<p><strong class="strong">Warning:</strong> if you change <code class="code">file-name-coding-system</code> (or
 the language environment) in the middle of an Emacs session, problems
 can result if you have already visited files whose names were encoded
 using the earlier coding system and are handled differently under the
 new coding system.  If you try to save one of these buffers under the
 visited file name, saving may use the wrong file name, or it may get
-an error.  If such a problem happens, use <kbd>C-x C-w</kbd> to specify a
+an error.  If such a problem happens, use <kbd class="kbd">C-x C-w</kbd> to specify a
 new file name for that buffer.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Lisp-and-Coding-Systems.html" accesskey="n" rel="next">Lisp and Coding Systems</a>, Previous: <a href="Coding-System-Basics.html" accesskey="p" rel="prev">Coding System Basics</a>, Up: <a href="Coding-Systems.html" accesskey="u" rel="up">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Lisp-and-Coding-Systems.html">Coding Systems in Lisp</a>, Previous: <a href="Coding-System-Basics.html">Basic Concepts of Coding Systems</a>, Up: <a href="Coding-Systems.html">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

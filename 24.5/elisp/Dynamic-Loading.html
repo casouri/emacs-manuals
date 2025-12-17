@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Dynamic Loading (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Dynamic Loading (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Docs-and-Compilation.html" rel="prev" title="Docs and Compilation">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,17 +49,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Dynamic-Loading"></span><div class="header">
+<div class="section-level-extent" id="Dynamic-Loading">
+<div class="nav-panel">
 <p>
-Next: <a href="Eval-During-Compile.html" accesskey="n" rel="next">Eval During Compile</a>, Previous: <a href="Docs-and-Compilation.html" accesskey="p" rel="prev">Docs and Compilation</a>, Up: <a href="Byte-Compilation.html" accesskey="u" rel="up">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Eval-During-Compile.html" accesskey="n" rel="next">Evaluation During Compilation</a>, Previous: <a href="Docs-and-Compilation.html" accesskey="p" rel="prev">Documentation Strings and Compilation</a>, Up: <a href="Byte-Compilation.html" accesskey="u" rel="up">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Dynamic-Loading-of-Individual-Functions"></span><h3 class="section">16.4 Dynamic Loading of Individual Functions</h3>
+<h3 class="section" id="Dynamic-Loading-of-Individual-Functions"><span>16.4 Dynamic Loading of Individual Functions<a class="copiable-link" href="#Dynamic-Loading-of-Individual-Functions"> &para;</a></span></h3>
 
-<span id="index-dynamic-loading-of-functions"></span>
-<span id="index-lazy-loading"></span>
-<p>When you compile a file, you can optionally enable the <em>dynamic
-function loading</em> feature (also known as <em>lazy loading</em>).  With
+<a class="index-entry-id" id="index-dynamic-loading-of-functions"></a>
+<a class="index-entry-id" id="index-lazy-loading"></a>
+<p>When you compile a file, you can optionally enable the <em class="dfn">dynamic
+function loading</em> feature (also known as <em class="dfn">lazy loading</em>).  With
 dynamic function loading, loading the file doesn&rsquo;t fully read the
 function definitions in the file.  Instead, each function definition
 contains a place-holder which refers to the file.  The first time each
@@ -82,11 +76,11 @@ invoke the mode, but use only a few of the commands it provides.
 </p>
 <p>The dynamic loading feature has certain disadvantages:
 </p>
-<ul>
-<li> If you delete or move the compiled file after loading it, Emacs can no
+<ul class="itemize mark-bullet">
+<li>If you delete or move the compiled file after loading it, Emacs can no
 longer load the remaining function definitions not already loaded.
 
-</li><li> If you alter the compiled file (such as by compiling a new version),
+</li><li>If you alter the compiled file (such as by compiling a new version),
 then trying to load any function not already loaded will usually yield
 nonsense results.
 </li></ul>
@@ -97,34 +91,35 @@ files that you are changing.  The easiest way to prevent these problems
 is to reload the new compiled file immediately after each recompilation.
 </p>
 <p>The byte compiler uses the dynamic function loading feature if the
-variable <code>byte-compile-dynamic</code> is non-<code>nil</code> at compilation
+variable <code class="code">byte-compile-dynamic</code> is non-<code class="code">nil</code> at compilation
 time.  Do not set this variable globally, since dynamic loading is
 desirable only for certain files.  Instead, enable the feature for
 specific source files with file-local variable bindings.  For example,
 you could do it by writing this text in the source file&rsquo;s first line:
 </p>
 <div class="example">
-<pre class="example">-*-byte-compile-dynamic: t;-*-
+<pre class="example-preformatted">-*-byte-compile-dynamic: t;-*-
 </pre></div>
 
-<dl>
-<dt id="index-byte_002dcompile_002ddynamic">Variable: <strong>byte-compile-dynamic</strong></dt>
-<dd><p>If this is non-<code>nil</code>, the byte compiler generates compiled files
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-byte_002dcompile_002ddynamic"><span class="category-def">Variable: </span><span><strong class="def-name">byte-compile-dynamic</strong><a class="copiable-link" href="#index-byte_002dcompile_002ddynamic"> &para;</a></span></dt>
+<dd><p>If this is non-<code class="code">nil</code>, the byte compiler generates compiled files
 that are set up for dynamic function loading.
 </p></dd></dl>
 
-<dl>
-<dt id="index-fetch_002dbytecode">Function: <strong>fetch-bytecode</strong> <em>function</em></dt>
-<dd><p>If <var>function</var> is a byte-code function object, this immediately
-finishes loading the byte code of <var>function</var> from its
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-fetch_002dbytecode"><span class="category-def">Function: </span><span><strong class="def-name">fetch-bytecode</strong> <var class="def-var-arguments">function</var><a class="copiable-link" href="#index-fetch_002dbytecode"> &para;</a></span></dt>
+<dd><p>If <var class="var">function</var> is a byte-code function object, this immediately
+finishes loading the byte code of <var class="var">function</var> from its
 byte-compiled file, if it is not fully loaded already.  Otherwise,
-it does nothing.  It always returns <var>function</var>.
+it does nothing.  It always returns <var class="var">function</var>.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Eval-During-Compile.html" accesskey="n" rel="next">Eval During Compile</a>, Previous: <a href="Docs-and-Compilation.html" accesskey="p" rel="prev">Docs and Compilation</a>, Up: <a href="Byte-Compilation.html" accesskey="u" rel="up">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Eval-During-Compile.html">Evaluation During Compilation</a>, Previous: <a href="Docs-and-Compilation.html">Documentation Strings and Compilation</a>, Up: <a href="Byte-Compilation.html">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

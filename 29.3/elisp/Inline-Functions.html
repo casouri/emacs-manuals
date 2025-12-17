@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Inline Functions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Inline Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Inline Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Functions.html" rel="up" title="Functions">
+<link href="Declare-Form.html" rel="next" title="Declare Form">
+<link href="Obsolete-Functions.html" rel="prev" title="Obsolete Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-minus {list-style-type: "\2212"}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Inline-Functions">
+<div class="nav-panel">
+<p>
+Next: <a href="Declare-Form.html" accesskey="n" rel="next">The <code class="code">declare</code> Form</a>, Previous: <a href="Obsolete-Functions.html" accesskey="p" rel="prev">Declaring Functions Obsolete</a>, Up: <a href="Functions.html" accesskey="u" rel="up">Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Inline-Functions-1"><span>13.14 Inline Functions<a class="copiable-link" href="#Inline-Functions-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-inline-functions"></a>
+
+<p>An <em class="dfn">inline function</em> is a function that works just like an
+ordinary function, except for one thing: when you byte-compile a call
+to the function (see <a class="pxref" href="Byte-Compilation.html">Byte Compilation</a>), the function&rsquo;s definition
+is expanded into the caller.
+</p>
+<p>The simple way to define an inline function, is to write
+<code class="code">defsubst</code> instead of <code class="code">defun</code>.  The rest of the definition
+looks just the same, but using <code class="code">defsubst</code> says to make it inline
+for byte compilation.
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-defsubst"><span class="category-def">Macro: </span><span><strong class="def-name">defsubst</strong> <var class="def-var-arguments">name args [doc] [declare] [interactive] body&hellip;</var><a class="copiable-link" href="#index-defsubst"> &para;</a></span></dt>
+<dd><p>This macro defines an inline function.  Its syntax is exactly the same
+as <code class="code">defun</code> (see <a class="pxref" href="Defining-Functions.html">Defining Functions</a>).
+</p></dd></dl>
+
+<p>Making a function inline often makes its function calls run faster.
+But it also has disadvantages.  For one thing, it reduces flexibility;
+if you change the definition of the function, calls already inlined
+still use the old definition until you recompile them.
+</p>
+<p>Another disadvantage is that making a large function inline can
+increase the size of compiled code both in files and in memory.  Since
+the speed advantage of inline functions is greatest for small
+functions, you generally should not make large functions inline.
+</p>
+<p>Also, inline functions do not behave well with respect to debugging,
+tracing, and advising (see <a class="pxref" href="Advising-Functions.html">Advising Emacs Lisp Functions</a>).  Since ease of
+debugging and the flexibility of redefining functions are important
+features of Emacs, you should not make a function inline, even if it&rsquo;s
+small, unless its speed is really crucial, and you&rsquo;ve timed the code
+to verify that using <code class="code">defun</code> actually has performance problems.
+</p>
+<p>After an inline function is defined, its inline expansion can be
+performed later on in the same file, just like macros.
+</p>
+<p>It&rsquo;s possible to use <code class="code">defmacro</code> to define a macro to expand
+into the same code that an inline function would execute
+(see <a class="pxref" href="Macros.html">Macros</a>).  But the macro would be limited to direct use in
+expressions&mdash;a macro cannot be called with <code class="code">apply</code>,
+<code class="code">mapcar</code> and so on.  Also, it takes some work to convert an
+ordinary function into a macro.  To convert it into an inline function
+is easy; just replace <code class="code">defun</code> with <code class="code">defsubst</code>.  Since each
+argument of an inline function is evaluated exactly once, you needn&rsquo;t
+worry about how many times the body uses the arguments, as you do for
+macros.
+</p>
+<p>Alternatively, you can define a function by providing the code which
+will inline it as a compiler macro (see <a class="pxref" href="Declare-Form.html">The <code class="code">declare</code> Form</a>).  The
+following macros make this possible.
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-define_002dinline"><span class="category-def">Macro: </span><span><strong class="def-name">define-inline</strong> <var class="def-var-arguments">name args [doc] [declare] body&hellip;</var><a class="copiable-link" href="#index-define_002dinline"> &para;</a></span></dt>
+<dd><p>Define a function <var class="var">name</var> by providing code that does its inlining,
+as a compiler macro.  The function will accept the argument list
+<var class="var">args</var> and will have the specified <var class="var">body</var>.
+</p>
+<p>If present, <var class="var">doc</var> should be the function&rsquo;s documentation string
+(see <a class="pxref" href="Function-Documentation.html">Documentation Strings of Functions</a>); <var class="var">declare</var>, if present, should be
+a <code class="code">declare</code> form (see <a class="pxref" href="Declare-Form.html">The <code class="code">declare</code> Form</a>) specifying the function&rsquo;s
+metadata.
+</p></dd></dl>
+
+<p>Functions defined via <code class="code">define-inline</code> have several advantages
+with respect to macros defined by <code class="code">defsubst</code> or <code class="code">defmacro</code>:
+</p>
+<ul class="itemize mark-minus">
+<li>They can be passed to <code class="code">mapcar</code> (see <a class="pxref" href="Mapping-Functions.html">Mapping Functions</a>).
+
+</li><li>They are more efficient.
+
+</li><li>They can be used as <em class="dfn">place forms</em> to store values
+(see <a class="pxref" href="Generalized-Variables.html">Generalized Variables</a>).
+
+</li><li>They behave in a more predictable way than <code class="code">cl-defsubst</code>
+(see <a data-manual="cl" href="https://www.gnu.org/software/emacs/manual/html_node/cl/Argument-Lists.html#Argument-Lists">Argument Lists</a> in <cite class="cite">Common Lisp Extensions for GNU Emacs
+Lisp</cite>).
+</li></ul>
+
+<p>Like <code class="code">defmacro</code>, a function inlined with <code class="code">define-inline</code>
+inherits the scoping rules, either dynamic or lexical, from the call
+site.  See <a class="xref" href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a>.
+</p>
+<p>The following macros should be used in the body of a function defined
+by <code class="code">define-inline</code>.
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-inline_002dquote"><span class="category-def">Macro: </span><span><strong class="def-name">inline-quote</strong> <var class="def-var-arguments">expression</var><a class="copiable-link" href="#index-inline_002dquote"> &para;</a></span></dt>
+<dd><p>Quote <var class="var">expression</var> for <code class="code">define-inline</code>.  This is similar to
+the backquote (see <a class="pxref" href="Backquote.html">Backquote</a>), but quotes code and accepts only
+<code class="code">,</code>, not <code class="code">,@</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-inline_002dletevals"><span class="category-def">Macro: </span><span><strong class="def-name">inline-letevals</strong> <var class="def-var-arguments">(bindings&hellip;) body&hellip;</var><a class="copiable-link" href="#index-inline_002dletevals"> &para;</a></span></dt>
+<dd><p>This provides a convenient way to ensure that the arguments to an
+inlined function are evaluated exactly once, as well as to create
+local variables.
+</p>
+<p>It&rsquo;s similar to <code class="code">let</code> (see <a class="pxref" href="Local-Variables.html">Local Variables</a>): It sets up local
+variables as specified by <var class="var">bindings</var>, and then evaluates
+<var class="var">body</var> with those bindings in effect.
+</p>
+<p>Each element of <var class="var">bindings</var> should be either a symbol or a list of
+the form <code class="code">(<var class="var">var</var>&nbsp;<var class="var">expr</var>)</code><!-- /@w -->; the result is to evaluate
+<var class="var">expr</var> and bind <var class="var">var</var> to the result.  However, when an element
+of <var class="var">bindings</var> is just a symbol <var class="var">var</var>, the result of evaluating
+<var class="var">var</var> is re-bound to <var class="var">var</var> (which is quite different from the
+way <code class="code">let</code> works).
+</p>
+<p>The tail of <var class="var">bindings</var> can be either <code class="code">nil</code> or a symbol which
+should hold a list of arguments, in which case each argument is
+evaluated, and the symbol is bound to the resulting list.
+</p></dd></dl>
+
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-inline_002dconst_002dp"><span class="category-def">Macro: </span><span><strong class="def-name">inline-const-p</strong> <var class="def-var-arguments">expression</var><a class="copiable-link" href="#index-inline_002dconst_002dp"> &para;</a></span></dt>
+<dd><p>Return non-<code class="code">nil</code> if the value of <var class="var">expression</var> is already
+known.
+</p></dd></dl>
+
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-inline_002dconst_002dval"><span class="category-def">Macro: </span><span><strong class="def-name">inline-const-val</strong> <var class="def-var-arguments">expression</var><a class="copiable-link" href="#index-inline_002dconst_002dval"> &para;</a></span></dt>
+<dd><p>Return the value of <var class="var">expression</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-inline_002derror"><span class="category-def">Macro: </span><span><strong class="def-name">inline-error</strong> <var class="def-var-arguments">format &amp;rest args</var><a class="copiable-link" href="#index-inline_002derror"> &para;</a></span></dt>
+<dd><p>Signal an error, formatting <var class="var">args</var> according to <var class="var">format</var>.
+</p></dd></dl>
+
+<p>Here&rsquo;s an example of using <code class="code">define-inline</code>:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(define-inline myaccessor (obj)
+  (inline-letevals (obj)
+    (inline-quote (if (foo-p ,obj) (aref (cdr ,obj) 3) (aref ,obj 2)))))
+</pre></div>
+
+<p>This is equivalent to
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(defsubst myaccessor (obj)
+  (if (foo-p obj) (aref (cdr obj) 3) (aref obj 2)))
+</pre></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Declare-Form.html">The <code class="code">declare</code> Form</a>, Previous: <a href="Obsolete-Functions.html">Declaring Functions Obsolete</a>, Up: <a href="Functions.html">Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Special Read Syntax (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Special Read Syntax (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,9 @@ developing GNU and promoting software freedom." -->
 <link href="Printed-Representation.html" rel="prev" title="Printed Representation">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,101 +48,110 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Special-Read-Syntax"></span><div class="header">
+<div class="section-level-extent" id="Special-Read-Syntax">
+<div class="nav-panel">
 <p>
-Next: <a href="Comments.html" accesskey="n" rel="next">Comments</a>, Previous: <a href="Printed-Representation.html" accesskey="p" rel="prev">Printed Representation</a>, Up: <a href="Lisp-Data-Types.html" accesskey="u" rel="up">Lisp Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Comments.html" accesskey="n" rel="next">Comments</a>, Previous: <a href="Printed-Representation.html" accesskey="p" rel="prev">Printed Representation and Read Syntax</a>, Up: <a href="Lisp-Data-Types.html" accesskey="u" rel="up">Lisp Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Special-Read-Syntax-1"></span><h3 class="section">2.2 Special Read Syntax</h3>
-<span id="index-special-read-syntax"></span>
+<h3 class="section" id="Special-Read-Syntax-1"><span>2.2 Special Read Syntax<a class="copiable-link" href="#Special-Read-Syntax-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-special-read-syntax"></a>
 
 <p>Emacs Lisp represents many special objects and constructs via
 special hash notations.
 </p>
-<dl compact="compact">
-<dt>&lsquo;<samp>#&lt;&hellip;&gt;</samp>&rsquo;</dt>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">#&lt;&hellip;&gt;</samp>&rsquo;</dt>
 <dd><p>Objects that have no read syntax are presented like this
-(see <a href="Printed-Representation.html">Printed Representation</a>).
+(see <a class="pxref" href="Printed-Representation.html">Printed Representation and Read Syntax</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>##</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">##</samp>&rsquo;</dt>
 <dd><p>The printed representation of an interned symbol whose name is an
-empty string (see <a href="Symbol-Type.html">Symbol Type</a>).
+empty string (see <a class="pxref" href="Symbol-Type.html">Symbol Type</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>#'</samp>&rsquo;</dt>
-<dd><p>This is a shortcut for <code>function</code>, see <a href="Anonymous-Functions.html">Anonymous Functions</a>.
+<dt>&lsquo;<samp class="samp">#'</samp>&rsquo;</dt>
+<dd><p>This is a shortcut for <code class="code">function</code>, see <a class="ref" href="Anonymous-Functions.html">Anonymous Functions</a>.
 </p>
 </dd>
-<dt>&lsquo;<samp>#:</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">#:</samp>&rsquo;</dt>
 <dd><p>The printed representation of an uninterned symbol whose name is
-<var>foo</var> is &lsquo;<samp>#:<var>foo</var></samp>&rsquo; (see <a href="Symbol-Type.html">Symbol Type</a>).
+<var class="var">foo</var> is &lsquo;<samp class="samp">#:<var class="var">foo</var></samp>&rsquo; (see <a class="pxref" href="Symbol-Type.html">Symbol Type</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>#N</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">#N</samp>&rsquo;</dt>
 <dd><p>When printing circular structures, this construct is used to represent
-where the structure loops back onto itself, and &lsquo;<samp>N</samp>&rsquo; is the
+where the structure loops back onto itself, and &lsquo;<samp class="samp">N</samp>&rsquo; is the
 starting list count:
 </p>
-<div class="lisp">
-<pre class="lisp">(let ((a (list 1)))
+<div class="example lisp">
+<pre class="lisp-preformatted">(let ((a (list 1)))
   (setcdr a a))
 =&gt; (1 . #0)
 </pre></div>
 
 </dd>
-<dt>&lsquo;<samp>#N=</samp>&rsquo;</dt>
-<dt>&lsquo;<samp>#N#</samp>&rsquo;</dt>
-<dd><p>&lsquo;<samp>#N=</samp>&rsquo; gives the name to an object, and &lsquo;<samp>#N#</samp>&rsquo; represents that
+<dt>&lsquo;<samp class="samp">#N=</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">#N#</samp>&rsquo;</dt>
+<dd><p>&lsquo;<samp class="samp">#N=</samp>&rsquo; gives the name to an object, and &lsquo;<samp class="samp">#N#</samp>&rsquo; represents that
 object, so when reading back the object, they will be the same object
-instead of copies (see <a href="Circular-Objects.html">Circular Objects</a>).
+instead of copies (see <a class="pxref" href="Circular-Objects.html">Read Syntax for Circular Objects</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>#xN</samp>&rsquo;</dt>
-<dd><p>&lsquo;<samp>N</samp>&rsquo; represented as a hexadecimal number (&lsquo;<samp>#x2a</samp>&rsquo;).
+<dt>&lsquo;<samp class="samp">#xN</samp>&rsquo;</dt>
+<dd><p>&lsquo;<samp class="samp">N</samp>&rsquo; represented as a hexadecimal number (&lsquo;<samp class="samp">#x2a</samp>&rsquo;).
 </p>
 </dd>
-<dt>&lsquo;<samp>#oN</samp>&rsquo;</dt>
-<dd><p>&lsquo;<samp>N</samp>&rsquo; represented as an octal number (&lsquo;<samp>#o52</samp>&rsquo;).
+<dt>&lsquo;<samp class="samp">#oN</samp>&rsquo;</dt>
+<dd><p>&lsquo;<samp class="samp">N</samp>&rsquo; represented as an octal number (&lsquo;<samp class="samp">#o52</samp>&rsquo;).
 </p>
 </dd>
-<dt>&lsquo;<samp>#bN</samp>&rsquo;</dt>
-<dd><p>&lsquo;<samp>N</samp>&rsquo; represented as a binary number (&lsquo;<samp>#b101010</samp>&rsquo;).
+<dt>&lsquo;<samp class="samp">#bN</samp>&rsquo;</dt>
+<dd><p>&lsquo;<samp class="samp">N</samp>&rsquo; represented as a binary number (&lsquo;<samp class="samp">#b101010</samp>&rsquo;).
 </p>
 </dd>
-<dt>&lsquo;<samp>#(&hellip;)</samp>&rsquo;</dt>
-<dd><p>String text properties (see <a href="Text-Props-and-Strings.html">Text Props and Strings</a>).
+<dt>&lsquo;<samp class="samp">#(&hellip;)</samp>&rsquo;</dt>
+<dd><p>String text properties (see <a class="pxref" href="Text-Props-and-Strings.html">Text Properties in Strings</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>#^</samp>&rsquo;</dt>
-<dd><p>A char table (see <a href="Char_002dTable-Type.html">Char-Table Type</a>).
+<dt>&lsquo;<samp class="samp">#^</samp>&rsquo;</dt>
+<dd><p>A char table (see <a class="pxref" href="Char_002dTable-Type.html">Char-Table Type</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>#s(hash-table &hellip;)</samp>&rsquo;</dt>
-<dd><p>A hash table (see <a href="Hash-Table-Type.html">Hash Table Type</a>).
+<dt>&lsquo;<samp class="samp">#s(hash-table &hellip;)</samp>&rsquo;</dt>
+<dd><p>A hash table (see <a class="pxref" href="Hash-Table-Type.html">Hash Table Type</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>?C</samp>&rsquo;</dt>
-<dd><p>A character (see <a href="Basic-Char-Syntax.html">Basic Char Syntax</a>).
+<dt>&lsquo;<samp class="samp">?C</samp>&rsquo;</dt>
+<dd><p>A character (see <a class="pxref" href="Basic-Char-Syntax.html">Basic Char Syntax</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>#$</samp>&rsquo;</dt>
-<dd><p>The current file name in byte-compiled files (see <a href="Docs-and-Compilation.html">Docs and Compilation</a>).  This is not meant to be used in Emacs Lisp source
+<dt>&lsquo;<samp class="samp">#$</samp>&rsquo;</dt>
+<dd><p>The current file name in byte-compiled files (see <a class="pxref" href="Docs-and-Compilation.html">Documentation Strings and Compilation</a>).  This is not meant to be used in Emacs Lisp source
 files.
 </p>
 </dd>
-<dt>&lsquo;<samp>#@N</samp>&rsquo;</dt>
-<dd><p>Skip the next &lsquo;<samp>N</samp>&rsquo; characters (see <a href="Comments.html">Comments</a>).  This is used in
+<dt>&lsquo;<samp class="samp">#@N</samp>&rsquo;</dt>
+<dd><p>Skip the next &lsquo;<samp class="samp">N</samp>&rsquo; characters (see <a class="pxref" href="Comments.html">Comments</a>).  This is used in
 byte-compiled files, and is not meant to be used in Emacs Lisp source
 files.
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">#f</samp>&rsquo;</dt>
+<dd><p>Indicates that the following form isn&rsquo;t readable by the Emacs Lisp
+reader.  This is only in text for display purposes (when that would
+look prettier than alternative ways of indicating an unreadable form)
+and will never appear in any Lisp file.
 </p></dd>
 </dl>
 
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Comments.html" accesskey="n" rel="next">Comments</a>, Previous: <a href="Printed-Representation.html" accesskey="p" rel="prev">Printed Representation</a>, Up: <a href="Lisp-Data-Types.html" accesskey="u" rel="up">Lisp Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Comments.html">Comments</a>, Previous: <a href="Printed-Representation.html">Printed Representation and Read Syntax</a>, Up: <a href="Lisp-Data-Types.html">Lisp Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

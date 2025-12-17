@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Setting Generalized Variables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Setting Generalized Variables (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Generalized-Variables.html" rel="up" title="Generalized Variables">
 <link href="Adding-Generalized-Variables.html" rel="next" title="Adding Generalized Variables">
-<link href="Generalized-Variables.html" rel="prev" title="Generalized Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,47 +48,48 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Setting-Generalized-Variables"></span><div class="header">
+<div class="subsection-level-extent" id="Setting-Generalized-Variables">
+<div class="nav-panel">
 <p>
-Next: <a href="Adding-Generalized-Variables.html" accesskey="n" rel="next">Adding Generalized Variables</a>, Up: <a href="Generalized-Variables.html" accesskey="u" rel="up">Generalized Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Adding-Generalized-Variables.html" accesskey="n" rel="next">Defining new <code class="code">setf</code> forms</a>, Up: <a href="Generalized-Variables.html" accesskey="u" rel="up">Generalized Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="The-setf-Macro"></span><h4 class="subsection">12.17.1 The <code>setf</code> Macro</h4>
+<h4 class="subsection" id="The-setf-Macro"><span>12.17.1 The <code class="code">setf</code> Macro<a class="copiable-link" href="#The-setf-Macro"> &para;</a></span></h4>
 
-<p>The <code>setf</code> macro is the most basic way to operate on generalized
-variables.  The <code>setf</code> form is like <code>setq</code>, except that it
+<p>The <code class="code">setf</code> macro is the most basic way to operate on generalized
+variables.  The <code class="code">setf</code> form is like <code class="code">setq</code>, except that it
 accepts arbitrary place forms on the left side rather than just
-symbols.  For example, <code>(setf (car a) b)</code> sets the car of
-<code>a</code> to <code>b</code>, doing the same operation as <code>(setcar a b)</code>,
+symbols.  For example, <code class="code">(setf (car a) b)</code> sets the car of
+<code class="code">a</code> to <code class="code">b</code>, doing the same operation as <code class="code">(setcar a b)</code>,
 but without you having to use two separate functions for setting and
 accessing this type of place.
 </p>
-<dl>
-<dt id="index-setf">Macro: <strong>setf</strong> <em>[place form]&hellip;</em></dt>
-<dd><p>This macro evaluates <var>form</var> and stores it in <var>place</var>, which
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-setf"><span class="category-def">Macro: </span><span><strong class="def-name">setf</strong> <var class="def-var-arguments">[place form]&hellip;</var><a class="copiable-link" href="#index-setf"> &para;</a></span></dt>
+<dd><p>This macro evaluates <var class="var">form</var> and stores it in <var class="var">place</var>, which
 must be a valid generalized variable form.  If there are several
-<var>place</var> and <var>form</var> pairs, the assignments are done sequentially
-just as with <code>setq</code>.  <code>setf</code> returns the value of the last
-<var>form</var>.
+<var class="var">place</var> and <var class="var">form</var> pairs, the assignments are done sequentially
+just as with <code class="code">setq</code>.  <code class="code">setf</code> returns the value of the last
+<var class="var">form</var>.
 </p></dd></dl>
 
 <p>The following Lisp forms are the forms in Emacs that will work as
-generalized variables, and so may appear in the <var>place</var> argument
-of <code>setf</code>:
+generalized variables, and so may appear in the <var class="var">place</var> argument
+of <code class="code">setf</code>:
 </p>
-<ul>
-<li> A symbol.  In other words, <code>(setf x y)</code> is exactly equivalent to
-<code>(setq x y)</code>, and <code>setq</code> itself is strictly speaking
-redundant given that <code>setf</code> exists.  Most programmers will
-continue to prefer <code>setq</code> for setting simple variables, though,
-for stylistic and historical reasons.  The macro <code>(setf x y)</code>
-actually expands to <code>(setq x y)</code>, so there is no performance
+<ul class="itemize mark-bullet">
+<li>A symbol.  In other words, <code class="code">(setf x y)</code> is exactly equivalent to
+<code class="code">(setq x y)</code>, and <code class="code">setq</code> itself is strictly speaking
+redundant given that <code class="code">setf</code> exists.  Most programmers will
+continue to prefer <code class="code">setq</code> for setting simple variables, though,
+for stylistic and historical reasons.  The macro <code class="code">(setf x y)</code>
+actually expands to <code class="code">(setq x y)</code>, so there is no performance
 penalty for using it in compiled code.
 
-</li><li> A call to any of the following standard Lisp functions:
+</li><li>A call to any of the following standard Lisp functions:
 
-<div class="example">
-<pre class="example">aref      cddr      symbol-function
+<div class="example smallexample">
+<pre class="example-preformatted">aref      cddr      symbol-function
 car       elt       symbol-plist
 caar      get       symbol-value
 cadr      gethash
@@ -104,10 +97,10 @@ cdr       nth
 cdar      nthcdr
 </pre></div>
 
-</li><li> A call to any of the following Emacs-specific functions:
+</li><li>A call to any of the following Emacs-specific functions:
 
-<div class="example">
-<pre class="example">alist-get                     process-get
+<div class="example smallexample">
+<pre class="example-preformatted">alist-get                     process-get
 frame-parameter               process-sentinel
 terminal-parameter            window-buffer
 keymap-parent                 window-display-table
@@ -120,34 +113,35 @@ process-filter                default-value
 </pre></div>
 </li></ul>
 
-<p><code>setf</code> signals an error if you pass a <var>place</var> form that it
+<p><code class="code">setf</code> signals an error if you pass a <var class="var">place</var> form that it
 does not know how to handle.
 </p>
-<p>Note that for <code>nthcdr</code>, the list argument of the function must
-itself be a valid <var>place</var> form.  For example, <code>(setf (nthcdr
-0 foo) 7)</code> will set <code>foo</code> itself to 7.
+<p>Note that for <code class="code">nthcdr</code>, the list argument of the function must
+itself be a valid <var class="var">place</var> form.  For example, <code class="code">(setf (nthcdr
+0 foo) 7)</code> will set <code class="code">foo</code> itself to 7.
 </p>
-<p>The macros <code>push</code> (see <a href="List-Variables.html">List Variables</a>) and <code>pop</code>
-(see <a href="List-Elements.html">List Elements</a>) can manipulate generalized variables,
-not just lists.  <code>(pop <var>place</var>)</code> removes and returns the first
-element of the list stored in <var>place</var>.  It is analogous to
-<code>(prog1 (car <var>place</var>) (setf <var>place</var> (cdr <var>place</var>)))</code>,
+<p>The macros <code class="code">push</code> (see <a class="pxref" href="List-Variables.html">Modifying List Variables</a>) and <code class="code">pop</code>
+(see <a class="pxref" href="List-Elements.html">Accessing Elements of Lists</a>) can manipulate generalized variables,
+not just lists.  <code class="code">(pop <var class="var">place</var>)</code> removes and returns the first
+element of the list stored in <var class="var">place</var>.  It is analogous to
+<code class="code">(prog1 (car <var class="var">place</var>) (setf <var class="var">place</var> (cdr <var class="var">place</var>)))</code>,
 except that it takes care to evaluate all subforms only once.
-<code>(push <var>x</var> <var>place</var>)</code> inserts <var>x</var> at the front of
-the list stored in <var>place</var>.  It is analogous to <code>(setf
-<var>place</var> (cons <var>x</var> <var>place</var>))</code>, except for evaluation of the
-subforms.  Note that <code>push</code> and <code>pop</code> on an <code>nthcdr</code>
+<code class="code">(push <var class="var">x</var> <var class="var">place</var>)</code> inserts <var class="var">x</var> at the front of
+the list stored in <var class="var">place</var>.  It is analogous to <code class="code">(setf
+<var class="var">place</var> (cons <var class="var">x</var> <var class="var">place</var>))</code>, except for evaluation of the
+subforms.  Note that <code class="code">push</code> and <code class="code">pop</code> on an <code class="code">nthcdr</code>
 place can be used to insert or delete at any position in a list.
 </p>
-<p>The <samp>cl-lib</samp> library defines various extensions for generalized
-variables, including additional <code>setf</code> places.
-See <a href="https://www.gnu.org/software/emacs/manual/html_node/cl/Generalized-Variables.html#Generalized-Variables">Generalized Variables</a> in <cite>Common Lisp Extensions</cite>.
+<p>The <samp class="file">cl-lib</samp> library defines various extensions for generalized
+variables, including additional <code class="code">setf</code> places.
+See <a data-manual="cl" href="https://www.gnu.org/software/emacs/manual/html_node/cl/Generalized-Variables.html#Generalized-Variables">Generalized Variables</a> in <cite class="cite">Common Lisp Extensions</cite>.
 </p>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Adding-Generalized-Variables.html" accesskey="n" rel="next">Adding Generalized Variables</a>, Up: <a href="Generalized-Variables.html" accesskey="u" rel="up">Generalized Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Adding-Generalized-Variables.html">Defining new <code class="code">setf</code> forms</a>, Up: <a href="Generalized-Variables.html">Generalized Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

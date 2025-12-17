@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Buffer List (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Buffer List (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Buffer List (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Buffers.html" rel="up" title="Buffers">
+<link href="Creating-Buffers.html" rel="next" title="Creating Buffers">
+<link href="Read-Only-Buffers.html" rel="prev" title="Read Only Buffers">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Buffer-List">
+<div class="nav-panel">
+<p>
+Next: <a href="Creating-Buffers.html" accesskey="n" rel="next">Creating Buffers</a>, Previous: <a href="Read-Only-Buffers.html" accesskey="p" rel="prev">Read-Only Buffers</a>, Up: <a href="Buffers.html" accesskey="u" rel="up">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="The-Buffer-List"><span>28.8 The Buffer List<a class="copiable-link" href="#The-Buffer-List"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-buffer-list"></a>
+<a class="index-entry-id" id="index-listing-all-buffers"></a>
+
+<p>The <em class="dfn">buffer list</em> is a list of all live buffers.  The order of the
+buffers in this list is based primarily on how recently each buffer has
+been displayed in a window.  Several functions, notably
+<code class="code">other-buffer</code>, use this ordering.  A buffer list displayed for the
+user also follows this order.
+</p>
+<p>Creating a buffer adds it to the end of the buffer list, and killing
+a buffer removes it from that list.  A buffer moves to the front of
+this list whenever it is chosen for display in a window
+(see <a class="pxref" href="Switching-Buffers.html">Switching to a Buffer in a Window</a>) or a window displaying it is selected
+(see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>).  A buffer moves to the end of the list
+when it is buried (see <code class="code">bury-buffer</code>, below).  There are no
+functions available to the Lisp programmer which directly manipulate
+the buffer list.
+</p>
+<p>In addition to the fundamental buffer list just described, Emacs
+maintains a local buffer list for each frame, in which the buffers that
+have been displayed (or had their windows selected) in that frame come
+first.  (This order is recorded in the frame&rsquo;s <code class="code">buffer-list</code> frame
+parameter; see <a class="ref" href="Buffer-Parameters.html">Buffer Parameters</a>.)  Buffers never displayed in
+that frame come afterward, ordered according to the fundamental buffer
+list.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-buffer_002dlist"><span class="category-def">Function: </span><span><strong class="def-name">buffer-list</strong> <var class="def-var-arguments">&amp;optional frame</var><a class="copiable-link" href="#index-buffer_002dlist"> &para;</a></span></dt>
+<dd><p>This function returns the buffer list, including all buffers, even those
+whose names begin with a space.  The elements are actual buffers, not
+their names.
+</p>
+<p>If <var class="var">frame</var> is a frame, this returns <var class="var">frame</var>&rsquo;s local buffer list.
+If <var class="var">frame</var> is <code class="code">nil</code> or omitted, the fundamental buffer list is
+used: the buffers appear in order of most recent display or selection,
+regardless of which frames they were displayed on.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(buffer-list)
+     &rArr; (#&lt;buffer buffers.texi&gt;
+         #&lt;buffer  *Minibuf-1*&gt; #&lt;buffer buffer.c&gt;
+         #&lt;buffer *Help*&gt; #&lt;buffer TAGS&gt;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">Note that the name of the minibuffer</span>
+;;   <span class="r">begins with a space!</span>
+(mapcar #'buffer-name (buffer-list))
+    &rArr; (&quot;buffers.texi&quot; &quot; *Minibuf-1*&quot;
+        &quot;buffer.c&quot; &quot;*Help*&quot; &quot;TAGS&quot;)
+</pre></div></div>
+</dd></dl>
+
+<p>The list returned by <code class="code">buffer-list</code> is constructed specifically;
+it is not an internal Emacs data structure, and modifying it has no
+effect on the order of buffers.  If you want to change the order of
+buffers in the fundamental buffer list, here is an easy way:
+</p>
+<div class="example">
+<pre class="example-preformatted">(defun reorder-buffer-list (new-list)
+  (while new-list
+    (bury-buffer (car new-list))
+    (setq new-list (cdr new-list))))
+</pre></div>
+
+<p>With this method, you can specify any order for the list, but there is
+no danger of losing a buffer or adding something that is not a valid
+live buffer.
+</p>
+<p>To change the order or value of a specific frame&rsquo;s buffer list, set
+that frame&rsquo;s <code class="code">buffer-list</code> parameter with
+<code class="code">modify-frame-parameters</code> (see <a class="pxref" href="Parameter-Access.html">Access to Frame Parameters</a>).
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-other_002dbuffer"><span class="category-def">Function: </span><span><strong class="def-name">other-buffer</strong> <var class="def-var-arguments">&amp;optional buffer visible-ok frame</var><a class="copiable-link" href="#index-other_002dbuffer"> &para;</a></span></dt>
+<dd><p>This function returns the first buffer in the buffer list other than
+<var class="var">buffer</var>.  Usually, this is the buffer appearing in the most
+recently selected window (in frame <var class="var">frame</var> or else the selected
+frame, see <a class="pxref" href="Input-Focus.html">Input Focus</a>), aside from <var class="var">buffer</var>.  Buffers whose
+names start with a space are not considered at all.
+</p>
+<p>If <var class="var">buffer</var> is not supplied (or if it is not a live buffer), then
+<code class="code">other-buffer</code> returns the first buffer in the selected frame&rsquo;s
+local buffer list.  (If <var class="var">frame</var> is non-<code class="code">nil</code>, it returns the
+first buffer in <var class="var">frame</var>&rsquo;s local buffer list instead.)
+</p>
+<p>If <var class="var">frame</var> has a non-<code class="code">nil</code> <code class="code">buffer-predicate</code> parameter,
+then <code class="code">other-buffer</code> uses that predicate to decide which buffers to
+consider.  It calls the predicate once for each buffer, and if the value
+is <code class="code">nil</code>, that buffer is ignored.  See <a class="xref" href="Buffer-Parameters.html">Buffer Parameters</a>.
+</p>
+<p>If <var class="var">visible-ok</var> is <code class="code">nil</code>, <code class="code">other-buffer</code> avoids returning
+a buffer visible in any window on any visible frame, except as a last
+resort.  If <var class="var">visible-ok</var> is non-<code class="code">nil</code>, then it does not matter
+whether a buffer is displayed somewhere or not.
+</p>
+<p>If no suitable buffer exists, the buffer <samp class="file">*scratch*</samp> is returned
+(and created, if necessary).
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-last_002dbuffer"><span class="category-def">Function: </span><span><strong class="def-name">last-buffer</strong> <var class="def-var-arguments">&amp;optional buffer visible-ok frame</var><a class="copiable-link" href="#index-last_002dbuffer"> &para;</a></span></dt>
+<dd><p>This function returns the last buffer in <var class="var">frame</var>&rsquo;s buffer list other
+than <var class="var">buffer</var>.  If <var class="var">frame</var> is omitted or <code class="code">nil</code>, it uses the
+selected frame&rsquo;s buffer list.
+</p>
+<p>The argument <var class="var">visible-ok</var> is handled as with <code class="code">other-buffer</code>,
+see above.  If no suitable buffer can be found, the buffer
+<samp class="file">*scratch*</samp> is returned.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-bury_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">bury-buffer</strong> <var class="def-var-arguments">&amp;optional buffer-or-name</var><a class="copiable-link" href="#index-bury_002dbuffer"> &para;</a></span></dt>
+<dd><p>This command puts <var class="var">buffer-or-name</var> at the end of the buffer list,
+without changing the order of any of the other buffers on the list.
+This buffer therefore becomes the least desirable candidate for
+<code class="code">other-buffer</code> to return.  The argument can be either a buffer
+itself or the name of one.
+</p>
+<p>This function operates on each frame&rsquo;s <code class="code">buffer-list</code> parameter as
+well as the fundamental buffer list; therefore, the buffer that you bury
+will come last in the value of <code class="code">(buffer-list <var class="var">frame</var>)</code> and in
+the value of <code class="code">(buffer-list)</code>.  In addition, it also puts the buffer
+at the end of the list of buffers of the selected window (see <a class="pxref" href="Window-History.html">Window History</a>) provided it is shown in that window.
+</p>
+<p>If <var class="var">buffer-or-name</var> is <code class="code">nil</code> or omitted, this means to bury the
+current buffer.  In addition, if the current buffer is displayed in the
+selected window (see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>), this makes sure that the
+window is either deleted or another buffer is shown in it.  More
+precisely, if the selected window is dedicated (see <a class="pxref" href="Dedicated-Windows.html">Dedicated Windows</a>) and there are other windows on its frame, the window is
+deleted.  If it is the only window on its frame and that frame is not
+the only frame on its terminal, the frame is dismissed by calling the
+function specified by <code class="code">frame-auto-hide-function</code> (see <a class="pxref" href="Quitting-Windows.html">Quitting Windows</a>).  Otherwise, it calls <code class="code">switch-to-prev-buffer</code>
+(see <a class="pxref" href="Window-History.html">Window History</a>) to show another buffer in that window.  If
+<var class="var">buffer-or-name</var> is displayed in some other window, it remains
+displayed there.
+</p>
+<p>To replace a buffer in all the windows that display it, use
+<code class="code">replace-buffer-in-windows</code>, See <a class="xref" href="Buffers-and-Windows.html">Buffers and Windows</a>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-unbury_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">unbury-buffer</strong><a class="copiable-link" href="#index-unbury_002dbuffer"> &para;</a></span></dt>
+<dd><p>This command switches to the last buffer in the local buffer list of
+the selected frame.  More precisely, it calls the function
+<code class="code">switch-to-buffer</code> (see <a class="pxref" href="Switching-Buffers.html">Switching to a Buffer in a Window</a>), to display the
+buffer returned by <code class="code">last-buffer</code> (see above), in the selected
+window.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-buffer_002dlist_002dupdate_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">buffer-list-update-hook</strong><a class="copiable-link" href="#index-buffer_002dlist_002dupdate_002dhook"> &para;</a></span></dt>
+<dd><p>This is a normal hook run whenever the buffer list changes.  Functions
+(implicitly) running this hook are <code class="code">get-buffer-create</code>
+(see <a class="pxref" href="Creating-Buffers.html">Creating Buffers</a>), <code class="code">rename-buffer</code> (see <a class="pxref" href="Buffer-Names.html">Buffer Names</a>), <code class="code">kill-buffer</code> (see <a class="pxref" href="Killing-Buffers.html">Killing Buffers</a>),
+<code class="code">bury-buffer</code> (see above), and <code class="code">select-window</code>
+(see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>).  This hook is not run for internal or
+temporary buffers created by <code class="code">get-buffer-create</code> or
+<code class="code">generate-new-buffer</code> with a non-<code class="code">nil</code> argument
+<var class="var">inhibit-buffer-hooks</var>.
+</p>
+<p>Functions run by this hook should avoid calling <code class="code">select-window</code>
+with a <code class="code">nil</code> <var class="var">norecord</var> argument since this may lead to
+infinite recursion.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-buffer_002dmatch_002dp"><span class="category-def">Function: </span><span><strong class="def-name">buffer-match-p</strong> <var class="def-var-arguments">condition buffer-or-name &amp;optional arg</var><a class="copiable-link" href="#index-buffer_002dmatch_002dp"> &para;</a></span></dt>
+<dd><p>This function checks if a buffer designated by <code class="code">buffer-or-name</code>
+satisfies the specified <code class="code">condition</code>.  Optional third argument
+<var class="var">arg</var> is passed to the predicate function in <var class="var">condition</var>.  A
+valid <var class="var">condition</var> can be one of the following:
+</p><ul class="itemize mark-bullet">
+<li>A string, interpreted as a regular expression.  The buffer
+satisfies the condition if the regular expression matches the buffer
+name.
+</li><li>A predicate function, which should return non-<code class="code">nil</code> if the buffer
+matches.  If the function expects one argument, it is called with
+<var class="var">buffer-or-name</var> as the argument; if it expects 2 arguments, the
+first argument is <var class="var">buffer-or-name</var> and the second is <var class="var">arg</var>
+(or <code class="code">nil</code> if <var class="var">arg</var> is omitted).
+</li><li>A cons-cell <code class="code">(<var class="var">oper</var> . <var class="var">expr</var>)</code> where <var class="var">oper</var> is one
+of
+<dl class="table">
+<dt><code class="code">(not <var class="var">cond</var>)</code></dt>
+<dd><p>Satisfied if <var class="var">cond</var> doesn&rsquo;t satisfy <code class="code">buffer-match-p</code> with
+the same buffer and <code class="code">arg</code>.
+</p></dd>
+<dt><code class="code">(or <var class="var">conds</var>&hellip;)</code></dt>
+<dd><p>Satisfied if <em class="emph">any</em> condition in <var class="var">conds</var> satisfies
+<code class="code">buffer-match-p</code>, with the same buffer and <code class="code">arg</code>.
+</p></dd>
+<dt><code class="code">(and <var class="var">conds</var>&hellip;)</code></dt>
+<dd><p>Satisfied if <em class="emph">all</em> the conditions in <var class="var">conds</var> satisfy
+<code class="code">buffer-match-p</code>, with the same buffer and <code class="code">arg</code>.
+</p></dd>
+<dt><code class="code">derived-mode</code></dt>
+<dd><p>Satisfied if the buffer&rsquo;s major mode derives from <var class="var">expr</var>.
+</p></dd>
+<dt><code class="code">major-mode</code></dt>
+<dd><p>Satisfied if the buffer&rsquo;s major mode is equal to <var class="var">expr</var>.  Prefer
+using <code class="code">derived-mode</code> instead, when both can work.
+</p></dd>
+</dl>
+</li><li>t
+Satisfied by any buffer.  A convenient alternative to <code class="code">&quot;&quot;</code> (empty
+string) or <code class="code">(and)</code> (empty conjunction).
+</li></ul>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-match_002dbuffers"><span class="category-def">Function: </span><span><strong class="def-name">match-buffers</strong> <var class="def-var-arguments">condition &amp;optional buffer-list arg</var><a class="copiable-link" href="#index-match_002dbuffers"> &para;</a></span></dt>
+<dd><p>This function returns a list of all buffers that satisfy the
+<code class="code">condition</code>.  If no buffers match, the function returns
+<code class="code">nil</code>.  The argument <var class="var">condition</var> is as defined in
+<code class="code">buffer-match-p</code> above.  By default, all the buffers are
+considered, but this can be restricted via the optional argument
+<code class="code">buffer-list</code>, which should be a list of buffers to consider.
+Optional third argument <var class="var">arg</var> will be passed to <var class="var">condition</var> in
+the same way as <code class="code">buffer-match-p</code> does.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Creating-Buffers.html">Creating Buffers</a>, Previous: <a href="Read-Only-Buffers.html">Read-Only Buffers</a>, Up: <a href="Buffers.html">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

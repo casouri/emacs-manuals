@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Delayed Warnings (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Delayed Warnings (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Warnings.html" rel="up" title="Warnings">
-<link href="Invisible-Text.html" rel="next" title="Invisible Text">
 <link href="Warning-Options.html" rel="prev" title="Warning Options">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,58 +47,60 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Delayed-Warnings"></span><div class="header">
+<div class="subsection-level-extent" id="Delayed-Warnings">
+<div class="nav-panel">
 <p>
-Previous: <a href="Warning-Options.html" accesskey="p" rel="prev">Warning Options</a>, Up: <a href="Warnings.html" accesskey="u" rel="up">Warnings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Warning-Options.html" accesskey="p" rel="prev">Warning Options</a>, Up: <a href="Warnings.html" accesskey="u" rel="up">Reporting Warnings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Delayed-Warnings-1"></span><h4 class="subsection">37.5.4 Delayed Warnings</h4>
-<span id="index-delayed-warnings"></span>
+<h4 class="subsection" id="Delayed-Warnings-1"><span>37.5.4 Delayed Warnings<a class="copiable-link" href="#Delayed-Warnings-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-delayed-warnings"></a>
 
 <p>Sometimes, you may wish to avoid showing a warning while a command is
 running, and only show it only after the end of the command.  You can
-use the variable <code>delayed-warnings-list</code> for this.
+use the variable <code class="code">delayed-warnings-list</code> for this.
 </p>
-<dl>
-<dt id="index-delayed_002dwarnings_002dlist">Variable: <strong>delayed-warnings-list</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-delayed_002dwarnings_002dlist"><span class="category-def">Variable: </span><span><strong class="def-name">delayed-warnings-list</strong><a class="copiable-link" href="#index-delayed_002dwarnings_002dlist"> &para;</a></span></dt>
 <dd><p>The value of this variable is a list of warnings to be displayed after
 the current command has finished.  Each element must be a list
 </p>
-<div class="example">
-<pre class="example">(<var>type</var> <var>message</var> [<var>level</var> [<var>buffer-name</var>]])
+<div class="example smallexample">
+<pre class="example-preformatted">(<var class="var">type</var> <var class="var">message</var> [<var class="var">level</var> [<var class="var">buffer-name</var>]])
 </pre></div>
 
 <p>with the same form, and the same meanings, as the argument list of
-<code>display-warning</code> (see <a href="Warning-Basics.html">Warning Basics</a>).  Immediately after
-running <code>post-command-hook</code> (see <a href="Command-Overview.html">Command Overview</a>), the Emacs
+<code class="code">display-warning</code> (see <a class="pxref" href="Warning-Basics.html">Warning Basics</a>).  Immediately after
+running <code class="code">post-command-hook</code> (see <a class="pxref" href="Command-Overview.html">Command Loop Overview</a>), the Emacs
 command loop displays all the warnings specified by this variable,
-then resets it to <code>nil</code>.
+then resets it to <code class="code">nil</code>.
 </p></dd></dl>
 
 <p>Programs which need to further customize the delayed warnings
-mechanism can change the variable <code>delayed-warnings-hook</code>:
+mechanism can change the variable <code class="code">delayed-warnings-hook</code>:
 </p>
-<dl>
-<dt id="index-delayed_002dwarnings_002dhook">Variable: <strong>delayed-warnings-hook</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-delayed_002dwarnings_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">delayed-warnings-hook</strong><a class="copiable-link" href="#index-delayed_002dwarnings_002dhook"> &para;</a></span></dt>
 <dd><p>This is a normal hook which is run by the Emacs command loop, after
-<code>post-command-hook</code>, in order to to process and display delayed
+<code class="code">post-command-hook</code>, in order to to process and display delayed
 warnings.
 </p>
 <p>Its default value is a list of two functions:
 </p>
-<div class="example">
-<pre class="example">(collapse-delayed-warnings display-delayed-warnings)
+<div class="example smallexample">
+<pre class="example-preformatted">(collapse-delayed-warnings display-delayed-warnings)
 </pre></div>
 
-<span id="index-collapse_002ddelayed_002dwarnings"></span>
-<span id="index-display_002ddelayed_002dwarnings"></span>
-<p>The function <code>collapse-delayed-warnings</code> removes repeated entries
-from <code>delayed-warnings-list</code>.  The function
-<code>display-delayed-warnings</code> calls <code>display-warning</code> on each
-of the entries in <code>delayed-warnings-list</code>, in turn, and then sets
-<code>delayed-warnings-list</code> to <code>nil</code>.
+<a class="index-entry-id" id="index-collapse_002ddelayed_002dwarnings"></a>
+<a class="index-entry-id" id="index-display_002ddelayed_002dwarnings"></a>
+<p>The function <code class="code">collapse-delayed-warnings</code> removes repeated entries
+from <code class="code">delayed-warnings-list</code>.  The function
+<code class="code">display-delayed-warnings</code> calls <code class="code">display-warning</code> on each
+of the entries in <code class="code">delayed-warnings-list</code>, in turn, and then sets
+<code class="code">delayed-warnings-list</code> to <code class="code">nil</code>.
 </p></dd></dl>
 
+</div>
 
 
 

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.1.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Dabbrev Customization (GNU Emacs Manual)</title>
+
+<meta name="description" content="Dabbrev Customization (GNU Emacs Manual)">
+<meta name="keywords" content="Dabbrev Customization (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Abbrevs.html" rel="up" title="Abbrevs">
+<link href="Dynamic-Abbrevs.html" rel="prev" title="Dynamic Abbrevs">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Dabbrev-Customization">
+<div class="nav-panel">
+<p>
+Previous: <a href="Dynamic-Abbrevs.html" accesskey="p" rel="prev">Dynamic Abbrev Expansion</a>, Up: <a href="Abbrevs.html" accesskey="u" rel="up">Abbrevs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Customizing-Dynamic-Abbreviation"><span>29.8 Customizing Dynamic Abbreviation<a class="copiable-link" href="#Customizing-Dynamic-Abbreviation"> &para;</a></span></h3>
+
+<p>Normally, dynamic abbrev expansion ignores case when searching for
+expansions.  That is, the expansion need not agree in case with the word
+you are expanding.
+</p>
+<a class="index-entry-id" id="index-dabbrev_002dcase_002dfold_002dsearch"></a>
+<p>This feature is controlled by the variable
+<code class="code">dabbrev-case-fold-search</code>.  If it is <code class="code">t</code>, case is ignored
+in this search; if it is <code class="code">nil</code>, the word and the expansion must
+match in case.  If the value is <code class="code">case-fold-search</code> (the default),
+then the variable <code class="code">case-fold-search</code> controls whether to ignore
+case while searching for expansions (see <a class="pxref" href="Lax-Search.html">Lax Matching During Searching</a>).
+</p>
+<p>Normally, dynamic abbrev expansion preserves the case pattern
+<em class="emph">of the dynamic abbrev you are expanding</em>, by converting the
+expansion to that case pattern.
+</p>
+<a class="index-entry-id" id="index-dabbrev_002dcase_002dreplace"></a>
+<p>The variable <code class="code">dabbrev-case-replace</code> controls whether to
+preserve the case pattern of the dynamic abbrev.  If it is <code class="code">t</code>,
+the dynamic abbrev&rsquo;s case pattern is preserved in most cases; if it is
+<code class="code">nil</code>, the expansion is always copied verbatim.  If the value is
+<code class="code">case-replace</code> (the default), then the variable
+<code class="code">case-replace</code> controls whether to copy the expansion verbatim
+(see <a class="pxref" href="Replacement-and-Lax-Matches.html">Replace Commands and Lax Matches</a>).
+</p>
+<p>However, if the expansion contains a complex mixed case pattern, and
+the dynamic abbrev matches this pattern as far as it goes, then the
+expansion is always copied verbatim, regardless of those variables.
+Thus, for example, if the buffer contains
+<code class="code">variableWithSillyCasePattern</code>, and you type <kbd class="kbd">v a M-/</kbd>, it
+copies the expansion verbatim including its case pattern.
+</p>
+<a class="index-entry-id" id="index-dabbrev_002dabbrev_002dchar_002dregexp"></a>
+<p>The variable <code class="code">dabbrev-abbrev-char-regexp</code>, if non-<code class="code">nil</code>,
+controls which characters are considered part of a word, for dynamic
+expansion purposes.  The regular expression must match just one
+character, never two or more.  The same regular expression also
+determines which characters are part of an expansion.  The (default)
+value <code class="code">nil</code> has a special meaning: dynamic abbrevs (i.e. the
+word at point) are made of word characters, but their expansions are
+looked for as sequences of word and symbol characters.  This is
+generally appropriate for expanding symbols in a program source and
+also for human-readable text in many languages, but may not be what
+you want in a text buffer that includes unusual punctuation characters;
+in that case, the value <code class="code">&quot;\\sw&quot;</code> might produce better results.
+</p>
+<a class="index-entry-id" id="index-dabbrev_002dabbrev_002dskip_002dleading_002dregexp"></a>
+<p>In shell scripts and makefiles, a variable name is sometimes prefixed
+with &lsquo;<samp class="samp">$</samp>&rsquo; and sometimes not.  Major modes for this kind of text can
+customize dynamic abbrev expansion to handle optional prefixes by setting
+the variable <code class="code">dabbrev-abbrev-skip-leading-regexp</code>.  Its value
+should be a regular expression that matches the optional prefix that
+dynamic abbrev expression should ignore.  The default is <code class="code">nil</code>,
+which means no characters should be skipped.
+</p></div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Dynamic-Abbrevs.html">Dynamic Abbrev Expansion</a>, Up: <a href="Abbrevs.html">Abbrevs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Classifying Events (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Classifying Events (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Event-Examples.html" rel="prev" title="Event Examples">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,20 +50,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Classifying-Events"></span><div class="header">
+<div class="subsection-level-extent" id="Classifying-Events">
+<div class="nav-panel">
 <p>
-Next: <a href="Accessing-Mouse.html" accesskey="n" rel="next">Accessing Mouse</a>, Previous: <a href="Event-Examples.html" accesskey="p" rel="prev">Event Examples</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Accessing-Mouse.html" accesskey="n" rel="next">Accessing Mouse Events</a>, Previous: <a href="Event-Examples.html" accesskey="p" rel="prev">Event Examples</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Classifying-Events-1"></span><h4 class="subsection">22.7.12 Classifying Events</h4>
-<span id="index-event-type"></span>
-<span id="index-classifying-events"></span>
+<h4 class="subsection" id="Classifying-Events-1"><span>22.7.14 Classifying Events<a class="copiable-link" href="#Classifying-Events-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-event-type"></a>
+<a class="index-entry-id" id="index-classifying-events"></a>
 
-<p>Every event has an <em>event type</em>, which classifies the event for
+<p>Every event has an <em class="dfn">event type</em>, which classifies the event for
 key binding purposes.  For a keyboard event, the event type equals the
 event value; thus, the event type for a character is the character, and
 the event type for a function key symbol is the symbol itself.  For
-events that are lists, the event type is the symbol in the <small>CAR</small> of
+events that are lists, the event type is the symbol in the <small class="sc">CAR</small> of
 the list.  Thus, the event type is always a symbol or a character.
 </p>
 <p>Two events of the same type are equivalent where key bindings are
@@ -80,31 +74,31 @@ at the whole event to decide what to do.  For example, some commands use
 the location of a mouse event to decide where in the buffer to act.
 </p>
 <p>Sometimes broader classifications of events are useful.  For example,
-you might want to ask whether an event involved the <tt class="key">META</tt> key,
+you might want to ask whether an event involved the <kbd class="key">META</kbd> key,
 regardless of which other key or mouse button was used.
 </p>
-<p>The functions <code>event-modifiers</code> and <code>event-basic-type</code> are
+<p>The functions <code class="code">event-modifiers</code> and <code class="code">event-basic-type</code> are
 provided to get such information conveniently.
 </p>
-<dl>
-<dt id="index-event_002dmodifiers">Function: <strong>event-modifiers</strong> <em>event</em></dt>
-<dd><p>This function returns a list of the modifiers that <var>event</var> has.  The
-modifiers are symbols; they include <code>shift</code>, <code>control</code>,
-<code>meta</code>, <code>alt</code>, <code>hyper</code> and <code>super</code>.  In addition,
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-event_002dmodifiers"><span class="category-def">Function: </span><span><strong class="def-name">event-modifiers</strong> <var class="def-var-arguments">event</var><a class="copiable-link" href="#index-event_002dmodifiers"> &para;</a></span></dt>
+<dd><p>This function returns a list of the modifiers that <var class="var">event</var> has.  The
+modifiers are symbols; they include <code class="code">shift</code>, <code class="code">control</code>,
+<code class="code">meta</code>, <code class="code">alt</code>, <code class="code">hyper</code> and <code class="code">super</code>.  In addition,
 the modifiers list of a mouse event symbol always contains one of
-<code>click</code>, <code>drag</code>, and <code>down</code>.  For double or triple
-events, it also contains <code>double</code> or <code>triple</code>.
+<code class="code">click</code>, <code class="code">drag</code>, and <code class="code">down</code>.  For double or triple
+events, it also contains <code class="code">double</code> or <code class="code">triple</code>.
 </p>
-<p>The argument <var>event</var> may be an entire event object, or just an
-event type.  If <var>event</var> is a symbol that has never been used in an
+<p>The argument <var class="var">event</var> may be an entire event object, or just an
+event type.  If <var class="var">event</var> is a symbol that has never been used in an
 event that has been read as input in the current Emacs session, then
-<code>event-modifiers</code> can return <code>nil</code>, even when <var>event</var>
+<code class="code">event-modifiers</code> can return <code class="code">nil</code>, even when <var class="var">event</var>
 actually has modifiers.
 </p>
 <p>Here are some examples:
 </p>
 <div class="example">
-<pre class="example">(event-modifiers ?a)
+<pre class="example-preformatted">(event-modifiers ?a)
      &rArr; nil
 (event-modifiers ?A)
      &rArr; (shift)
@@ -126,22 +120,22 @@ actually has modifiers.
      &rArr; (down)
 </pre></div>
 
-<p>The modifiers list for a click event explicitly contains <code>click</code>,
-but the event symbol name itself does not contain &lsquo;<samp>click</samp>&rsquo;.
-Similarly, the modifiers list for an <acronym>ASCII</acronym> control
-character, such as &lsquo;<samp>C-a</samp>&rsquo;, contains <code>control</code>, even though
-reading such an event via <code>read-char</code> will return the value 1
+<p>The modifiers list for a click event explicitly contains <code class="code">click</code>,
+but the event symbol name itself does not contain &lsquo;<samp class="samp">click</samp>&rsquo;.
+Similarly, the modifiers list for an <abbr class="acronym">ASCII</abbr> control
+character, such as &lsquo;<samp class="samp">C-a</samp>&rsquo;, contains <code class="code">control</code>, even though
+reading such an event via <code class="code">read-char</code> will return the value 1
 with the control modifier bit removed.
 </p></dd></dl>
 
-<dl>
-<dt id="index-event_002dbasic_002dtype">Function: <strong>event-basic-type</strong> <em>event</em></dt>
-<dd><p>This function returns the key or mouse button that <var>event</var>
-describes, with all modifiers removed.  The <var>event</var> argument is as
-in <code>event-modifiers</code>.  For example:
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-event_002dbasic_002dtype"><span class="category-def">Function: </span><span><strong class="def-name">event-basic-type</strong> <var class="def-var-arguments">event</var><a class="copiable-link" href="#index-event_002dbasic_002dtype"> &para;</a></span></dt>
+<dd><p>This function returns the key or mouse button that <var class="var">event</var>
+describes, with all modifiers removed.  The <var class="var">event</var> argument is as
+in <code class="code">event-modifiers</code>.  For example:
 </p>
 <div class="example">
-<pre class="example">(event-basic-type ?a)
+<pre class="example-preformatted">(event-basic-type ?a)
      &rArr; 97
 (event-basic-type ?A)
      &rArr; 97
@@ -160,32 +154,17 @@ in <code>event-modifiers</code>.  For example:
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-mouse_002dmovement_002dp">Function: <strong>mouse-movement-p</strong> <em>object</em></dt>
-<dd><p>This function returns non-<code>nil</code> if <var>object</var> is a mouse movement
-event.  See <a href="Motion-Events.html">Motion Events</a>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-mouse_002dmovement_002dp"><span class="category-def">Function: </span><span><strong class="def-name">mouse-movement-p</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-mouse_002dmovement_002dp"> &para;</a></span></dt>
+<dd><p>This function returns non-<code class="code">nil</code> if <var class="var">object</var> is a mouse movement
+event.  See <a class="xref" href="Motion-Events.html">Motion Events</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-event_002dconvert_002dlist">Function: <strong>event-convert-list</strong> <em>list</em></dt>
-<dd><p>This function converts a list of modifier names and a basic event type
-to an event type which specifies all of them.  The basic event type
-must be the last element of the list.  For example,
-</p>
-<div class="example">
-<pre class="example">(event-convert-list '(control ?a))
-     &rArr; 1
-(event-convert-list '(control meta ?a))
-     &rArr; -134217727
-(event-convert-list '(control super f1))
-     &rArr; C-s-f1
-</pre></div>
-</dd></dl>
-
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Accessing-Mouse.html" accesskey="n" rel="next">Accessing Mouse</a>, Previous: <a href="Event-Examples.html" accesskey="p" rel="prev">Event Examples</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Accessing-Mouse.html">Accessing Mouse Events</a>, Previous: <a href="Event-Examples.html">Event Examples</a>, Up: <a href="Input-Events.html">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

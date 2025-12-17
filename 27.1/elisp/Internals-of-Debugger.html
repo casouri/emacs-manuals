@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Internals of Debugger (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Internals of Debugger (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Debugger.html" rel="up" title="Debugger">
-<link href="Edebug.html" rel="next" title="Edebug">
 <link href="Invoking-the-Debugger.html" rel="prev" title="Invoking the Debugger">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,41 +49,42 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Internals-of-Debugger"></span><div class="header">
+<div class="subsection-level-extent" id="Internals-of-Debugger">
+<div class="nav-panel">
 <p>
-Previous: <a href="Invoking-the-Debugger.html" accesskey="p" rel="prev">Invoking the Debugger</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Invoking-the-Debugger.html" accesskey="p" rel="prev">Invoking the Debugger</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">The Lisp Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Internals-of-the-Debugger"></span><h4 class="subsection">18.1.10 Internals of the Debugger</h4>
+<h4 class="subsection" id="Internals-of-the-Debugger"><span>18.1.10 Internals of the Debugger<a class="copiable-link" href="#Internals-of-the-Debugger"> &para;</a></span></h4>
 
 <p>This section describes functions and variables used internally by the
 debugger.
 </p>
-<dl>
-<dt id="index-debugger">Variable: <strong>debugger</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-debugger"><span class="category-def">Variable: </span><span><strong class="def-name">debugger</strong><a class="copiable-link" href="#index-debugger"> &para;</a></span></dt>
 <dd><p>The value of this variable is the function to call to invoke the
 debugger.  Its value must be a function of any number of arguments, or,
 more typically, the name of a function.  This function should invoke
 some kind of debugger.  The default value of the variable is
-<code>debug</code>.
+<code class="code">debug</code>.
 </p>
 <p>The first argument that Lisp hands to the function indicates why it
 was called.  The convention for arguments is detailed in the description
-of <code>debug</code> (see <a href="Invoking-the-Debugger.html">Invoking the Debugger</a>).
+of <code class="code">debug</code> (see <a class="pxref" href="Invoking-the-Debugger.html">Invoking the Debugger</a>).
 </p></dd></dl>
 
-<dl>
-<dt id="index-backtrace">Function: <strong>backtrace</strong></dt>
-<dd><span id="index-run-time-stack"></span>
-<span id="index-call-stack"></span>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-backtrace"><span class="category-def">Function: </span><span><strong class="def-name">backtrace</strong><a class="copiable-link" href="#index-backtrace"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-run-time-stack"></a>
+<a class="index-entry-id" id="index-call-stack"></a>
 <p>This function prints a trace of Lisp function calls currently active.
-The trace is identical to the one that <code>debug</code> would show in the
-<samp>*Backtrace*</samp> buffer.  The return value is always nil.
+The trace is identical to the one that <code class="code">debug</code> would show in the
+<samp class="file">*Backtrace*</samp> buffer.  The return value is always nil.
 </p>
-<p>In the following example, a Lisp expression calls <code>backtrace</code>
+<p>In the following example, a Lisp expression calls <code class="code">backtrace</code>
 explicitly.  This prints the backtrace to the stream
-<code>standard-output</code>, which, in this case, is the buffer
-&lsquo;<samp>backtrace-output</samp>&rsquo;.
+<code class="code">standard-output</code>, which, in this case, is the buffer
+&lsquo;<samp class="samp">backtrace-output</samp>&rsquo;.
 </p>
 <p>Each line of the backtrace represents one function call.  The line
 shows the function followed by a list of the values of the function&rsquo;s
@@ -99,8 +92,8 @@ arguments if they are all known; if they are still being computed, the
 line consists of a list containing the function and its unevaluated
 arguments.  Long lists or deeply nested structures may be elided.
 </p>
-<div class="example">
-<pre class="example">(with-output-to-temp-buffer &quot;backtrace-output&quot;
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(with-output-to-temp-buffer &quot;backtrace-output&quot;
   (let ((var 1))
     (save-excursion
       (setq var (eval '(progn
@@ -108,12 +101,12 @@ arguments.  Long lists or deeply nested structures may be elided.
                          (list 'testing (backtrace))))))))
 
      &rArr; (testing nil)
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">----------- Buffer: backtrace-output ------------
+</pre><div class="group"><pre class="example-preformatted">----------- Buffer: backtrace-output ------------
   backtrace()
   (list 'testing (backtrace))
-</pre><pre class="example">  (progn ...)
+</pre></div><pre class="example-preformatted">  (progn ...)
   eval((progn (1+ var) (list 'testing (backtrace))))
   (setq ...)
   (save-excursion ...)
@@ -121,27 +114,27 @@ arguments.  Long lists or deeply nested structures may be elided.
   (with-output-to-temp-buffer ...)
   eval((with-output-to-temp-buffer ...))
   eval-last-sexp-1(nil)
-</pre><pre class="example">  eval-last-sexp(nil)
+</pre><div class="group"><pre class="example-preformatted">  eval-last-sexp(nil)
   call-interactively(eval-last-sexp)
 ----------- Buffer: backtrace-output ------------
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-debugger_002dstack_002dframe_002das_002dlist">User Option: <strong>debugger-stack-frame-as-list</strong></dt>
-<dd><p>If this variable is non-<code>nil</code>, every stack frame of the backtrace
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-debugger_002dstack_002dframe_002das_002dlist"><span class="category-def">User Option: </span><span><strong class="def-name">debugger-stack-frame-as-list</strong><a class="copiable-link" href="#index-debugger_002dstack_002dframe_002das_002dlist"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, every stack frame of the backtrace
 is displayed as a list.  This aims at improving the backtrace
 readability at the cost of special forms no longer being visually
 different from regular function calls.
 </p>
-<p>With <code>debugger-stack-frame-as-list</code> non-<code>nil</code>, the above
+<p>With <code class="code">debugger-stack-frame-as-list</code> non-<code class="code">nil</code>, the above
 example would look as follows:
 </p>
-<div class="example">
-<pre class="example">----------- Buffer: backtrace-output ------------
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">----------- Buffer: backtrace-output ------------
   (backtrace)
   (list 'testing (backtrace))
-</pre><pre class="example">  (progn ...)
+</pre></div><pre class="example-preformatted">  (progn ...)
   (eval (progn (1+ var) (list 'testing (backtrace))))
   (setq ...)
   (save-excursion ...)
@@ -149,40 +142,40 @@ example would look as follows:
   (with-output-to-temp-buffer ...)
   (eval (with-output-to-temp-buffer ...))
   (eval-last-sexp-1 nil)
-</pre><pre class="example">  (eval-last-sexp nil)
+</pre><div class="group"><pre class="example-preformatted">  (eval-last-sexp nil)
   (call-interactively eval-last-sexp)
 ----------- Buffer: backtrace-output ------------
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-debug_002don_002dnext_002dcall">Variable: <strong>debug-on-next-call</strong></dt>
-<dd><span id="index-eval_002c-and-debugging"></span>
-<span id="index-apply_002c-and-debugging"></span>
-<span id="index-funcall_002c-and-debugging"></span>
-<p>If this variable is non-<code>nil</code>, it says to call the debugger before
-the next <code>eval</code>, <code>apply</code> or <code>funcall</code>.  Entering the
-debugger sets <code>debug-on-next-call</code> to <code>nil</code>.
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-debug_002don_002dnext_002dcall"><span class="category-def">Variable: </span><span><strong class="def-name">debug-on-next-call</strong><a class="copiable-link" href="#index-debug_002don_002dnext_002dcall"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-eval_002c-and-debugging"></a>
+<a class="index-entry-id" id="index-apply_002c-and-debugging"></a>
+<a class="index-entry-id" id="index-funcall_002c-and-debugging"></a>
+<p>If this variable is non-<code class="code">nil</code>, it says to call the debugger before
+the next <code class="code">eval</code>, <code class="code">apply</code> or <code class="code">funcall</code>.  Entering the
+debugger sets <code class="code">debug-on-next-call</code> to <code class="code">nil</code>.
 </p>
-<p>The <kbd>d</kbd> command in the debugger works by setting this variable.
+<p>The <kbd class="kbd">d</kbd> command in the debugger works by setting this variable.
 </p></dd></dl>
 
-<dl>
-<dt id="index-backtrace_002ddebug">Function: <strong>backtrace-debug</strong> <em>level flag</em></dt>
-<dd><p>This function sets the debug-on-exit flag of the stack frame <var>level</var>
-levels down the stack, giving it the value <var>flag</var>.  If <var>flag</var> is
-non-<code>nil</code>, this will cause the debugger to be entered when that
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-backtrace_002ddebug"><span class="category-def">Function: </span><span><strong class="def-name">backtrace-debug</strong> <var class="def-var-arguments">level flag</var><a class="copiable-link" href="#index-backtrace_002ddebug"> &para;</a></span></dt>
+<dd><p>This function sets the debug-on-exit flag of the stack frame <var class="var">level</var>
+levels down the stack, giving it the value <var class="var">flag</var>.  If <var class="var">flag</var> is
+non-<code class="code">nil</code>, this will cause the debugger to be entered when that
 frame later exits.  Even a nonlocal exit through that frame will enter
 the debugger.
 </p>
 <p>This function is used only by the debugger.
 </p></dd></dl>
 
-<dl>
-<dt id="index-command_002ddebug_002dstatus">Variable: <strong>command-debug-status</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-command_002ddebug_002dstatus"><span class="category-def">Variable: </span><span><strong class="def-name">command-debug-status</strong><a class="copiable-link" href="#index-command_002ddebug_002dstatus"> &para;</a></span></dt>
 <dd><p>This variable records the debugging status of the current interactive
 command.  Each time a command is called interactively, this variable is
-bound to <code>nil</code>.  The debugger can set this variable to leave
+bound to <code class="code">nil</code>.  The debugger can set this variable to leave
 information for future debugger invocations during the same command
 invocation.
 </p>
@@ -193,57 +186,58 @@ invocation.
 <p>This variable is obsolete and will be removed in future versions.
 </p></dd></dl>
 
-<dl>
-<dt id="index-backtrace_002dframe">Function: <strong>backtrace-frame</strong> <em>frame-number &amp;optional base</em></dt>
-<dd><p>The function <code>backtrace-frame</code> is intended for use in Lisp
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-backtrace_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">backtrace-frame</strong> <var class="def-var-arguments">frame-number &amp;optional base</var><a class="copiable-link" href="#index-backtrace_002dframe"> &para;</a></span></dt>
+<dd><p>The function <code class="code">backtrace-frame</code> is intended for use in Lisp
 debuggers.  It returns information about what computation is happening
-in the stack frame <var>frame-number</var> levels down.
+in the stack frame <var class="var">frame-number</var> levels down.
 </p>
 <p>If that frame has not evaluated the arguments yet, or is a special
-form, the value is <code>(nil <var>function</var> <var>arg-forms</var>&hellip;)</code>.
+form, the value is <code class="code">(nil <var class="var">function</var> <var class="var">arg-forms</var>&hellip;)</code>.
 </p>
 <p>If that frame has evaluated its arguments and called its function
-already, the return value is <code>(t <var>function</var>
-<var>arg-values</var>&hellip;)</code>.
+already, the return value is <code class="code">(t <var class="var">function</var>
+<var class="var">arg-values</var>&hellip;)</code>.
 </p>
-<p>In the return value, <var>function</var> is whatever was supplied as the
-<small>CAR</small> of the evaluated list, or a <code>lambda</code> expression in the
-case of a macro call.  If the function has a <code>&amp;rest</code> argument, that
-is represented as the tail of the list <var>arg-values</var>.
+<p>In the return value, <var class="var">function</var> is whatever was supplied as the
+<small class="sc">CAR</small> of the evaluated list, or a <code class="code">lambda</code> expression in the
+case of a macro call.  If the function has a <code class="code">&amp;rest</code> argument, that
+is represented as the tail of the list <var class="var">arg-values</var>.
 </p>
-<p>If <var>base</var> is specified, <var>frame-number</var> counts relative to
-the topmost frame whose <var>function</var> is <var>base</var>.
+<p>If <var class="var">base</var> is specified, <var class="var">frame-number</var> counts relative to
+the topmost frame whose <var class="var">function</var> is <var class="var">base</var>.
 </p>
-<p>If <var>frame-number</var> is out of range, <code>backtrace-frame</code> returns
-<code>nil</code>.
+<p>If <var class="var">frame-number</var> is out of range, <code class="code">backtrace-frame</code> returns
+<code class="code">nil</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-mapbacktrace">Function: <strong>mapbacktrace</strong> <em>function &amp;optional base</em></dt>
-<dd><p>The function <code>mapbacktrace</code> calls <var>function</var> once for each
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-mapbacktrace"><span class="category-def">Function: </span><span><strong class="def-name">mapbacktrace</strong> <var class="def-var-arguments">function &amp;optional base</var><a class="copiable-link" href="#index-mapbacktrace"> &para;</a></span></dt>
+<dd><p>The function <code class="code">mapbacktrace</code> calls <var class="var">function</var> once for each
 frame in the backtrace, starting at the first frame whose function is
-<var>base</var> (or from the top if <var>base</var> is omitted or <code>nil</code>).
+<var class="var">base</var> (or from the top if <var class="var">base</var> is omitted or <code class="code">nil</code>).
 </p>
-<p><var>function</var> is called with four arguments: <var>evald</var>, <var>func</var>,
-<var>args</var>, and <var>flags</var>.
+<p><var class="var">function</var> is called with four arguments: <var class="var">evald</var>, <var class="var">func</var>,
+<var class="var">args</var>, and <var class="var">flags</var>.
 </p>
 <p>If a frame has not evaluated its arguments yet or is a special form,
-<var>evald</var> is <code>nil</code> and <var>args</var> is a list of forms.
+<var class="var">evald</var> is <code class="code">nil</code> and <var class="var">args</var> is a list of forms.
 </p>
 <p>If a frame has evaluated its arguments and called its function
-already, <var>evald</var> is <code>t</code> and <var>args</var> is a list of values.
-<var>flags</var> is a plist of properties of the current frame: currently,
-the only supported property is <code>:debug-on-exit</code>, which is
-<code>t</code> if the stack frame&rsquo;s <code>debug-on-exit</code> flag is set.
+already, <var class="var">evald</var> is <code class="code">t</code> and <var class="var">args</var> is a list of values.
+<var class="var">flags</var> is a plist of properties of the current frame: currently,
+the only supported property is <code class="code">:debug-on-exit</code>, which is
+<code class="code">t</code> if the stack frame&rsquo;s <code class="code">debug-on-exit</code> flag is set.
 </p></dd></dl>
 
 
 
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Invoking-the-Debugger.html" accesskey="p" rel="prev">Invoking the Debugger</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Invoking-the-Debugger.html">Invoking the Debugger</a>, Up: <a href="Debugger.html">The Lisp Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

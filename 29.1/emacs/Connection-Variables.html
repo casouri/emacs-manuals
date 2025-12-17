@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Connection Variables (GNU Emacs Manual)</title>
+
+<meta name="description" content="Connection Variables (GNU Emacs Manual)">
+<meta name="keywords" content="Connection Variables (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Variables.html" rel="up" title="Variables">
+<link href="Directory-Variables.html" rel="prev" title="Directory Variables">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Connection-Variables">
+<div class="nav-panel">
+<p>
+Previous: <a href="Directory-Variables.html" accesskey="p" rel="prev">Per-Directory Local Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Per_002dConnection-Local-Variables"><span>50.2.6 Per-Connection Local Variables<a class="copiable-link" href="#Per_002dConnection-Local-Variables"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-local-variables_002c-for-all-remote-connections"></a>
+<a class="index-entry-id" id="index-connection_002dlocal-variables"></a>
+<a class="index-entry-id" id="index-per_002dconnection-local-variables"></a>
+
+<p>Most of the variables reflect the situation on the local machine.
+Often, they must use a different value when you operate in buffers
+with a remote default directory.  Think about the behavior when
+calling <code class="code">shell</code> &ndash; on your local machine, you might use
+<samp class="file">/bin/bash</samp> and rely on termcap, but on a remote machine, it may
+be <samp class="file">/bin/ksh</samp> and terminfo.
+</p>
+<p>This can be accomplished with <em class="dfn">connection-local variables</em>.
+Directory and file local variables override connection-local
+variables.  Unsafe connection-local variables are handled in the same
+way as unsafe file-local variables (see <a class="pxref" href="Safe-File-Variables.html">Safety of File Variables</a>).
+</p>
+<a class="index-entry-id" id="index-connection_002dlocal_002dset_002dprofile_002dvariables"></a>
+<a class="index-entry-id" id="index-connection_002dlocal_002dset_002dprofiles"></a>
+<p>Connection-local variables are declared as a group of
+variables/value pairs in a <em class="dfn">profile</em>, using the
+<code class="code">connection-local-set-profile-variables</code> function.  The function
+<code class="code">connection-local-set-profiles</code> activates profiles for a given
+criteria, identifying a remote machine:
+</p>
+<div class="example">
+<pre class="example-preformatted">(connection-local-set-profile-variables 'remote-terminfo
+   '((system-uses-terminfo . t)
+     (comint-terminfo-terminal . &quot;dumb-emacs-ansi&quot;)))
+
+(connection-local-set-profile-variables 'remote-ksh
+   '((shell-file-name . &quot;/bin/ksh&quot;)
+     (shell-command-switch . &quot;-c&quot;)))
+
+(connection-local-set-profile-variables 'remote-bash
+   '((shell-file-name . &quot;/bin/bash&quot;)
+     (shell-command-switch . &quot;-c&quot;)))
+
+(connection-local-set-profiles
+   '(:application tramp :machine &quot;remotemachine&quot;)
+   'remote-terminfo 'remote-ksh)
+</pre></div>
+
+<p>This code declares three different profiles, <code class="code">remote-terminfo</code>,
+<code class="code">remote-ksh</code>, and <code class="code">remote-bash</code>.  The profiles
+<code class="code">remote-terminfo</code> and <code class="code">remote-ksh</code> are applied to all
+buffers which have a remote default directory matching the regexp
+<code class="code">&quot;remotemachine&quot;</code> as host name.  Such a criteria can also
+discriminate for the properties <code class="code">:protocol</code> (this is the Tramp
+method) or <code class="code">:user</code> (a remote user name).  The <code class="code">nil</code> criteria
+matches all buffers with a remote default directory.
+</p>
+</div>
+
+
+
+</body>
+</html>

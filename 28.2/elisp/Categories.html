@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Categories (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Categories (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Categories (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Syntax-Tables.html" rel="up" title="Syntax Tables">
+<link href="Syntax-Table-Internals.html" rel="prev" title="Syntax Table Internals">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Categories">
+<div class="nav-panel">
+<p>
+Previous: <a href="Syntax-Table-Internals.html" accesskey="p" rel="prev">Syntax Table Internals</a>, Up: <a href="Syntax-Tables.html" accesskey="u" rel="up">Syntax Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Categories-1"><span>36.8 Categories<a class="copiable-link" href="#Categories-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-categories-of-characters"></a>
+<a class="index-entry-id" id="index-character-categories"></a>
+
+<p><em class="dfn">Categories</em> provide an alternate way of classifying characters
+syntactically.  You can define several categories as needed, then
+independently assign each character to one or more categories.  Unlike
+syntax classes, categories are not mutually exclusive; it is normal for
+one character to belong to several categories.
+</p>
+<a class="index-entry-id" id="index-category-table"></a>
+<p>Each buffer has a <em class="dfn">category table</em> which records which categories
+are defined and also which characters belong to each category.  Each
+category table defines its own categories, but normally these are
+initialized by copying from the standard categories table, so that the
+standard categories are available in all modes.
+</p>
+<p>Each category has a name, which is an <abbr class="acronym">ASCII</abbr> printing character in
+the range &lsquo;<samp class="samp">&nbsp;</samp>&rsquo;<!-- /@w --> to &lsquo;<samp class="samp">~</samp>&rsquo;.  You specify the name of a category
+when you define it with <code class="code">define-category</code>.
+</p>
+<a class="index-entry-id" id="index-category-set"></a>
+<p>The category table is actually a char-table (see <a class="pxref" href="Char_002dTables.html">Char-Tables</a>).
+The element of the category table at index <var class="var">c</var> is a <em class="dfn">category
+set</em>&mdash;a bool-vector&mdash;that indicates which categories character <var class="var">c</var>
+belongs to.  In this category set, if the element at index <var class="var">cat</var> is
+<code class="code">t</code>, that means category <var class="var">cat</var> is a member of the set, and that
+character <var class="var">c</var> belongs to category <var class="var">cat</var>.
+</p>
+<p>For the next three functions, the optional argument <var class="var">table</var>
+defaults to the current buffer&rsquo;s category table.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-define_002dcategory"><span class="category-def">Function: </span><span><strong class="def-name">define-category</strong> <var class="def-var-arguments">char docstring &amp;optional table</var><a class="copiable-link" href="#index-define_002dcategory"> &para;</a></span></dt>
+<dd><p>This function defines a new category, with name <var class="var">char</var> and
+documentation <var class="var">docstring</var>, for the category table <var class="var">table</var>.
+</p>
+<p>Here&rsquo;s an example of defining a new category for characters that have
+strong right-to-left directionality (see <a class="pxref" href="Bidirectional-Display.html">Bidirectional Display</a>)
+and using it in a special category table.  To obtain the information
+about the directionality of characters, the example code uses the
+&lsquo;<samp class="samp">bidi-class</samp>&rsquo; Unicode property (see <a class="pxref" href="Character-Properties.html">bidi-class</a>).
+</p>
+<div class="example">
+<pre class="example-preformatted">(defvar special-category-table-for-bidi
+  ;;     Make an empty category-table.
+  (let ((category-table (make-category-table))
+        ;; Create a char-table which gives the 'bidi-class' Unicode
+        ;; property for each character.
+        (uniprop-table
+         (unicode-property-table-internal 'bidi-class)))
+    (define-category ?R &quot;Characters of bidi-class R, AL, or RLO&quot;
+                     category-table)
+    ;; Modify the category entry of each character whose
+    ;; 'bidi-class' Unicode property is R, AL, or RLO --
+    ;; these have a right-to-left directionality.
+    (map-char-table
+     (lambda (key val)
+       (if (memq val '(R AL RLO))
+           (modify-category-entry key ?R category-table)))
+     uniprop-table)
+    category-table))
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-category_002ddocstring"><span class="category-def">Function: </span><span><strong class="def-name">category-docstring</strong> <var class="def-var-arguments">category &amp;optional table</var><a class="copiable-link" href="#index-category_002ddocstring"> &para;</a></span></dt>
+<dd><p>This function returns the documentation string of category <var class="var">category</var>
+in category table <var class="var">table</var>.
+</p>
+<div class="example">
+<pre class="example-preformatted">(category-docstring ?a)
+     &rArr; &quot;ASCII&quot;
+(category-docstring ?l)
+     &rArr; &quot;Latin&quot;
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-get_002dunused_002dcategory"><span class="category-def">Function: </span><span><strong class="def-name">get-unused-category</strong> <var class="def-var-arguments">&amp;optional table</var><a class="copiable-link" href="#index-get_002dunused_002dcategory"> &para;</a></span></dt>
+<dd><p>This function returns a category name (a character) which is not
+currently defined in <var class="var">table</var>.  If all possible categories are in use
+in <var class="var">table</var>, it returns <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-category_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">category-table</strong><a class="copiable-link" href="#index-category_002dtable"> &para;</a></span></dt>
+<dd><p>This function returns the current buffer&rsquo;s category table.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-category_002dtable_002dp"><span class="category-def">Function: </span><span><strong class="def-name">category-table-p</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-category_002dtable_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">object</var> is a category table,
+otherwise <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-standard_002dcategory_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">standard-category-table</strong><a class="copiable-link" href="#index-standard_002dcategory_002dtable"> &para;</a></span></dt>
+<dd><p>This function returns the standard category table.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-copy_002dcategory_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">copy-category-table</strong> <var class="def-var-arguments">&amp;optional table</var><a class="copiable-link" href="#index-copy_002dcategory_002dtable"> &para;</a></span></dt>
+<dd><p>This function constructs a copy of <var class="var">table</var> and returns it.  If
+<var class="var">table</var> is not supplied (or is <code class="code">nil</code>), it returns a copy of the
+standard category table.  Otherwise, an error is signaled if <var class="var">table</var>
+is not a category table.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dcategory_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">set-category-table</strong> <var class="def-var-arguments">table</var><a class="copiable-link" href="#index-set_002dcategory_002dtable"> &para;</a></span></dt>
+<dd><p>This function makes <var class="var">table</var> the category table for the current
+buffer.  It returns <var class="var">table</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dcategory_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">make-category-table</strong><a class="copiable-link" href="#index-make_002dcategory_002dtable"> &para;</a></span></dt>
+<dd><p>This creates and returns an empty category table.  In an empty category
+table, no categories have been allocated, and no characters belong to
+any categories.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dcategory_002dset"><span class="category-def">Function: </span><span><strong class="def-name">make-category-set</strong> <var class="def-var-arguments">categories</var><a class="copiable-link" href="#index-make_002dcategory_002dset"> &para;</a></span></dt>
+<dd><p>This function returns a new category set&mdash;a bool-vector&mdash;whose initial
+contents are the categories listed in the string <var class="var">categories</var>.  The
+elements of <var class="var">categories</var> should be category names; the new category
+set has <code class="code">t</code> for each of those categories, and <code class="code">nil</code> for all
+other categories.
+</p>
+<div class="example">
+<pre class="example-preformatted">(make-category-set &quot;al&quot;)
+     &rArr; #&amp;128&quot;\0\0\0\0\0\0\0\0\0\0\0\0\2\20\0\0&quot;
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-char_002dcategory_002dset"><span class="category-def">Function: </span><span><strong class="def-name">char-category-set</strong> <var class="def-var-arguments">char</var><a class="copiable-link" href="#index-char_002dcategory_002dset"> &para;</a></span></dt>
+<dd><p>This function returns the category set for character <var class="var">char</var> in the
+current buffer&rsquo;s category table.  This is the bool-vector which
+records which categories the character <var class="var">char</var> belongs to.  The
+function <code class="code">char-category-set</code> does not allocate storage, because
+it returns the same bool-vector that exists in the category table.
+</p>
+<div class="example">
+<pre class="example-preformatted">(char-category-set ?a)
+     &rArr; #&amp;128&quot;\0\0\0\0\0\0\0\0\0\0\0\0\2\20\0\0&quot;
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-category_002dset_002dmnemonics"><span class="category-def">Function: </span><span><strong class="def-name">category-set-mnemonics</strong> <var class="def-var-arguments">category-set</var><a class="copiable-link" href="#index-category_002dset_002dmnemonics"> &para;</a></span></dt>
+<dd><p>This function converts the category set <var class="var">category-set</var> into a string
+containing the characters that designate the categories that are members
+of the set.
+</p>
+<div class="example">
+<pre class="example-preformatted">(category-set-mnemonics (char-category-set ?a))
+     &rArr; &quot;al&quot;
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-modify_002dcategory_002dentry"><span class="category-def">Function: </span><span><strong class="def-name">modify-category-entry</strong> <var class="def-var-arguments">char category &amp;optional table reset</var><a class="copiable-link" href="#index-modify_002dcategory_002dentry"> &para;</a></span></dt>
+<dd><p>This function modifies the category set of <var class="var">char</var> in category
+table <var class="var">table</var> (which defaults to the current buffer&rsquo;s category
+table).  <var class="var">char</var> can be a character, or a cons cell of the form
+<code class="code">(<var class="var">min</var> . <var class="var">max</var>)</code>; in the latter case, the function
+modifies the category sets of all characters in the range between
+<var class="var">min</var> and <var class="var">max</var>, inclusive.
+</p>
+<p>Normally, it modifies a category set by adding <var class="var">category</var> to it.
+But if <var class="var">reset</var> is non-<code class="code">nil</code>, then it deletes <var class="var">category</var>
+instead.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-describe_002dcategories"><span class="category-def">Command: </span><span><strong class="def-name">describe-categories</strong> <var class="def-var-arguments">&amp;optional buffer-or-name</var><a class="copiable-link" href="#index-describe_002dcategories"> &para;</a></span></dt>
+<dd><p>This function describes the category specifications in the current
+category table.  It inserts the descriptions in a buffer, and then
+displays that buffer.  If <var class="var">buffer-or-name</var> is non-<code class="code">nil</code>, it
+describes the category table of that buffer instead.
+</p></dd></dl>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Syntax-Table-Internals.html">Syntax Table Internals</a>, Up: <a href="Syntax-Tables.html">Syntax Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

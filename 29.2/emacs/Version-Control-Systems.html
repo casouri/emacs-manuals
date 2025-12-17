@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.2.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Version Control Systems (GNU Emacs Manual)</title>
+
+<meta name="description" content="Version Control Systems (GNU Emacs Manual)">
+<meta name="keywords" content="Version Control Systems (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Introduction-to-VC.html" rel="up" title="Introduction to VC">
+<link href="VCS-Concepts.html" rel="next" title="VCS Concepts">
+<link href="Why-Version-Control_003f.html" rel="prev" title="Why Version Control?">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Version-Control-Systems">
+<div class="nav-panel">
+<p>
+Next: <a href="VCS-Concepts.html" accesskey="n" rel="next">Concepts of Version Control</a>, Previous: <a href="Why-Version-Control_003f.html" accesskey="p" rel="prev">Understanding the Problems it Addresses</a>, Up: <a href="Introduction-to-VC.html" accesskey="u" rel="up">Introduction to Version Control</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Supported-Version-Control-Systems"><span>29.1.1.2 Supported Version Control Systems<a class="copiable-link" href="#Supported-Version-Control-Systems"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-back-end-_0028version-control_0029"></a>
+<p>VC currently works with many different version control systems,
+which it refers to as <em class="dfn">back ends</em>:
+</p>
+<ul class="itemize mark-bullet">
+<li><a class="index-entry-id" id="index-git"></a>
+Git is a decentralized version control system originally invented by
+Linus Torvalds to support development of Linux (his kernel).  VC
+supports many common Git operations, but others, such as repository
+syncing, must be done from the command line.
+
+</li><li><a class="index-entry-id" id="index-CVS"></a>
+CVS is the free version control system that was, until circa 2008,
+used by the majority of free software projects.  Since then, it has
+been superseded by newer systems.  CVS allows concurrent multi-user
+development either locally or over the network.  Unlike newer systems,
+it lacks support for atomic commits and file moving/renaming.  VC
+supports all basic editing operations under CVS.
+
+</li><li><a class="index-entry-id" id="index-SVN"></a>
+<a class="index-entry-id" id="index-Subversion"></a>
+Subversion (svn) is a free version control system designed to be
+similar to CVS but without its problems (e.g., it supports atomic
+commits of filesets, and versioning of directories, symbolic links,
+meta-data, renames, copies, and deletes).
+
+</li><li><a class="index-entry-id" id="index-SCCS"></a>
+SCCS was the first version control system ever built, and was long ago
+superseded by more advanced ones.  VC compensates for certain features
+missing in SCCS (e.g., tag names for releases) by implementing them
+itself.  Other VC features, such as multiple branches, are simply
+unavailable.  Since SCCS is non-free, we recommend avoiding it.
+
+</li><li><a class="index-entry-id" id="index-CSSC"></a>
+CSSC is a free replacement for SCCS.  You should use CSSC only if, for
+some reason, you cannot use a more recent and better-designed version
+control system.
+
+</li><li><a class="index-entry-id" id="index-RCS"></a>
+RCS is the free version control system around which VC was initially
+built.  It is relatively primitive: it cannot be used over the
+network, and works at the level of individual files.  Almost
+everything you can do with RCS can be done through VC.
+
+</li><li><a class="index-entry-id" id="index-hg"></a>
+<a class="index-entry-id" id="index-Mercurial"></a>
+Mercurial (hg) is a decentralized version control system broadly
+resembling Git.  VC supports most Mercurial commands, with the
+exception of repository sync operations.
+
+</li><li><a class="index-entry-id" id="index-bzr"></a>
+<a class="index-entry-id" id="index-Bazaar"></a>
+Bazaar (bzr) is a decentralized version control system that supports
+both repository-based and decentralized versioning.  VC supports most
+basic editing operations under Bazaar.
+
+</li><li><a class="index-entry-id" id="index-SRC"></a>
+<a class="index-entry-id" id="index-src"></a>
+SRC (src) is RCS, reloaded&mdash;a specialized version-control system
+designed for single-file projects worked on by only one person.  It
+allows multiple files with independent version-control histories to
+exist in one directory, and is thus particularly well suited for
+maintaining small documents, scripts, and dotfiles.  While it uses RCS
+for revision storage, it presents a modern user interface featuring
+lockless operation and integer sequential version numbers.  VC
+supports almost all SRC operations.
+</li></ul>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="VCS-Concepts.html">Concepts of Version Control</a>, Previous: <a href="Why-Version-Control_003f.html">Understanding the Problems it Addresses</a>, Up: <a href="Introduction-to-VC.html">Introduction to Version Control</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

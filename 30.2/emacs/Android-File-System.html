@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.2.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Android File System (GNU Emacs Manual)</title>
+
+<meta name="description" content="Android File System (GNU Emacs Manual)">
+<meta name="keywords" content="Android File System (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Android.html" rel="up" title="Android">
+<link href="Android-Document-Providers.html" rel="next" title="Android Document Providers">
+<link href="Android-Startup.html" rel="prev" title="Android Startup">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Android-File-System">
+<div class="nav-panel">
+<p>
+Next: <a href="Android-Document-Providers.html" accesskey="n" rel="next">Accessing Files from Other Programs on Android</a>, Previous: <a href="Android-Startup.html" accesskey="p" rel="prev">Starting Emacs on Android</a>, Up: <a href="Android.html" accesskey="u" rel="up">Emacs and Android</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="What-Files-Emacs-Can-Access-on-Android"><span>H.3 What Files Emacs Can Access on Android<a class="copiable-link" href="#What-Files-Emacs-Can-Access-on-Android"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-_002fassets-directory_002c-android"></a>
+
+<p>Emacs exposes a special directory on Android systems: the name of
+the directory is <samp class="file">/assets</samp>, and it contains the <samp class="file">etc</samp>,
+<samp class="file">lisp</samp> and <samp class="file">info</samp> directories which are normally installed
+in <samp class="file">/usr/share/emacs</samp> directory on GNU and Unix systems.  On
+Android systems, the Lisp emulation of <code class="command">ls</code> (see <a class="pxref" href="ls-in-Lisp.html">Emulation of <code class="code">ls</code> on MS-Windows</a>) is also enabled by default, as the <code class="command">ls</code> binary which
+comes with the system varies by manufacturer and usually does not
+support all of the features required by Emacs.  One copy of
+<code class="command">ls</code> distributed with some Android systems is even known to
+lack support for the <code class="code">-l</code> flag.
+</p>
+<a class="index-entry-id" id="index-limitations-of-the-_002fassets-directory"></a>
+
+<p>This directory exists because Android does not extract the contents
+of application packages on to the file system while unpacking them,
+but instead requires programs like Emacs to access its contents using
+a special &ldquo;asset manager&rdquo; interface.  Here are the peculiarities
+that result from such an implementation:
+</p>
+<ul class="itemize mark-bullet">
+<li>Subprocesses (such as <code class="command">ls</code>) can not run from the
+<samp class="file">/assets</samp> directory; if you try to run a subprocess with
+<code class="code">current-directory</code> set to <samp class="file">/assets</samp>,
+<samp class="file">/content/storage</samp> or a subdirectory thereof, it will run from
+the home directory instead.
+
+</li><li>There are no <samp class="file">.</samp> and <samp class="file">..</samp> directories inside the
+<samp class="file">/assets</samp> or <samp class="file">/content</samp> directory.
+
+</li><li>Files in the <samp class="file">/assets</samp> directory are always read only, and may be
+read in to memory more than once each time they are opened.
+</li></ul>
+
+<p>Aside from the <samp class="file">/assets</samp> directory, Android programs normally
+have access to four other directories.  They are:
+</p>
+<ul class="itemize mark-bullet">
+<li>The <em class="dfn">app data</em> directory.  This also serves as the home directory
+for Emacs, and is always accessible read-write.
+
+</li><li>The <em class="dfn">app library</em> directory.  This is automatically appended to
+<code class="code">exec-path</code> and made <code class="code">exec-directory</code> upon startup, and
+contains utility executables alongside Emacs itself.
+
+</li><li>The <em class="dfn">external storage</em> directory.  This is accessible to Emacs
+when the user grants the &ldquo;Files and Media&rdquo; permission to Emacs via
+system settings.
+
+</li><li>Directories provided by <em class="dfn">document providers</em> on Android 5.0 and
+later.  These directories exist independently of the Unix virtual
+filesystem, containing files provided by external programs
+(see <a class="pxref" href="Android-Document-Providers.html">Accessing Files from Other Programs on Android</a>.)
+</li></ul>
+
+<p>Despite ordinary installations of Android not having files within
+the (normally read-only) root directory named <samp class="file">content</samp> or
+<samp class="file">assets</samp>, you may want to access real files by these names if the
+Android installation in use has been customized.  These files will
+conflict with the aforementioned special directories, but can
+nevertheless be accessed by writing their names relative to the
+&ldquo;parent&rdquo; directory of the root directory, as so illustrated:
+<samp class="file">/../content</samp>, <samp class="file">/../assets</samp>.
+</p>
+<p>The external storage directory is found at <samp class="file">/sdcard</samp>.  The
+other directories are not found at any fixed location (but see below),
+although the app data directory is typically symlinked to
+<samp class="file">/data/data/org.gnu.emacs/files</samp>.
+</p>
+<a class="index-entry-id" id="index-app-library-directory_002c-android"></a>
+<a class="index-entry-id" id="index-where-is-emacsclient-under-android"></a>
+<p>Older versions of Android used to place the app library directory
+under the name <samp class="file">lib</samp> in the parent of the app data directory.
+Today, this directory is often placed in a directory with a randomly
+generated name under <samp class="file">/data/app</samp>.
+</p>
+<p>For the convenience of scripts running within applications sharing
+the same user ID as Emacs (which have no access to the
+<code class="code">exec-directory</code> variable), a fairly considerable effort is made
+at startup to symlink the application library directory to its
+traditional location within the parent of the app data directory.
+</p>
+<p>If Emacs is reinstalled and the location of the app library
+directory consequently changes, that symlink will also be updated
+to point to its new location the next time Emacs is started by the
+system.
+</p>
+<a class="index-entry-id" id="index-temp_007eunlinked_002eNNNN-files_002c-Android"></a>
+<p>On Android devices running very old (2.6.29) versions of the Linux
+kernel, Emacs needs to create files named starting with
+<samp class="file">temp~unlinked</samp> in the temporary file directory in order to
+read from asset files.  Do not create files with such names yourself,
+or they may be overwritten or removed.
+</p>
+<a class="index-entry-id" id="index-file-system-limitations_002c-Android-11"></a>
+<p>On Android 11 and later, the Android system restricts applications
+from accessing files in the <samp class="file">/sdcard</samp> directory using
+file-related system calls such as <code class="code">open</code> and <code class="code">readdir</code>.
+</p>
+<p>This restriction is known as &ldquo;Scoped Storage&rdquo;, and supposedly
+makes the system more secure.  Unfortunately, it also means that Emacs
+cannot access files in those directories, despite holding the
+necessary permissions.  Thankfully, the Open Handset Alliance&rsquo;s
+version of Android allows this restriction to be disabled on a
+per-program basis; the corresponding option in the system settings
+panel is:
+</p>
+<div class="example">
+<pre class="example-preformatted">System -&gt; Apps -&gt; Special App Access -&gt; All files access -&gt; Emacs
+</pre></div>
+
+<p>After you disable or enable this setting as appropriate and grant
+Emacs the &ldquo;Files and Media&rdquo; permission, it will be able to access
+files under <samp class="file">/sdcard</samp> as usual.  These settings are not present
+on some proprietary versions of Android.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Android-Document-Providers.html">Accessing Files from Other Programs on Android</a>, Previous: <a href="Android-Startup.html">Starting Emacs on Android</a>, Up: <a href="Android.html">Emacs and Android</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

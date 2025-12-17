@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Macros (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Macros (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Simple-Macro.html" rel="next" title="Simple Macro">
-<link href="Related-Topics.html" rel="prev" title="Related Topics">
+<link href="Customization.html" rel="next" title="Customization">
+<link href="Functions.html" rel="prev" title="Functions">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,19 +46,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Macros"></span><div class="header">
+<div class="chapter-level-extent" id="Macros">
+<div class="nav-panel">
 <p>
-Next: <a href="Customization.html" accesskey="n" rel="next">Customization</a>, Previous: <a href="Functions.html" accesskey="p" rel="prev">Functions</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Customization.html" accesskey="n" rel="next">Customization Settings</a>, Previous: <a href="Functions.html" accesskey="p" rel="prev">Functions</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Macros-1"></span><h2 class="chapter">13 Macros</h2>
-<span id="index-macros"></span>
+<h2 class="chapter" id="Macros-1"><span>13 Macros<a class="copiable-link" href="#Macros-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-macros"></a>
 
-<p><em>Macros</em> enable you to define new control constructs and other
+<p><em class="dfn">Macros</em> enable you to define new control constructs and other
 language features.  A macro is defined much like a function, but instead
 of telling how to compute a value, it tells how to compute another Lisp
 expression which will in turn compute the value.  We call this
-expression the <em>expansion</em> of the macro.
+expression the <em class="dfn">expansion</em> of the macro.
 </p>
 <p>Macros can do this because they operate on the unevaluated expressions
 for the arguments, not on the argument values as functions do.  They can
@@ -77,24 +68,18 @@ or parts of them.
 </p>
 <p>If you are using a macro to do something an ordinary function could
 do, just for the sake of speed, consider using an inline function
-instead.  See <a href="Inline-Functions.html">Inline Functions</a>.
+instead.  See <a class="xref" href="Inline-Functions.html">Inline Functions</a>.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Simple-Macro.html" accesskey="1">Simple Macro</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A basic example.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Expansion.html" accesskey="2">Expansion</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How, when and why macros are expanded.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Compiling-Macros.html" accesskey="3">Compiling Macros</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How macros are expanded by the compiler.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Defining-Macros.html" accesskey="4">Defining Macros</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to write a macro definition.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Problems-with-Macros.html" accesskey="5">Problems with Macros</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Don&rsquo;t evaluate the macro arguments too many times.
-                              Don&rsquo;t hide the user&rsquo;s variables.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Indenting-Macros.html" accesskey="6">Indenting Macros</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Specifying how to indent macro calls.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Simple-Macro.html" accesskey="1">A Simple Example of a Macro</a></li>
+<li><a href="Expansion.html" accesskey="2">Expansion of a Macro Call</a></li>
+<li><a href="Compiling-Macros.html" accesskey="3">Macros and Byte Compilation</a></li>
+<li><a href="Defining-Macros.html" accesskey="4">Defining Macros</a></li>
+<li><a href="Problems-with-Macros.html" accesskey="5">Common Problems Using Macros</a></li>
+<li><a href="Indenting-Macros.html" accesskey="6">Indenting Macros</a></li>
+</ul>
+</div>
 
 
 

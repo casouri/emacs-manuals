@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Searching Keymaps (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Searching Keymaps (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Active-Keymaps.html" rel="prev" title="Active Keymaps">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,51 +46,58 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Searching-Keymaps"></span><div class="header">
+<div class="section-level-extent" id="Searching-Keymaps">
+<div class="nav-panel">
 <p>
-Next: <a href="Controlling-Active-Maps.html" accesskey="n" rel="next">Controlling Active Maps</a>, Previous: <a href="Active-Keymaps.html" accesskey="p" rel="prev">Active Keymaps</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Controlling-Active-Maps.html" accesskey="n" rel="next">Controlling the Active Keymaps</a>, Previous: <a href="Active-Keymaps.html" accesskey="p" rel="prev">Active Keymaps</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Searching-the-Active-Keymaps"></span><h3 class="section">22.8 Searching the Active Keymaps</h3>
-<span id="index-searching-active-keymaps-for-keys"></span>
+<h3 class="section" id="Searching-the-Active-Keymaps"><span>22.8 Searching the Active Keymaps<a class="copiable-link" href="#Searching-the-Active-Keymaps"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-searching-active-keymaps-for-keys"></a>
 
-<p>After translation of event subsequences (see <a href="Translation-Keymaps.html">Translation Keymaps</a>) Emacs looks for them in the active keymaps.  Here is a
+<p>After translation of event subsequences (see <a class="pxref" href="Translation-Keymaps.html">Keymaps for Translating Sequences of Events</a>) Emacs looks for them in the active keymaps.  Here is a
 pseudo-Lisp description of the order and conditions for searching
 them:
 </p>
-<div class="lisp">
-<pre class="lisp">(or (cond
+<div class="example lisp">
+<pre class="lisp-preformatted">(or (cond
      (overriding-terminal-local-map
-      (<var>find-in</var> overriding-terminal-local-map))
+      (<var class="var">find-in</var> overriding-terminal-local-map))
      (overriding-local-map
-      (<var>find-in</var> overriding-local-map))
-     ((or (<var>find-in</var> (get-char-property (point) 'keymap))
-          (<var>find-in</var> <var>temp-map</var>)
-          (<var>find-in-any</var> emulation-mode-map-alists)
-          (<var>find-in-any</var> minor-mode-overriding-map-alist)
-          (<var>find-in-any</var> minor-mode-map-alist)
+      (<var class="var">find-in</var> overriding-local-map))
+     ((or (<var class="var">find-in</var> (get-char-property (point) 'keymap))
+          (<var class="var">find-in</var> <var class="var">temp-map</var>)
+          (<var class="var">find-in-any</var> emulation-mode-map-alists)
+          (<var class="var">find-in-any</var> minor-mode-overriding-map-alist)
+          (<var class="var">find-in-any</var> minor-mode-map-alist)
           (if (get-text-property (point) 'local-map)
-              (<var>find-in</var> (get-char-property (point) 'local-map))
-            (<var>find-in</var> (current-local-map))))))
-    (<var>find-in</var> (current-global-map)))
+              (<var class="var">find-in</var> (get-char-property (point) 'local-map))
+            (<var class="var">find-in</var> (current-local-map))))))
+    (<var class="var">find-in</var> (current-global-map)))
 </pre></div>
 
-<p><var>find-in</var> and <var>find-in-any</var> are pseudo functions that search
+<p><var class="var">find-in</var> and <var class="var">find-in-any</var> are pseudo functions that search
 in one keymap and in an alist of keymaps, respectively.  (Searching a
-single keymap for a binding is called <em>key lookup</em>; see <a href="Key-Lookup.html">Key Lookup</a>.)  If the key sequence starts with a mouse event, that event&rsquo;s position
+single keymap for a binding is called <em class="dfn">key lookup</em>; see <a class="ref" href="Key-Lookup.html">Key Lookup</a>.)  If the key sequence starts with a mouse event, that event&rsquo;s position
 is used instead of point and the current buffer.  Mouse events on an
-embedded string use non-<code>nil</code> text properties from that string
-instead of the buffer.  <var>temp-map</var> is a pseudo variable that
-represents the effect of a <code>set-temporary-overlay-map</code> call.
+embedded string use non-<code class="code">nil</code> text properties from that string
+instead of the buffer.  <var class="var">temp-map</var> is a pseudo variable that
+represents the effect of a <code class="code">set-temporary-overlay-map</code> call.
 </p>
-<p>When a match is found (see <a href="Key-Lookup.html">Key Lookup</a>), if the binding in the
+<p>When a match is found (see <a class="pxref" href="Key-Lookup.html">Key Lookup</a>), if the binding in the
 keymap is a function, the search is over.  However if the keymap entry
 is a symbol with a value or a string, Emacs replaces the input key
 sequences with the variable&rsquo;s value or the string, and restarts the
 search of the active keymaps.
 </p>
-<p>The function finally found might also be remapped.  See <a href="Remapping-Commands.html">Remapping Commands</a>.
+<p>The function finally found might also be remapped.  See <a class="xref" href="Remapping-Commands.html">Remapping Commands</a>.
 </p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Controlling-Active-Maps.html">Controlling the Active Keymaps</a>, Previous: <a href="Active-Keymaps.html">Active Keymaps</a>, Up: <a href="Keymaps.html">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

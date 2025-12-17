@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Selecting Lisp Dialect (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Selecting Lisp Dialect (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Selecting Lisp Dialect (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Variable-Scoping.html" rel="up" title="Variable Scoping">
+<link href="Converting-to-Lexical-Binding.html" rel="next" title="Converting to Lexical Binding">
+<link href="Dynamic-Binding-Tips.html" rel="prev" title="Dynamic Binding Tips">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Selecting-Lisp-Dialect">
+<div class="nav-panel">
+<p>
+Next: <a href="Converting-to-Lexical-Binding.html" accesskey="n" rel="next">Converting to Lexical Binding</a>, Previous: <a href="Dynamic-Binding-Tips.html" accesskey="p" rel="prev">Proper Use of Dynamic Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Selecting-Lisp-Dialect-1"><span>12.10.4 Selecting Lisp Dialect<a class="copiable-link" href="#Selecting-Lisp-Dialect-1"> &para;</a></span></h4>
+
+<p>When loading an Emacs Lisp file or evaluating a Lisp buffer, the
+Lisp dialect is selected using the buffer-local variable
+<code class="code">lexical-binding</code>.
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-lexical_002dbinding"><span class="category-def">Variable: </span><span><strong class="def-name">lexical-binding</strong><a class="copiable-link" href="#index-lexical_002dbinding"> &para;</a></span></dt>
+<dd><p>If this buffer-local variable is non-<code class="code">nil</code>, Emacs Lisp files and
+buffers are evaluated using the modern Lisp dialect that by default
+uses lexical binding instead of dynamic binding.  If <code class="code">nil</code>, the
+old dialect is used that uses dynamic binding for all local variables.
+This variable is typically set for a whole Emacs Lisp file, as a
+file-local variable (see <a class="pxref" href="File-Local-Variables.html">File Local Variables</a>).  Note that unlike
+other such variables, this one must be set in the first line of a
+file.
+</p></dd></dl>
+
+<p>In practice, dialect selection means that the first line in an Emacs
+Lisp file looks like:
+</p>
+<div class="example">
+<pre class="example-preformatted">;;; ...  -*- lexical-binding: t -*-
+</pre></div>
+
+<p>for the modern lexical-binding dialect, and
+</p>
+<div class="example">
+<pre class="example-preformatted">;;; ...  -*- lexical-binding: nil -*-
+</pre></div>
+
+<p>for the old dynamic-only dialect.  When no declaration is present the
+old dialect is used, but this may change in a future release.
+The compiler will warn if no declaration is present.
+</p>
+<p>When evaluating Emacs Lisp code directly using an <code class="code">eval</code> call,
+lexical binding is enabled if the <var class="var">lexical</var> argument to
+<code class="code">eval</code> is non-<code class="code">nil</code>.  See <a class="xref" href="Eval.html">Eval</a>.
+</p>
+<a class="index-entry-id" id="index-eval_002dexpression_002c-and-lexical_002dbinding"></a>
+<p>Lexical binding is also enabled in Lisp Interaction and IELM mode,
+used in the <samp class="file">*scratch*</samp> and <samp class="file">*ielm*</samp> buffers, and also when
+evaluating expressions via <kbd class="kbd">M-:</kbd> (<code class="code">eval-expression</code>) and when
+processing the <samp class="option">--eval</samp> command-line options of Emacs
+(see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Action-Arguments.html#Action-Arguments">Action Arguments</a> in <cite class="cite">The GNU Emacs Manual</cite>) and
+<code class="command">emacsclient</code> (see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/emacsclient-Options.html#emacsclient-Options">emacsclient Options</a> in <cite class="cite">The GNU
+Emacs Manual</cite>).
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Converting-to-Lexical-Binding.html">Converting to Lexical Binding</a>, Previous: <a href="Dynamic-Binding-Tips.html">Proper Use of Dynamic Binding</a>, Up: <a href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

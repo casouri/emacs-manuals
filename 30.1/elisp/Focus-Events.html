@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Focus Events (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Focus Events (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Focus Events (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Input-Events.html" rel="up" title="Input Events">
+<link href="Xwidget-Events.html" rel="next" title="Xwidget Events">
+<link href="Touchscreen-Events.html" rel="prev" title="Touchscreen Events">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Focus-Events">
+<div class="nav-panel">
+<p>
+Next: <a href="Xwidget-Events.html" accesskey="n" rel="next">Xwidget events</a>, Previous: <a href="Touchscreen-Events.html" accesskey="p" rel="prev">Touchscreen Events</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Focus-Events-1"><span>22.7.10 Focus Events<a class="copiable-link" href="#Focus-Events-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-focus-event"></a>
+
+<p>This section talks about both window systems and Emacs frames.  When
+talking about just &ldquo;frames&rdquo; or &ldquo;windows&rdquo;, it refers to Emacs frames
+and Emacs windows.  When talking about window system windows, which are
+also Emacs frames, this section always says &ldquo;window system window&rdquo;.
+</p>
+<p>Window systems provide general ways for the user to control which window
+system window, or Emacs frame, gets keyboard input.  This choice of
+window system window is called the <em class="dfn">focus</em>.  When the user does
+something to switch between Emacs frames, that generates a <em class="dfn">focus
+event</em>.  Emacs also generates focus events when using
+<var class="var">mouse-autoselect-window</var> to switch between Emacs windows within
+Emacs frames.
+</p>
+<p>A focus event in the middle of a key sequence would garble the
+sequence.  So Emacs never generates a focus event in the middle of a key
+sequence.  If the user changes focus in the middle of a key
+sequence&mdash;that is, after a prefix key&mdash;then Emacs reorders the events
+so that the focus event comes either before or after the multi-event key
+sequence, and not within it.
+</p>
+<h4 class="subsubheading" id="Focus-events-for-frames"><span>Focus events for frames<a class="copiable-link" href="#Focus-events-for-frames"> &para;</a></span></h4>
+
+<p>The normal definition of a focus event that switches frames, in the
+global keymap, is to select that new frame within Emacs, as the user
+would expect.  See <a class="xref" href="Input-Focus.html">Input Focus</a>, which also describes hooks related to
+focus events for frames.  Focus events for frames are represented in
+Lisp as lists that look like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(switch-frame <var class="var">new-frame</var>)
+</pre></div>
+
+<p>where <var class="var">new-frame</var> is the frame switched to.
+</p>
+<p>Some X window managers are set up so that just moving the mouse into a
+frame is enough to set the focus there.  Usually, there is no need for a
+Lisp program to know about the focus change until some other kind of
+input arrives.  Emacs generates a focus event only when the user
+actually types a keyboard key or presses a mouse button in the new
+frame; just moving the mouse between frames does not generate a focus
+event.
+</p>
+<h4 class="subsubheading" id="Focus-events-for-windows"><span>Focus events for windows<a class="copiable-link" href="#Focus-events-for-windows"> &para;</a></span></h4>
+
+<p>When <var class="var">mouse-autoselect-window</var> is set, moving the mouse over a new
+window within a frame can also switch the selected window.  See <a class="xref" href="Mouse-Window-Auto_002dselection.html">Mouse Window Auto-selection</a>, which describes the behavior for different
+values.  When the mouse is moved over a new window, a focus event for
+switching windows is generated.  Focus events for windows are
+represented in Lisp as lists that look like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(select-window <var class="var">new-window</var>)
+</pre></div>
+
+<p>where <var class="var">new-window</var> is the window switched to.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Xwidget-Events.html">Xwidget events</a>, Previous: <a href="Touchscreen-Events.html">Touchscreen Events</a>, Up: <a href="Input-Events.html">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

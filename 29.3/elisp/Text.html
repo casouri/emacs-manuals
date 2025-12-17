@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Text (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Text (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Text (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Non_002dASCII-Characters.html" rel="next" title="Non-ASCII Characters">
+<link href="Markers.html" rel="prev" title="Markers">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Text">
+<div class="nav-panel">
+<p>
+Next: <a href="Non_002dASCII-Characters.html" accesskey="n" rel="next">Non-<abbr class="acronym">ASCII</abbr> Characters</a>, Previous: <a href="Markers.html" accesskey="p" rel="prev">Markers</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Text-1"><span>33 Text<a class="copiable-link" href="#Text-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-text"></a>
+
+<p>This chapter describes the functions that deal with the text in a
+buffer.  Most examine, insert, or delete text in the current buffer,
+often operating at point or on text adjacent to point.  Many are
+interactive.  All the functions that change the text provide for undoing
+the changes (see <a class="pxref" href="Undo.html">Undo</a>).
+</p>
+<p>Many text-related functions operate on a region of text defined by two
+buffer positions passed in arguments named <var class="var">start</var> and <var class="var">end</var>.
+These arguments should be either markers (see <a class="pxref" href="Markers.html">Markers</a>) or numeric
+character positions (see <a class="pxref" href="Positions.html">Positions</a>).  The order of these arguments
+does not matter; it is all right for <var class="var">start</var> to be the end of the
+region and <var class="var">end</var> the beginning.  For example, <code class="code">(delete-region 1
+10)</code> and <code class="code">(delete-region 10 1)</code> are equivalent.  An
+<code class="code">args-out-of-range</code> error is signaled if either <var class="var">start</var> or
+<var class="var">end</var> is outside the accessible portion of the buffer.  In an
+interactive call, point and the mark are used for these arguments.
+</p>
+<a class="index-entry-id" id="index-buffer-contents"></a>
+<p>Throughout this chapter, &ldquo;text&rdquo; refers to the characters in the
+buffer, together with their properties (when relevant).  Keep in mind
+that point is always between two characters, and the cursor appears on
+the character after point.
+</p>
+
+<ul class="mini-toc">
+<li><a href="Near-Point.html" accesskey="1">Examining Text Near Point</a></li>
+<li><a href="Buffer-Contents.html" accesskey="2">Examining Buffer Contents</a></li>
+<li><a href="Comparing-Text.html" accesskey="3">Comparing Text</a></li>
+<li><a href="Insertion.html" accesskey="4">Inserting Text</a></li>
+<li><a href="Commands-for-Insertion.html" accesskey="5">User-Level Insertion Commands</a></li>
+<li><a href="Deletion.html" accesskey="6">Deleting Text</a></li>
+<li><a href="User_002dLevel-Deletion.html" accesskey="7">User-Level Deletion Commands</a></li>
+<li><a href="The-Kill-Ring.html" accesskey="8">The Kill Ring</a></li>
+<li><a href="Undo.html" accesskey="9">Undo</a></li>
+<li><a href="Maintaining-Undo.html">Maintaining Undo Lists</a></li>
+<li><a href="Filling.html">Filling</a></li>
+<li><a href="Margins.html">Margins for Filling</a></li>
+<li><a href="Adaptive-Fill.html">Adaptive Fill Mode</a></li>
+<li><a href="Auto-Filling.html">Auto Filling</a></li>
+<li><a href="Sorting.html">Sorting Text</a></li>
+<li><a href="Columns.html">Counting Columns</a></li>
+<li><a href="Indentation.html">Indentation</a></li>
+<li><a href="Case-Changes.html">Case Changes</a></li>
+<li><a href="Text-Properties.html">Text Properties</a></li>
+<li><a href="Substitution.html">Substituting for a Character Code</a></li>
+<li><a href="Registers.html">Registers</a></li>
+<li><a href="Transposition.html">Transposition of Text</a></li>
+<li><a href="Replacing.html">Replacing Buffer Text</a></li>
+<li><a href="Decompression.html">Dealing With Compressed Data</a></li>
+<li><a href="Base-64.html">Base 64 Encoding</a></li>
+<li><a href="Checksum_002fHash.html">Checksum/Hash</a></li>
+<li><a href="Suspicious-Text.html">Suspicious Text</a></li>
+<li><a href="GnuTLS-Cryptography.html">GnuTLS Cryptography</a></li>
+<li><a href="Database.html">Database</a></li>
+<li><a href="Parsing-HTML_002fXML.html">Parsing HTML and XML</a></li>
+<li><a href="Parsing-JSON.html">Parsing and generating JSON values</a></li>
+<li><a href="JSONRPC.html">JSONRPC communication</a></li>
+<li><a href="Atomic-Changes.html">Atomic Change Groups</a></li>
+<li><a href="Change-Hooks.html">Change Hooks</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Non_002dASCII-Characters.html">Non-<abbr class="acronym">ASCII</abbr> Characters</a>, Previous: <a href="Markers.html">Markers</a>, Up: <a href="index.html">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

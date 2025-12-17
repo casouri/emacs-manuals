@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Layout Parameters (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Layout Parameters (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,8 @@ developing GNU and promoting software freedom." -->
 <link href="Size-Parameters.html" rel="prev" title="Size Parameters">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,135 +47,161 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Layout-Parameters"></span><div class="header">
+<div class="subsubsection-level-extent" id="Layout-Parameters">
+<div class="nav-panel">
 <p>
 Next: <a href="Buffer-Parameters.html" accesskey="n" rel="next">Buffer Parameters</a>, Previous: <a href="Size-Parameters.html" accesskey="p" rel="prev">Size Parameters</a>, Up: <a href="Window-Frame-Parameters.html" accesskey="u" rel="up">Window Frame Parameters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Layout-Parameters-1"></span><h4 class="subsubsection">30.4.3.4 Layout Parameters</h4>
-<span id="index-layout-parameters-of-frames"></span>
-<span id="index-frame-layout-parameters"></span>
+<h4 class="subsubsection" id="Layout-Parameters-1"><span>30.4.3.4 Layout Parameters<a class="copiable-link" href="#Layout-Parameters-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-layout-parameters-of-frames"></a>
+<a class="index-entry-id" id="index-frame-layout-parameters"></a>
 
-<p>These frame parameters enable or disable various parts of the
-frame, or control their sizes.
+<p>These frame parameters enable or disable various parts of the frame,
+or control their sizes.  Unless stated otherwise, these parameters have
+no meaning on text terminals.
 </p>
-<dl compact="compact">
-<dd><span id="index-border_002dwidth_002c-a-frame-parameter"></span>
-</dd>
-<dt><code>border-width</code></dt>
-<dd><p>The width in pixels of the frame&rsquo;s outer border (see <a href="Frame-Geometry.html">Frame Geometry</a>).
+<dl class="table">
+<dt><a id="index-undecorated_002c-a-frame-parameter"></a><span><code class="code">undecorated</code><a class="copiable-link" href="#index-undecorated_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>If non-<code class="code">nil</code>, then on a graphical system this frame&rsquo;s window-system
+window is drawn without decorations, like the title, minimize/maximize
+boxes and external borders.  This usually means that the window cannot
+be dragged, resized, iconified, maximized or deleted with the mouse.  If
+<code class="code">nil</code>, the frame&rsquo;s window is usually drawn with all the elements
+listed above unless their display has been suspended via window manager
+settings.
 </p>
-<span id="index-internal_002dborder_002dwidth_002c-a-frame-parameter"></span>
-</dd>
-<dt><code>internal-border-width</code></dt>
-<dd><p>The width in pixels of the frame&rsquo;s internal border (see <a href="Frame-Geometry.html">Frame Geometry</a>).
+<p>Under X, Emacs uses the Motif window manager hints to turn off
+decorations.  Some window managers may not honor these hints.
 </p>
-<span id="index-child_002dframe_002dborder_002dwidth_002c-a-frame-parameter"></span>
-</dd>
-<dt><code>child-frame-border-width</code></dt>
-<dd><p>The width in pixels of the frame&rsquo;s internal border (see <a href="Frame-Geometry.html">Frame Geometry</a>) if the given frame is a child frame (see <a href="Child-Frames.html">Child Frames</a>).
-If this is <code>nil</code>, the value specified by the
-<code>internal-border-width</code> parameter is used instead.
+<p>NS builds consider the tool bar to be a decoration, and therefore hide
+it on an undecorated frame.
 </p>
-<span id="index-vertical_002dscroll_002dbars_002c-a-frame-parameter"></span>
+<p>On a text terminal, this parameter, if non-<code class="code">nil</code>, will make a child
+frame show an outer border, which allows to resize that frame via mouse
+dragging (see <a class="pxref" href="Mouse-Dragging-Parameters.html">Mouse Dragging Parameters</a>).
+</p>
 </dd>
-<dt><code>vertical-scroll-bars</code></dt>
-<dd><p>Whether the frame has scroll bars (see <a href="Scroll-Bars.html">Scroll Bars</a>) for vertical
+<dt><a id="index-border_002dwidth_002c-a-frame-parameter"></a><span><code class="code">border-width</code><a class="copiable-link" href="#index-border_002dwidth_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The width in pixels of the frame&rsquo;s outer border (see <a class="pxref" href="Frame-Geometry.html">Frame Geometry</a>).
+</p>
+</dd>
+<dt><a id="index-internal_002dborder_002dwidth_002c-a-frame-parameter"></a><span><code class="code">internal-border-width</code><a class="copiable-link" href="#index-internal_002dborder_002dwidth_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The width in pixels of the frame&rsquo;s internal border (see <a class="pxref" href="Frame-Geometry.html">Frame Geometry</a>).
+</p>
+</dd>
+<dt><a id="index-child_002dframe_002dborder_002dwidth_002c-a-frame-parameter"></a><span><code class="code">child-frame-border-width</code><a class="copiable-link" href="#index-child_002dframe_002dborder_002dwidth_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The width in pixels of the frame&rsquo;s internal border (see <a class="pxref" href="Frame-Geometry.html">Frame Geometry</a>) if the given frame is a child frame (see <a class="pxref" href="Child-Frames.html">Child Frames</a>).
+If this is <code class="code">nil</code>, the value specified by the
+<code class="code">internal-border-width</code> parameter is used instead.
+</p>
+</dd>
+<dt><a id="index-vertical_002dscroll_002dbars_002c-a-frame-parameter"></a><span><code class="code">vertical-scroll-bars</code><a class="copiable-link" href="#index-vertical_002dscroll_002dbars_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>Whether the frame has scroll bars (see <a class="pxref" href="Scroll-Bars.html">Scroll Bars</a>) for vertical
 scrolling, and which side of the frame they should be on.  The possible
-values are <code>left</code>, <code>right</code>, and <code>nil</code> for no scroll bars.
+values are <code class="code">left</code>, <code class="code">right</code>, and <code class="code">nil</code> for no scroll bars.
 </p>
-<span id="index-horizontal_002dscroll_002dbars_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>horizontal-scroll-bars</code></dt>
-<dd><p>Whether the frame has scroll bars for horizontal scrolling (<code>t</code> and
-<code>bottom</code> mean yes, <code>nil</code> means no).
+<dt><a id="index-horizontal_002dscroll_002dbars_002c-a-frame-parameter"></a><span><code class="code">horizontal-scroll-bars</code><a class="copiable-link" href="#index-horizontal_002dscroll_002dbars_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>Whether the frame has scroll bars for horizontal scrolling (<code class="code">t</code> and
+<code class="code">bottom</code> mean yes, <code class="code">nil</code> means no).
 </p>
-<span id="index-scroll_002dbar_002dwidth_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>scroll-bar-width</code></dt>
-<dd><p>The width of vertical scroll bars, in pixels, or <code>nil</code> meaning to
+<dt><a id="index-scroll_002dbar_002dwidth_002c-a-frame-parameter"></a><span><code class="code">scroll-bar-width</code><a class="copiable-link" href="#index-scroll_002dbar_002dwidth_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The width of vertical scroll bars, in pixels, or <code class="code">nil</code> meaning to
 use the default width.
 </p>
-<span id="index-scroll_002dbar_002dheight_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>scroll-bar-height</code></dt>
-<dd><p>The height of horizontal scroll bars, in pixels, or <code>nil</code> meaning
+<dt><a id="index-scroll_002dbar_002dheight_002c-a-frame-parameter"></a><span><code class="code">scroll-bar-height</code><a class="copiable-link" href="#index-scroll_002dbar_002dheight_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The height of horizontal scroll bars, in pixels, or <code class="code">nil</code> meaning
 to use the default height.
 </p>
-<span id="index-left_002dfringe_002c-a-frame-parameter"></span>
-<span id="index-right_002dfringe_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>left-fringe</code></dt>
-<dt><code>right-fringe</code></dt>
+<dt><a class="index-entry-id" id="index-right_002dfringe_002c-a-frame-parameter"></a>
+<a id="index-left_002dfringe_002c-a-frame-parameter"></a><span><code class="code">left-fringe</code><a class="copiable-link" href="#index-left_002dfringe_002c-a-frame-parameter"> &para;</a></span></dt>
+<dt><code class="code">right-fringe</code></dt>
 <dd><p>The default width of the left and right fringes of windows in this
-frame (see <a href="Fringes.html">Fringes</a>).  If either of these is zero, that effectively
+frame (see <a class="pxref" href="Fringes.html">Fringes</a>).  If either of these is zero, that effectively
 removes the corresponding fringe.
 </p>
-<p>When you use <code>frame-parameter</code> to query the value of either of
+<p>When you use <code class="code">frame-parameter</code> to query the value of either of
 these two frame parameters, the return value is always an integer.
-When using <code>set-frame-parameter</code>, passing a <code>nil</code> value
+When using <code class="code">set-frame-parameter</code>, passing a <code class="code">nil</code> value
 imposes an actual default value of 8 pixels.
 </p>
-<span id="index-right_002ddivider_002dwidth_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>right-divider-width</code></dt>
-<dd><p>The width (thickness) reserved for the right divider (see <a href="Window-Dividers.html">Window Dividers</a>) of any window on the frame, in pixels.  A value of zero means
+<dt><a id="index-right_002ddivider_002dwidth_002c-a-frame-parameter"></a><span><code class="code">right-divider-width</code><a class="copiable-link" href="#index-right_002ddivider_002dwidth_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The width (thickness) reserved for the right divider (see <a class="pxref" href="Window-Dividers.html">Window Dividers</a>) of any window on the frame, in pixels.  A value of zero means
 to not draw right dividers.
 </p>
-<span id="index-bottom_002ddivider_002dwidth_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>bottom-divider-width</code></dt>
-<dd><p>The width (thickness) reserved for the bottom divider (see <a href="Window-Dividers.html">Window Dividers</a>) of any window on the frame, in pixels.  A value of zero means
+<dt><a id="index-bottom_002ddivider_002dwidth_002c-a-frame-parameter"></a><span><code class="code">bottom-divider-width</code><a class="copiable-link" href="#index-bottom_002ddivider_002dwidth_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The width (thickness) reserved for the bottom divider (see <a class="pxref" href="Window-Dividers.html">Window Dividers</a>) of any window on the frame, in pixels.  A value of zero means
 to not draw bottom dividers.
 </p>
-<span id="index-menu_002dbar_002dlines_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>menu-bar-lines</code></dt>
+<dt><a id="index-menu_002dbar_002dlines_002c-a-frame-parameter"></a><span><code class="code">menu-bar-lines</code><a class="copiable-link" href="#index-menu_002dbar_002dlines_002c-a-frame-parameter"> &para;</a></span></dt>
 <dd><p>The number of lines to allocate at the top of the frame for a menu bar
-(see <a href="Menu-Bar.html">Menu Bar</a>).  The default is one if Menu Bar mode is enabled and
-zero otherwise.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Menu-Bars.html#Menu-Bars">Menu Bars</a> in <cite>The GNU Emacs Manual</cite>.  For an
-external menu bar (see <a href="Frame-Layout.html">Frame Layout</a>), this value remains unchanged
+(see <a class="pxref" href="Menu-Bar.html">The Menu Bar</a>).  The default is 1 if Menu Bar mode is enabled and 0
+otherwise.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Menu-Bars.html#Menu-Bars">Menu Bars</a> in <cite class="cite">The GNU Emacs Manual</cite>.  For an
+external menu bar (see <a class="pxref" href="Frame-Layout.html">Frame Layout</a>), this value remains unchanged
 even when the menu bar wraps to two or more lines.  In that case, the
-<code>menu-bar-size</code> value returned by <code>frame-geometry</code>
-(see <a href="Frame-Geometry.html">Frame Geometry</a>) allows to derive whether the menu bar actually
-occupies one or more lines.
+<code class="code">menu-bar-size</code> value returned by <code class="code">frame-geometry</code>
+(see <a class="pxref" href="Frame-Geometry.html">Frame Geometry</a>) can be used to establish whether the menu bar
+actually occupies one or more lines.  This parameter affects the
+presence of a menu bar on the root frame (see <a class="pxref" href="Child-Frames.html">Child Frames</a>) of a
+text terminal too.  On a text terminal the value may be only 0 or 1.
 </p>
-<span id="index-tool_002dbar_002dlines_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>tool-bar-lines</code></dt>
-<dd><p>The number of lines to use for the tool bar (see <a href="Tool-Bar.html">Tool Bar</a>).  The
+<dt><a id="index-tool_002dbar_002dlines_002c-a-frame-parameter"></a><span><code class="code">tool-bar-lines</code><a class="copiable-link" href="#index-tool_002dbar_002dlines_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The number of lines to use for the tool bar (see <a class="pxref" href="Tool-Bar.html">Tool bars</a>).  The
 default is one if Tool Bar mode is enabled and zero otherwise.
-See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Tool-Bars.html#Tool-Bars">Tool Bars</a> in <cite>The GNU Emacs Manual</cite>.  This value may change
-whenever the tool bar wraps (see <a href="Frame-Layout.html">Frame Layout</a>).
+See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Tool-Bars.html#Tool-Bars">Tool Bars</a> in <cite class="cite">The GNU Emacs Manual</cite>.  This value may change
+whenever the tool bar wraps (see <a class="pxref" href="Frame-Layout.html">Frame Layout</a>).
 </p>
-<span id="index-tool_002dbar_002dposition_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>tool-bar-position</code></dt>
-<dd><p>The position of the tool bar when Emacs was built with GTK+.  Its value
-can be one of <code>top</code>, <code>bottom</code> <code>left</code>, <code>right</code>.  The
-default is <code>top</code>.
+<dt><a id="index-tool_002dbar_002dposition_002c-a-frame-parameter"></a><span><code class="code">tool-bar-position</code><a class="copiable-link" href="#index-tool_002dbar_002dposition_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The position of the tool bar.  Its value can be one of <code class="code">top</code>,
+<code class="code">bottom</code> <code class="code">left</code>, <code class="code">right</code>.  The default is <code class="code">top</code>.
 </p>
-<span id="index-line_002dspacing_002c-a-frame-parameter"></span>
+<p>It can be set to <code class="code">bottom</code> on Emacs built with any toolkit other
+than Nextstep, and <code class="code">left</code> or <code class="code">right</code> on builds using GTK+.
+</p>
 </dd>
-<dt><code>line-spacing</code></dt>
+<dt><a id="index-tab_002dbar_002dlines_002c-a-frame-parameter"></a><span><code class="code">tab-bar-lines</code><a class="copiable-link" href="#index-tab_002dbar_002dlines_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>The number of lines to use for the tab bar (see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Tab-Bars.html#Tab-Bars">Tab Bars</a> in <cite class="cite">The
+GNU Emacs Manual</cite>).  The default is one if Tab Bar mode is enabled and
+zero otherwise.  This value may change whenever the tab bar wraps
+(see <a class="pxref" href="Frame-Layout.html">Frame Layout</a>).  This parameter affects the presence of a tab
+bar on the root frame (see <a class="pxref" href="Child-Frames.html">Child Frames</a>) of a text terminal too.
+</p>
+</dd>
+<dt><a id="index-line_002dspacing_002c-a-frame-parameter"></a><span><code class="code">line-spacing</code><a class="copiable-link" href="#index-line_002dspacing_002c-a-frame-parameter"> &para;</a></span></dt>
 <dd><p>Additional space to leave below each text line, in pixels (a positive
-integer).  See <a href="Line-Height.html">Line Height</a>, for more information.
+integer).  See <a class="xref" href="Line-Height.html">Line Height</a>, for more information.
 </p>
-<span id="index-no_002dspecial_002dglyphs_002c-a-frame-parameter"></span>
 </dd>
-<dt><code>no-special-glyphs</code></dt>
-<dd><p>If this is non-<code>nil</code>, it suppresses the display of any truncation
-and continuation glyphs (see <a href="Truncation.html">Truncation</a>) for all buffers displayed
-by this frame.  This is useful to eliminate such glyphs when fitting a
-frame to its buffer via <code>fit-frame-to-buffer</code> (see <a href="Resizing-Windows.html">Resizing Windows</a>).
+<dt><a id="index-no_002dspecial_002dglyphs_002c-a-frame-parameter"></a><span><code class="code">no-special-glyphs</code><a class="copiable-link" href="#index-no_002dspecial_002dglyphs_002c-a-frame-parameter"> &para;</a></span></dt>
+<dd><p>If this is non-<code class="code">nil</code>, it suppresses the display of any truncation
+(see <a class="pxref" href="Truncation.html">Truncation</a>) and continuation glyphs for all the buffers
+displayed by this frame.  This is useful to eliminate such glyphs when
+fitting a frame to its buffer via <code class="code">fit-frame-to-buffer</code>
+(see <a class="pxref" href="Resizing-Windows.html">Resizing Windows</a>).  This frame parameter has effect only for
+GUI frames shown on graphical displays, and only if the fringes are
+disabled.  This parameter is intended as a purely-presentation feature,
+and in particular should not be used for frames where the user can
+interactively insert text, or more generally where the cursor is shown.
+A notable example of frames where this is used is tooltip frames
+(see <a class="pxref" href="Tooltips.html">Tooltips</a>).  This parameter affects text terminals as well.
 </p></dd>
 </dl>
 
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Buffer-Parameters.html" accesskey="n" rel="next">Buffer Parameters</a>, Previous: <a href="Size-Parameters.html" accesskey="p" rel="prev">Size Parameters</a>, Up: <a href="Window-Frame-Parameters.html" accesskey="u" rel="up">Window Frame Parameters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Buffer-Parameters.html">Buffer Parameters</a>, Previous: <a href="Size-Parameters.html">Size Parameters</a>, Up: <a href="Window-Frame-Parameters.html">Window Frame Parameters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

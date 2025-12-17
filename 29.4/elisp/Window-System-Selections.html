@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Window System Selections (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Window System Selections (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Window System Selections (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Frames.html" rel="up" title="Frames">
+<link href="Yanking-Media.html" rel="next" title="Yanking Media">
+<link href="Pointer-Shape.html" rel="prev" title="Pointer Shape">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Window-System-Selections">
+<div class="nav-panel">
+<p>
+Next: <a href="Yanking-Media.html" accesskey="n" rel="next">Yanking Media</a>, Previous: <a href="Pointer-Shape.html" accesskey="p" rel="prev">Pointer Shape</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Window-System-Selections-1"><span>30.20 Window System Selections<a class="copiable-link" href="#Window-System-Selections-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-selection-_0028for-window-systems_0029"></a>
+<a class="index-entry-id" id="index-clipboard"></a>
+<a class="index-entry-id" id="index-primary-selection"></a>
+<a class="index-entry-id" id="index-secondary-selection"></a>
+
+<p>In window systems, such as X, data can be transferred between
+different applications by means of <em class="dfn">selections</em>.  X defines an
+arbitrary number of <em class="dfn">selection types</em>, each of which can store its
+own data; however, only three are commonly used: the <em class="dfn">clipboard</em>,
+<em class="dfn">primary selection</em>, and <em class="dfn">secondary selection</em>.  Other window
+systems support only the clipboard.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Cut-and-Paste.html#Cut-and-Paste">Cut and
+Paste</a> in <cite class="cite">The GNU Emacs Manual</cite>, for Emacs commands that make use
+of these selections.  This section documents the low-level functions
+for reading and setting window-system selections.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-gui_002dset_002dselection"><span class="category-def">Command: </span><span><strong class="def-name">gui-set-selection</strong> <var class="def-var-arguments">type data</var><a class="copiable-link" href="#index-gui_002dset_002dselection"> &para;</a></span></dt>
+<dd><p>This function sets a window-system selection.  It takes two arguments:
+a selection type <var class="var">type</var>, and the value to assign to it, <var class="var">data</var>.
+</p>
+<p><var class="var">type</var> should be a symbol; it is usually one of <code class="code">PRIMARY</code>,
+<code class="code">SECONDARY</code> or <code class="code">CLIPBOARD</code>.  These are symbols with
+upper-case names, in accord with X Window System conventions.  If
+<var class="var">type</var> is <code class="code">nil</code>, that stands for <code class="code">PRIMARY</code>.
+</p>
+<p>If <var class="var">data</var> is <code class="code">nil</code>, it means to clear out the selection.
+Otherwise, <var class="var">data</var> may be a string, a symbol, an integer, an
+overlay, or a cons of two markers pointing to the same buffer.  An
+overlay or a pair of markers stands for text in the overlay or between
+the markers.  The argument <var class="var">data</var> may also be a vector of valid
+non-vector selection values.
+</p>
+<p>If <var class="var">data</var> is a string, then its text properties can specify values
+used for individual data types.  For example, if <var class="var">data</var> has a
+property named <code class="code">text/uri-list</code>, then a call to
+<code class="code">gui-get-selection</code> with the data type <code class="code">text/uri-list</code> will
+result in the value of that property being used instead of <var class="var">data</var>
+itself.
+</p>
+<p>This function returns <var class="var">data</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-gui_002dget_002dselection"><span class="category-def">Function: </span><span><strong class="def-name">gui-get-selection</strong> <var class="def-var-arguments">&amp;optional type data-type</var><a class="copiable-link" href="#index-gui_002dget_002dselection"> &para;</a></span></dt>
+<dd><p>This function accesses selections set up by Emacs or by other
+programs.  It takes two optional arguments, <var class="var">type</var> and
+<var class="var">data-type</var>.  The default for <var class="var">type</var>, the selection type, is
+<code class="code">PRIMARY</code>.
+</p>
+<p>The <var class="var">data-type</var> argument specifies the form of data conversion to
+use, to convert the raw data obtained from another program into Lisp
+data.  Meaningful values include <code class="code">TEXT</code>, <code class="code">STRING</code>,
+<code class="code">UTF8_STRING</code>, <code class="code">TARGETS</code>, <code class="code">LENGTH</code>, <code class="code">DELETE</code>,
+<code class="code">FILE_NAME</code>, <code class="code">CHARACTER_POSITION</code>, <code class="code">NAME</code>,
+<code class="code">LINE_NUMBER</code>, <code class="code">COLUMN_NUMBER</code>, <code class="code">OWNER_OS</code>,
+<code class="code">HOST_NAME</code>, <code class="code">USER</code>, <code class="code">CLASS</code>, <code class="code">ATOM</code>, and
+<code class="code">INTEGER</code>.  (These are symbols with upper-case names in accord
+with X conventions.)  The default for <var class="var">data-type</var> is
+<code class="code">STRING</code>.  Window systems other than X usually support only a
+small subset of these types, in addition to <code class="code">STRING</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-selection_002dcoding_002dsystem"><span class="category-def">User Option: </span><span><strong class="def-name">selection-coding-system</strong><a class="copiable-link" href="#index-selection_002dcoding_002dsystem"> &para;</a></span></dt>
+<dd><p>This variable specifies the coding system to use when reading and
+writing selections or the clipboard.  See <a class="xref" href="Coding-Systems.html">Coding Systems</a>.  The default is <code class="code">compound-text-with-extensions</code>, which
+converts to the text representation that X11 normally uses.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-clipboard-support-_0028for-MS_002dWindows_0029"></a>
+<p>When Emacs runs on MS-Windows, it does not implement X selections in
+general, but it does support the clipboard.  <code class="code">gui-get-selection</code>
+and <code class="code">gui-set-selection</code> on MS-Windows support the text data type
+only; if the clipboard holds other types of data, Emacs treats the
+clipboard as empty.  The supported data type is <code class="code">STRING</code>.
+</p>
+<p>For backward compatibility, there are obsolete aliases
+<code class="code">x-get-selection</code> and <code class="code">x-set-selection</code>, which were the
+names of <code class="code">gui-get-selection</code> and <code class="code">gui-set-selection</code> before
+Emacs 25.1.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Yanking-Media.html">Yanking Media</a>, Previous: <a href="Pointer-Shape.html">Pointer Shape</a>, Up: <a href="Frames.html">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

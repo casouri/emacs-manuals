@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Key Sequence Input (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Key Sequence Input (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Key Sequence Input (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Reading-Input.html" rel="up" title="Reading Input">
+<link href="Reading-One-Event.html" rel="next" title="Reading One Event">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Key-Sequence-Input">
+<div class="nav-panel">
+<p>
+Next: <a href="Reading-One-Event.html" accesskey="n" rel="next">Reading One Event</a>, Up: <a href="Reading-Input.html" accesskey="u" rel="up">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Key-Sequence-Input-1"><span>22.8.1 Key Sequence Input<a class="copiable-link" href="#Key-Sequence-Input-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-key-sequence-input"></a>
+
+<p>The command loop reads input a key sequence at a time, by calling
+<code class="code">read-key-sequence</code>.  Lisp programs can also call this function;
+for example, <code class="code">describe-key</code> uses it to read the key to describe.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-read_002dkey_002dsequence"><span class="category-def">Function: </span><span><strong class="def-name">read-key-sequence</strong> <var class="def-var-arguments">prompt &amp;optional continue-echo dont-downcase-last switch-frame-ok command-loop</var><a class="copiable-link" href="#index-read_002dkey_002dsequence"> &para;</a></span></dt>
+<dd><p>This function reads a key sequence and returns it as a string or
+vector.  It keeps reading events until it has accumulated a complete key
+sequence; that is, enough to specify a non-prefix command using the
+currently active keymaps.  (Remember that a key sequence that starts
+with a mouse event is read using the keymaps of the buffer in the
+window that the mouse was in, not the current buffer.)
+</p>
+<p>If the events are all characters and all can fit in a string, then
+<code class="code">read-key-sequence</code> returns a string (see <a class="pxref" href="Strings-of-Events.html">Putting Keyboard Events in Strings</a>).
+Otherwise, it returns a vector, since a vector can hold all kinds of
+events&mdash;characters, symbols, and lists.  The elements of the string or
+vector are the events in the key sequence.
+</p>
+<p>Reading a key sequence includes translating the events in various
+ways.  See <a class="xref" href="Translation-Keymaps.html">Keymaps for Translating Sequences of Events</a>.
+</p>
+<p>The argument <var class="var">prompt</var> is either a string to be displayed in the
+echo area as a prompt, or <code class="code">nil</code>, meaning not to display a prompt.
+The argument <var class="var">continue-echo</var>, if non-<code class="code">nil</code>, means to echo
+this key as a continuation of the previous key.
+</p>
+<p>Normally any upper case event is converted to lower case if the
+original event is undefined and the lower case equivalent is defined.
+The argument <var class="var">dont-downcase-last</var>, if non-<code class="code">nil</code>, means do not
+convert the last event to lower case.  This is appropriate for reading
+a key sequence to be defined.
+</p>
+<p>The argument <var class="var">switch-frame-ok</var>, if non-<code class="code">nil</code>, means that this
+function should process a <code class="code">switch-frame</code> event if the user
+switches frames before typing anything.  If the user switches frames
+in the middle of a key sequence, or at the start of the sequence but
+<var class="var">switch-frame-ok</var> is <code class="code">nil</code>, then the event will be put off
+until after the current key sequence.
+</p>
+<p>The argument <var class="var">command-loop</var>, if non-<code class="code">nil</code>, means that this
+key sequence is being read by something that will read commands one
+after another.  It should be <code class="code">nil</code> if the caller will read just
+one key sequence.
+</p>
+<p>In the following example, Emacs displays the prompt &lsquo;<samp class="samp">?</samp>&rsquo; in the
+echo area, and then the user types <kbd class="kbd">C-x C-f</kbd>.
+</p>
+<div class="example">
+<pre class="example-preformatted">(read-key-sequence &quot;?&quot;)
+
+</pre><div class="group"><pre class="example-preformatted">---------- Echo Area ----------
+?<kbd class="kbd">C-x C-f</kbd>
+---------- Echo Area ----------
+
+     &rArr; &quot;^X^F&quot;
+</pre></div></div>
+
+<p>The function <code class="code">read-key-sequence</code> suppresses quitting: <kbd class="kbd">C-g</kbd>
+typed while reading with this function works like any other character,
+and does not set <code class="code">quit-flag</code>.  See <a class="xref" href="Quitting.html">Quitting</a>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-read_002dkey_002dsequence_002dvector"><span class="category-def">Function: </span><span><strong class="def-name">read-key-sequence-vector</strong> <var class="def-var-arguments">prompt &amp;optional continue-echo dont-downcase-last switch-frame-ok command-loop</var><a class="copiable-link" href="#index-read_002dkey_002dsequence_002dvector"> &para;</a></span></dt>
+<dd><p>This is like <code class="code">read-key-sequence</code> except that it always
+returns the key sequence as a vector, never as a string.
+See <a class="xref" href="Strings-of-Events.html">Putting Keyboard Events in Strings</a>.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-upper-case-key-sequence"></a>
+<a class="index-entry-id" id="index-downcasing-in-lookup_002dkey"></a>
+<a class="index-entry-id" id="index-shift_002dtranslation"></a>
+<a class="index-entry-id" id="index-translate_002dupper_002dcase_002dkey_002dbindings"></a>
+<p>If an input character is upper-case (or has the shift modifier) and
+has no key binding, but its lower-case equivalent has one, then
+<code class="code">read-key-sequence</code> converts the character to lower case.  (This
+behavior can be disabled by setting the
+<code class="code">translate-upper-case-key-bindings</code> user option to <code class="code">nil</code>.)
+Note that <code class="code">lookup-key</code> does not perform case conversion in this
+way.
+</p>
+<a class="index-entry-id" id="index-this_002dcommand_002dkeys_002dshift_002dtranslated"></a>
+<p>When reading input results in such a <em class="dfn">shift-translation</em>, Emacs
+sets the variable <code class="code">this-command-keys-shift-translated</code> to a
+non-<code class="code">nil</code> value.  Lisp programs can examine this variable if they
+need to modify their behavior when invoked by shift-translated keys.
+For example, the function <code class="code">handle-shift-selection</code> examines the
+value of this variable to determine how to activate or deactivate the
+region (see <a class="pxref" href="The-Mark.html">handle-shift-selection</a>).
+</p>
+<p>The function <code class="code">read-key-sequence</code> also transforms some mouse events.
+It converts unbound drag events into click events, and discards unbound
+button-down events entirely.  It also reshuffles focus events and
+miscellaneous window events so that they never appear in a key sequence
+with any other events.
+</p>
+<a class="index-entry-id" id="index-tab_002dline_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-header_002dline_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-mode_002dline_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-vertical_002dline_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-horizontal_002dscroll_002dbar_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-vertical_002dscroll_002dbar_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-menu_002dbar_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-tab_002dbar_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-left_002dmargin_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-right_002dmargin_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-left_002dfringe_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-right_002dfringe_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-right_002ddivider_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-bottom_002ddivider_002c-prefix-key"></a>
+<a class="index-entry-id" id="index-mouse-events_002c-in-special-parts-of-window-or-frame"></a>
+<p>When mouse events occur in special parts of a window or frame, such as a mode
+line or a scroll bar, the event type shows nothing special&mdash;it is the
+same symbol that would normally represent that combination of mouse
+button and modifier keys.  The information about the window part is kept
+elsewhere in the event&mdash;in the coordinates.  But
+<code class="code">read-key-sequence</code> translates this information into imaginary
+prefix keys, all of which are symbols: <code class="code">tab-line</code>, <code class="code">header-line</code>,
+<code class="code">horizontal-scroll-bar</code>, <code class="code">menu-bar</code>, <code class="code">tab-bar</code>, <code class="code">mode-line</code>,
+<code class="code">vertical-line</code>, <code class="code">vertical-scroll-bar</code>, <code class="code">left-margin</code>,
+<code class="code">right-margin</code>, <code class="code">left-fringe</code>, <code class="code">right-fringe</code>,
+<code class="code">right-divider</code>, and <code class="code">bottom-divider</code>.  You can define meanings for
+mouse clicks in special window parts by defining key sequences using these
+imaginary prefix keys.
+</p>
+<p>For example, if you call <code class="code">read-key-sequence</code> and then click the
+mouse on the window&rsquo;s mode line, you get two events, like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(read-key-sequence &quot;Click on the mode line: &quot;)
+     &rArr; [mode-line
+         (mouse-1
+          (#&lt;window 6 on NEWS&gt; mode-line
+           (40 . 63) 5959987))]
+</pre></div>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-num_002dinput_002dkeys"><span class="category-def">Variable: </span><span><strong class="def-name">num-input-keys</strong><a class="copiable-link" href="#index-num_002dinput_002dkeys"> &para;</a></span></dt>
+<dd><p>This variable&rsquo;s value is the number of key sequences processed so far in
+this Emacs session.  This includes key sequences read from the terminal
+and key sequences read from keyboard macros being executed.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Reading-One-Event.html">Reading One Event</a>, Up: <a href="Reading-Input.html">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

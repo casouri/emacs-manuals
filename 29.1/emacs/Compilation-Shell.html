@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Compilation Shell (GNU Emacs Manual)</title>
+
+<meta name="description" content="Compilation Shell (GNU Emacs Manual)">
+<meta name="keywords" content="Compilation Shell (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Building.html" rel="up" title="Building">
+<link href="Grep-Searching.html" rel="next" title="Grep Searching">
+<link href="Compilation-Mode.html" rel="prev" title="Compilation Mode">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Compilation-Shell">
+<div class="nav-panel">
+<p>
+Next: <a href="Grep-Searching.html" accesskey="n" rel="next">Searching with Grep under Emacs</a>, Previous: <a href="Compilation-Mode.html" accesskey="p" rel="prev">Compilation Mode</a>, Up: <a href="Building.html" accesskey="u" rel="up">Compiling and Testing Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Subshells-for-Compilation"><span>28.3 Subshells for Compilation<a class="copiable-link" href="#Subshells-for-Compilation"> &para;</a></span></h3>
+
+<p>This section includes various techniques and advice for using a
+shell and its features in compilation buffers.  This material is
+specific to local compilations, and will most probably not work in (or
+be irrelevant to) compilation buffers whose default directory is on
+remote hosts.
+</p>
+<p>The <kbd class="kbd">M-x compile</kbd> command uses a shell to run the compilation
+command, but specifies the option for a noninteractive shell.  This
+means, in particular, that the shell should start with no prompt.  If
+you find your usual shell prompt making an unsightly appearance in the
+<samp class="file">*compilation*</samp> buffer, it means you have made a mistake in your
+shell&rsquo;s init file by setting the prompt unconditionally.  (This init
+file may be named <samp class="file">.bashrc</samp>, <samp class="file">.profile</samp>, <samp class="file">.cshrc</samp>,
+<samp class="file">.shrc</samp>, etc., depending on what shell you use.)  The shell init
+file should set the prompt only if there already is a prompt.  Here&rsquo;s
+how to do it in bash:
+</p>
+<div class="example">
+<pre class="example-preformatted">if [ &quot;${PS1+set}&quot; = set ]
+then PS1=...
+fi
+</pre></div>
+
+<p>And here&rsquo;s how to do it in csh:
+</p>
+<div class="example">
+<pre class="example-preformatted">if ($?prompt) set prompt = ...
+</pre></div>
+
+<a class="index-entry-id" id="index-TERM_002c-environment-variable_002c-in-compilation-mode"></a>
+<p>If you want to customize the value of the <code class="env">TERM</code> environment
+variable passed to the compilation subshell, customize the variable
+<code class="code">comint-terminfo-terminal</code> (see <a class="pxref" href="Shell-Options.html">Shell Mode Options</a>).
+</p>
+<p>Emacs does not expect a compiler process to launch asynchronous
+subprocesses; if it does, and they keep running after the main
+compiler process has terminated, Emacs may kill them or their output
+may not arrive in Emacs.  To avoid this problem, make the main
+compilation process wait for its subprocesses to finish.  In a shell
+script, you can do this using &lsquo;<samp class="samp">$!</samp>&rsquo; and &lsquo;<samp class="samp">wait</samp>&rsquo;, like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(sleep 10; echo 2nd)&amp; pid=$!  # <span class="r">Record pid of subprocess</span>
+echo first message
+wait $pid                     # <span class="r">Wait for subprocess</span>
+</pre></div>
+
+<p>If the background process does not output to the compilation buffer,
+so you only need to prevent it from being killed when the main
+compilation process terminates, this is sufficient:
+</p>
+<div class="example">
+<pre class="example-preformatted">nohup <var class="var">command</var>; sleep 1
+</pre></div>
+
+<p>On MS-DOS, asynchronous subprocesses are
+not supported, so <kbd class="kbd">M-x compile</kbd> runs the compilation command
+synchronously (i.e., you must wait until the command finishes before
+you can do anything else in Emacs).  See <a class="xref" href="MS_002dDOS.html">Emacs and MS-DOS</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Grep-Searching.html">Searching with Grep under Emacs</a>, Previous: <a href="Compilation-Mode.html">Compilation Mode</a>, Up: <a href="Building.html">Compiling and Testing Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

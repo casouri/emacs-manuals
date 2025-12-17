@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Repeated Loading (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Repeated Loading (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Autoload.html" rel="prev" title="Autoload">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,65 +47,67 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Repeated-Loading"></span><div class="header">
+<div class="section-level-extent" id="Repeated-Loading">
+<div class="nav-panel">
 <p>
-Next: <a href="Named-Features.html" accesskey="n" rel="next">Named Features</a>, Previous: <a href="Autoload.html" accesskey="p" rel="prev">Autoload</a>, Up: <a href="Loading.html" accesskey="u" rel="up">Loading</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Named-Features.html" accesskey="n" rel="next">Features</a>, Previous: <a href="Autoload.html" accesskey="p" rel="prev">Autoload</a>, Up: <a href="Loading.html" accesskey="u" rel="up">Loading</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Repeated-Loading-1"></span><h3 class="section">15.6 Repeated Loading</h3>
-<span id="index-repeated-loading"></span>
+<h3 class="section" id="Repeated-Loading-1"><span>15.6 Repeated Loading<a class="copiable-link" href="#Repeated-Loading-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-repeated-loading"></a>
 
 <p>You can load a given file more than once in an Emacs session.  For
 example, after you have rewritten and reinstalled a function definition
 by editing it in a buffer, you may wish to return to the original
 version; you can do this by reloading the file it came from.
 </p>
-<p>When you load or reload files, bear in mind that the <code>load</code> and
-<code>load-library</code> functions automatically load a byte-compiled file
+<p>When you load or reload files, bear in mind that the <code class="code">load</code> and
+<code class="code">load-library</code> functions automatically load a byte-compiled file
 rather than a non-compiled file of similar name.  If you rewrite a file
 that you intend to save and reinstall, you need to byte-compile the new
 version; otherwise Emacs will load the older, byte-compiled file instead
 of your newer, non-compiled file!  If that happens, the message
-displayed when loading the file includes, &lsquo;<samp>(compiled; note, source is
+displayed when loading the file includes, &lsquo;<samp class="samp">(compiled; note, source is
 newer)</samp>&rsquo;, to remind you to recompile it.
 </p>
 <p>When writing the forms in a Lisp library file, keep in mind that the
 file might be loaded more than once.  For example, think about whether
 each variable should be reinitialized when you reload the library;
-<code>defvar</code> does not change the value if the variable is already
-initialized.  (See <a href="Defining-Variables.html">Defining Variables</a>.)
+<code class="code">defvar</code> does not change the value if the variable is already
+initialized.  (See <a class="xref" href="Defining-Variables.html">Defining Global Variables</a>.)
 </p>
 <p>The simplest way to add an element to an alist is like this:
 </p>
 <div class="example">
-<pre class="example">(push '(leif-mode &quot; Leif&quot;) minor-mode-alist)
+<pre class="example-preformatted">(push '(leif-mode &quot; Leif&quot;) minor-mode-alist)
 </pre></div>
 
 <p>But this would add multiple elements if the library is reloaded.  To
-avoid the problem, use <code>add-to-list</code> (see <a href="List-Variables.html">List Variables</a>):
+avoid the problem, use <code class="code">add-to-list</code> (see <a class="pxref" href="List-Variables.html">Modifying List Variables</a>):
 </p>
 <div class="example">
-<pre class="example">(add-to-list 'minor-mode-alist '(leif-mode &quot; Leif&quot;))
+<pre class="example-preformatted">(add-to-list 'minor-mode-alist '(leif-mode &quot; Leif&quot;))
 </pre></div>
 
 <p>Occasionally you will want to test explicitly whether a library has
-already been loaded.  If the library uses <code>provide</code> to provide a
-named feature, you can use <code>featurep</code> earlier in the file to test
-whether the <code>provide</code> call has been executed before (see <a href="Named-Features.html">Named Features</a>).  Alternatively, you could use something like this:
+already been loaded.  If the library uses <code class="code">provide</code> to provide a
+named feature, you can use <code class="code">featurep</code> earlier in the file to test
+whether the <code class="code">provide</code> call has been executed before (see <a class="pxref" href="Named-Features.html">Features</a>).  Alternatively, you could use something like this:
 </p>
 <div class="example">
-<pre class="example">(defvar foo-was-loaded nil)
+<pre class="example-preformatted">(defvar foo-was-loaded nil)
 
 (unless foo-was-loaded
-  <var>execute-first-time-only</var>
+  <var class="var">execute-first-time-only</var>
   (setq foo-was-loaded t))
 </pre></div>
 
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Named-Features.html" accesskey="n" rel="next">Named Features</a>, Previous: <a href="Autoload.html" accesskey="p" rel="prev">Autoload</a>, Up: <a href="Loading.html" accesskey="u" rel="up">Loading</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Named-Features.html">Features</a>, Previous: <a href="Autoload.html">Autoload</a>, Up: <a href="Loading.html">Loading</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

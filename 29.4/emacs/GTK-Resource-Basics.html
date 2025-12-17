@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>GTK Resource Basics (GNU Emacs Manual)</title>
+
+<meta name="description" content="GTK Resource Basics (GNU Emacs Manual)">
+<meta name="keywords" content="GTK Resource Basics (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="GTK-resources.html" rel="up" title="GTK resources">
+<link href="GTK-Widget-Names.html" rel="next" title="GTK Widget Names">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="appendixsubsec-level-extent" id="GTK-Resource-Basics">
+<div class="nav-panel">
+<p>
+Next: <a href="GTK-Widget-Names.html" accesskey="n" rel="next">GTK+ widget names</a>, Up: <a href="GTK-resources.html" accesskey="u" rel="up">GTK+ resources</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="appendixsubsec" id="GTK_002b-Resource-Basics"><span>D.5.1 GTK+ Resource Basics<a class="copiable-link" href="#GTK_002b-Resource-Basics"> &para;</a></span></h4>
+
+<p>In a GTK+ 2 resource file (usually <samp class="file">~/.emacs.d/gtkrc</samp>), the
+simplest kind of a resource setting simply assigns a value to a
+variable.  For example, putting the following line in the resource
+file changes the font on all GTK+ widgets to &lsquo;<samp class="samp">courier-12</samp>&rsquo;:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">gtk-font-name = &quot;courier 12&quot;
+</pre></div>
+
+<p>Note that in this case the font name must be supplied as a GTK font
+pattern (also called a <em class="dfn">Pango font name</em>), not as a
+Fontconfig-style font name or XLFD.  See <a class="xref" href="Fonts.html">Fonts</a>.
+</p>
+<p>To customize widgets you first define a <em class="dfn">style</em>, and then apply
+the style to the widgets.  Here is an example that sets the font for
+menus (&lsquo;<samp class="samp">#</samp>&rsquo; characters indicate comments):
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted"># <span class="r">Define the style &lsquo;<samp class="samp">my_style</samp>&rsquo;.</span>
+style &quot;my_style&quot;
+{
+  font_name = &quot;helvetica bold 14&quot;
+}
+
+# <span class="r">Specify that widget type &lsquo;<samp class="samp">*emacs-menuitem*</samp>&rsquo; uses &lsquo;<samp class="samp">my_style</samp>&rsquo;.</span>
+widget &quot;*emacs-menuitem*&quot; style &quot;my_style&quot;
+</pre></div>
+
+<p>The widget name in this example contains wildcards, so the style is
+applied to all widgets matching &lsquo;<samp class="samp">*emacs-menuitem*</samp>&rsquo;.  The widgets
+are named by the way they are contained, from the outer widget to the
+inner widget.  Here is another example that applies &lsquo;<samp class="samp">my_style</samp>&rsquo;
+specifically to the Emacs menu bar:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">widget &quot;Emacs.pane.menubar.*&quot; style &quot;my_style&quot;
+</pre></div>
+
+<p>Here is a more elaborate example, showing how to change the parts of
+the scroll bar:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">style &quot;scroll&quot;
+{
+  fg[NORMAL] = &quot;red&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# <span class="r">Arrow color.</span>
+  bg[NORMAL] = &quot;yellow&quot;&nbsp;&nbsp;# <span class="r">Thumb and background around arrow.</span>
+  bg[ACTIVE] = &quot;blue&quot;&nbsp;&nbsp;&nbsp;&nbsp;# <span class="r">Trough color.</span>
+  bg[PRELIGHT] = &quot;white&quot;&nbsp;# <span class="r">Thumb color when the mouse is over it.</span>
+}
+
+widget &quot;*verticalScrollBar*&quot; style &quot;scroll&quot;
+</pre></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="GTK-Widget-Names.html">GTK+ widget names</a>, Up: <a href="GTK-resources.html">GTK+ resources</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.1.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Registers (GNU Emacs Manual)</title>
+
+<meta name="description" content="Registers (GNU Emacs Manual)">
+<meta name="keywords" content="Registers (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Display.html" rel="next" title="Display">
+<link href="Killing.html" rel="prev" title="Killing">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Registers">
+<div class="nav-panel">
+<p>
+Next: <a href="Display.html" accesskey="n" rel="next">Controlling the Display</a>, Previous: <a href="Killing.html" accesskey="p" rel="prev">Killing and Moving Text</a>, Up: <a href="index.html" accesskey="u" rel="up">The Emacs Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Registers-1"><span>15 Registers<a class="copiable-link" href="#Registers-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-registers"></a>
+
+<p>Emacs <em class="dfn">registers</em> are compartments where you can save text,
+rectangles, positions, and other things for later use.  Once you save
+text or a rectangle in a register, you can copy it into the buffer
+once or many times; once you save a position in a register, you can
+jump back to that position once or many times.
+</p>
+<p>Each register has a name that consists of a single character, which
+we will denote by <var class="var">r</var>; <var class="var">r</var> can be a letter (such as &lsquo;<samp class="samp">a</samp>&rsquo;)
+or a number (such as &lsquo;<samp class="samp">1</samp>&rsquo;); case matters, so register &lsquo;<samp class="samp">a</samp>&rsquo; is
+not the same as register &lsquo;<samp class="samp">A</samp>&rsquo;.  You can also set a register in
+non-alphanumeric characters, for instance &lsquo;<samp class="samp">C-d</samp>&rsquo; by using for
+example <kbd class="key">C-q</kbd> &lsquo;<samp class="samp">C-d</samp>&rsquo;.
+</p>
+<a class="index-entry-id" id="index-view_002dregister"></a>
+<p>A register can store a position, a piece of text, a rectangle, a
+number, a window or frame configuration, a buffer name, or a file
+name, but only one thing at any given time.  Whatever you store in a
+register remains there until you store something else in that
+register.  To see what register <var class="var">r</var> contains, use <kbd class="kbd">M-x
+view-register</kbd>:
+</p>
+<dl class="table">
+<dt><kbd class="kbd">M-x view-register <kbd class="key">RET</kbd> <var class="var">r</var></kbd></dt>
+<dd><p>Display a description of what register <var class="var">r</var> contains.
+</p></dd>
+</dl>
+
+
+<a class="index-entry-id" id="index-preview-of-registers"></a>
+<a class="index-entry-id" id="index-register_002duse_002dpreview"></a>
+<p>All of the commands that prompt for a register will by default
+display a preview window that lists the existing registers (if there
+are any) and their current values, after a short delay.  This and
+other aspects of prompting for a register can be customized by setting
+the value of <code class="code">register-use-preview</code>, which can have the following
+values:
+</p>
+<dl class="table">
+<dt><a id="index-register_002dpreview_002ddelay"></a><span><code class="code">traditional</code><a class="copiable-link" href="#index-register_002dpreview_002ddelay"> &para;</a></span></dt>
+<dd><p>With this value, which is the default, Emacs behaves like it did in
+all the versions before Emacs 29: it shows a preview of existing registers
+after a delay, and lets you overwrite the values of existing registers
+by typing a single character, the name of the register.  The preview
+appears after the delay determined by the customizable variable
+<code class="code">register-preview-delay</code>, which specifies the delay in seconds;
+setting it to <code class="code">nil</code> disables the preview (but you can still
+explicitly request a preview window by pressing <kbd class="kbd">C-h</kbd> or
+<kbd class="key">F1</kbd> when Emacs prompts for a register).
+</p>
+</dd>
+<dt><code class="code">t</code></dt>
+<dd><p>This value requests a more flexible preview of existing registers.
+The preview appears immediately when Emacs prompts for a register
+(thus <code class="code">register-preview-delay</code> has no effect), and the preview
+window provides navigation: by using <kbd class="kbd">C-n</kbd> and <kbd class="kbd">C-p</kbd> (or the
+<kbd class="kbd"><kbd class="key">UP</kbd></kbd> and <kbd class="kbd"><kbd class="key">DOWN</kbd></kbd> arrow keys), you can move between
+the registers in the preview window.  To overwrite the value of an
+existing registers in this mode, you need to type <kbd class="key">RET</kbd> after
+selecting the register by navigation or typing its name.
+</p>
+<p>In addition, the registers shown by the preview are filtered according
+to the command that popped the preview: for example, the preview shown
+by <code class="code">insert-register</code> will only show registers whose values can be
+inserted into the buffer, omitting registers which hold window
+configurations, positions, and other un-insertable values.
+</p>
+</dd>
+<dt><code class="code">insist</code></dt>
+<dd><p>This value is like <code class="code">t</code>, but in addition you can press the same
+key as the name of register one more time to exit the minibuffer,
+instead of pressing <kbd class="key">RET</kbd>.
+</p>
+</dd>
+<dt><code class="code">nil</code></dt>
+<dd><p>This value requests behavior similar to <code class="code">traditional</code>, but the
+preview is shown without delay, and is filtered according to the
+command.
+</p>
+</dd>
+<dt><code class="code">never</code></dt>
+<dd><p>This value is like <code class="code">nil</code>, but it disables the preview.
+</p></dd>
+</dl>
+
+<p><em class="dfn">Bookmarks</em> record files and positions in them, so you can
+return to those positions when you look at the file again.  Bookmarks
+are similar in spirit to registers, so they are also documented in
+this chapter.
+</p>
+
+<ul class="mini-toc">
+<li><a href="Position-Registers.html" accesskey="1">Saving Positions in Registers</a></li>
+<li><a href="Text-Registers.html" accesskey="2">Saving Text in Registers</a></li>
+<li><a href="Rectangle-Registers.html" accesskey="3">Saving Rectangles in Registers</a></li>
+<li><a href="Configuration-Registers.html" accesskey="4">Saving Window and Frame Configurations in Registers</a></li>
+<li><a href="Number-Registers.html" accesskey="5">Keeping Numbers in Registers</a></li>
+<li><a href="File-and-Buffer-Registers.html" accesskey="6">Keeping File and Buffer Names in Registers</a></li>
+<li><a href="Keyboard-Macro-Registers.html" accesskey="7">Keyboard Macro Registers</a></li>
+<li><a href="Bookmarks.html" accesskey="8">Bookmarks</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Display.html">Controlling the Display</a>, Previous: <a href="Killing.html">Killing and Moving Text</a>, Up: <a href="index.html">The Emacs Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

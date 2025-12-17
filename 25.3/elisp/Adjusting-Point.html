@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Adjusting Point (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Adjusting Point (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Command-Loop-Info.html" rel="prev" title="Command Loop Info">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,42 +47,44 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Adjusting-Point"></span><div class="header">
+<div class="section-level-extent" id="Adjusting-Point">
+<div class="nav-panel">
 <p>
-Next: <a href="Input-Events.html" accesskey="n" rel="next">Input Events</a>, Previous: <a href="Command-Loop-Info.html" accesskey="p" rel="prev">Command Loop Info</a>, Up: <a href="Command-Loop.html" accesskey="u" rel="up">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Input-Events.html" accesskey="n" rel="next">Input Events</a>, Previous: <a href="Command-Loop-Info.html" accesskey="p" rel="prev">Information from the Command Loop</a>, Up: <a href="Command-Loop.html" accesskey="u" rel="up">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Adjusting-Point-After-Commands"></span><h3 class="section">20.6 Adjusting Point After Commands</h3>
-<span id="index-adjusting-point"></span>
-<span id="index-invisible_002fintangible-text_002c-and-point"></span>
-<span id="index-display-property_002c-and-point-display"></span>
-<span id="index-composition-property_002c-and-point-display"></span>
+<h3 class="section" id="Adjusting-Point-After-Commands"><span>20.6 Adjusting Point After Commands<a class="copiable-link" href="#Adjusting-Point-After-Commands"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-adjusting-point"></a>
+<a class="index-entry-id" id="index-invisible_002fintangible-text_002c-and-point"></a>
+<a class="index-entry-id" id="index-display-property_002c-and-point-display"></a>
+<a class="index-entry-id" id="index-composition-property_002c-and-point-display"></a>
 
 <p>It is not easy to display a value of point in the middle of a
-sequence of text that has the <code>display</code>, <code>composition</code> or
+sequence of text that has the <code class="code">display</code>, <code class="code">composition</code> or
 is invisible.  Therefore, after a command finishes and returns to the
 command loop, if point is within such a sequence, the command loop
 normally moves point to the edge of the sequence.
 </p>
 <p>A command can inhibit this feature by setting the variable
-<code>disable-point-adjustment</code>:
+<code class="code">disable-point-adjustment</code>:
 </p>
-<dl>
-<dt id="index-disable_002dpoint_002dadjustment">Variable: <strong>disable-point-adjustment</strong></dt>
-<dd><p>If this variable is non-<code>nil</code> when a command returns to the
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-disable_002dpoint_002dadjustment"><span class="category-def">Variable: </span><span><strong class="def-name">disable-point-adjustment</strong><a class="copiable-link" href="#index-disable_002dpoint_002dadjustment"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code> when a command returns to the
 command loop, then the command loop does not check for those text
 properties, and does not move point out of sequences that have them.
 </p>
-<p>The command loop sets this variable to <code>nil</code> before each command,
+<p>The command loop sets this variable to <code class="code">nil</code> before each command,
 so if a command sets it, the effect applies only to that command.
 </p></dd></dl>
 
-<dl>
-<dt id="index-global_002ddisable_002dpoint_002dadjustment">Variable: <strong>global-disable-point-adjustment</strong></dt>
-<dd><p>If you set this variable to a non-<code>nil</code> value, the feature of
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-global_002ddisable_002dpoint_002dadjustment"><span class="category-def">Variable: </span><span><strong class="def-name">global-disable-point-adjustment</strong><a class="copiable-link" href="#index-global_002ddisable_002dpoint_002dadjustment"> &para;</a></span></dt>
+<dd><p>If you set this variable to a non-<code class="code">nil</code> value, the feature of
 moving point out of these sequences is completely turned off.
 </p></dd></dl>
 
+</div>
 
 
 

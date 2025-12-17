@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Name Help (GNU Emacs Manual)</title>
+
+<meta name="description" content="Name Help (GNU Emacs Manual)">
+<meta name="keywords" content="Name Help (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Help.html" rel="up" title="Help">
+<link href="Apropos.html" rel="next" title="Apropos">
+<link href="Key-Help.html" rel="prev" title="Key Help">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Name-Help">
+<div class="nav-panel">
+<p>
+Next: <a href="Apropos.html" accesskey="n" rel="next">Apropos</a>, Previous: <a href="Key-Help.html" accesskey="p" rel="prev">Documentation for a Key</a>, Up: <a href="Help.html" accesskey="u" rel="up">Help</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Help-by-Command-or-Variable-Name"><span>11.3 Help by Command or Variable Name<a class="copiable-link" href="#Help-by-Command-or-Variable-Name"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-C_002dh-x"></a>
+<a class="index-entry-id" id="index-describe_002dcommand"></a>
+<p><kbd class="kbd">C-h x <var class="var">command</var> <kbd class="key">RET</kbd></kbd> (<code class="code">describe-command</code>)
+displays the documentation of the named <var class="var">command</var>, in a
+window.  For example,
+</p>
+<div class="example">
+<pre class="example-preformatted">C-h x auto-fill-mode <kbd class="key">RET</kbd>
+</pre></div>
+
+<p>displays the documentation of <code class="code">auto-fill-mode</code>.  This is how you
+would get the documentation of a command that is not bound to any key
+(one which you would normally run using <kbd class="kbd">M-x</kbd>).
+</p>
+<a class="index-entry-id" id="index-C_002dh-f"></a>
+<a class="index-entry-id" id="index-describe_002dfunction"></a>
+<p><kbd class="kbd">C-h f <var class="var">function</var> <kbd class="key">RET</kbd></kbd> (<code class="code">describe-function</code>)
+displays the documentation of Lisp <var class="var">function</var>.  This command is
+intended for Lisp functions that you use in a Lisp program.  For
+example, if you have just written the expression
+<code class="code">(make-vector len)</code> and want to check that you are using
+<code class="code">make-vector</code> properly, type <kbd class="kbd">C-h&nbsp;f&nbsp;make-vector&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w -->.
+Additionally, since all commands are Lisp functions, you can also use
+this command to view the documentation of any command.
+</p>
+<p>If you type <kbd class="kbd">C-h f <kbd class="key">RET</kbd></kbd>, it describes the function called
+by the innermost Lisp expression in the buffer around point,
+<em class="emph">provided</em> that function name is a valid, defined Lisp function.
+(That name appears as the default while you enter the argument.)  For
+example, if point is located following the text &lsquo;<samp class="samp">(make-vector
+(car x)</samp>&rsquo;, the innermost list containing point is the one that starts
+with &lsquo;<samp class="samp">(make-vector</samp>&rsquo;, so <kbd class="kbd">C-h&nbsp;f&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w --> describes the
+function <code class="code">make-vector</code>.
+</p>
+<p><kbd class="kbd">C-h f</kbd> is also useful just to verify that you spelled a
+function name correctly.  If the minibuffer prompt for <kbd class="kbd">C-h f</kbd>
+shows the function name from the buffer as the default, it means that
+name is defined as a Lisp function.  Type <kbd class="kbd">C-g</kbd> to cancel the
+<kbd class="kbd">C-h f</kbd> command if you don&rsquo;t really want to view the
+documentation.
+</p>
+<a class="index-entry-id" id="index-help_002denable_002dsymbol_002dautoload"></a>
+<p>If you request help for an autoloaded function whose <code class="code">autoload</code>
+form (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Autoload.html#Autoload">Autoload</a> in <cite class="cite">The Emacs Lisp Reference Manual</cite>)
+doesn&rsquo;t provide a doc string, the <samp class="file">*Help*</samp> buffer won&rsquo;t have any
+doc string to display.  In that case, if
+<code class="code">help-enable-symbol-autoload</code> is non-<code class="code">nil</code>, Emacs will try
+to load the file in which the function is defined to see whether
+there&rsquo;s a doc string there.
+</p>
+<a class="index-entry-id" id="index-shortdoc"></a>
+<p>You can get an overview of functions relevant for a particular topic
+by using the <kbd class="kbd">M-x shortdoc</kbd> command.  This will prompt you for an
+area of interest, e.g., <code class="code">string</code>, and pop you to a buffer where
+many of the functions relevant for handling strings are listed.
+</p>
+<a class="index-entry-id" id="index-C_002dh-v"></a>
+<a class="index-entry-id" id="index-describe_002dvariable"></a>
+<p><kbd class="kbd">C-h v</kbd> (<code class="code">describe-variable</code>) is like <kbd class="kbd">C-h f</kbd> but
+describes Lisp variables instead of Lisp functions.  Its default is
+the Lisp symbol around or before point, if that is the name of a
+defined Lisp variable.  See <a class="xref" href="Variables.html">Variables</a>.
+</p>
+<p>Help buffers that describe Emacs variables and functions normally
+have hyperlinks to the corresponding source code, if you have the
+source files installed (see <a class="pxref" href="Hyperlinking.html">Hyperlinking and Web Navigation Features</a>).
+</p>
+<a class="index-entry-id" id="index-C_002dh-F"></a>
+<a class="index-entry-id" id="index-Info_002dgoto_002demacs_002dcommand_002dnode"></a>
+<p>To find a command&rsquo;s documentation in a manual, use <kbd class="kbd">C-h F</kbd>
+(<code class="code">Info-goto-emacs-command-node</code>).  This knows about various
+manuals, not just the Emacs manual, and finds the right one.
+</p>
+<a class="index-entry-id" id="index-C_002dh-o"></a>
+<a class="index-entry-id" id="index-describe_002dsymbol"></a>
+<p><kbd class="kbd">C-h o</kbd> (<code class="code">describe-symbol</code>) is like <kbd class="kbd">C-h f</kbd> and
+<kbd class="kbd">C-h v</kbd>, but it describes any symbol, be it a function, a
+variable, or a face.  If the symbol has more than one definition, like
+it has both definition as a function and as a variable, this command
+will show the documentation of all of them, one after the other.
+</p>
+<a class="index-entry-id" id="index-completions_002ddetailed"></a>
+<p>If the <code class="code">completions-detailed</code> user option is non-<code class="code">nil</code>,
+some commands provide details about the possible values when
+displaying completions.  For instance, <kbd class="kbd">C-h o TAB</kbd> will then
+include the first line of the doc string, and will also say whether
+each symbol is a function or a variable (and so on).  Which details
+are included varies depending on the command used.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Apropos.html">Apropos</a>, Previous: <a href="Key-Help.html">Documentation for a Key</a>, Up: <a href="Help.html">Help</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

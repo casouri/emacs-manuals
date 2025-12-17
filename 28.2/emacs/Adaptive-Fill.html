@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.2.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Adaptive Fill (GNU Emacs Manual)</title>
+
+<meta name="description" content="Adaptive Fill (GNU Emacs Manual)">
+<meta name="keywords" content="Adaptive Fill (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Filling.html" rel="up" title="Filling">
+<link href="Fill-Prefix.html" rel="prev" title="Fill Prefix">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Adaptive-Fill">
+<div class="nav-panel">
+<p>
+Previous: <a href="Fill-Prefix.html" accesskey="p" rel="prev">The Fill Prefix</a>, Up: <a href="Filling.html" accesskey="u" rel="up">Filling Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Adaptive-Filling"><span>25.6.4 Adaptive Filling<a class="copiable-link" href="#Adaptive-Filling"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-adaptive-filling"></a>
+<p>The fill commands can deduce the proper fill prefix for a paragraph
+automatically in certain cases: either whitespace or certain punctuation
+characters at the beginning of a line are propagated to all lines of the
+paragraph.
+</p>
+<p>If the paragraph has two or more lines, the fill prefix is taken from
+the paragraph&rsquo;s second line, but only if it appears on the first line as
+well.
+</p>
+<p>If a paragraph has just one line, fill commands <em class="emph">may</em> take a
+prefix from that line.  The decision is complicated because there are
+three reasonable things to do in such a case:
+</p>
+<ul class="itemize mark-bullet">
+<li>Use the first line&rsquo;s prefix on all the lines of the paragraph.
+
+</li><li>Indent subsequent lines with whitespace, so that they line up under the
+text that follows the prefix on the first line, but don&rsquo;t actually copy
+the prefix from the first line.
+
+</li><li>Don&rsquo;t do anything special with the second and following lines.
+</li></ul>
+
+<p>All three of these styles of formatting are commonly used.  So the
+fill commands try to determine what you would like, based on the prefix
+that appears and on the major mode.  Here is how.
+</p>
+<a class="index-entry-id" id="index-adaptive_002dfill_002dfirst_002dline_002dregexp"></a>
+<p>If the prefix found on the first line matches
+<code class="code">adaptive-fill-first-line-regexp</code>, or if it appears to be a
+comment-starting sequence (this depends on the major mode), then the
+prefix found is used for filling the paragraph, provided it would not
+act as a paragraph starter on subsequent lines.
+</p>
+<p>Otherwise, the prefix found is converted to an equivalent number of
+spaces, and those spaces are used as the fill prefix for the rest of the
+lines, provided they would not act as a paragraph starter on subsequent
+lines.
+</p>
+<p>In Text mode, and other modes where only blank lines and page
+delimiters separate paragraphs, the prefix chosen by adaptive filling
+never acts as a paragraph starter, so it can always be used for filling.
+</p>
+<a class="index-entry-id" id="index-adaptive_002dfill_002dmode"></a>
+<a class="index-entry-id" id="index-adaptive_002dfill_002dregexp"></a>
+<p>The variable <code class="code">adaptive-fill-regexp</code> determines what kinds of line
+beginnings can serve as a fill prefix: any characters at the start of
+the line that match this regular expression are used.  If you set the
+variable <code class="code">adaptive-fill-mode</code> to <code class="code">nil</code>, the fill prefix is
+never chosen automatically.
+</p>
+<a class="index-entry-id" id="index-adaptive_002dfill_002dfunction"></a>
+<p>You can specify more complex ways of choosing a fill prefix
+automatically by setting the variable <code class="code">adaptive-fill-function</code> to a
+function.  This function is called with point after the left margin of a
+line, and it should return the appropriate fill prefix based on that
+line.  If it returns <code class="code">nil</code>, <code class="code">adaptive-fill-regexp</code> gets
+a chance to find a prefix.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Fill-Prefix.html">The Fill Prefix</a>, Up: <a href="Filling.html">Filling Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

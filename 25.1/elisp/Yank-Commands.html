@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Yank Commands (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Yank Commands (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Yanking.html" rel="prev" title="Yanking">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,86 +48,88 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Yank-Commands"></span><div class="header">
+<div class="subsection-level-extent" id="Yank-Commands">
+<div class="nav-panel">
 <p>
 Next: <a href="Low_002dLevel-Kill-Ring.html" accesskey="n" rel="next">Low-Level Kill Ring</a>, Previous: <a href="Yanking.html" accesskey="p" rel="prev">Yanking</a>, Up: <a href="The-Kill-Ring.html" accesskey="u" rel="up">The Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Functions-for-Yanking"></span><h4 class="subsection">31.8.4 Functions for Yanking</h4>
+<h4 class="subsection" id="Functions-for-Yanking"><span>31.8.4 Functions for Yanking<a class="copiable-link" href="#Functions-for-Yanking"> &para;</a></span></h4>
 
 <p>This section describes higher-level commands for yanking, which are
 intended primarily for the user but useful also in Lisp programs.
-Both <code>yank</code> and <code>yank-pop</code> honor the
-<code>yank-excluded-properties</code> variable and <code>yank-handler</code> text
-property (see <a href="Yanking.html">Yanking</a>).
+Both <code class="code">yank</code> and <code class="code">yank-pop</code> honor the
+<code class="code">yank-excluded-properties</code> variable and <code class="code">yank-handler</code> text
+property (see <a class="pxref" href="Yanking.html">Yanking</a>).
 </p>
-<dl>
-<dt id="index-yank">Command: <strong>yank</strong> <em>&amp;optional arg</em></dt>
-<dd><span id="index-inserting-killed-text"></span>
+<dl class="first-deffn">
+<dt class="deffn" id="index-yank"><span class="category-def">Command: </span><span><strong class="def-name">yank</strong> <var class="def-var-arguments">&amp;optional arg</var><a class="copiable-link" href="#index-yank"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-inserting-killed-text"></a>
 <p>This command inserts before point the text at the front of the kill
 ring.  It sets the mark at the beginning of that text, using
-<code>push-mark</code> (see <a href="The-Mark.html">The Mark</a>), and puts point at the end.
+<code class="code">push-mark</code> (see <a class="pxref" href="The-Mark.html">The Mark</a>), and puts point at the end.
 </p>
-<p>If <var>arg</var> is a non-<code>nil</code> list (which occurs interactively when
-the user types <kbd>C-u</kbd> with no digits), then <code>yank</code> inserts the
+<p>If <var class="var">arg</var> is a non-<code class="code">nil</code> list (which occurs interactively when
+the user types <kbd class="kbd">C-u</kbd> with no digits), then <code class="code">yank</code> inserts the
 text as described above, but puts point before the yanked text and
 sets the mark after it.
 </p>
-<p>If <var>arg</var> is a number, then <code>yank</code> inserts the <var>arg</var>th
-most recently killed text&mdash;the <var>arg</var>th element of the kill ring
+<p>If <var class="var">arg</var> is a number, then <code class="code">yank</code> inserts the <var class="var">arg</var>th
+most recently killed text&mdash;the <var class="var">arg</var>th element of the kill ring
 list, counted cyclically from the front, which is considered the
 first element for this purpose.
 </p>
-<p><code>yank</code> does not alter the contents of the kill ring, unless it
+<p><code class="code">yank</code> does not alter the contents of the kill ring, unless it
 used text provided by another program, in which case it pushes that text
-onto the kill ring.  However if <var>arg</var> is an integer different from
+onto the kill ring.  However if <var class="var">arg</var> is an integer different from
 one, it rotates the kill ring to place the yanked string at the front.
 </p>
-<p><code>yank</code> returns <code>nil</code>.
+<p><code class="code">yank</code> returns <code class="code">nil</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-yank_002dpop">Command: <strong>yank-pop</strong> <em>&amp;optional arg</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-yank_002dpop"><span class="category-def">Command: </span><span><strong class="def-name">yank-pop</strong> <var class="def-var-arguments">&amp;optional arg</var><a class="copiable-link" href="#index-yank_002dpop"> &para;</a></span></dt>
 <dd><p>This command replaces the just-yanked entry from the kill ring with a
 different entry from the kill ring.
 </p>
-<p>This is allowed only immediately after a <code>yank</code> or another
-<code>yank-pop</code>.  At such a time, the region contains text that was just
-inserted by yanking.  <code>yank-pop</code> deletes that text and inserts in
+<p>This is allowed only immediately after a <code class="code">yank</code> or another
+<code class="code">yank-pop</code>.  At such a time, the region contains text that was just
+inserted by yanking.  <code class="code">yank-pop</code> deletes that text and inserts in
 its place a different piece of killed text.  It does not add the deleted
 text to the kill ring, since it is already in the kill ring somewhere.
 It does however rotate the kill ring to place the newly yanked string at
 the front.
 </p>
-<p>If <var>arg</var> is <code>nil</code>, then the replacement text is the previous
-element of the kill ring.  If <var>arg</var> is numeric, the replacement is
-the <var>arg</var>th previous kill.  If <var>arg</var> is negative, a more recent
+<p>If <var class="var">arg</var> is <code class="code">nil</code>, then the replacement text is the previous
+element of the kill ring.  If <var class="var">arg</var> is numeric, the replacement is
+the <var class="var">arg</var>th previous kill.  If <var class="var">arg</var> is negative, a more recent
 kill is the replacement.
 </p>
 <p>The sequence of kills in the kill ring wraps around, so that after the
 oldest one comes the newest one, and before the newest one goes the
 oldest.
 </p>
-<p>The return value is always <code>nil</code>.
+<p>The return value is always <code class="code">nil</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-yank_002dundo_002dfunction">Variable: <strong>yank-undo-function</strong></dt>
-<dd><p>If this variable is non-<code>nil</code>, the function <code>yank-pop</code> uses
-its value instead of <code>delete-region</code> to delete the text
-inserted by the previous <code>yank</code> or
-<code>yank-pop</code> command.  The value must be a function of two
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-yank_002dundo_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">yank-undo-function</strong><a class="copiable-link" href="#index-yank_002dundo_002dfunction"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, the function <code class="code">yank-pop</code> uses
+its value instead of <code class="code">delete-region</code> to delete the text
+inserted by the previous <code class="code">yank</code> or
+<code class="code">yank-pop</code> command.  The value must be a function of two
 arguments, the start and end of the current region.
 </p>
-<p>The function <code>insert-for-yank</code> automatically sets this variable
-according to the <var>undo</var> element of the <code>yank-handler</code>
+<p>The function <code class="code">insert-for-yank</code> automatically sets this variable
+according to the <var class="var">undo</var> element of the <code class="code">yank-handler</code>
 text property, if there is one.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Low_002dLevel-Kill-Ring.html" accesskey="n" rel="next">Low-Level Kill Ring</a>, Previous: <a href="Yanking.html" accesskey="p" rel="prev">Yanking</a>, Up: <a href="The-Kill-Ring.html" accesskey="u" rel="up">The Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Low_002dLevel-Kill-Ring.html">Low-Level Kill Ring</a>, Previous: <a href="Yanking.html">Yanking</a>, Up: <a href="The-Kill-Ring.html">The Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

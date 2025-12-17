@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 25.1.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Replacement and Lax Matches (GNU Emacs Manual)</title>
 
 <meta name="description" content="Replacement and Lax Matches (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Regexp-Replace.html" rel="prev" title="Regexp Replace">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,73 +50,75 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Replacement-and-Lax-Matches"></span><div class="header">
+<div class="subsection-level-extent" id="Replacement-and-Lax-Matches">
+<div class="nav-panel">
 <p>
-Next: <a href="Query-Replace.html" accesskey="n" rel="next">Query Replace</a>, Previous: <a href="Regexp-Replace.html" accesskey="p" rel="prev">Regexp Replace</a>, Up: <a href="Replace.html" accesskey="u" rel="up">Replace</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Query-Replace.html" accesskey="n" rel="next">Query Replace</a>, Previous: <a href="Regexp-Replace.html" accesskey="p" rel="prev">Regexp Replacement</a>, Up: <a href="Replace.html" accesskey="u" rel="up">Replacement Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Replace-Commands-and-Lax-Matches"></span><h4 class="subsection">15.10.3 Replace Commands and Lax Matches</h4>
+<h4 class="subsection" id="Replace-Commands-and-Lax-Matches"><span>15.10.3 Replace Commands and Lax Matches<a class="copiable-link" href="#Replace-Commands-and-Lax-Matches"> &para;</a></span></h4>
 
 <p>This subsection describes the behavior of replace commands with
-respect to lax matches (see <a href="Lax-Search.html">Lax Search</a>) and how to customize it.
+respect to lax matches (see <a class="pxref" href="Lax-Search.html">Lax Matching During Searching</a>) and how to customize it.
 In general, replace commands mostly default to stricter matching than
 their search counterparts.
 </p>
-<span id="index-lax-space-matching-in-replace-commands"></span>
-<span id="index-replace_002dlax_002dwhitespace"></span>
+<a class="index-entry-id" id="index-lax-space-matching-in-replace-commands"></a>
+<a class="index-entry-id" id="index-replace_002dlax_002dwhitespace"></a>
 <p>Unlike incremental search, the replacement commands do not use lax
-space matching (see <a href="Lax-Search.html">lax space matching</a>) by default.
+space matching (see <a class="pxref" href="Lax-Search.html">lax space matching</a>) by default.
 To enable lax space matching for replacement, change the variable
-<code>replace-lax-whitespace</code> to non-<code>nil</code>.  (This only affects
+<code class="code">replace-lax-whitespace</code> to non-<code class="code">nil</code>.  (This only affects
 how Emacs finds the text to replace, not the replacement text.)
 </p>
-<span id="index-replace_002dregexp_002dlax_002dwhitespace"></span>
-<p>A companion variable <code>replace-regexp-lax-whitespace</code> controls
-whether <code>query-replace-regexp</code> uses lax whitespace matching when
+<a class="index-entry-id" id="index-replace_002dregexp_002dlax_002dwhitespace"></a>
+<p>A companion variable <code class="code">replace-regexp-lax-whitespace</code> controls
+whether <code class="code">query-replace-regexp</code> uses lax whitespace matching when
 searching for patterns.
 </p>
-<span id="index-case-folding-in-replace-commands"></span>
+<a class="index-entry-id" id="index-case-folding-in-replace-commands"></a>
 <p>If the first argument of a replace command is all lower case, the
 command ignores case while searching for occurrences to
-replace&mdash;provided <code>case-fold-search</code> is non-<code>nil</code>.  If
-<code>case-fold-search</code> is set to <code>nil</code>, case is always significant
+replace&mdash;provided <code class="code">case-fold-search</code> is non-<code class="code">nil</code>.  If
+<code class="code">case-fold-search</code> is set to <code class="code">nil</code>, case is always significant
 in all searches.
 </p>
-<span id="index-case_002dreplace"></span>
-<p>In addition, when the <var>newstring</var> argument is all or partly lower
+<a class="index-entry-id" id="index-case_002dreplace"></a>
+<p>In addition, when the <var class="var">newstring</var> argument is all or partly lower
 case, replacement commands try to preserve the case pattern of each
 occurrence.  Thus, the command
 </p>
 <div class="example">
-<pre class="example">M-x replace-string <span class="key">RET</span> foo <span class="key">RET</span> bar <span class="key">RET</span>
+<pre class="example-preformatted">M-x replace-string <kbd class="key">RET</kbd> foo <kbd class="key">RET</kbd> bar <kbd class="key">RET</kbd>
 </pre></div>
 
-<p>replaces a lower case &lsquo;<samp>foo</samp>&rsquo; with a lower case &lsquo;<samp>bar</samp>&rsquo;, an
-all-caps &lsquo;<samp>FOO</samp>&rsquo; with &lsquo;<samp>BAR</samp>&rsquo;, and a capitalized &lsquo;<samp>Foo</samp>&rsquo; with
-&lsquo;<samp>Bar</samp>&rsquo;.  (These three alternatives&mdash;lower case, all caps, and
-capitalized, are the only ones that <code>replace-string</code> can
+<p>replaces a lower case &lsquo;<samp class="samp">foo</samp>&rsquo; with a lower case &lsquo;<samp class="samp">bar</samp>&rsquo;, an
+all-caps &lsquo;<samp class="samp">FOO</samp>&rsquo; with &lsquo;<samp class="samp">BAR</samp>&rsquo;, and a capitalized &lsquo;<samp class="samp">Foo</samp>&rsquo; with
+&lsquo;<samp class="samp">Bar</samp>&rsquo;.  (These three alternatives&mdash;lower case, all caps, and
+capitalized, are the only ones that <code class="code">replace-string</code> can
 distinguish.)
 </p>
 <p>If upper-case letters are used in the replacement string, they remain
 upper case every time that text is inserted.  If upper-case letters are
 used in the first argument, the second argument is always substituted
 exactly as given, with no case conversion.  Likewise, if either
-<code>case-replace</code> or <code>case-fold-search</code> is set to <code>nil</code>,
+<code class="code">case-replace</code> or <code class="code">case-fold-search</code> is set to <code class="code">nil</code>,
 replacement is done without case conversion.
 </p>
-<span id="index-character-folding-in-replace-commands"></span>
+<a class="index-entry-id" id="index-character-folding-in-replace-commands"></a>
 <p>The replacement commands by default do not use character folding
-(see <a href="Lax-Search.html">character folding</a>) when looking for the text to
+(see <a class="pxref" href="Lax-Search.html">character folding</a>) when looking for the text to
 replace.  To enable character folding for matching in
-<code>query-replace</code> and <code>replace-string</code>, set the variable
-<code>replace-char-fold</code> to a non-<code>nil</code> value.  (This
+<code class="code">query-replace</code> and <code class="code">replace-string</code>, set the variable
+<code class="code">replace-char-fold</code> to a non-<code class="code">nil</code> value.  (This
 setting does not affect the replacement text, only how Emacs finds the
-text to replace.  It also doesn&rsquo;t affect <code>replace-regexp</code>.)
+text to replace.  It also doesn&rsquo;t affect <code class="code">replace-regexp</code>.)
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Query-Replace.html" accesskey="n" rel="next">Query Replace</a>, Previous: <a href="Regexp-Replace.html" accesskey="p" rel="prev">Regexp Replace</a>, Up: <a href="Replace.html" accesskey="u" rel="up">Replace</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Query-Replace.html">Query Replace</a>, Previous: <a href="Regexp-Replace.html">Regexp Replacement</a>, Up: <a href="Replace.html">Replacement Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

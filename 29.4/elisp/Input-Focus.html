@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Input Focus (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Input Focus (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Input Focus (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Frames.html" rel="up" title="Frames">
+<link href="Visibility-of-Frames.html" rel="next" title="Visibility of Frames">
+<link href="Minibuffers-and-Frames.html" rel="prev" title="Minibuffers and Frames">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Input-Focus">
+<div class="nav-panel">
+<p>
+Next: <a href="Visibility-of-Frames.html" accesskey="n" rel="next">Visibility of Frames</a>, Previous: <a href="Minibuffers-and-Frames.html" accesskey="p" rel="prev">Minibuffers and Frames</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Input-Focus-1"><span>30.10 Input Focus<a class="copiable-link" href="#Input-Focus-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-input-focus"></a>
+<a class="index-entry-id" id="index-selected-frame"></a>
+
+<p>At any time, one frame in Emacs is the <em class="dfn">selected frame</em>.  The
+selected window (see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>) always resides on the
+selected frame.
+</p>
+<p>When Emacs displays its frames on several terminals (see <a class="pxref" href="Multiple-Terminals.html">Multiple Terminals</a>), each terminal has its own selected frame.  But only one
+of these is <em class="emph">the</em> selected frame: it&rsquo;s the frame that belongs
+to the terminal from which the most recent input came.  That is, when
+Emacs runs a command that came from a certain terminal, the selected
+frame is the one of that terminal.  Since Emacs runs only a single
+command at any given time, it needs to consider only one selected
+frame at a time; this frame is what we call <em class="dfn">the selected frame</em>
+in this manual.  The display on which the selected frame is shown is
+the <em class="dfn">selected frame&rsquo;s display</em>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-selected_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">selected-frame</strong><a class="copiable-link" href="#index-selected_002dframe"> &para;</a></span></dt>
+<dd><p>This function returns the selected frame.
+</p></dd></dl>
+
+<p>Some window systems and window managers direct keyboard input to the
+window object that the mouse is in; others require explicit clicks or
+commands to <em class="dfn">shift the focus</em> to various window objects.  Either
+way, Emacs automatically keeps track of which frames have focus.  To
+explicitly switch to a different frame from a Lisp function, call
+<code class="code">select-frame-set-input-focus</code>.
+</p>
+<p>The plural &ldquo;frames&rdquo; in the previous paragraph is deliberate: while
+Emacs itself has only one selected frame, Emacs can have frames on
+many different terminals (recall that a connection to a window system
+counts as a terminal), and each terminal has its own idea of which
+frame has input focus.  Under the X Window System, where user input is
+organized into individual &ldquo;seats&rdquo; of input, each seat in turn can
+have its own specific input focus.  When you set the input focus to a
+frame, you set the focus for that frame&rsquo;s terminal on the last seat
+which interacted with Emacs, but frames on other terminals and seats
+may still remain focused.
+</p>
+<p>If the input focus is set before any user interaction has occurred on
+the specified terminal, then the X server picks a random seat
+(normally the one with the lowest number) and sets the input focus
+there.
+</p>
+<p>Lisp programs can switch frames temporarily by calling the function
+<code class="code">select-frame</code>.  This does not alter the window system&rsquo;s concept
+of focus; rather, it escapes from the window manager&rsquo;s control until
+that control is somehow reasserted.
+</p>
+<p>When using a text terminal, only one frame can be displayed at a time
+on the terminal, so after a call to <code class="code">select-frame</code>, the next
+redisplay actually displays the newly selected frame.  This frame
+remains selected until a subsequent call to <code class="code">select-frame</code>.  Each
+frame on a text terminal has a number which appears in the mode line
+before the buffer name (see <a class="pxref" href="Mode-Line-Variables.html">Variables Used in the Mode Line</a>).
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-select_002dframe_002dset_002dinput_002dfocus"><span class="category-def">Function: </span><span><strong class="def-name">select-frame-set-input-focus</strong> <var class="def-var-arguments">frame &amp;optional norecord</var><a class="copiable-link" href="#index-select_002dframe_002dset_002dinput_002dfocus"> &para;</a></span></dt>
+<dd><p>This function selects <var class="var">frame</var>, raises it (should it happen to be
+obscured by other frames) and tries to give it the window system&rsquo;s
+focus.  On a text terminal, the next redisplay displays the new frame
+on the entire terminal screen.  The optional argument <var class="var">norecord</var>
+has the same meaning as for <code class="code">select-frame</code> (see below).
+The return value of this function is not significant.
+</p></dd></dl>
+
+<p>Ideally, the function described next should focus a frame without also
+raising it above other frames.  Unfortunately, many window-systems or
+window managers may refuse to comply.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-x_002dfocus_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">x-focus-frame</strong> <var class="def-var-arguments">frame &amp;optional noactivate</var><a class="copiable-link" href="#index-x_002dfocus_002dframe"> &para;</a></span></dt>
+<dd><p>This function gives <var class="var">frame</var> the focus of the X server without
+necessarily raising it.  <var class="var">frame</var> <code class="code">nil</code> means use the selected
+frame.  Under X, the optional argument <var class="var">noactivate</var>, if
+non-<code class="code">nil</code>, means to avoid making <var class="var">frame</var>&rsquo;s window-system window
+the &ldquo;active&rdquo; window which should insist a bit more on avoiding to
+raise <var class="var">frame</var> above other frames.
+</p>
+<p>On MS-Windows the <var class="var">noactivate</var> argument has no effect.  However, if
+<var class="var">frame</var> is a child frame (see <a class="pxref" href="Child-Frames.html">Child Frames</a>), this function
+usually focuses <var class="var">frame</var> without raising it above other child
+frames.
+</p>
+<p>If there is no window system support, this function does nothing.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-select_002dframe"><span class="category-def">Command: </span><span><strong class="def-name">select-frame</strong> <var class="def-var-arguments">frame &amp;optional norecord</var><a class="copiable-link" href="#index-select_002dframe"> &para;</a></span></dt>
+<dd><p>This function selects frame <var class="var">frame</var>, temporarily disregarding the
+focus of the X server if any.  The selection of <var class="var">frame</var> lasts until
+the next time the user does something to select a different frame, or
+until the next time this function is called.  (If you are using a
+window system, the previously selected frame may be restored as the
+selected frame after return to the command loop, because it still may
+have the window system&rsquo;s input focus.)
+</p>
+<p>The specified <var class="var">frame</var> becomes the selected frame, and its terminal
+becomes the selected terminal.  This function then calls
+<code class="code">select-window</code> as a subroutine, passing the window selected
+within <var class="var">frame</var> as its first argument and <var class="var">norecord</var> as its
+second argument (hence, if <var class="var">norecord</var> is non-<code class="code">nil</code>, this
+avoids changing the order of recently selected windows and the buffer
+list).  See <a class="xref" href="Selecting-Windows.html">Selecting Windows</a>.
+</p>
+<p>This function returns <var class="var">frame</var>, or <code class="code">nil</code> if <var class="var">frame</var> has
+been deleted.
+</p>
+<p>In general, you should never use <code class="code">select-frame</code> in a way that
+could switch to a different terminal without switching back when
+you&rsquo;re done.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-text_002dterminal-focus-notification"></a>
+<p>Emacs cooperates with the window system by arranging to select frames
+as the server and window manager request.  When a window system
+informs Emacs that one of its frames has been selected, Emacs
+internally generates a <em class="dfn">focus-in</em> event.  When an Emacs frame is
+displayed on a text-terminal emulator, such as <code class="command">xterm</code>, which
+supports reporting of focus-change notification, the focus-in and
+focus-out events are available even for text-mode frames.  Focus
+events are normally handled by <code class="code">handle-focus-in</code>.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-handle_002dfocus_002din"><span class="category-def">Command: </span><span><strong class="def-name">handle-focus-in</strong> <var class="def-var-arguments">event</var><a class="copiable-link" href="#index-handle_002dfocus_002din"> &para;</a></span></dt>
+<dd><p>This function handles focus-in events from window systems and
+terminals that support explicit focus notifications.  It updates the
+per-frame focus flags that <code class="code">frame-focus-state</code> queries and calls
+<code class="code">after-focus-change-function</code>.  In addition, it generates a
+<code class="code">switch-frame</code> event in order to switch the Emacs notion of the
+selected frame to the frame most recently focused in some terminal.
+It&rsquo;s important to note that this switching of the Emacs selected frame
+to the most recently focused frame does not mean that other frames do
+not continue to have the focus in their respective terminals.  Do not
+invoke this function yourself: instead, attach logic to
+<code class="code">after-focus-change-function</code>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-handle_002dswitch_002dframe"><span class="category-def">Command: </span><span><strong class="def-name">handle-switch-frame</strong> <var class="def-var-arguments">frame</var><a class="copiable-link" href="#index-handle_002dswitch_002dframe"> &para;</a></span></dt>
+<dd><p>This function handles a switch-frame event, which Emacs generates for
+itself upon focus notification or under various other circumstances
+involving an input event arriving at a different frame from the last
+event.  Do not invoke this function yourself.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-redirect_002dframe_002dfocus"><span class="category-def">Function: </span><span><strong class="def-name">redirect-frame-focus</strong> <var class="def-var-arguments">frame &amp;optional focus-frame</var><a class="copiable-link" href="#index-redirect_002dframe_002dfocus"> &para;</a></span></dt>
+<dd><p>This function redirects focus from <var class="var">frame</var> to <var class="var">focus-frame</var>.
+This means that <var class="var">focus-frame</var> will receive subsequent keystrokes and
+events intended for <var class="var">frame</var>.  After such an event, the value of
+<code class="code">last-event-frame</code> will be <var class="var">focus-frame</var>.  Also, switch-frame
+events specifying <var class="var">frame</var> will instead select <var class="var">focus-frame</var>.
+</p>
+<p>If <var class="var">focus-frame</var> is omitted or <code class="code">nil</code>, that cancels any existing
+redirection for <var class="var">frame</var>, which therefore once again receives its own
+events.
+</p>
+<p>One use of focus redirection is for frames that don&rsquo;t have minibuffers.
+These frames use minibuffers on other frames.  Activating a minibuffer
+on another frame redirects focus to that frame.  This puts the focus on
+the minibuffer&rsquo;s frame, where it belongs, even though the mouse remains
+in the frame that activated the minibuffer.
+</p>
+<p>Selecting a frame can also change focus redirections.  Selecting frame
+<code class="code">bar</code>, when <code class="code">foo</code> had been selected, changes any redirections
+pointing to <code class="code">foo</code> so that they point to <code class="code">bar</code> instead.  This
+allows focus redirection to work properly when the user switches from
+one frame to another using <code class="code">select-window</code>.
+</p>
+<p>This means that a frame whose focus is redirected to itself is treated
+differently from a frame whose focus is not redirected.
+<code class="code">select-frame</code> affects the former but not the latter.
+</p>
+<p>The redirection lasts until <code class="code">redirect-frame-focus</code> is called to
+change it.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-frame_002dfocus_002dstate"><span class="category-def">Function: </span><span><strong class="def-name">frame-focus-state</strong> <var class="def-var-arguments">frame</var><a class="copiable-link" href="#index-frame_002dfocus_002dstate"> &para;</a></span></dt>
+<dd><p>This function retrieves the last known focus state of <var class="var">frame</var>.
+</p>
+<p>It returns <code class="code">nil</code> if the frame is known not to be focused,
+<code class="code">t</code> if the frame is known to be focused, or <code class="code">unknown</code> if
+Emacs does not know the focus state of the frame.  (You may see this
+last state in TTY frames running on terminals that do not support
+explicit focus notifications.)
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-after_002dfocus_002dchange_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">after-focus-change-function</strong><a class="copiable-link" href="#index-after_002dfocus_002dchange_002dfunction"> &para;</a></span></dt>
+<dd><p>This function is called with no arguments when Emacs notices that a
+frame may have gotten or lost focus.  Focus events are delivered
+asynchronously, and may not be delivered in the expected order, so
+code that wants to do something depending on the state of focused
+frames have go through all the frames and check.
+</p>
+<p>For instance, here&rsquo;s a simple example function that sets the
+background color based on whether the frame has focus or not:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(add-function :after after-focus-change-function
+              #'my-change-background)
+(defun my-change-background ()
+  (dolist (frame (frame-list))
+    (pcase (frame-focus-state frame)
+      (`t (set-face-background 'default &quot;black&quot; frame))
+      (`nil (set-face-background 'default &quot;#404040&quot; frame)))))
+</pre></div>
+
+<p>Multiple frames may appear to have input focus simultaneously due to
+focus event delivery differences, the presence of multiple Emacs
+terminals, and other factors, and code should be robust in the face of
+this situation.
+</p>
+<p>Depending on window system, focus events may also be delivered
+repeatedly and with different focus states before settling to the
+expected values.  Code relying on focus notifications should
+&ldquo;debounce&rdquo; any user-visible updates arising from focus changes,
+perhaps by deferring work until redisplay.
+</p>
+<p>This function may be called in arbitrary contexts, including from
+inside <code class="code">read-event</code>, so take the same care as you might when
+writing a process filter.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-focus_002dfollows_002dmouse"><span class="category-def">User Option: </span><span><strong class="def-name">focus-follows-mouse</strong><a class="copiable-link" href="#index-focus_002dfollows_002dmouse"> &para;</a></span></dt>
+<dd><p>This option informs Emacs whether and how the window manager transfers
+focus when you move the mouse pointer into a frame.  It can have three
+meaningful values:
+</p>
+<dl class="table">
+<dt><code class="code">nil</code></dt>
+<dd><p>The default value <code class="code">nil</code> should be used when your window manager
+follows a &ldquo;click-to-focus&rdquo; policy where you have to click the mouse
+inside of a frame in order for that frame to gain focus.
+</p>
+</dd>
+<dt><code class="code">t</code></dt>
+<dd><p>The value <code class="code">t</code> should be used when your window manager has the focus
+automatically follow the position of the mouse pointer but a frame that
+gains focus is not raised automatically and may even remain occluded by
+other window-system windows.
+</p>
+</dd>
+<dt><code class="code">auto-raise</code></dt>
+<dd><p>The value <code class="code">auto-raise</code> should be used when your window manager has
+the focus automatically follow the position of the mouse pointer and a
+frame that gains focus is raised automatically.
+</p></dd>
+</dl>
+
+<p>If this option is non-<code class="code">nil</code>, Emacs moves the mouse pointer to the
+frame selected by <code class="code">select-frame-set-input-focus</code>.  That function is
+used by a number of commands like, for example, <code class="code">other-frame</code> and
+<code class="code">pop-to-buffer</code>.
+</p>
+<p>The distinction between the values <code class="code">t</code> and <code class="code">auto-raise</code> is not
+needed for &ldquo;normal&rdquo; frames because the window manager usually takes
+care of raising them.  It is useful to automatically raise child frames
+via <code class="code">mouse-autoselect-window</code> (see <a class="pxref" href="Mouse-Window-Auto_002dselection.html">Mouse Window Auto-selection</a>).
+</p>
+<p>Note that this option does not distinguish &ldquo;sloppy&rdquo; focus (where the
+frame that previously had focus retains focus as long as the mouse
+pointer does not move into another window-system window) from &ldquo;strict&rdquo;
+focus (where a frame immediately loses focus when it&rsquo;s left by the mouse
+pointer).  Neither does it recognize whether your window manager
+supports delayed focusing or auto-raising where you can explicitly
+specify the time until a new frame gets focus or is auto-raised.
+</p>
+<p>You can supply a &ldquo;focus follows mouse&rdquo; policy for individual Emacs
+windows by customizing the variable <code class="code">mouse-autoselect-window</code>
+(see <a class="pxref" href="Mouse-Window-Auto_002dselection.html">Mouse Window Auto-selection</a>).
+</p></dd></dl>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Visibility-of-Frames.html">Visibility of Frames</a>, Previous: <a href="Minibuffers-and-Frames.html">Minibuffers and Frames</a>, Up: <a href="Frames.html">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

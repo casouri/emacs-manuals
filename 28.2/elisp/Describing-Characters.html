@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Describing Characters (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Describing Characters (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Describing Characters (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Documentation.html" rel="up" title="Documentation">
+<link href="Help-Functions.html" rel="next" title="Help Functions">
+<link href="Text-Quoting-Style.html" rel="prev" title="Text Quoting Style">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Describing-Characters">
+<div class="nav-panel">
+<p>
+Next: <a href="Help-Functions.html" accesskey="n" rel="next">Help Functions</a>, Previous: <a href="Text-Quoting-Style.html" accesskey="p" rel="prev">Text Quoting Style</a>, Up: <a href="Documentation.html" accesskey="u" rel="up">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Describing-Characters-for-Help-Messages"><span>25.5 Describing Characters for Help Messages<a class="copiable-link" href="#Describing-Characters-for-Help-Messages"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-describe-characters-and-events"></a>
+
+<p>These functions convert events, key sequences, or characters to
+textual descriptions.  These descriptions are useful for including
+arbitrary text characters or key sequences in messages, because they
+convert non-printing and whitespace characters to sequences of printing
+characters.  The description of a non-whitespace printing character is
+the character itself.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-key_002ddescription"><span class="category-def">Function: </span><span><strong class="def-name">key-description</strong> <var class="def-var-arguments">sequence &amp;optional prefix</var><a class="copiable-link" href="#index-key_002ddescription"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-Emacs-event-standard-notation"></a>
+<p>This function returns a string containing the Emacs standard notation
+for the input events in <var class="var">sequence</var>.  If <var class="var">prefix</var> is
+non-<code class="code">nil</code>, it is a sequence of input events leading up to
+<var class="var">sequence</var> and is included in the return value.  Both arguments
+may be strings, vectors or lists.  See <a class="xref" href="Input-Events.html">Input Events</a>, for more
+information about valid events.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(key-description [?\M-3 delete])
+     &rArr; &quot;M-3 &lt;delete&gt;&quot;
+</pre></div><div class="group"><pre class="example-preformatted">(key-description [delete] &quot;\M-3&quot;)
+     &rArr; &quot;M-3 &lt;delete&gt;&quot;
+</pre></div></div>
+
+<p>See also the examples for <code class="code">single-key-description</code>, below.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-single_002dkey_002ddescription"><span class="category-def">Function: </span><span><strong class="def-name">single-key-description</strong> <var class="def-var-arguments">event &amp;optional no-angles</var><a class="copiable-link" href="#index-single_002dkey_002ddescription"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-event-printing"></a>
+<a class="index-entry-id" id="index-character-printing"></a>
+<a class="index-entry-id" id="index-control-character-printing"></a>
+<a class="index-entry-id" id="index-meta-character-printing"></a>
+<p>This function returns a string describing <var class="var">event</var> in the standard
+Emacs notation for keyboard input.  A normal printing character
+appears as itself, but a control character turns into a string
+starting with &lsquo;<samp class="samp">C-</samp>&rsquo;, a meta character turns into a string starting
+with &lsquo;<samp class="samp">M-</samp>&rsquo;, and space, tab, etc., appear as &lsquo;<samp class="samp">SPC</samp>&rsquo;,
+&lsquo;<samp class="samp">TAB</samp>&rsquo;, etc.  A function key symbol appears inside angle brackets
+&lsquo;<samp class="samp">&lt;&hellip;&gt;</samp>&rsquo;.  An event that is a list appears as the name of the
+symbol in the <small class="sc">CAR</small> of the list, inside angle brackets.
+</p>
+<p>If the optional argument <var class="var">no-angles</var> is non-<code class="code">nil</code>, the angle
+brackets around function keys and event symbols are omitted; this is
+for compatibility with old versions of Emacs which didn&rsquo;t use the
+brackets.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(single-key-description ?\C-x)
+     &rArr; &quot;C-x&quot;
+</pre></div><div class="group"><pre class="example-preformatted">(key-description &quot;\C-x \M-y \n \t \r \f123&quot;)
+     &rArr; &quot;C-x SPC M-y SPC C-j SPC TAB SPC RET SPC C-l 1 2 3&quot;
+</pre></div><div class="group"><pre class="example-preformatted">(single-key-description 'delete)
+     &rArr; &quot;&lt;delete&gt;&quot;
+</pre></div><div class="group"><pre class="example-preformatted">(single-key-description 'C-mouse-1)
+     &rArr; &quot;C-&lt;mouse-1&gt;&quot;
+</pre></div><div class="group"><pre class="example-preformatted">(single-key-description 'C-mouse-1 t)
+     &rArr; &quot;C-mouse-1&quot;
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-text_002dchar_002ddescription"><span class="category-def">Function: </span><span><strong class="def-name">text-char-description</strong> <var class="def-var-arguments">character</var><a class="copiable-link" href="#index-text_002dchar_002ddescription"> &para;</a></span></dt>
+<dd><p>This function returns a string describing <var class="var">character</var> in the
+standard Emacs notation for characters that can appear in
+text&mdash;similar to <code class="code">single-key-description</code>, except that the
+argument must be a valid character code that passes a
+<code class="code">characterp</code> test (see <a class="pxref" href="Character-Codes.html">Character Codes</a>).  The function
+produces descriptions of control characters with a leading caret
+(which is how Emacs usually displays control characters in buffers).
+Characters with modifier bits will cause this function to signal an
+error (<abbr class="acronym">ASCII</abbr> characters with the Control modifier are an
+exception, they are represented as control characters).
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(text-char-description ?\C-c)
+     &rArr; &quot;^C&quot;
+</pre></div><div class="group"><pre class="example-preformatted">(text-char-description ?\M-m)
+     error&rarr; Wrong type argument: characterp, 134217837
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-read_002dkbd_002dmacro"><span class="category-def">Command: </span><span><strong class="def-name">read-kbd-macro</strong> <var class="def-var-arguments">string &amp;optional need-vector</var><a class="copiable-link" href="#index-read_002dkbd_002dmacro"> &para;</a></span></dt>
+<dd><p>This function is used mainly for operating on keyboard macros, but it
+can also be used as a rough inverse for <code class="code">key-description</code>.  You
+call it with a string containing key descriptions, separated by spaces;
+it returns a string or vector containing the corresponding events.
+(This may or may not be a single valid key sequence, depending on what
+events you use; see <a class="pxref" href="Key-Sequences.html">Key Sequences</a>.)  If <var class="var">need-vector</var> is
+non-<code class="code">nil</code>, the return value is always a vector.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Help-Functions.html">Help Functions</a>, Previous: <a href="Text-Quoting-Style.html">Text Quoting Style</a>, Up: <a href="Documentation.html">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

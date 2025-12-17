@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Mail Aliases (GNU Emacs Manual)</title>
+
+<meta name="description" content="Mail Aliases (GNU Emacs Manual)">
+<meta name="keywords" content="Mail Aliases (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Sending-Mail.html" rel="up" title="Sending Mail">
+<link href="Mail-Commands.html" rel="next" title="Mail Commands">
+<link href="Mail-Headers.html" rel="prev" title="Mail Headers">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Mail-Aliases">
+<div class="nav-panel">
+<p>
+Next: <a href="Mail-Commands.html" accesskey="n" rel="next">Mail Commands</a>, Previous: <a href="Mail-Headers.html" accesskey="p" rel="prev">Mail Header Fields</a>, Up: <a href="Sending-Mail.html" accesskey="u" rel="up">Sending Mail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Mail-Aliases-1"><span>33.3 Mail Aliases<a class="copiable-link" href="#Mail-Aliases-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-mail-aliases"></a>
+<a class="index-entry-id" id="index-_002emailrc-file"></a>
+<a class="index-entry-id" id="index-mailrc-file"></a>
+<a class="index-entry-id" id="index-mail_002dpersonal_002dalias_002dfile"></a>
+
+<p>You can define <em class="dfn">mail aliases</em>, which are short mnemonic names
+that stand for one or more mailing addresses.  By default, mail
+aliases are defined in the file <samp class="file">~/.mailrc</samp>.  You can specify a
+different file name to use, by setting the variable
+<code class="code">mail-personal-alias-file</code>.
+</p>
+<p>To define an alias in <samp class="file">~/.mailrc</samp>, write a line like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">alias <var class="var">nick</var> <var class="var">fulladdresses</var>
+</pre></div>
+
+<p>This means that <var class="var">nick</var> should expand into <var class="var">fulladdresses</var>,
+where <var class="var">fulladdresses</var> can be either a single address, or multiple
+addresses separated with spaces.  For instance, to make <code class="code">maingnu</code>
+stand for <code class="code">gnu@gnu.org</code> plus a local address of your own, put in
+this line:
+</p>
+<div class="example">
+<pre class="example-preformatted">alias maingnu gnu@gnu.org local-gnu
+</pre></div>
+
+<p>If an address contains a space, quote the whole address with a pair of
+double quotes, like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">alias jsmith &quot;John Q. Smith &lt;none@example.com&gt;&quot;
+</pre></div>
+
+<p>Note that you need not include double quotes around individual parts
+of the address, such as the person&rsquo;s full name.  Emacs puts them in if
+they are needed.  For instance, it inserts the above address as
+&lsquo;<samp class="samp">&quot;John Q. Smith&quot; &lt;none@example.com&gt;</samp>&rsquo;.
+</p>
+<a class="index-entry-id" id="index-rebuild_002dmail_002dabbrevs"></a>
+<a class="index-entry-id" id="index-merge_002dmail_002dabbrevs"></a>
+<p>After editing the <samp class="file">~/.mailrc</samp> file, or if the file was modified
+outside of Emacs, you can update the mail aliases used by a running
+Emacs session with <kbd class="kbd">M-x&nbsp;rebuild-mail-abbrevs&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w -->.  This
+prompts for the name of the file to use, the default being the value
+of <code class="code">mail-personal-alias-file</code>.  A similar command
+<code class="code">merge-mail-abbrevs</code> prompts for a file with mail aliases, then
+merges the aliases in that file with the existing ones.
+</p>
+<a class="index-entry-id" id="index-define_002dmail_002dabbrev"></a>
+<p>Alternatively, you can use Emacs commands to define mail aliases.
+The command <code class="code">define-mail-abbrev</code> prompts for the alias and the
+full address, and defines the alias to expand to the full address.
+Emacs will save the added aliases whenever it offers to save all
+files (for <kbd class="kbd">C-x s</kbd> or <kbd class="kbd">C-x C-c</kbd>), like it does with other
+abbrevs (see <a class="pxref" href="Saving-Abbrevs.html">Saving Abbrevs</a>).
+</p>
+<p>Emacs also recognizes include commands in <samp class="file">~/.mailrc</samp>.  They
+look like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">source <var class="var">filename</var>
+</pre></div>
+
+<p>The <samp class="file">~/.mailrc</samp> file is not unique to Emacs; many other
+mail-reading programs use it for mail aliases, and it can contain
+various other commands.  However, Emacs ignores everything except
+alias definitions and include commands.
+</p>
+<a class="index-entry-id" id="index-mail_002dabbrev_002dinsert_002dalias"></a>
+<p>Mail aliases expand as abbrevs&mdash;that is to say, as soon as you type
+a word-separator character after an alias (see <a class="pxref" href="Abbrevs.html">Abbrevs</a>).  This
+expansion takes place only within the &lsquo;<samp class="samp">To</samp>&rsquo;, &lsquo;<samp class="samp">From</samp>&rsquo;,
+&lsquo;<samp class="samp">CC</samp>&rsquo;, &lsquo;<samp class="samp">BCC</samp>&rsquo;, and &lsquo;<samp class="samp">Reply-To</samp>&rsquo; header fields (plus their
+&lsquo;<samp class="samp">Resent-</samp>&rsquo; variants); it does not take place in other header
+fields, such as &lsquo;<samp class="samp">Subject</samp>&rsquo;.
+</p>
+<p>You can also insert an aliased address directly, using the command
+<kbd class="kbd">M-x mail-abbrev-insert-alias</kbd>.  This reads an alias name, with
+completion, and inserts its definition at point.
+</p>
+<a class="index-entry-id" id="index-mail_002dabbrev_002dcomplete_002dalias"></a>
+<p>The command <code class="code">mail-abbrev-complete-alias</code> completes on the mail
+alias preceding point.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Mail-Commands.html">Mail Commands</a>, Previous: <a href="Mail-Headers.html">Mail Header Fields</a>, Up: <a href="Sending-Mail.html">Sending Mail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

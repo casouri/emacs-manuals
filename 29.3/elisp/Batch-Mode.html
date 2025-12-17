@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Batch Mode (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Batch Mode (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Batch Mode (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="System-Interface.html" rel="up" title="System Interface">
+<link href="Session-Management.html" rel="next" title="Session Management">
+<link href="X11-Keysyms.html" rel="prev" title="X11 Keysyms">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Batch-Mode">
+<div class="nav-panel">
+<p>
+Next: <a href="Session-Management.html" accesskey="n" rel="next">Session Management</a>, Previous: <a href="X11-Keysyms.html" accesskey="p" rel="prev">Operating on X11 Keysyms</a>, Up: <a href="System-Interface.html" accesskey="u" rel="up">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Batch-Mode-1"><span>42.17 Batch Mode<a class="copiable-link" href="#Batch-Mode-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-batch-mode"></a>
+
+<p>The command-line option &lsquo;<samp class="samp">-batch</samp>&rsquo; causes Emacs to run
+noninteractively.  In this mode, Emacs does not read commands from the
+terminal, it does not alter the terminal modes, and it does not expect
+to be outputting to an erasable screen.  The idea is that you specify
+Lisp programs to run; when they are finished, Emacs should exit.  The
+way to specify the programs to run is with &lsquo;<samp class="samp">-l <var class="var">file</var></samp>&rsquo;, which
+loads the library named <var class="var">file</var>, or &lsquo;<samp class="samp">-f <var class="var">function</var></samp>&rsquo;, which
+calls <var class="var">function</var> with no arguments, or &lsquo;<samp class="samp">--eval=<var class="var">form</var></samp>&rsquo;.
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-noninteractive"><span class="category-def">Variable: </span><span><strong class="def-name">noninteractive</strong><a class="copiable-link" href="#index-noninteractive"> &para;</a></span></dt>
+<dd><p>This variable is non-<code class="code">nil</code> when Emacs is running in batch mode.
+</p></dd></dl>
+
+<p>If the specified Lisp program signals an unhandled error in batch
+mode, Emacs exits with a non-zero exit status after invoking the Lisp
+debugger which shows the Lisp backtrace (see <a class="pxref" href="Invoking-the-Debugger.html">Invoking the Debugger</a>) on the standard error stream:
+</p>
+<div class="example">
+<pre class="example-preformatted">$ emacs -Q --batch --eval '(error &quot;foo&quot;)'; echo $?
+
+</pre><div class="group"><pre class="example-preformatted">Error: error (&quot;foo&quot;)
+mapbacktrace(#f(compiled-function (evald func args flags) #&lt;bytecode -0x4f85c5
+7c45e2f81&gt;))
+debug-early-backtrace()
+debug-early(error (error &quot;foo&quot;))
+signal(error (&quot;foo&quot;))
+error(&quot;foo&quot;)
+eval((error &quot;foo&quot;) t)
+command-line-1((&quot;--eval&quot; &quot;(error \&quot;foo\&quot;)&quot;))
+command-line()
+normal-top-level()
+</pre></div><pre class="example-preformatted">foo
+255
+</pre></div>
+
+<p>Any Lisp program output that would normally go to the echo area,
+either using <code class="code">message</code>, or using <code class="code">prin1</code>, etc., with
+<code class="code">t</code> as the stream (see <a class="pxref" href="Output-Streams.html">Output Streams</a>), goes instead to
+Emacs&rsquo;s standard descriptors when in batch mode: <code class="code">message</code> writes
+to the standard error descriptor, while <code class="code">prin1</code> and other print
+functions write to the standard output.  Similarly, input that would
+normally come from the minibuffer is read from the standard input
+descriptor.  Thus, Emacs behaves much like a noninteractive
+application program.  (The echo area output that Emacs itself normally
+generates, such as command echoing, is suppressed entirely.)
+</p>
+<p>Non-ASCII text written to the standard output or error descriptors is
+by default encoded using <code class="code">locale-coding-system</code> (see <a class="pxref" href="Locales.html">Locales</a>)
+if it is non-<code class="code">nil</code>; this can be overridden by binding
+<code class="code">coding-system-for-write</code> to a coding system of you choice
+(see <a class="pxref" href="Explicit-Encoding.html">Explicit Encoding and Decoding</a>).
+</p>
+<a class="index-entry-id" id="index-gc_002dcons_002dpercentage_002c-in-batch-mode"></a>
+<p>In batch mode, Emacs will enlarge the value of the
+<code class="code">gc-cons-percentage</code> variable from the default of &lsquo;<samp class="samp">0.1</samp>&rsquo; up to
+&lsquo;<samp class="samp">1.0</samp>&rsquo;.  Batch jobs that are supposed to run for a long time
+should adjust the limit back down again, because this means that less
+garbage collection will be performed by default (and more memory
+consumed).
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Session-Management.html">Session Management</a>, Previous: <a href="X11-Keysyms.html">Operating on X11 Keysyms</a>, Up: <a href="System-Interface.html">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

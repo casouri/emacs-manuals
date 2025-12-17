@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 25.1.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Other Repeating Search (GNU Emacs Manual)</title>
 
 <meta name="description" content="Other Repeating Search (GNU Emacs Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Search.html" rel="up" title="Search">
 <link href="Search-Customizations.html" rel="next" title="Search Customizations">
-<link href="Query-Replace.html" rel="prev" title="Query Replace">
+<link href="Replace.html" rel="prev" title="Replace">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,122 +49,121 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Other-Repeating-Search"></span><div class="header">
+<div class="section-level-extent" id="Other-Repeating-Search">
+<div class="nav-panel">
 <p>
-Next: <a href="Search-Customizations.html" accesskey="n" rel="next">Search Customizations</a>, Previous: <a href="Replace.html" accesskey="p" rel="prev">Replace</a>, Up: <a href="Search.html" accesskey="u" rel="up">Search</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Search-Customizations.html" accesskey="n" rel="next">Tailoring Search to Your Needs</a>, Previous: <a href="Replace.html" accesskey="p" rel="prev">Replacement Commands</a>, Up: <a href="Search.html" accesskey="u" rel="up">Searching and Replacement</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Other-Search_002dand_002dLoop-Commands"></span><h3 class="section">15.11 Other Search-and-Loop Commands</h3>
+<h3 class="section" id="Other-Search_002dand_002dLoop-Commands"><span>15.11 Other Search-and-Loop Commands<a class="copiable-link" href="#Other-Search_002dand_002dLoop-Commands"> &para;</a></span></h3>
 
 <p>Here are some other commands that find matches for a regular
 expression.  They all ignore case in matching, if the pattern contains
-no upper-case letters and <code>case-fold-search</code> is non-<code>nil</code>.
-Aside from <code>occur</code> and its variants, all operate on the text from
+no upper-case letters and <code class="code">case-fold-search</code> is non-<code class="code">nil</code>.
+Aside from <code class="code">occur</code> and its variants, all operate on the text from
 point to the end of the buffer, or on the region if it is active.
 </p>
-<span id="index-list_002dmatching_002dlines"></span>
-<span id="index-occur"></span>
-<span id="index-multi_002doccur"></span>
-<span id="index-multi_002doccur_002din_002dmatching_002dbuffers"></span>
-<span id="index-how_002dmany"></span>
-<span id="index-flush_002dlines"></span>
-<span id="index-keep_002dlines"></span>
+<a class="index-entry-id" id="index-list_002dmatching_002dlines"></a>
+<a class="index-entry-id" id="index-occur"></a>
+<a class="index-entry-id" id="index-multi_002doccur"></a>
+<a class="index-entry-id" id="index-multi_002doccur_002din_002dmatching_002dbuffers"></a>
+<a class="index-entry-id" id="index-how_002dmany"></a>
+<a class="index-entry-id" id="index-flush_002dlines"></a>
+<a class="index-entry-id" id="index-keep_002dlines"></a>
 
-<dl compact="compact">
-<dt><kbd>M-x multi-isearch-buffers</kbd></dt>
-<dd><p>Prompt for one or more buffer names, ending with <tt class="key">RET</tt>; then,
+<dl class="table">
+<dt><kbd class="kbd">M-x multi-isearch-buffers</kbd></dt>
+<dd><p>Prompt for one or more buffer names, ending with <kbd class="key">RET</kbd>; then,
 begin a multi-buffer incremental search in those buffers.  (If the
-search fails in one buffer, the next <kbd>C-s</kbd> tries searching the
+search fails in one buffer, the next <kbd class="kbd">C-s</kbd> tries searching the
 next specified buffer, and so forth.)  With a prefix argument, prompt
 for a regexp and begin a multi-buffer incremental search in buffers
 matching that regexp.
 </p>
 </dd>
-<dt><kbd>M-x multi-isearch-buffers-regexp</kbd></dt>
-<dd><p>This command is just like <code>multi-isearch-buffers</code>, except it
+<dt><kbd class="kbd">M-x multi-isearch-buffers-regexp</kbd></dt>
+<dd><p>This command is just like <code class="code">multi-isearch-buffers</code>, except it
 performs an incremental regexp search.
 </p>
 </dd>
-<dt><kbd>M-x multi-isearch-files</kbd></dt>
-<dd><p>Prompt for one or more file names, ending with <tt class="key">RET</tt>; then,
+<dt><kbd class="kbd">M-x multi-isearch-files</kbd></dt>
+<dd><p>Prompt for one or more file names, ending with <kbd class="key">RET</kbd>; then,
 begin a multi-file incremental search in those files.  (If the
-search fails in one file, the next <kbd>C-s</kbd> tries searching the
+search fails in one file, the next <kbd class="kbd">C-s</kbd> tries searching the
 next specified file, and so forth.)  With a prefix argument, prompt
 for a regexp and begin a multi-file incremental search in files
 matching that regexp.
 </p>
 </dd>
-<dt><kbd>M-x multi-isearch-files-regexp</kbd></dt>
-<dd><p>This command is just like <code>multi-isearch-files</code>, except it
+<dt><kbd class="kbd">M-x multi-isearch-files-regexp</kbd></dt>
+<dd><p>This command is just like <code class="code">multi-isearch-files</code>, except it
 performs an incremental regexp search.
 </p>
 <p>In some modes that set the buffer-local variable
-<code>multi-isearch-next-buffer-function</code> (e.g., in Change Log mode)
+<code class="code">multi-isearch-next-buffer-function</code> (e.g., in Change Log mode)
 a multi-file incremental search is activated automatically.
 </p>
-<span id="index-Occur-mode"></span>
-<span id="index-mode_002c-Occur"></span>
-<span id="index-match-_0028face-name_0029"></span>
-<span id="index-list_002dmatching_002dlines_002ddefault_002dcontext_002dlines"></span>
 </dd>
-<dt><kbd>M-x occur</kbd></dt>
+<dt><a class="index-entry-id" id="index-mode_002c-Occur"></a>
+<a class="index-entry-id" id="index-match-_0028face-name_0029"></a>
+<a class="index-entry-id" id="index-list_002dmatching_002dlines_002ddefault_002dcontext_002dlines"></a>
+<a id="index-Occur-mode"></a><span><kbd class="kbd">M-x occur</kbd><a class="copiable-link" href="#index-Occur-mode"> &para;</a></span></dt>
 <dd><p>Prompt for a regexp, and display a list showing each line in the
 buffer that contains a match for it.  The text that matched is
-highlighted using the <code>match</code> face.  To limit the search to part
-of the buffer, narrow to that part (see <a href="Narrowing.html">Narrowing</a>).  A numeric
-argument <var>n</var> specifies that <var>n</var> lines of context are to be
+highlighted using the <code class="code">match</code> face.  To limit the search to part
+of the buffer, narrow to that part (see <a class="pxref" href="Narrowing.html">Narrowing</a>).  A numeric
+argument <var class="var">n</var> specifies that <var class="var">n</var> lines of context are to be
 displayed before and after each matching line.  The default number of
 context lines is specified by the variable
-<code>list-matching-lines-default-context-lines</code>.
+<code class="code">list-matching-lines-default-context-lines</code>.
 </p>
-<span id="index-RET-_0028Occur-mode_0029"></span>
-<span id="index-o-_0028Occur-mode_0029"></span>
-<span id="index-C_002do-_0028Occur-mode_0029"></span>
-<p>In the <samp>*Occur*</samp> buffer, you can click on each entry, or move
-point there and type <tt class="key">RET</tt>, to visit the corresponding position in
-the buffer that was searched.  <kbd>o</kbd> and <kbd>C-o</kbd> display the match
-in another window; <kbd>C-o</kbd> does not select it.  Alternatively, you
-can use the <kbd>C-x `</kbd> (<code>next-error</code>) command to visit the
-occurrences one by one (see <a href="Compilation-Mode.html">Compilation Mode</a>).
+<a class="index-entry-id" id="index-RET-_0028Occur-mode_0029"></a>
+<a class="index-entry-id" id="index-o-_0028Occur-mode_0029"></a>
+<a class="index-entry-id" id="index-C_002do-_0028Occur-mode_0029"></a>
+<p>In the <samp class="file">*Occur*</samp> buffer, you can click on each entry, or move
+point there and type <kbd class="key">RET</kbd>, to visit the corresponding position in
+the buffer that was searched.  <kbd class="kbd">o</kbd> and <kbd class="kbd">C-o</kbd> display the match
+in another window; <kbd class="kbd">C-o</kbd> does not select it.  Alternatively, you
+can use the <kbd class="kbd">C-x `</kbd> (<code class="code">next-error</code>) command to visit the
+occurrences one by one (see <a class="pxref" href="Compilation-Mode.html">Compilation Mode</a>).
 </p>
-<span id="index-Occur-Edit-mode"></span>
-<span id="index-mode_002c-Occur-Edit"></span>
-<p>Typing <kbd>e</kbd> in the <samp>*Occur*</samp> buffer switches to Occur Edit
+<a class="index-entry-id" id="index-Occur-Edit-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Occur-Edit"></a>
+<p>Typing <kbd class="kbd">e</kbd> in the <samp class="file">*Occur*</samp> buffer switches to Occur Edit
 mode, in which edits made to the entries are also applied to the text
-in the originating buffer.  Type <kbd>C-c C-c</kbd> to return to Occur
+in the originating buffer.  Type <kbd class="kbd">C-c C-c</kbd> to return to Occur
 mode.
 </p>
-<p>The command <kbd>M-x list-matching-lines</kbd> is a synonym for <kbd>M-x
+<p>The command <kbd class="kbd">M-x list-matching-lines</kbd> is a synonym for <kbd class="kbd">M-x
 occur</kbd>.
 </p>
-<span id="index-M_002ds-o"></span>
 </dd>
-<dt><kbd>M-s o</kbd></dt>
-<dd><p>Run <code>occur</code> using the search string of the last incremental
-string search.  You can also run <kbd>M-s o</kbd> when an incremental
+<dt><a id="index-M_002ds-o"></a><span><kbd class="kbd">M-s o</kbd><a class="copiable-link" href="#index-M_002ds-o"> &para;</a></span></dt>
+<dd><p>Run <code class="code">occur</code> using the search string of the last incremental
+string search.  You can also run <kbd class="kbd">M-s o</kbd> when an incremental
 search is active; this uses the current search string.
 </p>
 </dd>
-<dt><kbd>M-x multi-occur</kbd></dt>
-<dd><p>This command is just like <code>occur</code>, except it is able to search
+<dt><kbd class="kbd">M-x multi-occur</kbd></dt>
+<dd><p>This command is just like <code class="code">occur</code>, except it is able to search
 through multiple buffers.  It asks you to specify the buffer names one
 by one.
 </p>
 </dd>
-<dt><kbd>M-x multi-occur-in-matching-buffers</kbd></dt>
-<dd><p>This command is similar to <code>multi-occur</code>, except the buffers to
+<dt><kbd class="kbd">M-x multi-occur-in-matching-buffers</kbd></dt>
+<dd><p>This command is similar to <code class="code">multi-occur</code>, except the buffers to
 search are specified by a regular expression that matches visited file
 names.  With a prefix argument, it uses the regular expression to
 match buffer names instead.
 </p>
 </dd>
-<dt><kbd>M-x how-many</kbd></dt>
+<dt><kbd class="kbd">M-x how-many</kbd></dt>
 <dd><p>Prompt for a regexp, and print the number of matches for it in the
 buffer after point.  If the region is active, this operates on the
 region instead.
 </p>
 </dd>
-<dt><kbd>M-x flush-lines</kbd></dt>
+<dt><kbd class="kbd">M-x flush-lines</kbd></dt>
 <dd><p>Prompt for a regexp, and delete each line that contains a match for
 it, operating on the text after point.  This command deletes the
 current line if it contains a match starting after point.  If the
@@ -180,14 +171,14 @@ region is active, it operates on the region instead; if a line
 partially contained in the region contains a match entirely contained
 in the region, it is deleted.
 </p>
-<p>If a match is split across lines, <code>flush-lines</code> deletes all those
+<p>If a match is split across lines, <code class="code">flush-lines</code> deletes all those
 lines.  It deletes the lines before starting to look for the next
 match; hence, it ignores a match starting on the same line at which
 another match ended.
 </p>
 </dd>
-<dt><kbd>M-x keep-lines</kbd></dt>
-<dd><p>Prompt for a regexp, and delete each line that <em>does not</em> contain
+<dt><kbd class="kbd">M-x keep-lines</kbd></dt>
+<dd><p>Prompt for a regexp, and delete each line that <em class="emph">does not</em> contain
 a match for it, operating on the text after point.  If point is not at
 the beginning of a line, this command always keeps the current line.
 If the region is active, the command operates on the region instead;
@@ -198,10 +189,11 @@ it never deletes lines that are only partially contained in the region
 </p></dd>
 </dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Search-Customizations.html" accesskey="n" rel="next">Search Customizations</a>, Previous: <a href="Replace.html" accesskey="p" rel="prev">Replace</a>, Up: <a href="Search.html" accesskey="u" rel="up">Search</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Search-Customizations.html">Tailoring Search to Your Needs</a>, Previous: <a href="Replace.html">Replacement Commands</a>, Up: <a href="Search.html">Searching and Replacement</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

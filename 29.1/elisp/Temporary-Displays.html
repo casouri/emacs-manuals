@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Temporary Displays (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Temporary Displays (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Temporary Displays (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Overlays.html" rel="next" title="Overlays">
+<link href="Selective-Display.html" rel="prev" title="Selective Display">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Temporary-Displays">
+<div class="nav-panel">
+<p>
+Next: <a href="Overlays.html" accesskey="n" rel="next">Overlays</a>, Previous: <a href="Selective-Display.html" accesskey="p" rel="prev">Selective Display</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Temporary-Displays-1"><span>41.8 Temporary Displays<a class="copiable-link" href="#Temporary-Displays-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-temporary-display"></a>
+<a class="index-entry-id" id="index-temporary-buffer-display"></a>
+
+<p>Temporary displays are used by Lisp programs to put output into a
+buffer and then present it to the user for perusal rather than for
+editing.  Many help commands use this feature.
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-with_002doutput_002dto_002dtemp_002dbuffer"><span class="category-def">Macro: </span><span><strong class="def-name">with-output-to-temp-buffer</strong> <var class="def-var-arguments">buffer-name body&hellip;</var><a class="copiable-link" href="#index-with_002doutput_002dto_002dtemp_002dbuffer"> &para;</a></span></dt>
+<dd><p>This function executes the forms in <var class="var">body</var> while arranging to insert
+any output they print into the buffer named <var class="var">buffer-name</var>, which is
+first created if necessary, and put into Help mode.  (See the similar
+form <code class="code">with-temp-buffer-window</code> below.)  Finally, the buffer is
+displayed in some window, but that window is not selected.
+</p>
+<p>If the forms in <var class="var">body</var> do not change the major mode in the output
+buffer, so that it is still Help mode at the end of their execution,
+then <code class="code">with-output-to-temp-buffer</code> makes this buffer read-only at
+the end, and also scans it for function and variable names to make them
+into clickable cross-references.  See <a class="xref" href="Documentation-Tips.html#Docstring-hyperlinks">Tips for
+Documentation Strings</a>, in particular the item on hyperlinks in
+documentation strings, for more details.
+</p>
+<p>The string <var class="var">buffer-name</var> specifies the temporary buffer, which need
+not already exist.  The argument must be a string, not a buffer.  The
+buffer is erased initially (with no questions asked), and it is marked
+as unmodified after <code class="code">with-output-to-temp-buffer</code> exits.
+</p>
+<p><code class="code">with-output-to-temp-buffer</code> binds <code class="code">standard-output</code> to the
+temporary buffer, then it evaluates the forms in <var class="var">body</var>.  Output
+using the Lisp output functions within <var class="var">body</var> goes by default to
+that buffer (but screen display and messages in the echo area, although
+they are &ldquo;output&rdquo; in the general sense of the word, are not affected).
+See <a class="xref" href="Output-Functions.html">Output Functions</a>.
+</p>
+<p>Several hooks are available for customizing the behavior
+of this construct; they are listed below.
+</p>
+<p>The value of the last form in <var class="var">body</var> is returned.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
+ This is the contents of foo.
+---------- Buffer: foo ----------
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(with-output-to-temp-buffer &quot;foo&quot;
+    (print 20)
+    (print standard-output))
+&rArr; #&lt;buffer foo&gt;
+
+---------- Buffer: foo ----------
+
+20
+
+#&lt;buffer foo&gt;
+
+---------- Buffer: foo ----------
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-temp_002dbuffer_002dshow_002dfunction"><span class="category-def">User Option: </span><span><strong class="def-name">temp-buffer-show-function</strong><a class="copiable-link" href="#index-temp_002dbuffer_002dshow_002dfunction"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, <code class="code">with-output-to-temp-buffer</code>
+calls it as a function to do the job of displaying a help buffer.  The
+function gets one argument, which is the buffer it should display.
+</p>
+<p>It is a good idea for this function to run <code class="code">temp-buffer-show-hook</code>
+just as <code class="code">with-output-to-temp-buffer</code> normally would, inside of
+<code class="code">save-selected-window</code> and with the chosen window and buffer
+selected.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-temp_002dbuffer_002dsetup_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">temp-buffer-setup-hook</strong><a class="copiable-link" href="#index-temp_002dbuffer_002dsetup_002dhook"> &para;</a></span></dt>
+<dd><p>This normal hook is run by <code class="code">with-output-to-temp-buffer</code> before
+evaluating <var class="var">body</var>.  When the hook runs, the temporary buffer is
+current.  This hook is normally set up with a function to put the
+buffer in Help mode.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-temp_002dbuffer_002dshow_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">temp-buffer-show-hook</strong><a class="copiable-link" href="#index-temp_002dbuffer_002dshow_002dhook"> &para;</a></span></dt>
+<dd><p>This normal hook is run by <code class="code">with-output-to-temp-buffer</code> after
+displaying the temporary buffer.  When the hook runs, the temporary buffer
+is current, and the window it was displayed in is selected.
+</p></dd></dl>
+
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-with_002dtemp_002dbuffer_002dwindow"><span class="category-def">Macro: </span><span><strong class="def-name">with-temp-buffer-window</strong> <var class="def-var-arguments">buffer-or-name action quit-function body&hellip;</var><a class="copiable-link" href="#index-with_002dtemp_002dbuffer_002dwindow"> &para;</a></span></dt>
+<dd><p>This macro is similar to <code class="code">with-output-to-temp-buffer</code>.  Like that
+construct, it executes <var class="var">body</var> while arranging to insert any output
+it prints into the buffer named <var class="var">buffer-or-name</var> and displays that
+buffer in some window.  Unlike <code class="code">with-output-to-temp-buffer</code>,
+however, it does not automatically switch that buffer to Help mode.
+</p>
+<p>The argument <var class="var">buffer-or-name</var> specifies the temporary buffer.  It
+can be either a buffer, which must already exist, or a string, in which
+case a buffer of that name is created, if necessary.  The buffer is
+marked as unmodified and read-only when <code class="code">with-temp-buffer-window</code>
+exits.
+</p>
+<p>This macro does not call <code class="code">temp-buffer-show-function</code>.  Rather, it
+passes the <var class="var">action</var> argument to <code class="code">display-buffer</code>
+(see <a class="pxref" href="Choosing-Window.html">Choosing a Window for Displaying a Buffer</a>) in order to display the buffer.
+</p>
+<p>The value of the last form in <var class="var">body</var> is returned, unless the
+argument <var class="var">quit-function</var> is specified.  In that case, it is called
+with two arguments: the window showing the buffer and the result of
+<var class="var">body</var>.  The final return value is then whatever <var class="var">quit-function</var>
+returns.
+</p>
+<a class="index-entry-id" id="index-temp_002dbuffer_002dwindow_002dsetup_002dhook"></a>
+<a class="index-entry-id" id="index-temp_002dbuffer_002dwindow_002dshow_002dhook"></a>
+<p>This macro uses the normal hooks <code class="code">temp-buffer-window-setup-hook</code>
+and <code class="code">temp-buffer-window-show-hook</code> in place of the analogous hooks
+run by <code class="code">with-output-to-temp-buffer</code>.
+</p></dd></dl>
+
+<p>The two constructs described next are mostly identical to
+<code class="code">with-temp-buffer-window</code> but differ from it as specified:
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-with_002dcurrent_002dbuffer_002dwindow"><span class="category-def">Macro: </span><span><strong class="def-name">with-current-buffer-window</strong> <var class="def-var-arguments">buffer-or-name action quit-function &amp;rest body</var><a class="copiable-link" href="#index-with_002dcurrent_002dbuffer_002dwindow"> &para;</a></span></dt>
+<dd><p>This macro is like <code class="code">with-temp-buffer-window</code> but unlike that makes
+the buffer specified by <var class="var">buffer-or-name</var> current for running
+<var class="var">body</var>.
+</p></dd></dl>
+
+<p>A window showing a temporary buffer can be fitted to the size of that
+buffer using the following mode:
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-temp_002dbuffer_002dresize_002dmode"><span class="category-def">User Option: </span><span><strong class="def-name">temp-buffer-resize-mode</strong><a class="copiable-link" href="#index-temp_002dbuffer_002dresize_002dmode"> &para;</a></span></dt>
+<dd><p>When this minor mode is enabled, windows showing a temporary buffer are
+automatically resized to fit their buffer&rsquo;s contents.
+</p>
+<p>A window is resized if and only if it has been specially created for the
+buffer.  In particular, windows that have shown another buffer before
+are not resized.  By default, this mode uses <code class="code">fit-window-to-buffer</code>
+(see <a class="pxref" href="Resizing-Windows.html">Resizing Windows</a>) for resizing.  You can specify a different
+function by customizing the options <code class="code">temp-buffer-max-height</code> and
+<code class="code">temp-buffer-max-width</code> below.
+</p>
+<p>The effect of this option can be overridden by providing a suitable
+<code class="code">window-height</code>, <code class="code">window-width</code> or <code class="code">window-size</code> action
+alist entry for <code class="code">display-buffer</code> (see <a class="pxref" href="Buffer-Display-Action-Alists.html">Action Alists for Buffer Display</a>).
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-temp_002dbuffer_002dmax_002dheight"><span class="category-def">User Option: </span><span><strong class="def-name">temp-buffer-max-height</strong><a class="copiable-link" href="#index-temp_002dbuffer_002dmax_002dheight"> &para;</a></span></dt>
+<dd><p>This option specifies the maximum height (in lines) of a window
+displaying a temporary buffer when <code class="code">temp-buffer-resize-mode</code> is
+enabled.  It can also be a function to be called to choose the height
+for such a buffer.  It gets one argument, the buffer, and should return
+a positive integer.  At the time the function is called, the window to
+be resized is selected.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-temp_002dbuffer_002dmax_002dwidth"><span class="category-def">User Option: </span><span><strong class="def-name">temp-buffer-max-width</strong><a class="copiable-link" href="#index-temp_002dbuffer_002dmax_002dwidth"> &para;</a></span></dt>
+<dd><p>This option specifies the maximum width of a window (in columns)
+displaying a temporary buffer when <code class="code">temp-buffer-resize-mode</code> is
+enabled.  It can also be a function to be called to choose the width for
+such a buffer.  It gets one argument, the buffer, and should return a
+positive integer.  At the time the function is called, the window to be
+resized is selected.
+</p></dd></dl>
+
+<p>The following function uses the current buffer for temporary display:
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-momentary_002dstring_002ddisplay"><span class="category-def">Function: </span><span><strong class="def-name">momentary-string-display</strong> <var class="def-var-arguments">string position &amp;optional char message</var><a class="copiable-link" href="#index-momentary_002dstring_002ddisplay"> &para;</a></span></dt>
+<dd><p>This function momentarily displays <var class="var">string</var> in the current buffer at
+<var class="var">position</var>.  It has no effect on the undo list or on the buffer&rsquo;s
+modification status.
+</p>
+<p>The momentary display remains until the next input event.  If the next
+input event is <var class="var">char</var>, <code class="code">momentary-string-display</code> ignores it
+and returns.  Otherwise, that event remains buffered for subsequent use
+as input.  Thus, typing <var class="var">char</var> will simply remove the string from
+the display, while typing (say) <kbd class="kbd">C-f</kbd> will remove the string from
+the display and later (presumably) move point forward.  The argument
+<var class="var">char</var> is a space by default.
+</p>
+<p>The return value of <code class="code">momentary-string-display</code> is not meaningful.
+</p>
+<p>If the string <var class="var">string</var> does not contain control characters, you can
+do the same job in a more general way by creating (and then subsequently
+deleting) an overlay with a <code class="code">before-string</code> property.
+See <a class="xref" href="Overlay-Properties.html">Overlay Properties</a>.
+</p>
+<p>If <var class="var">message</var> is non-<code class="code">nil</code>, it is displayed in the echo area
+while <var class="var">string</var> is displayed in the buffer.  If it is <code class="code">nil</code>, a
+default message says to type <var class="var">char</var> to continue.
+</p>
+<p>In this example, point is initially located at the beginning of the
+second line:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
+This is the contents of foo.
+&lowast;Second line.
+---------- Buffer: foo ----------
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(momentary-string-display
+  &quot;**** Important Message! ****&quot;
+  (point) ?\r
+  &quot;Type RET when done reading&quot;)
+&rArr; t
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
+This is the contents of foo.
+**** Important Message! ****Second line.
+---------- Buffer: foo ----------
+
+---------- Echo Area ----------
+Type RET when done reading
+---------- Echo Area ----------
+</pre></div></div>
+</dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Overlays.html">Overlays</a>, Previous: <a href="Selective-Display.html">Selective Display</a>, Up: <a href="Display.html">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

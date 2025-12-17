@@ -1,10 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
-updated for Emacs version 29.0.50.
+updated for Emacs version 31.0.50.
 
-Copyright © 1985-1987, 1993-2021 Free Software Foundation,
-Inc.
+Copyright © 1985-2025 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -18,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Enriched Mode (GNU Emacs Manual)</title>
 
 <meta name="description" content="Enriched Mode (GNU Emacs Manual)">
@@ -28,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Enriched-Text.html" rel="up" title="Enriched Text">
 <link href="Hard-and-Soft-Newlines.html" rel="next" title="Hard and Soft Newlines">
-<link href="Enriched-Text.html" rel="prev" title="Enriched Text">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,55 +48,57 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Enriched-Mode"></span><div class="header">
+<div class="subsection-level-extent" id="Enriched-Mode">
+<div class="nav-panel">
 <p>
 Next: <a href="Hard-and-Soft-Newlines.html" accesskey="n" rel="next">Hard and Soft Newlines</a>, Up: <a href="Enriched-Text.html" accesskey="u" rel="up">Enriched Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Enriched-Mode-1"></span><h4 class="subsection">25.14.1 Enriched Mode</h4>
+<h4 class="subsection" id="Enriched-Mode-1"><span>27.14.1 Enriched Mode<a class="copiable-link" href="#Enriched-Mode-1"> &para;</a></span></h4>
 
-<p>Enriched mode is a buffer-local minor mode (see <a href="Minor-Modes.html">Minor Modes</a>).
-When you visit a file that has been saved in the &lsquo;<samp>text/enriched</samp>&rsquo;
+<p>Enriched mode is a buffer-local minor mode (see <a class="pxref" href="Minor-Modes.html">Minor Modes</a>).
+When you visit a file that has been saved in the &lsquo;<samp class="samp">text/enriched</samp>&rsquo;
 format, Emacs automatically enables Enriched mode, and applies the
 formatting information in the file to the buffer text.  When you save
 a buffer with Enriched mode enabled, it is saved using the
-&lsquo;<samp>text/enriched</samp>&rsquo; format, including the formatting information.
+&lsquo;<samp class="samp">text/enriched</samp>&rsquo; format, including the formatting information.
 </p>
-<span id="index-enriched_002dmode"></span>
+<a class="index-entry-id" id="index-enriched_002dmode"></a>
 <p>To create a new file of formatted text, visit the nonexistent file
-and type <kbd>M-x enriched-mode</kbd>.  This command actually toggles
+and type <kbd class="kbd">M-x enriched-mode</kbd>.  This command actually toggles
 Enriched mode.  With a prefix argument, it enables Enriched mode if
 the argument is positive, and disables Enriched mode otherwise.  If
 you disable Enriched mode, Emacs no longer saves the buffer using the
-&lsquo;<samp>text/enriched</samp>&rsquo; format; any formatting properties that have been
+&lsquo;<samp class="samp">text/enriched</samp>&rsquo; format; any formatting properties that have been
 added to the buffer remain in the buffer, but they are not saved to
 disk.
 </p>
-<span id="index-enriched_002dtranslations"></span>
+<a class="index-entry-id" id="index-enriched_002dtranslations"></a>
 <p>Enriched mode does not save all Emacs text properties, only those
-specified in the variable <code>enriched-translations</code>.  These include
+specified in the variable <code class="code">enriched-translations</code>.  These include
 properties for fonts, colors, indentation, and justification.
 </p>
-<span id="index-format_002ddecode_002dbuffer"></span>
+<a class="index-entry-id" id="index-format_002ddecode_002dbuffer"></a>
 <p>If you visit a file and Emacs fails to recognize that it is in the
-&lsquo;<samp>text/enriched</samp>&rsquo; format, type <kbd>M-x format-decode-buffer</kbd>.
+&lsquo;<samp class="samp">text/enriched</samp>&rsquo; format, type <kbd class="kbd">M-x format-decode-buffer</kbd>.
 This command prompts for a file format, and re-reads the file in that
-format.  Specifying the &lsquo;<samp>text/enriched</samp>&rsquo; format automatically
+format.  Specifying the &lsquo;<samp class="samp">text/enriched</samp>&rsquo; format automatically
 enables Enriched mode.
 </p>
-<p>To view a &lsquo;<samp>text/enriched</samp>&rsquo; file in raw form (as plain text with
-markup tags rather than formatted text), use <kbd>M-x
-find-file-literally</kbd> (see <a href="Visiting.html">Visiting</a>).
+<p>To view a &lsquo;<samp class="samp">text/enriched</samp>&rsquo; file in raw form (as plain text with
+markup tags rather than formatted text), use <kbd class="kbd">M-x
+find-file-literally</kbd> (see <a class="pxref" href="Visiting.html">Visiting Files</a>).
 </p>
-<p>See <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Format-Conversion.html#Format-Conversion">Format Conversion</a> in <cite>the Emacs Lisp
+<p>See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Format-Conversion.html#Format-Conversion">Format Conversion</a> in <cite class="cite">the Emacs Lisp
 Reference Manual</cite>, for details of how Emacs recognizes and converts
-file formats like &lsquo;<samp>text/enriched</samp>&rsquo;.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-Properties.html#Text-Properties">Text Properties</a> in <cite>the Emacs Lisp Reference Manual</cite>, for more information about
+file formats like &lsquo;<samp class="samp">text/enriched</samp>&rsquo;.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-Properties.html#Text-Properties">Text Properties</a> in <cite class="cite">the Emacs Lisp Reference Manual</cite>, for more information about
 text properties.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Hard-and-Soft-Newlines.html" accesskey="n" rel="next">Hard and Soft Newlines</a>, Up: <a href="Enriched-Text.html" accesskey="u" rel="up">Enriched Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Hard-and-Soft-Newlines.html">Hard and Soft Newlines</a>, Up: <a href="Enriched-Text.html">Enriched Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

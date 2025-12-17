@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.2.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>MS-DOS Processes (GNU Emacs Manual)</title>
+
+<meta name="description" content="MS-DOS Processes (GNU Emacs Manual)">
+<meta name="keywords" content="MS-DOS Processes (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="MS_002dDOS.html" rel="up" title="MS-DOS">
+<link href="MS_002dDOS-and-MULE.html" rel="prev" title="MS-DOS and MULE">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="MS_002dDOS-Processes">
+<div class="nav-panel">
+<p>
+Previous: <a href="MS_002dDOS-and-MULE.html" accesskey="p" rel="prev">International Support on MS-DOS</a>, Up: <a href="MS_002dDOS.html" accesskey="u" rel="up">Emacs and MS-DOS</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Subprocesses-on-MS_002dDOS"><span>G.12.7 Subprocesses on MS-DOS<a class="copiable-link" href="#Subprocesses-on-MS_002dDOS"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-compilation-under-MS_002dDOS"></a>
+<a class="index-entry-id" id="index-inferior-processes-under-MS_002dDOS"></a>
+<a class="index-entry-id" id="index-compile-_0028MS_002dDOS_0029"></a>
+<a class="index-entry-id" id="index-grep-_0028MS_002dDOS_0029"></a>
+<p>Because MS-DOS is a single-process &ldquo;operating system&rdquo;,
+asynchronous subprocesses are not available.  In particular, Shell
+mode and its variants do not work.  Most Emacs features that use
+asynchronous subprocesses also don&rsquo;t work on MS-DOS, including
+Shell mode and GUD.  When in doubt, try and see; commands that
+don&rsquo;t work output an error message saying that asynchronous processes
+aren&rsquo;t supported.
+</p>
+<p>Compilation under Emacs with <kbd class="kbd">M-x compile</kbd>, searching files with
+<kbd class="kbd">M-x grep</kbd> and displaying differences between files with <kbd class="kbd">M-x
+diff</kbd> do work, by running the inferior processes synchronously.  This
+means you cannot do any more editing until the inferior process
+finishes.
+</p>
+<p>Spell checking also works, by means of special support for synchronous
+invocation of the <code class="code">ispell</code> program.  This is slower than the
+asynchronous invocation on other platforms.
+</p>
+<p>Instead of the Shell mode, which doesn&rsquo;t work on MS-DOS, you can use
+the <kbd class="kbd">M-x eshell</kbd> command.  This invokes the Eshell package that
+implements a POSIX-like shell entirely in Emacs Lisp.
+</p>
+<p>By contrast, Emacs compiled as a native Windows application
+<strong class="strong">does</strong> support asynchronous subprocesses.
+See <a class="xref" href="Windows-Processes.html">Subprocesses on Windows 9X/ME and Windows NT/2K/XP/Vista/7/8/10</a>.
+</p>
+<a class="index-entry-id" id="index-printing-under-MS_002dDOS"></a>
+<p>Printing commands, such as <code class="code">lpr-buffer</code>
+(see <a class="pxref" href="Printing.html">Printing Hard Copies</a>) and <code class="code">ps-print-buffer</code> (see <a class="pxref" href="PostScript.html">PostScript Hardcopy</a>),
+work in MS-DOS by sending the output to one of the printer ports.
+See <a class="xref" href="MS_002dDOS-Printing.html">Printing and MS-DOS</a>.
+</p>
+<p>When you run a subprocess synchronously on MS-DOS, make sure the
+program terminates and does not try to read keyboard input.  If the
+program does not terminate on its own, you will be unable to terminate
+it, because MS-DOS provides no general way to terminate a process.
+Pressing <kbd class="kbd">C-c</kbd> or <kbd class="kbd">C-<kbd class="key">Break</kbd></kbd> might sometimes help in these
+cases.
+</p>
+<p>Accessing files on other machines is not supported on MS-DOS.  Other
+network-oriented commands such as sending mail, Web browsing, remote
+login, etc., don&rsquo;t work either, unless network access is built into
+MS-DOS with some network redirector.
+</p>
+<a class="index-entry-id" id="index-directory-listing-on-MS_002dDOS"></a>
+<a class="index-entry-id" id="index-dired_002dlisting_002dswitches-_0028MS_002dDOS_0029"></a>
+<p>Dired on MS-DOS uses the <code class="code">ls-lisp</code> package
+(see <a class="pxref" href="ls-in-Lisp.html">Emulation of <code class="code">ls</code> on MS-Windows</a>).
+Therefore, Dired on MS-DOS supports only some of the possible options
+you can mention in the <code class="code">dired-listing-switches</code> variable.  The
+options that work are &lsquo;<samp class="samp">-A</samp>&rsquo;, &lsquo;<samp class="samp">-a</samp>&rsquo;, &lsquo;<samp class="samp">-c</samp>&rsquo;, &lsquo;<samp class="samp">-i</samp>&rsquo;,
+&lsquo;<samp class="samp">-r</samp>&rsquo;, &lsquo;<samp class="samp">-S</samp>&rsquo;, &lsquo;<samp class="samp">-s</samp>&rsquo;, &lsquo;<samp class="samp">-t</samp>&rsquo;, and &lsquo;<samp class="samp">-u</samp>&rsquo;.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="MS_002dDOS-and-MULE.html">International Support on MS-DOS</a>, Up: <a href="MS_002dDOS.html">Emacs and MS-DOS</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

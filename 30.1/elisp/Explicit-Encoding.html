@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Explicit Encoding (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Explicit Encoding (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Explicit Encoding (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Coding-Systems.html" rel="up" title="Coding Systems">
+<link href="Terminal-I_002fO-Encoding.html" rel="next" title="Terminal I/O Encoding">
+<link href="Specifying-Coding-Systems.html" rel="prev" title="Specifying Coding Systems">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Explicit-Encoding">
+<div class="nav-panel">
+<p>
+Next: <a href="Terminal-I_002fO-Encoding.html" accesskey="n" rel="next">Terminal I/O Encoding</a>, Previous: <a href="Specifying-Coding-Systems.html" accesskey="p" rel="prev">Specifying a Coding System for One Operation</a>, Up: <a href="Coding-Systems.html" accesskey="u" rel="up">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Explicit-Encoding-and-Decoding"><span>34.10.7 Explicit Encoding and Decoding<a class="copiable-link" href="#Explicit-Encoding-and-Decoding"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-encoding-in-coding-systems"></a>
+<a class="index-entry-id" id="index-decoding-in-coding-systems"></a>
+
+<p>All the operations that transfer text in and out of Emacs have the
+ability to use a coding system to encode or decode the text.
+You can also explicitly encode and decode text using the functions
+in this section.
+</p>
+<p>The result of encoding, and the input to decoding, are not ordinary
+text.  They logically consist of a series of byte values; that is, a
+series of <abbr class="acronym">ASCII</abbr> and eight-bit characters.  In unibyte
+buffers and strings, these characters have codes in the range 0
+through #xFF (255).  In a multibyte buffer or string, eight-bit
+characters have character codes higher than #xFF (see <a class="pxref" href="Text-Representations.html">Text Representations</a>), but Emacs transparently converts them to their
+single-byte values when you encode or decode such text.
+</p>
+<p>The usual way to read a file into a buffer as a sequence of bytes, so
+you can decode the contents explicitly, is with
+<code class="code">insert-file-contents-literally</code> (see <a class="pxref" href="Reading-from-Files.html">Reading from Files</a>);
+alternatively, specify a non-<code class="code">nil</code> <var class="var">rawfile</var> argument when
+visiting a file with <code class="code">find-file-noselect</code>.  These methods result in
+a unibyte buffer.
+</p>
+<p>The usual way to use the byte sequence that results from explicitly
+encoding text is to copy it to a file or process&mdash;for example, to write
+it with <code class="code">write-region</code> (see <a class="pxref" href="Writing-to-Files.html">Writing to Files</a>), and suppress
+encoding by binding <code class="code">coding-system-for-write</code> to
+<code class="code">no-conversion</code>.
+</p>
+<p>Here are the functions to perform explicit encoding or decoding.  The
+encoding functions produce sequences of bytes; the decoding functions
+are meant to operate on sequences of bytes.  All of these functions
+discard text properties.  They also set <code class="code">last-coding-system-used</code>
+to the precise coding system they used.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-encode_002dcoding_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">encode-coding-region</strong> <var class="def-var-arguments">start end coding-system &amp;optional destination</var><a class="copiable-link" href="#index-encode_002dcoding_002dregion"> &para;</a></span></dt>
+<dd><p>This command encodes the text from <var class="var">start</var> to <var class="var">end</var> according
+to coding system <var class="var">coding-system</var>.  Normally, the encoded text
+replaces the original text in the buffer, but the optional argument
+<var class="var">destination</var> can change that.  If <var class="var">destination</var> is a buffer,
+the encoded text is inserted in that buffer after point (point does
+not move); if it is <code class="code">t</code>, the command returns the encoded text as
+a unibyte string without inserting it.
+</p>
+<p>If encoded text is inserted in some buffer, this command returns the
+length of the encoded text.
+</p>
+<p>The result of encoding is logically a sequence of bytes, but the
+buffer remains multibyte if it was multibyte before, and any 8-bit
+bytes are converted to their multibyte representation (see <a class="pxref" href="Text-Representations.html">Text Representations</a>).
+</p>
+<a class="index-entry-id" id="index-undecided-coding_002dsystem_002c-when-encoding"></a>
+<p>Do <em class="emph">not</em> use <code class="code">undecided</code> for <var class="var">coding-system</var> when
+encoding text, since that may lead to unexpected results.  Instead,
+use <code class="code">select-safe-coding-system</code> (see <a class="pxref" href="User_002dChosen-Coding-Systems.html">select-safe-coding-system</a>) to suggest a suitable encoding,
+if there&rsquo;s no obvious pertinent value for <var class="var">coding-system</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-encode_002dcoding_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">encode-coding-string</strong> <var class="def-var-arguments">string coding-system &amp;optional nocopy buffer</var><a class="copiable-link" href="#index-encode_002dcoding_002dstring"> &para;</a></span></dt>
+<dd><p>This function encodes the text in <var class="var">string</var> according to coding
+system <var class="var">coding-system</var>.  It returns a new string containing the
+encoded text, except when <var class="var">nocopy</var> is non-<code class="code">nil</code>, in which
+case the function may return <var class="var">string</var> itself if the encoding
+operation is trivial.  The result of encoding is a unibyte string.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-decode_002dcoding_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">decode-coding-region</strong> <var class="def-var-arguments">start end coding-system &amp;optional destination</var><a class="copiable-link" href="#index-decode_002dcoding_002dregion"> &para;</a></span></dt>
+<dd><p>This command decodes the text from <var class="var">start</var> to <var class="var">end</var> according
+to coding system <var class="var">coding-system</var>.  To make explicit decoding
+useful, the text before decoding ought to be a sequence of byte
+values, but both multibyte and unibyte buffers are acceptable (in the
+multibyte case, the raw byte values should be represented as eight-bit
+characters).  Normally, the decoded text replaces the original text in
+the buffer, but the optional argument <var class="var">destination</var> can change
+that.  If <var class="var">destination</var> is a buffer, the decoded text is inserted
+in that buffer after point (point does not move); if it is <code class="code">t</code>,
+the command returns the decoded text as a multibyte string without
+inserting it.
+</p>
+<p>If decoded text is inserted in some buffer, this command returns the
+length of the decoded text.  If that buffer is a unibyte buffer
+(see <a class="pxref" href="Selecting-a-Representation.html">Selecting a Representation</a>), the internal representation of
+the decoded text (see <a class="pxref" href="Text-Representations.html">Text Representations</a>) is inserted into the
+buffer as individual bytes.
+</p>
+<a class="index-entry-id" id="index-charset_002c-text-property-on-buffer-text"></a>
+<p>This command puts a <code class="code">charset</code> text property on the decoded text.
+The value of the property states the character set used to decode the
+original text.
+</p>
+<a class="index-entry-id" id="index-undecided-coding_002dsystem_002c-when-decoding"></a>
+<p>This command detects the encoding of the text if necessary.  If
+<var class="var">coding-system</var> is <code class="code">undecided</code>, the command detects the
+encoding of the text based on the byte sequences it finds in the text,
+and also detects the type of end-of-line convention used by the text
+(see <a class="pxref" href="Lisp-and-Coding-Systems.html">eol type</a>).  If <var class="var">coding-system</var>
+is <code class="code">undecided-<var class="var">eol-type</var></code>, where <var class="var">eol-type</var> is
+<code class="code">unix</code>, <code class="code">dos</code>, or <code class="code">mac</code>, then the command detects only
+the encoding of the text.  Any <var class="var">coding-system</var> that doesn&rsquo;t
+specify <var class="var">eol-type</var>, as in <code class="code">utf-8</code>, causes the command to
+detect the end-of-line convention; specify the encoding completely, as
+in <code class="code">utf-8-unix</code>, if the EOL convention used by the text is known
+in advance, to prevent any automatic detection.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-decode_002dcoding_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">decode-coding-string</strong> <var class="def-var-arguments">string coding-system &amp;optional nocopy buffer</var><a class="copiable-link" href="#index-decode_002dcoding_002dstring"> &para;</a></span></dt>
+<dd><p>This function decodes the text in <var class="var">string</var> according to
+<var class="var">coding-system</var>.  It returns a new string containing the decoded
+text, except when <var class="var">nocopy</var> is non-<code class="code">nil</code>, in which case the
+function may return <var class="var">string</var> itself if the decoding operation is
+trivial.  To make explicit decoding useful, the contents of
+<var class="var">string</var> ought to be a unibyte string with a sequence of byte
+values, but a multibyte string is also acceptable (assuming it
+contains 8-bit bytes in their multibyte form).
+</p>
+<p>This function detects the encoding of the string if needed, like
+<code class="code">decode-coding-region</code> does.
+</p>
+<p>If optional argument <var class="var">buffer</var> specifies a buffer, the decoded text
+is inserted in that buffer after point (point does not move).  In this
+case, the return value is the length of the decoded text.  If that
+buffer is a unibyte buffer, the internal representation of the decoded
+text is inserted into it as individual bytes.
+</p>
+<a class="index-entry-id" id="index-charset_002c-text-property-on-strings"></a>
+<p>This function puts a <code class="code">charset</code> text property on the decoded text.
+The value of the property states the character set used to decode the
+original text:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(decode-coding-string &quot;Gr\374ss Gott&quot; 'latin-1)
+     &rArr; #(&quot;Grüss Gott&quot; 0 9 (charset iso-8859-1))
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-decode_002dcoding_002dinserted_002dregion"><span class="category-def">Function: </span><span><strong class="def-name">decode-coding-inserted-region</strong> <var class="def-var-arguments">from to filename &amp;optional visit beg end replace</var><a class="copiable-link" href="#index-decode_002dcoding_002dinserted_002dregion"> &para;</a></span></dt>
+<dd><p>This function decodes the text from <var class="var">from</var> to <var class="var">to</var> as if
+it were being read from file <var class="var">filename</var> using <code class="code">insert-file-contents</code>
+using the rest of the arguments provided.
+</p>
+<p>The normal way to use this function is after reading text from a file
+without decoding, if you decide you would rather have decoded it.
+Instead of deleting the text and reading it again, this time with
+decoding, you can call this function.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Terminal-I_002fO-Encoding.html">Terminal I/O Encoding</a>, Previous: <a href="Specifying-Coding-Systems.html">Specifying a Coding System for One Operation</a>, Up: <a href="Coding-Systems.html">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Misc Network (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Misc Network (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Processes.html" rel="up" title="Processes">
 <link href="Serial-Ports.html" rel="next" title="Serial Ports">
-<link href="Network-Feature-Testing.html" rel="prev" title="Network Feature Testing">
+<link href="Low_002dLevel-Network.html" rel="prev" title="Low-Level Network">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,72 +47,79 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Misc-Network"></span><div class="header">
+<div class="section-level-extent" id="Misc-Network">
+<div class="nav-panel">
 <p>
-Next: <a href="Serial-Ports.html" accesskey="n" rel="next">Serial Ports</a>, Previous: <a href="Low_002dLevel-Network.html" accesskey="p" rel="prev">Low-Level Network</a>, Up: <a href="Processes.html" accesskey="u" rel="up">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Serial-Ports.html" accesskey="n" rel="next">Communicating with Serial Ports</a>, Previous: <a href="Low_002dLevel-Network.html" accesskey="p" rel="prev">Low-Level Network Access</a>, Up: <a href="Processes.html" accesskey="u" rel="up">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Misc-Network-Facilities"></span><h3 class="section">36.18 Misc Network Facilities</h3>
+<h3 class="section" id="Misc-Network-Facilities"><span>36.18 Misc Network Facilities<a class="copiable-link" href="#Misc-Network-Facilities"> &para;</a></span></h3>
 
 <p>These additional functions are useful for creating and operating
 on network connections.  Note that they are supported only on some
 systems.
 </p>
-<dl>
-<dt id="index-network_002dinterface_002dlist">Function: <strong>network-interface-list</strong></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-network_002dinterface_002dlist"><span class="category-def">Function: </span><span><strong class="def-name">network-interface-list</strong><a class="copiable-link" href="#index-network_002dinterface_002dlist"> &para;</a></span></dt>
 <dd><p>This function returns a list describing the network interfaces
 of the machine you are using.  The value is an alist whose
-elements have the form <code>(<var>name</var> . <var>address</var>)</code>.
-<var>address</var> has the same form as the <var>local-address</var>
-and <var>remote-address</var> arguments to <code>make-network-process</code>.
+elements have the form <code class="code">(<var class="var">name</var> . <var class="var">address</var>)</code>.
+<var class="var">address</var> has the same form as the <var class="var">local-address</var>
+and <var class="var">remote-address</var> arguments to <code class="code">make-network-process</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-network_002dinterface_002dinfo">Function: <strong>network-interface-info</strong> <em>ifname</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-network_002dinterface_002dinfo"><span class="category-def">Function: </span><span><strong class="def-name">network-interface-info</strong> <var class="def-var-arguments">ifname</var><a class="copiable-link" href="#index-network_002dinterface_002dinfo"> &para;</a></span></dt>
 <dd><p>This function returns information about the network interface named
-<var>ifname</var>.  The value is a list of the form
-<code>(<var>addr</var> <var>bcast</var> <var>netmask</var> <var>hwaddr</var> <var>flags</var>)</code>.
+<var class="var">ifname</var>.  The value is a list of the form
+<code class="code">(<var class="var">addr</var> <var class="var">bcast</var> <var class="var">netmask</var> <var class="var">hwaddr</var> <var class="var">flags</var>)</code>.
 </p>
-<dl compact="compact">
-<dt><var>addr</var></dt>
+<dl class="table">
+<dt><var class="var">addr</var></dt>
 <dd><p>The Internet protocol address.
 </p></dd>
-<dt><var>bcast</var></dt>
+<dt><var class="var">bcast</var></dt>
 <dd><p>The broadcast address.
 </p></dd>
-<dt><var>netmask</var></dt>
+<dt><var class="var">netmask</var></dt>
 <dd><p>The network mask.
 </p></dd>
-<dt><var>hwaddr</var></dt>
+<dt><var class="var">hwaddr</var></dt>
 <dd><p>The layer 2 address (Ethernet MAC address, for instance).
 </p></dd>
-<dt><var>flags</var></dt>
+<dt><var class="var">flags</var></dt>
 <dd><p>The current flags of the interface.
 </p></dd>
 </dl>
 </dd></dl>
 
-<dl>
-<dt id="index-format_002dnetwork_002daddress">Function: <strong>format-network-address</strong> <em>address &amp;optional omit-port</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-format_002dnetwork_002daddress"><span class="category-def">Function: </span><span><strong class="def-name">format-network-address</strong> <var class="def-var-arguments">address &amp;optional omit-port</var><a class="copiable-link" href="#index-format_002dnetwork_002daddress"> &para;</a></span></dt>
 <dd><p>This function converts the Lisp representation of a network address to
 a string.
 </p>
-<p>A five-element vector <code>[<var>a</var> <var>b</var> <var>c</var> <var>d</var> <var>p</var>]</code>
-represents an IPv4 address <var>a</var>.<var>b</var>.<var>c</var>.<var>d</var> and port
-number <var>p</var>.  <code>format-network-address</code> converts that to the
-string <code>&quot;<var>a</var>.<var>b</var>.<var>c</var>.<var>d</var>:<var>p</var>&quot;</code>.
+<p>A five-element vector <code class="code">[<var class="var">a</var> <var class="var">b</var> <var class="var">c</var> <var class="var">d</var> <var class="var">p</var>]</code>
+represents an IPv4 address <var class="var">a</var>.<var class="var">b</var>.<var class="var">c</var>.<var class="var">d</var> and port
+number <var class="var">p</var>.  <code class="code">format-network-address</code> converts that to the
+string <code class="code">&quot;<var class="var">a</var>.<var class="var">b</var>.<var class="var">c</var>.<var class="var">d</var>:<var class="var">p</var>&quot;</code>.
 </p>
-<p>A nine-element vector <code>[<var>a</var> <var>b</var> <var>c</var> <var>d</var> <var>e</var>
-<var>f</var> <var>g</var> <var>h</var> <var>p</var>]</code> represents an IPv6 address along
-with a port number.  <code>format-network-address</code> converts that to
+<p>A nine-element vector <code class="code">[<var class="var">a</var> <var class="var">b</var> <var class="var">c</var> <var class="var">d</var> <var class="var">e</var>
+<var class="var">f</var> <var class="var">g</var> <var class="var">h</var> <var class="var">p</var>]</code> represents an IPv6 address along
+with a port number.  <code class="code">format-network-address</code> converts that to
 the string
-<code>&quot;[<var>a</var>:<var>b</var>:<var>c</var>:<var>d</var>:<var>e</var>:<var>f</var>:<var>g</var>:<var>h</var>]:<var>p</var>&quot;</code>.
+<code class="code">&quot;[<var class="var">a</var>:<var class="var">b</var>:<var class="var">c</var>:<var class="var">d</var>:<var class="var">e</var>:<var class="var">f</var>:<var class="var">g</var>:<var class="var">h</var>]:<var class="var">p</var>&quot;</code>.
 </p>
-<p>If the vector does not include the port number, <var>p</var>, or if
-<var>omit-port</var> is non-<code>nil</code>, the result does not include the
-<code>:<var>p</var></code> suffix.
+<p>If the vector does not include the port number, <var class="var">p</var>, or if
+<var class="var">omit-port</var> is non-<code class="code">nil</code>, the result does not include the
+<code class="code">:<var class="var">p</var></code> suffix.
 </p></dd></dl>
 
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Serial-Ports.html">Communicating with Serial Ports</a>, Previous: <a href="Low_002dLevel-Network.html">Low-Level Network Access</a>, Up: <a href="Processes.html">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

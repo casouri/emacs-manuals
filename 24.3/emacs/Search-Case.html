@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.3.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Search Case (GNU Emacs Manual)</title>
 
 <meta name="description" content="Search Case (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Regexp-Example.html" rel="prev" title="Regexp Example">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -56,47 +48,54 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Search-Case"></span><div class="header">
+<div class="section-level-extent" id="Search-Case">
+<div class="nav-panel">
 <p>
-Next: <a href="Replace.html" accesskey="n" rel="next">Replace</a>, Previous: <a href="Regexp-Example.html" accesskey="p" rel="prev">Regexp Example</a>, Up: <a href="Search.html" accesskey="u" rel="up">Search</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Replace.html" accesskey="n" rel="next">Replacement Commands</a>, Previous: <a href="Regexp-Example.html" accesskey="p" rel="prev">Regular Expression Example</a>, Up: <a href="Search.html" accesskey="u" rel="up">Searching and Replacement</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Searching-and-Case"></span><h3 class="section">15.9 Searching and Case</h3>
+<h3 class="section" id="Searching-and-Case"><span>15.9 Searching and Case<a class="copiable-link" href="#Searching-and-Case"> &para;</a></span></h3>
 
 <p>Searches in Emacs normally ignore the case of the text they are
 searching through, if you specify the text in lower case.  Thus, if
-you specify searching for &lsquo;<samp>foo</samp>&rsquo;, then &lsquo;<samp>Foo</samp>&rsquo; and &lsquo;<samp>foo</samp>&rsquo;
+you specify searching for &lsquo;<samp class="samp">foo</samp>&rsquo;, then &lsquo;<samp class="samp">Foo</samp>&rsquo; and &lsquo;<samp class="samp">foo</samp>&rsquo;
 also match.  Regexps, and in particular character sets, behave
-likewise: &lsquo;<samp>[ab]</samp>&rsquo; matches &lsquo;<samp>a</samp>&rsquo; or &lsquo;<samp>A</samp>&rsquo; or &lsquo;<samp>b</samp>&rsquo; or
-&lsquo;<samp>B</samp>&rsquo;.
+likewise: &lsquo;<samp class="samp">[ab]</samp>&rsquo; matches &lsquo;<samp class="samp">a</samp>&rsquo; or &lsquo;<samp class="samp">A</samp>&rsquo; or &lsquo;<samp class="samp">b</samp>&rsquo; or
+&lsquo;<samp class="samp">B</samp>&rsquo;.
 </p>
 <p>An upper-case letter anywhere in the incremental search string makes
-the search case-sensitive.  Thus, searching for &lsquo;<samp>Foo</samp>&rsquo; does not find
-&lsquo;<samp>foo</samp>&rsquo; or &lsquo;<samp>FOO</samp>&rsquo;.  This applies to regular expression search as
+the search case-sensitive.  Thus, searching for &lsquo;<samp class="samp">Foo</samp>&rsquo; does not find
+&lsquo;<samp class="samp">foo</samp>&rsquo; or &lsquo;<samp class="samp">FOO</samp>&rsquo;.  This applies to regular expression search as
 well as to string search.  The effect ceases if you delete the
 upper-case letter from the search string.
 </p>
-<p>Typing <kbd>M-c</kbd> within an incremental search toggles the case
+<p>Typing <kbd class="kbd">M-c</kbd> within an incremental search toggles the case
 sensitivity of that search.  The effect does not extend beyond the
 current incremental search to the next one, but it does override the
 effect of adding or removing an upper-case letter in the current
 search.
 </p>
-<span id="index-case_002dfold_002dsearch"></span>
-<p>If you set the variable <code>case-fold-search</code> to <code>nil</code>, then
+<a class="index-entry-id" id="index-case_002dfold_002dsearch"></a>
+<p>If you set the variable <code class="code">case-fold-search</code> to <code class="code">nil</code>, then
 all letters must match exactly, including case.  This is a per-buffer
 variable; altering the variable normally affects only the current buffer,
-unless you change its default value.  See <a href="Locals.html">Locals</a>.
+unless you change its default value.  See <a class="xref" href="Locals.html">Local Variables</a>.
 This variable applies to nonincremental searches also, including those
-performed by the replace commands (see <a href="Replace.html">Replace</a>) and the minibuffer
-history matching commands (see <a href="Minibuffer-History.html">Minibuffer History</a>).
+performed by the replace commands (see <a class="pxref" href="Replace.html">Replacement Commands</a>) and the minibuffer
+history matching commands (see <a class="pxref" href="Minibuffer-History.html">Minibuffer History</a>).
 </p>
 <p>Several related variables control case-sensitivity of searching and
 matching for specific commands or activities.  For instance,
-<code>tags-case-fold-search</code> controls case sensitivity for
-<code>find-tag</code>.  To find these variables, do <kbd>M-x
-apropos-variable <span class="key">RET</span> case-fold-search <span class="key">RET</span></kbd>.
+<code class="code">tags-case-fold-search</code> controls case sensitivity for
+<code class="code">find-tag</code>.  To find these variables, do <kbd class="kbd">M-x
+apropos-variable <kbd class="key">RET</kbd> case-fold-search <kbd class="key">RET</kbd></kbd>.
 </p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Replace.html">Replacement Commands</a>, Previous: <a href="Regexp-Example.html">Regular Expression Example</a>, Up: <a href="Search.html">Searching and Replacement</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

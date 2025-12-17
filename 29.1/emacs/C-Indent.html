@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>C Indent (GNU Emacs Manual)</title>
+
+<meta name="description" content="C Indent (GNU Emacs Manual)">
+<meta name="keywords" content="C Indent (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Program-Indent.html" rel="up" title="Program Indent">
+<link href="Custom-C-Indent.html" rel="next" title="Custom C Indent">
+<link href="Lisp-Indent.html" rel="prev" title="Lisp Indent">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="C-Indent">
+<div class="nav-panel">
+<p>
+Next: <a href="Custom-C-Indent.html" accesskey="n" rel="next">Customizing C Indentation</a>, Previous: <a href="Lisp-Indent.html" accesskey="p" rel="prev">Customizing Lisp Indentation</a>, Up: <a href="Program-Indent.html" accesskey="u" rel="up">Indentation for Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Commands-for-C-Indentation"><span>27.3.4 Commands for C Indentation<a class="copiable-link" href="#Commands-for-C-Indentation"> &para;</a></span></h4>
+
+<p>Here are special features for indentation in C mode and related modes:
+</p>
+<dl class="table">
+<dt><a class="index-entry-id" id="index-c_002dindent_002ddefun"></a>
+<a class="index-entry-id" id="index-c_002dts_002dmode_002dindent_002ddefun"></a>
+<a id="index-C_002dc-C_002dq-_0028C-mode_0029"></a><span><kbd class="kbd">C-c C-q</kbd><a class="copiable-link" href="#index-C_002dc-C_002dq-_0028C-mode_0029"> &para;</a></span></dt>
+<dd><p>Reindent the current top-level function definition or aggregate type
+declaration (<code class="code">c-indent-defun</code> in CC mode,
+<code class="code">c-ts-mode-indent-defun</code> in <code class="code">c-ts-mode</code> based on tree-sitter).
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-c_002dindent_002dexp"></a>
+<a class="index-entry-id" id="index-prog_002dindent_002dsexp"></a>
+<a id="index-C_002dM_002dq-_0028C-mode_0029"></a><span><kbd class="kbd">C-M-q</kbd><a class="copiable-link" href="#index-C_002dM_002dq-_0028C-mode_0029"> &para;</a></span></dt>
+<dd><p>Reindent each line in the balanced expression (see <a class="pxref" href="Expressions.html">Expressions with Balanced Parentheses</a>),
+also known as &ldquo;sexp&rdquo;, that follows point.  In CC mode, this invokes
+<code class="code">c-indent-exp</code>; in tree-sitter based <code class="code">c-ts-mode</code> this
+invokes a more general <code class="code">prog-indent-sexp</code>.  A prefix argument
+inhibits warning messages about invalid syntax.
+</p>
+</dd>
+<dt><a id="index-c_002dindent_002dline_002dor_002dregion"></a><span><kbd class="kbd"><kbd class="key">TAB</kbd></kbd><a class="copiable-link" href="#index-c_002dindent_002dline_002dor_002dregion"> &para;</a></span></dt>
+<dd><p>Reindent the current line, active region, or block starting on this
+line (<code class="code">c-indent-line-or-region</code>).  With prefix argument, rigidly
+reindent the balanced expression which starts on the current line, if
+the current line needs reindentation.
+</p>
+<a class="index-entry-id" id="index-c_002dtab_002dalways_002dindent"></a>
+<p>If <code class="code">c-tab-always-indent</code> is <code class="code">t</code>, this command always reindents
+the current line and does nothing else.  This is the default.
+</p>
+<p>If that variable is <code class="code">nil</code>, this command reindents the current line
+only if point is at the left margin or in the line&rsquo;s indentation;
+otherwise, it inserts a tab (or the equivalent number of spaces,
+if <code class="code">indent-tabs-mode</code> is <code class="code">nil</code>).
+</p>
+<p>Any other value (not <code class="code">nil</code> or <code class="code">t</code>) means always reindent the
+line, and also insert a tab if within a comment or a string.
+</p></dd>
+</dl>
+
+<p>To reindent the whole current buffer, type <kbd class="kbd">C-x h C-M-\</kbd>.  This
+first selects the whole buffer as the region, then reindents that
+region.
+</p>
+<p>To reindent the current block, use <kbd class="kbd">C-M-u C-M-q</kbd>.  This moves
+to the front of the block and then reindents it all.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Custom-C-Indent.html">Customizing C Indentation</a>, Previous: <a href="Lisp-Indent.html">Customizing Lisp Indentation</a>, Up: <a href="Program-Indent.html">Indentation for Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

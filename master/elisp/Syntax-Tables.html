@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Syntax Tables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Syntax Tables (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Syntax-Basics.html" rel="next" title="Syntax Basics">
-<link href="Standard-Regexps.html" rel="prev" title="Standard Regexps">
+<link href="Parsing-Expression-Grammars.html" rel="next" title="Parsing Expression Grammars">
+<link href="Searching-and-Matching.html" rel="prev" title="Searching and Matching">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,41 +47,34 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Syntax-Tables"></span><div class="header">
+<div class="chapter-level-extent" id="Syntax-Tables">
+<div class="nav-panel">
 <p>
-Next: <a href="Abbrevs.html" accesskey="n" rel="next">Abbrevs</a>, Previous: <a href="Searching-and-Matching.html" accesskey="p" rel="prev">Searching and Matching</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Parsing-Expression-Grammars.html" accesskey="n" rel="next">Parsing Expression Grammars</a>, Previous: <a href="Searching-and-Matching.html" accesskey="p" rel="prev">Searching and Matching</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Syntax-Tables-1"></span><h2 class="chapter">36 Syntax Tables</h2>
-<span id="index-parsing-buffer-text"></span>
-<span id="index-syntax-table"></span>
-<span id="index-text-parsing"></span>
+<h2 class="chapter" id="Syntax-Tables-1"><span>36 Syntax Tables<a class="copiable-link" href="#Syntax-Tables-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-parsing-buffer-text"></a>
+<a class="index-entry-id" id="index-syntax-table"></a>
+<a class="index-entry-id" id="index-text-parsing"></a>
 
-<p>A <em>syntax table</em> specifies the syntactic role of each character
+<p>A <em class="dfn">syntax table</em> specifies the syntactic role of each character
 in a buffer.  It can be used to determine where words, symbols, and
 other syntactic constructs begin and end.  This information is used by
-many Emacs facilities, including Font Lock mode (see <a href="Font-Lock-Mode.html">Font Lock Mode</a>) and the various complex movement commands (see <a href="Motion.html">Motion</a>).
+many Emacs facilities, including Font Lock mode (see <a class="pxref" href="Font-Lock-Mode.html">Font Lock Mode</a>) and the various complex movement commands (see <a class="pxref" href="Motion.html">Motion</a>).
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Syntax-Basics.html" accesskey="1">Basics</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Basic concepts of syntax tables.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Syntax-Descriptors.html" accesskey="2">Syntax Descriptors</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How characters are classified.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Syntax-Table-Functions.html" accesskey="3">Syntax Table Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to create, examine and alter syntax tables.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Syntax-Properties.html" accesskey="4">Syntax Properties</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Overriding syntax with text properties.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Motion-and-Syntax.html" accesskey="5">Motion and Syntax</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Moving over characters with certain syntaxes.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Parsing-Expressions.html" accesskey="6">Parsing Expressions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Parsing balanced expressions
-                                using the syntax table.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Syntax-Table-Internals.html" accesskey="7">Syntax Table Internals</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How syntax table information is stored.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Categories.html" accesskey="8">Categories</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Another way of classifying character syntax.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Syntax-Basics.html" accesskey="1">Syntax Table Concepts</a></li>
+<li><a href="Syntax-Descriptors.html" accesskey="2">Syntax Descriptors</a></li>
+<li><a href="Syntax-Table-Functions.html" accesskey="3">Syntax Table Functions</a></li>
+<li><a href="Syntax-Properties.html" accesskey="4">Syntax Properties</a></li>
+<li><a href="Motion-and-Syntax.html" accesskey="5">Motion and Syntax</a></li>
+<li><a href="Parsing-Expressions.html" accesskey="6">Parsing Expressions</a></li>
+<li><a href="Syntax-Table-Internals.html" accesskey="7">Syntax Table Internals</a></li>
+<li><a href="Categories.html" accesskey="8">Categories</a></li>
+</ul>
+</div>
 
 
 

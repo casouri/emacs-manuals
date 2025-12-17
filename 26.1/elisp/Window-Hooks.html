@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Window Hooks (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Window Hooks (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Windows.html" rel="up" title="Windows">
-<link href="Frames.html" rel="next" title="Frames">
 <link href="Window-Parameters.html" rel="prev" title="Window Parameters">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,23 +46,24 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Window-Hooks"></span><div class="header">
+<div class="section-level-extent" id="Window-Hooks">
+<div class="nav-panel">
 <p>
 Previous: <a href="Window-Parameters.html" accesskey="p" rel="prev">Window Parameters</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Hooks-for-Window-Scrolling-and-Changes"></span><h3 class="section">28.30 Hooks for Window Scrolling and Changes</h3>
-<span id="index-hooks-for-window-operations"></span>
+<h3 class="section" id="Hooks-for-Window-Scrolling-and-Changes"><span>28.30 Hooks for Window Scrolling and Changes<a class="copiable-link" href="#Hooks-for-Window-Scrolling-and-Changes"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-hooks-for-window-operations"></a>
 
 <p>This section describes how a Lisp program can take action whenever a
 window displays a different part of its buffer or a different buffer.
 There are three actions that can change this: scrolling the window,
 switching buffers in the window, and changing the size of the window.
-The first two actions run <code>window-scroll-functions</code>; the last runs
-<code>window-size-change-functions</code>.
+The first two actions run <code class="code">window-scroll-functions</code>; the last runs
+<code class="code">window-size-change-functions</code>.
 </p>
-<dl>
-<dt id="index-window_002dscroll_002dfunctions">Variable: <strong>window-scroll-functions</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-window_002dscroll_002dfunctions"><span class="category-def">Variable: </span><span><strong class="def-name">window-scroll-functions</strong><a class="copiable-link" href="#index-window_002dscroll_002dfunctions"> &para;</a></span></dt>
 <dd><p>This variable holds a list of functions that Emacs should call before
 redisplaying a window with scrolling.  Displaying a different buffer in
 the window also runs these functions.
@@ -83,33 +74,33 @@ time of the call, the display-start position of the window argument is
 already set to its new value, and the buffer to be displayed in the
 window is already set as the current buffer.
 </p>
-<p>These functions must take care when using <code>window-end</code>
-(see <a href="Window-Start-and-End.html">Window Start and End</a>); if you need an up-to-date value, you
-must use the <var>update</var> argument to ensure you get it.
+<p>These functions must take care when using <code class="code">window-end</code>
+(see <a class="pxref" href="Window-Start-and-End.html">The Window Start and End Positions</a>); if you need an up-to-date value, you
+must use the <var class="var">update</var> argument to ensure you get it.
 </p>
-<p><strong>Warning:</strong> don&rsquo;t use this feature to alter the way the window
+<p><strong class="strong">Warning:</strong> don&rsquo;t use this feature to alter the way the window
 is scrolled.  It&rsquo;s not designed for that, and such use probably won&rsquo;t
 work.
 </p></dd></dl>
 
-<dl>
-<dt id="index-run_002dwindow_002dscroll_002dfunctions">Function: <strong>run-window-scroll-functions</strong> <em>&amp;optional window</em></dt>
-<dd><p>This function calls <code>window-scroll-functions</code> for the specified
-<var>window</var>, which defaults to the selected window.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-run_002dwindow_002dscroll_002dfunctions"><span class="category-def">Function: </span><span><strong class="def-name">run-window-scroll-functions</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-run_002dwindow_002dscroll_002dfunctions"> &para;</a></span></dt>
+<dd><p>This function calls <code class="code">window-scroll-functions</code> for the specified
+<var class="var">window</var>, which defaults to the selected window.
 </p></dd></dl>
 
-<dl>
-<dt id="index-window_002dsize_002dchange_002dfunctions">Variable: <strong>window-size-change-functions</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-window_002dsize_002dchange_002dfunctions"><span class="category-def">Variable: </span><span><strong class="def-name">window-size-change-functions</strong><a class="copiable-link" href="#index-window_002dsize_002dchange_002dfunctions"> &para;</a></span></dt>
 <dd><p>This variable holds a list of functions to be called if the size of any
 window changes for any reason.  The functions are called once per
 redisplay, and once for each frame on which size changes have occurred.
 </p>
 <p>Each function receives the frame as its sole argument.  To find out
 whether a specific window has changed size, compare the return values of
-<code>window-pixel-width-before-size-change</code> and
-<code>window-pixel-width</code> respectively
-<code>window-pixel-height-before-size-change</code> and
-<code>window-pixel-height</code> for that window (see <a href="Window-Sizes.html">Window Sizes</a>).
+<code class="code">window-pixel-width-before-size-change</code> and
+<code class="code">window-pixel-width</code> respectively
+<code class="code">window-pixel-height-before-size-change</code> and
+<code class="code">window-pixel-height</code> for that window (see <a class="pxref" href="Window-Sizes.html">Window Sizes</a>).
 </p>
 <p>These function are usually only called when at least one window was
 added or has changed size since the last time this hook was run for the
@@ -118,20 +109,20 @@ that was added intermittently has been deleted afterwards.  In these
 cases none of the windows on the frame will appear to have changed its
 size.
 </p>
-<p>You may use <code>save-selected-window</code> in these functions
-(see <a href="Selecting-Windows.html">Selecting Windows</a>).  However, do not use
-<code>save-window-excursion</code> (see <a href="Window-Configurations.html">Window Configurations</a>); exiting
+<p>You may use <code class="code">save-selected-window</code> in these functions
+(see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>).  However, do not use
+<code class="code">save-window-excursion</code> (see <a class="pxref" href="Window-Configurations.html">Window Configurations</a>); exiting
 that macro counts as a size change, which would cause these functions to
 be called again.
 </p></dd></dl>
 
-<dl>
-<dt id="index-window_002dconfiguration_002dchange_002dhook">Variable: <strong>window-configuration-change-hook</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-window_002dconfiguration_002dchange_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">window-configuration-change-hook</strong><a class="copiable-link" href="#index-window_002dconfiguration_002dchange_002dhook"> &para;</a></span></dt>
 <dd><p>A normal hook that is run every time the window configuration of a frame
 changes.  Window configuration changes include splitting and deleting
 windows, and the display of a different buffer in a window.  Resizing the
 frame or individual windows do not count as configuration changes.  Use
-<code>window-size-change-functions</code>, see above, when you want to track
+<code class="code">window-size-change-functions</code>, see above, when you want to track
 size changes that are not caused by the deletion or creation of windows.
 </p>
 <p>The buffer-local value of this hook is run once for each window on the
@@ -140,20 +131,21 @@ current.  The global value of this hook is run once for the modified
 frame, with that frame selected.
 </p></dd></dl>
 
-<dl>
-<dt id="index-run_002dwindow_002dconfiguration_002dchange_002dhook">Function: <strong>run-window-configuration-change-hook</strong> <em>&amp;optional frame</em></dt>
-<dd><p>This function runs <code>window-configuration-change-hook</code> for the
-specified <var>frame</var>, which defaults to the selected frame.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-run_002dwindow_002dconfiguration_002dchange_002dhook"><span class="category-def">Function: </span><span><strong class="def-name">run-window-configuration-change-hook</strong> <var class="def-var-arguments">&amp;optional frame</var><a class="copiable-link" href="#index-run_002dwindow_002dconfiguration_002dchange_002dhook"> &para;</a></span></dt>
+<dd><p>This function runs <code class="code">window-configuration-change-hook</code> for the
+specified <var class="var">frame</var>, which defaults to the selected frame.
 </p></dd></dl>
 
-<p>In addition, you can use <code>jit-lock-register</code> to register a Font
+<p>In addition, you can use <code class="code">jit-lock-register</code> to register a Font
 Lock fontification function, which will be called whenever parts of a
 buffer are (re)fontified because a window was scrolled or its size
-changed.  See <a href="Other-Font-Lock-Variables.html">Other Font Lock Variables</a>.
-</p><hr>
-<div class="header">
+changed.  See <a class="xref" href="Other-Font-Lock-Variables.html">Other Font Lock Variables</a>.
+</p></div>
+<hr>
+<div class="nav-panel">
 <p>
-Previous: <a href="Window-Parameters.html" accesskey="p" rel="prev">Window Parameters</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Window-Parameters.html">Window Parameters</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

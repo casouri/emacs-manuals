@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Bindat Functions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Bindat Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Bindat Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Byte-Packing.html" rel="up" title="Byte Packing">
+<link href="Bindat-Computed-Types.html" rel="next" title="Bindat Computed Types">
+<link href="Bindat-Types.html" rel="prev" title="Bindat Types">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Bindat-Functions">
+<div class="nav-panel">
+<p>
+Next: <a href="Bindat-Computed-Types.html" accesskey="n" rel="next">Advanced data layout specifications</a>, Previous: <a href="Bindat-Types.html" accesskey="p" rel="prev">Describing Data Layout</a>, Up: <a href="Byte-Packing.html" accesskey="u" rel="up">Packing and Unpacking Byte Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Functions-to-Unpack-and-Pack-Bytes"><span>40.20.2 Functions to Unpack and Pack Bytes<a class="copiable-link" href="#Functions-to-Unpack-and-Pack-Bytes"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-bindat-functions"></a>
+
+<p>In the following documentation, <var class="var">type</var> refers to a Bindat type
+value as returned from <code class="code">bindat-type</code>, <var class="var">raw</var> to a byte
+array, and <var class="var">struct</var> to an alist representing unpacked field data.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-bindat_002dunpack"><span class="category-def">Function: </span><span><strong class="def-name">bindat-unpack</strong> <var class="def-var-arguments">type raw &amp;optional idx</var><a class="copiable-link" href="#index-bindat_002dunpack"> &para;</a></span></dt>
+<dd><p>This function unpacks data from the unibyte string or byte
+array <var class="var">raw</var>
+according to <var class="var">type</var>.  Normally, this starts unpacking at the
+beginning of the byte array, but if <var class="var">idx</var> is non-<code class="code">nil</code>, it
+specifies a zero-based starting position to use instead.
+</p>
+<p>The value is an alist or nested alist in which each element describes
+one unpacked field.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-bindat_002dget_002dfield"><span class="category-def">Function: </span><span><strong class="def-name">bindat-get-field</strong> <var class="def-var-arguments">struct &amp;rest name</var><a class="copiable-link" href="#index-bindat_002dget_002dfield"> &para;</a></span></dt>
+<dd><p>This function selects a field&rsquo;s data from the nested alist
+<var class="var">struct</var>.  Usually <var class="var">struct</var> was returned by
+<code class="code">bindat-unpack</code>.  If <var class="var">name</var> corresponds to just one argument,
+that means to extract a top-level field value.  Multiple <var class="var">name</var>
+arguments specify repeated lookup of sub-structures.  An integer
+<var class="var">name</var> acts as an array index.
+</p>
+<p>For example, <code class="code">(bindat-get-field&nbsp;<var class="var">struct</var>&nbsp;a&nbsp;b&nbsp;2&nbsp;c)</code><!-- /@w --> means
+to find field <code class="code">c</code> in the third element of subfield <code class="code">b</code> of
+field <code class="code">a</code>.  (This corresponds to <code class="code"><var class="var">struct</var>.a.b[2].c</code> in
+the C programming language syntax.)
+</p></dd></dl>
+
+<p>Although packing and unpacking operations change the organization of
+data (in memory), they preserve the data&rsquo;s <em class="dfn">total length</em>, which is
+the sum of all the fields&rsquo; lengths, in bytes.  This value is not
+generally inherent in either the specification or alist alone; instead,
+both pieces of information contribute to its calculation.  Likewise, the
+length of a string or array being unpacked may be longer than the data&rsquo;s
+total length as described by the specification.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-bindat_002dlength"><span class="category-def">Function: </span><span><strong class="def-name">bindat-length</strong> <var class="def-var-arguments">type struct</var><a class="copiable-link" href="#index-bindat_002dlength"> &para;</a></span></dt>
+<dd><p>This function returns the total length of the data in <var class="var">struct</var>,
+according to <var class="var">type</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-bindat_002dpack"><span class="category-def">Function: </span><span><strong class="def-name">bindat-pack</strong> <var class="def-var-arguments">type struct &amp;optional raw idx</var><a class="copiable-link" href="#index-bindat_002dpack"> &para;</a></span></dt>
+<dd><p>This function returns a byte array packed according to <var class="var">type</var> from
+the data in the alist <var class="var">struct</var>.  It normally creates and fills a
+new byte array starting at the beginning.  However, if <var class="var">raw</var>
+is non-<code class="code">nil</code>, it specifies a pre-allocated unibyte string or vector to
+pack into.  If <var class="var">idx</var> is non-<code class="code">nil</code>, it specifies the starting
+offset for packing into <var class="var">raw</var>.
+</p>
+<p>When pre-allocating, you should make sure <code class="code">(length <var class="var">raw</var>)</code>
+meets or exceeds the total length to avoid an out-of-range error.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-bindat_002dip_002dto_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">bindat-ip-to-string</strong> <var class="def-var-arguments">ip</var><a class="copiable-link" href="#index-bindat_002dip_002dto_002dstring"> &para;</a></span></dt>
+<dd><p>Convert the Internet address vector <var class="var">ip</var> to a string in the usual
+dotted notation.
+</p>
+<div class="example">
+<pre class="example-preformatted">(bindat-ip-to-string [127 0 0 1])
+     &rArr; &quot;127.0.0.1&quot;
+</pre></div>
+</dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Bindat-Computed-Types.html">Advanced data layout specifications</a>, Previous: <a href="Bindat-Types.html">Describing Data Layout</a>, Up: <a href="Byte-Packing.html">Packing and Unpacking Byte Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

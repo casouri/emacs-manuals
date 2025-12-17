@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Pattern-Matching Conditional (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Pattern-Matching Conditional (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Pattern-Matching Conditional (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Control-Structures.html" rel="up" title="Control Structures">
+<link href="Iteration.html" rel="next" title="Iteration">
+<link href="Combining-Conditions.html" rel="prev" title="Combining Conditions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Pattern_002dMatching-Conditional">
+<div class="nav-panel">
+<p>
+Next: <a href="Iteration.html" accesskey="n" rel="next">Iteration</a>, Previous: <a href="Combining-Conditions.html" accesskey="p" rel="prev">Constructs for Combining Conditions</a>, Up: <a href="Control-Structures.html" accesskey="u" rel="up">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Pattern_002dMatching-Conditional-1"><span>11.4 Pattern-Matching Conditional<a class="copiable-link" href="#Pattern_002dMatching-Conditional-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-pcase"></a>
+<a class="index-entry-id" id="index-pattern-matching_002c-programming-style"></a>
+
+<p>Aside from the four basic conditional forms, Emacs Lisp also
+has a pattern-matching conditional form, the <code class="code">pcase</code> macro,
+a hybrid of <code class="code">cond</code> and <code class="code">cl-case</code>
+(see <a data-manual="cl" href="https://www.gnu.org/software/emacs/manual/html_node/cl/Conditionals.html#Conditionals">Conditionals</a> in <cite class="cite">Common Lisp Extensions</cite>)
+that overcomes their limitations and introduces
+the <em class="dfn">pattern matching programming style</em>.
+The limitations that <code class="code">pcase</code> overcomes are:
+</p>
+<ul class="itemize mark-bullet">
+<li>The <code class="code">cond</code> form chooses among alternatives by evaluating the
+predicate <var class="var">condition</var> of each of its clauses
+(see <a class="pxref" href="Conditionals.html">Conditionals</a>).  The primary limitation is that variables
+let-bound in <var class="var">condition</var> are not available to the clause&rsquo;s
+<var class="var">body-forms</var>.
+
+<p>Another annoyance (more an inconvenience than a limitation)
+is that when a series of <var class="var">condition</var> predicates implement
+equality tests, there is a lot of repeated code.  (<code class="code">cl-case</code>
+solves this inconvenience.)
+</p>
+</li><li>The <code class="code">cl-case</code> macro chooses among alternatives by evaluating
+the equality of its first argument against a set of specific
+values.
+
+<p>Its limitations are two-fold:
+</p>
+<ol class="enumerate">
+<li> The equality tests use <code class="code">eql</code>.
+</li><li> The values must be known and written in advance.
+</li></ol>
+
+<p>These render <code class="code">cl-case</code> unsuitable for strings or compound
+data structures (e.g., lists or vectors).  (<code class="code">cond</code> doesn&rsquo;t have
+these limitations, but it has others, see above.)
+</p></li></ul>
+
+<p>Conceptually, the <code class="code">pcase</code> macro borrows the first-arg focus
+of <code class="code">cl-case</code> and the clause-processing flow of <code class="code">cond</code>,
+replacing <var class="var">condition</var> with a generalization of
+the equality test which is a variant of <em class="dfn">pattern matching</em>,
+and adding facilities so that you can concisely express a
+clause&rsquo;s predicate, and arrange to share let-bindings between
+a clause&rsquo;s predicate and <var class="var">body-forms</var>.
+</p>
+<p>The concise expression of a predicate is known as a <em class="dfn">pattern</em>.
+When the predicate, called on the value of the first arg, returns
+non-<code class="code">nil</code>, we say that &ldquo;the pattern matches the value&rdquo; (or
+sometimes &ldquo;the value matches the pattern&rdquo;).
+</p>
+
+<ul class="mini-toc">
+<li><a href="pcase-Macro.html" accesskey="1">The <code class="code">pcase</code> macro</a></li>
+<li><a href="Extending-pcase.html" accesskey="2">Extending <code class="code">pcase</code></a></li>
+<li><a href="Backquote-Patterns.html" accesskey="3">Backquote-Style Patterns</a></li>
+<li><a href="Destructuring-with-pcase-Patterns.html" accesskey="4">Destructuring with <code class="code">pcase</code> Patterns</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Iteration.html">Iteration</a>, Previous: <a href="Combining-Conditions.html">Constructs for Combining Conditions</a>, Up: <a href="Control-Structures.html">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

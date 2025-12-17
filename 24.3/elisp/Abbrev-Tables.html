@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Abbrev Tables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Abbrev Tables (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Abbrevs.html" rel="up" title="Abbrevs">
 <link href="Defining-Abbrevs.html" rel="next" title="Defining Abbrevs">
-<link href="Abbrevs.html" rel="prev" title="Abbrevs">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,84 +45,86 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Abbrev-Tables"></span><div class="header">
+<div class="section-level-extent" id="Abbrev-Tables">
+<div class="nav-panel">
 <p>
-Next: <a href="Defining-Abbrevs.html" accesskey="n" rel="next">Defining Abbrevs</a>, Up: <a href="Abbrevs.html" accesskey="u" rel="up">Abbrevs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Defining-Abbrevs.html" accesskey="n" rel="next">Defining Abbrevs</a>, Up: <a href="Abbrevs.html" accesskey="u" rel="up">Abbrevs and Abbrev Expansion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Abbrev-Tables-1"></span><h3 class="section">36.1 Abbrev Tables</h3>
+<h3 class="section" id="Abbrev-Tables-1"><span>36.1 Abbrev Tables<a class="copiable-link" href="#Abbrev-Tables-1"> &para;</a></span></h3>
 
 <p>This section describes how to create and manipulate abbrev tables.
 </p>
-<dl>
-<dt id="index-make_002dabbrev_002dtable">Function: <strong>make-abbrev-table</strong> <em>&amp;optional props</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dabbrev_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">make-abbrev-table</strong> <var class="def-var-arguments">&amp;optional props</var><a class="copiable-link" href="#index-make_002dabbrev_002dtable"> &para;</a></span></dt>
 <dd><p>This function creates and returns a new, empty abbrev table&mdash;an
 obarray containing no symbols.  It is a vector filled with zeros.
-<var>props</var> is a property list that is applied to the new table
-(see <a href="Abbrev-Table-Properties.html">Abbrev Table Properties</a>).
+<var class="var">props</var> is a property list that is applied to the new table
+(see <a class="pxref" href="Abbrev-Table-Properties.html">Abbrev Table Properties</a>).
 </p></dd></dl>
 
-<dl>
-<dt id="index-abbrev_002dtable_002dp">Function: <strong>abbrev-table-p</strong> <em>object</em></dt>
-<dd><p>This function returns a non-<code>nil</code> value if <var>object</var> is an
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-abbrev_002dtable_002dp"><span class="category-def">Function: </span><span><strong class="def-name">abbrev-table-p</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-abbrev_002dtable_002dp"> &para;</a></span></dt>
+<dd><p>This function returns a non-<code class="code">nil</code> value if <var class="var">object</var> is an
 abbrev table.
 </p></dd></dl>
 
-<dl>
-<dt id="index-clear_002dabbrev_002dtable">Function: <strong>clear-abbrev-table</strong> <em>abbrev-table</em></dt>
-<dd><p>This function undefines all the abbrevs in <var>abbrev-table</var>, leaving
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-clear_002dabbrev_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">clear-abbrev-table</strong> <var class="def-var-arguments">abbrev-table</var><a class="copiable-link" href="#index-clear_002dabbrev_002dtable"> &para;</a></span></dt>
+<dd><p>This function undefines all the abbrevs in <var class="var">abbrev-table</var>, leaving
 it empty.
 </p></dd></dl>
 
-<dl>
-<dt id="index-copy_002dabbrev_002dtable">Function: <strong>copy-abbrev-table</strong> <em>abbrev-table</em></dt>
-<dd><p>This function returns a copy of <var>abbrev-table</var>&mdash;a new abbrev
-table containing the same abbrev definitions.  It does <em>not</em> copy
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-copy_002dabbrev_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">copy-abbrev-table</strong> <var class="def-var-arguments">abbrev-table</var><a class="copiable-link" href="#index-copy_002dabbrev_002dtable"> &para;</a></span></dt>
+<dd><p>This function returns a copy of <var class="var">abbrev-table</var>&mdash;a new abbrev
+table containing the same abbrev definitions.  It does <em class="emph">not</em> copy
 any property lists; only the names, values, and functions.
 </p></dd></dl>
 
-<dl>
-<dt id="index-define_002dabbrev_002dtable">Function: <strong>define-abbrev-table</strong> <em>tabname definitions &amp;optional docstring &amp;rest props</em></dt>
-<dd><p>This function defines <var>tabname</var> (a symbol) as an abbrev table
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-define_002dabbrev_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">define-abbrev-table</strong> <var class="def-var-arguments">tabname definitions &amp;optional docstring &amp;rest props</var><a class="copiable-link" href="#index-define_002dabbrev_002dtable"> &para;</a></span></dt>
+<dd><p>This function defines <var class="var">tabname</var> (a symbol) as an abbrev table
 name, i.e., as a variable whose value is an abbrev table.  It defines
-abbrevs in the table according to <var>definitions</var>, a list of
-elements of the form <code>(<var>abbrevname</var> <var>expansion</var>
-[<var>hook</var>] [<var>props</var>...])</code>.  These elements are passed as
-arguments to <code>define-abbrev</code>.  </p>
-<p>The optional string <var>docstring</var> is the documentation string of the
-variable <var>tabname</var>.  The property list <var>props</var> is applied to
-the abbrev table (see <a href="Abbrev-Table-Properties.html">Abbrev Table Properties</a>).
+abbrevs in the table according to <var class="var">definitions</var>, a list of
+elements of the form <code class="code">(<var class="var">abbrevname</var> <var class="var">expansion</var>
+[<var class="var">hook</var>] [<var class="var">props</var>...])</code>.  These elements are passed as
+arguments to <code class="code">define-abbrev</code>.  </p>
+<p>The optional string <var class="var">docstring</var> is the documentation string of the
+variable <var class="var">tabname</var>.  The property list <var class="var">props</var> is applied to
+the abbrev table (see <a class="pxref" href="Abbrev-Table-Properties.html">Abbrev Table Properties</a>).
 </p>
-<p>If this function is called more than once for the same <var>tabname</var>,
-subsequent calls add the definitions in <var>definitions</var> to
-<var>tabname</var>, rather than overwriting the entire original contents.
+<p>If this function is called more than once for the same <var class="var">tabname</var>,
+subsequent calls add the definitions in <var class="var">definitions</var> to
+<var class="var">tabname</var>, rather than overwriting the entire original contents.
 (A subsequent call only overrides abbrevs explicitly redefined or
-undefined in <var>definitions</var>.)
+undefined in <var class="var">definitions</var>.)
 </p></dd></dl>
 
-<dl>
-<dt id="index-abbrev_002dtable_002dname_002dlist">Variable: <strong>abbrev-table-name-list</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-abbrev_002dtable_002dname_002dlist"><span class="category-def">Variable: </span><span><strong class="def-name">abbrev-table-name-list</strong><a class="copiable-link" href="#index-abbrev_002dtable_002dname_002dlist"> &para;</a></span></dt>
 <dd><p>This is a list of symbols whose values are abbrev tables.
-<code>define-abbrev-table</code> adds the new abbrev table name to this list.
+<code class="code">define-abbrev-table</code> adds the new abbrev table name to this list.
 </p></dd></dl>
 
-<dl>
-<dt id="index-insert_002dabbrev_002dtable_002ddescription">Function: <strong>insert-abbrev-table-description</strong> <em>name &amp;optional human</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-insert_002dabbrev_002dtable_002ddescription"><span class="category-def">Function: </span><span><strong class="def-name">insert-abbrev-table-description</strong> <var class="def-var-arguments">name &amp;optional human</var><a class="copiable-link" href="#index-insert_002dabbrev_002dtable_002ddescription"> &para;</a></span></dt>
 <dd><p>This function inserts before point a description of the abbrev table
-named <var>name</var>.  The argument <var>name</var> is a symbol whose value is an
+named <var class="var">name</var>.  The argument <var class="var">name</var> is a symbol whose value is an
 abbrev table.  </p>
-<p>If <var>human</var> is non-<code>nil</code>, the description is human-oriented.
+<p>If <var class="var">human</var> is non-<code class="code">nil</code>, the description is human-oriented.
 System abbrevs are listed and identified as such.  Otherwise the
-description is a Lisp expression&mdash;a call to <code>define-abbrev-table</code>
-that would define <var>name</var> as it is currently defined, but without
-the system abbrevs.  (The mode or package using <var>name</var> is supposed
-to add these to <var>name</var> separately.)
+description is a Lisp expression&mdash;a call to <code class="code">define-abbrev-table</code>
+that would define <var class="var">name</var> as it is currently defined, but without
+the system abbrevs.  (The mode or package using <var class="var">name</var> is supposed
+to add these to <var class="var">name</var> separately.)
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Defining-Abbrevs.html" accesskey="n" rel="next">Defining Abbrevs</a>, Up: <a href="Abbrevs.html" accesskey="u" rel="up">Abbrevs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Defining-Abbrevs.html">Defining Abbrevs</a>, Up: <a href="Abbrevs.html">Abbrevs and Abbrev Expansion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

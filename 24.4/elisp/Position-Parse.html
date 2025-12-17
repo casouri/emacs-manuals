@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Position Parse (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Position Parse (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Motion-via-Parsing.html" rel="prev" title="Motion via Parsing">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,67 +47,69 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Position-Parse"></span><div class="header">
+<div class="subsection-level-extent" id="Position-Parse">
+<div class="nav-panel">
 <p>
-Next: <a href="Parser-State.html" accesskey="n" rel="next">Parser State</a>, Previous: <a href="Motion-via-Parsing.html" accesskey="p" rel="prev">Motion via Parsing</a>, Up: <a href="Parsing-Expressions.html" accesskey="u" rel="up">Parsing Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Parser-State.html" accesskey="n" rel="next">Parser State</a>, Previous: <a href="Motion-via-Parsing.html" accesskey="p" rel="prev">Motion Commands Based on Parsing</a>, Up: <a href="Parsing-Expressions.html" accesskey="u" rel="up">Parsing Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Finding-the-Parse-State-for-a-Position"></span><h4 class="subsection">34.6.2 Finding the Parse State for a Position</h4>
+<h4 class="subsection" id="Finding-the-Parse-State-for-a-Position"><span>34.6.2 Finding the Parse State for a Position<a class="copiable-link" href="#Finding-the-Parse-State-for-a-Position"> &para;</a></span></h4>
 
 <p>For syntactic analysis, such as in indentation, often the useful
 thing is to compute the syntactic state corresponding to a given buffer
 position.  This function does that conveniently.
 </p>
-<dl>
-<dt id="index-syntax_002dppss">Function: <strong>syntax-ppss</strong> <em>&amp;optional pos</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-syntax_002dppss"><span class="category-def">Function: </span><span><strong class="def-name">syntax-ppss</strong> <var class="def-var-arguments">&amp;optional pos</var><a class="copiable-link" href="#index-syntax_002dppss"> &para;</a></span></dt>
 <dd><p>This function returns the parser state that the parser would reach at
-position <var>pos</var> starting from the beginning of the buffer.
-See <a href="Parser-State.html">Parser State</a>,
+position <var class="var">pos</var> starting from the beginning of the buffer.
+See <a class="xref" href="Parser-State.html">Parser State</a>,
 for a description of the parser state.
 </p>
 <p>The return value is the same as if you call the low-level parsing
-function <code>parse-partial-sexp</code> to parse from the beginning of the
-buffer to <var>pos</var> (see <a href="Low_002dLevel-Parsing.html">Low-Level Parsing</a>).  However,
-<code>syntax-ppss</code> uses a cache to speed up the computation.  Due to
+function <code class="code">parse-partial-sexp</code> to parse from the beginning of the
+buffer to <var class="var">pos</var> (see <a class="pxref" href="Low_002dLevel-Parsing.html">Low-Level Parsing</a>).  However,
+<code class="code">syntax-ppss</code> uses a cache to speed up the computation.  Due to
 this optimization, the second value (previous complete subexpression)
 and sixth value (minimum parenthesis depth) in the returned parser
 state are not meaningful.
 </p>
 <p>This function has a side effect: it adds a buffer-local entry to
-<code>before-change-functions</code> (see <a href="Change-Hooks.html">Change Hooks</a>) for
-<code>syntax-ppss-flush-cache</code> (see below).  This entry keeps the
+<code class="code">before-change-functions</code> (see <a class="pxref" href="Change-Hooks.html">Change Hooks</a>) for
+<code class="code">syntax-ppss-flush-cache</code> (see below).  This entry keeps the
 cache consistent as the buffer is modified.  However, the cache might
-not be updated if <code>syntax-ppss</code> is called while
-<code>before-change-functions</code> is temporarily let-bound, or if the
+not be updated if <code class="code">syntax-ppss</code> is called while
+<code class="code">before-change-functions</code> is temporarily let-bound, or if the
 buffer is modified without running the hook, such as when using
-<code>inhibit-modification-hooks</code>.  In those cases, it is necessary to
-call <code>syntax-ppss-flush-cache</code> explicitly.
+<code class="code">inhibit-modification-hooks</code>.  In those cases, it is necessary to
+call <code class="code">syntax-ppss-flush-cache</code> explicitly.
 </p></dd></dl>
 
-<dl>
-<dt id="index-syntax_002dppss_002dflush_002dcache">Function: <strong>syntax-ppss-flush-cache</strong> <em>beg &amp;rest ignored-args</em></dt>
-<dd><p>This function flushes the cache used by <code>syntax-ppss</code>, starting
-at position <var>beg</var>.  The remaining arguments, <var>ignored-args</var>,
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-syntax_002dppss_002dflush_002dcache"><span class="category-def">Function: </span><span><strong class="def-name">syntax-ppss-flush-cache</strong> <var class="def-var-arguments">beg &amp;rest ignored-args</var><a class="copiable-link" href="#index-syntax_002dppss_002dflush_002dcache"> &para;</a></span></dt>
+<dd><p>This function flushes the cache used by <code class="code">syntax-ppss</code>, starting
+at position <var class="var">beg</var>.  The remaining arguments, <var class="var">ignored-args</var>,
 are ignored; this function accepts them so that it can be directly
-used on hooks such as <code>before-change-functions</code> (see <a href="Change-Hooks.html">Change Hooks</a>).
+used on hooks such as <code class="code">before-change-functions</code> (see <a class="pxref" href="Change-Hooks.html">Change Hooks</a>).
 </p></dd></dl>
 
-<p>Major modes can make <code>syntax-ppss</code> run faster by specifying
+<p>Major modes can make <code class="code">syntax-ppss</code> run faster by specifying
 where it needs to start parsing.
 </p>
-<dl>
-<dt id="index-syntax_002dbegin_002dfunction">Variable: <strong>syntax-begin-function</strong></dt>
-<dd><p>If this is non-<code>nil</code>, it should be a function that moves to an
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-syntax_002dbegin_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">syntax-begin-function</strong><a class="copiable-link" href="#index-syntax_002dbegin_002dfunction"> &para;</a></span></dt>
+<dd><p>If this is non-<code class="code">nil</code>, it should be a function that moves to an
 earlier buffer position where the parser state is equivalent to
-<code>nil</code>&mdash;in other words, a position outside of any comment,
-string, or parenthesis.  <code>syntax-ppss</code> uses it to further
+<code class="code">nil</code>&mdash;in other words, a position outside of any comment,
+string, or parenthesis.  <code class="code">syntax-ppss</code> uses it to further
 optimize its computations, when the cache gives no help.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Parser-State.html" accesskey="n" rel="next">Parser State</a>, Previous: <a href="Motion-via-Parsing.html" accesskey="p" rel="prev">Motion via Parsing</a>, Up: <a href="Parsing-Expressions.html" accesskey="u" rel="up">Parsing Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Parser-State.html">Parser State</a>, Previous: <a href="Motion-via-Parsing.html">Motion Commands Based on Parsing</a>, Up: <a href="Parsing-Expressions.html">Parsing Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

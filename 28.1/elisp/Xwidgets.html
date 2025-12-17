@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.1.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Xwidgets (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Xwidgets (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Xwidgets (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Buttons.html" rel="next" title="Buttons">
+<link href="Images.html" rel="prev" title="Images">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Xwidgets">
+<div class="nav-panel">
+<p>
+Next: <a href="Buttons.html" accesskey="n" rel="next">Buttons</a>, Previous: <a href="Images.html" accesskey="p" rel="prev">Images</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Embedded-Native-Widgets"><span>40.18 Embedded Native Widgets<a class="copiable-link" href="#Embedded-Native-Widgets"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-xwidget"></a>
+<a class="index-entry-id" id="index-embedded-widgets"></a>
+<a class="index-entry-id" id="index-webkit-browser-widget"></a>
+
+<p>Emacs is able to display native widgets, such as GTK+ WebKit widgets,
+in Emacs buffers when it was built with the necessary support
+libraries and is running on a graphical terminal.  To test whether
+Emacs supports display of embedded widgets, check that the
+<code class="code">xwidget-internal</code> feature is available (see <a class="pxref" href="Named-Features.html">Features</a>).
+</p>
+<p>To display an embedded widget in a buffer, you must first create an
+xwidget object, and then use that object as the display specifier
+in a <code class="code">display</code> text or overlay property (see <a class="pxref" href="Display-Property.html">The <code class="code">display</code> Property</a>).
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dxwidget"><span class="category-def">Function: </span><span><strong class="def-name">make-xwidget</strong> <var class="def-var-arguments">type title width height arguments &amp;optional buffer</var><a class="copiable-link" href="#index-make_002dxwidget"> &para;</a></span></dt>
+<dd><p>This creates and returns an xwidget object.  If
+<var class="var">buffer</var> is omitted or <code class="code">nil</code>, it defaults to the current
+buffer.  If <var class="var">buffer</var> names a buffer that doesn&rsquo;t exist, it will be
+created.  The <var class="var">type</var> identifies the type of the xwidget component,
+it can be one of the following:
+</p>
+<dl class="table">
+<dt><code class="code">webkit</code></dt>
+<dd><p>The WebKit component.
+</p></dd>
+</dl>
+
+<p>The <var class="var">width</var> and <var class="var">height</var> arguments specify the widget size in
+pixels, and <var class="var">title</var>, a string, specifies its title.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidgetp"><span class="category-def">Function: </span><span><strong class="def-name">xwidgetp</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-xwidgetp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">object</var> is an xwidget,
+<code class="code">nil</code> otherwise.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dplist"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-plist</strong> <var class="def-var-arguments">xwidget</var><a class="copiable-link" href="#index-xwidget_002dplist"> &para;</a></span></dt>
+<dd><p>This function returns the property list of <var class="var">xwidget</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dxwidget_002dplist"><span class="category-def">Function: </span><span><strong class="def-name">set-xwidget-plist</strong> <var class="def-var-arguments">xwidget plist</var><a class="copiable-link" href="#index-set_002dxwidget_002dplist"> &para;</a></span></dt>
+<dd><p>This function replaces the property list of <var class="var">xwidget</var> with a new
+property list given by <var class="var">plist</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dbuffer"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-buffer</strong> <var class="def-var-arguments">xwidget</var><a class="copiable-link" href="#index-xwidget_002dbuffer"> &para;</a></span></dt>
+<dd><p>This function returns the buffer of <var class="var">xwidget</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-get_002dbuffer_002dxwidgets"><span class="category-def">Function: </span><span><strong class="def-name">get-buffer-xwidgets</strong> <var class="def-var-arguments">buffer</var><a class="copiable-link" href="#index-get_002dbuffer_002dxwidgets"> &para;</a></span></dt>
+<dd><p>This function returns a list of xwidget objects associated with the
+<var class="var">buffer</var>, which can be specified as a buffer object or a name of
+an existing buffer, a string.  The value is <code class="code">nil</code> if <var class="var">buffer</var>
+contains no xwidgets.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dwebkit_002dgoto_002duri"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-webkit-goto-uri</strong> <var class="def-var-arguments">xwidget uri</var><a class="copiable-link" href="#index-xwidget_002dwebkit_002dgoto_002duri"> &para;</a></span></dt>
+<dd><p>This function browses the specified <var class="var">uri</var> in the given
+<var class="var">xwidget</var>.  The <var class="var">uri</var> is a string that specifies the name of a
+file or a URL.  </p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dwebkit_002dexecute_002dscript"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-webkit-execute-script</strong> <var class="def-var-arguments">xwidget script</var><a class="copiable-link" href="#index-xwidget_002dwebkit_002dexecute_002dscript"> &para;</a></span></dt>
+<dd><p>This function causes the browser widget specified by <var class="var">xwidget</var> to
+execute the specified JavaScript <code class="code">script</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dwebkit_002dexecute_002dscript_002drv"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-webkit-execute-script-rv</strong> <var class="def-var-arguments">xwidget script &amp;optional default</var><a class="copiable-link" href="#index-xwidget_002dwebkit_002dexecute_002dscript_002drv"> &para;</a></span></dt>
+<dd><p>This function executes the specified <var class="var">script</var> like
+<code class="code">xwidget-webkit-execute-script</code> does, but it also returns the
+script&rsquo;s return value as a string.  If <var class="var">script</var> doesn&rsquo;t return a
+value, this function returns <var class="var">default</var>, or <code class="code">nil</code> if
+<var class="var">default</var> was omitted.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dwebkit_002dget_002dtitle"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-webkit-get-title</strong> <var class="def-var-arguments">xwidget</var><a class="copiable-link" href="#index-xwidget_002dwebkit_002dget_002dtitle"> &para;</a></span></dt>
+<dd><p>This function returns the title of <var class="var">xwidget</var> as a string.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dresize"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-resize</strong> <var class="def-var-arguments">xwidget width height</var><a class="copiable-link" href="#index-xwidget_002dresize"> &para;</a></span></dt>
+<dd><p>This function resizes the specified <var class="var">xwidget</var> to the size
+<var class="var">width</var>x<var class="var">height</var> pixels.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dsize_002drequest"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-size-request</strong> <var class="def-var-arguments">xwidget</var><a class="copiable-link" href="#index-xwidget_002dsize_002drequest"> &para;</a></span></dt>
+<dd><p>This function returns the desired size of <var class="var">xwidget</var> as a list of
+the form <code class="code">(<var class="var">width</var> <var class="var">height</var>)</code>.  The dimensions are in
+pixels.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dinfo"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-info</strong> <var class="def-var-arguments">xwidget</var><a class="copiable-link" href="#index-xwidget_002dinfo"> &para;</a></span></dt>
+<dd><p>This function returns the attributes of <var class="var">xwidget</var> as a vector of
+the form <code class="code">[<var class="var">type</var> <var class="var">title</var> <var class="var">width</var> <var class="var">height</var>]</code>.
+The attributes are usually determined by <code class="code">make-xwidget</code> when the
+xwidget is created.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dxwidget_002dquery_002don_002dexit_002dflag"><span class="category-def">Function: </span><span><strong class="def-name">set-xwidget-query-on-exit-flag</strong> <var class="def-var-arguments">xwidget flag</var><a class="copiable-link" href="#index-set_002dxwidget_002dquery_002don_002dexit_002dflag"> &para;</a></span></dt>
+<dd><p>This function allows you to arrange that Emacs will ask the user for
+confirmation before exiting or before killing a buffer that has
+<var class="var">xwidget</var> associated with it.  If <var class="var">flag</var> is non-<code class="code">nil</code>,
+Emacs will query the user, otherwise it will not.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xwidget_002dquery_002don_002dexit_002dflag"><span class="category-def">Function: </span><span><strong class="def-name">xwidget-query-on-exit-flag</strong> <var class="def-var-arguments">xwidget</var><a class="copiable-link" href="#index-xwidget_002dquery_002don_002dexit_002dflag"> &para;</a></span></dt>
+<dd><p>This function returns the current setting of <var class="var">xwidget</var>s
+query-on-exit flag, either <code class="code">t</code> or <code class="code">nil</code>.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Buttons.html">Buttons</a>, Previous: <a href="Images.html">Images</a>, Up: <a href="Display.html">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

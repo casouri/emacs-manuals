@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Function Debugging (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Function Debugging (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Infinite-Loops.html" rel="prev" title="Infinite Loops">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,14 +48,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Function-Debugging"></span><div class="header">
+<div class="subsection-level-extent" id="Function-Debugging">
+<div class="nav-panel">
 <p>
-Next: <a href="Explicit-Debug.html" accesskey="n" rel="next">Explicit Debug</a>, Previous: <a href="Infinite-Loops.html" accesskey="p" rel="prev">Infinite Loops</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Explicit-Debug.html" accesskey="n" rel="next">Explicit Entry to the Debugger</a>, Previous: <a href="Infinite-Loops.html" accesskey="p" rel="prev">Debugging Infinite Loops</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">The Lisp Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Entering-the-Debugger-on-a-Function-Call"></span><h4 class="subsection">17.1.3 Entering the Debugger on a Function Call</h4>
-<span id="index-function-call-debugging"></span>
-<span id="index-debugging-specific-functions"></span>
+<h4 class="subsection" id="Entering-the-Debugger-on-a-Function-Call"><span>17.1.3 Entering the Debugger on a Function Call<a class="copiable-link" href="#Entering-the-Debugger-on-a-Function-Call"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-function-call-debugging"></a>
+<a class="index-entry-id" id="index-debugging-specific-functions"></a>
 
 <p>To investigate a problem that happens in the middle of a program, one
 useful technique is to enter the debugger whenever a certain function is
@@ -72,9 +65,9 @@ and then step through the function, or you can do this to a function
 called shortly before the problem, step quickly over the call to that
 function, and then step through its caller.
 </p>
-<dl>
-<dt id="index-debug_002don_002dentry">Command: <strong>debug-on-entry</strong> <em>function-name</em></dt>
-<dd><p>This function requests <var>function-name</var> to invoke the debugger each
+<dl class="first-deffn">
+<dt class="deffn" id="index-debug_002don_002dentry"><span class="category-def">Command: </span><span><strong class="def-name">debug-on-entry</strong> <var class="def-var-arguments">function-name</var><a class="copiable-link" href="#index-debug_002don_002dentry"> &para;</a></span></dt>
+<dd><p>This function requests <var class="var">function-name</var> to invoke the debugger each
 time it is called.
 </p>
 <p>Any function or macro defined as Lisp code may be set to break on
@@ -86,24 +79,24 @@ arguments).  You can also set debug-on-entry for primitive functions
 primitive is called from Lisp code.  Debug-on-entry is not allowed for
 special forms.
 </p>
-<p>When <code>debug-on-entry</code> is called interactively, it prompts for
-<var>function-name</var> in the minibuffer.  If the function is already set
-up to invoke the debugger on entry, <code>debug-on-entry</code> does nothing.
-<code>debug-on-entry</code> always returns <var>function-name</var>.
+<p>When <code class="code">debug-on-entry</code> is called interactively, it prompts for
+<var class="var">function-name</var> in the minibuffer.  If the function is already set
+up to invoke the debugger on entry, <code class="code">debug-on-entry</code> does nothing.
+<code class="code">debug-on-entry</code> always returns <var class="var">function-name</var>.
 </p>
 <p>Here&rsquo;s an example to illustrate use of this function:
 </p>
 <div class="example">
-<pre class="example">(defun fact (n)
+<div class="group"><pre class="example-preformatted">(defun fact (n)
   (if (zerop n) 1
       (* n (fact (1- n)))))
      &rArr; fact
-</pre><pre class="example">(debug-on-entry 'fact)
+</pre></div><div class="group"><pre class="example-preformatted">(debug-on-entry 'fact)
      &rArr; fact
-</pre><pre class="example">(fact 3)
-</pre><pre class="example">
+</pre></div><div class="group"><pre class="example-preformatted">(fact 3)
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">------ Buffer: *Backtrace* ------
+</pre><div class="group"><pre class="example-preformatted">------ Buffer: *Backtrace* ------
 Debugger entered--entering a function:
 * fact(3)
   eval((fact 3))
@@ -111,25 +104,26 @@ Debugger entered--entering a function:
   eval-last-sexp(nil)
   call-interactively(eval-last-sexp)
 ------ Buffer: *Backtrace* ------
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-cancel_002ddebug_002don_002dentry">Command: <strong>cancel-debug-on-entry</strong> <em>&amp;optional function-name</em></dt>
-<dd><p>This function undoes the effect of <code>debug-on-entry</code> on
-<var>function-name</var>.  When called interactively, it prompts for
-<var>function-name</var> in the minibuffer.  If <var>function-name</var> is
-omitted or <code>nil</code>, it cancels break-on-entry for all functions.
-Calling <code>cancel-debug-on-entry</code> does nothing to a function which is
+<dl class="first-deffn">
+<dt class="deffn" id="index-cancel_002ddebug_002don_002dentry"><span class="category-def">Command: </span><span><strong class="def-name">cancel-debug-on-entry</strong> <var class="def-var-arguments">&amp;optional function-name</var><a class="copiable-link" href="#index-cancel_002ddebug_002don_002dentry"> &para;</a></span></dt>
+<dd><p>This function undoes the effect of <code class="code">debug-on-entry</code> on
+<var class="var">function-name</var>.  When called interactively, it prompts for
+<var class="var">function-name</var> in the minibuffer.  If <var class="var">function-name</var> is
+omitted or <code class="code">nil</code>, it cancels break-on-entry for all functions.
+Calling <code class="code">cancel-debug-on-entry</code> does nothing to a function which is
 not currently set up to break on entry.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Explicit-Debug.html" accesskey="n" rel="next">Explicit Debug</a>, Previous: <a href="Infinite-Loops.html" accesskey="p" rel="prev">Infinite Loops</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Explicit-Debug.html">Explicit Entry to the Debugger</a>, Previous: <a href="Infinite-Loops.html">Debugging Infinite Loops</a>, Up: <a href="Debugger.html">The Lisp Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

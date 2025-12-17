@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Init Rebinding (GNU Emacs Manual)</title>
+
+<meta name="description" content="Init Rebinding (GNU Emacs Manual)">
+<meta name="keywords" content="Init Rebinding (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Key-Bindings.html" rel="up" title="Key Bindings">
+<link href="Modifier-Keys.html" rel="next" title="Modifier Keys">
+<link href="Rebinding.html" rel="prev" title="Rebinding">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Init-Rebinding">
+<div class="nav-panel">
+<p>
+Next: <a href="Modifier-Keys.html" accesskey="n" rel="next">Modifier Keys</a>, Previous: <a href="Rebinding.html" accesskey="p" rel="prev">Changing Key Bindings Interactively</a>, Up: <a href="Key-Bindings.html" accesskey="u" rel="up">Customizing Key Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Rebinding-Keys-in-Your-Init-File"><span>50.3.6 Rebinding Keys in Your Init File<a class="copiable-link" href="#Rebinding-Keys-in-Your-Init-File"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-rebinding-major-mode-keys"></a>
+<a class="index-entry-id" id="index-key-rebinding_002c-permanent"></a>
+<a class="index-entry-id" id="index-rebinding-keys_002c-permanently"></a>
+
+<p>If you have a set of key bindings that you like to use all the time,
+you can specify them in your initialization file by writing Lisp code.
+See <a class="xref" href="Init-File.html">The Emacs Initialization File</a>, for a description of the initialization file.
+</p>
+<a class="index-entry-id" id="index-keymap_002dglobal_002dset-1"></a>
+<p>The recommended way to write a key binding using Lisp is to use
+either the <code class="code">keymap-global-set</code> or the <code class="code">keymap-set</code>
+functions.  For example, here&rsquo;s how to bind <kbd class="kbd">C-z</kbd> to the
+<code class="code">shell</code> command in the global keymap (see <a class="pxref" href="Interactive-Shell.html">Interactive Subshell</a>):
+</p>
+<div class="example">
+<pre class="example-preformatted">(keymap-global-set &quot;C-z&quot; 'shell)
+</pre></div>
+
+<a class="index-entry-id" id="index-key-sequence-syntax"></a>
+<p>The first argument to <code class="code">keymap-global-set</code> describes the key
+sequence.  It is a string made of a series of characters separated
+by spaces, with each character corresponding to a key.  Keys with
+modifiers can be specified by prepending the modifier, such as
+&lsquo;<samp class="samp">C-</samp>&rsquo; for Control, or &lsquo;<samp class="samp">M-</samp>&rsquo; for Meta.  Special keys, such as
+<kbd class="key">TAB</kbd> and <kbd class="key">RET</kbd>, can be specified within angle brackets as in
+<kbd class="kbd"><kbd class="key">TAB</kbd></kbd> and <kbd class="kbd"><kbd class="key">RET</kbd></kbd>.
+</p>
+<p>The single-quote before the command name that is being bound to the
+key sequence, <code class="code">shell</code> in the above example, marks it as a
+constant symbol rather than a variable.  If you omit the quote, Emacs
+would try to evaluate <code class="code">shell</code> as a variable.  This will probably
+cause an error; it certainly isn&rsquo;t what you want.
+</p>
+<p>Here are some additional examples, including binding function keys
+and mouse events:
+</p>
+<div class="example">
+<pre class="example-preformatted">(keymap-global-set &quot;C-c y&quot; 'clipboard-yank)
+(keymap-global-set &quot;C-M-q&quot; 'query-replace)
+(keymap-global-set &quot;&lt;f5&gt;&quot; 'flyspell-mode)
+(keymap-global-set &quot;C-&lt;f5&gt;&quot; 'display-line-numbers-mode)
+(keymap-global-set &quot;C-&lt;right&gt;&quot; 'forward-sentence)
+(keymap-global-set &quot;&lt;mouse-2&gt;&quot; 'mouse-save-then-kill)
+</pre></div>
+
+<p>Language and coding systems may cause problems with key bindings for
+non-<abbr class="acronym">ASCII</abbr> characters.  See <a class="xref" href="Init-Non_002dASCII.html">Non-<abbr class="acronym">ASCII</abbr> Characters in Init Files</a>.
+</p>
+<a class="index-entry-id" id="index-global_002dset_002dkey"></a>
+<a class="index-entry-id" id="index-define_002dkey"></a>
+<p>Alternatively, you can use the low level functions <code class="code">define-key</code>
+and <code class="code">global-set-key</code>.  For example, to bind <kbd class="kbd">C-z</kbd> to the
+<code class="code">shell</code> command, as in the above example, using these low-level
+functions, use:
+</p>
+<div class="example">
+<pre class="example-preformatted">(global-set-key (kbd &quot;C-z&quot;) 'shell)
+</pre></div>
+
+<a class="index-entry-id" id="index-kbd"></a>
+<p>There are various ways to specify the key sequence but the simplest is
+to use the function <code class="code">kbd</code> as shown in the example above.
+<code class="code">kbd</code> takes a single string argument that is a textual
+representation of a key sequence, and converts it into a form suitable
+for low-level functions such as <code class="code">global-set-key</code>.  For more
+details about binding keys using Lisp, see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Keymaps.html#Keymaps">Keymaps</a> in <cite class="cite">The
+Emacs Lisp Reference Manual</cite>.
+</p>
+<a class="index-entry-id" id="index-keymap_002dset"></a>
+<a class="index-entry-id" id="index-keymap_002dunset"></a>
+<p>As described in <a class="ref" href="Local-Keymaps.html">Local Keymaps</a>, major modes and minor modes can
+define local keymaps.  These keymaps are constructed when the mode is
+loaded for the first time in a session.  The function <code class="code">keymap-set</code>
+can be used to make changes in a specific keymap.  To remove a key
+binding, use <code class="code">keymap-unset</code>.
+</p>
+<p>Since a mode&rsquo;s keymaps are not constructed until it has been loaded,
+you must delay running code which modifies them, e.g., by putting it
+on a <em class="dfn">mode hook</em> (see <a class="pxref" href="Hooks.html">Hooks</a>).  For example, Texinfo mode
+runs the hook <code class="code">texinfo-mode-hook</code>.  Here&rsquo;s how you can use the
+hook to add local bindings for <kbd class="kbd">C-c n</kbd> and <kbd class="kbd">C-c p</kbd>, and remove
+the one for <kbd class="kbd">C-c C-x x</kbd> in Texinfo mode:
+</p>
+<div class="example">
+<pre class="example-preformatted">(add-hook 'texinfo-mode-hook
+          (lambda ()
+            (keymap-set texinfo-mode-map &quot;C-c p&quot;
+                        'backward-paragraph)
+            (keymap-set texinfo-mode-map &quot;C-c n&quot;
+                        'forward-paragraph)))
+            (keymap-set texinfo-mode-map &quot;C-c C-x x&quot; nil)
+</pre></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Modifier-Keys.html">Modifier Keys</a>, Previous: <a href="Rebinding.html">Changing Key Bindings Interactively</a>, Up: <a href="Key-Bindings.html">Customizing Key Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

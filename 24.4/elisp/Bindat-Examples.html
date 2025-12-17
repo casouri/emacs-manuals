@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Bindat Examples (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Bindat Examples (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Byte-Packing.html" rel="up" title="Byte Packing">
-<link href="Display.html" rel="next" title="Display">
 <link href="Bindat-Functions.html" rel="prev" title="Bindat Functions">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,17 +46,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Bindat-Examples"></span><div class="header">
+<div class="subsection-level-extent" id="Bindat-Examples">
+<div class="nav-panel">
 <p>
-Previous: <a href="Bindat-Functions.html" accesskey="p" rel="prev">Bindat Functions</a>, Up: <a href="Byte-Packing.html" accesskey="u" rel="up">Byte Packing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Bindat-Functions.html" accesskey="p" rel="prev">Functions to Unpack and Pack Bytes</a>, Up: <a href="Byte-Packing.html" accesskey="u" rel="up">Packing and Unpacking Byte Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Examples-of-Byte-Unpacking-and-Packing"></span><h4 class="subsection">36.20.3 Examples of Byte Unpacking and Packing</h4>
+<h4 class="subsection" id="Examples-of-Byte-Unpacking-and-Packing"><span>36.20.3 Examples of Byte Unpacking and Packing<a class="copiable-link" href="#Examples-of-Byte-Unpacking-and-Packing"> &para;</a></span></h4>
 
 <p>Here is a complete example of byte unpacking and packing:
 </p>
-<div class="lisp">
-<pre class="lisp">(require 'bindat)
+<div class="example lisp">
+<pre class="lisp-preformatted">(require 'bindat)
 
 (defvar fcookie-index-spec
   '((:version  u32)
@@ -149,7 +140,7 @@ COOKIES, indicates the border between entries.&quot;
 structure.  Consider the following C structures:
 </p>
 <div class="example">
-<pre class="example">struct header {
+<pre class="example-preformatted">struct header {
     unsigned long    dest_ip;
     unsigned long    src_ip;
     unsigned short   dest_port;
@@ -176,8 +167,8 @@ struct packet {
 
 <p>The corresponding data layout specification is:
 </p>
-<div class="lisp">
-<pre class="lisp">(setq header-spec
+<div class="example lisp">
+<pre class="lisp-preformatted">(setq header-spec
       '((dest-ip   ip)
         (src-ip    ip)
         (dest-port u16)
@@ -202,8 +193,8 @@ struct packet {
 
 <p>A binary data representation is:
 </p>
-<div class="lisp">
-<pre class="lisp">(setq binary-data
+<div class="example lisp">
+<pre class="lisp-preformatted">(setq binary-data
       [ 192 168 1 100 192 168 1 101 01 28 21 32
         160 134 1 0 5 1 0 0 2 0 0 0
         2 3 0 5 ?A ?B ?C ?D ?E ?F 0 0 1 2 3 4 5 0 0 0
@@ -212,8 +203,8 @@ struct packet {
 
 <p>The corresponding decoded structure is:
 </p>
-<div class="lisp">
-<pre class="lisp">(setq decoded (bindat-unpack packet-spec binary-data))
+<div class="example lisp">
+<pre class="lisp-preformatted">(setq decoded (bindat-unpack packet-spec binary-data))
      &rArr;
 ((header
   (dest-ip   . [192 168 1 100])
@@ -236,15 +227,16 @@ struct packet {
 
 <p>An example of fetching data from this structure:
 </p>
-<div class="lisp">
-<pre class="lisp">(bindat-get-field decoded 'item 1 'id)
+<div class="example lisp">
+<pre class="lisp-preformatted">(bindat-get-field decoded 'item 1 'id)
      &rArr; &quot;BCDEFG&quot;
 </pre></div>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Bindat-Functions.html" accesskey="p" rel="prev">Bindat Functions</a>, Up: <a href="Byte-Packing.html" accesskey="u" rel="up">Byte Packing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Bindat-Functions.html">Functions to Unpack and Pack Bytes</a>, Up: <a href="Byte-Packing.html">Packing and Unpacking Byte Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

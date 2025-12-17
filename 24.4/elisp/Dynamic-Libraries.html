@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Dynamic Libraries (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Dynamic Libraries (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="System-Interface.html" rel="up" title="System Interface">
-<link href="Packaging.html" rel="next" title="Packaging">
 <link href="File-Notifications.html" rel="prev" title="File Notifications">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,25 +47,26 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Dynamic-Libraries"></span><div class="header">
+<div class="section-level-extent" id="Dynamic-Libraries">
+<div class="nav-panel">
 <p>
-Previous: <a href="File-Notifications.html" accesskey="p" rel="prev">File Notifications</a>, Up: <a href="System-Interface.html" accesskey="u" rel="up">System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="File-Notifications.html" accesskey="p" rel="prev">Notifications on File Changes</a>, Up: <a href="System-Interface.html" accesskey="u" rel="up">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Dynamically-Loaded-Libraries"></span><h3 class="section">38.20 Dynamically Loaded Libraries</h3>
-<span id="index-dynamic-libraries"></span>
+<h3 class="section" id="Dynamically-Loaded-Libraries"><span>38.20 Dynamically Loaded Libraries<a class="copiable-link" href="#Dynamically-Loaded-Libraries"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-dynamic-libraries"></a>
 
-<p>A <em>dynamically loaded library</em> is a library that is loaded on
+<p>A <em class="dfn">dynamically loaded library</em> is a library that is loaded on
 demand, when its facilities are first needed.  Emacs supports such
 on-demand loading of support libraries for some of its features.
 </p>
-<dl>
-<dt id="index-dynamic_002dlibrary_002dalist">Variable: <strong>dynamic-library-alist</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-dynamic_002dlibrary_002dalist"><span class="category-def">Variable: </span><span><strong class="def-name">dynamic-library-alist</strong><a class="copiable-link" href="#index-dynamic_002dlibrary_002dalist"> &para;</a></span></dt>
 <dd><p>This is an alist of dynamic libraries and external library files
 implementing them.
 </p>
 <p>Each element is a list of the form
-<code>(<var>library</var>&nbsp;<var>files</var>&hellip;)</code><!-- /@w -->, where the <code>car</code> is
+<code class="code">(<var class="var">library</var>&nbsp;<var class="var">files</var>&hellip;)</code><!-- /@w -->, where the <code class="code">car</code> is
 a symbol representing a supported external library, and the rest are
 strings giving alternate filenames for that library.
 </p>
@@ -87,7 +79,7 @@ unavailable.
 of setting this variable for supporting images on MS-Windows:
 </p>
 <div class="example">
-<pre class="example">(setq dynamic-library-alist
+<pre class="example-preformatted">(setq dynamic-library-alist
       '((xpm &quot;libxpm.dll&quot; &quot;xpm4.dll&quot; &quot;libXpm-nox4.dll&quot;)
         (png &quot;libpng12d.dll&quot; &quot;libpng12.dll&quot; &quot;libpng.dll&quot;
              &quot;libpng13d.dll&quot; &quot;libpng13.dll&quot;)
@@ -101,7 +93,7 @@ of setting this variable for supporting images on MS-Windows:
 	(gobject &quot;libgobject-2.0-0.dll&quot;)))
 </pre></div>
 
-<p>Note that image types <code>pbm</code> and <code>xbm</code> do not need entries in
+<p>Note that image types <code class="code">pbm</code> and <code class="code">xbm</code> do not need entries in
 this variable because they do not depend on external libraries and are
 always available in Emacs.
 </p>
@@ -109,10 +101,16 @@ always available in Emacs.
 accessing external libraries; only those already known by Emacs can
 be loaded through it.
 </p>
-<p>This variable is ignored if the given <var>library</var> is statically
+<p>This variable is ignored if the given <var class="var">library</var> is statically
 linked into Emacs.
 </p></dd></dl>
 
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="File-Notifications.html">Notifications on File Changes</a>, Up: <a href="System-Interface.html">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

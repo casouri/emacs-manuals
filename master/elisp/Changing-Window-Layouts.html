@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 31.0.50.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Changing Window Layouts (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Changing Window Layouts (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Changing Window Layouts (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Windows.html" rel="up" title="Windows">
+<link href="Cyclic-Window-Ordering.html" rel="next" title="Cyclic Window Ordering">
+<link href="Resurrecting-Windows.html" rel="prev" title="Resurrecting Windows">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Changing-Window-Layouts">
+<div class="nav-panel">
+<p>
+Next: <a href="Cyclic-Window-Ordering.html" accesskey="n" rel="next">Cyclic Ordering of Windows</a>, Previous: <a href="Resurrecting-Windows.html" accesskey="p" rel="prev">Resurrecting Windows</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Changing-Window-Layouts-1"><span>29.11 Changing Window Layouts<a class="copiable-link" href="#Changing-Window-Layouts-1"> &para;</a></span></h3>
+
+<p>Sometimes it can be useful to change the layout of windows such that two
+or more windows occupy the locations of each other.  The commands
+described in this section do that in an orderly manner.  Conceptually,
+these commands affect a rectangular subset of the windows on a frame.
+As a rule, they neither affect the location of a frame&rsquo;s minibuffer
+window nor of any of its side windows (see <a class="pxref" href="Side-Windows.html">Side Windows</a>).
+</p>
+<p>Common to all these commands is that they preserve the identity of
+windows by deleting them first and resurrecting them
+(see <a class="pxref" href="Resurrecting-Windows.html">Resurrecting Windows</a>) in their new locations afterwards.  No
+window gets lost and no window is added or duplicated.  Where possible,
+these commands try to preserve the relative size of windows as well as
+all other non-geometric properties including parameters.
+</p>
+<p>The <var class="var">window</var> argument of all functions described in this section
+must specify a valid parent window (see <a class="pxref" href="Windows-and-Frames.html">Windows and Frames</a>).  If it
+is <code class="code">nil</code>, it stands for the main window (see <a class="pxref" href="Side-Windows.html">Side Windows</a>) of
+the selected frame.  Interactively, a prefix argument means to operate
+on the parent window of the selected window.  In the examples given
+below, we shall always assume that the windows displayed constitute
+their frame&rsquo;s main window and the <var class="var">window</var> argument is <code class="code">nil</code>
+unless stated otherwise.
+</p>
+<p>The first two commands rotate a window layout either clockwise or
+counterclockwise.
+<a class="index-entry-id" id="index-rotate-window-layout"></a>
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-window_002dlayout_002drotate_002dclockwise"><span class="category-def">Command: </span><span><strong class="def-name">window-layout-rotate-clockwise</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dlayout_002drotate_002dclockwise"> &para;</a></span></dt>
+<dd><p>This command rotates the window layout clockwise by 90 degrees.  Imagine
+a layout with three live windows <var class="var">A</var>, <var class="var">B</var> and <var class="var">C</var> as
+depicted on the left below.  Then this command will produce the layout
+on the right.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">     ___________       ___________
+    |           |     |     |     |
+    |     A     |     |  B  |     |
+    |___________| --&gt; |_____|  A  |
+    |     |     |     |     |     |
+    |  B  |  C  |     |  C  |     |
+    |_____|_____|     |_____|_____|
+
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-window_002dlayout_002drotate_002danticlockwise"><span class="category-def">Command: </span><span><strong class="def-name">window-layout-rotate-anticlockwise</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dlayout_002drotate_002danticlockwise"> &para;</a></span></dt>
+<dd><p>This is like <code class="code">window-layout-rotate-clockwise</code> but rotates the
+layout in the opposite direction as demonstrated in the example below.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">     ___________       ___________
+    |           |     |     |     |
+    |     A     |     |     |  C  |
+    |___________| --&gt; |  A  |_____|
+    |     |     |     |     |     |
+    |  B  |  C  |     |     |  B  |
+    |_____|_____|     |_____|_____|
+
+</pre></div></div>
+</dd></dl>
+
+<p>The next two commands <small class="sc">FLIP</small> the window layout&mdash;rotate it around an
+imaginary horizontal or vertical axis.
+<a class="index-entry-id" id="index-flip-window-layout"></a>
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-window_002dlayout_002dflip_002dtopdown"><span class="category-def">Command: </span><span><strong class="def-name">window-layout-flip-topdown</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dlayout_002dflip_002dtopdown"> &para;</a></span></dt>
+<dd><p>This command flips windows such that windows on the bottom become
+windows on the top and vice-versa as in the example below.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">     ___________       ___________
+    |           |     |     |     |
+    |     A     |     |  B  |  C  |
+    |___________| --&gt; |_____|_____|
+    |     |     |     |           |
+    |  B  |  C  |     |     A     |
+    |_____|_____|     |___________|
+
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-window_002dlayout_002dflip_002dleftright"><span class="category-def">Command: </span><span><strong class="def-name">window-layout-flip-leftright</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dlayout_002dflip_002dleftright"> &para;</a></span></dt>
+<dd><p>This command rearranges window in a way that the windows on the right
+become the window on the left, and vice-versa.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">     ___________        ___________
+    |           |     |           |
+    |     A     |     |     A     |
+    |___________| --&gt; |___________|
+    |     |     |     |     |     |
+    |  B  |  C  |     |  C  |  B  |
+    |_____|_____|     |_____|_____|
+
+</pre></div></div>
+</dd></dl>
+
+<p>The next command can be used for <small class="sc">TRANSPOSING</small> windows&mdash;changing
+horizontal splits to vertical ones and vice-versa.
+<a class="index-entry-id" id="index-transposing-windows"></a>
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-window_002dlayout_002dtranspose"><span class="category-def">Command: </span><span><strong class="def-name">window-layout-transpose</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dlayout_002dtranspose"> &para;</a></span></dt>
+<dd><p>This command reorganizes windows such that every horizontal split
+becomes a vertical split and vice versa.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">     ___________       ___________
+    |           |     |     |     |
+    |     A     |     |     |  B  |
+    |___________| --&gt; |  A  |_____|
+    |     |     |     |     |     |
+    |  B  |  C  |     |     |  C  |
+    |_____|_____|     |_____|_____|
+
+</pre></div></div>
+</dd></dl>
+
+<p>The final two commands can be used to rotate windows within the existing
+layout.  They are like the commands that rotate the layout but leave the
+underlying structure of the layout unchanged.  What actually changes are
+the positions of windows within the existing layout.
+<a class="index-entry-id" id="index-rotating-windows"></a>
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-rotate_002dwindows"><span class="category-def">Command: </span><span><strong class="def-name">rotate-windows</strong> <var class="def-var-arguments">&amp;optional window reverse</var><a class="copiable-link" href="#index-rotate_002dwindows"> &para;</a></span></dt>
+<dd><p>This rotate windows under <var class="var">window</var> in cyclic ordering.  The optional
+argument <var class="var">reverse</var> means to rotate windows backward, in reverse
+cyclic order.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">     ___________        ___________
+    |           |      |           |
+    |     A     |      |     C     |
+    |___________| --&gt;  |___________|
+    |     |     |      |     |     |
+    |  B  |  C  |      |  A  |  B  |
+    |_____|_____|      |_____|_____|
+
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-rotate_002dwindows_002dback"><span class="category-def">Command: </span><span><strong class="def-name">rotate-windows-back</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-rotate_002dwindows_002dback"> &para;</a></span></dt>
+<dd><p>This command rotates windows under <var class="var">window</var> backward in cyclic
+ordering.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">     ___________        ___________
+    |           |      |           |
+    |     A     |      |     B     |
+    |___________| --&gt;  |___________|
+    |     |     |      |     |     |
+    |  B  |  C  |      |  C  |  A  |
+    |_____|_____|      |_____|_____|
+
+</pre></div></div>
+</dd></dl>
+
+<p>The last two commands are subject to the following option.
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-rotate_002dwindows_002dchange_002dselected"><span class="category-def">User Option: </span><span><strong class="def-name">rotate-windows-change-selected</strong><a class="copiable-link" href="#index-rotate_002dwindows_002dchange_002dselected"> &para;</a></span></dt>
+<dd><p>If this is <code class="code">nil</code>, the selected window will remain unaffected by
+<code class="code">rotate-windows</code> and <code class="code">rotate-windows-back</code>.  Otherwise, the
+selected window will change to the window that appears at the location
+of the selected window before any of these commands were invoked.
+</p></dd></dl>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Cyclic-Window-Ordering.html">Cyclic Ordering of Windows</a>, Previous: <a href="Resurrecting-Windows.html">Resurrecting Windows</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

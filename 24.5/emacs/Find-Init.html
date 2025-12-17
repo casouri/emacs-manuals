@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.5.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Find Init (GNU Emacs Manual)</title>
 
 <meta name="description" content="Find Init (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Terminal-Init.html" rel="prev" title="Terminal Init">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,32 +49,34 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Find-Init"></span><div class="header">
+<div class="subsection-level-extent" id="Find-Init">
+<div class="nav-panel">
 <p>
-Next: <a href="Init-Non_002dASCII.html" accesskey="n" rel="next">Init Non-ASCII</a>, Previous: <a href="Terminal-Init.html" accesskey="p" rel="prev">Terminal Init</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">Init File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Init-Non_002dASCII.html" accesskey="n" rel="next">Non-<abbr class="acronym">ASCII</abbr> Characters in Init Files</a>, Previous: <a href="Terminal-Init.html" accesskey="p" rel="prev">Terminal-specific Initialization</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="How-Emacs-Finds-Your-Init-File"></span><h4 class="subsection">48.4.4 How Emacs Finds Your Init File</h4>
+<h4 class="subsection" id="How-Emacs-Finds-Your-Init-File"><span>48.4.4 How Emacs Finds Your Init File<a class="copiable-link" href="#How-Emacs-Finds-Your-Init-File"> &para;</a></span></h4>
 
-<p>Normally Emacs uses the environment variable <code>HOME</code>
-(see <a href="General-Variables.html">HOME</a>) to find <samp>.emacs</samp>; that&rsquo;s what
-&lsquo;<samp>~</samp>&rsquo; means in a file name.  If <samp>.emacs</samp> is not found inside
-<samp>~/</samp> (nor <samp>.emacs.el</samp>), Emacs looks for
-<samp>~/.emacs.d/init.el</samp> (which, like <samp>~/.emacs.el</samp>, can be
+<p>Normally Emacs uses the environment variable <code class="env">HOME</code>
+(see <a class="pxref" href="General-Variables.html">HOME</a>) to find <samp class="file">.emacs</samp>; that&rsquo;s what
+&lsquo;<samp class="samp">~</samp>&rsquo; means in a file name.  If <samp class="file">.emacs</samp> is not found inside
+<samp class="file">~/</samp> (nor <samp class="file">.emacs.el</samp>), Emacs looks for
+<samp class="file">~/.emacs.d/init.el</samp> (which, like <samp class="file">~/.emacs.el</samp>, can be
 byte-compiled).
 </p>
-<p>However, if you run Emacs from a shell started by <code>su</code>, Emacs
-tries to find your own <samp>.emacs</samp>, not that of the user you are
+<p>However, if you run Emacs from a shell started by <code class="code">su</code>, Emacs
+tries to find your own <samp class="file">.emacs</samp>, not that of the user you are
 currently pretending to be.  The idea is that you should get your own
 editor customizations even if you are running as the super user.
 </p>
 <p>More precisely, Emacs first determines which user&rsquo;s init file to use.
-It gets your user name from the environment variables <code>LOGNAME</code> and
-<code>USER</code>; if neither of those exists, it uses effective user-ID.
-If that user name matches the real user-ID, then Emacs uses <code>HOME</code>;
+It gets your user name from the environment variables <code class="env">LOGNAME</code> and
+<code class="env">USER</code>; if neither of those exists, it uses effective user-ID.
+If that user name matches the real user-ID, then Emacs uses <code class="env">HOME</code>;
 otherwise, it looks up the home directory corresponding to that user
 name in the system&rsquo;s data base of users.
 </p>
+</div>
 
 
 

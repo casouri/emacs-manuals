@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Comment Tips (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Comment Tips (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Comment Tips (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Tips.html" rel="up" title="Tips">
+<link href="Library-Headers.html" rel="next" title="Library Headers">
+<link href="Documentation-Tips.html" rel="prev" title="Documentation Tips">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Comment-Tips">
+<div class="nav-panel">
+<p>
+Next: <a href="Library-Headers.html" accesskey="n" rel="next">Conventional Headers for Emacs Libraries</a>, Previous: <a href="Documentation-Tips.html" accesskey="p" rel="prev">Tips for Documentation Strings</a>, Up: <a href="Tips.html" accesskey="u" rel="up">Tips and Conventions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Tips-on-Writing-Comments"><span>D.7 Tips on Writing Comments<a class="copiable-link" href="#Tips-on-Writing-Comments"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-comments_002c-Lisp-convention-for"></a>
+<a class="index-entry-id" id="index-conventions-for-Lisp-comments"></a>
+
+<p>We recommend these conventions for comments:
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">;</samp>&rsquo;</dt>
+<dd><p>Comments that start with a single semicolon, &lsquo;<samp class="samp">;</samp>&rsquo;, should all be
+aligned to the same column on the right of the source code.  Such
+comments usually explain how the code on that line does its job.
+For example:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq base-version-list                 ; There was a base
+      (assoc (substring fn 0 start-vn)  ; version to which
+             file-version-assoc-list))  ; this looks like
+                                        ; a subversion.
+</pre></div></div>
+
+</dd>
+<dt>&lsquo;<samp class="samp">;;</samp>&rsquo;</dt>
+<dd><p>Comments that start with two semicolons, &lsquo;<samp class="samp">;;</samp>&rsquo;, should be aligned to
+the same level of indentation as the code.  Such comments usually
+describe the purpose of the following lines or the state of the program
+at that point.  For example:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(prog1 (setq auto-fill-function
+             ...
+             ...
+  ;; Update mode line.
+  (force-mode-line-update)))
+</pre></div></div>
+
+<p>We also normally use two semicolons for comments outside functions.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;; This Lisp code is run in Emacs when it is to operate as
+;; a server for other processes.
+</pre></div></div>
+
+<p>If a function has no documentation string, it should instead have a
+two-semicolon comment right before the function, explaining what the
+function does and how to call it properly.  Explain precisely what
+each argument means and how the function interprets its possible
+values.  It is much better to convert such comments to documentation
+strings, though.
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">;;;</samp>&rsquo;</dt>
+<dd>
+<p>Comments that start with three (or more) semicolons, &lsquo;<samp class="samp">;;;</samp>&rsquo;,
+should start at the left margin.  We use them for comments that should
+be considered a heading by Outline minor mode.  By default, comments
+starting with at least three semicolons (followed by a single space
+and a non-whitespace character) are considered section headings,
+comments starting with two or fewer are not.
+</p>
+<p>(Historically, triple-semicolon comments have also been used for
+commenting out lines within a function, but this use is discouraged in
+favor of using just two semicolons.  This also applies when commenting
+out entire functions; when doing that use two semicolons as well.)
+</p>
+<p>Three semicolons are used for top-level sections, four for
+sub-sections, five for sub-sub-sections and so on.
+</p>
+<p>Typically libraries have at least four top-level sections.  For
+example when the bodies of all of these sections are hidden:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">;;; backquote.el --- implement the ` Lisp construct...
+;;; Commentary:...
+;;; Code:...
+;;; backquote.el ends here
+</pre></div></div>
+
+<p>(In a sense the last line is not a section heading as it must
+never be followed by any text; after all it marks the end of the
+file.)
+</p>
+<p>For longer libraries it is advisable to split the code into multiple
+sections.  This can be done by splitting the &lsquo;<samp class="samp">Code:</samp>&rsquo; section into
+multiple sub-sections.  Even though that was the only recommended
+approach for a long time, many people have chosen to use multiple
+top-level code sections instead.  You may chose either style.
+</p>
+<p>Using multiple top-level code sections has the advantage that it
+avoids introducing an additional nesting level but it also means that
+the section named &lsquo;<samp class="samp">Code</samp>&rsquo; does not contain all the code, which is
+awkward.  To avoid that, you should put no code at all inside that
+section; that way it can be considered a separator instead of a
+section heading.
+</p>
+<p>Finally, we recommend that you don&rsquo;t end headings with a colon or any
+other punctuation for that matter.  For historic reasons the
+&lsquo;<samp class="samp">Code:</samp>&rsquo; and &lsquo;<samp class="samp">Commentary:</samp>&rsquo; headings end with a colon, but we
+recommend that you don&rsquo;t do the same for other headings anyway.
+</p>
+</dd>
+</dl>
+
+<p>Generally speaking, the <kbd class="kbd">M-;</kbd> (<code class="code">comment-dwim</code>) command
+automatically starts a comment of the appropriate type; or indents an
+existing comment to the right place, depending on the number of
+semicolons.
+See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Comments.html#Comments">Manipulating Comments</a> in <cite class="cite">The GNU Emacs Manual</cite>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Library-Headers.html">Conventional Headers for Emacs Libraries</a>, Previous: <a href="Documentation-Tips.html">Tips for Documentation Strings</a>, Up: <a href="Tips.html">Tips and Conventions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

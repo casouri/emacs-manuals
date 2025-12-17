@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Writing to Files (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Writing to Files (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Reading-from-Files.html" rel="prev" title="Reading from Files">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,117 +47,119 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Writing-to-Files"></span><div class="header">
+<div class="section-level-extent" id="Writing-to-Files">
+<div class="nav-panel">
 <p>
 Next: <a href="File-Locks.html" accesskey="n" rel="next">File Locks</a>, Previous: <a href="Reading-from-Files.html" accesskey="p" rel="prev">Reading from Files</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Writing-to-Files-1"></span><h3 class="section">25.4 Writing to Files</h3>
-<span id="index-writing-to-files"></span>
+<h3 class="section" id="Writing-to-Files-1"><span>25.4 Writing to Files<a class="copiable-link" href="#Writing-to-Files-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-writing-to-files"></a>
 
 <p>You can write the contents of a buffer, or part of a buffer, directly
-to a file on disk using the <code>append-to-file</code> and
-<code>write-region</code> functions.  Don&rsquo;t use these functions to write to
+to a file on disk using the <code class="code">append-to-file</code> and
+<code class="code">write-region</code> functions.  Don&rsquo;t use these functions to write to
 files that are being visited; that could cause confusion in the
 mechanisms for visiting.
 </p>
-<dl>
-<dt id="index-append_002dto_002dfile">Command: <strong>append-to-file</strong> <em>start end filename</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-append_002dto_002dfile"><span class="category-def">Command: </span><span><strong class="def-name">append-to-file</strong> <var class="def-var-arguments">start end filename</var><a class="copiable-link" href="#index-append_002dto_002dfile"> &para;</a></span></dt>
 <dd><p>This function appends the contents of the region delimited by
-<var>start</var> and <var>end</var> in the current buffer to the end of file
-<var>filename</var>.  If that file does not exist, it is created.  This
-function returns <code>nil</code>.
+<var class="var">start</var> and <var class="var">end</var> in the current buffer to the end of file
+<var class="var">filename</var>.  If that file does not exist, it is created.  This
+function returns <code class="code">nil</code>.
 </p>
-<p>An error is signaled if <var>filename</var> specifies a nonwritable file,
+<p>An error is signaled if <var class="var">filename</var> specifies a nonwritable file,
 or a nonexistent file in a directory where files cannot be created.
 </p>
 <p>When called from Lisp, this function is completely equivalent to:
 </p>
 <div class="example">
-<pre class="example">(write-region start end filename t)
+<pre class="example-preformatted">(write-region start end filename t)
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-write_002dregion">Command: <strong>write-region</strong> <em>start end filename &amp;optional append visit lockname mustbenew</em></dt>
-<dd><p>This function writes the region delimited by <var>start</var> and <var>end</var>
-in the current buffer into the file specified by <var>filename</var>.
+<dl class="first-deffn">
+<dt class="deffn" id="index-write_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">write-region</strong> <var class="def-var-arguments">start end filename &amp;optional append visit lockname mustbenew</var><a class="copiable-link" href="#index-write_002dregion"> &para;</a></span></dt>
+<dd><p>This function writes the region delimited by <var class="var">start</var> and <var class="var">end</var>
+in the current buffer into the file specified by <var class="var">filename</var>.
 </p>
-<p>If <var>start</var> is <code>nil</code>, then the command writes the entire buffer
-contents (<em>not</em> just the accessible portion) to the file and
-ignores <var>end</var>.
+<p>If <var class="var">start</var> is <code class="code">nil</code>, then the command writes the entire buffer
+contents (<em class="emph">not</em> just the accessible portion) to the file and
+ignores <var class="var">end</var>.
 </p>
-<p>If <var>start</var> is a string, then <code>write-region</code> writes or appends
-that string, rather than text from the buffer.  <var>end</var> is ignored in
+<p>If <var class="var">start</var> is a string, then <code class="code">write-region</code> writes or appends
+that string, rather than text from the buffer.  <var class="var">end</var> is ignored in
 this case.
 </p>
-<p>If <var>append</var> is non-<code>nil</code>, then the specified text is appended
-to the existing file contents (if any).  If <var>append</var> is an
-integer, <code>write-region</code> seeks to that byte offset from the start
+<p>If <var class="var">append</var> is non-<code class="code">nil</code>, then the specified text is appended
+to the existing file contents (if any).  If <var class="var">append</var> is an
+integer, <code class="code">write-region</code> seeks to that byte offset from the start
 of the file and writes the data from there.
 </p>
-<p>If <var>mustbenew</var> is non-<code>nil</code>, then <code>write-region</code> asks
-for confirmation if <var>filename</var> names an existing file.  If
-<var>mustbenew</var> is the symbol <code>excl</code>, then <code>write-region</code>
+<p>If <var class="var">mustbenew</var> is non-<code class="code">nil</code>, then <code class="code">write-region</code> asks
+for confirmation if <var class="var">filename</var> names an existing file.  If
+<var class="var">mustbenew</var> is the symbol <code class="code">excl</code>, then <code class="code">write-region</code>
 does not ask for confirmation, but instead it signals an error
-<code>file-already-exists</code> if the file already exists.
+<code class="code">file-already-exists</code> if the file already exists.
 </p>
-<p>The test for an existing file, when <var>mustbenew</var> is <code>excl</code>, uses
+<p>The test for an existing file, when <var class="var">mustbenew</var> is <code class="code">excl</code>, uses
 a special system feature.  At least for files on a local disk, there is
 no chance that some other program could create a file of the same name
 before Emacs does, without Emacs&rsquo;s noticing.
 </p>
-<p>If <var>visit</var> is <code>t</code>, then Emacs establishes an association
+<p>If <var class="var">visit</var> is <code class="code">t</code>, then Emacs establishes an association
 between the buffer and the file: the buffer is then visiting that file.
 It also sets the last file modification time for the current buffer to
-<var>filename</var>&rsquo;s modtime, and marks the buffer as not modified.  This
-feature is used by <code>save-buffer</code>, but you probably should not use
+<var class="var">filename</var>&rsquo;s modtime, and marks the buffer as not modified.  This
+feature is used by <code class="code">save-buffer</code>, but you probably should not use
 it yourself.
 </p>
-<p>If <var>visit</var> is a string, it specifies the file name to visit.  This
-way, you can write the data to one file (<var>filename</var>) while recording
-the buffer as visiting another file (<var>visit</var>).  The argument
-<var>visit</var> is used in the echo area message and also for file locking;
-<var>visit</var> is stored in <code>buffer-file-name</code>.  This feature is used
-to implement <code>file-precious-flag</code>; don&rsquo;t use it yourself unless you
+<p>If <var class="var">visit</var> is a string, it specifies the file name to visit.  This
+way, you can write the data to one file (<var class="var">filename</var>) while recording
+the buffer as visiting another file (<var class="var">visit</var>).  The argument
+<var class="var">visit</var> is used in the echo area message and also for file locking;
+<var class="var">visit</var> is stored in <code class="code">buffer-file-name</code>.  This feature is used
+to implement <code class="code">file-precious-flag</code>; don&rsquo;t use it yourself unless you
 really know what you&rsquo;re doing.
 </p>
-<p>The optional argument <var>lockname</var>, if non-<code>nil</code>, specifies the
+<p>The optional argument <var class="var">lockname</var>, if non-<code class="code">nil</code>, specifies the
 file name to use for purposes of locking and unlocking, overriding
-<var>filename</var> and <var>visit</var> for that purpose.
+<var class="var">filename</var> and <var class="var">visit</var> for that purpose.
 </p>
-<p>The function <code>write-region</code> converts the data which it writes to
-the appropriate file formats specified by <code>buffer-file-format</code>
+<p>The function <code class="code">write-region</code> converts the data which it writes to
+the appropriate file formats specified by <code class="code">buffer-file-format</code>
 and also calls the functions in the list
-<code>write-region-annotate-functions</code>.
-See <a href="Format-Conversion.html">Format Conversion</a>.
+<code class="code">write-region-annotate-functions</code>.
+See <a class="xref" href="Format-Conversion.html">File Format Conversion</a>.
 </p>
-<p>Normally, <code>write-region</code> displays the message &lsquo;<samp>Wrote
-<var>filename</var></samp>&rsquo; in the echo area.  If <var>visit</var> is neither <code>t</code>
-nor <code>nil</code> nor a string, then this message is inhibited.  This
+<p>Normally, <code class="code">write-region</code> displays the message &lsquo;<samp class="samp">Wrote
+<var class="var">filename</var></samp>&rsquo; in the echo area.  If <var class="var">visit</var> is neither <code class="code">t</code>
+nor <code class="code">nil</code> nor a string, then this message is inhibited.  This
 feature is useful for programs that use files for internal purposes,
 files that the user does not need to know about.
 </p></dd></dl>
 
-<dl>
-<dt id="index-with_002dtemp_002dfile">Macro: <strong>with-temp-file</strong> <em>file body&hellip;</em></dt>
-<dd><span id="Definition-of-with_002dtemp_002dfile"></span><p>The <code>with-temp-file</code> macro evaluates the <var>body</var> forms with a
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-with_002dtemp_002dfile"><span class="category-def">Macro: </span><span><strong class="def-name">with-temp-file</strong> <var class="def-var-arguments">file body&hellip;</var><a class="copiable-link" href="#index-with_002dtemp_002dfile"> &para;</a></span></dt>
+<dd><a class="anchor" id="Definition-of-with_002dtemp_002dfile"></a><p>The <code class="code">with-temp-file</code> macro evaluates the <var class="var">body</var> forms with a
 temporary buffer as the current buffer; then, at the end, it writes the
-buffer contents into file <var>file</var>.  It kills the temporary buffer
+buffer contents into file <var class="var">file</var>.  It kills the temporary buffer
 when finished, restoring the buffer that was current before the
-<code>with-temp-file</code> form.  Then it returns the value of the last form
-in <var>body</var>.
+<code class="code">with-temp-file</code> form.  Then it returns the value of the last form
+in <var class="var">body</var>.
 </p>
 <p>The current buffer is restored even in case of an abnormal exit via
-<code>throw</code> or error (see <a href="Nonlocal-Exits.html">Nonlocal Exits</a>).
+<code class="code">throw</code> or error (see <a class="pxref" href="Nonlocal-Exits.html">Nonlocal Exits</a>).
 </p>
-<p>See also <code>with-temp-buffer</code> in <a href="Current-Buffer.html#Definition-of-with_002dtemp_002dbuffer">The Current Buffer</a>.
+<p>See also <code class="code">with-temp-buffer</code> in <a class="ref" href="Current-Buffer.html#Definition-of-with_002dtemp_002dbuffer">The Current Buffer</a>.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="File-Locks.html" accesskey="n" rel="next">File Locks</a>, Previous: <a href="Reading-from-Files.html" accesskey="p" rel="prev">Reading from Files</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="File-Locks.html">File Locks</a>, Previous: <a href="Reading-from-Files.html">Reading from Files</a>, Up: <a href="Files.html">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

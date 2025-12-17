@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>SVG Images (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="SVG Images (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="SVG Images (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Images.html" rel="up" title="Images">
+<link href="Other-Image-Types.html" rel="next" title="Other Image Types">
+<link href="ImageMagick-Images.html" rel="prev" title="ImageMagick Images">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="SVG-Images">
+<div class="nav-panel">
+<p>
+Next: <a href="Other-Image-Types.html" accesskey="n" rel="next">Other Image Types</a>, Previous: <a href="ImageMagick-Images.html" accesskey="p" rel="prev">ImageMagick Images</a>, Up: <a href="Images.html" accesskey="u" rel="up">Images</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="SVG-Images-1"><span>42.17.6 SVG Images<a class="copiable-link" href="#SVG-Images-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-SVG-images"></a>
+
+<p>SVG (Scalable Vector Graphics) is an XML format for specifying images.
+SVG images support the following additional image descriptor
+properties:
+</p>
+<dl class="table">
+<dt><code class="code">:foreground <var class="var">foreground</var></code></dt>
+<dd><p><var class="var">foreground</var>, if non-<code class="code">nil</code>, should be a string specifying a
+color, which is used as the image&rsquo;s foreground color.  If the value is
+<code class="code">nil</code>, it defaults to the current face&rsquo;s foreground color.
+</p>
+</dd>
+<dt><code class="code">:background <var class="var">background</var></code></dt>
+<dd><p><var class="var">background</var>, if non-<code class="code">nil</code>, should be a string specifying a
+color, which is used as the image&rsquo;s background color if the image
+supports transparency.  If the value is <code class="code">nil</code>, it defaults to the
+current face&rsquo;s background color.
+</p>
+</dd>
+<dt><code class="code">:css <var class="var">css</var></code></dt>
+<dd><p><var class="var">css</var>, if non-<code class="code">nil</code>, should be a string specifying the CSS to
+override the default CSS used when generating the image.
+</p></dd>
+</dl>
+
+<h4 class="subsubheading" id="SVG-library"><span>SVG library<a class="copiable-link" href="#SVG-library"> &para;</a></span></h4>
+
+<p>If your Emacs build has SVG support, you can create and manipulate
+these images with the following functions from the <samp class="file">svg.el</samp>
+library.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dcreate"><span class="category-def">Function: </span><span><strong class="def-name">svg-create</strong> <var class="def-var-arguments">width height &amp;rest args</var><a class="copiable-link" href="#index-svg_002dcreate"> &para;</a></span></dt>
+<dd><p>Create a new, empty SVG image with the specified dimensions.
+<var class="var">args</var> is an argument plist with you can specify following:
+</p>
+<dl class="table">
+<dt><code class="code">:stroke-width</code></dt>
+<dd><p>The default width (in pixels) of any lines created.
+</p>
+</dd>
+<dt><code class="code">:stroke</code></dt>
+<dd><p>The default stroke color on any lines created.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-SVG-object"></a>
+<p>This function returns an <em class="dfn">SVG object</em>, a Lisp data structure that
+specifies an SVG image, and all the following functions work on that
+structure.  The argument <var class="var">svg</var> in the following functions
+specifies such an SVG object.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dgradient"><span class="category-def">Function: </span><span><strong class="def-name">svg-gradient</strong> <var class="def-var-arguments">svg id type stops</var><a class="copiable-link" href="#index-svg_002dgradient"> &para;</a></span></dt>
+<dd><p>Create a gradient in <var class="var">svg</var> with identifier <var class="var">id</var>.  <var class="var">type</var>
+specifies the gradient type, and can be either <code class="code">linear</code> or
+<code class="code">radial</code>.  <var class="var">stops</var> is a list of percentage/color pairs.
+</p>
+<p>The following will create a linear gradient that goes from red at the
+start, to green 25% of the way, to blue at the end:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-gradient svg &quot;gradient1&quot; 'linear
+              '((0 . &quot;red&quot;) (25 . &quot;green&quot;) (100 . &quot;blue&quot;)))
+</pre></div>
+
+<p>The gradient created (and inserted into the SVG object) can later be
+used by all functions that create shapes.
+</p></dd></dl>
+
+<p>All the following functions take an optional list of keyword
+parameters that alter the various attributes from their default
+values.  Valid attributes include:
+</p>
+<dl class="table">
+<dt><code class="code">:stroke-width</code></dt>
+<dd><p>The width (in pixels) of lines drawn, and outlines around solid
+shapes.
+</p>
+</dd>
+<dt><code class="code">:stroke-color</code></dt>
+<dd><p>The color of lines drawn, and outlines around solid shapes.
+</p>
+</dd>
+<dt><code class="code">:fill-color</code></dt>
+<dd><p>The color used for solid shapes.
+</p>
+</dd>
+<dt><code class="code">:id</code></dt>
+<dd><p>The identified of the shape.
+</p>
+</dd>
+<dt><code class="code">:gradient</code></dt>
+<dd><p>If given, this should be the identifier of a previously defined
+gradient object.
+</p>
+</dd>
+<dt><code class="code">:clip-path</code></dt>
+<dd><p>Identifier of a clip path.
+</p></dd>
+</dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002drectangle"><span class="category-def">Function: </span><span><strong class="def-name">svg-rectangle</strong> <var class="def-var-arguments">svg x y width height &amp;rest args</var><a class="copiable-link" href="#index-svg_002drectangle"> &para;</a></span></dt>
+<dd><p>Add to <var class="var">svg</var> a rectangle whose upper left corner is at
+position <var class="var">x</var>/<var class="var">y</var> and whose size is <var class="var">width</var>/<var class="var">height</var>.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-rectangle svg 100 100 500 500 :gradient &quot;gradient1&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dcircle"><span class="category-def">Function: </span><span><strong class="def-name">svg-circle</strong> <var class="def-var-arguments">svg x y radius &amp;rest args</var><a class="copiable-link" href="#index-svg_002dcircle"> &para;</a></span></dt>
+<dd><p>Add to <var class="var">svg</var> a circle whose center is at <var class="var">x</var>/<var class="var">y</var> and whose
+radius is <var class="var">radius</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dellipse"><span class="category-def">Function: </span><span><strong class="def-name">svg-ellipse</strong> <var class="def-var-arguments">svg x y x-radius y-radius &amp;rest args</var><a class="copiable-link" href="#index-svg_002dellipse"> &para;</a></span></dt>
+<dd><p>Add to <var class="var">svg</var> an ellipse whose center is at <var class="var">x</var>/<var class="var">y</var>, and
+whose horizontal radius is <var class="var">x-radius</var> and the vertical radius is
+<var class="var">y-radius</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dline"><span class="category-def">Function: </span><span><strong class="def-name">svg-line</strong> <var class="def-var-arguments">svg x1 y1 x2 y2 &amp;rest args</var><a class="copiable-link" href="#index-svg_002dline"> &para;</a></span></dt>
+<dd><p>Add to <var class="var">svg</var> a line that starts at <var class="var">x1</var>/<var class="var">y1</var> and extends
+to <var class="var">x2</var>/<var class="var">y2</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dpolyline"><span class="category-def">Function: </span><span><strong class="def-name">svg-polyline</strong> <var class="def-var-arguments">svg points &amp;rest args</var><a class="copiable-link" href="#index-svg_002dpolyline"> &para;</a></span></dt>
+<dd><p>Add to <var class="var">svg</var> a multiple-segment line (a.k.a. &ldquo;polyline&rdquo;) that
+goes through <var class="var">points</var>, which is a list of X/Y position pairs.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-polyline svg '((200 . 100) (500 . 450) (80 . 100))
+              :stroke-color &quot;green&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dpolygon"><span class="category-def">Function: </span><span><strong class="def-name">svg-polygon</strong> <var class="def-var-arguments">svg points &amp;rest args</var><a class="copiable-link" href="#index-svg_002dpolygon"> &para;</a></span></dt>
+<dd><p>Add a polygon to <var class="var">svg</var> where <var class="var">points</var> is a list of X/Y pairs
+that describe the outer circumference of the polygon.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-polygon svg '((100 . 100) (200 . 150) (150 . 90))
+             :stroke-color &quot;blue&quot; :fill-color &quot;red&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dpath"><span class="category-def">Function: </span><span><strong class="def-name">svg-path</strong> <var class="def-var-arguments">svg commands &amp;rest args</var><a class="copiable-link" href="#index-svg_002dpath"> &para;</a></span></dt>
+<dd><p>Add the outline of a shape to <var class="var">svg</var> according to <var class="var">commands</var>,
+see <a class="ref" href="#SVG-Path-Commands">SVG Path Commands</a>.
+</p>
+<p>Coordinates by default are absolute.  To use coordinates relative to
+the last position, or &ndash; initially &ndash; to the origin, set the attribute
+<var class="var">:relative</var> to <code class="code">t</code>.  This attribute can be specified for the
+function or for individual commands.  If specified for the function,
+then all commands use relative coordinates by default.  To make an
+individual command use absolute coordinates, set <var class="var">:relative</var> to
+<code class="code">nil</code>.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg
+	  '((moveto ((100 . 100)))
+	    (lineto ((200 . 0) (0 . 200) (-200 . 0)))
+	    (lineto ((100 . 100)) :relative nil))
+	  :stroke-color &quot;blue&quot;
+	  :fill-color &quot;lightblue&quot;
+	  :relative t)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dtext"><span class="category-def">Function: </span><span><strong class="def-name">svg-text</strong> <var class="def-var-arguments">svg text &amp;rest args</var><a class="copiable-link" href="#index-svg_002dtext"> &para;</a></span></dt>
+<dd><p>Add the specified <var class="var">text</var> to <var class="var">svg</var>.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-text
+ svg &quot;This is a text&quot;
+ :font-size &quot;40&quot;
+ :font-weight &quot;bold&quot;
+ :stroke &quot;black&quot;
+ :fill &quot;white&quot;
+ :font-family &quot;impact&quot;
+ :letter-spacing &quot;4pt&quot;
+ :x 300
+ :y 400
+ :stroke-width 1)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dembed"><span class="category-def">Function: </span><span><strong class="def-name">svg-embed</strong> <var class="def-var-arguments">svg image image-type datap &amp;rest args</var><a class="copiable-link" href="#index-svg_002dembed"> &para;</a></span></dt>
+<dd><p>Add an embedded (raster) image to <var class="var">svg</var>.  If <var class="var">datap</var> is
+<code class="code">nil</code>, <var class="var">image</var> should be a file name; otherwise it should be a
+string containing the image data as raw bytes.  <var class="var">image-type</var> should be a
+<abbr class="acronym">MIME</abbr> image type, for instance <code class="code">&quot;image/jpeg&quot;</code>.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-embed svg &quot;~/rms.jpg&quot; &quot;image/jpeg&quot; nil
+           :width &quot;100px&quot; :height &quot;100px&quot;
+           :x &quot;50px&quot; :y &quot;75px&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dembed_002dbase_002duri_002dimage"><span class="category-def">Function: </span><span><strong class="def-name">svg-embed-base-uri-image</strong> <var class="def-var-arguments">svg relative-filename &amp;rest args</var><a class="copiable-link" href="#index-svg_002dembed_002dbase_002duri_002dimage"> &para;</a></span></dt>
+<dd><p>To <var class="var">svg</var> add an embedded (raster) image placed at
+<var class="var">relative-filename</var>.  <var class="var">relative-filename</var> is searched inside
+<code class="code">file-name-directory</code> of the <code class="code">:base-uri</code> svg image property.
+<code class="code">:base-uri</code> specifies a (possibly non-existing) file name of the
+svg image to be created, thus all the embedded files are searched
+relatively to the <code class="code">:base-uri</code> filename&rsquo;s directory.  If
+<code class="code">:base-uri</code> is omitted, then filename from where svg image is
+loaded is used.  Using <code class="code">:base-uri</code> improves the performance of
+embedding large images, comparing to <code class="code">svg-embed</code>, because all the
+work is done directly by librsvg.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">;; Embedding /tmp/subdir/rms.jpg and /tmp/another/rms.jpg
+(svg-embed-base-uri-image svg &quot;subdir/rms.jpg&quot;
+           :width &quot;100px&quot; :height &quot;100px&quot;
+           :x &quot;50px&quot; :y &quot;75px&quot;)
+(svg-embed-base-uri-image svg &quot;another/rms.jpg&quot;
+           :width &quot;100px&quot; :height &quot;100px&quot;
+           :x &quot;75px&quot; :y &quot;50px&quot;)
+(svg-image svg :scale 1.0
+           :base-uri &quot;/tmp/dummy&quot;
+           :width 175 :height 175)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dclip_002dpath"><span class="category-def">Function: </span><span><strong class="def-name">svg-clip-path</strong> <var class="def-var-arguments">svg &amp;rest args</var><a class="copiable-link" href="#index-svg_002dclip_002dpath"> &para;</a></span></dt>
+<dd><p>Add a clipping path to <var class="var">svg</var>.  If applied to a shape via the
+<var class="var">:clip-path</var> property, parts of that shape which lie outside of
+the clipping path are not drawn.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(let ((clip-path (svg-clip-path svg :id &quot;foo&quot;)))
+  (svg-circle clip-path 200 200 175))
+(svg-rectangle svg 50 50 300 300
+               :fill-color &quot;red&quot;
+               :clip-path &quot;url(#foo)&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dnode"><span class="category-def">Function: </span><span><strong class="def-name">svg-node</strong> <var class="def-var-arguments">svg tag &amp;rest args</var><a class="copiable-link" href="#index-svg_002dnode"> &para;</a></span></dt>
+<dd><p>Add the custom node <var class="var">tag</var> to <var class="var">svg</var>.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-node svg
+          'rect
+          :width 300 :height 200 :x 50 :y 100 :fill-color &quot;green&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dremove"><span class="category-def">Function: </span><span><strong class="def-name">svg-remove</strong> <var class="def-var-arguments">svg id</var><a class="copiable-link" href="#index-svg_002dremove"> &para;</a></span></dt>
+<dd><p>Remove the element with identifier <code class="code">id</code> from the <code class="code">svg</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-svg_002dimage"><span class="category-def">Function: </span><span><strong class="def-name">svg-image</strong> <var class="def-var-arguments">svg</var><a class="copiable-link" href="#index-svg_002dimage"> &para;</a></span></dt>
+<dd><p>Finally, the <code class="code">svg-image</code> takes an SVG object as its argument and
+returns an image object suitable for use in functions like
+<code class="code">insert-image</code>.
+</p></dd></dl>
+
+<p>Here&rsquo;s a complete example that creates and inserts an image with a
+circle:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(let ((svg (svg-create 400 400 :stroke-width 10)))
+  (svg-gradient svg &quot;gradient1&quot; 'linear '((0 . &quot;red&quot;) (100 . &quot;blue&quot;)))
+  (svg-circle svg 200 200 100 :gradient &quot;gradient1&quot;
+                  :stroke-color &quot;green&quot;)
+  (insert-image (svg-image svg)))
+</pre></div>
+
+
+<h4 class="subsubheading" id="SVG-Path-Commands-1"><span>SVG Path Commands<a class="copiable-link" href="#SVG-Path-Commands-1"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-svg-path-commands"></a>
+<a class="anchor" id="SVG-Path-Commands"></a><p><em class="dfn">SVG paths</em> allow creation of complex images by combining lines,
+curves, arcs, and other basic shapes.  The functions described below
+allow invoking SVG path commands from a Lisp program.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-moveto"><span class="category-def">Command: </span><span><strong class="def-name">moveto</strong> <var class="def-var-arguments">points</var><a class="copiable-link" href="#index-moveto"> &para;</a></span></dt>
+<dd><p>Move the pen to the first point in <var class="var">points</var>.  Additional points
+are connected with lines.  <var class="var">points</var> is a list of X/Y coordinate
+pairs.  Subsequent <code class="command">moveto</code> commands represent the start of a
+new <em class="dfn">subpath</em>.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((200 . 100) (100 . 200) (0 . 100))))
+          :fill &quot;white&quot; :stroke &quot;black&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-closepath"><span class="category-def">Command: </span><span><strong class="def-name">closepath</strong><a class="copiable-link" href="#index-closepath"> &para;</a></span></dt>
+<dd><p>End the current subpath by connecting it back to its initial point.  A
+line is drawn along the connection.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((200 . 100) (100 . 200) (0 . 100)))
+                (closepath)
+                (moveto ((75 . 125) (100 . 150) (125 . 125)))
+                (closepath))
+          :fill &quot;red&quot; :stroke &quot;black&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-lineto"><span class="category-def">Command: </span><span><strong class="def-name">lineto</strong> <var class="def-var-arguments">points</var><a class="copiable-link" href="#index-lineto"> &para;</a></span></dt>
+<dd><p>Draw a line from the current point to the first element in
+<var class="var">points</var>, a list of X/Y position pairs.  If more than one point is
+specified, draw a polyline.
+</p><div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((200 . 100)))
+                (lineto ((100 . 200) (0 . 100))))
+          :fill &quot;yellow&quot; :stroke &quot;red&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-horizontal_002dlineto"><span class="category-def">Command: </span><span><strong class="def-name">horizontal-lineto</strong> <var class="def-var-arguments">x-coordinates</var><a class="copiable-link" href="#index-horizontal_002dlineto"> &para;</a></span></dt>
+<dd><p>Draw a horizontal line from the current point to the first element in
+<var class="var">x-coordinates</var>.  Specifying multiple coordinates is possible,
+although this usually doesn&rsquo;t make sense.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((100 . 200)))
+                (horizontal-lineto (300)))
+          :stroke &quot;green&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-vertical_002dlineto"><span class="category-def">Command: </span><span><strong class="def-name">vertical-lineto</strong> <var class="def-var-arguments">y-coordinates</var><a class="copiable-link" href="#index-vertical_002dlineto"> &para;</a></span></dt>
+<dd><p>Draw vertical lines.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((200 . 100)))
+                (vertical-lineto (300)))
+          :stroke &quot;green&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-curveto"><span class="category-def">Command: </span><span><strong class="def-name">curveto</strong> <var class="def-var-arguments">coordinate-sets</var><a class="copiable-link" href="#index-curveto"> &para;</a></span></dt>
+<dd><p>Using the first element in <var class="var">coordinate-sets</var>, draw a cubic Bézier
+curve from the current point.  If there are multiple coordinate sets,
+draw a polybezier.  Each coordinate set is a list of the form
+<code class="code">(<var class="var">x1</var> <var class="var">y1</var> <var class="var">x2</var> <var class="var">y2</var> <var class="var">x</var> <var class="var">y</var>)</code>, where
+(<var class="var">x</var>,&nbsp;<var class="var">y</var>)<!-- /@w --> is the curve&rsquo;s end point.  (<var class="var">x1</var>,&nbsp;<var class="var">y1</var>)<!-- /@w --> and (<var class="var">x2</var>,&nbsp;<var class="var">y2</var>)<!-- /@w --> are control points at the
+beginning and at the end, respectively.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((100 . 100)))
+                (curveto ((200 100 100 200 200 200)
+                          (300 200 0 100 100 100))))
+          :fill &quot;transparent&quot; :stroke &quot;red&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-smooth_002dcurveto"><span class="category-def">Command: </span><span><strong class="def-name">smooth-curveto</strong> <var class="def-var-arguments">coordinate-sets</var><a class="copiable-link" href="#index-smooth_002dcurveto"> &para;</a></span></dt>
+<dd><p>Using the first element in <var class="var">coordinate-sets</var>, draw a cubic Bézier
+curve from the current point.  If there are multiple coordinate sets,
+draw a polybezier.  Each coordinate set is a list of the form
+<code class="code">(<var class="var">x2</var> <var class="var">y2</var> <var class="var">x</var> <var class="var">y</var>)</code>, where (<var class="var">x</var>,&nbsp;<var class="var">y</var>)<!-- /@w --> is the curve&rsquo;s end point and (<var class="var">x2</var>,&nbsp;<var class="var">y2</var>)<!-- /@w --> is the
+corresponding control point.  The first control point is the
+reflection of the second control point of the previous command
+relative to the current point, if that command was <code class="command">curveto</code>
+or <code class="command">smooth-curveto</code>.  Otherwise the first control point
+coincides with the current point.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((100 . 100)))
+                (curveto ((200 100 100 200 200 200)))
+                (smooth-curveto ((0 100 100 100))))
+          :fill &quot;transparent&quot; :stroke &quot;blue&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-quadratic_002dbezier_002dcurveto"><span class="category-def">Command: </span><span><strong class="def-name">quadratic-bezier-curveto</strong> <var class="def-var-arguments">coordinate-sets</var><a class="copiable-link" href="#index-quadratic_002dbezier_002dcurveto"> &para;</a></span></dt>
+<dd><p>Using the first element in <var class="var">coordinate-sets</var>, draw a quadratic
+Bézier curve from the current point.  If there are multiple coordinate
+sets, draw a polybezier.  Each coordinate set is a list of the form
+<code class="code">(<var class="var">x1</var> <var class="var">y1</var> <var class="var">x</var> <var class="var">y</var>)</code>, where (<var class="var">x</var>,&nbsp;<var class="var">y</var>)<!-- /@w --> is the curve&rsquo;s end point and (<var class="var">x1</var>,&nbsp;<var class="var">y1</var>)<!-- /@w --> is the
+control point.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((200 . 100)))
+                (quadratic-bezier-curveto ((300 100 300 200)))
+                (quadratic-bezier-curveto ((300 300 200 300)))
+                (quadratic-bezier-curveto ((100 300 100 200)))
+                (quadratic-bezier-curveto ((100 100 200 100))))
+          :fill &quot;transparent&quot; :stroke &quot;pink&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-smooth_002dquadratic_002dbezier_002dcurveto"><span class="category-def">Command: </span><span><strong class="def-name">smooth-quadratic-bezier-curveto</strong> <var class="def-var-arguments">coordinate-sets</var><a class="copiable-link" href="#index-smooth_002dquadratic_002dbezier_002dcurveto"> &para;</a></span></dt>
+<dd><p>Using the first element in <var class="var">coordinate-sets</var>, draw a quadratic
+Bézier curve from the current point.  If there are multiple coordinate
+sets, draw a polybezier.  Each coordinate set is a list of the form
+<code class="code">(<var class="var">x</var> <var class="var">y</var>)</code>, where (<var class="var">x</var>,&nbsp;<var class="var">y</var>)<!-- /@w --> is the curve&rsquo;s
+end point.  The control point is the reflection of the control point
+of the previous command relative to the current point, if that command
+was <code class="command">quadratic-bezier-curveto</code> or
+<code class="command">smooth-quadratic-bezier-curveto</code>.  Otherwise the control
+point coincides with the current point.
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((200 . 100)))
+                (quadratic-bezier-curveto ((300 100 300 200)))
+                (smooth-quadratic-bezier-curveto ((200 300)))
+                (smooth-quadratic-bezier-curveto ((100 200)))
+                (smooth-quadratic-bezier-curveto ((200 100))))
+          :fill &quot;transparent&quot; :stroke &quot;lightblue&quot;)
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-elliptical_002darc"><span class="category-def">Command: </span><span><strong class="def-name">elliptical-arc</strong> <var class="def-var-arguments">coordinate-sets</var><a class="copiable-link" href="#index-elliptical_002darc"> &para;</a></span></dt>
+<dd><p>Using the first element in <var class="var">coordinate-sets</var>, draw an elliptical
+arc from the current point.  If there are multiple coordinate sets,
+draw a sequence of elliptical arcs.  Each coordinate set is a list of
+the form <code class="code">(<var class="var">rx</var> <var class="var">ry</var> <var class="var">x</var> <var class="var">y</var>)</code>, where
+(<var class="var">x</var>,&nbsp;<var class="var">y</var>)<!-- /@w --> is the end point of the ellipse, and
+(<var class="var">rx</var>,&nbsp;<var class="var">ry</var>)<!-- /@w --> are its radii.  Attributes may be appended to
+the list:
+</p>
+<dl class="table">
+<dt><code class="code">:x-axis-rotation</code></dt>
+<dd><p>The angle in degrees by which the x-axis of the ellipse is rotated
+relative to the x-axis of the current coordinate system.
+</p>
+</dd>
+<dt><code class="code">:large-arc</code></dt>
+<dd><p>If set to <code class="code">t</code>, draw an arc sweep greater than or equal to 180
+degrees.  Otherwise, draw an arc sweep smaller than or equal to 180
+degrees.
+</p>
+</dd>
+<dt><code class="code">:sweep</code></dt>
+<dd><p>If set to <code class="code">t</code>, draw an arc in <em class="dfn">positive angle direction</em>.
+Otherwise, draw it in <em class="dfn">negative angle direction</em>.
+</p></dd>
+</dl>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(svg-path svg '((moveto ((200 . 250)))
+                (elliptical-arc ((75 75 200 350))))
+          :fill &quot;transparent&quot; :stroke &quot;red&quot;)
+(svg-path svg '((moveto ((200 . 250)))
+                (elliptical-arc ((75 75 200 350 :large-arc t))))
+          :fill &quot;transparent&quot; :stroke &quot;green&quot;)
+(svg-path svg '((moveto ((200 . 250)))
+                (elliptical-arc ((75 75 200 350 :sweep t))))
+          :fill &quot;transparent&quot; :stroke &quot;blue&quot;)
+(svg-path svg '((moveto ((200 . 250)))
+                (elliptical-arc ((75 75 200 350 :large-arc t
+                                     :sweep t))))
+          :fill &quot;transparent&quot; :stroke &quot;gray&quot;)
+(svg-path svg '((moveto ((160 . 100)))
+                (elliptical-arc ((40 100 80 0)))
+                (elliptical-arc ((40 100 -40 -70
+                                     :x-axis-rotation -120)))
+                (elliptical-arc ((40 100 -40 70
+                                     :x-axis-rotation -240))))
+          :stroke &quot;pink&quot; :fill &quot;lightblue&quot;
+          :relative t)
+</pre></div>
+</dd></dl>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Other-Image-Types.html">Other Image Types</a>, Previous: <a href="ImageMagick-Images.html">ImageMagick Images</a>, Up: <a href="Images.html">Images</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

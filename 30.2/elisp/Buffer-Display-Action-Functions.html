@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Buffer Display Action Functions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Buffer Display Action Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Buffer Display Action Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Displaying-Buffers.html" rel="up" title="Displaying Buffers">
+<link href="Buffer-Display-Action-Alists.html" rel="next" title="Buffer Display Action Alists">
+<link href="Choosing-Window.html" rel="prev" title="Choosing Window">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Buffer-Display-Action-Functions">
+<div class="nav-panel">
+<p>
+Next: <a href="Buffer-Display-Action-Alists.html" accesskey="n" rel="next">Action Alists for Buffer Display</a>, Previous: <a href="Choosing-Window.html" accesskey="p" rel="prev">Choosing a Window for Displaying a Buffer</a>, Up: <a href="Displaying-Buffers.html" accesskey="u" rel="up">Displaying a Buffer in a Suitable Window</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Action-Functions-for-Buffer-Display"><span>29.13.2 Action Functions for Buffer Display<a class="copiable-link" href="#Action-Functions-for-Buffer-Display"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-buffer-display-action-function"></a>
+<a class="index-entry-id" id="index-action-function_002c-for-buffer-display"></a>
+
+<p>An <em class="dfn">action function</em> is a function <code class="code">display-buffer</code> calls for
+choosing a window to display a buffer.  Action functions take two
+arguments: <var class="var">buffer</var>, the buffer to display, and <var class="var">alist</var>, an
+action alist (see <a class="pxref" href="Buffer-Display-Action-Alists.html">Action Alists for Buffer Display</a>).  They are
+supposed to return a window displaying <var class="var">buffer</var> if they succeed
+and <code class="code">nil</code> if they fail.
+</p>
+<p>The following basic action functions are defined in Emacs.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dsame_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-same-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dsame_002dwindow"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> in the selected window.
+It fails if the selected window is a minibuffer window or is dedicated
+to another buffer (see <a class="pxref" href="Dedicated-Windows.html">Dedicated Windows</a>).  It also fails if
+<var class="var">alist</var> has a non-<code class="code">nil</code> <code class="code">inhibit-same-window</code> entry.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dreuse_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-reuse-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dreuse_002dwindow"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> by finding a window that
+is already displaying it.  Windows on the selected frame are preferred
+to windows on other frames.
+</p>
+<p>If <var class="var">alist</var> has a non-<code class="code">nil</code> <code class="code">inhibit-same-window</code> entry,
+the selected window is not eligible for reuse.  The set of frames to
+search for a window already displaying <var class="var">buffer</var> can be specified
+with the help of the <code class="code">reusable-frames</code> action alist entry.  If
+<var class="var">alist</var> contains no <code class="code">reusable-frames</code> entry, this function
+searches just the selected frame.
+</p>
+<p>If this function chooses a window on another frame, it makes that
+frame visible and, unless <var class="var">alist</var> contains an
+<code class="code">inhibit-switch-frame</code> entry, raises that frame if necessary.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dreuse_002dmode_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-reuse-mode-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dreuse_002dmode_002dwindow"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> by finding a window
+that is displaying a buffer in a given mode.
+</p>
+<p>If <var class="var">alist</var> contains a <code class="code">mode</code> entry, its value specifies a
+major mode (a symbol) or a list of major modes.  If <var class="var">alist</var>
+contains no <code class="code">mode</code> entry, the current major mode of <var class="var">buffer</var>
+is used instead.  A window is a candidate if it displays a buffer
+whose mode derives from one of the modes specified thusly.
+</p>
+<p>The behavior is also controlled by <var class="var">alist</var> entries for
+<code class="code">inhibit-same-window</code>, <code class="code">reusable-frames</code> and
+<code class="code">inhibit-switch-frame</code>, like <code class="code">display-buffer-reuse-window</code>
+does.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dpop_002dup_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-pop-up-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dpop_002dup_002dwindow"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> by splitting the largest
+or least recently-used window (usually located on the selected frame).
+It actually performs the split by calling the function specified by
+<code class="code">split-window-preferred-function</code> (see <a class="pxref" href="Choosing-Window-Options.html">Additional Options for Displaying Buffers</a>).
+</p>
+<p>The size of the new window can be adjusted by supplying
+<code class="code">window-height</code> and <code class="code">window-width</code> entries in <var class="var">alist</var>.
+If <var class="var">alist</var> contains a <code class="code">preserve-size</code> entry, Emacs will also
+try to preserve the size of the new window during future resize
+operations (see <a class="pxref" href="Preserving-Window-Sizes.html">Preserving Window Sizes</a>).
+</p>
+<p>This function fails if no window can be split.  More often than not,
+this happens because no window is large enough to allow splitting.
+Setting <code class="code">split-height-threshold</code> or <code class="code">split-width-threshold</code>
+to lower values may help in this regard.  Splitting also fails when
+the selected frame has an <code class="code">unsplittable</code> frame parameter;
+see <a class="pxref" href="Buffer-Parameters.html">Buffer Parameters</a>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002din_002dprevious_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-in-previous-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002din_002dprevious_002dwindow"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> in a window where it was
+displayed previously.
+</p>
+<p>If <var class="var">alist</var> contains a non-<code class="code">nil</code> <code class="code">inhibit-same-window</code>
+entry, the selected window is not eligible for use.  A dedicated
+window is usable only if it already shows <var class="var">buffer</var>.  If
+<var class="var">alist</var> contains a <code class="code">previous-window</code> entry, the window
+specified by that entry is usable even if it never showed <var class="var">buffer</var>
+before.
+</p>
+<p>If <var class="var">alist</var> contains a <code class="code">reusable-frames</code> entry (see <a class="pxref" href="Buffer-Display-Action-Alists.html">Action Alists for Buffer Display</a>), its value determines which frames to search
+for a suitable window.  If <var class="var">alist</var> contains no
+<code class="code">reusable-frames</code> entry, this function searches just the selected
+frame if <code class="code">display-buffer-reuse-frames</code> and <code class="code">pop-up-frames</code>
+are both <code class="code">nil</code>; it searches all frames on the current terminal if
+either of those variables is non-<code class="code">nil</code>.
+</p>
+<p>If more than one window qualifies as usable according to these rules,
+this function makes a choice in the following order of preference:
+</p>
+<ul class="itemize mark-bullet">
+<li>The window specified by any <code class="code">previous-window</code> <var class="var">alist</var> entry,
+provided it is not the selected window.
+
+</li><li>A window that showed <var class="var">buffer</var> before, provided it is not the
+selected window.
+
+</li><li>The selected window if it is either specified by a
+<code class="code">previous-window</code> <var class="var">alist</var> entry or showed <var class="var">buffer</var>
+before.
+</li></ul>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002duse_002dsome_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-use-some-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002duse_002dsome_002dwindow"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> by choosing an existing
+window and displaying the buffer in that window.  It first tries to find
+a window that has not been used recently (see <a class="pxref" href="Cyclic-Window-Ordering.html">Cyclic Ordering of Windows</a>) on any frame specified by a <code class="code">lru-frames</code> <var class="var">alist</var>
+entry, falling back to the selected frame if no such entry exists.  It
+also prefers windows that satisfy the constraints specified by
+<code class="code">window-min-width</code> and <code class="code">window-min-height</code> <var class="var">alist</var>
+entries; preferring full-width windows if no <code class="code">window-min-width</code>
+entry is found.  Finally, it will not return a window whose use time is
+higher than that specified by any <code class="code">lru-time</code> entry provided by
+<var class="var">alist</var>.
+</p>
+<p>If no less recently used window is found, this function will try to use
+some other window, preferably a large window on some visible frame.  It
+can fail if all windows are dedicated to other buffers (see <a class="pxref" href="Dedicated-Windows.html">Dedicated Windows</a>).
+</p>
+<p>The above describes the behavior when the <code class="code">some-window</code> <var class="var">alist</var>
+entry is <code class="code">lru</code> or <code class="code">nil</code> which is the default.  Another
+possible value is <code class="code">mru</code>.  If, for example,
+<code class="code">display-buffer-base-action</code> is customized to <code class="code">(nil&nbsp;.&nbsp;((some-window&nbsp;.&nbsp;mru)))</code><!-- /@w -->, then this function will prefer the most
+recently used window.  This will try to display several buffers from
+consecutive calls of <code class="code">display-buffer</code> in the same window.  Consider
+a configuration of three or more windows where a user wants to consult,
+in a non-selected window, one after the other, the results of a query
+spread among several buffers.  With the <code class="code">lru</code> strategy, Emacs may
+continuously choose another window because the least recently used
+window changes with every call of <code class="code">display-buffer-use-some-window</code>.
+With the <code class="code">mru</code> strategy, the window chosen would always remain the
+same, resulting in a predictable user experience.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002duse_002dleast_002drecent_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-use-least-recent-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002duse_002dleast_002drecent_002dwindow"> &para;</a></span></dt>
+<dd><p>This function is similar to <code class="code">display-buffer-use-some-window</code>, but
+will try harder to not use a recently used window.  In particular,
+it does not use the selected window.  In addition, it will first try to
+reuse a window that shows <var class="var">buffer</var> already, base the decision
+whether it should use a window showing another buffer on that window&rsquo;s
+use time alone and pop up a new window if no usable window is found.
+</p>
+<p>Finally, this function will bump the use time (see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>) of any window it returns in order to avoid that further
+invocations will use that window for showing another buffer.  An
+application that wants to display several buffers in a row can help this
+function by providing a <code class="code">lru-time</code> <var class="var">alist</var> entry it has
+initially set to the value of the selected window&rsquo;s use time.  Each
+invocation of this function will then bump the use time of the window
+returned to a value higher than that and a subsequent invocation will
+inhibit this function to use a window it returned earlier.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002din_002ddirection"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-in-direction</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002din_002ddirection"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> at a location specified by
+<var class="var">alist</var>.  For this purpose, <var class="var">alist</var> should contain a
+<code class="code">direction</code> entry whose value is one of <code class="code">left</code>, <code class="code">above</code>
+(or <code class="code">up</code>), <code class="code">right</code> and <code class="code">below</code> (or <code class="code">down</code>).  Other
+values are usually interpreted as <code class="code">below</code>.
+</p>
+<p>If <var class="var">alist</var> also contains a <code class="code">window</code> entry, its value
+specifies a reference window.  That value can be a special symbol like
+<code class="code">main</code> which stands for the selected frame&rsquo;s main window
+(see <a class="pxref" href="Side-Window-Options-and-Functions.html">Side Window Options and Functions</a>) or <code class="code">root</code> standing
+for the selected frame&rsquo;s root window (see <a class="pxref" href="Windows-and-Frames.html">Windows and Frames</a>).  It
+can also specify an arbitrary valid window.  Any other value (or
+omitting the <code class="code">window</code> entry entirely) means to use the selected
+window as reference window.
+</p>
+<p>This function first tries to reuse a window in the specified direction
+that already shows <var class="var">buffer</var>.  If no such window exists, it tries
+to split the reference window in order to produce a new window in the
+specified direction.  If this fails as well, it will try to display
+<var class="var">buffer</var> in an existing window in the specified direction.  In
+either case, the window chosen will appear on the side of the
+reference window specified by the <code class="code">direction</code> entry, sharing at
+least one edge with the reference window.
+</p>
+<p>If the reference window is live, the edge the chosen window will share
+with it is always the opposite of the one specified by the
+<code class="code">direction</code> entry.  For example, if the value of the
+<code class="code">direction</code> entry is <code class="code">left</code>, the chosen window&rsquo;s right edge
+coordinate (see <a class="pxref" href="Coordinates-and-Windows.html">Coordinates and Windows</a>) will equal the reference
+window&rsquo;s left edge coordinate.
+</p>
+<p>If the reference window is internal, a reused window must share with
+it the edge specified by the <code class="code">direction</code> entry.  Hence if, for
+example, the reference window is the frame&rsquo;s root window and the value
+of the <code class="code">direction</code> entry is <code class="code">left</code>, a reused window must be
+on the left of the frame.  This means that the left edge coordinate of
+the chosen window and that of the reference window are the same.
+</p>
+<p>A new window, however, will be created by splitting the reference
+window such that the chosen window will share the opposite edge with
+the reference window.  In our example, a new root window would be
+created with a new live window and the reference window as its
+children.  The chosen window&rsquo;s right edge coordinate would then equal
+the left edge coordinate of the reference window.  Its left edge
+coordinate would equal the left edge coordinate of the frame&rsquo;s new
+root window.
+</p>
+<p>Four special values for <code class="code">direction</code> entries allow implicitly
+specifying the selected frame&rsquo;s main window as the reference window:
+<code class="code">leftmost</code>, <code class="code">top</code>, <code class="code">rightmost</code> and <code class="code">bottom</code>.  This
+means that instead of, for example, <code class="code">(direction&nbsp;.&nbsp;left)&nbsp;(window&nbsp;.&nbsp;main)</code><!-- /@w --> one can just specify <code class="code">(direction&nbsp;.&nbsp;leftmost)</code><!-- /@w -->.  An existing <code class="code">window</code> <var class="var">alist</var> entry is ignored
+in such cases.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dbelow_002dselected"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-below-selected</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dbelow_002dselected"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> in a window below the
+selected window.  If there is a window below the selected one and that
+window already displays <var class="var">buffer</var>, it reuses that window.
+</p>
+<p>If there is no such window, this function tries to create a new window
+by splitting the selected one, and displays <var class="var">buffer</var> there.  It will
+also try to adjust that window&rsquo;s size provided <var class="var">alist</var> contains a
+suitable <code class="code">window-height</code> or <code class="code">window-width</code> entry, see above.
+</p>
+<p>If splitting the selected window fails and there is a non-dedicated
+window below the selected one showing some other buffer, this function
+tries to use that window for showing <var class="var">buffer</var>.
+</p>
+<p>If <var class="var">alist</var> contains a <code class="code">window-min-height</code> entry, this
+function ensures that the window used is or can become at least as
+high as specified by that entry&rsquo;s value.  Note that this is only a
+guarantee.  In order to actually resize the window used, <var class="var">alist</var>
+must also provide an appropriate <code class="code">window-height</code> entry.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dat_002dbottom"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-at-bottom</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dat_002dbottom"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> in a window at the bottom
+of the selected frame.
+</p>
+<p>This either tries to split the window at the bottom of the frame or
+the frame&rsquo;s root window, or to reuse an existing window at the bottom
+of the selected frame.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dpop_002dup_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-pop-up-frame</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dpop_002dup_002dframe"> &para;</a></span></dt>
+<dd><p>This function creates a new frame, and displays the buffer in that
+frame&rsquo;s window.  It actually performs the frame creation by calling
+the function specified in <code class="code">pop-up-frame-function</code>
+(see <a class="pxref" href="Choosing-Window-Options.html">Additional Options for Displaying Buffers</a>).  If <var class="var">alist</var> contains a
+<code class="code">pop-up-frame-parameters</code> entry, the associated value is added to
+the newly created frame&rsquo;s parameters.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dfull_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-full-frame</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dfull_002dframe"> &para;</a></span></dt>
+<dd><p>This function displays the buffer on the current frame, deleting all
+other windows so that it takes up the full frame.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002din_002dchild_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-in-child-frame</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002din_002dchild_002dframe"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> in a child frame
+(see <a class="pxref" href="Child-Frames.html">Child Frames</a>) of the selected frame, either reusing an
+existing child frame or by making a new one.  If <var class="var">alist</var> has a
+non-<code class="code">nil</code> <code class="code">child-frame-parameters</code> entry, the corresponding
+value is an alist of frame parameters to give the new frame.  A
+<code class="code">parent-frame</code> parameter specifying the selected frame is
+provided by default.  If the child frame should become the child of
+another frame, a corresponding entry must be added to <var class="var">alist</var>.
+</p>
+<p>The appearance of child frames is largely dependent on the parameters
+provided via <var class="var">alist</var>.  It is advisable to use at least ratios to
+specify the size (see <a class="pxref" href="Size-Parameters.html">Size Parameters</a>) and the position
+(see <a class="pxref" href="Position-Parameters.html">Position Parameters</a>) of the child frame, and to add a
+<code class="code">keep-ratio</code> parameter (see <a class="pxref" href="Frame-Interaction-Parameters.html">Frame Interaction Parameters</a>), in
+order to make sure that the child frame remains visible.  For other
+parameters that should be considered see <a class="ref" href="Child-Frames.html">Child Frames</a>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002duse_002dsome_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-use-some-frame</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002duse_002dsome_002dframe"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> by finding a frame that
+meets a predicate (by default any frame other than the selected
+frame).
+</p>
+<p>If this function chooses a window on another frame, it makes that
+frame visible and, unless <var class="var">alist</var> contains an
+<code class="code">inhibit-switch-frame</code> entry, raises that frame if necessary.
+</p>
+<p>If <var class="var">alist</var> has a non-<code class="code">nil</code> <code class="code">frame-predicate</code> entry, its
+value is a function taking one argument (a frame), returning
+non-<code class="code">nil</code> if the frame is a candidate; this function replaces the
+default predicate.
+</p>
+<p>If <var class="var">alist</var> has a non-<code class="code">nil</code> <code class="code">inhibit-same-window</code> entry,
+the selected window is not used; thus if the selected frame has a
+single window, it is not used.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dno_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-no-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dno_002dwindow"> &para;</a></span></dt>
+<dd><p>If <var class="var">alist</var> has a non-<code class="code">nil</code> <code class="code">allow-no-window</code> entry, then
+this function does not display <var class="var">buffer</var> and returns the symbol
+<code class="code">fail</code>.  This constitutes the only exception to the convention
+that an action function returns either <code class="code">nil</code> or a window showing
+<var class="var">buffer</var>.  If <var class="var">alist</var> has no such <code class="code">allow-no-window</code>
+entry, this function returns <code class="code">nil</code>.
+</p>
+<p>If this function returns <code class="code">fail</code>, <code class="code">display-buffer</code> will skip
+the execution of any further display actions and return <code class="code">nil</code>
+immediately.  If this function returns <code class="code">nil</code>,
+<code class="code">display-buffer</code> will continue with the next display action, if
+any.
+</p>
+<p>It is assumed that when a caller of <code class="code">display-buffer</code> specifies a
+non-<code class="code">nil</code> <code class="code">allow-no-window</code> entry, it is also able to handle
+a <code class="code">nil</code> return value.
+</p></dd></dl>
+
+<p>Two other action functions are described in their proper
+sections&mdash;<code class="code">display-buffer-in-side-window</code> (see <a class="pxref" href="Displaying-Buffers-in-Side-Windows.html">Displaying Buffers in Side Windows</a>) and <code class="code">display-buffer-in-atom-window</code>
+(see <a class="pxref" href="Atomic-Windows.html">Atomic Windows</a>).
+</p>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Buffer-Display-Action-Alists.html">Action Alists for Buffer Display</a>, Previous: <a href="Choosing-Window.html">Choosing a Window for Displaying a Buffer</a>, Up: <a href="Displaying-Buffers.html">Displaying a Buffer in a Suitable Window</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

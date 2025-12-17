@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Syntax Errors (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Syntax Errors (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Debugging.html" rel="up" title="Debugging">
-<link href="Excess-Open.html" rel="next" title="Excess Open">
-<link href="Edebug-Options.html" rel="prev" title="Edebug Options">
+<link href="Test-Coverage.html" rel="next" title="Test Coverage">
+<link href="Edebug.html" rel="prev" title="Edebug">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,42 +47,42 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Syntax-Errors"></span><div class="header">
+<div class="section-level-extent" id="Syntax-Errors">
+<div class="nav-panel">
 <p>
-Next: <a href="Test-Coverage.html" accesskey="n" rel="next">Test Coverage</a>, Previous: <a href="Edebug.html" accesskey="p" rel="prev">Edebug</a>, Up: <a href="Debugging.html" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Test-Coverage.html" accesskey="n" rel="next">Test Coverage</a>, Previous: <a href="Edebug.html" accesskey="p" rel="prev">Edebug</a>, Up: <a href="Debugging.html" accesskey="u" rel="up">Debugging Lisp Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Debugging-Invalid-Lisp-Syntax"></span><h3 class="section">17.3 Debugging Invalid Lisp Syntax</h3>
-<span id="index-debugging-invalid-Lisp-syntax"></span>
+<h3 class="section" id="Debugging-Invalid-Lisp-Syntax"><span>17.3 Debugging Invalid Lisp Syntax<a class="copiable-link" href="#Debugging-Invalid-Lisp-Syntax"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-debugging-invalid-Lisp-syntax"></a>
 
 <p>The Lisp reader reports invalid syntax, but cannot say where the real
-problem is.  For example, the error &lsquo;<samp>End of file during parsing</samp>&rsquo; in
+problem is.  For example, the error &lsquo;<samp class="samp">End of file during parsing</samp>&rsquo; in
 evaluating an expression indicates an excess of open parentheses (or
 square brackets).  The reader detects this imbalance at the end of the
 file, but it cannot figure out where the close parenthesis should have
-been.  Likewise, &lsquo;<samp>Invalid read syntax: &quot;)&quot;</samp>&rsquo; indicates an excess close
+been.  Likewise, &lsquo;<samp class="samp">Invalid read syntax: &quot;)&quot;</samp>&rsquo; indicates an excess close
 parenthesis or missing open parenthesis, but does not say where the
 missing parenthesis belongs.  How, then, to find what to change?
 </p>
 <p>If the problem is not simply an imbalance of parentheses, a useful
-technique is to try <kbd>C-M-e</kbd> at the beginning of each defun, and see
+technique is to try <kbd class="kbd">C-M-e</kbd> at the beginning of each defun, and see
 if it goes to the place where that defun appears to end.  If it does
 not, there is a problem in that defun.
 </p>
-<span id="index-unbalanced-parentheses"></span>
-<span id="index-parenthesis-mismatch_002c-debugging"></span>
+<a class="index-entry-id" id="index-unbalanced-parentheses"></a>
+<a class="index-entry-id" id="index-parenthesis-mismatch_002c-debugging"></a>
 <p>However, unmatched parentheses are the most common syntax errors in
 Lisp, and we can give further advice for those cases.  (In addition,
 just moving point through the code with Show Paren mode enabled might
 find the mismatch.)
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Excess-Open.html" accesskey="1">Excess Open</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to find a spurious open paren or missing close.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Excess-Close.html" accesskey="2">Excess Close</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to find a spurious close paren or missing open.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Excess-Open.html" accesskey="1">Excess Open Parentheses</a></li>
+<li><a href="Excess-Close.html" accesskey="2">Excess Close Parentheses</a></li>
+</ul>
+</div>
 
 
 

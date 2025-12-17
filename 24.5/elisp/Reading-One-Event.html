@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Reading One Event (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Reading One Event (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,12 @@ developing GNU and promoting software freedom." -->
 <link href="Key-Sequence-Input.html" rel="prev" title="Key Sequence Input">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,154 +50,156 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Reading-One-Event"></span><div class="header">
+<div class="subsection-level-extent" id="Reading-One-Event">
+<div class="nav-panel">
 <p>
-Next: <a href="Event-Mod.html" accesskey="n" rel="next">Event Mod</a>, Previous: <a href="Key-Sequence-Input.html" accesskey="p" rel="prev">Key Sequence Input</a>, Up: <a href="Reading-Input.html" accesskey="u" rel="up">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Event-Mod.html" accesskey="n" rel="next">Modifying and Translating Input Events</a>, Previous: <a href="Key-Sequence-Input.html" accesskey="p" rel="prev">Key Sequence Input</a>, Up: <a href="Reading-Input.html" accesskey="u" rel="up">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Reading-One-Event-1"></span><h4 class="subsection">20.8.2 Reading One Event</h4>
-<span id="index-reading-a-single-event"></span>
-<span id="index-event_002c-reading-only-one"></span>
+<h4 class="subsection" id="Reading-One-Event-1"><span>20.8.2 Reading One Event<a class="copiable-link" href="#Reading-One-Event-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-reading-a-single-event"></a>
+<a class="index-entry-id" id="index-event_002c-reading-only-one"></a>
 
-<p>The lowest level functions for command input are <code>read-event</code>,
-<code>read-char</code>, and <code>read-char-exclusive</code>.
+<p>The lowest level functions for command input are <code class="code">read-event</code>,
+<code class="code">read-char</code>, and <code class="code">read-char-exclusive</code>.
 </p>
-<dl>
-<dt id="index-read_002devent">Function: <strong>read-event</strong> <em>&amp;optional prompt inherit-input-method seconds</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-read_002devent"><span class="category-def">Function: </span><span><strong class="def-name">read-event</strong> <var class="def-var-arguments">&amp;optional prompt inherit-input-method seconds</var><a class="copiable-link" href="#index-read_002devent"> &para;</a></span></dt>
 <dd><p>This function reads and returns the next event of command input,
 waiting if necessary until an event is available.
 </p>
 <p>The returned event may come directly from the user, or from a keyboard
 macro.  It is not decoded by the keyboard&rsquo;s input coding system
-(see <a href="Terminal-I_002fO-Encoding.html">Terminal I/O Encoding</a>).
+(see <a class="pxref" href="Terminal-I_002fO-Encoding.html">Terminal I/O Encoding</a>).
 </p>
-<p>If the optional argument <var>prompt</var> is non-<code>nil</code>, it should be a
+<p>If the optional argument <var class="var">prompt</var> is non-<code class="code">nil</code>, it should be a
 string to display in the echo area as a prompt.  Otherwise,
-<code>read-event</code> does not display any message to indicate it is waiting
+<code class="code">read-event</code> does not display any message to indicate it is waiting
 for input; instead, it prompts by echoing: it displays descriptions of
-the events that led to or were read by the current command.  See <a href="The-Echo-Area.html">The Echo Area</a>.
+the events that led to or were read by the current command.  See <a class="xref" href="The-Echo-Area.html">The Echo Area</a>.
 </p>
-<p>If <var>inherit-input-method</var> is non-<code>nil</code>, then the current input
+<p>If <var class="var">inherit-input-method</var> is non-<code class="code">nil</code>, then the current input
 method (if any) is employed to make it possible to enter a
-non-<acronym>ASCII</acronym> character.  Otherwise, input method handling is disabled
+non-<abbr class="acronym">ASCII</abbr> character.  Otherwise, input method handling is disabled
 for reading this event.
 </p>
-<p>If <code>cursor-in-echo-area</code> is non-<code>nil</code>, then <code>read-event</code>
+<p>If <code class="code">cursor-in-echo-area</code> is non-<code class="code">nil</code>, then <code class="code">read-event</code>
 moves the cursor temporarily to the echo area, to the end of any message
-displayed there.  Otherwise <code>read-event</code> does not move the cursor.
+displayed there.  Otherwise <code class="code">read-event</code> does not move the cursor.
 </p>
-<p>If <var>seconds</var> is non-<code>nil</code>, it should be a number specifying
+<p>If <var class="var">seconds</var> is non-<code class="code">nil</code>, it should be a number specifying
 the maximum time to wait for input, in seconds.  If no input arrives
-within that time, <code>read-event</code> stops waiting and returns
-<code>nil</code>.  A floating point <var>seconds</var> means to wait
+within that time, <code class="code">read-event</code> stops waiting and returns
+<code class="code">nil</code>.  A floating point <var class="var">seconds</var> means to wait
 for a fractional number of seconds.  Some systems support only a whole
-number of seconds; on these systems, <var>seconds</var> is rounded down.
-If <var>seconds</var> is <code>nil</code>, <code>read-event</code> waits as long as
+number of seconds; on these systems, <var class="var">seconds</var> is rounded down.
+If <var class="var">seconds</var> is <code class="code">nil</code>, <code class="code">read-event</code> waits as long as
 necessary for input to arrive.
 </p>
-<p>If <var>seconds</var> is <code>nil</code>, Emacs is considered idle while waiting
+<p>If <var class="var">seconds</var> is <code class="code">nil</code>, Emacs is considered idle while waiting
 for user input to arrive.  Idle timers&mdash;those created with
-<code>run-with-idle-timer</code> (see <a href="Idle-Timers.html">Idle Timers</a>)&mdash;can run during this
-period.  However, if <var>seconds</var> is non-<code>nil</code>, the state of
+<code class="code">run-with-idle-timer</code> (see <a class="pxref" href="Idle-Timers.html">Idle Timers</a>)&mdash;can run during this
+period.  However, if <var class="var">seconds</var> is non-<code class="code">nil</code>, the state of
 idleness remains unchanged.  If Emacs is non-idle when
-<code>read-event</code> is called, it remains non-idle throughout the
-operation of <code>read-event</code>; if Emacs is idle (which can happen if
+<code class="code">read-event</code> is called, it remains non-idle throughout the
+operation of <code class="code">read-event</code>; if Emacs is idle (which can happen if
 the call happens inside an idle timer), it remains idle.
 </p>
-<p>If <code>read-event</code> gets an event that is defined as a help character,
-then in some cases <code>read-event</code> processes the event directly without
-returning.  See <a href="Help-Functions.html">Help Functions</a>.  Certain other events, called
-<em>special events</em>, are also processed directly within
-<code>read-event</code> (see <a href="Special-Events.html">Special Events</a>).
+<p>If <code class="code">read-event</code> gets an event that is defined as a help character,
+then in some cases <code class="code">read-event</code> processes the event directly without
+returning.  See <a class="xref" href="Help-Functions.html">Help Functions</a>.  Certain other events, called
+<em class="dfn">special events</em>, are also processed directly within
+<code class="code">read-event</code> (see <a class="pxref" href="Special-Events.html">Special Events</a>).
 </p>
-<p>Here is what happens if you call <code>read-event</code> and then press the
+<p>Here is what happens if you call <code class="code">read-event</code> and then press the
 right-arrow function key:
 </p>
 <div class="example">
-<pre class="example">(read-event)
+<div class="group"><pre class="example-preformatted">(read-event)
      &rArr; right
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-read_002dchar">Function: <strong>read-char</strong> <em>&amp;optional prompt inherit-input-method seconds</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-read_002dchar"><span class="category-def">Function: </span><span><strong class="def-name">read-char</strong> <var class="def-var-arguments">&amp;optional prompt inherit-input-method seconds</var><a class="copiable-link" href="#index-read_002dchar"> &para;</a></span></dt>
 <dd><p>This function reads and returns a character of command input.  If the
 user generates an event which is not a character (i.e., a mouse click or
-function key event), <code>read-char</code> signals an error.  The arguments
-work as in <code>read-event</code>.
+function key event), <code class="code">read-char</code> signals an error.  The arguments
+work as in <code class="code">read-event</code>.
 </p>
-<p>In the first example, the user types the character <kbd>1</kbd> (<acronym>ASCII</acronym>
+<p>In the first example, the user types the character <kbd class="kbd">1</kbd> (<abbr class="acronym">ASCII</abbr>
 code 49).  The second example shows a keyboard macro definition that
-calls <code>read-char</code> from the minibuffer using <code>eval-expression</code>.
-<code>read-char</code> reads the keyboard macro&rsquo;s very next character, which
-is <kbd>1</kbd>.  Then <code>eval-expression</code> displays its return value in
+calls <code class="code">read-char</code> from the minibuffer using <code class="code">eval-expression</code>.
+<code class="code">read-char</code> reads the keyboard macro&rsquo;s very next character, which
+is <kbd class="kbd">1</kbd>.  Then <code class="code">eval-expression</code> displays its return value in
 the echo area.
 </p>
 <div class="example">
-<pre class="example">(read-char)
+<div class="group"><pre class="example-preformatted">(read-char)
      &rArr; 49
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">;; <span class="roman">We assume here you use <kbd>M-:</kbd> to evaluate this.</span>
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">We assume here you use <kbd class="kbd">M-:</kbd> to evaluate this.</span>
 (symbol-function 'foo)
      &rArr; &quot;^[:(read-char)^M1&quot;
-</pre><pre class="example">(execute-kbd-macro 'foo)
-     ⊣ 49
+</pre></div><div class="group"><pre class="example-preformatted">(execute-kbd-macro 'foo)
+     -| 49
      &rArr; nil
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-read_002dchar_002dexclusive">Function: <strong>read-char-exclusive</strong> <em>&amp;optional prompt inherit-input-method seconds</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-read_002dchar_002dexclusive"><span class="category-def">Function: </span><span><strong class="def-name">read-char-exclusive</strong> <var class="def-var-arguments">&amp;optional prompt inherit-input-method seconds</var><a class="copiable-link" href="#index-read_002dchar_002dexclusive"> &para;</a></span></dt>
 <dd><p>This function reads and returns a character of command input.  If the
 user generates an event which is not a character,
-<code>read-char-exclusive</code> ignores it and reads another event, until it
-gets a character.  The arguments work as in <code>read-event</code>.
+<code class="code">read-char-exclusive</code> ignores it and reads another event, until it
+gets a character.  The arguments work as in <code class="code">read-event</code>.
 </p></dd></dl>
 
 <p>None of the above functions suppress quitting.
 </p>
-<dl>
-<dt id="index-num_002dnonmacro_002dinput_002devents">Variable: <strong>num-nonmacro-input-events</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-num_002dnonmacro_002dinput_002devents"><span class="category-def">Variable: </span><span><strong class="def-name">num-nonmacro-input-events</strong><a class="copiable-link" href="#index-num_002dnonmacro_002dinput_002devents"> &para;</a></span></dt>
 <dd><p>This variable holds the total number of input events received so far
 from the terminal&mdash;not counting those generated by keyboard macros.
 </p></dd></dl>
 
-<p>We emphasize that, unlike <code>read-key-sequence</code>, the functions
-<code>read-event</code>, <code>read-char</code>, and <code>read-char-exclusive</code> do
-not perform the translations described in <a href="Translation-Keymaps.html">Translation Keymaps</a>.
+<p>We emphasize that, unlike <code class="code">read-key-sequence</code>, the functions
+<code class="code">read-event</code>, <code class="code">read-char</code>, and <code class="code">read-char-exclusive</code> do
+not perform the translations described in <a class="ref" href="Translation-Keymaps.html">Keymaps for Translating Sequences of Events</a>.
 If you wish to read a single key taking these translations into
-account, use the function <code>read-key</code>:
+account, use the function <code class="code">read-key</code>:
 </p>
-<dl>
-<dt id="index-read_002dkey">Function: <strong>read-key</strong> <em>&amp;optional prompt</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-read_002dkey"><span class="category-def">Function: </span><span><strong class="def-name">read-key</strong> <var class="def-var-arguments">&amp;optional prompt</var><a class="copiable-link" href="#index-read_002dkey"> &para;</a></span></dt>
 <dd><p>This function reads a single key.  It is &ldquo;intermediate&rdquo; between
-<code>read-key-sequence</code> and <code>read-event</code>.  Unlike the former, it
+<code class="code">read-key-sequence</code> and <code class="code">read-event</code>.  Unlike the former, it
 reads a single key, not a key sequence.  Unlike the latter, it does
 not return a raw event, but decodes and translates the user input
-according to <code>input-decode-map</code>, <code>local-function-key-map</code>,
-and <code>key-translation-map</code> (see <a href="Translation-Keymaps.html">Translation Keymaps</a>).
+according to <code class="code">input-decode-map</code>, <code class="code">local-function-key-map</code>,
+and <code class="code">key-translation-map</code> (see <a class="pxref" href="Translation-Keymaps.html">Keymaps for Translating Sequences of Events</a>).
 </p>
-<p>The argument <var>prompt</var> is either a string to be displayed in the
-echo area as a prompt, or <code>nil</code>, meaning not to display a prompt.
+<p>The argument <var class="var">prompt</var> is either a string to be displayed in the
+echo area as a prompt, or <code class="code">nil</code>, meaning not to display a prompt.
 </p></dd></dl>
 
-<dl>
-<dt id="index-read_002dchar_002dchoice">Function: <strong>read-char-choice</strong> <em>prompt chars &amp;optional inhibit-quit</em></dt>
-<dd><p>This function uses <code>read-key</code> to read and return a single
-character.  It ignores any input that is not a member of <var>chars</var>,
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-read_002dchar_002dchoice"><span class="category-def">Function: </span><span><strong class="def-name">read-char-choice</strong> <var class="def-var-arguments">prompt chars &amp;optional inhibit-quit</var><a class="copiable-link" href="#index-read_002dchar_002dchoice"> &para;</a></span></dt>
+<dd><p>This function uses <code class="code">read-key</code> to read and return a single
+character.  It ignores any input that is not a member of <var class="var">chars</var>,
 a list of accepted characters.  Optionally, it will also ignore
 keyboard-quit events while it is waiting for valid input.  If you bind
-<code>help-form</code> (see <a href="Help-Functions.html">Help Functions</a>) to a non-<code>nil</code> value
-while calling <code>read-char-choice</code>, then pressing <code>help-char</code>
-causes it to evaluate <code>help-form</code> and display the result.  It
+<code class="code">help-form</code> (see <a class="pxref" href="Help-Functions.html">Help Functions</a>) to a non-<code class="code">nil</code> value
+while calling <code class="code">read-char-choice</code>, then pressing <code class="code">help-char</code>
+causes it to evaluate <code class="code">help-form</code> and display the result.  It
 then continues to wait for a valid input character, or keyboard-quit.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Event-Mod.html" accesskey="n" rel="next">Event Mod</a>, Previous: <a href="Key-Sequence-Input.html" accesskey="p" rel="prev">Key Sequence Input</a>, Up: <a href="Reading-Input.html" accesskey="u" rel="up">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Event-Mod.html">Modifying and Translating Input Events</a>, Previous: <a href="Key-Sequence-Input.html">Key Sequence Input</a>, Up: <a href="Reading-Input.html">Reading Input</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.2.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>M-x (GNU Emacs Manual)</title>
+
+<meta name="description" content="M-x (GNU Emacs Manual)">
+<meta name="keywords" content="M-x (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Help.html" rel="next" title="Help">
+<link href="Minibuffer.html" rel="prev" title="Minibuffer">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="M_002dx">
+<div class="nav-panel">
+<p>
+Next: <a href="Help.html" accesskey="n" rel="next">Help</a>, Previous: <a href="Minibuffer.html" accesskey="p" rel="prev">The Minibuffer</a>, Up: <a href="index.html" accesskey="u" rel="up">The Emacs Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Running-Commands-by-Name"><span>9 Running Commands by Name<a class="copiable-link" href="#Running-Commands-by-Name"> &para;</a></span></h2>
+
+<p>Every Emacs command has a name that you can use to run it.  For
+convenience, many commands also have key bindings.  You can run those
+commands by typing the keys, or run them by name.  Most Emacs commands
+have no key bindings, so the only way to run them is by name.
+(See <a class="xref" href="Key-Bindings.html">Customizing Key Bindings</a>, for how to set up key bindings.)
+</p>
+<p>By convention, a command name consists of one or more words,
+separated by hyphens; for example, <code class="code">auto-fill-mode</code> or
+<code class="code">manual-entry</code>.  Command names mostly use complete English words
+to make them easier to remember.
+</p>
+<a class="index-entry-id" id="index-M_002dx"></a>
+<p>To run a command by name, start with <kbd class="kbd">M-x</kbd>, type the command
+name, then terminate it with <kbd class="key">RET</kbd>.  <kbd class="kbd">M-x</kbd> uses the minibuffer
+to read the command name.  The string &lsquo;<samp class="samp">M-x</samp>&rsquo; appears at the
+beginning of the minibuffer as a <em class="dfn">prompt</em> to remind you to enter a
+command name to be run.  <kbd class="key">RET</kbd> exits the minibuffer and runs the
+command.  See <a class="xref" href="Minibuffer.html">The Minibuffer</a>, for more information on the minibuffer.
+</p>
+<p>You can use completion to enter the command name.  For example,
+to invoke the command <code class="code">forward-char</code>, you can type
+</p>
+<div class="example">
+<pre class="example-preformatted">M-x forward-char <kbd class="key">RET</kbd>
+</pre></div>
+
+<p>or
+</p>
+<div class="example">
+<pre class="example-preformatted">M-x forw <kbd class="key">TAB</kbd> c <kbd class="key">RET</kbd>
+</pre></div>
+
+<p>Note that <code class="code">forward-char</code> is the same command that you invoke with
+the key <kbd class="kbd">C-f</kbd>.  The existence of a key binding does not stop you
+from running the command by name.
+</p>
+<a class="index-entry-id" id="index-obsolete-command"></a>
+<p>When <kbd class="kbd">M-x</kbd> completes on commands, it ignores the commands that
+are declared <em class="dfn">obsolete</em>; for these, you will have to type their
+full name.  (Obsolete commands are those for which newer, better
+alternatives exist, and which are slated for removal in some future
+Emacs release.)
+</p>
+<a class="index-entry-id" id="index-read_002dextended_002dcommand_002dpredicate"></a>
+<p>In addition, <kbd class="kbd">M-x</kbd> completion can exclude commands that are not
+relevant to, and generally cannot work with, the current buffer&rsquo;s
+major mode (see <a class="pxref" href="Major-Modes.html">Major Modes</a>) and minor modes (see <a class="pxref" href="Minor-Modes.html">Minor Modes</a>).  By default, no commands are excluded, but you can customize
+the option <code class="code">read-extended-command-predicate</code> to exclude those
+irrelevant commands from completion results.
+</p>
+<a class="index-entry-id" id="index-M_002dS_002dx"></a>
+<a class="index-entry-id" id="index-M_002dX"></a>
+<p>Conversely, Emacs can exclude all commands except those that are
+particularly relevant to the current buffer.  The <kbd class="kbd">M-S-x</kbd> (that&rsquo;s
+&ldquo;meta shift x&rdquo;) command works just like <kbd class="kbd">M-x</kbd>, but instead of
+listing all (or most) of the commands Emacs knows about, it will only
+list the commands that have been marked as &ldquo;belonging&rdquo; to the
+current major mode, or any enabled minor modes.
+</p>
+<p>To cancel the <kbd class="kbd">M-x</kbd> and not run a command, type <kbd class="kbd">C-g</kbd> instead
+of entering the command name.  This takes you back to command level.
+</p>
+<p>To pass a numeric argument to the command you are invoking with
+<kbd class="kbd">M-x</kbd>, specify the numeric argument before <kbd class="kbd">M-x</kbd>.  The
+argument value appears in the prompt while the command name is being
+read, and finally <kbd class="kbd">M-x</kbd> passes the argument to that command.  For
+example, to pass the numeric argument of 42 to the command
+<code class="code">forward-char</code> you can type <kbd class="kbd">C-u 42 M-x forward-char
+<kbd class="key">RET</kbd></kbd>.
+</p>
+<a class="index-entry-id" id="index-suggest_002dkey_002dbindings"></a>
+<p>When the command you run with <kbd class="kbd">M-x</kbd> has a key binding, Emacs
+mentions this in the echo area after running the command.  For
+example, if you type <kbd class="kbd">M-x forward-word</kbd>, the message says that you
+can run the same command by typing <kbd class="kbd">M-f</kbd>.  You can turn off these
+messages by setting the variable <code class="code">suggest-key-bindings</code> to
+<code class="code">nil</code>.  The value of <code class="code">suggest-key-bindings</code> can also be a
+number, in which case Emacs will show the binding for that many
+seconds before removing it from display.  The default behavior is to
+display the binding for 2 seconds.
+</p>
+<p>Additionally, when <code class="code">suggest-key-bindings</code> is non-<code class="code">nil</code>, the
+completion list of <kbd class="kbd">M-x</kbd> shows equivalent key bindings for all
+commands that have them.
+</p>
+<a class="index-entry-id" id="index-extended_002dcommand_002dsuggest_002dshorter"></a>
+<p>Commands that don&rsquo;t have key bindings, can still be invoked after
+typing less than their full name at the &lsquo;<samp class="samp">M-x</samp>&rsquo; prompt.  Emacs
+mentions such shorthands in the echo area if they are significantly
+shorter than the full command name, and
+<code class="code">extended-command-suggest-shorter</code> is non-<code class="code">nil</code>.  The
+setting of <code class="code">suggest-key-bindings</code> affects these hints as well.
+</p>
+<p>In this manual, when we speak of running a command by name, we often
+omit the <kbd class="key">RET</kbd> that terminates the name.  Thus we might say
+<kbd class="kbd">M-x auto-fill-mode</kbd> rather than <kbd class="kbd">M-x&nbsp;auto-fill-mode&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w -->.  We mention the <kbd class="key">RET</kbd> only for emphasis, such as when
+the command is followed by arguments.
+</p>
+<a class="index-entry-id" id="index-execute_002dextended_002dcommand"></a>
+<p><kbd class="kbd">M-x</kbd> works by running the command
+<code class="code">execute-extended-command</code>, which is responsible for reading the
+name of another command and invoking it.
+</p></div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Help.html">Help</a>, Previous: <a href="Minibuffer.html">The Minibuffer</a>, Up: <a href="index.html">The Emacs Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Window System Selections (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Window System Selections (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Pointer-Shape.html" rel="prev" title="Pointer Shape">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,82 +47,84 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Window-System-Selections"></span><div class="header">
+<div class="section-level-extent" id="Window-System-Selections">
+<div class="nav-panel">
 <p>
 Next: <a href="Drag-and-Drop.html" accesskey="n" rel="next">Drag and Drop</a>, Previous: <a href="Pointer-Shape.html" accesskey="p" rel="prev">Pointer Shape</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Window-System-Selections-1"></span><h3 class="section">28.18 Window System Selections</h3>
-<span id="index-selection-_0028for-window-systems_0029"></span>
-<span id="index-clipboard"></span>
-<span id="index-primary-selection"></span>
-<span id="index-secondary-selection"></span>
+<h3 class="section" id="Window-System-Selections-1"><span>28.18 Window System Selections<a class="copiable-link" href="#Window-System-Selections-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-selection-_0028for-window-systems_0029"></a>
+<a class="index-entry-id" id="index-clipboard"></a>
+<a class="index-entry-id" id="index-primary-selection"></a>
+<a class="index-entry-id" id="index-secondary-selection"></a>
 
 <p>In the X window system, data can be transferred between different
-applications by means of <em>selections</em>.  X defines an arbitrary
-number of <em>selection types</em>, each of which can store its own data;
-however, only three are commonly used: the <em>clipboard</em>,
-<em>primary selection</em>, and <em>secondary selection</em>.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Cut-and-Paste.html#Cut-and-Paste">Cut and Paste</a> in <cite>The GNU Emacs Manual</cite>, for Emacs
+applications by means of <em class="dfn">selections</em>.  X defines an arbitrary
+number of <em class="dfn">selection types</em>, each of which can store its own data;
+however, only three are commonly used: the <em class="dfn">clipboard</em>,
+<em class="dfn">primary selection</em>, and <em class="dfn">secondary selection</em>.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Cut-and-Paste.html#Cut-and-Paste">Cut and Paste</a> in <cite class="cite">The GNU Emacs Manual</cite>, for Emacs
 commands that make use of these selections.  This section documents
 the low-level functions for reading and setting X selections.
 </p>
-<dl>
-<dt id="index-x_002dset_002dselection">Command: <strong>x-set-selection</strong> <em>type data</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-x_002dset_002dselection"><span class="category-def">Command: </span><span><strong class="def-name">x-set-selection</strong> <var class="def-var-arguments">type data</var><a class="copiable-link" href="#index-x_002dset_002dselection"> &para;</a></span></dt>
 <dd><p>This function sets an X selection.  It takes two arguments: a
-selection type <var>type</var>, and the value to assign to it, <var>data</var>.
+selection type <var class="var">type</var>, and the value to assign to it, <var class="var">data</var>.
 </p>
-<p><var>type</var> should be a symbol; it is usually one of <code>PRIMARY</code>,
-<code>SECONDARY</code> or <code>CLIPBOARD</code>.  These are symbols with
+<p><var class="var">type</var> should be a symbol; it is usually one of <code class="code">PRIMARY</code>,
+<code class="code">SECONDARY</code> or <code class="code">CLIPBOARD</code>.  These are symbols with
 upper-case names, in accord with X Window System conventions.  If
-<var>type</var> is <code>nil</code>, that stands for <code>PRIMARY</code>.
+<var class="var">type</var> is <code class="code">nil</code>, that stands for <code class="code">PRIMARY</code>.
 </p>
-<p>If <var>data</var> is <code>nil</code>, it means to clear out the selection.
-Otherwise, <var>data</var> may be a string, a symbol, an integer (or a cons
+<p>If <var class="var">data</var> is <code class="code">nil</code>, it means to clear out the selection.
+Otherwise, <var class="var">data</var> may be a string, a symbol, an integer (or a cons
 of two integers or list of two integers), an overlay, or a cons of two
 markers pointing to the same buffer.  An overlay or a pair of markers
 stands for text in the overlay or between the markers.  The argument
-<var>data</var> may also be a vector of valid non-vector selection values.
+<var class="var">data</var> may also be a vector of valid non-vector selection values.
 </p>
-<p>This function returns <var>data</var>.
+<p>This function returns <var class="var">data</var>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-x_002dget_002dselection">Function: <strong>x-get-selection</strong> <em>&amp;optional type data-type</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-x_002dget_002dselection"><span class="category-def">Function: </span><span><strong class="def-name">x-get-selection</strong> <var class="def-var-arguments">&amp;optional type data-type</var><a class="copiable-link" href="#index-x_002dget_002dselection"> &para;</a></span></dt>
 <dd><p>This function accesses selections set up by Emacs or by other X
-clients.  It takes two optional arguments, <var>type</var> and
-<var>data-type</var>.  The default for <var>type</var>, the selection type, is
-<code>PRIMARY</code>.
+clients.  It takes two optional arguments, <var class="var">type</var> and
+<var class="var">data-type</var>.  The default for <var class="var">type</var>, the selection type, is
+<code class="code">PRIMARY</code>.
 </p>
-<p>The <var>data-type</var> argument specifies the form of data conversion to
+<p>The <var class="var">data-type</var> argument specifies the form of data conversion to
 use, to convert the raw data obtained from another X client into Lisp
-data.  Meaningful values include <code>TEXT</code>, <code>STRING</code>,
-<code>UTF8_STRING</code>, <code>TARGETS</code>, <code>LENGTH</code>, <code>DELETE</code>,
-<code>FILE_NAME</code>, <code>CHARACTER_POSITION</code>, <code>NAME</code>,
-<code>LINE_NUMBER</code>, <code>COLUMN_NUMBER</code>, <code>OWNER_OS</code>,
-<code>HOST_NAME</code>, <code>USER</code>, <code>CLASS</code>, <code>ATOM</code>, and
-<code>INTEGER</code>.  (These are symbols with upper-case names in accord
-with X conventions.)  The default for <var>data-type</var> is
-<code>STRING</code>.
+data.  Meaningful values include <code class="code">TEXT</code>, <code class="code">STRING</code>,
+<code class="code">UTF8_STRING</code>, <code class="code">TARGETS</code>, <code class="code">LENGTH</code>, <code class="code">DELETE</code>,
+<code class="code">FILE_NAME</code>, <code class="code">CHARACTER_POSITION</code>, <code class="code">NAME</code>,
+<code class="code">LINE_NUMBER</code>, <code class="code">COLUMN_NUMBER</code>, <code class="code">OWNER_OS</code>,
+<code class="code">HOST_NAME</code>, <code class="code">USER</code>, <code class="code">CLASS</code>, <code class="code">ATOM</code>, and
+<code class="code">INTEGER</code>.  (These are symbols with upper-case names in accord
+with X conventions.)  The default for <var class="var">data-type</var> is
+<code class="code">STRING</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-selection_002dcoding_002dsystem">User Option: <strong>selection-coding-system</strong></dt>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-selection_002dcoding_002dsystem"><span class="category-def">User Option: </span><span><strong class="def-name">selection-coding-system</strong><a class="copiable-link" href="#index-selection_002dcoding_002dsystem"> &para;</a></span></dt>
 <dd><p>This variable specifies the coding system to use when reading and
-writing selections or the clipboard.  See <a href="Coding-Systems.html">Coding Systems</a>.  The default is <code>compound-text-with-extensions</code>, which
+writing selections or the clipboard.  See <a class="xref" href="Coding-Systems.html">Coding Systems</a>.  The default is <code class="code">compound-text-with-extensions</code>, which
 converts to the text representation that X11 normally uses.
 </p></dd></dl>
 
-<span id="index-clipboard-support-_0028for-MS_002dWindows_0029"></span>
+<a class="index-entry-id" id="index-clipboard-support-_0028for-MS_002dWindows_0029"></a>
 <p>When Emacs runs on MS-Windows, it does not implement X selections in
-general, but it does support the clipboard.  <code>x-get-selection</code>
-and <code>x-set-selection</code> on MS-Windows support the text data type
+general, but it does support the clipboard.  <code class="code">x-get-selection</code>
+and <code class="code">x-set-selection</code> on MS-Windows support the text data type
 only; if the clipboard holds other types of data, Emacs treats the
 clipboard as empty.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Drag-and-Drop.html" accesskey="n" rel="next">Drag and Drop</a>, Previous: <a href="Pointer-Shape.html" accesskey="p" rel="prev">Pointer Shape</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Drag-and-Drop.html">Drag and Drop</a>, Previous: <a href="Pointer-Shape.html">Pointer Shape</a>, Up: <a href="Frames.html">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

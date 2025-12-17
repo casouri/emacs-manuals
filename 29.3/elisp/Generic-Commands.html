@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Generic Commands (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Generic Commands (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Generic Commands (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Defining-Commands.html" rel="up" title="Defining Commands">
+<link href="Command-Modes.html" rel="prev" title="Command Modes">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Generic-Commands">
+<div class="nav-panel">
+<p>
+Previous: <a href="Command-Modes.html" accesskey="p" rel="prev">Specifying Modes For Commands</a>, Up: <a href="Defining-Commands.html" accesskey="u" rel="up">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Select-among-Command-Alternatives"><span>22.2.5 Select among Command Alternatives<a class="copiable-link" href="#Select-among-Command-Alternatives"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-generic-commands"></a>
+<a class="index-entry-id" id="index-alternative-commands_002c-defining"></a>
+
+<p>Sometimes it is useful to define a command that serves as a &ldquo;generic
+dispatcher&rdquo; capable of invoking one of a set of commands according to
+the user&rsquo;s needs.  For example, imagine that you want to define a
+command named &lsquo;<samp class="samp">open</samp>&rsquo; that can &ldquo;open&rdquo; and display several
+different types of objects.  Or you could have a command named
+&lsquo;<samp class="samp">mua</samp>&rsquo; (which stands for Mail User Agent) that can read and send
+email using one of several email backends, such as Rmail, Gnus, or
+MH-E.  The macro <code class="code">define-alternatives</code> can be used to define such
+<em class="dfn">generic commands</em>.  A generic command is an interactive function
+whose implementation can be selected from several alternatives, as a
+matter of user preference.
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-define_002dalternatives"><span class="category-def">Macro: </span><span><strong class="def-name">define-alternatives</strong> <var class="def-var-arguments">command &amp;rest customizations</var><a class="copiable-link" href="#index-define_002dalternatives"> &para;</a></span></dt>
+<dd><p>This macro defines the new generic <var class="var">command</var>, which can have
+several alternative implementations.  The argument <var class="var">command</var>
+should be an unquoted symbol.
+</p>
+<p>When invoked, the macro creates an interactive Lisp closure
+(see <a class="pxref" href="Closures.html">Closures</a>).  When the user runs <kbd class="kbd">M-x&nbsp;<var class="var">command</var>&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w --> for the first time, Emacs asks to select one of the
+alternative implementations of <var class="var">command</var>, offering completion for
+the names of these alternatives.  These names come from the user
+option whose name is <code class="code"><var class="var">command</var>-alternatives</code>, which the
+macro creates (if it didn&rsquo;t exist before).  To be useful, this
+variable&rsquo;s value should be an alist whose elements have the form
+<code class="code">(<var class="var">alt-name</var>&nbsp;.&nbsp;<var class="var">alt-func</var>)</code><!-- /@w -->, where <var class="var">alt-name</var> is
+the name of the alternative and <var class="var">alt-func</var> is the interactive
+function to be called if this alternative is selected.  When the user
+selects an alternative, Emacs remembers the selection, and will
+thereafter automatically call that selected alternative without
+prompting when the user invokes <kbd class="kbd">M-x <var class="var">command</var></kbd> again.  To
+choose a different alternative, type <kbd class="kbd">C-u&nbsp;M-x&nbsp;<var class="var">command</var>&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w -->&ndash;then Emacs will again prompt for one of the alternatives,
+and the selection will override the previous one.
+</p>
+<p>The variable <code class="code"><var class="var">command</var>-alternatives</code> can be created before
+calling <code class="code">define-alternatives</code>, with the appropriate values;
+otherwise the macro creates the variable with a <code class="code">nil</code> value, and
+it should then be populated with the associations describing the
+alternatives.  Packages that wish to provide their own implementation
+of an existing generic command can use <code class="code">autoload</code> cookies
+(see <a class="pxref" href="Autoload.html">Autoload</a>) to add to the alist, for example:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">;;;###autoload (push '(&quot;My name&quot; . my-foo-symbol) foo-alternatives
+</pre></div>
+
+<p>If the optional argument <var class="var">customizations</var> is non-<code class="code">nil</code>, it
+should consist of alternating <code class="code">defcustom</code> keywords (typically
+<code class="code">:group</code> and <code class="code">:version</code>) and values to add to the definition
+of the <code class="code">defcustom</code> <code class="code"><var class="var">command</var>-alternatives</code>.
+</p>
+<p>Here is an example of a simple generic dispatcher command named
+<code class="code">open</code> with 3 alternative implementations:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(define-alternatives open
+  :group 'files
+  :version &quot;42.1&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(setq open-alternatives
+      '((&quot;file&quot; . find-file)
+	(&quot;directory&quot; . dired)
+	(&quot;hexl&quot; . hexl-find-file)))
+</pre></div></div>
+
+</dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Command-Modes.html">Specifying Modes For Commands</a>, Up: <a href="Defining-Commands.html">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

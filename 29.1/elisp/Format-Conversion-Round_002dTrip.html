@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Format Conversion Round-Trip (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Format Conversion Round-Trip (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Format Conversion Round-Trip (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Format-Conversion.html" rel="up" title="Format Conversion">
+<link href="Format-Conversion-Piecemeal.html" rel="next" title="Format Conversion Piecemeal">
+<link href="Format-Conversion-Overview.html" rel="prev" title="Format Conversion Overview">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Format-Conversion-Round_002dTrip">
+<div class="nav-panel">
+<p>
+Next: <a href="Format-Conversion-Piecemeal.html" accesskey="n" rel="next">Piecemeal Specification</a>, Previous: <a href="Format-Conversion-Overview.html" accesskey="p" rel="prev">Overview</a>, Up: <a href="Format-Conversion.html" accesskey="u" rel="up">File Format Conversion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Round_002dTrip-Specification"><span>26.13.2 Round-Trip Specification<a class="copiable-link" href="#Round_002dTrip-Specification"> &para;</a></span></h4>
+
+<p>The most general of the two facilities is controlled by the variable
+<code class="code">format-alist</code>, a list of <em class="dfn">file format</em> specifications, which
+describe textual representations used in files for the data in an Emacs
+buffer.  The descriptions for reading and writing are paired, which is
+why we call this &ldquo;round-trip&rdquo; specification
+(see <a class="pxref" href="Format-Conversion-Piecemeal.html">Piecemeal Specification</a>, for non-paired specification).
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-format_002dalist"><span class="category-def">Variable: </span><span><strong class="def-name">format-alist</strong><a class="copiable-link" href="#index-format_002dalist"> &para;</a></span></dt>
+<dd><p>This list contains one format definition for each defined file format.
+Each format definition is a list of this form:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">name</var> <var class="var">doc-string</var> <var class="var">regexp</var> <var class="var">from-fn</var> <var class="var">to-fn</var> <var class="var">modify</var> <var class="var">mode-fn</var> <var class="var">preserve</var>)
+</pre></div>
+</dd></dl>
+
+<a class="index-entry-id" id="index-format-definition"></a>
+<p>Here is what the elements in a format definition mean:
+</p>
+<dl class="table">
+<dt><var class="var">name</var></dt>
+<dd><p>The name of this format.
+</p>
+</dd>
+<dt><var class="var">doc-string</var></dt>
+<dd><p>A documentation string for the format.
+</p>
+</dd>
+<dt><var class="var">regexp</var></dt>
+<dd><p>A regular expression which is used to recognize files represented in
+this format.  If <code class="code">nil</code>, the format is never applied automatically.
+</p>
+</dd>
+<dt><var class="var">from-fn</var></dt>
+<dd><p>A shell command or function to decode data in this format (to convert
+file data into the usual Emacs data representation).
+</p>
+<p>A shell command is represented as a string; Emacs runs the command as a
+filter to perform the conversion.
+</p>
+<p>If <var class="var">from-fn</var> is a function, it is called with two arguments, <var class="var">begin</var>
+and <var class="var">end</var>, which specify the part of the buffer it should convert.
+It should convert the text by editing it in place.  Since this can
+change the length of the text, <var class="var">from-fn</var> should return the modified
+end position.
+</p>
+<p>One responsibility of <var class="var">from-fn</var> is to make sure that the beginning
+of the file no longer matches <var class="var">regexp</var>.  Otherwise it is likely to
+get called again.  Also, <var class="var">from-fn</var> must not involve buffers or
+files other than the one being decoded, otherwise the internal buffer
+used for formatting might be overwritten.
+</p>
+</dd>
+<dt><var class="var">to-fn</var></dt>
+<dd><p>A shell command or function to encode data in this format&mdash;that is, to
+convert the usual Emacs data representation into this format.
+</p>
+<p>If <var class="var">to-fn</var> is a string, it is a shell command; Emacs runs the
+command as a filter to perform the conversion.
+</p>
+<p>If <var class="var">to-fn</var> is a function, it is called with three arguments:
+<var class="var">begin</var> and <var class="var">end</var>, which specify the part of the buffer it
+should convert, and <var class="var">buffer</var>, which specifies which buffer.  There
+are two ways it can do the conversion:
+</p>
+<ul class="itemize mark-bullet">
+<li>By editing the buffer in place.  In this case, <var class="var">to-fn</var> should
+return the end-position of the range of text, as modified.
+
+</li><li>By returning a list of annotations.  This is a list of elements of the
+form <code class="code">(<var class="var">position</var> . <var class="var">string</var>)</code>, where <var class="var">position</var> is an
+integer specifying the relative position in the text to be written, and
+<var class="var">string</var> is the annotation to add there.  The list must be sorted in
+order of position when <var class="var">to-fn</var> returns it.
+
+<p>When <code class="code">write-region</code> actually writes the text from the buffer to the
+file, it intermixes the specified annotations at the corresponding
+positions.  All this takes place without modifying the buffer.
+</p></li></ul>
+
+<p><var class="var">to-fn</var> must not involve buffers or files other than the one being
+encoded, otherwise the internal buffer used for formatting might be
+overwritten.
+</p>
+</dd>
+<dt><var class="var">modify</var></dt>
+<dd><p>A flag, <code class="code">t</code> if the encoding function modifies the buffer, and
+<code class="code">nil</code> if it works by returning a list of annotations.
+</p>
+</dd>
+<dt><var class="var">mode-fn</var></dt>
+<dd><p>A minor-mode function to call after visiting a file converted from this
+format.  The function is called with one argument, the integer 1;
+that tells a minor-mode function to enable the mode.
+</p>
+</dd>
+<dt><var class="var">preserve</var></dt>
+<dd><p>A flag, <code class="code">t</code> if <code class="code">format-write-file</code> should not remove this format
+from <code class="code">buffer-file-format</code>.
+</p></dd>
+</dl>
+
+<p>The function <code class="code">insert-file-contents</code> automatically recognizes file
+formats when it reads the specified file.  It checks the text of the
+beginning of the file against the regular expressions of the format
+definitions, and if it finds a match, it calls the decoding function for
+that format.  Then it checks all the known formats over again.
+It keeps checking them until none of them is applicable.
+</p>
+<p>Visiting a file, with <code class="code">find-file-noselect</code> or the commands that use
+it, performs conversion likewise (because it calls
+<code class="code">insert-file-contents</code>); it also calls the mode function for each
+format that it decodes.  It stores a list of the format names in the
+buffer-local variable <code class="code">buffer-file-format</code>.
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-buffer_002dfile_002dformat"><span class="category-def">Variable: </span><span><strong class="def-name">buffer-file-format</strong><a class="copiable-link" href="#index-buffer_002dfile_002dformat"> &para;</a></span></dt>
+<dd><p>This variable states the format of the visited file.  More precisely,
+this is a list of the file format names that were decoded in the course
+of visiting the current buffer&rsquo;s file.  It is always buffer-local in all
+buffers.
+</p></dd></dl>
+
+<p>When <code class="code">write-region</code> writes data into a file, it first calls the
+encoding functions for the formats listed in <code class="code">buffer-file-format</code>,
+in the order of appearance in the list.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-format_002dwrite_002dfile"><span class="category-def">Command: </span><span><strong class="def-name">format-write-file</strong> <var class="def-var-arguments">file format &amp;optional confirm</var><a class="copiable-link" href="#index-format_002dwrite_002dfile"> &para;</a></span></dt>
+<dd><p>This command writes the current buffer contents into the file <var class="var">file</var>
+in a format based on <var class="var">format</var>, which is a list of format names.  It
+constructs the actual format starting from <var class="var">format</var>, then appending
+any elements from the value of <code class="code">buffer-file-format</code> with a
+non-<code class="code">nil</code> <var class="var">preserve</var> flag (see above), if they are not already
+present in <var class="var">format</var>.  It then updates <code class="code">buffer-file-format</code> with
+this format, making it the default for future saves.  Except for the
+<var class="var">format</var> argument, this command is similar to <code class="code">write-file</code>.  In
+particular, <var class="var">confirm</var> has the same meaning and interactive treatment
+as the corresponding argument to <code class="code">write-file</code>.  See <a class="xref" href="Saving-Buffers.html#Definition-of-write_002dfile">Definition of write-file</a>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-format_002dfind_002dfile"><span class="category-def">Command: </span><span><strong class="def-name">format-find-file</strong> <var class="def-var-arguments">file format</var><a class="copiable-link" href="#index-format_002dfind_002dfile"> &para;</a></span></dt>
+<dd><p>This command finds the file <var class="var">file</var>, converting it according to
+format <var class="var">format</var>.  It also makes <var class="var">format</var> the default if the
+buffer is saved later.
+</p>
+<p>The argument <var class="var">format</var> is a list of format names.  If <var class="var">format</var> is
+<code class="code">nil</code>, no conversion takes place.  Interactively, typing just
+<kbd class="key">RET</kbd> for <var class="var">format</var> specifies <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-format_002dinsert_002dfile"><span class="category-def">Command: </span><span><strong class="def-name">format-insert-file</strong> <var class="def-var-arguments">file format &amp;optional beg end</var><a class="copiable-link" href="#index-format_002dinsert_002dfile"> &para;</a></span></dt>
+<dd><p>This command inserts the contents of file <var class="var">file</var>, converting it
+according to format <var class="var">format</var>.  If <var class="var">beg</var> and <var class="var">end</var> are
+non-<code class="code">nil</code>, they specify which part of the file to read, as in
+<code class="code">insert-file-contents</code> (see <a class="pxref" href="Reading-from-Files.html">Reading from Files</a>).
+</p>
+<p>The return value is like what <code class="code">insert-file-contents</code> returns: a
+list of the absolute file name and the length of the data inserted
+(after conversion).
+</p>
+<p>The argument <var class="var">format</var> is a list of format names.  If <var class="var">format</var> is
+<code class="code">nil</code>, no conversion takes place.  Interactively, typing just
+<kbd class="key">RET</kbd> for <var class="var">format</var> specifies <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-buffer_002dauto_002dsave_002dfile_002dformat"><span class="category-def">Variable: </span><span><strong class="def-name">buffer-auto-save-file-format</strong><a class="copiable-link" href="#index-buffer_002dauto_002dsave_002dfile_002dformat"> &para;</a></span></dt>
+<dd><p>This variable specifies the format to use for auto-saving.  Its value is
+a list of format names, just like the value of
+<code class="code">buffer-file-format</code>; however, it is used instead of
+<code class="code">buffer-file-format</code> for writing auto-save files.  If the value
+is <code class="code">t</code>, the default, auto-saving uses the same format as a
+regular save in the same buffer.  This variable is always buffer-local
+in all buffers.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Format-Conversion-Piecemeal.html">Piecemeal Specification</a>, Previous: <a href="Format-Conversion-Overview.html">Overview</a>, Up: <a href="Format-Conversion.html">File Format Conversion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Accessing Documentation (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Accessing Documentation (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Documentation-Basics.html" rel="prev" title="Documentation Basics">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,85 +49,86 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Accessing-Documentation"></span><div class="header">
+<div class="section-level-extent" id="Accessing-Documentation">
+<div class="nav-panel">
 <p>
-Next: <a href="Keys-in-Documentation.html" accesskey="n" rel="next">Keys in Documentation</a>, Previous: <a href="Documentation-Basics.html" accesskey="p" rel="prev">Documentation Basics</a>, Up: <a href="Documentation.html" accesskey="u" rel="up">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Keys-in-Documentation.html" accesskey="n" rel="next">Substituting Key Bindings in Documentation</a>, Previous: <a href="Documentation-Basics.html" accesskey="p" rel="prev">Documentation Basics</a>, Up: <a href="Documentation.html" accesskey="u" rel="up">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Access-to-Documentation-Strings"></span><h3 class="section">24.2 Access to Documentation Strings</h3>
-<span id="index-accessing-documentation-strings"></span>
+<h3 class="section" id="Access-to-Documentation-Strings"><span>24.2 Access to Documentation Strings<a class="copiable-link" href="#Access-to-Documentation-Strings"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-accessing-documentation-strings"></a>
 
-<dl>
-<dt id="index-documentation_002dproperty">Function: <strong>documentation-property</strong> <em>symbol property &amp;optional verbatim</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-documentation_002dproperty"><span class="category-def">Function: </span><span><strong class="def-name">documentation-property</strong> <var class="def-var-arguments">symbol property &amp;optional verbatim</var><a class="copiable-link" href="#index-documentation_002dproperty"> &para;</a></span></dt>
 <dd><p>This function returns the documentation string recorded in
-<var>symbol</var>&rsquo;s property list under property <var>property</var>.  It is
+<var class="var">symbol</var>&rsquo;s property list under property <var class="var">property</var>.  It is
 most often used to look up the documentation strings of variables, for
-which <var>property</var> is <code>variable-documentation</code>.  However, it
+which <var class="var">property</var> is <code class="code">variable-documentation</code>.  However, it
 can also be used to look up other kinds of documentation, such as for
 customization groups (but for function documentation, use the
-<code>documentation</code> function, below).
+<code class="code">documentation</code> function, below).
 </p>
 <p>If the property value refers to a documentation string stored in the
-<samp>DOC</samp> file or a byte-compiled file, this function looks up that
+<samp class="file">DOC</samp> file or a byte-compiled file, this function looks up that
 string and returns it.
 </p>
-<p>If the property value isn&rsquo;t <code>nil</code>, isn&rsquo;t a string, and doesn&rsquo;t
+<p>If the property value isn&rsquo;t <code class="code">nil</code>, isn&rsquo;t a string, and doesn&rsquo;t
 refer to text in a file, then it is evaluated as a Lisp expression to
 obtain a string.
 </p>
 <p>Finally, this function passes the string through
-<code>substitute-command-keys</code> to substitute key bindings (see <a href="Keys-in-Documentation.html">Keys in Documentation</a>).  It skips this step if <var>verbatim</var> is
-non-<code>nil</code>.
+<code class="code">substitute-command-keys</code> to substitute key bindings (see <a class="pxref" href="Keys-in-Documentation.html">Substituting Key Bindings in Documentation</a>).  It skips this step if <var class="var">verbatim</var> is
+non-<code class="code">nil</code>.
 </p>
-<div class="example">
-<pre class="example">(documentation-property 'command-line-processed
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(documentation-property 'command-line-processed
    'variable-documentation)
      &rArr; &quot;Non-nil once command line has been processed&quot;
-</pre><pre class="example">(symbol-plist 'command-line-processed)
+</pre></div><div class="group"><pre class="example-preformatted">(symbol-plist 'command-line-processed)
      &rArr; (variable-documentation 188902)
-</pre><pre class="example">(documentation-property 'emacs 'group-documentation)
+</pre></div><div class="group"><pre class="example-preformatted">(documentation-property 'emacs 'group-documentation)
      &rArr; &quot;Customization of the One True Editor.&quot;
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-documentation">Function: <strong>documentation</strong> <em>function &amp;optional verbatim</em></dt>
-<dd><p>This function returns the documentation string of <var>function</var>.  It
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-documentation"><span class="category-def">Function: </span><span><strong class="def-name">documentation</strong> <var class="def-var-arguments">function &amp;optional verbatim</var><a class="copiable-link" href="#index-documentation"> &para;</a></span></dt>
+<dd><p>This function returns the documentation string of <var class="var">function</var>.  It
 handles macros, named keyboard macros, and special forms, as well as
 ordinary functions.
 </p>
-<p>If <var>function</var> is a symbol, this function first looks for the
-<code>function-documentation</code> property of that symbol; if that has a
-non-<code>nil</code> value, the documentation comes from that value (if the
+<p>If <var class="var">function</var> is a symbol, this function first looks for the
+<code class="code">function-documentation</code> property of that symbol; if that has a
+non-<code class="code">nil</code> value, the documentation comes from that value (if the
 value is not a string, it is evaluated).
 </p>
-<p>If <var>function</var> is not a symbol, or if it has no
-<code>function-documentation</code> property, then <code>documentation</code>
+<p>If <var class="var">function</var> is not a symbol, or if it has no
+<code class="code">function-documentation</code> property, then <code class="code">documentation</code>
 extracts the documentation string from the actual function definition,
 reading it from a file if called for.
 </p>
-<p>Finally, unless <var>verbatim</var> is non-<code>nil</code>, this function calls
-<code>substitute-command-keys</code>.  The result is the documentation
+<p>Finally, unless <var class="var">verbatim</var> is non-<code class="code">nil</code>, this function calls
+<code class="code">substitute-command-keys</code>.  The result is the documentation
 string to return.
 </p>
-<p>The <code>documentation</code> function signals a <code>void-function</code> error
-if <var>function</var> has no function definition.  However, it is OK if
+<p>The <code class="code">documentation</code> function signals a <code class="code">void-function</code> error
+if <var class="var">function</var> has no function definition.  However, it is OK if
 the function definition has no documentation string.  In that case,
-<code>documentation</code> returns <code>nil</code>.
+<code class="code">documentation</code> returns <code class="code">nil</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-face_002ddocumentation">Function: <strong>face-documentation</strong> <em>face</em></dt>
-<dd><p>This function returns the documentation string of <var>face</var> as a
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002ddocumentation"><span class="category-def">Function: </span><span><strong class="def-name">face-documentation</strong> <var class="def-var-arguments">face</var><a class="copiable-link" href="#index-face_002ddocumentation"> &para;</a></span></dt>
+<dd><p>This function returns the documentation string of <var class="var">face</var> as a
 face.
 </p></dd></dl>
 
-<p>Here is an example of using the two functions, <code>documentation</code> and
-<code>documentation-property</code>, to display the documentation strings for
-several symbols in a <samp>*Help*</samp> buffer.
+<p>Here is an example of using the two functions, <code class="code">documentation</code> and
+<code class="code">documentation-property</code>, to display the documentation strings for
+several symbols in a <samp class="file">*Help*</samp> buffer.
 </p>
-<span id="describe_002dsymbols-example"></span><div class="example">
-<pre class="example">(defun describe-symbols (pattern)
+<a class="anchor" id="describe_002dsymbols-example"></a><div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun describe-symbols (pattern)
   &quot;Describe the Emacs Lisp symbols matching PATTERN.
 All symbols that have PATTERN in their name are described
 in the *Help* buffer.&quot;
@@ -142,8 +136,8 @@ in the *Help* buffer.&quot;
   (let ((describe-func
          (function
           (lambda (s)
-</pre><pre class="example">            ;; <span class="roman">Print description of symbol.</span>
-            (if (fboundp s)             ; <span class="roman">It is a function.</span>
+</pre></div><div class="group"><pre class="example-preformatted">            ;; <span class="r">Print description of symbol.</span>
+            (if (fboundp s)             ; <span class="r">It is a function.</span>
                 (princ
                  (format &quot;%s\t%s\n%s\n\n&quot; s
                    (if (commandp s)
@@ -155,60 +149,60 @@ in the *Help* buffer.&quot;
                                          keys &quot; &quot;))
                            &quot;Keys: none&quot;))
                      &quot;Function&quot;)
-</pre><pre class="example">                   (or (documentation s)
+</pre></div><div class="group"><pre class="example-preformatted">                   (or (documentation s)
                        &quot;not documented&quot;))))
 
-            (if (boundp s)              ; <span class="roman">It is a variable.</span>
-</pre><pre class="example">                (princ
+            (if (boundp s)              ; <span class="r">It is a variable.</span>
+</pre></div><div class="group"><pre class="example-preformatted">                (princ
                  (format &quot;%s\t%s\n%s\n\n&quot; s
                    (if (custom-variable-p s)
                        &quot;Option &quot; &quot;Variable&quot;)
-</pre><pre class="example">                   (or (documentation-property
+</pre></div><div class="group"><pre class="example-preformatted">                   (or (documentation-property
                          s 'variable-documentation)
                        &quot;not documented&quot;)))))))
         sym-list)
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">    ;; <span class="roman">Build a list of symbols that match pattern.</span>
+</pre><div class="group"><pre class="example-preformatted">    ;; <span class="r">Build a list of symbols that match pattern.</span>
     (mapatoms (function
                (lambda (sym)
                  (if (string-match pattern (symbol-name sym))
                      (setq sym-list (cons sym sym-list))))))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">    ;; <span class="roman">Display the data.</span>
+</pre><div class="group"><pre class="example-preformatted">    ;; <span class="r">Display the data.</span>
     (help-setup-xref (list 'describe-symbols pattern) (interactive-p))
     (with-help-window (help-buffer)
       (mapcar describe-func (sort sym-list 'string&lt;)))))
-</pre></div>
+</pre></div></div>
 
-<p>The <code>describe-symbols</code> function works like <code>apropos</code>,
+<p>The <code class="code">describe-symbols</code> function works like <code class="code">apropos</code>,
 but provides more information.
 </p>
-<div class="example">
-<pre class="example">(describe-symbols &quot;goal&quot;)
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(describe-symbols &quot;goal&quot;)
 
 ---------- Buffer: *Help* ----------
 goal-column     Option
-Semipermanent goal column for vertical motion, as set by &hellip;
-</pre><pre class="example">
+Semipermanent goal column for vertical motion, as set by ...
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">minibuffer-temporary-goal-position      Variable
+</pre><div class="group"><pre class="example-preformatted">minibuffer-temporary-goal-position      Variable
 not documented
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">set-goal-column Keys: C-x C-n
+</pre><div class="group"><pre class="example-preformatted">set-goal-column Keys: C-x C-n
 Set the current horizontal position as a goal for C-n and C-p.
-</pre><pre class="example">Those commands will move to this position in the line moved to
+</pre></div><div class="group"><pre class="example-preformatted">Those commands will move to this position in the line moved to
 rather than trying to keep the same horizontal position.
 With a non-nil argument ARG, clears out the goal column
 so that C-n and C-p resume vertical motion.
 The goal column is stored in the variable ‘goal-column’.
 
 (fn ARG)
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">temporary-goal-column   Variable
+</pre><div class="group"><pre class="example-preformatted">temporary-goal-column   Variable
 Current goal column for vertical motion.
 It is the column where point was at the start of the current run
 of vertical motion commands.
@@ -221,37 +215,38 @@ columns by which window is scrolled from left margin.
 When the ‘track-eol’ feature is doing its job, the value is
 ‘most-positive-fixnum’.
 ---------- Buffer: *Help* ----------
-</pre></div>
+</pre></div></div>
 
-<span id="Definition-of-Snarf_002ddocumentation"></span><dl>
-<dt id="index-Snarf_002ddocumentation">Function: <strong>Snarf-documentation</strong> <em>filename</em></dt>
+<a class="anchor" id="Definition-of-Snarf_002ddocumentation"></a><dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-Snarf_002ddocumentation"><span class="category-def">Function: </span><span><strong class="def-name">Snarf-documentation</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-Snarf_002ddocumentation"> &para;</a></span></dt>
 <dd><p>This function is used when building Emacs, just before the runnable
 Emacs is dumped.  It finds the positions of the documentation strings
-stored in the file <var>filename</var>, and records those positions into
+stored in the file <var class="var">filename</var>, and records those positions into
 memory in the function definitions and variable property lists.
-See <a href="Building-Emacs.html">Building Emacs</a>.
+See <a class="xref" href="Building-Emacs.html">Building Emacs</a>.
 </p>
-<p>Emacs reads the file <var>filename</var> from the <samp>emacs/etc</samp> directory.
+<p>Emacs reads the file <var class="var">filename</var> from the <samp class="file">emacs/etc</samp> directory.
 When the dumped Emacs is later executed, the same file will be looked
-for in the directory <code>doc-directory</code>.  Usually <var>filename</var> is
-<code>&quot;DOC&quot;</code>.
+for in the directory <code class="code">doc-directory</code>.  Usually <var class="var">filename</var> is
+<code class="code">&quot;DOC&quot;</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-doc_002ddirectory">Variable: <strong>doc-directory</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-doc_002ddirectory"><span class="category-def">Variable: </span><span><strong class="def-name">doc-directory</strong><a class="copiable-link" href="#index-doc_002ddirectory"> &para;</a></span></dt>
 <dd><p>This variable holds the name of the directory which should contain the
-file <code>&quot;DOC&quot;</code> that contains documentation strings for
+file <code class="code">&quot;DOC&quot;</code> that contains documentation strings for
 built-in and preloaded functions and variables.
 </p>
-<p>In most cases, this is the same as <code>data-directory</code>.  They may be
+<p>In most cases, this is the same as <code class="code">data-directory</code>.  They may be
 different when you run Emacs from the directory where you built it,
-without actually installing it.  See <a href="Help-Functions.html#Definition-of-data_002ddirectory">Definition of data-directory</a>.
+without actually installing it.  See <a class="xref" href="Help-Functions.html#Definition-of-data_002ddirectory">Definition of data-directory</a>.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Keys-in-Documentation.html" accesskey="n" rel="next">Keys in Documentation</a>, Previous: <a href="Documentation-Basics.html" accesskey="p" rel="prev">Documentation Basics</a>, Up: <a href="Documentation.html" accesskey="u" rel="up">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Keys-in-Documentation.html">Substituting Key Bindings in Documentation</a>, Previous: <a href="Documentation-Basics.html">Documentation Basics</a>, Up: <a href="Documentation.html">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

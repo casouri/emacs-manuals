@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.4.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Mail Format (GNU Emacs Manual)</title>
 
 <meta name="description" content="Mail Format (GNU Emacs Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Sending-Mail.html" rel="up" title="Sending Mail">
 <link href="Mail-Headers.html" rel="next" title="Mail Headers">
-<link href="Sending-Mail.html" rel="prev" title="Sending Mail">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,17 +49,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Mail-Format"></span><div class="header">
+<div class="section-level-extent" id="Mail-Format">
+<div class="nav-panel">
 <p>
-Next: <a href="Mail-Headers.html" accesskey="n" rel="next">Mail Headers</a>, Up: <a href="Sending-Mail.html" accesskey="u" rel="up">Sending Mail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Mail-Headers.html" accesskey="n" rel="next">Mail Header Fields</a>, Up: <a href="Sending-Mail.html" accesskey="u" rel="up">Sending Mail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="The-Format-of-the-Mail-Buffer"></span><h3 class="section">32.1 The Format of the Mail Buffer</h3>
+<h3 class="section" id="The-Format-of-the-Mail-Buffer"><span>32.1 The Format of the Mail Buffer<a class="copiable-link" href="#The-Format-of-the-Mail-Buffer"> &para;</a></span></h3>
 
 <p>Here is an example of the contents of a mail buffer:
 </p>
 <div class="example">
-<pre class="example">To: subotai@example.org
+<pre class="example-preformatted">To: subotai@example.org
 CC: mongol.soldier@example.net, rms@gnu.org
 Subject: Re: What is best in life?
 From: conan@example.org
@@ -76,25 +69,26 @@ To crush your enemies, see them driven before you, and to
 hear the lamentation of their women.
 </pre></div>
 
-<p>At the top of the mail buffer is a set of <em>header fields</em>, which
+<p>At the top of the mail buffer is a set of <em class="dfn">header fields</em>, which
 are used for specifying information about the email&rsquo;s recipient(s),
 subject, and so on.  The above buffer contains header fields for
-&lsquo;<samp>To</samp>&rsquo;, &lsquo;<samp>Cc</samp>&rsquo;, &lsquo;<samp>Subject</samp>&rsquo;, and &lsquo;<samp>From</samp>&rsquo;.  Some header
+&lsquo;<samp class="samp">To</samp>&rsquo;, &lsquo;<samp class="samp">Cc</samp>&rsquo;, &lsquo;<samp class="samp">Subject</samp>&rsquo;, and &lsquo;<samp class="samp">From</samp>&rsquo;.  Some header
 fields are automatically pre-initialized in the mail buffer, when
 appropriate.
 </p>
-<p>The line that says &lsquo;<samp>--text follows this line--</samp>&rsquo; separates the
-header fields from the <em>body</em> (or <em>text</em>) of the message.
+<p>The line that says &lsquo;<samp class="samp">--text follows this line--</samp>&rsquo; separates the
+header fields from the <em class="dfn">body</em> (or <em class="dfn">text</em>) of the message.
 Everything above that line is treated as part of the headers;
 everything below it is treated as the body.  The delimiter line itself
 does not appear in the message actually sent.
 </p>
 <p>You can insert and edit header fields using ordinary editing
-commands.  See <a href="Header-Editing.html">Header Editing</a>, for commands specific to editing
-header fields.  Certain headers, such as &lsquo;<samp>Date</samp>&rsquo; and
-&lsquo;<samp>Message-Id</samp>&rsquo;, are normally omitted from the mail buffer and are
+commands.  See <a class="xref" href="Header-Editing.html">Mail Header Editing</a>, for commands specific to editing
+header fields.  Certain headers, such as &lsquo;<samp class="samp">Date</samp>&rsquo; and
+&lsquo;<samp class="samp">Message-Id</samp>&rsquo;, are normally omitted from the mail buffer and are
 created automatically when the message is sent.
 </p>
+</div>
 
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.4.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Crashing (GNU Emacs Manual)</title>
 
 <meta name="description" content="Crashing (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Memory-Full.html" rel="prev" title="Memory Full">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,34 +50,35 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Crashing"></span><div class="header">
+<div class="section-level-extent" id="Crashing">
+<div class="nav-panel">
 <p>
-Next: <a href="After-a-Crash.html" accesskey="n" rel="next">After a Crash</a>, Previous: <a href="Memory-Full.html" accesskey="p" rel="prev">Memory Full</a>, Up: <a href="Lossage.html" accesskey="u" rel="up">Lossage</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="After-a-Crash.html" accesskey="n" rel="next">Recovery After a Crash</a>, Previous: <a href="Memory-Full.html" accesskey="p" rel="prev">Running out of Memory</a>, Up: <a href="Lossage.html" accesskey="u" rel="up">Dealing with Emacs Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="When-Emacs-Crashes"></span><h3 class="section">51.6 When Emacs Crashes</h3>
+<h3 class="section subsection-level-set-section" id="When-Emacs-Crashes"><span>51.6 When Emacs Crashes<a class="copiable-link" href="#When-Emacs-Crashes"> &para;</a></span></h3>
 
-<span id="index-crash-report"></span>
-<span id="index-backtrace"></span>
-<span id="index-emacs_005fbacktrace_002etxt-file_002c-MS_002dWindows"></span>
+<a class="index-entry-id" id="index-crash-report"></a>
+<a class="index-entry-id" id="index-backtrace"></a>
+<a class="index-entry-id" id="index-emacs_005fbacktrace_002etxt-file_002c-MS_002dWindows"></a>
 <p>Emacs is not supposed to crash, but if it does, it produces a
-<em>crash report</em> prior to exiting.  The crash report is printed to
+<em class="dfn">crash report</em> prior to exiting.  The crash report is printed to
 the standard error stream.  If Emacs was started from a graphical
 desktop on a GNU or Unix system, the standard error stream is commonly
-redirected to a file such as <samp>~/.xsession-errors</samp>, so you can
+redirected to a file such as <samp class="file">~/.xsession-errors</samp>, so you can
 look for the crash report there.  On MS-Windows, the crash report is
-written to a file named <samp>emacs_backtrace.txt</samp> in the current
+written to a file named <samp class="file">emacs_backtrace.txt</samp> in the current
 directory of the Emacs process, in addition to the standard error
 stream.
 </p>
 <p>The format of the crash report depends on the platform.  On some
 platforms, such as those using the GNU C Library, the crash report
-includes a <em>backtrace</em> describing the execution state prior to
+includes a <em class="dfn">backtrace</em> describing the execution state prior to
 crashing, which can be used to help debug the crash.  Here is an
 example for a GNU system:
 </p>
 <div class="example">
-<pre class="example">Fatal error 11: Segmentation fault
+<pre class="example-preformatted">Fatal error 11: Segmentation fault
 Backtrace:
 emacs[0x5094e4]
 emacs[0x4ed3e6]
@@ -93,44 +87,45 @@ emacs[0x4ed504]
 /lib64/libpthread.so.0(read+0xe)[0x375220e08e]
 emacs[0x509af6]
 emacs[0x5acc26]
-&hellip;
+...
 </pre></div>
 
-<p>The number &lsquo;<samp>11</samp>&rsquo; is the system signal number corresponding to the
+<p>The number &lsquo;<samp class="samp">11</samp>&rsquo; is the system signal number corresponding to the
 crash&mdash;in this case a segmentation fault.  The hexadecimal numbers
 are program addresses, which can be associated with source code lines
 using a debugging tool.  For example, the GDB command
-&lsquo;<samp>list *0x509af6</samp>&rsquo; prints the source-code lines corresponding to
-the &lsquo;<samp>emacs[0x509af6]</samp>&rsquo; entry.  If your system has the
-<code>addr2line</code> utility, the following shell command outputs a
+&lsquo;<samp class="samp">list *0x509af6</samp>&rsquo; prints the source-code lines corresponding to
+the &lsquo;<samp class="samp">emacs[0x509af6]</samp>&rsquo; entry.  If your system has the
+<code class="command">addr2line</code> utility, the following shell command outputs a
 backtrace with source-code line numbers:
 </p>
 <div class="example">
-<pre class="example">sed -n 's/.*\[\(.*\)]$/\1/p' <var>backtrace</var> |
-  addr2line -C -f -i -p -e <var>bindir</var>/<var>emacs-binary</var>
+<pre class="example-preformatted">sed -n 's/.*\[\(.*\)]$/\1/p' <var class="var">backtrace</var> |
+  addr2line -C -f -i -p -e <var class="var">bindir</var>/<var class="var">emacs-binary</var>
 </pre></div>
 
-<p>Here, <var>backtrace</var> is the name of a text file containing a copy of
-the backtrace, <var>bindir</var> is the name of the directory that
-contains the Emacs executable, and <var>emacs-binary</var> is the name of
-the Emacs executable file, normally <samp>emacs</samp> on GNU and Unix
-systems and <samp>emacs.exe</samp> on MS-Windows and MS-DOS.  Omit the
-<samp>-p</samp> option if your version of <code>addr2line</code> is too old
+<p>Here, <var class="var">backtrace</var> is the name of a text file containing a copy of
+the backtrace, <var class="var">bindir</var> is the name of the directory that
+contains the Emacs executable, and <var class="var">emacs-binary</var> is the name of
+the Emacs executable file, normally <samp class="file">emacs</samp> on GNU and Unix
+systems and <samp class="file">emacs.exe</samp> on MS-Windows and MS-DOS.  Omit the
+<samp class="option">-p</samp> option if your version of <code class="command">addr2line</code> is too old
 to have it.
 </p>
-<span id="index-core-dump"></span>
-<p>Optionally, Emacs can generate a <em>core dump</em> when it crashes, on
+<a class="index-entry-id" id="index-core-dump"></a>
+<p>Optionally, Emacs can generate a <em class="dfn">core dump</em> when it crashes, on
 systems that support core files.  A core dump is a file containing
 voluminous data about the state of the program prior to the crash,
 usually examined by loading it into a debugger such as GDB.  On many
 platforms, core dumps are disabled by default, and you must explicitly
-enable them by running the shell command &lsquo;<samp>ulimit -c unlimited</samp>&rsquo;
+enable them by running the shell command &lsquo;<samp class="samp">ulimit -c unlimited</samp>&rsquo;
 (e.g., in your shell startup script).
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="After-a-Crash.html" accesskey="n" rel="next">After a Crash</a>, Previous: <a href="Memory-Full.html" accesskey="p" rel="prev">Memory Full</a>, Up: <a href="Lossage.html" accesskey="u" rel="up">Lossage</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="After-a-Crash.html">Recovery After a Crash</a>, Previous: <a href="Memory-Full.html">Running out of Memory</a>, Up: <a href="Lossage.html">Dealing with Emacs Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

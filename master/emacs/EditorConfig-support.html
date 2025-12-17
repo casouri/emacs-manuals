@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>EditorConfig support (GNU Emacs Manual)</title>
+
+<meta name="description" content="EditorConfig support (GNU Emacs Manual)">
+<meta name="keywords" content="EditorConfig support (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Directory-Variables.html" rel="up" title="Directory Variables">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="EditorConfig-support">
+<div class="nav-panel">
+<p>
+Up: <a href="Directory-Variables.html" accesskey="u" rel="up">Per-Directory Local Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Per_002dDirectory-Variables-via-EditorConfig"><span>51.2.5.1 Per-Directory Variables via EditorConfig<a class="copiable-link" href="#Per_002dDirectory-Variables-via-EditorConfig"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-EditorConfig-support"></a>
+<a class="index-entry-id" id="index-directory_002dlocal-variables_002c-via-EditorConfig"></a>
+<a class="index-entry-id" id="index-per_002ddirectory-local-variables_002c-via-EditorConfig"></a>
+
+<p>The <a class="uref" href="https://editorconfig.org/">EditorConfig standard</a>
+is an alternative to the <samp class="file">.dir-locals.el</samp>
+files, which can control only a very small number of variables, but
+has the advantage of being editor-neutral, not specific to Emacs.  Those
+settings are stored in files named <samp class="file">.editorconfig</samp>, and affect the
+files in that directory and its subdirectories.
+</p>
+<a class="index-entry-id" id="index-editorconfig_002dmode"></a>
+<a class="index-entry-id" id="index-enable_002dlocal_002dvariables_002c-and-EditorConfig-settings"></a>
+<p>If you want Emacs to obey the settings from <samp class="file">.editorconfig</samp> files,
+you need to enable the <code class="code">editorconfig-mode</code> global minor mode.  This
+is usually all that is needed: when the mode is activated, whenever a
+file is visited, Emacs will look for <samp class="file">.editorconfig</samp> in the file&rsquo;s
+directory and its parent directories, just as it does for
+<samp class="file">.dir-locals.el</samp>.  When both <samp class="file">.editorconfig</samp> and
+<samp class="file">.dir-locals.el</samp> files are found, their settings are combined, and
+in case of a conflict, the setting coming from the file closest in the
+directory hierarchy takes precedence.  If they are equally close,
+<samp class="file">.dir-locals.el</samp> takes precedence.  In terms of security, the
+<samp class="file">.editorconfig</samp> settings are subject to the same checks as those
+coming from <samp class="file">.dir-locals.el</samp> and from file-local variables (and
+also honor <code class="code">enable-local-variables</code>).  See <a class="xref" href="Safe-File-Variables.html">Safety of File Variables</a>.
+</p>
+<a class="index-entry-id" id="index-indent_005fsize-setting-of-EditorConfig"></a>
+<a class="index-entry-id" id="index-editorconfig_002dindent_002dsize_002dvars"></a>
+<a class="index-entry-id" id="index-editorconfig_002dindentation_002dalist"></a>
+<p>The <code class="code">indent_size</code> setting of the EditorConfig standard does not
+correspond to a fixed variable in Emacs, but instead needs to set
+different variables depending on the major mode.  Ideally all major
+modes should set the corresponding <code class="code">editorconfig-indent-size-vars</code>,
+but if you use a major mode in which <code class="code">indent_size</code> does not take
+effect because the major mode does not yet support it, you can customize
+the <code class="code">editorconfig-indentation-alist</code> variable to tell Emacs which
+variables need to be set in that major mode.
+</p>
+<a class="index-entry-id" id="index-trim_005ftrailing_005fwhitespace-setting-of-EditorConfig"></a>
+<a class="index-entry-id" id="index-editorconfig_002dtrim_002dwhitespaces_002dmode"></a>
+<a class="index-entry-id" id="index-delete_002dtrailing_002dwhitespace_002c-and-EditorConfig-settings"></a>
+<p>Similarly, there are several different ways to trim whitespace at
+the end of lines.  When the EditorConfig <code class="code">trim_trailing_whitespace</code>
+setting is used, by default <code class="code">editorconfig-mode</code> simply calls
+<code class="code">delete-trailing-whitespace</code> (see <a class="pxref" href="Useless-Whitespace.html">Useless Whitespace</a>) every
+time you save your file.  If you prefer some other behavior, you can
+customize <code class="code">editorconfig-trim-whitespaces-mode</code> to the minor mode of
+your preference, such as <code class="code">ws-butler-mode</code>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Up: <a href="Directory-Variables.html">Per-Directory Local Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

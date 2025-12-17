@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Array Functions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Array Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Array Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Sequences-Arrays-Vectors.html" rel="up" title="Sequences Arrays Vectors">
+<link href="Vectors.html" rel="next" title="Vectors">
+<link href="Arrays.html" rel="prev" title="Arrays">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Array-Functions">
+<div class="nav-panel">
+<p>
+Next: <a href="Vectors.html" accesskey="n" rel="next">Vectors</a>, Previous: <a href="Arrays.html" accesskey="p" rel="prev">Arrays</a>, Up: <a href="Sequences-Arrays-Vectors.html" accesskey="u" rel="up">Sequences, Arrays, and Vectors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Functions-that-Operate-on-Arrays"><span>6.3 Functions that Operate on Arrays<a class="copiable-link" href="#Functions-that-Operate-on-Arrays"> &para;</a></span></h3>
+
+<p>In this section, we describe the functions that accept all types of
+arrays.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-arrayp"><span class="category-def">Function: </span><span><strong class="def-name">arrayp</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-arrayp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">object</var> is an array (i.e., a
+vector, a string, a bool-vector or a char-table).
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(arrayp [a])
+     &rArr; t
+(arrayp &quot;asdf&quot;)
+     &rArr; t
+(arrayp (syntax-table))    ;; <span class="r">A char-table.</span>
+     &rArr; t
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-aref"><span class="category-def">Function: </span><span><strong class="def-name">aref</strong> <var class="def-var-arguments">arr index</var><a class="copiable-link" href="#index-aref"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-array-elements"></a>
+<p>This function returns the <var class="var">index</var>th element of the array or record
+<var class="var">arr</var>.  The first element is at index zero.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(setq primes [2 3 5 7 11 13])
+     &rArr; [2 3 5 7 11 13]
+(aref primes 4)
+     &rArr; 11
+</pre></div><div class="group"><pre class="example-preformatted">(aref &quot;abcdefg&quot; 1)
+     &rArr; 98           ; <span class="r">&lsquo;<samp class="samp">b</samp>&rsquo; is <abbr class="acronym">ASCII</abbr> code 98.</span>
+</pre></div></div>
+
+<p>See also the function <code class="code">elt</code>, in <a class="ref" href="Sequence-Functions.html">Sequences</a>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-aset"><span class="category-def">Function: </span><span><strong class="def-name">aset</strong> <var class="def-var-arguments">array index object</var><a class="copiable-link" href="#index-aset"> &para;</a></span></dt>
+<dd><p>This function sets the <var class="var">index</var>th element of <var class="var">array</var> to be
+<var class="var">object</var>.  It returns <var class="var">object</var>.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(setq w (vector 'foo 'bar 'baz))
+     &rArr; [foo bar baz]
+(aset w 0 'fu)
+     &rArr; fu
+w
+     &rArr; [fu bar baz]
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r"><code class="code">copy-sequence</code> copies the string to be modified later.</span>
+(setq x (copy-sequence &quot;asdfasfd&quot;))
+     &rArr; &quot;asdfasfd&quot;
+(aset x 3 ?Z)
+     &rArr; 90
+x
+     &rArr; &quot;asdZasfd&quot;
+</pre></div></div>
+
+<p>The <var class="var">array</var> should be mutable.  See <a class="xref" href="Mutability.html">Mutability</a>.
+</p>
+<p>If <var class="var">array</var> is a string and <var class="var">object</var> is not a character, a
+<code class="code">wrong-type-argument</code> error results.  The function converts a
+unibyte string to multibyte if necessary to insert a character.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-fillarray"><span class="category-def">Function: </span><span><strong class="def-name">fillarray</strong> <var class="def-var-arguments">array object</var><a class="copiable-link" href="#index-fillarray"> &para;</a></span></dt>
+<dd><p>This function fills the array <var class="var">array</var> with <var class="var">object</var>, so that
+each element of <var class="var">array</var> is <var class="var">object</var>.  It returns <var class="var">array</var>.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(setq a (copy-sequence [a b c d e f g]))
+     &rArr; [a b c d e f g]
+(fillarray a 0)
+     &rArr; [0 0 0 0 0 0 0]
+a
+     &rArr; [0 0 0 0 0 0 0]
+</pre></div><div class="group"><pre class="example-preformatted">(setq s (copy-sequence &quot;When in the course&quot;))
+     &rArr; &quot;When in the course&quot;
+(fillarray s ?-)
+     &rArr; &quot;------------------&quot;
+</pre></div></div>
+
+<p>If <var class="var">array</var> is a string and <var class="var">object</var> is not a character, a
+<code class="code">wrong-type-argument</code> error results.
+</p></dd></dl>
+
+<p>The general sequence functions <code class="code">copy-sequence</code> and <code class="code">length</code>
+are often useful for objects known to be arrays.  See <a class="xref" href="Sequence-Functions.html">Sequences</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Vectors.html">Vectors</a>, Previous: <a href="Arrays.html">Arrays</a>, Up: <a href="Sequences-Arrays-Vectors.html">Sequences, Arrays, and Vectors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

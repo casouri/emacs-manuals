@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.1.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Deletion (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Deletion (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Deletion (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Text.html" rel="up" title="Text">
+<link href="User_002dLevel-Deletion.html" rel="next" title="User-Level Deletion">
+<link href="Commands-for-Insertion.html" rel="prev" title="Commands for Insertion">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Deletion">
+<div class="nav-panel">
+<p>
+Next: <a href="User_002dLevel-Deletion.html" accesskey="n" rel="next">User-Level Deletion Commands</a>, Previous: <a href="Commands-for-Insertion.html" accesskey="p" rel="prev">User-Level Insertion Commands</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Deleting-Text"><span>33.6 Deleting Text<a class="copiable-link" href="#Deleting-Text"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-text-deletion"></a>
+
+<a class="index-entry-id" id="index-deleting-text-vs-killing"></a>
+<p>Deletion means removing part of the text in a buffer, without saving
+it in the kill ring (see <a class="pxref" href="The-Kill-Ring.html">The Kill Ring</a>).  Deleted text can&rsquo;t be
+yanked, but can be reinserted using the undo mechanism (see <a class="pxref" href="Undo.html">Undo</a>).
+Some deletion functions do save text in the kill ring in some special
+cases.
+</p>
+<p>All of the deletion functions operate on the current buffer.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-erase_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">erase-buffer</strong><a class="copiable-link" href="#index-erase_002dbuffer"> &para;</a></span></dt>
+<dd><p>This function deletes the entire text of the current buffer
+(<em class="emph">not</em> just the accessible portion), leaving it
+empty.  If the buffer is read-only, it signals a <code class="code">buffer-read-only</code>
+error; if some of the text in it is read-only, it signals a
+<code class="code">text-read-only</code> error.  Otherwise, it deletes the text without
+asking for any confirmation.  It returns <code class="code">nil</code>.
+</p>
+<p>Normally, deleting a large amount of text from a buffer inhibits further
+auto-saving of that buffer because it has shrunk.  However,
+<code class="code">erase-buffer</code> does not do this, the idea being that the future
+text is not really related to the former text, and its size should not
+be compared with that of the former text.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-delete_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">delete-region</strong> <var class="def-var-arguments">start end</var><a class="copiable-link" href="#index-delete_002dregion"> &para;</a></span></dt>
+<dd><p>This command deletes the text between positions <var class="var">start</var> and
+<var class="var">end</var> in the current buffer, and returns <code class="code">nil</code>.  If point was
+inside the deleted region, its value afterward is <var class="var">start</var>.
+Otherwise, point relocates with the surrounding text, as markers do.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-delete_002dand_002dextract_002dregion"><span class="category-def">Function: </span><span><strong class="def-name">delete-and-extract-region</strong> <var class="def-var-arguments">start end</var><a class="copiable-link" href="#index-delete_002dand_002dextract_002dregion"> &para;</a></span></dt>
+<dd><p>This function deletes the text between positions <var class="var">start</var> and
+<var class="var">end</var> in the current buffer, and returns a string containing the
+text just deleted.
+</p>
+<p>If point was inside the deleted region, its value afterward is
+<var class="var">start</var>.  Otherwise, point relocates with the surrounding text, as
+markers do.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-delete_002dchar"><span class="category-def">Command: </span><span><strong class="def-name">delete-char</strong> <var class="def-var-arguments">count &amp;optional killp</var><a class="copiable-link" href="#index-delete_002dchar"> &para;</a></span></dt>
+<dd><p>This command deletes <var class="var">count</var> characters directly after point, or
+before point if <var class="var">count</var> is negative.  If <var class="var">killp</var> is
+non-<code class="code">nil</code>, then it saves the deleted characters in the kill ring.
+</p>
+<p>In an interactive call, <var class="var">count</var> is the numeric prefix argument, and
+<var class="var">killp</var> is the unprocessed prefix argument.  Therefore, if a prefix
+argument is supplied, the text is saved in the kill ring.  If no prefix
+argument is supplied, then one character is deleted, but not saved in
+the kill ring.
+</p>
+<p>The value returned is always <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-delete_002dbackward_002dchar"><span class="category-def">Command: </span><span><strong class="def-name">delete-backward-char</strong> <var class="def-var-arguments">count &amp;optional killp</var><a class="copiable-link" href="#index-delete_002dbackward_002dchar"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-deleting-previous-char"></a>
+<p>This command deletes <var class="var">count</var> characters directly before point, or
+after point if <var class="var">count</var> is negative.  If <var class="var">killp</var> is
+non-<code class="code">nil</code>, then it saves the deleted characters in the kill ring.
+</p>
+<p>In an interactive call, <var class="var">count</var> is the numeric prefix argument, and
+<var class="var">killp</var> is the unprocessed prefix argument.  Therefore, if a prefix
+argument is supplied, the text is saved in the kill ring.  If no prefix
+argument is supplied, then one character is deleted, but not saved in
+the kill ring.
+</p>
+<p>The value returned is always <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-backward_002ddelete_002dchar_002duntabify"><span class="category-def">Command: </span><span><strong class="def-name">backward-delete-char-untabify</strong> <var class="def-var-arguments">count &amp;optional killp</var><a class="copiable-link" href="#index-backward_002ddelete_002dchar_002duntabify"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-tab-deletion"></a>
+<p>This command deletes <var class="var">count</var> characters backward, changing tabs
+into spaces.  When the next character to be deleted is a tab, it is
+first replaced with the proper number of spaces to preserve alignment
+and then one of those spaces is deleted instead of the tab.  If
+<var class="var">killp</var> is non-<code class="code">nil</code>, then the command saves the deleted
+characters in the kill ring.
+</p>
+<p>Conversion of tabs to spaces happens only if <var class="var">count</var> is positive.
+If it is negative, exactly &minus;<var class="var">count</var> characters after point
+are deleted.
+</p>
+<p>In an interactive call, <var class="var">count</var> is the numeric prefix argument, and
+<var class="var">killp</var> is the unprocessed prefix argument.  Therefore, if a prefix
+argument is supplied, the text is saved in the kill ring.  If no prefix
+argument is supplied, then one character is deleted, but not saved in
+the kill ring.
+</p>
+<p>The value returned is always <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-backward_002ddelete_002dchar_002duntabify_002dmethod"><span class="category-def">User Option: </span><span><strong class="def-name">backward-delete-char-untabify-method</strong><a class="copiable-link" href="#index-backward_002ddelete_002dchar_002duntabify_002dmethod"> &para;</a></span></dt>
+<dd><p>This option specifies how <code class="code">backward-delete-char-untabify</code> should
+deal with whitespace.  Possible values include <code class="code">untabify</code>, the
+default, meaning convert a tab to many spaces and delete one;
+<code class="code">hungry</code>, meaning delete all tabs and spaces before point with
+one command; <code class="code">all</code> meaning delete all tabs, spaces and newlines
+before point, and <code class="code">nil</code>, meaning do nothing special for
+whitespace characters.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="User_002dLevel-Deletion.html">User-Level Deletion Commands</a>, Previous: <a href="Commands-for-Insertion.html">User-Level Insertion Commands</a>, Up: <a href="Text.html">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

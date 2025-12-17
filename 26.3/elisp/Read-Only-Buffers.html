@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Read Only Buffers (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Read Only Buffers (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Modification-Time.html" rel="prev" title="Modification Time">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,94 +49,96 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Read-Only-Buffers"></span><div class="header">
+<div class="section-level-extent" id="Read-Only-Buffers">
+<div class="nav-panel">
 <p>
-Next: <a href="Buffer-List.html" accesskey="n" rel="next">Buffer List</a>, Previous: <a href="Modification-Time.html" accesskey="p" rel="prev">Modification Time</a>, Up: <a href="Buffers.html" accesskey="u" rel="up">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Buffer-List.html" accesskey="n" rel="next">The Buffer List</a>, Previous: <a href="Modification-Time.html" accesskey="p" rel="prev">Buffer Modification Time</a>, Up: <a href="Buffers.html" accesskey="u" rel="up">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Read_002dOnly-Buffers"></span><h3 class="section">27.7 Read-Only Buffers</h3>
-<span id="index-read_002donly-buffer"></span>
-<span id="index-buffer_002c-read_002donly"></span>
+<h3 class="section" id="Read_002dOnly-Buffers"><span>27.7 Read-Only Buffers<a class="copiable-link" href="#Read_002dOnly-Buffers"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-read_002donly-buffer"></a>
+<a class="index-entry-id" id="index-buffer_002c-read_002donly"></a>
 
-<p>If a buffer is <em>read-only</em>, then you cannot change its contents,
+<p>If a buffer is <em class="dfn">read-only</em>, then you cannot change its contents,
 although you may change your view of the contents by scrolling and
 narrowing.
 </p>
 <p>Read-only buffers are used in two kinds of situations:
 </p>
-<ul>
-<li> A buffer visiting a write-protected file is normally read-only.
+<ul class="itemize mark-bullet">
+<li>A buffer visiting a write-protected file is normally read-only.
 
 <p>Here, the purpose is to inform the user that editing the buffer with the
 aim of saving it in the file may be futile or undesirable.  The user who
 wants to change the buffer text despite this can do so after clearing
-the read-only flag with <kbd>C-x C-q</kbd>.
+the read-only flag with <kbd class="kbd">C-x C-q</kbd>.
 </p>
-</li><li> Modes such as Dired and Rmail make buffers read-only when altering the
+</li><li>Modes such as Dired and Rmail make buffers read-only when altering the
 contents with the usual editing commands would probably be a mistake.
 
-<p>The special commands of these modes bind <code>buffer-read-only</code> to
-<code>nil</code> (with <code>let</code>) or bind <code>inhibit-read-only</code> to
-<code>t</code> around the places where they themselves change the text.
+<p>The special commands of these modes bind <code class="code">buffer-read-only</code> to
+<code class="code">nil</code> (with <code class="code">let</code>) or bind <code class="code">inhibit-read-only</code> to
+<code class="code">t</code> around the places where they themselves change the text.
 </p></li></ul>
 
-<dl>
-<dt id="index-buffer_002dread_002donly">Variable: <strong>buffer-read-only</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-buffer_002dread_002donly"><span class="category-def">Variable: </span><span><strong class="def-name">buffer-read-only</strong><a class="copiable-link" href="#index-buffer_002dread_002donly"> &para;</a></span></dt>
 <dd><p>This buffer-local variable specifies whether the buffer is read-only.
-The buffer is read-only if this variable is non-<code>nil</code>.  However,
-characters that have the <code>inhibit-read-only</code> text property can
-still be modified.  See <a href="Special-Properties.html">inhibit-read-only</a>.
+The buffer is read-only if this variable is non-<code class="code">nil</code>.  However,
+characters that have the <code class="code">inhibit-read-only</code> text property can
+still be modified.  See <a class="xref" href="Special-Properties.html">inhibit-read-only</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-inhibit_002dread_002donly">Variable: <strong>inhibit-read-only</strong></dt>
-<dd><p>If this variable is non-<code>nil</code>, then read-only buffers and,
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-inhibit_002dread_002donly"><span class="category-def">Variable: </span><span><strong class="def-name">inhibit-read-only</strong><a class="copiable-link" href="#index-inhibit_002dread_002donly"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, then read-only buffers and,
 depending on the actual value, some or all read-only characters may be
 modified.  Read-only characters in a buffer are those that have a
-non-<code>nil</code> <code>read-only</code> text property.  See <a href="Special-Properties.html">Special Properties</a>, for more information about text properties.
+non-<code class="code">nil</code> <code class="code">read-only</code> text property.  See <a class="xref" href="Special-Properties.html">Properties with Special Meanings</a>, for more information about text properties.
 </p>
-<p>If <code>inhibit-read-only</code> is <code>t</code>, all <code>read-only</code> character
-properties have no effect.  If <code>inhibit-read-only</code> is a list, then
-<code>read-only</code> character properties have no effect if they are members
-of the list (comparison is done with <code>eq</code>).
+<p>If <code class="code">inhibit-read-only</code> is <code class="code">t</code>, all <code class="code">read-only</code> character
+properties have no effect.  If <code class="code">inhibit-read-only</code> is a list, then
+<code class="code">read-only</code> character properties have no effect if they are members
+of the list (comparison is done with <code class="code">eq</code>).
 </p></dd></dl>
 
-<dl>
-<dt id="index-read_002donly_002dmode">Command: <strong>read-only-mode</strong> <em>&amp;optional arg</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-read_002donly_002dmode"><span class="category-def">Command: </span><span><strong class="def-name">read-only-mode</strong> <var class="def-var-arguments">&amp;optional arg</var><a class="copiable-link" href="#index-read_002donly_002dmode"> &para;</a></span></dt>
 <dd><p>This is the mode command for Read Only minor mode, a buffer-local
-minor mode.  When the mode is enabled, <code>buffer-read-only</code> is
-non-<code>nil</code> in the buffer; when disabled, <code>buffer-read-only</code>
-is <code>nil</code> in the buffer.  The calling convention is the same as
-for other minor mode commands (see <a href="Minor-Mode-Conventions.html">Minor Mode Conventions</a>).
+minor mode.  When the mode is enabled, <code class="code">buffer-read-only</code> is
+non-<code class="code">nil</code> in the buffer; when disabled, <code class="code">buffer-read-only</code>
+is <code class="code">nil</code> in the buffer.  The calling convention is the same as
+for other minor mode commands (see <a class="pxref" href="Minor-Mode-Conventions.html">Conventions for Writing Minor Modes</a>).
 </p>
 <p>This minor mode mainly serves as a wrapper for
-<code>buffer-read-only</code>; unlike most minor modes, there is no separate
-<code>read-only-mode</code> variable.  Even when Read Only mode is disabled,
-characters with non-<code>nil</code> <code>read-only</code> text properties remain
+<code class="code">buffer-read-only</code>; unlike most minor modes, there is no separate
+<code class="code">read-only-mode</code> variable.  Even when Read Only mode is disabled,
+characters with non-<code class="code">nil</code> <code class="code">read-only</code> text properties remain
 read-only.  To temporarily ignore all read-only states, bind
-<code>inhibit-read-only</code>, as described above.
+<code class="code">inhibit-read-only</code>, as described above.
 </p>
 <p>When enabling Read Only mode, this mode command also enables View mode
-if the option <code>view-read-only</code> is non-<code>nil</code>.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Misc-Buffer.html#Misc-Buffer">Miscellaneous Buffer Operations</a> in <cite>The GNU Emacs Manual</cite>.
+if the option <code class="code">view-read-only</code> is non-<code class="code">nil</code>.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Misc-Buffer.html#Misc-Buffer">Miscellaneous Buffer Operations</a> in <cite class="cite">The GNU Emacs Manual</cite>.
 When disabling Read Only mode, it disables View mode if View mode was
 enabled.
 </p></dd></dl>
 
-<dl>
-<dt id="index-barf_002dif_002dbuffer_002dread_002donly">Function: <strong>barf-if-buffer-read-only</strong> <em>&amp;optional position</em></dt>
-<dd><p>This function signals a <code>buffer-read-only</code> error if the current
-buffer is read-only.  If the text at <var>position</var> (which defaults to
-point) has the <code>inhibit-read-only</code> text property set, the error
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-barf_002dif_002dbuffer_002dread_002donly"><span class="category-def">Function: </span><span><strong class="def-name">barf-if-buffer-read-only</strong> <var class="def-var-arguments">&amp;optional position</var><a class="copiable-link" href="#index-barf_002dif_002dbuffer_002dread_002donly"> &para;</a></span></dt>
+<dd><p>This function signals a <code class="code">buffer-read-only</code> error if the current
+buffer is read-only.  If the text at <var class="var">position</var> (which defaults to
+point) has the <code class="code">inhibit-read-only</code> text property set, the error
 will not be raised.
 </p>
-<p>See <a href="Using-Interactive.html">Using Interactive</a>, for another way to signal an error if the
+<p>See <a class="xref" href="Using-Interactive.html">Using <code class="code">interactive</code></a>, for another way to signal an error if the
 current buffer is read-only.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Buffer-List.html" accesskey="n" rel="next">Buffer List</a>, Previous: <a href="Modification-Time.html" accesskey="p" rel="prev">Modification Time</a>, Up: <a href="Buffers.html" accesskey="u" rel="up">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Buffer-List.html">The Buffer List</a>, Previous: <a href="Modification-Time.html">Buffer Modification Time</a>, Up: <a href="Buffers.html">Buffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

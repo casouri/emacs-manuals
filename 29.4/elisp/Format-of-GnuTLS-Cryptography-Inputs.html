@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Format of GnuTLS Cryptography Inputs (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Format of GnuTLS Cryptography Inputs (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Format of GnuTLS Cryptography Inputs (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="GnuTLS-Cryptography.html" rel="up" title="GnuTLS Cryptography">
+<link href="GnuTLS-Cryptographic-Functions.html" rel="next" title="GnuTLS Cryptographic Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Format-of-GnuTLS-Cryptography-Inputs">
+<div class="nav-panel">
+<p>
+Next: <a href="GnuTLS-Cryptographic-Functions.html" accesskey="n" rel="next">GnuTLS Cryptographic Functions</a>, Up: <a href="GnuTLS-Cryptography.html" accesskey="u" rel="up">GnuTLS Cryptography</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Format-of-GnuTLS-Cryptography-Inputs-1"><span>33.28.1 Format of GnuTLS Cryptography Inputs<a class="copiable-link" href="#Format-of-GnuTLS-Cryptography-Inputs-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-format-of-gnutls-cryptography-inputs"></a>
+<a class="index-entry-id" id="index-gnutls-cryptography-inputs-format"></a>
+
+<p>The inputs to GnuTLS cryptographic functions can be specified in
+several ways, both as primitive Emacs Lisp types or as lists.
+</p>
+<p>The list form is currently similar to how <code class="code">md5</code> and
+<code class="code">secure-hash</code> operate.
+</p>
+<dl class="table">
+<dt><code class="code"><var class="var">buffer</var></code></dt>
+<dd><p>Simply passing a buffer as input means the whole buffer should be used.
+</p>
+</dd>
+<dt><code class="code"><var class="var">string</var></code></dt>
+<dd><p>A string as input will be used directly.  It may be modified by the
+function (unlike most other Emacs Lisp functions) to reduce the chance
+of exposing sensitive data after the function does its work.
+</p>
+</dd>
+<dt><code class="code">(<var class="var">buffer-or-string</var> <var class="var">start</var> <var class="var">end</var> <var class="var">coding-system</var> <var class="var">noerror</var>)</code></dt>
+<dd><p>This specifies a buffer or a string as described above, but an
+optional range can be specified with <var class="var">start</var> and <var class="var">end</var>.
+</p>
+<p>In addition an optional <var class="var">coding-system</var> can be specified if needed.
+</p>
+<p>The last optional item, <var class="var">noerror</var>, overrides the normal error when
+the text can&rsquo;t be encoded using the specified or chosen coding system.
+When <var class="var">noerror</var> is non-<code class="code">nil</code>, this function silently uses
+<code class="code">raw-text</code> coding instead.
+</p>
+</dd>
+<dt><code class="code">(<code class="code">iv-auto</code> <var class="var">length</var>)</code></dt>
+<dd><p>This generates a random IV (Initialization Vector) of the specified
+length and passes it to the function.  This ensures that the IV is
+unpredictable and unlikely to be reused in the same session.
+</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+</body>
+</html>

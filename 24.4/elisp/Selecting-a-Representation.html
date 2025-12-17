@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Selecting a Representation (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Selecting a Representation (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Converting-Representations.html" rel="prev" title="Converting Representations">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,21 +47,22 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Selecting-a-Representation"></span><div class="header">
+<div class="section-level-extent" id="Selecting-a-Representation">
+<div class="nav-panel">
 <p>
-Next: <a href="Character-Codes.html" accesskey="n" rel="next">Character Codes</a>, Previous: <a href="Converting-Representations.html" accesskey="p" rel="prev">Converting Representations</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-ASCII Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Character-Codes.html" accesskey="n" rel="next">Character Codes</a>, Previous: <a href="Converting-Representations.html" accesskey="p" rel="prev">Converting Text Representations</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-<abbr class="acronym">ASCII</abbr> Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Selecting-a-Representation-1"></span><h3 class="section">32.4 Selecting a Representation</h3>
+<h3 class="section" id="Selecting-a-Representation-1"><span>32.4 Selecting a Representation<a class="copiable-link" href="#Selecting-a-Representation-1"> &para;</a></span></h3>
 
 <p>Sometimes it is useful to examine an existing buffer or string as
 multibyte when it was unibyte, or vice versa.
 </p>
-<dl>
-<dt id="index-set_002dbuffer_002dmultibyte">Function: <strong>set-buffer-multibyte</strong> <em>multibyte</em></dt>
-<dd><p>Set the representation type of the current buffer.  If <var>multibyte</var>
-is non-<code>nil</code>, the buffer becomes multibyte.  If <var>multibyte</var>
-is <code>nil</code>, the buffer becomes unibyte.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dbuffer_002dmultibyte"><span class="category-def">Function: </span><span><strong class="def-name">set-buffer-multibyte</strong> <var class="def-var-arguments">multibyte</var><a class="copiable-link" href="#index-set_002dbuffer_002dmultibyte"> &para;</a></span></dt>
+<dd><p>Set the representation type of the current buffer.  If <var class="var">multibyte</var>
+is non-<code class="code">nil</code>, the buffer becomes multibyte.  If <var class="var">multibyte</var>
+is <code class="code">nil</code>, the buffer becomes unibyte.
 </p>
 <p>This function leaves the buffer contents unchanged when viewed as a
 sequence of bytes.  As a consequence, it can change the contents
@@ -81,7 +73,7 @@ representing raw bytes are an exception.  They are represented by one
 byte in a unibyte buffer, but when the buffer is set to multibyte,
 they are converted to two-byte sequences, and vice versa.
 </p>
-<p>This function sets <code>enable-multibyte-characters</code> to record which
+<p>This function sets <code class="code">enable-multibyte-characters</code> to record which
 representation is in use.  It also adjusts various data in the buffer
 (including overlays, text properties and markers) so that they cover the
 same text as they did before.
@@ -95,33 +87,34 @@ buffer.  An indirect buffer always inherits the representation of its
 base buffer.
 </p></dd></dl>
 
-<dl>
-<dt id="index-string_002das_002dunibyte">Function: <strong>string-as-unibyte</strong> <em>string</em></dt>
-<dd><p>If <var>string</var> is already a unibyte string, this function returns
-<var>string</var> itself.  Otherwise, it returns a new string with the same
-bytes as <var>string</var>, but treating each byte as a separate character
-(so that the value may have more characters than <var>string</var>); as an
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-string_002das_002dunibyte"><span class="category-def">Function: </span><span><strong class="def-name">string-as-unibyte</strong> <var class="def-var-arguments">string</var><a class="copiable-link" href="#index-string_002das_002dunibyte"> &para;</a></span></dt>
+<dd><p>If <var class="var">string</var> is already a unibyte string, this function returns
+<var class="var">string</var> itself.  Otherwise, it returns a new string with the same
+bytes as <var class="var">string</var>, but treating each byte as a separate character
+(so that the value may have more characters than <var class="var">string</var>); as an
 exception, each eight-bit character representing a raw byte is
 converted into a single byte.  The newly-created string contains no
 text properties.
 </p></dd></dl>
 
-<dl>
-<dt id="index-string_002das_002dmultibyte">Function: <strong>string-as-multibyte</strong> <em>string</em></dt>
-<dd><p>If <var>string</var> is a multibyte string, this function returns
-<var>string</var> itself.  Otherwise, it returns a new string with the same
-bytes as <var>string</var>, but treating each multibyte sequence as one
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-string_002das_002dmultibyte"><span class="category-def">Function: </span><span><strong class="def-name">string-as-multibyte</strong> <var class="def-var-arguments">string</var><a class="copiable-link" href="#index-string_002das_002dmultibyte"> &para;</a></span></dt>
+<dd><p>If <var class="var">string</var> is a multibyte string, this function returns
+<var class="var">string</var> itself.  Otherwise, it returns a new string with the same
+bytes as <var class="var">string</var>, but treating each multibyte sequence as one
 character.  This means that the value may have fewer characters than
-<var>string</var> has.  If a byte sequence in <var>string</var> is invalid as a
+<var class="var">string</var> has.  If a byte sequence in <var class="var">string</var> is invalid as a
 multibyte representation of a single character, each byte in the
 sequence is treated as a raw 8-bit byte.  The newly-created string
 contains no text properties.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Character-Codes.html" accesskey="n" rel="next">Character Codes</a>, Previous: <a href="Converting-Representations.html" accesskey="p" rel="prev">Converting Representations</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-ASCII Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Character-Codes.html">Character Codes</a>, Previous: <a href="Converting-Representations.html">Converting Text Representations</a>, Up: <a href="Non_002dASCII-Characters.html">Non-<abbr class="acronym">ASCII</abbr> Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

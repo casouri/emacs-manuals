@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Other Char Bits (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Other Char Bits (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Character-Type.html" rel="up" title="Character Type">
-<link href="Symbol-Type.html" rel="next" title="Symbol Type">
 <link href="Meta_002dChar-Syntax.html" rel="prev" title="Meta-Char Syntax">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,38 +46,40 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Other-Char-Bits"></span><div class="header">
+<div class="subsubsection-level-extent" id="Other-Char-Bits">
+<div class="nav-panel">
 <p>
-Previous: <a href="Meta_002dChar-Syntax.html" accesskey="p" rel="prev">Meta-Char Syntax</a>, Up: <a href="Character-Type.html" accesskey="u" rel="up">Character Type</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Meta_002dChar-Syntax.html" accesskey="p" rel="prev">Meta-Character Syntax</a>, Up: <a href="Character-Type.html" accesskey="u" rel="up">Character Type</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Other-Character-Modifier-Bits"></span><h4 class="subsubsection">2.3.3.5 Other Character Modifier Bits</h4>
+<h4 class="subsubsection" id="Other-Character-Modifier-Bits"><span>2.3.3.5 Other Character Modifier Bits<a class="copiable-link" href="#Other-Character-Modifier-Bits"> &para;</a></span></h4>
 
 <p>The case of a graphic character is indicated by its character code;
-for example, <acronym>ASCII</acronym> distinguishes between the characters &lsquo;<samp>a</samp>&rsquo;
-and &lsquo;<samp>A</samp>&rsquo;.  But <acronym>ASCII</acronym> has no way to represent whether a control
+for example, <abbr class="acronym">ASCII</abbr> distinguishes between the characters &lsquo;<samp class="samp">a</samp>&rsquo;
+and &lsquo;<samp class="samp">A</samp>&rsquo;.  But <abbr class="acronym">ASCII</abbr> has no way to represent whether a control
 character is upper case or lower case.  Emacs uses the
 2**25
 bit to indicate that the shift key was used in typing a control
 character.  This distinction is possible only when you use X terminals
 or other special terminals; ordinary text terminals do not report the
-distinction.  The Lisp syntax for the shift bit is &lsquo;<samp>\S-</samp>&rsquo;; thus,
-&lsquo;<samp>?\C-\S-o</samp>&rsquo; or &lsquo;<samp>?\C-\S-O</samp>&rsquo; represents the shifted-control-o
+distinction.  The Lisp syntax for the shift bit is &lsquo;<samp class="samp">\S-</samp>&rsquo;; thus,
+&lsquo;<samp class="samp">?\C-\S-o</samp>&rsquo; or &lsquo;<samp class="samp">?\C-\S-O</samp>&rsquo; represents the shifted-control-o
 character.
 </p>
-<span id="index-hyper-characters"></span>
-<span id="index-super-characters"></span>
-<span id="index-alt-characters"></span>
+<a class="index-entry-id" id="index-hyper-characters"></a>
+<a class="index-entry-id" id="index-super-characters"></a>
+<a class="index-entry-id" id="index-alt-characters"></a>
 <p>The X Window System defines three other
-<span id="modifier-bits"></span>modifier bits that can be set
-in a character: <em>hyper</em>, <em>super</em> and <em>alt</em>.  The syntaxes
-for these bits are &lsquo;<samp>\H-</samp>&rsquo;, &lsquo;<samp>\s-</samp>&rsquo; and &lsquo;<samp>\A-</samp>&rsquo;.  (Case is
-significant in these prefixes.)  Thus, &lsquo;<samp>?\H-\M-\A-x</samp>&rsquo; represents
-<kbd>Alt-Hyper-Meta-x</kbd>.  (Note that &lsquo;<samp>\s</samp>&rsquo; with no following &lsquo;<samp>-</samp>&rsquo;
+<a class="anchor" id="modifier-bits"></a>modifier bits that can be set
+in a character: <em class="dfn">hyper</em>, <em class="dfn">super</em> and <em class="dfn">alt</em>.  The syntaxes
+for these bits are &lsquo;<samp class="samp">\H-</samp>&rsquo;, &lsquo;<samp class="samp">\s-</samp>&rsquo; and &lsquo;<samp class="samp">\A-</samp>&rsquo;.  (Case is
+significant in these prefixes.)  Thus, &lsquo;<samp class="samp">?\H-\M-\A-x</samp>&rsquo; represents
+<kbd class="kbd">Alt-Hyper-Meta-x</kbd>.  (Note that &lsquo;<samp class="samp">\s</samp>&rsquo; with no following &lsquo;<samp class="samp">-</samp>&rsquo;
 represents the space character.)
 Numerically, the
 bit values are 2**22 for alt, 2**23 for super and 2**24 for hyper.
 </p>
+</div>
 
 
 

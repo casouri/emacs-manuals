@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Case Changes (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Case Changes (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Case Changes (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Text.html" rel="up" title="Text">
+<link href="Text-Properties.html" rel="next" title="Text Properties">
+<link href="Indentation.html" rel="prev" title="Indentation">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Case-Changes">
+<div class="nav-panel">
+<p>
+Next: <a href="Text-Properties.html" accesskey="n" rel="next">Text Properties</a>, Previous: <a href="Indentation.html" accesskey="p" rel="prev">Indentation</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Case-Changes-1"><span>33.18 Case Changes<a class="copiable-link" href="#Case-Changes-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-case-conversion-in-buffers"></a>
+
+<p>The case change commands described here work on text in the current
+buffer.  See <a class="xref" href="Case-Conversion.html">Case Conversion in Lisp</a>, for case conversion functions that work
+on strings and characters.  See <a class="xref" href="Case-Tables.html">The Case Table</a>, for how to customize
+which characters are upper or lower case and how to convert them.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-capitalize_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">capitalize-region</strong> <var class="def-var-arguments">start end</var><a class="copiable-link" href="#index-capitalize_002dregion"> &para;</a></span></dt>
+<dd><p>This function capitalizes all words in the region defined by
+<var class="var">start</var> and <var class="var">end</var>.  To capitalize means to convert each word&rsquo;s
+first character to upper case and convert the rest of each word to lower
+case.  The function returns <code class="code">nil</code>.
+</p>
+<p>If one end of the region is in the middle of a word, the part of the
+word within the region is treated as an entire word.
+</p>
+<p>When <code class="code">capitalize-region</code> is called interactively, <var class="var">start</var> and
+<var class="var">end</var> are point and the mark, with the smallest first.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
+This is the contents of the 5th foo.
+---------- Buffer: foo ----------
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(capitalize-region 1 37)
+&rArr; nil
+
+---------- Buffer: foo ----------
+This Is The Contents Of The 5th Foo.
+---------- Buffer: foo ----------
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-downcase_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">downcase-region</strong> <var class="def-var-arguments">start end</var><a class="copiable-link" href="#index-downcase_002dregion"> &para;</a></span></dt>
+<dd><p>This function converts all of the letters in the region defined by
+<var class="var">start</var> and <var class="var">end</var> to lower case.  The function returns
+<code class="code">nil</code>.
+</p>
+<p>When <code class="code">downcase-region</code> is called interactively, <var class="var">start</var> and
+<var class="var">end</var> are point and the mark, with the smallest first.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-upcase_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">upcase-region</strong> <var class="def-var-arguments">start end</var><a class="copiable-link" href="#index-upcase_002dregion"> &para;</a></span></dt>
+<dd><p>This function converts all of the letters in the region defined by
+<var class="var">start</var> and <var class="var">end</var> to upper case.  The function returns
+<code class="code">nil</code>.
+</p>
+<p>When <code class="code">upcase-region</code> is called interactively, <var class="var">start</var> and
+<var class="var">end</var> are point and the mark, with the smallest first.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-capitalize_002dword"><span class="category-def">Command: </span><span><strong class="def-name">capitalize-word</strong> <var class="def-var-arguments">count</var><a class="copiable-link" href="#index-capitalize_002dword"> &para;</a></span></dt>
+<dd><p>This function capitalizes <var class="var">count</var> words after point, moving point
+over as it does.  To capitalize means to convert each word&rsquo;s first
+character to upper case and convert the rest of each word to lower case.
+If <var class="var">count</var> is negative, the function capitalizes the
+&minus;<var class="var">count</var> previous words but does not move point.  The value
+is <code class="code">nil</code>.
+</p>
+<p>If point is in the middle of a word, the part of the word before point
+is ignored when moving forward.  The rest is treated as an entire word.
+</p>
+<p>When <code class="code">capitalize-word</code> is called interactively, <var class="var">count</var> is
+set to the numeric prefix argument.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-downcase_002dword"><span class="category-def">Command: </span><span><strong class="def-name">downcase-word</strong> <var class="def-var-arguments">count</var><a class="copiable-link" href="#index-downcase_002dword"> &para;</a></span></dt>
+<dd><p>This function converts the <var class="var">count</var> words after point to all lower
+case, moving point over as it does.  If <var class="var">count</var> is negative, it
+converts the &minus;<var class="var">count</var> previous words but does not move point.
+The value is <code class="code">nil</code>.
+</p>
+<p>When <code class="code">downcase-word</code> is called interactively, <var class="var">count</var> is set
+to the numeric prefix argument.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-upcase_002dword"><span class="category-def">Command: </span><span><strong class="def-name">upcase-word</strong> <var class="def-var-arguments">count</var><a class="copiable-link" href="#index-upcase_002dword"> &para;</a></span></dt>
+<dd><p>This function converts the <var class="var">count</var> words after point to all upper
+case, moving point over as it does.  If <var class="var">count</var> is negative, it
+converts the &minus;<var class="var">count</var> previous words but does not move point.
+The value is <code class="code">nil</code>.
+</p>
+<p>When <code class="code">upcase-word</code> is called interactively, <var class="var">count</var> is set to
+the numeric prefix argument.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Text-Properties.html">Text Properties</a>, Previous: <a href="Indentation.html">Indentation</a>, Up: <a href="Text.html">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

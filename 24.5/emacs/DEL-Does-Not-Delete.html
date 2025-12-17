@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.5.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>DEL Does Not Delete (GNU Emacs Manual)</title>
 
 <meta name="description" content="DEL Does Not Delete (GNU Emacs Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Lossage.html" rel="up" title="Lossage">
 <link href="Stuck-Recursive.html" rel="next" title="Stuck Recursive">
-<link href="Lossage.html" rel="prev" title="Lossage">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,69 +49,71 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="DEL-Does-Not-Delete"></span><div class="header">
+<div class="section-level-extent" id="DEL-Does-Not-Delete">
+<div class="nav-panel">
 <p>
-Next: <a href="Stuck-Recursive.html" accesskey="n" rel="next">Stuck Recursive</a>, Up: <a href="Lossage.html" accesskey="u" rel="up">Lossage</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Stuck-Recursive.html" accesskey="n" rel="next">Recursive Editing Levels</a>, Up: <a href="Lossage.html" accesskey="u" rel="up">Dealing with Emacs Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="If-DEL-Fails-to-Delete"></span><h3 class="section">50.1 If <tt class="key">DEL</tt> Fails to Delete</h3>
-<span id="index-DEL-vs-BACKSPACE"></span>
-<span id="index-BACKSPACE-vs-DEL"></span>
-<span id="index-DEL-does-not-delete"></span>
+<h3 class="section subsection-level-set-section" id="If-DEL-Fails-to-Delete"><span>50.1 If <kbd class="key">DEL</kbd> Fails to Delete<a class="copiable-link" href="#If-DEL-Fails-to-Delete"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-DEL-vs-BACKSPACE"></a>
+<a class="index-entry-id" id="index-BACKSPACE-vs-DEL"></a>
+<a class="index-entry-id" id="index-DEL-does-not-delete"></a>
 
-<p>Every keyboard has a large key, usually labeled <tt class="key">BACKSPACE</tt>,
+<p>Every keyboard has a large key, usually labeled <kbd class="key">BACKSPACE</kbd>,
 which is ordinarily used to erase the last character that you typed.
-In Emacs, this key is supposed to be equivalent to <tt class="key">DEL</tt>.
+In Emacs, this key is supposed to be equivalent to <kbd class="key">DEL</kbd>.
 </p>
 <p>When Emacs starts up on a graphical display, it determines
-automatically which key should be <tt class="key">DEL</tt>.  In some unusual cases,
-Emacs gets the wrong information from the system, and <tt class="key">BACKSPACE</tt>
+automatically which key should be <kbd class="key">DEL</kbd>.  In some unusual cases,
+Emacs gets the wrong information from the system, and <kbd class="key">BACKSPACE</kbd>
 ends up deleting forwards instead of backwards.
 </p>
-<p>Some keyboards also have a <tt class="key">Delete</tt> key, which is ordinarily
+<p>Some keyboards also have a <kbd class="key">Delete</kbd> key, which is ordinarily
 used to delete forwards.  If this key deletes backward in Emacs, that
 too suggests Emacs got the wrong information&mdash;but in the opposite
 sense.
 </p>
-<p>On a text terminal, if you find that <tt class="key">BACKSPACE</tt> prompts for a
-Help command, like <kbd>Control-h</kbd>, instead of deleting a character,
-it means that key is actually sending the &lsquo;<samp>BS</samp>&rsquo; character.  Emacs
-ought to be treating <tt class="key">BS</tt> as <tt class="key">DEL</tt>, but it isn&rsquo;t.
+<p>On a text terminal, if you find that <kbd class="key">BACKSPACE</kbd> prompts for a
+Help command, like <kbd class="kbd">Control-h</kbd>, instead of deleting a character,
+it means that key is actually sending the &lsquo;<samp class="samp">BS</samp>&rsquo; character.  Emacs
+ought to be treating <kbd class="key">BS</kbd> as <kbd class="key">DEL</kbd>, but it isn&rsquo;t.
 </p>
-<span id="index-normal_002derase_002dis_002dbackspace_002dmode"></span>
+<a class="index-entry-id" id="index-normal_002derase_002dis_002dbackspace_002dmode"></a>
 <p>In all of those cases, the immediate remedy is the same: use the
-command <kbd>M-x normal-erase-is-backspace-mode</kbd>.  This toggles
-between the two modes that Emacs supports for handling <tt class="key">DEL</tt>, so
+command <kbd class="kbd">M-x normal-erase-is-backspace-mode</kbd>.  This toggles
+between the two modes that Emacs supports for handling <kbd class="key">DEL</kbd>, so
 if Emacs starts in the wrong mode, this should switch to the right
-mode.  On a text terminal, if you want to ask for help when <tt class="key">BS</tt>
-is treated as <tt class="key">DEL</tt>, use <tt class="key">F1</tt>; <kbd>C-?</kbd> may also work, if it
+mode.  On a text terminal, if you want to ask for help when <kbd class="key">BS</kbd>
+is treated as <kbd class="key">DEL</kbd>, use <kbd class="key">F1</kbd>; <kbd class="kbd">C-?</kbd> may also work, if it
 sends character code 127.
 </p>
 <p>To fix the problem in every Emacs session, put one of the following
-lines into your initialization file (see <a href="Init-File.html">Init File</a>).  For the
-first case above, where <tt class="key">BACKSPACE</tt> deletes forwards instead of
-backwards, use this line to make <tt class="key">BACKSPACE</tt> act as <tt class="key">DEL</tt>:
+lines into your initialization file (see <a class="pxref" href="Init-File.html">The Emacs Initialization File</a>).  For the
+first case above, where <kbd class="key">BACKSPACE</kbd> deletes forwards instead of
+backwards, use this line to make <kbd class="key">BACKSPACE</kbd> act as <kbd class="key">DEL</kbd>:
 </p>
-<div class="lisp">
-<pre class="lisp">(normal-erase-is-backspace-mode 0)
+<div class="example lisp">
+<pre class="lisp-preformatted">(normal-erase-is-backspace-mode 0)
 </pre></div>
 
 <p>For the other two cases, use this line:
 </p>
-<div class="lisp">
-<pre class="lisp">(normal-erase-is-backspace-mode 1)
+<div class="example lisp">
+<pre class="lisp-preformatted">(normal-erase-is-backspace-mode 1)
 </pre></div>
 
-<span id="index-normal_002derase_002dis_002dbackspace"></span>
+<a class="index-entry-id" id="index-normal_002derase_002dis_002dbackspace"></a>
 <p>Another way to fix the problem for every Emacs session is to
-customize the variable <code>normal-erase-is-backspace</code>: the value
-<code>t</code> specifies the mode where <tt class="key">BS</tt> or <tt class="key">BACKSPACE</tt> is
-<tt class="key">DEL</tt>, and <code>nil</code> specifies the other mode.  See <a href="Easy-Customization.html">Easy Customization</a>.
+customize the variable <code class="code">normal-erase-is-backspace</code>: the value
+<code class="code">t</code> specifies the mode where <kbd class="key">BS</kbd> or <kbd class="key">BACKSPACE</kbd> is
+<kbd class="key">DEL</kbd>, and <code class="code">nil</code> specifies the other mode.  See <a class="xref" href="Easy-Customization.html">Easy Customization Interface</a>.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Stuck-Recursive.html" accesskey="n" rel="next">Stuck Recursive</a>, Up: <a href="Lossage.html" accesskey="u" rel="up">Lossage</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Stuck-Recursive.html">Recursive Editing Levels</a>, Up: <a href="Lossage.html">Dealing with Emacs Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

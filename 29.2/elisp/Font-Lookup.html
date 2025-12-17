@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.2.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Font Lookup (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Font Lookup (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Font Lookup (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Faces.html" rel="up" title="Faces">
+<link href="Fontsets.html" rel="next" title="Fontsets">
+<link href="Font-Selection.html" rel="prev" title="Font Selection">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Font-Lookup">
+<div class="nav-panel">
+<p>
+Next: <a href="Fontsets.html" accesskey="n" rel="next">Fontsets</a>, Previous: <a href="Font-Selection.html" accesskey="p" rel="prev">Font Selection</a>, Up: <a href="Faces.html" accesskey="u" rel="up">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Looking-Up-Fonts"><span>41.12.10 Looking Up Fonts<a class="copiable-link" href="#Looking-Up-Fonts"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-font-lookup"></a>
+<a class="index-entry-id" id="index-looking-up-fonts"></a>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-x_002dlist_002dfonts"><span class="category-def">Function: </span><span><strong class="def-name">x-list-fonts</strong> <var class="def-var-arguments">name &amp;optional reference-face frame maximum width</var><a class="copiable-link" href="#index-x_002dlist_002dfonts"> &para;</a></span></dt>
+<dd><p>This function returns a list of available font names that match
+<var class="var">name</var>.  <var class="var">name</var> should be a string containing a font name in
+either the Fontconfig, GTK+, or XLFD format (see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html#Fonts">Fonts</a> in <cite class="cite">The
+GNU Emacs Manual</cite>).  Within an XLFD string, wildcard characters may be
+used: the &lsquo;<samp class="samp">*</samp>&rsquo; character matches any substring, and the &lsquo;<samp class="samp">?</samp>&rsquo;
+character matches any single character.  Case is ignored when matching
+font names.
+</p>
+<p>If the optional arguments <var class="var">reference-face</var> and <var class="var">frame</var> are
+specified, the returned list includes only fonts that are the same
+size as <var class="var">reference-face</var> (a face name) currently is on the frame
+<var class="var">frame</var>.
+</p>
+<p>The optional argument <var class="var">maximum</var> sets a limit on how many fonts to
+return.  If it is non-<code class="code">nil</code>, then the return value is truncated
+after the first <var class="var">maximum</var> matching fonts.  Specifying a small
+value for <var class="var">maximum</var> can make this function much faster, in cases
+where many fonts match the pattern.
+</p>
+<p>The optional argument <var class="var">width</var> specifies a desired font width.  If
+it is non-<code class="code">nil</code>, the function only returns those fonts whose
+characters are (on average) <var class="var">width</var> times as wide as
+<var class="var">reference-face</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-x_002dfamily_002dfonts"><span class="category-def">Function: </span><span><strong class="def-name">x-family-fonts</strong> <var class="def-var-arguments">&amp;optional family frame</var><a class="copiable-link" href="#index-x_002dfamily_002dfonts"> &para;</a></span></dt>
+<dd><p>This function returns a list describing the available fonts for family
+<var class="var">family</var> on <var class="var">frame</var>.  If <var class="var">family</var> is omitted or <code class="code">nil</code>,
+this list applies to all families, and therefore, it contains all
+available fonts.  Otherwise, <var class="var">family</var> must be a string; it may
+contain the wildcards &lsquo;<samp class="samp">?</samp>&rsquo; and &lsquo;<samp class="samp">*</samp>&rsquo;.
+</p>
+<p>The list describes the display that <var class="var">frame</var> is on; if <var class="var">frame</var> is
+omitted or <code class="code">nil</code>, it applies to the selected frame&rsquo;s display
+(see <a class="pxref" href="Input-Focus.html">Input Focus</a>).
+</p>
+<p>Each element in the list is a vector of the following form:
+</p>
+<div class="example">
+<pre class="example-preformatted">[<var class="var">family</var> <var class="var">width</var> <var class="var">point-size</var> <var class="var">weight</var> <var class="var">slant</var>
+ <var class="var">fixed-p</var> <var class="var">full</var> <var class="var">registry-and-encoding</var>]
+</pre></div>
+
+<p>The first five elements correspond to face attributes; if you
+specify these attributes for a face, it will use this font.
+</p>
+<p>The last three elements give additional information about the font.
+<var class="var">fixed-p</var> is non-<code class="code">nil</code> if the font is fixed-pitch.
+<var class="var">full</var> is the full name of the font, and
+<var class="var">registry-and-encoding</var> is a string giving the registry and
+encoding of the font.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Fontsets.html">Fontsets</a>, Previous: <a href="Font-Selection.html">Font Selection</a>, Up: <a href="Faces.html">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

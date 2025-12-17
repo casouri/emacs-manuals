@@ -1,10 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
-updated for Emacs version 29.0.50.
+updated for Emacs version 31.0.50.
 
-Copyright © 1985-1987, 1993-2021 Free Software Foundation,
-Inc.
+Copyright © 1985-2025 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -18,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>CUA Bindings (GNU Emacs Manual)</title>
 
 <meta name="description" content="CUA Bindings (GNU Emacs Manual)">
@@ -28,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Killing.html" rel="up" title="Killing">
-<link href="Registers.html" rel="next" title="Registers">
 <link href="Rectangles.html" rel="prev" title="Rectangles">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,62 +48,63 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="CUA-Bindings"></span><div class="header">
+<div class="section-level-extent" id="CUA-Bindings">
+<div class="nav-panel">
 <p>
-Previous: <a href="Rectangles.html" accesskey="p" rel="prev">Rectangles</a>, Up: <a href="Killing.html" accesskey="u" rel="up">Killing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Rectangles.html" accesskey="p" rel="prev">Rectangles</a>, Up: <a href="Killing.html" accesskey="u" rel="up">Killing and Moving Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="CUA-Bindings-1"></span><h3 class="section">12.6 CUA Bindings</h3>
-<span id="index-cua_002dmode"></span>
-<span id="index-cua_002dmode-1"></span>
-<span id="index-CUA-key-bindings"></span>
-<span id="index-cua_002denable_002dcua_002dkeys"></span>
-<p>The command <kbd>M-x cua-mode</kbd> sets up key bindings that are
+<h3 class="section" id="CUA-Bindings-1"><span>14.6 CUA Bindings<a class="copiable-link" href="#CUA-Bindings-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-cua_002dmode"></a>
+<a class="index-entry-id" id="index-cua_002dmode-1"></a>
+<a class="index-entry-id" id="index-CUA-key-bindings"></a>
+<a class="index-entry-id" id="index-cua_002denable_002dcua_002dkeys"></a>
+<p>The command <kbd class="kbd">M-x cua-mode</kbd> sets up key bindings that are
 compatible with the Common User Access (CUA) system used in many other
 applications.
 </p>
-<p>When CUA mode is enabled, the keys <kbd>C-x</kbd>, <kbd>C-c</kbd>, <kbd>C-v</kbd>,
-and <kbd>C-z</kbd> invoke commands that cut (kill), copy, paste (yank), and
-undo respectively.  The <kbd>C-x</kbd> and <kbd>C-c</kbd> keys perform cut and
+<p>When CUA mode is enabled, the keys <kbd class="kbd">C-x</kbd>, <kbd class="kbd">C-c</kbd>, <kbd class="kbd">C-v</kbd>,
+and <kbd class="kbd">C-z</kbd> invoke commands that cut (kill), copy, paste (yank), and
+undo respectively.  The <kbd class="kbd">C-x</kbd> and <kbd class="kbd">C-c</kbd> keys perform cut and
 copy only if the region is active.  Otherwise, they still act as
-prefix keys, so that standard Emacs commands like <kbd>C-x C-c</kbd> still
-work.  Note that this means the variable <code>mark-even-if-inactive</code>
-has no effect for <kbd>C-x</kbd> and <kbd>C-c</kbd> (see <a href="Using-Region.html">Using Region</a>).
+prefix keys, so that standard Emacs commands like <kbd class="kbd">C-x C-c</kbd> still
+work.  Note that this means the variable <code class="code">mark-even-if-inactive</code>
+has no effect for <kbd class="kbd">C-x</kbd> and <kbd class="kbd">C-c</kbd> (see <a class="pxref" href="Using-Region.html">Operating on the Region</a>).
 </p>
-<p>To enter an Emacs command like <kbd>C-x C-f</kbd> while the mark is
-active, use one of the following methods: either hold <kbd>Shift</kbd>
-together with the prefix key, e.g., <kbd>S-C-x C-f</kbd>, or quickly type
-the prefix key twice, e.g., <kbd>C-x C-x C-f</kbd>.
+<p>To enter an Emacs command like <kbd class="kbd">C-x C-f</kbd> while the mark is
+active, use one of the following methods: either hold <kbd class="kbd">Shift</kbd>
+together with the prefix key, e.g., <kbd class="kbd">S-C-x C-f</kbd>, or quickly type
+the prefix key twice, e.g., <kbd class="kbd">C-x C-x C-f</kbd>.
 </p>
 <p>To disable the overriding of standard Emacs binding by CUA mode,
 while retaining the other features of CUA mode described below, set
-the variable <code>cua-enable-cua-keys</code> to <code>nil</code>.
+the variable <code class="code">cua-enable-cua-keys</code> to <code class="code">nil</code>.
 </p>
-<p>CUA mode by default activates Delete-Selection mode (see <a href="Mouse-Commands.html">Mouse Commands</a>)
+<p>CUA mode by default activates Delete-Selection mode (see <a class="pxref" href="Mouse-Commands.html">Mouse Commands for Editing</a>)
 so that typed text replaces the active region.  To use CUA without this
-behavior, set the variable <code>cua-delete-selection</code> to <code>nil</code>.
+behavior, set the variable <code class="code">cua-delete-selection</code> to <code class="code">nil</code>.
 </p>
-<span id="index-rectangle-highlighting"></span>
+<a class="index-entry-id" id="index-rectangle-highlighting"></a>
 <p>CUA mode provides enhanced rectangle support with visible
-rectangle highlighting.  Use <kbd>C-<span class="key">RET</span></kbd> to start a rectangle,
+rectangle highlighting.  Use <kbd class="kbd">C-<kbd class="key">RET</kbd></kbd> to start a rectangle,
 extend it using the movement commands, and cut or copy it using
-<kbd>C-x</kbd> or <kbd>C-c</kbd>.  <tt class="key">RET</tt> moves the cursor to the next
+<kbd class="kbd">C-x</kbd> or <kbd class="kbd">C-c</kbd>.  <kbd class="key">RET</kbd> moves the cursor to the next
 (clockwise) corner of the rectangle, so you can easily expand it in
 any direction.  Normal text you type is inserted to the left or right
 of each line in the rectangle (on the same side as the cursor).
 </p>
 <p>You can use this rectangle support without activating CUA by calling the
-<code>cua-rectangle-mark-mode</code> command.  There&rsquo;s also the standard command
-<code>rectangle-mark-mode</code>, see <a href="Rectangles.html">Rectangles</a>.
+<code class="code">cua-rectangle-mark-mode</code> command.  There&rsquo;s also the standard command
+<code class="code">rectangle-mark-mode</code>, see <a class="ref" href="Rectangles.html">Rectangles</a>.
 </p>
 <p>With CUA you can easily copy text and rectangles into and out of
 registers by providing a one-digit numeric prefix to the kill, copy,
-and yank commands, e.g., <kbd>C-1 C-c</kbd> copies the region into register
-<code>1</code>, and <kbd>C-2 C-v</kbd> yanks the contents of register <code>2</code>.
+and yank commands, e.g., <kbd class="kbd">C-1 C-c</kbd> copies the region into register
+<code class="code">1</code>, and <kbd class="kbd">C-2 C-v</kbd> yanks the contents of register <code class="code">2</code>.
 </p>
-<span id="index-global-mark"></span>
+<a class="index-entry-id" id="index-global-mark"></a>
 <p>CUA mode also has a global mark feature which allows easy moving and
-copying of text between buffers.  Use <kbd>C-S-<span class="key">SPC</span></kbd> to toggle the
+copying of text between buffers.  Use <kbd class="kbd">C-S-<kbd class="key">SPC</kbd></kbd> to toggle the
 global mark on and off.  When the global mark is on, all text that you
 kill or copy is automatically inserted at the global mark, and text
 you type is inserted at the global mark rather than at the current
@@ -122,13 +113,14 @@ position.
 <p>For example, to copy words from various buffers into a word list in
 a given buffer, set the global mark in the target buffer, then
 navigate to each of the words you want in the list, mark it (e.g., with
-<kbd>S-M-f</kbd>), copy it to the list with <kbd>C-c</kbd> or <kbd>M-w</kbd>, and
+<kbd class="kbd">S-M-f</kbd>), copy it to the list with <kbd class="kbd">C-c</kbd> or <kbd class="kbd">M-w</kbd>, and
 insert a newline after the word in the target list by pressing
-<tt class="key">RET</tt>.
-</p><hr>
-<div class="header">
+<kbd class="key">RET</kbd>.
+</p></div>
+<hr>
+<div class="nav-panel">
 <p>
-Previous: <a href="Rectangles.html" accesskey="p" rel="prev">Rectangles</a>, Up: <a href="Killing.html" accesskey="u" rel="up">Killing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Rectangles.html">Rectangles</a>, Up: <a href="Killing.html">Killing and Moving Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

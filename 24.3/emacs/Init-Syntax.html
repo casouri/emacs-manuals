@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.3.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Init Syntax (GNU Emacs Manual)</title>
 
 <meta name="description" content="Init Syntax (GNU Emacs Manual)">
@@ -27,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Init-File.html" rel="up" title="Init File">
 <link href="Init-Examples.html" rel="next" title="Init Examples">
-<link href="Init-File.html" rel="prev" title="Init File">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -56,94 +47,93 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Init-Syntax"></span><div class="header">
+<div class="subsection-level-extent" id="Init-Syntax">
+<div class="nav-panel">
 <p>
-Next: <a href="Init-Examples.html" accesskey="n" rel="next">Init Examples</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">Init File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Init-Examples.html" accesskey="n" rel="next">Init File Examples</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Init-File-Syntax"></span><h4 class="subsection">48.4.1 Init File Syntax</h4>
+<h4 class="subsection" id="Init-File-Syntax"><span>48.4.1 Init File Syntax<a class="copiable-link" href="#Init-File-Syntax"> &para;</a></span></h4>
 
 <p>The init file contains one or more Lisp expressions.  Each of these
 consists of a function name followed by arguments, all surrounded by
-parentheses.  For example, <code>(setq fill-column 60)</code> calls the
-function <code>setq</code> to set the variable <code>fill-column</code>
-(see <a href="Filling.html">Filling</a>) to 60.
+parentheses.  For example, <code class="code">(setq fill-column 60)</code> calls the
+function <code class="code">setq</code> to set the variable <code class="code">fill-column</code>
+(see <a class="pxref" href="Filling.html">Filling Text</a>) to 60.
 </p>
-<p>You can set any Lisp variable with <code>setq</code>, but with certain
-variables <code>setq</code> won&rsquo;t do what you probably want in the
-<samp>.emacs</samp> file.  Some variables automatically become buffer-local
-when set with <code>setq</code>; what you want in <samp>.emacs</samp> is to set
-the default value, using <code>setq-default</code>.  Some customizable minor
+<p>You can set any Lisp variable with <code class="code">setq</code>, but with certain
+variables <code class="code">setq</code> won&rsquo;t do what you probably want in the
+<samp class="file">.emacs</samp> file.  Some variables automatically become buffer-local
+when set with <code class="code">setq</code>; what you want in <samp class="file">.emacs</samp> is to set
+the default value, using <code class="code">setq-default</code>.  Some customizable minor
 mode variables do special things to enable the mode when you set them
-with Customize, but ordinary <code>setq</code> won&rsquo;t do that; to enable the
-mode in your <samp>.emacs</samp> file, call the minor mode command.  The
+with Customize, but ordinary <code class="code">setq</code> won&rsquo;t do that; to enable the
+mode in your <samp class="file">.emacs</samp> file, call the minor mode command.  The
 following section has examples of both of these methods.
 </p>
-<p>The second argument to <code>setq</code> is an expression for the new
+<p>The second argument to <code class="code">setq</code> is an expression for the new
 value of the variable.  This can be a constant, a variable, or a
-function call expression.  In <samp>.emacs</samp>, constants are used most
+function call expression.  In <samp class="file">.emacs</samp>, constants are used most
 of the time.  They can be:
 </p>
-<dl compact="compact">
+<dl class="table">
 <dt>Numbers:</dt>
 <dd><p>Numbers are written in decimal, with an optional initial minus sign.
 </p>
 </dd>
-<dt>Strings:</dt>
-<dd><span id="index-Lisp-string-syntax"></span>
-<span id="index-string-syntax"></span>
-<p>Lisp string syntax is the same as C string syntax with a few extra
+<dt><a class="index-entry-id" id="index-string-syntax"></a>
+<a id="index-Lisp-string-syntax"></a><span>Strings:<a class="copiable-link" href="#index-Lisp-string-syntax"> &para;</a></span></dt>
+<dd><p>Lisp string syntax is the same as C string syntax with a few extra
 features.  Use a double-quote character to begin and end a string constant.
 </p>
 <p>In a string, you can include newlines and special characters literally.
-But often it is cleaner to use backslash sequences for them: &lsquo;<samp>\n</samp>&rsquo;
-for newline, &lsquo;<samp>\b</samp>&rsquo; for backspace, &lsquo;<samp>\r</samp>&rsquo; for carriage return,
-&lsquo;<samp>\t</samp>&rsquo; for tab, &lsquo;<samp>\f</samp>&rsquo; for formfeed (control-L), &lsquo;<samp>\e</samp>&rsquo; for
-escape, &lsquo;<samp>\\</samp>&rsquo; for a backslash, &lsquo;<samp>\&quot;</samp>&rsquo; for a double-quote, or
-&lsquo;<samp>\<var>ooo</var></samp>&rsquo; for the character whose octal code is <var>ooo</var>.
+But often it is cleaner to use backslash sequences for them: &lsquo;<samp class="samp">\n</samp>&rsquo;
+for newline, &lsquo;<samp class="samp">\b</samp>&rsquo; for backspace, &lsquo;<samp class="samp">\r</samp>&rsquo; for carriage return,
+&lsquo;<samp class="samp">\t</samp>&rsquo; for tab, &lsquo;<samp class="samp">\f</samp>&rsquo; for formfeed (control-L), &lsquo;<samp class="samp">\e</samp>&rsquo; for
+escape, &lsquo;<samp class="samp">\\</samp>&rsquo; for a backslash, &lsquo;<samp class="samp">\&quot;</samp>&rsquo; for a double-quote, or
+&lsquo;<samp class="samp">\<var class="var">ooo</var></samp>&rsquo; for the character whose octal code is <var class="var">ooo</var>.
 Backslash and double-quote are the only characters for which backslash
 sequences are mandatory.
 </p>
-<p>&lsquo;<samp>\C-</samp>&rsquo; can be used as a prefix for a control character, as in
-&lsquo;<samp>\C-s</samp>&rsquo; for <acronym>ASCII</acronym> control-S, and &lsquo;<samp>\M-</samp>&rsquo; can be used as a prefix for
-a Meta character, as in &lsquo;<samp>\M-a</samp>&rsquo; for <kbd>Meta-A</kbd> or &lsquo;<samp>\M-\C-a</samp>&rsquo; for
-<kbd>Control-Meta-A</kbd>.
+<p>&lsquo;<samp class="samp">\C-</samp>&rsquo; can be used as a prefix for a control character, as in
+&lsquo;<samp class="samp">\C-s</samp>&rsquo; for <abbr class="acronym">ASCII</abbr> control-S, and &lsquo;<samp class="samp">\M-</samp>&rsquo; can be used as a prefix for
+a Meta character, as in &lsquo;<samp class="samp">\M-a</samp>&rsquo; for <kbd class="kbd">Meta-A</kbd> or &lsquo;<samp class="samp">\M-\C-a</samp>&rsquo; for
+<kbd class="kbd">Control-Meta-A</kbd>.
 </p>
-<p>See <a href="Init-Non_002dASCII.html">Init Non-ASCII</a>, for information about including
-non-<acronym>ASCII</acronym> in your init file.
+<p>See <a class="xref" href="Init-Non_002dASCII.html">Non-<abbr class="acronym">ASCII</abbr> Characters in Init Files</a>, for information about including
+non-<abbr class="acronym">ASCII</abbr> in your init file.
 </p>
 </dd>
-<dt>Characters:</dt>
-<dd><span id="index-Lisp-character-syntax"></span>
-<span id="index-character-syntax"></span>
-<p>Lisp character constant syntax consists of a &lsquo;<samp>?</samp>&rsquo; followed by
-either a character or an escape sequence starting with &lsquo;<samp>\</samp>&rsquo;.
-Examples: <code>?x</code>, <code>?\n</code>, <code>?\&quot;</code>, <code>?\)</code>.  Note that
+<dt><a class="index-entry-id" id="index-character-syntax"></a>
+<a id="index-Lisp-character-syntax"></a><span>Characters:<a class="copiable-link" href="#index-Lisp-character-syntax"> &para;</a></span></dt>
+<dd><p>Lisp character constant syntax consists of a &lsquo;<samp class="samp">?</samp>&rsquo; followed by
+either a character or an escape sequence starting with &lsquo;<samp class="samp">\</samp>&rsquo;.
+Examples: <code class="code">?x</code>, <code class="code">?\n</code>, <code class="code">?\&quot;</code>, <code class="code">?\)</code>.  Note that
 strings and characters are not interchangeable in Lisp; some contexts
 require one and some contexts require the other.
 </p>
-<p>See <a href="Init-Non_002dASCII.html">Init Non-ASCII</a>, for information about binding commands to
-keys which send non-<acronym>ASCII</acronym> characters.
+<p>See <a class="xref" href="Init-Non_002dASCII.html">Non-<abbr class="acronym">ASCII</abbr> Characters in Init Files</a>, for information about binding commands to
+keys which send non-<abbr class="acronym">ASCII</abbr> characters.
 </p>
 </dd>
 <dt>True:</dt>
-<dd><p><code>t</code> stands for &lsquo;true&rsquo;.
+<dd><p><code class="code">t</code> stands for &lsquo;true&rsquo;.
 </p>
 </dd>
 <dt>False:</dt>
-<dd><p><code>nil</code> stands for &lsquo;false&rsquo;.
+<dd><p><code class="code">nil</code> stands for &lsquo;false&rsquo;.
 </p>
 </dd>
-<dt>Other Lisp objects:</dt>
-<dd><span id="index-Lisp-object-syntax"></span>
-<p>Write a single-quote (<code>'</code>) followed by the Lisp object you want.
+<dt><a id="index-Lisp-object-syntax"></a><span>Other Lisp objects:<a class="copiable-link" href="#index-Lisp-object-syntax"> &para;</a></span></dt>
+<dd><p>Write a single-quote (<code class="code">'</code>) followed by the Lisp object you want.
 </p></dd>
 </dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Init-Examples.html" accesskey="n" rel="next">Init Examples</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">Init File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Init-Examples.html">Init File Examples</a>, Up: <a href="Init-File.html">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

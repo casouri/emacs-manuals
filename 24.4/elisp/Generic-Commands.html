@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Generic Commands (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Generic Commands (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Defining-Commands.html" rel="up" title="Defining Commands">
-<link href="Interactive-Call.html" rel="next" title="Interactive Call">
 <link href="Interactive-Examples.html" rel="prev" title="Interactive Examples">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,39 +48,41 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Generic-Commands"></span><div class="header">
+<div class="subsection-level-extent" id="Generic-Commands">
+<div class="nav-panel">
 <p>
-Previous: <a href="Interactive-Examples.html" accesskey="p" rel="prev">Interactive Examples</a>, Up: <a href="Defining-Commands.html" accesskey="u" rel="up">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Interactive-Examples.html" accesskey="p" rel="prev">Examples of Using <code class="code">interactive</code></a>, Up: <a href="Defining-Commands.html" accesskey="u" rel="up">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Select-among-Command-Alternatives"></span><h4 class="subsection">20.2.4 Select among Command Alternatives</h4>
-<span id="index-generic-commands"></span>
-<span id="index-alternatives_002c-defining"></span>
+<h4 class="subsection" id="Select-among-Command-Alternatives"><span>20.2.4 Select among Command Alternatives<a class="copiable-link" href="#Select-among-Command-Alternatives"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-generic-commands"></a>
+<a class="index-entry-id" id="index-alternatives_002c-defining"></a>
 
-<p>The macro <code>define-alternatives</code> can be used to define
-<em>generic commands</em>.  These are interactive functions whose
+<p>The macro <code class="code">define-alternatives</code> can be used to define
+<em class="dfn">generic commands</em>.  These are interactive functions whose
 implementation can be selected from several alternatives, as a matter
 of user preference.
 </p>
-<dl>
-<dt id="index-define_002dalternatives">Macro: <strong>define-alternatives</strong> <em>command &amp;rest customizations</em></dt>
-<dd><p>Define the new command <var>command</var>, a symbol.
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-define_002dalternatives"><span class="category-def">Macro: </span><span><strong class="def-name">define-alternatives</strong> <var class="def-var-arguments">command &amp;rest customizations</var><a class="copiable-link" href="#index-define_002dalternatives"> &para;</a></span></dt>
+<dd><p>Define the new command <var class="var">command</var>, a symbol.
 </p>
-<p>When a user runs <kbd>M-x <var>command</var> <span class="key">RET</span></kbd> for the first time,
+<p>When a user runs <kbd class="kbd">M-x <var class="var">command</var> <kbd class="key">RET</kbd></kbd> for the first time,
 Emacs prompts for which real form of the command to use, and records
 the selection by way of a custom variable.  Using a prefix argument
 repeats this process of choosing an alternative.
 </p>
-<p>The variable <code><var>command</var>-alternatives</code> should contain an alist
-with alternative implementations of <var>command</var>.
-Until this variable is set, <code>define-alternatives</code> has no effect.
+<p>The variable <code class="code"><var class="var">command</var>-alternatives</code> should contain an alist
+with alternative implementations of <var class="var">command</var>.
+Until this variable is set, <code class="code">define-alternatives</code> has no effect.
 </p>
-<p>If <var>customizations</var> is non-<code>nil</code>, it should consist of
-alternating <code>defcustom</code> keywords (typically <code>:group</code> and
-<code>:version</code>) and values to add to the declaration of
-<code><var>command</var>-alternatives</code>.
+<p>If <var class="var">customizations</var> is non-<code class="code">nil</code>, it should consist of
+alternating <code class="code">defcustom</code> keywords (typically <code class="code">:group</code> and
+<code class="code">:version</code>) and values to add to the declaration of
+<code class="code"><var class="var">command</var>-alternatives</code>.
 </p></dd></dl>
 
+</div>
 
 
 

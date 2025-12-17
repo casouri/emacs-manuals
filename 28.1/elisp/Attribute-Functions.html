@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.1.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Attribute Functions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Attribute Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Attribute Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Faces.html" rel="up" title="Faces">
+<link href="Displaying-Faces.html" rel="next" title="Displaying Faces">
+<link href="Defining-Faces.html" rel="prev" title="Defining Faces">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Attribute-Functions">
+<div class="nav-panel">
+<p>
+Next: <a href="Displaying-Faces.html" accesskey="n" rel="next">Displaying Faces</a>, Previous: <a href="Defining-Faces.html" accesskey="p" rel="prev">Defining Faces</a>, Up: <a href="Faces.html" accesskey="u" rel="up">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Face-Attribute-Functions"><span>40.12.3 Face Attribute Functions<a class="copiable-link" href="#Face-Attribute-Functions"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-face-attributes_002c-access-and-modification"></a>
+
+<p>This section describes functions for directly accessing and
+modifying the attributes of a named face.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dattribute"><span class="category-def">Function: </span><span><strong class="def-name">face-attribute</strong> <var class="def-var-arguments">face attribute &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002dattribute"> &para;</a></span></dt>
+<dd><p>This function returns the value of the <var class="var">attribute</var> attribute for
+<var class="var">face</var> on <var class="var">frame</var>.
+</p>
+<p>If <var class="var">frame</var> is omitted or <code class="code">nil</code>, that means the selected frame
+(see <a class="pxref" href="Input-Focus.html">Input Focus</a>).  If <var class="var">frame</var> is <code class="code">t</code>, this function
+returns the value of the specified attribute for newly-created frames,
+i.e. the value of the attribute before applying the face spec in the
+face&rsquo;s <code class="code">defface</code> definition (see <a class="pxref" href="Defining-Faces.html">Defining Faces</a>) or the spec
+set by <code class="code">face-spec-set</code>.  This default value of <var class="var">attribute</var> is
+normally <code class="code">unspecified</code>, unless you have specified some other
+value using <code class="code">set-face-attribute</code>; see below.
+</p>
+<p>If <var class="var">inherit</var> is <code class="code">nil</code>, only attributes directly defined by
+<var class="var">face</var> are considered, so the return value may be
+<code class="code">unspecified</code>, or a relative value.  If <var class="var">inherit</var> is
+non-<code class="code">nil</code>, <var class="var">face</var>&rsquo;s definition of <var class="var">attribute</var> is merged
+with the faces specified by its <code class="code">:inherit</code> attribute; however the
+return value may still be <code class="code">unspecified</code> or relative.  If
+<var class="var">inherit</var> is a face or a list of faces, then the result is further
+merged with that face (or faces), until it becomes specified and
+absolute.
+</p>
+<p>To ensure that the return value is always specified and absolute, use
+a value of <code class="code">default</code> for <var class="var">inherit</var>; this will resolve any
+unspecified or relative values by merging with the <code class="code">default</code> face
+(which is always completely specified).
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example-preformatted">(face-attribute 'bold :weight)
+     &rArr; bold
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dattribute_002drelative_002dp"><span class="category-def">Function: </span><span><strong class="def-name">face-attribute-relative-p</strong> <var class="def-var-arguments">attribute value</var><a class="copiable-link" href="#index-face_002dattribute_002drelative_002dp"> &para;</a></span></dt>
+<dd><p>This function returns non-<code class="code">nil</code> if <var class="var">value</var>, when used as the
+value of the face attribute <var class="var">attribute</var>, is relative.  This means
+it would modify, rather than completely override, any value that comes
+from a subsequent face in the face list or that is inherited from
+another face.
+</p>
+<p><code class="code">unspecified</code> is a relative value for all attributes.  For
+<code class="code">:height</code>, floating point and function values are also relative.
+</p>
+<p>For example:
+</p>
+<div class="example">
+<pre class="example-preformatted">(face-attribute-relative-p :height 2.0)
+     &rArr; t
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dall_002dattributes"><span class="category-def">Function: </span><span><strong class="def-name">face-all-attributes</strong> <var class="def-var-arguments">face &amp;optional frame</var><a class="copiable-link" href="#index-face_002dall_002dattributes"> &para;</a></span></dt>
+<dd><p>This function returns an alist of attributes of <var class="var">face</var>.  The
+elements of the result are name-value pairs of the form
+<code class="code">(<var class="var">attr-name</var>&nbsp;.&nbsp;<var class="var">attr-value</var>)</code><!-- /@w -->.  Optional argument
+<var class="var">frame</var> specifies the frame whose definition of <var class="var">face</var> to
+return; if omitted or <code class="code">nil</code>, the returned value describes the
+default attributes of <var class="var">face</var> for newly created frames, i.e. the
+values these attributes have before applying the face spec in the
+face&rsquo;s <code class="code">defface</code> definition or the spec set by
+<code class="code">face-spec-set</code>.  These default values of the attributes are
+normally <code class="code">unspecified</code>, unless you have specified some other
+value using <code class="code">set-face-attribute</code>; see below.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-merge_002dface_002dattribute"><span class="category-def">Function: </span><span><strong class="def-name">merge-face-attribute</strong> <var class="def-var-arguments">attribute value1 value2</var><a class="copiable-link" href="#index-merge_002dface_002dattribute"> &para;</a></span></dt>
+<dd><p>If <var class="var">value1</var> is a relative value for the face attribute
+<var class="var">attribute</var>, returns it merged with the underlying value
+<var class="var">value2</var>; otherwise, if <var class="var">value1</var> is an absolute value for the
+face attribute <var class="var">attribute</var>, returns <var class="var">value1</var> unchanged.
+</p></dd></dl>
+
+<p>Normally, Emacs uses the face specs of each face to automatically
+calculate its attributes on each frame (see <a class="pxref" href="Defining-Faces.html">Defining Faces</a>).  The
+function <code class="code">set-face-attribute</code> can override this calculation by
+directly assigning attributes to a face, either on a specific frame or
+for all frames.  This function is mostly intended for internal usage.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dface_002dattribute"><span class="category-def">Function: </span><span><strong class="def-name">set-face-attribute</strong> <var class="def-var-arguments">face frame &amp;rest arguments</var><a class="copiable-link" href="#index-set_002dface_002dattribute"> &para;</a></span></dt>
+<dd><p>This function sets one or more attributes of <var class="var">face</var> for
+<var class="var">frame</var>.  The attributes specified in this way override the face
+spec(s) belonging to <var class="var">face</var>.
+</p>
+<p>The extra arguments <var class="var">arguments</var> specify the attributes to set, and
+the values for them.  They should consist of alternating attribute
+names (such as <code class="code">:family</code> or <code class="code">:underline</code>) and values.  Thus,
+</p>
+<div class="example">
+<pre class="example-preformatted">(set-face-attribute 'foo nil :weight 'bold :slant 'italic)
+</pre></div>
+
+<p>sets the attribute <code class="code">:weight</code> to <code class="code">bold</code> and the attribute
+<code class="code">:slant</code> to <code class="code">italic</code>.
+</p>
+<p>If <var class="var">frame</var> is <code class="code">t</code>, this function sets the default attributes
+for newly created frames; they will effectively override the attribute
+values specified by <code class="code">defface</code>.  If <var class="var">frame</var> is <code class="code">nil</code>,
+this function sets the attributes for all existing frames, as well as
+for newly created frames.  However, if you want to <em class="emph">reset</em> the
+value of an attribute to <code class="code">unspecified</code> in a way that also affects
+newly created frames, you <em class="emph">must</em> explicitly call this function
+with <var class="var">frame</var> set to <code class="code">t</code> and the value of the attribute set to
+<code class="code">unspecified</code> (<em class="emph">not</em> <code class="code">nil</code>!), in addition to the call
+with <var class="var">frame</var> set to <code class="code">nil</code>.  This is because the default
+attributes for newly created frames are merged with the face&rsquo;s spec in
+<code class="code">defface</code> when a new frame is created, and so having
+<code class="code">unspecified</code> in the default attributes for new frames will be
+unable to override <code class="code">defface</code>; the special call to this function
+as described above will arrange for <code class="code">defface</code> to be overridden.
+</p></dd></dl>
+
+<p>The following commands and functions mostly provide compatibility
+with old versions of Emacs.  They work by calling
+<code class="code">set-face-attribute</code>.  Values of <code class="code">t</code> and <code class="code">nil</code> (or
+omitted) for their <var class="var">frame</var> argument are handled just like
+<code class="code">set-face-attribute</code> and <code class="code">face-attribute</code>.  The commands
+read their arguments using the minibuffer, if called interactively.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-set_002dface_002dforeground"><span class="category-def">Command: </span><span><strong class="def-name">set-face-foreground</strong> <var class="def-var-arguments">face color &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002dforeground"> &para;</a></span></dt>
+<dt class="deffnx def-cmd-deffn" id="index-set_002dface_002dbackground"><span class="category-def">Command: </span><span><strong class="def-name">set-face-background</strong> <var class="def-var-arguments">face color &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002dbackground"> &para;</a></span></dt>
+<dd><p>These set the <code class="code">:foreground</code> attribute (or <code class="code">:background</code>
+attribute, respectively) of <var class="var">face</var> to <var class="var">color</var>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-set_002dface_002dstipple"><span class="category-def">Command: </span><span><strong class="def-name">set-face-stipple</strong> <var class="def-var-arguments">face pattern &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002dstipple"> &para;</a></span></dt>
+<dd><p>This sets the <code class="code">:stipple</code> attribute of <var class="var">face</var> to
+<var class="var">pattern</var>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-set_002dface_002dfont"><span class="category-def">Command: </span><span><strong class="def-name">set-face-font</strong> <var class="def-var-arguments">face font &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002dfont"> &para;</a></span></dt>
+<dd><p>Change the font-related attributes of <var class="var">face</var> to those of
+<var class="var">font</var> (a string or a font object).  See <a class="xref" href="Face-Attributes.html#face_002dfont_002dattribute">face-font-attribute</a>,
+for the supported formats of the <var class="var">font</var> argument.  This function
+sets the attribute <code class="code">:font</code> of the face, and indirectly also the
+<code class="code">:family</code>, <code class="code">:foundry</code>, <code class="code">:width</code>, <code class="code">:height</code>,
+<code class="code">:weight</code>, and <code class="code">:slant</code> attributes, as defined by the font.
+If <var class="var">frame</var> is non-<code class="code">nil</code>, only change the attributes on the
+specified frame.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dface_002dbold"><span class="category-def">Function: </span><span><strong class="def-name">set-face-bold</strong> <var class="def-var-arguments">face bold-p &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002dbold"> &para;</a></span></dt>
+<dd><p>This sets the <code class="code">:weight</code> attribute of <var class="var">face</var> to <var class="var">normal</var>
+if <var class="var">bold-p</var> is <code class="code">nil</code>, and to <var class="var">bold</var> otherwise.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dface_002ditalic"><span class="category-def">Function: </span><span><strong class="def-name">set-face-italic</strong> <var class="def-var-arguments">face italic-p &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002ditalic"> &para;</a></span></dt>
+<dd><p>This sets the <code class="code">:slant</code> attribute of <var class="var">face</var> to <var class="var">normal</var> if
+<var class="var">italic-p</var> is <code class="code">nil</code>, and to <var class="var">italic</var> otherwise.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-set_002dface_002dunderline"><span class="category-def">Command: </span><span><strong class="def-name">set-face-underline</strong> <var class="def-var-arguments">face underline &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002dunderline"> &para;</a></span></dt>
+<dd><p>This sets the <code class="code">:underline</code> attribute of <var class="var">face</var> to
+<var class="var">underline</var>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-set_002dface_002dinverse_002dvideo"><span class="category-def">Command: </span><span><strong class="def-name">set-face-inverse-video</strong> <var class="def-var-arguments">face inverse-video-p &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002dinverse_002dvideo"> &para;</a></span></dt>
+<dd><p>This sets the <code class="code">:inverse-video</code> attribute of <var class="var">face</var> to
+<var class="var">inverse-video-p</var>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-invert_002dface"><span class="category-def">Command: </span><span><strong class="def-name">invert-face</strong> <var class="def-var-arguments">face &amp;optional frame</var><a class="copiable-link" href="#index-invert_002dface"> &para;</a></span></dt>
+<dd><p>This swaps the foreground and background colors of face <var class="var">face</var>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-set_002dface_002dextend"><span class="category-def">Command: </span><span><strong class="def-name">set-face-extend</strong> <var class="def-var-arguments">face extend &amp;optional frame</var><a class="copiable-link" href="#index-set_002dface_002dextend"> &para;</a></span></dt>
+<dd><p>This sets the <code class="code">:extend</code> attribute of <var class="var">face</var> to
+<var class="var">extend</var>.
+</p></dd></dl>
+
+<p>The following functions examine the attributes of a face.  They
+mostly provide compatibility with old versions of Emacs.  If you don&rsquo;t
+specify <var class="var">frame</var>, they refer to the selected frame; <code class="code">t</code> refers
+to the default data for new frames.  They return <code class="code">unspecified</code> if
+the face doesn&rsquo;t define any value for that attribute.  If
+<var class="var">inherit</var> is <code class="code">nil</code>, only an attribute directly defined by the
+face is returned.  If <var class="var">inherit</var> is non-<code class="code">nil</code>, any faces
+specified by its <code class="code">:inherit</code> attribute are considered as well, and
+if <var class="var">inherit</var> is a face or a list of faces, then they are also
+considered, until a specified attribute is found.  To ensure that the
+return value is always specified, use a value of <code class="code">default</code> for
+<var class="var">inherit</var>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dfont"><span class="category-def">Function: </span><span><strong class="def-name">face-font</strong> <var class="def-var-arguments">face &amp;optional frame character</var><a class="copiable-link" href="#index-face_002dfont"> &para;</a></span></dt>
+<dd><p>This function returns the name of the font used by the specified
+<var class="var">face</var>.
+</p>
+<p>If the optional argument <var class="var">frame</var> is specified, it returns the name
+of the font of <var class="var">face</var> for that frame; <var class="var">frame</var> defaults to the
+selected frame if it is <code class="code">nil</code> or omitted.  If <var class="var">frame</var> is
+<code class="code">t</code>, the function reports on the font defaults for <var class="var">face</var> to
+be used for new frames.
+</p>
+<p>By default, the returned font is for displaying ASCII characters, but
+if <var class="var">frame</var> is anything but <code class="code">t</code>, and the optional third
+argument <var class="var">character</var> is supplied, the function returns the font
+name used by <var class="var">face</var> for that character.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dforeground"><span class="category-def">Function: </span><span><strong class="def-name">face-foreground</strong> <var class="def-var-arguments">face &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002dforeground"> &para;</a></span></dt>
+<dt class="deffnx defunx-alias-deffnx def-cmd-deffn" id="index-face_002dbackground"><span class="category-def">Function: </span><span><strong class="def-name">face-background</strong> <var class="def-var-arguments">face &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002dbackground"> &para;</a></span></dt>
+<dd><p>These functions return the foreground color (or background color,
+respectively) of face <var class="var">face</var>, as a string.  If the color is
+unspecified, they return <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dstipple"><span class="category-def">Function: </span><span><strong class="def-name">face-stipple</strong> <var class="def-var-arguments">face &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002dstipple"> &para;</a></span></dt>
+<dd><p>This function returns the name of the background stipple pattern of face
+<var class="var">face</var>, or <code class="code">nil</code> if it doesn&rsquo;t have one.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dbold_002dp"><span class="category-def">Function: </span><span><strong class="def-name">face-bold-p</strong> <var class="def-var-arguments">face &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002dbold_002dp"> &para;</a></span></dt>
+<dd><p>This function returns a non-<code class="code">nil</code> value if the <code class="code">:weight</code>
+attribute of <var class="var">face</var> is bolder than normal (i.e., one of
+<code class="code">semi-bold</code>, <code class="code">bold</code>, <code class="code">extra-bold</code>, or
+<code class="code">ultra-bold</code>).  Otherwise, it returns <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002ditalic_002dp"><span class="category-def">Function: </span><span><strong class="def-name">face-italic-p</strong> <var class="def-var-arguments">face &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002ditalic_002dp"> &para;</a></span></dt>
+<dd><p>This function returns a non-<code class="code">nil</code> value if the <code class="code">:slant</code>
+attribute of <var class="var">face</var> is <code class="code">italic</code> or <code class="code">oblique</code>, and
+<code class="code">nil</code> otherwise.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dunderline_002dp"><span class="category-def">Function: </span><span><strong class="def-name">face-underline-p</strong> <var class="def-var-arguments">face &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002dunderline_002dp"> &para;</a></span></dt>
+<dd><p>This function returns non-<code class="code">nil</code> if face <var class="var">face</var> specifies
+a non-<code class="code">nil</code> <code class="code">:underline</code> attribute.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dinverse_002dvideo_002dp"><span class="category-def">Function: </span><span><strong class="def-name">face-inverse-video-p</strong> <var class="def-var-arguments">face &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002dinverse_002dvideo_002dp"> &para;</a></span></dt>
+<dd><p>This function returns non-<code class="code">nil</code> if face <var class="var">face</var> specifies
+a non-<code class="code">nil</code> <code class="code">:inverse-video</code> attribute.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-face_002dextend_002dp"><span class="category-def">Function: </span><span><strong class="def-name">face-extend-p</strong> <var class="def-var-arguments">face &amp;optional frame inherit</var><a class="copiable-link" href="#index-face_002dextend_002dp"> &para;</a></span></dt>
+<dd><p>This function returns non-<code class="code">nil</code> if face <var class="var">face</var> specifies
+a non-<code class="code">nil</code> <code class="code">:extend</code> attribute.  The <var class="var">inherit</var> argument
+is passed to <code class="code">face-attribute</code>.
+</p></dd></dl>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Displaying-Faces.html">Displaying Faces</a>, Previous: <a href="Defining-Faces.html">Defining Faces</a>, Up: <a href="Faces.html">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

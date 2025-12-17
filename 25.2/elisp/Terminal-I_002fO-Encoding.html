@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Terminal I/O Encoding (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Terminal I/O Encoding (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Coding-Systems.html" rel="up" title="Coding Systems">
-<link href="Input-Methods.html" rel="next" title="Input Methods">
 <link href="Explicit-Encoding.html" rel="prev" title="Explicit Encoding">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,56 +46,63 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Terminal-I_002fO-Encoding"></span><div class="header">
+<div class="subsection-level-extent" id="Terminal-I_002fO-Encoding">
+<div class="nav-panel">
 <p>
-Previous: <a href="Explicit-Encoding.html" accesskey="p" rel="prev">Explicit Encoding</a>, Up: <a href="Coding-Systems.html" accesskey="u" rel="up">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Explicit-Encoding.html" accesskey="p" rel="prev">Explicit Encoding and Decoding</a>, Up: <a href="Coding-Systems.html" accesskey="u" rel="up">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Terminal-I_002fO-Encoding-1"></span><h4 class="subsection">32.10.8 Terminal I/O Encoding</h4>
+<h4 class="subsection" id="Terminal-I_002fO-Encoding-1"><span>32.10.8 Terminal I/O Encoding<a class="copiable-link" href="#Terminal-I_002fO-Encoding-1"> &para;</a></span></h4>
 
 <p>Emacs can use coding systems to decode keyboard input and encode
 terminal output.  This is useful for terminals that transmit or
 display text using a particular encoding, such as Latin-1.  Emacs does
-not set <code>last-coding-system-used</code> when encoding or decoding
+not set <code class="code">last-coding-system-used</code> when encoding or decoding
 terminal I/O.
 </p>
-<dl>
-<dt id="index-keyboard_002dcoding_002dsystem">Function: <strong>keyboard-coding-system</strong> <em>&amp;optional terminal</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-keyboard_002dcoding_002dsystem"><span class="category-def">Function: </span><span><strong class="def-name">keyboard-coding-system</strong> <var class="def-var-arguments">&amp;optional terminal</var><a class="copiable-link" href="#index-keyboard_002dcoding_002dsystem"> &para;</a></span></dt>
 <dd><p>This function returns the coding system used for decoding keyboard
-input from <var>terminal</var>.  A value of <code>no-conversion</code> means no
-decoding is done.  If <var>terminal</var> is omitted or <code>nil</code>, it
-means the selected frame&rsquo;s terminal.  See <a href="Multiple-Terminals.html">Multiple Terminals</a>.
+input from <var class="var">terminal</var>.  A value of <code class="code">no-conversion</code> means no
+decoding is done.  If <var class="var">terminal</var> is omitted or <code class="code">nil</code>, it
+means the selected frame&rsquo;s terminal.  See <a class="xref" href="Multiple-Terminals.html">Multiple Terminals</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-set_002dkeyboard_002dcoding_002dsystem">Command: <strong>set-keyboard-coding-system</strong> <em>coding-system &amp;optional terminal</em></dt>
-<dd><p>This command specifies <var>coding-system</var> as the coding system to use
-for decoding keyboard input from <var>terminal</var>.  If
-<var>coding-system</var> is <code>nil</code>, that means not to decode keyboard
-input.  If <var>terminal</var> is a frame, it means that frame&rsquo;s terminal;
-if it is <code>nil</code>, that means the currently selected frame&rsquo;s
-terminal.  See <a href="Multiple-Terminals.html">Multiple Terminals</a>.
+<dl class="first-deffn">
+<dt class="deffn" id="index-set_002dkeyboard_002dcoding_002dsystem"><span class="category-def">Command: </span><span><strong class="def-name">set-keyboard-coding-system</strong> <var class="def-var-arguments">coding-system &amp;optional terminal</var><a class="copiable-link" href="#index-set_002dkeyboard_002dcoding_002dsystem"> &para;</a></span></dt>
+<dd><p>This command specifies <var class="var">coding-system</var> as the coding system to use
+for decoding keyboard input from <var class="var">terminal</var>.  If
+<var class="var">coding-system</var> is <code class="code">nil</code>, that means not to decode keyboard
+input.  If <var class="var">terminal</var> is a frame, it means that frame&rsquo;s terminal;
+if it is <code class="code">nil</code>, that means the currently selected frame&rsquo;s
+terminal.  See <a class="xref" href="Multiple-Terminals.html">Multiple Terminals</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-terminal_002dcoding_002dsystem">Function: <strong>terminal-coding-system</strong> <em>&amp;optional terminal</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-terminal_002dcoding_002dsystem"><span class="category-def">Function: </span><span><strong class="def-name">terminal-coding-system</strong> <var class="def-var-arguments">&amp;optional terminal</var><a class="copiable-link" href="#index-terminal_002dcoding_002dsystem"> &para;</a></span></dt>
 <dd><p>This function returns the coding system that is in use for encoding
-terminal output from <var>terminal</var>.  A value of <code>no-conversion</code>
-means no encoding is done.  If <var>terminal</var> is a frame, it means
-that frame&rsquo;s terminal; if it is <code>nil</code>, that means the currently
+terminal output from <var class="var">terminal</var>.  A value of <code class="code">no-conversion</code>
+means no encoding is done.  If <var class="var">terminal</var> is a frame, it means
+that frame&rsquo;s terminal; if it is <code class="code">nil</code>, that means the currently
 selected frame&rsquo;s terminal.
 </p></dd></dl>
 
-<dl>
-<dt id="index-set_002dterminal_002dcoding_002dsystem">Command: <strong>set-terminal-coding-system</strong> <em>coding-system &amp;optional terminal</em></dt>
-<dd><p>This command specifies <var>coding-system</var> as the coding system to use
-for encoding terminal output from <var>terminal</var>.  If
-<var>coding-system</var> is <code>nil</code>, that means not to encode terminal
-output.  If <var>terminal</var> is a frame, it means that frame&rsquo;s terminal;
-if it is <code>nil</code>, that means the currently selected frame&rsquo;s
+<dl class="first-deffn">
+<dt class="deffn" id="index-set_002dterminal_002dcoding_002dsystem"><span class="category-def">Command: </span><span><strong class="def-name">set-terminal-coding-system</strong> <var class="def-var-arguments">coding-system &amp;optional terminal</var><a class="copiable-link" href="#index-set_002dterminal_002dcoding_002dsystem"> &para;</a></span></dt>
+<dd><p>This command specifies <var class="var">coding-system</var> as the coding system to use
+for encoding terminal output from <var class="var">terminal</var>.  If
+<var class="var">coding-system</var> is <code class="code">nil</code>, that means not to encode terminal
+output.  If <var class="var">terminal</var> is a frame, it means that frame&rsquo;s terminal;
+if it is <code class="code">nil</code>, that means the currently selected frame&rsquo;s
 terminal.
 </p></dd></dl>
 
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Explicit-Encoding.html">Explicit Encoding and Decoding</a>, Up: <a href="Coding-Systems.html">Coding Systems</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

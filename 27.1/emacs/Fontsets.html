@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 27.1.
 
@@ -18,9 +21,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Fontsets (GNU Emacs Manual)</title>
 
 <meta name="description" content="Fontsets (GNU Emacs Manual)">
@@ -28,6 +28,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -36,20 +38,11 @@ developing GNU and promoting software freedom." -->
 <link href="Terminal-Coding.html" rel="prev" title="Terminal Coding">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,24 +51,25 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Fontsets"></span><div class="header">
+<div class="section-level-extent" id="Fontsets">
+<div class="nav-panel">
 <p>
-Next: <a href="Defining-Fontsets.html" accesskey="n" rel="next">Defining Fontsets</a>, Previous: <a href="Terminal-Coding.html" accesskey="p" rel="prev">Terminal Coding</a>, Up: <a href="International.html" accesskey="u" rel="up">International</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Defining-Fontsets.html" accesskey="n" rel="next">Defining Fontsets</a>, Previous: <a href="Terminal-Coding.html" accesskey="p" rel="prev">Coding Systems for Terminal I/O</a>, Up: <a href="International.html" accesskey="u" rel="up">International Character Set Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Fontsets-1"></span><h3 class="section">22.13 Fontsets</h3>
-<span id="index-fontsets"></span>
+<h3 class="section" id="Fontsets-1"><span>22.13 Fontsets<a class="copiable-link" href="#Fontsets-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-fontsets"></a>
 
 <p>A font typically defines shapes for a single alphabet or script.
 Therefore, displaying the entire range of scripts that Emacs supports
 requires a collection of many fonts.  In Emacs, such a collection is
-called a <em>fontset</em>.  A fontset is defined by a list of font specifications,
+called a <em class="dfn">fontset</em>.  A fontset is defined by a list of font specifications,
 each assigned to handle a range of character codes, and may fall back
 on another fontset for characters that are not covered by the fonts
 it specifies.
 </p>
-<span id="index-fonts-for-various-scripts"></span>
-<span id="index-Intlfonts-package_002c-installation"></span>
+<a class="index-entry-id" id="index-fonts-for-various-scripts"></a>
+<a class="index-entry-id" id="index-Intlfonts-package_002c-installation"></a>
 <p>Each fontset has a name, like a font.  However, while fonts are
 stored in the system and the available font names are defined by the
 system, fontsets are defined within Emacs itself.  Once you have
@@ -89,65 +83,66 @@ like, you may need to install extra fonts or modify the fontset to use
 specific fonts already installed on your system (see below).  Your
 operating system may have optional fonts that you can install; or you
 can install the GNU Intlfonts package, which includes fonts for most
-supported scripts.<a id="DOCF9" href="#FOOT9"><sup>9</sup></a>
+supported scripts.<a class="footnote" id="DOCF9" href="#FOOT9"><sup>9</sup></a>
 </p>
-<p>Emacs creates three fontsets automatically: the <em>standard
-fontset</em>, the <em>startup fontset</em> and the <em>default fontset</em>.
+<p>Emacs creates three fontsets automatically: the <em class="dfn">standard
+fontset</em>, the <em class="dfn">startup fontset</em> and the <em class="dfn">default fontset</em>.
 The default fontset is most likely to have fonts for a wide variety of
-non-<acronym>ASCII</acronym> characters, and is the default fallback for the
+non-<abbr class="acronym">ASCII</abbr> characters, and is the default fallback for the
 other two fontsets, and if you set a default font rather than fontset.
 However, it does not specify font family names, so results can be
 somewhat random if you use it directly.  You can specify a particular
-fontset by starting Emacs with the &lsquo;<samp>-fn</samp>&rsquo; option.  For example,
+fontset by starting Emacs with the &lsquo;<samp class="samp">-fn</samp>&rsquo; option.  For example,
 </p>
 <div class="example">
-<pre class="example">emacs -fn fontset-standard
+<pre class="example-preformatted">emacs -fn fontset-standard
 </pre></div>
 
-<p>You can also specify a fontset with the &lsquo;<samp>Font</samp>&rsquo; resource (see <a href="X-Resources.html">X Resources</a>).
+<p>You can also specify a fontset with the &lsquo;<samp class="samp">Font</samp>&rsquo; resource (see <a class="pxref" href="X-Resources.html">X Options and Resources</a>).
 </p>
 <p>If no fontset is specified for use, then Emacs uses an
-<acronym>ASCII</acronym> font, with &lsquo;<samp>fontset-default</samp>&rsquo; as a fallback for
+<abbr class="acronym">ASCII</abbr> font, with &lsquo;<samp class="samp">fontset-default</samp>&rsquo; as a fallback for
 characters the font does not cover.  The standard fontset is only used if
 explicitly requested, despite its name.
 </p>
-<span id="index-describe_002dfontset"></span>
+<a class="index-entry-id" id="index-describe_002dfontset"></a>
 <p>To show the information about a specific fontset, use the
-<kbd><span class="nolinebreak">M-x</span>&nbsp;<span class="nolinebreak">describe-fontset</span></kbd><!-- /@w --> command.  It prompts for a fontset
+<kbd class="kbd">M-x&nbsp;describe-fontset</kbd><!-- /@w --> command.  It prompts for a fontset
 name, defaulting to the one used by the current frame, and then
 displays all the subranges of characters and the fonts assigned to
 them in that fontset.  To see which fonts Emacs is using in a session
 started without a specific fontset (which is what happens normally),
-type <kbd>fontset-default <span class="key">RET</span></kbd> at the prompt, or just
-<kbd><span class="key">RET</span></kbd> to describe the fontset used by the current frame.
+type <kbd class="kbd">fontset-default <kbd class="key">RET</kbd></kbd> at the prompt, or just
+<kbd class="kbd"><kbd class="key">RET</kbd></kbd> to describe the fontset used by the current frame.
 </p>
 <p>A fontset does not necessarily specify a font for every character
 code.  If a fontset specifies no font for a certain character, or if
 it specifies a font that does not exist on your system, then it cannot
 display that character properly.  It will display that character as a
-hex code or thin space or an empty box instead.  (See <a href="Text-Display.html">glyphless characters</a>, for details.)  Or a fontset might specify a
+hex code or thin space or an empty box instead.  (See <a class="xref" href="Text-Display.html">glyphless characters</a>, for details.)  Or a fontset might specify a
 font for some range of characters, but you may not like their visual
 appearance.  If this happens, you may wish to modify your fontset; see
-<a href="Modifying-Fontsets.html">Modifying Fontsets</a>, for how to do that.
+<a class="ref" href="Modifying-Fontsets.html">Modifying Fontsets</a>, for how to do that.
 </p>
-<div class="footnote">
+</div>
+<div class="footnotes-segment">
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h5><a id="FOOT9" href="#DOCF9">(9)</a></h3>
+<h5 class="footnote-body-heading"><a id="FOOT9" href="#DOCF9">(9)</a></h5>
 <p>If you run Emacs on X, you may need to
 inform the X server about the location of the newly installed fonts
 with commands such as:
 </p>
 <div class="example">
-<pre class="example"> xset fp+ /usr/local/share/emacs/fonts
+<pre class="example-preformatted"> xset fp+ /usr/local/share/emacs/fonts
  xset fp rehash
 </pre></div>
 </div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Defining-Fontsets.html" accesskey="n" rel="next">Defining Fontsets</a>, Previous: <a href="Terminal-Coding.html" accesskey="p" rel="prev">Terminal Coding</a>, Up: <a href="International.html" accesskey="u" rel="up">International</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Defining-Fontsets.html">Defining Fontsets</a>, Previous: <a href="Terminal-Coding.html">Coding Systems for Terminal I/O</a>, Up: <a href="International.html">International Character Set Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

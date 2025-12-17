@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.1.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Arguments (GNU Emacs Manual)</title>
+
+<meta name="description" content="Arguments (GNU Emacs Manual)">
+<meta name="keywords" content="Arguments (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Basic.html" rel="up" title="Basic">
+<link href="Repeating.html" rel="next" title="Repeating">
+<link href="Position-Info.html" rel="prev" title="Position Info">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Arguments">
+<div class="nav-panel">
+<p>
+Next: <a href="Repeating.html" accesskey="n" rel="next">Repeating a Command</a>, Previous: <a href="Position-Info.html" accesskey="p" rel="prev">Cursor Position Information</a>, Up: <a href="Basic.html" accesskey="u" rel="up">Basic Editing Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Numeric-Arguments"><span>7.10 Numeric Arguments<a class="copiable-link" href="#Numeric-Arguments"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-numeric-arguments"></a>
+<a class="index-entry-id" id="index-prefix-arguments"></a>
+<a class="index-entry-id" id="index-arguments-to-commands"></a>
+
+<p>In the terminology of mathematics and computing, <em class="dfn">argument</em>
+means &ldquo;data provided to a function or operation&rdquo;.  You can give any
+Emacs command a <em class="dfn">numeric argument</em> (also called a <em class="dfn">prefix
+argument</em>).  Some commands interpret the argument as a repetition
+count.  For example, giving <kbd class="kbd">C-f</kbd> an argument of ten causes it to
+move point forward by ten characters instead of one.  With these
+commands, no argument is equivalent to an argument of one, and
+negative arguments cause them to move or act in the opposite
+direction.
+</p>
+<a class="index-entry-id" id="index-M_002d1"></a>
+<a class="index-entry-id" id="index-M_002d_002d"></a>
+<a class="index-entry-id" id="index-digit_002dargument"></a>
+<a class="index-entry-id" id="index-negative_002dargument"></a>
+<p>The easiest way to specify a numeric argument is to type a digit
+and/or a minus sign while holding down the <kbd class="key">Meta</kbd> key.  For
+example,
+</p>
+<div class="example">
+<pre class="example-preformatted">M-5 C-n
+</pre></div>
+
+<p>moves down five lines.  The keys <kbd class="kbd">M-1</kbd>, <kbd class="kbd">M-2</kbd>, and so on, as
+well as <kbd class="kbd">M--</kbd>, are bound to commands (<code class="code">digit-argument</code> and
+<code class="code">negative-argument</code>) that set up an argument for the next
+command.  <kbd class="kbd">M--</kbd> without digits normally means &minus;1.
+</p>
+<p>If you enter more than one digit, you need not hold down the
+<kbd class="key">Meta</kbd> key for the second and subsequent digits.  Thus, to move
+down fifty lines, type
+</p>
+<div class="example">
+<pre class="example-preformatted">M-5 0 C-n
+</pre></div>
+
+<p>Note that this <em class="emph">does not</em> insert five copies of &lsquo;<samp class="samp">0</samp>&rsquo; and move
+down one line, as you might expect&mdash;the &lsquo;<samp class="samp">0</samp>&rsquo; is treated as part
+of the prefix argument.
+</p>
+<p>(What if you do want to insert five copies of &lsquo;<samp class="samp">0</samp>&rsquo;?  Type <kbd class="kbd">M-5
+C-u 0</kbd>.  Here, <kbd class="kbd">C-u</kbd> terminates the prefix argument, so that
+the next keystroke begins the command that you want to execute.  Note
+that this meaning of <kbd class="kbd">C-u</kbd> applies only to this case.  For the
+usual role of <kbd class="kbd">C-u</kbd>, see below.)
+</p>
+<a class="index-entry-id" id="index-C_002du"></a>
+<a class="index-entry-id" id="index-universal_002dargument"></a>
+<p>Instead of typing <kbd class="kbd">M-1</kbd>, <kbd class="kbd">M-2</kbd>, and so on, another way to
+specify a numeric argument is to type <kbd class="kbd">C-u</kbd>
+(<code class="code">universal-argument</code>) followed by some digits, or (for a
+negative argument) a minus sign followed by digits.  A minus sign
+without digits normally means &minus;1.
+</p>
+<p><kbd class="kbd">C-u</kbd> alone has the special meaning of &ldquo;four times&rdquo;: it
+multiplies the argument for the next command by four.  <kbd class="kbd">C-u C-u</kbd>
+multiplies it by sixteen.  Thus, <kbd class="kbd">C-u C-u C-f</kbd> moves forward
+sixteen characters.  Other useful combinations are <kbd class="kbd">C-u C-n</kbd>,
+<kbd class="kbd">C-u C-u C-n</kbd> (move down a good fraction of a screen), <kbd class="kbd">C-u
+C-u C-o</kbd> (make sixteen blank lines), and <kbd class="kbd">C-u C-k</kbd> (kill four
+lines).
+</p>
+<p>You can use a numeric argument before a self-inserting character to
+insert multiple copies of it.  This is straightforward when the
+character is not a digit; for example, <kbd class="kbd">C-u&nbsp;6&nbsp;4&nbsp;a</kbd><!-- /@w --> inserts 64
+copies of the character &lsquo;<samp class="samp">a</samp>&rsquo;.  But this does not work for
+inserting digits; <kbd class="kbd">C-u&nbsp;6&nbsp;4&nbsp;1</kbd><!-- /@w --> specifies an argument of 641.
+You can separate the argument from the digit to insert with another
+<kbd class="kbd">C-u</kbd>; for example, <kbd class="kbd">C-u&nbsp;6&nbsp;4&nbsp;C-u&nbsp;1</kbd><!-- /@w --> does insert 64 copies
+of the character &lsquo;<samp class="samp">1</samp>&rsquo;.
+</p>
+<p>Some commands care whether there is an argument, but ignore its
+value.  For example, the command <kbd class="kbd">M-q</kbd> (<code class="code">fill-paragraph</code>)
+fills text; with an argument, it justifies the text as well.
+(See <a class="xref" href="Filling.html">Filling Text</a>, for more information on <kbd class="kbd">M-q</kbd>.)  For these
+commands, it is enough to specify the argument with a single
+<kbd class="kbd">C-u</kbd>.
+</p>
+<p>Some commands use the value of the argument as a repeat count but
+do something special when there is no argument.  For example, the
+command <kbd class="kbd">C-k</kbd> (<code class="code">kill-line</code>) with argument <var class="var">n</var> kills
+<var class="var">n</var> lines, including their terminating newlines.  But <kbd class="kbd">C-k</kbd>
+with no argument is special: it kills the text up to the next newline,
+or, if point is right at the end of the line, it kills the newline
+itself.  Thus, two <kbd class="kbd">C-k</kbd> commands with no arguments can kill a
+nonblank line, just like <kbd class="kbd">C-k</kbd> with an argument of one.
+(See <a class="xref" href="Killing.html">Killing and Moving Text</a>, for more information on <kbd class="kbd">C-k</kbd>.)
+</p>
+<p>A few commands treat a plain <kbd class="kbd">C-u</kbd> differently from an ordinary
+argument.  A few others may treat an argument of just a minus sign
+differently from an argument of &minus;1.  These unusual cases are
+described when they come up; they exist to make an individual command
+more convenient, and they are documented in that command&rsquo;s
+documentation string.
+</p>
+<p>We use the term <em class="dfn">prefix argument</em> to emphasize that you type
+such arguments <em class="emph">before</em> the command, and to distinguish them from
+minibuffer arguments (see <a class="pxref" href="Minibuffer.html">The Minibuffer</a>), which are entered
+<em class="emph">after</em> invoking the command.
+</p>
+<p>On graphical displays, <kbd class="kbd">C-0</kbd>, <kbd class="kbd">C-1</kbd>, etc.&nbsp;act the same as
+<kbd class="kbd">M-0</kbd>, <kbd class="kbd">M-1</kbd>, etc.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Repeating.html">Repeating a Command</a>, Previous: <a href="Position-Info.html">Cursor Position Information</a>, Up: <a href="Basic.html">Basic Editing Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

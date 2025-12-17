@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Parsing HTML/XML (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Parsing HTML/XML (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Text.html" rel="up" title="Text">
-<link href="Document-Object-Model.html" rel="next" title="Document Object Model">
+<link href="Atomic-Changes.html" rel="next" title="Atomic Changes">
 <link href="Checksum_002fHash.html" rel="prev" title="Checksum/Hash">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,28 +48,29 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Parsing-HTML_002fXML"></span><div class="header">
+<div class="section-level-extent" id="Parsing-HTML_002fXML">
+<div class="nav-panel">
 <p>
-Next: <a href="Atomic-Changes.html" accesskey="n" rel="next">Atomic Changes</a>, Previous: <a href="Checksum_002fHash.html" accesskey="p" rel="prev">Checksum/Hash</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Atomic-Changes.html" accesskey="n" rel="next">Atomic Change Groups</a>, Previous: <a href="Checksum_002fHash.html" accesskey="p" rel="prev">Checksum/Hash</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Parsing-HTML-and-XML"></span><h3 class="section">31.26 Parsing HTML and XML</h3>
-<span id="index-parsing-html"></span>
+<h3 class="section" id="Parsing-HTML-and-XML"><span>31.26 Parsing HTML and XML<a class="copiable-link" href="#Parsing-HTML-and-XML"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-parsing-html"></a>
 
 <p>When Emacs is compiled with libxml2 support, the following functions
 are available to parse HTML or XML text into Lisp object trees.
 </p>
-<dl>
-<dt id="index-libxml_002dparse_002dhtml_002dregion">Function: <strong>libxml-parse-html-region</strong> <em>start end &amp;optional base-url discard-comments</em></dt>
-<dd><p>This function parses the text between <var>start</var> and <var>end</var> as
-HTML, and returns a list representing the HTML <em>parse tree</em>.  It
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-libxml_002dparse_002dhtml_002dregion"><span class="category-def">Function: </span><span><strong class="def-name">libxml-parse-html-region</strong> <var class="def-var-arguments">start end &amp;optional base-url discard-comments</var><a class="copiable-link" href="#index-libxml_002dparse_002dhtml_002dregion"> &para;</a></span></dt>
+<dd><p>This function parses the text between <var class="var">start</var> and <var class="var">end</var> as
+HTML, and returns a list representing the HTML <em class="dfn">parse tree</em>.  It
 attempts to handle real-world HTML by robustly coping with syntax
 mistakes.
 </p>
-<p>The optional argument <var>base-url</var>, if non-<code>nil</code>, should be a
+<p>The optional argument <var class="var">base-url</var>, if non-<code class="code">nil</code>, should be a
 string specifying the base URL for relative URLs occurring in links.
 </p>
-<p>If the optional argument <var>discard-comments</var> is non-<code>nil</code>,
+<p>If the optional argument <var class="var">discard-comments</var> is non-<code class="code">nil</code>,
 then the parse tree is created without any comments.
 </p>
 <p>In the parse tree, each HTML node is represented by a list in which
@@ -89,14 +82,14 @@ the subnodes.
 document:
 </p>
 <div class="example">
-<pre class="example">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body width=101&gt;&lt;div class=thing&gt;Foo&lt;div&gt;Yes
+<pre class="example-preformatted">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body width=101&gt;&lt;div class=thing&gt;Foo&lt;div&gt;Yes
 </pre></div>
 
-<p>A call to <code>libxml-parse-html-region</code> returns this <acronym>DOM</acronym>
+<p>A call to <code class="code">libxml-parse-html-region</code> returns this <abbr class="acronym">DOM</abbr>
 (document object model):
 </p>
 <div class="example">
-<pre class="example">(html nil
+<pre class="example-preformatted">(html nil
  (head nil)
  (body ((width . &quot;101&quot;))
   (div ((class . &quot;thing&quot;))
@@ -106,32 +99,32 @@ document:
 </pre></div>
 </dd></dl>
 
-<span id="index-rendering-html"></span>
-<dl>
-<dt id="index-shr_002dinsert_002ddocument">Function: <strong>shr-insert-document</strong> <em>dom</em></dt>
-<dd><p>This function renders the parsed HTML in <var>dom</var> into the current
-buffer.  The argument <var>dom</var> should be a list as generated by
-<code>libxml-parse-html-region</code>.  This function is, e.g., used by
-<a href="https://www.gnu.org/software/emacs/manual/html_node/eww/index.html#Top">EWW</a> in <cite>The Emacs Web Wowser Manual</cite>.
+<a class="index-entry-id" id="index-rendering-html"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-shr_002dinsert_002ddocument"><span class="category-def">Function: </span><span><strong class="def-name">shr-insert-document</strong> <var class="def-var-arguments">dom</var><a class="copiable-link" href="#index-shr_002dinsert_002ddocument"> &para;</a></span></dt>
+<dd><p>This function renders the parsed HTML in <var class="var">dom</var> into the current
+buffer.  The argument <var class="var">dom</var> should be a list as generated by
+<code class="code">libxml-parse-html-region</code>.  This function is, e.g., used by
+<a data-manual="eww" href="https://www.gnu.org/software/emacs/manual/html_node/eww/index.html#Top">EWW</a> in <cite class="cite">The Emacs Web Wowser Manual</cite>.
 </p></dd></dl>
 
-<span id="index-parsing-xml"></span>
-<dl>
-<dt id="index-libxml_002dparse_002dxml_002dregion">Function: <strong>libxml-parse-xml-region</strong> <em>start end &amp;optional base-url discard-comments</em></dt>
-<dd><p>This function is the same as <code>libxml-parse-html-region</code>, except
+<a class="index-entry-id" id="index-parsing-xml"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-libxml_002dparse_002dxml_002dregion"><span class="category-def">Function: </span><span><strong class="def-name">libxml-parse-xml-region</strong> <var class="def-var-arguments">start end &amp;optional base-url discard-comments</var><a class="copiable-link" href="#index-libxml_002dparse_002dxml_002dregion"> &para;</a></span></dt>
+<dd><p>This function is the same as <code class="code">libxml-parse-html-region</code>, except
 that it parses the text as XML rather than HTML (so it is stricter
 about syntax).
 </p></dd></dl>
 
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Document-Object-Model.html" accesskey="1">Document Object Model</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Access, manipulate and search the <acronym>DOM</acronym>.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Document-Object-Model.html" accesskey="1">Document Object Model</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Atomic-Changes.html" accesskey="n" rel="next">Atomic Changes</a>, Previous: <a href="Checksum_002fHash.html" accesskey="p" rel="prev">Checksum/Hash</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Atomic-Changes.html">Atomic Change Groups</a>, Previous: <a href="Checksum_002fHash.html">Checksum/Hash</a>, Up: <a href="Text.html">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

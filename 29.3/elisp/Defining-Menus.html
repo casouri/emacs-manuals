@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Defining Menus (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Defining Menus (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Defining Menus (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Menu-Keymaps.html" rel="up" title="Menu Keymaps">
+<link href="Mouse-Menus.html" rel="next" title="Mouse Menus">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Defining-Menus">
+<div class="nav-panel">
+<p>
+Next: <a href="Mouse-Menus.html" accesskey="n" rel="next">Menus and the Mouse</a>, Up: <a href="Menu-Keymaps.html" accesskey="u" rel="up">Menu Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Defining-Menus-1"><span>23.18.1 Defining Menus<a class="copiable-link" href="#Defining-Menus-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-defining-menus"></a>
+<a class="index-entry-id" id="index-menu-prompt-string"></a>
+<a class="index-entry-id" id="index-prompt-string-_0028of-menu_0029"></a>
+<a class="index-entry-id" id="index-menu-item"></a>
+
+<p>A keymap acts as a menu if it has an <em class="dfn">overall prompt string</em>,
+which is a string that appears as an element of the keymap.
+(See <a class="xref" href="Format-of-Keymaps.html">Format of Keymaps</a>.)  The string should describe the purpose of
+the menu&rsquo;s commands.  Emacs displays the overall prompt string as the
+menu title in some cases, depending on the toolkit (if any) used for
+displaying menus.<a class="footnote" id="DOCF18" href="#FOOT18"><sup>18</sup></a>  Keyboard menus also display the
+overall prompt string.
+</p>
+<p>The easiest way to construct a keymap with a prompt string is to
+specify the string as an argument when you call <code class="code">make-keymap</code>,
+<code class="code">make-sparse-keymap</code> (see <a class="pxref" href="Creating-Keymaps.html">Creating Keymaps</a>), or
+<code class="code">define-prefix-command</code> (see <a class="pxref" href="Prefix-Keys.html#Definition-of-define_002dprefix_002dcommand">Definition of define-prefix-command</a>).  If you do not want the keymap to operate as
+a menu, don&rsquo;t specify a prompt string for it.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-keymap_002dprompt"><span class="category-def">Function: </span><span><strong class="def-name">keymap-prompt</strong> <var class="def-var-arguments">keymap</var><a class="copiable-link" href="#index-keymap_002dprompt"> &para;</a></span></dt>
+<dd><p>This function returns the overall prompt string of <var class="var">keymap</var>,
+or <code class="code">nil</code> if it has none.
+</p></dd></dl>
+
+<p>The menu&rsquo;s items are the bindings in the keymap.  Each binding
+associates an event type to a definition, but the event types have no
+significance for the menu appearance.  (Usually we use pseudo-events,
+symbols that the keyboard cannot generate, as the event types for menu
+item bindings.)  The menu is generated entirely from the bindings that
+correspond in the keymap to these events.
+</p>
+<p>The order of items in the menu is the same as the order of bindings in
+the keymap.  Since <code class="code">define-key</code> puts new bindings at the front, you
+should define the menu items starting at the bottom of the menu and
+moving to the top, if you care about the order.  When you add an item to
+an existing menu, you can specify its position in the menu using
+<code class="code">keymap-set-after</code> (see <a class="pxref" href="Modifying-Menus.html">Modifying Menus</a>).
+</p>
+
+<ul class="mini-toc">
+<li><a href="Simple-Menu-Items.html" accesskey="1">Simple Menu Items</a></li>
+<li><a href="Extended-Menu-Items.html" accesskey="2">Extended Menu Items</a></li>
+<li><a href="Menu-Separators.html" accesskey="3">Menu Separators</a></li>
+<li><a href="Alias-Menu-Items.html" accesskey="4">Alias Menu Items</a></li>
+</ul>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT18" href="#DOCF18">(18)</a></h5>
+<p>It is required for menus which do not use a
+toolkit, e.g., on a text terminal.</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Mouse-Menus.html">Menus and the Mouse</a>, Up: <a href="Menu-Keymaps.html">Menu Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

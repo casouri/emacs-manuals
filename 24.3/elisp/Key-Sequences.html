@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Key Sequences (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Key Sequences (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,21 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Keymaps.html" rel="up" title="Keymaps">
 <link href="Keymap-Basics.html" rel="next" title="Keymap Basics">
-<link href="Keymaps.html" rel="prev" title="Keymaps">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,60 +48,61 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Key-Sequences"></span><div class="header">
+<div class="section-level-extent" id="Key-Sequences">
+<div class="nav-panel">
 <p>
 Next: <a href="Keymap-Basics.html" accesskey="n" rel="next">Keymap Basics</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Key-Sequences-1"></span><h3 class="section">22.1 Key Sequences</h3>
-<span id="index-key"></span>
-<span id="index-keystroke"></span>
-<span id="index-key-sequence"></span>
+<h3 class="section" id="Key-Sequences-1"><span>22.1 Key Sequences<a class="copiable-link" href="#Key-Sequences-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-key"></a>
+<a class="index-entry-id" id="index-keystroke"></a>
+<a class="index-entry-id" id="index-key-sequence"></a>
 
-<p>A <em>key sequence</em>, or <em>key</em> for short, is a sequence of one
+<p>A <em class="dfn">key sequence</em>, or <em class="dfn">key</em> for short, is a sequence of one
 or more input events that form a unit.  Input events include
 characters, function keys, mouse actions, or system events external to
-Emacs, such as <code>iconify-frame</code> (see <a href="Input-Events.html">Input Events</a>).
+Emacs, such as <code class="code">iconify-frame</code> (see <a class="pxref" href="Input-Events.html">Input Events</a>).
 The Emacs Lisp representation for a key sequence is a string or
 vector.  Unless otherwise stated, any Emacs Lisp function that accepts
 a key sequence as an argument can handle both representations.
 </p>
 <p>In the string representation, alphanumeric characters ordinarily
-stand for themselves; for example, <code>&quot;a&quot;</code> represents <kbd>a</kbd>
-and <code>&quot;2&quot;</code> represents <kbd>2</kbd>.  Control character events are
-prefixed by the substring <code>&quot;\C-&quot;</code>, and meta characters by
-<code>&quot;\M-&quot;</code>; for example, <code>&quot;\C-x&quot;</code> represents the key <kbd>C-x</kbd>.
-In addition, the <tt class="key">TAB</tt>, <tt class="key">RET</tt>, <tt class="key">ESC</tt>, and <tt class="key">DEL</tt> events
-are represented by <code>&quot;\t&quot;</code>, <code>&quot;\r&quot;</code>, <code>&quot;\e&quot;</code>, and
-<code>&quot;\d&quot;</code> respectively.  The string representation of a complete key
+stand for themselves; for example, <code class="code">&quot;a&quot;</code> represents <kbd class="kbd">a</kbd>
+and <code class="code">&quot;2&quot;</code> represents <kbd class="kbd">2</kbd>.  Control character events are
+prefixed by the substring <code class="code">&quot;\C-&quot;</code>, and meta characters by
+<code class="code">&quot;\M-&quot;</code>; for example, <code class="code">&quot;\C-x&quot;</code> represents the key <kbd class="kbd">C-x</kbd>.
+In addition, the <kbd class="key">TAB</kbd>, <kbd class="key">RET</kbd>, <kbd class="key">ESC</kbd>, and <kbd class="key">DEL</kbd> events
+are represented by <code class="code">&quot;\t&quot;</code>, <code class="code">&quot;\r&quot;</code>, <code class="code">&quot;\e&quot;</code>, and
+<code class="code">&quot;\d&quot;</code> respectively.  The string representation of a complete key
 sequence is the concatenation of the string representations of the
-constituent events; thus, <code>&quot;\C-xl&quot;</code> represents the key sequence
-<kbd>C-x l</kbd>.
+constituent events; thus, <code class="code">&quot;\C-xl&quot;</code> represents the key sequence
+<kbd class="kbd">C-x l</kbd>.
 </p>
 <p>Key sequences containing function keys, mouse button events, system
-events, or non-<acronym>ASCII</acronym> characters such as <kbd>C-=</kbd> or
-<kbd>H-a</kbd> cannot be represented as strings; they have to be
+events, or non-<abbr class="acronym">ASCII</abbr> characters such as <kbd class="kbd">C-=</kbd> or
+<kbd class="kbd">H-a</kbd> cannot be represented as strings; they have to be
 represented as vectors.
 </p>
 <p>In the vector representation, each element of the vector represents
-an input event, in its Lisp form.  See <a href="Input-Events.html">Input Events</a>.  For example,
-the vector <code>[?\C-x ?l]</code> represents the key sequence <kbd>C-x l</kbd>.
+an input event, in its Lisp form.  See <a class="xref" href="Input-Events.html">Input Events</a>.  For example,
+the vector <code class="code">[?\C-x ?l]</code> represents the key sequence <kbd class="kbd">C-x l</kbd>.
 </p>
 <p>For examples of key sequences written in string and vector
-representations, <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html#Init-Rebinding">Init Rebinding</a> in <cite>The GNU Emacs Manual</cite>.
+representations, <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Rebinding.html#Init-Rebinding">Init Rebinding</a> in <cite class="cite">The GNU Emacs Manual</cite>.
 </p>
-<dl>
-<dt id="index-kbd">Function: <strong>kbd</strong> <em>keyseq-text</em></dt>
-<dd><p>This function converts the text <var>keyseq-text</var> (a string constant)
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-kbd"><span class="category-def">Function: </span><span><strong class="def-name">kbd</strong> <var class="def-var-arguments">keyseq-text</var><a class="copiable-link" href="#index-kbd"> &para;</a></span></dt>
+<dd><p>This function converts the text <var class="var">keyseq-text</var> (a string constant)
 into a key sequence (a string or vector constant).  The contents of
-<var>keyseq-text</var> should use the same syntax as in the buffer invoked
-by the <kbd>C-x C-k <span class="key">RET</span></kbd> (<code>kmacro-edit-macro</code>) command; in
+<var class="var">keyseq-text</var> should use the same syntax as in the buffer invoked
+by the <kbd class="kbd">C-x C-k <kbd class="key">RET</kbd></kbd> (<code class="code">kmacro-edit-macro</code>) command; in
 particular, you must surround function key names with
-&lsquo;<samp>&lt;&hellip;&gt;</samp>&rsquo;.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Edit-Keyboard-Macro.html#Edit-Keyboard-Macro">Edit Keyboard Macro</a> in <cite>The GNU Emacs
+&lsquo;<samp class="samp">&lt;&hellip;&gt;</samp>&rsquo;.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Edit-Keyboard-Macro.html#Edit-Keyboard-Macro">Edit Keyboard Macro</a> in <cite class="cite">The GNU Emacs
 Manual</cite>.
 </p>
 <div class="example">
-<pre class="example">(kbd &quot;C-x&quot;) &rArr; &quot;\C-x&quot;
+<pre class="example-preformatted">(kbd &quot;C-x&quot;) &rArr; &quot;\C-x&quot;
 (kbd &quot;C-x C-f&quot;) &rArr; &quot;\C-x\C-f&quot;
 (kbd &quot;C-x 4 C-f&quot;) &rArr; &quot;\C-x4\C-f&quot;
 (kbd &quot;X&quot;) &rArr; &quot;X&quot;
@@ -119,10 +113,11 @@ Manual</cite>.
 </pre></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Keymap-Basics.html" accesskey="n" rel="next">Keymap Basics</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Keymap-Basics.html">Keymap Basics</a>, Up: <a href="Keymaps.html">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

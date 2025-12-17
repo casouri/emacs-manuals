@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Flagging Many Files (GNU Emacs Manual)</title>
+
+<meta name="description" content="Flagging Many Files (GNU Emacs Manual)">
+<meta name="keywords" content="Flagging Many Files (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Dired.html" rel="up" title="Dired">
+<link href="Dired-Visiting.html" rel="next" title="Dired Visiting">
+<link href="Dired-Deletion.html" rel="prev" title="Dired Deletion">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Flagging-Many-Files">
+<div class="nav-panel">
+<p>
+Next: <a href="Dired-Visiting.html" accesskey="n" rel="next">Visiting Files in Dired</a>, Previous: <a href="Dired-Deletion.html" accesskey="p" rel="prev">Deleting Files with Dired</a>, Up: <a href="Dired.html" accesskey="u" rel="up">Dired, the Directory Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Flagging-Many-Files-at-Once"><span>31.4 Flagging Many Files at Once<a class="copiable-link" href="#Flagging-Many-Files-at-Once"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-flagging-many-files-for-deletion-_0028in-Dired_0029"></a>
+
+<p>The <kbd class="kbd">#</kbd>, <kbd class="kbd">~</kbd>, <kbd class="kbd">.</kbd>, <kbd class="kbd">% &amp;</kbd>, and <kbd class="kbd">% d</kbd> commands
+flag many files for deletion, based on their file names:
+</p>
+<dl class="table">
+<dt><kbd class="kbd">#</kbd></dt>
+<dd><p>Flag all auto-save files (files whose names start and end with &lsquo;<samp class="samp">#</samp>&rsquo;)
+for deletion (see <a class="pxref" href="Auto-Save.html">Auto-Saving: Protection Against Disasters</a>).
+</p>
+</dd>
+<dt><kbd class="kbd">~</kbd></dt>
+<dd><p>Flag all backup files (files whose names end with &lsquo;<samp class="samp">~</samp>&rsquo;) for deletion
+(see <a class="pxref" href="Backup.html">Backup Files</a>).
+</p>
+</dd>
+<dt><kbd class="kbd">. <span class="r">(Period)</span></kbd></dt>
+<dd><p>Flag excess numeric backup files for deletion.  The oldest and newest
+few backup files of any one file are exempt; the middle ones are
+flagged.
+</p>
+</dd>
+<dt><kbd class="kbd">% &amp;</kbd></dt>
+<dd><p>Flag for deletion all files with certain kinds of names which suggest
+you could easily create those files again.
+</p>
+</dd>
+<dt><kbd class="kbd">% d <var class="var">regexp</var> <kbd class="key">RET</kbd></kbd></dt>
+<dd><p>Flag for deletion all files whose names match the regular expression
+<var class="var">regexp</var>.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-_0023-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-dired_002dflag_002dauto_002dsave_002dfiles"></a>
+<a class="index-entry-id" id="index-deleting-auto_002dsave-files"></a>
+<p><kbd class="kbd">#</kbd> (<code class="code">dired-flag-auto-save-files</code>) flags all files whose
+names look like auto-save files&mdash;that is, files whose names begin and
+end with &lsquo;<samp class="samp">#</samp>&rsquo;.  See <a class="xref" href="Auto-Save.html">Auto-Saving: Protection Against Disasters</a>.
+</p>
+<a class="index-entry-id" id="index-_007e-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-dired_002dflag_002dbackup_002dfiles"></a>
+<p><kbd class="kbd">~</kbd> (<code class="code">dired-flag-backup-files</code>) flags all files whose names
+say they are backup files&mdash;that is, files whose names end in
+&lsquo;<samp class="samp">~</samp>&rsquo;.  See <a class="xref" href="Backup.html">Backup Files</a>.
+</p>
+<a class="index-entry-id" id="index-_002e-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-dired_002dkept_002dversions"></a>
+<a class="index-entry-id" id="index-dired_002dclean_002ddirectory"></a>
+<p><kbd class="kbd">.</kbd> (period, <code class="code">dired-clean-directory</code>) flags just some of
+the backup files for deletion: all but the oldest few and newest few
+backups of any one file.  Normally, the number of newest versions kept
+for each file is given by the variable <code class="code">dired-kept-versions</code>
+(<em class="emph">not</em> <code class="code">kept-new-versions</code>; that applies only when saving).
+The number of oldest versions to keep is given by the variable
+<code class="code">kept-old-versions</code>.
+</p>
+<p>Period with a positive numeric argument, as in <kbd class="kbd">C-u 3 .</kbd>,
+specifies the number of newest versions to keep, overriding
+<code class="code">dired-kept-versions</code>.  A negative numeric argument overrides
+<code class="code">kept-old-versions</code>, using minus the value of the argument to
+specify the number of oldest versions of each file to keep.
+</p>
+<a class="index-entry-id" id="index-_0025-_0026-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-dired_002dflag_002dgarbage_002dfiles"></a>
+<a class="index-entry-id" id="index-dired_002dgarbage_002dfiles_002dregexp"></a>
+<a class="index-entry-id" id="index-deleting-some-backup-files"></a>
+<p><kbd class="kbd">% &amp;</kbd> (<code class="code">dired-flag-garbage-files</code>) flags files whose names
+match the regular expression specified by the variable
+<code class="code">dired-garbage-files-regexp</code>.  By default, this matches certain
+files produced by TeX, &lsquo;<samp class="samp">.bak</samp>&rsquo; files, and the &lsquo;<samp class="samp">.orig</samp>&rsquo; and
+&lsquo;<samp class="samp">.rej</samp>&rsquo; files produced by <code class="code">patch</code>.
+</p>
+<a class="index-entry-id" id="index-dired_002dflag_002dfiles_002dregexp"></a>
+<a class="index-entry-id" id="index-_0025-d-_0028Dired_0029"></a>
+<p><kbd class="kbd">% d</kbd> flags all files whose names match a specified regular
+expression (<code class="code">dired-flag-files-regexp</code>).  Only the non-directory
+part of the file name is used in matching.  You can use &lsquo;<samp class="samp">^</samp>&rsquo; and
+&lsquo;<samp class="samp">$</samp>&rsquo; to anchor matches.  You can exclude certain subdirectories
+from marking by hiding them while you use <kbd class="kbd">% d</kbd>.  See <a class="xref" href="Hiding-Subdirectories.html">Hiding Subdirectories</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dired-Visiting.html">Visiting Files in Dired</a>, Previous: <a href="Dired-Deletion.html">Deleting Files with Dired</a>, Up: <a href="Dired.html">Dired, the Directory Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Document Object Model (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Document Object Model (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Document Object Model (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Parsing-HTML_002fXML.html" rel="up" title="Parsing HTML/XML">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Document-Object-Model">
+<div class="nav-panel">
+<p>
+Up: <a href="Parsing-HTML_002fXML.html" accesskey="u" rel="up">Parsing HTML and XML</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Document-Object-Model-1"><span>33.30.1 Document Object Model<a class="copiable-link" href="#Document-Object-Model-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-HTML-DOM"></a>
+<a class="index-entry-id" id="index-XML-DOM"></a>
+<a class="index-entry-id" id="index-DOM"></a>
+<a class="index-entry-id" id="index-Document-Object-Model"></a>
+
+<p>The <abbr class="acronym">DOM</abbr> returned by <code class="code">libxml-parse-html-region</code> (and
+the other <abbr class="acronym">XML</abbr> parsing functions) is a tree structure where
+each node has a node name (called a <em class="dfn">tag</em>), and optional key/value
+<em class="dfn">attribute</em> list, and then a list of <em class="dfn">child nodes</em>.  The child
+nodes are either strings or <abbr class="acronym">DOM</abbr> objects.
+</p>
+<div class="example">
+<pre class="example-preformatted">(body ((width . &quot;101&quot;))
+ (div ((class . &quot;thing&quot;))
+  &quot;Foo&quot;
+  (div nil
+   &quot;Yes&quot;)))
+</pre></div>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-dom_002dnode"><span class="category-def">Function: </span><span><strong class="def-name">dom-node</strong> <var class="def-var-arguments">tag &amp;optional attributes &amp;rest children</var><a class="copiable-link" href="#index-dom_002dnode"> &para;</a></span></dt>
+<dd><p>This function creates a <abbr class="acronym">DOM</abbr> node of type <var class="var">tag</var>.  If
+given, <var class="var">attributes</var> should be a key/value pair list.
+If given, <var class="var">children</var> should be <abbr class="acronym">DOM</abbr> nodes.
+</p></dd></dl>
+
+<p>The following functions can be used to work with this structure.  Each
+function takes a <abbr class="acronym">DOM</abbr> node, or a list of nodes.  In the
+latter case, only the first node in the list is used.
+</p>
+<p>Simple accessors:
+</p>
+<dl class="table">
+<dt><code class="code">dom-tag <var class="var">node</var></code></dt>
+<dd><p>Return the <em class="dfn">tag</em> (also called &ldquo;node name&rdquo;) of the node.
+</p>
+</dd>
+<dt><code class="code">dom-attr <var class="var">node</var> <var class="var">attribute</var></code></dt>
+<dd><p>Return the value of <var class="var">attribute</var> in the node.  A common usage
+would be:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(dom-attr img 'href)
+=&gt; &quot;https://fsf.org/logo.png&quot;
+</pre></div>
+
+</dd>
+<dt><code class="code">dom-children <var class="var">node</var></code></dt>
+<dd><p>Return all the children of the node.
+</p>
+</dd>
+<dt><code class="code">dom-non-text-children <var class="var">node</var></code></dt>
+<dd><p>Return all the non-string children of the node.
+</p>
+</dd>
+<dt><code class="code">dom-attributes <var class="var">node</var></code></dt>
+<dd><p>Return the key/value pair list of attributes of the node.
+</p>
+</dd>
+<dt><code class="code">dom-text <var class="var">node</var></code></dt>
+<dd><p>Return all the textual elements of the node as a concatenated string.
+</p>
+</dd>
+<dt><code class="code">dom-texts <var class="var">node</var></code></dt>
+<dd><p>Return all the textual elements of the node, as well as the textual
+elements of all the children of the node, recursively, as a
+concatenated string.  This function also takes an optional separator
+to be inserted between the textual elements.
+</p>
+</dd>
+<dt><code class="code">dom-parent <var class="var">dom</var> <var class="var">node</var></code></dt>
+<dd><p>Return the parent of <var class="var">node</var> in <var class="var">dom</var>.
+</p>
+</dd>
+<dt><code class="code">dom-remove <var class="var">dom</var> <var class="var">node</var></code></dt>
+<dd><p>Remove <var class="var">node</var> from <var class="var">dom</var>.
+</p></dd>
+</dl>
+
+<p>The following are functions for altering the <abbr class="acronym">DOM</abbr>.
+</p>
+<dl class="table">
+<dt><code class="code">dom-set-attribute <var class="var">node</var> <var class="var">attribute</var> <var class="var">value</var></code></dt>
+<dd><p>Set the <var class="var">attribute</var> of the node to <var class="var">value</var>.
+</p>
+</dd>
+<dt><code class="code">dom-remove-attribute <var class="var">node</var> <var class="var">attribute</var></code></dt>
+<dd><p>Remove <var class="var">attribute</var> from <var class="var">node</var>.
+</p>
+</dd>
+<dt><code class="code">dom-append-child <var class="var">node</var> <var class="var">child</var></code></dt>
+<dd><p>Append <var class="var">child</var> as the last child of <var class="var">node</var>.
+</p>
+</dd>
+<dt><code class="code">dom-add-child-before <var class="var">node</var> <var class="var">child</var> <var class="var">before</var></code></dt>
+<dd><p>Add <var class="var">child</var> to <var class="var">node</var>&rsquo;s child list before the <var class="var">before</var>
+node.  If <var class="var">before</var> is <code class="code">nil</code>, make <var class="var">child</var> the first child.
+</p>
+</dd>
+<dt><code class="code">dom-set-attributes <var class="var">node</var> <var class="var">attributes</var></code></dt>
+<dd><p>Replace all the attributes of the node with a new key/value list.
+</p></dd>
+</dl>
+
+<p>The following are functions for searching for elements in the
+<abbr class="acronym">DOM</abbr>.  They all return lists of matching nodes.
+</p>
+<dl class="table">
+<dt><code class="code">dom-by-tag <var class="var">dom</var> <var class="var">tag</var></code></dt>
+<dd><p>Return all nodes in <var class="var">dom</var> that are of type <var class="var">tag</var>.  A typical
+use would be:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(dom-by-tag dom 'td)
+=&gt; '((td ...) (td ...) (td ...))
+</pre></div>
+
+</dd>
+<dt><code class="code">dom-by-class <var class="var">dom</var> <var class="var">match</var></code></dt>
+<dd><p>Return all nodes in <var class="var">dom</var> that have class names that match
+<var class="var">match</var>, which is a regular expression.
+</p>
+</dd>
+<dt><code class="code">dom-by-style <var class="var">dom</var> <var class="var">style</var></code></dt>
+<dd><p>Return all nodes in <var class="var">dom</var> that have styles that match <var class="var">match</var>,
+which is a regular expression.
+</p>
+</dd>
+<dt><code class="code">dom-by-id <var class="var">dom</var> <var class="var">style</var></code></dt>
+<dd><p>Return all nodes in <var class="var">dom</var> that have IDs that match <var class="var">match</var>,
+which is a regular expression.
+</p>
+</dd>
+<dt><code class="code">dom-search <var class="var">dom</var> <var class="var">predicate</var></code></dt>
+<dd><p>Return all nodes in <var class="var">dom</var> where <var class="var">predicate</var> returns a
+non-<code class="code">nil</code> value.  <var class="var">predicate</var> is called with the node to be
+tested as its parameter.
+</p>
+</dd>
+<dt><code class="code">dom-strings <var class="var">dom</var></code></dt>
+<dd><p>Return all strings in <var class="var">dom</var>.
+</p>
+</dd>
+</dl>
+
+<p>Utility functions:
+</p>
+<dl class="table">
+<dt><code class="code">dom-pp <var class="var">dom</var> &amp;optional <var class="var">remove-empty</var></code></dt>
+<dd><p>Pretty-print <var class="var">dom</var> at point.  If <var class="var">remove-empty</var>, don&rsquo;t print
+textual nodes that just contain white-space.
+</p>
+</dd>
+<dt><code class="code">dom-print <var class="var">dom</var> &amp;optional <var class="var">pretty</var> <var class="var">xml</var></code></dt>
+<dd><p>Print <var class="var">dom</var> at point.  If <var class="var">xml</var> is non-<code class="code">nil</code>, print as
+<abbr class="acronym">XML</abbr>; otherwise, print as <abbr class="acronym">HTML</abbr>.  If <var class="var">pretty</var> is
+non-<code class="code">nil</code>, indent the <abbr class="acronym">HTML</abbr>/<abbr class="acronym">XML</abbr> logically.
+</p></dd>
+</dl>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Up: <a href="Parsing-HTML_002fXML.html">Parsing HTML and XML</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

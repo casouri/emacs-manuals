@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Decoding Output (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Decoding Output (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,8 @@ developing GNU and promoting software freedom." -->
 <link href="Filter-Functions.html" rel="prev" title="Filter Functions">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,29 +46,30 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Decoding-Output"></span><div class="header">
+<div class="subsection-level-extent" id="Decoding-Output">
+<div class="nav-panel">
 <p>
-Next: <a href="Accepting-Output.html" accesskey="n" rel="next">Accepting Output</a>, Previous: <a href="Filter-Functions.html" accesskey="p" rel="prev">Filter Functions</a>, Up: <a href="Output-from-Processes.html" accesskey="u" rel="up">Output from Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Accepting-Output.html" accesskey="n" rel="next">Accepting Output from Processes</a>, Previous: <a href="Filter-Functions.html" accesskey="p" rel="prev">Process Filter Functions</a>, Up: <a href="Output-from-Processes.html" accesskey="u" rel="up">Receiving Output from Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Decoding-Process-Output"></span><h4 class="subsection">36.9.3 Decoding Process Output</h4>
-<span id="index-decode-process-output"></span>
+<h4 class="subsection" id="Decoding-Process-Output"><span>36.9.3 Decoding Process Output<a class="copiable-link" href="#Decoding-Process-Output"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-decode-process-output"></a>
 
 <p>When Emacs writes process output directly into a multibyte buffer,
 it decodes the output according to the process output coding system.
-If the coding system is <code>raw-text</code> or <code>no-conversion</code>, Emacs
+If the coding system is <code class="code">raw-text</code> or <code class="code">no-conversion</code>, Emacs
 converts the unibyte output to multibyte using
-<code>string-to-multibyte</code>, and inserts the resulting multibyte text.
+<code class="code">string-to-multibyte</code>, and inserts the resulting multibyte text.
 </p>
-<p>You can use <code>set-process-coding-system</code> to specify which coding
-system to use (see <a href="Process-Information.html">Process Information</a>).  Otherwise, the coding
-system comes from <code>coding-system-for-read</code>, if that is
-non-<code>nil</code>; or else from the defaulting mechanism (see <a href="Default-Coding-Systems.html">Default Coding Systems</a>).  If the text output by a process contains null
-bytes, Emacs by default uses <code>no-conversion</code> for it; see
-<a href="Lisp-and-Coding-Systems.html">inhibit-null-byte-detection</a>, for how to
+<p>You can use <code class="code">set-process-coding-system</code> to specify which coding
+system to use (see <a class="pxref" href="Process-Information.html">Process Information</a>).  Otherwise, the coding
+system comes from <code class="code">coding-system-for-read</code>, if that is
+non-<code class="code">nil</code>; or else from the defaulting mechanism (see <a class="pxref" href="Default-Coding-Systems.html">Default Coding Systems</a>).  If the text output by a process contains null
+bytes, Emacs by default uses <code class="code">no-conversion</code> for it; see
+<a class="ref" href="Lisp-and-Coding-Systems.html">inhibit-null-byte-detection</a>, for how to
 control this behavior.
 </p>
-<p><strong>Warning:</strong> Coding systems such as <code>undecided</code>, which
+<p><strong class="strong">Warning:</strong> Coding systems such as <code class="code">undecided</code>, which
 determine the coding system from the data, do not work entirely
 reliably with asynchronous subprocess output.  This is because Emacs
 has to process asynchronous subprocess output in batches, as it
@@ -86,21 +77,22 @@ arrives.  Emacs must try to detect the proper coding system from one
 batch at a time, and this does not always work.  Therefore, if at all
 possible, specify a coding system that determines both the character
 code conversion and the end of line conversion&mdash;that is, one like
-<code>latin-1-unix</code>, rather than <code>undecided</code> or <code>latin-1</code>.
+<code class="code">latin-1-unix</code>, rather than <code class="code">undecided</code> or <code class="code">latin-1</code>.
 </p>
-<span id="index-filter-multibyte-flag_002c-of-process"></span>
-<span id="index-process-filter-multibyte-flag"></span>
+<a class="index-entry-id" id="index-filter-multibyte-flag_002c-of-process"></a>
+<a class="index-entry-id" id="index-process-filter-multibyte-flag"></a>
 <p>When Emacs calls a process filter function, it provides the process
 output as a multibyte string or as a unibyte string according to the
 process&rsquo;s filter coding system.  Emacs
 decodes the output according to the process output coding system,
 which usually produces a multibyte string, except for coding systems
-such as <code>binary</code> and <code>raw-text</code>.
+such as <code class="code">binary</code> and <code class="code">raw-text</code>.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Accepting-Output.html" accesskey="n" rel="next">Accepting Output</a>, Previous: <a href="Filter-Functions.html" accesskey="p" rel="prev">Filter Functions</a>, Up: <a href="Output-from-Processes.html" accesskey="u" rel="up">Output from Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Accepting-Output.html">Accepting Output from Processes</a>, Previous: <a href="Filter-Functions.html">Process Filter Functions</a>, Up: <a href="Output-from-Processes.html">Receiving Output from Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

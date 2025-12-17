@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Auto Scrolling (GNU Emacs Manual)</title>
+
+<meta name="description" content="Auto Scrolling (GNU Emacs Manual)">
+<meta name="keywords" content="Auto Scrolling (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Horizontal-Scrolling.html" rel="next" title="Horizontal Scrolling">
+<link href="Recentering.html" rel="prev" title="Recentering">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Auto-Scrolling">
+<div class="nav-panel">
+<p>
+Next: <a href="Horizontal-Scrolling.html" accesskey="n" rel="next">Horizontal Scrolling</a>, Previous: <a href="Recentering.html" accesskey="p" rel="prev">Recentering</a>, Up: <a href="Display.html" accesskey="u" rel="up">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Automatic-Scrolling"><span>15.3 Automatic Scrolling<a class="copiable-link" href="#Automatic-Scrolling"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-automatic-scrolling"></a>
+<p>Emacs performs <em class="dfn">automatic scrolling</em> when point moves out of the
+visible portion of the text.  Normally, automatic scrolling centers
+point vertically in the window, but there are several ways to alter
+this behavior.
+</p>
+<a class="index-entry-id" id="index-scroll_002dconservatively"></a>
+<a class="index-entry-id" id="index-scroll_002dminibuffer_002dconservatively"></a>
+<p>If you set <code class="code">scroll-conservatively</code> to a small number <var class="var">n</var>,
+then moving point just a little off the screen (no more than <var class="var">n</var>
+lines) causes Emacs to scroll just enough to bring point back on
+screen; if doing so fails to make point visible, Emacs scrolls just
+far enough to center point in the window.  If you set
+<code class="code">scroll-conservatively</code> to a large number (larger than 100),
+automatic scrolling never centers point, no matter how far point
+moves; Emacs always scrolls text just enough to bring point into view,
+either at the top or bottom of the window depending on the scroll
+direction.  By default, <code class="code">scroll-conservatively</code> is&nbsp;0, which
+means to always center point in the window.
+This said, in minibuffer windows, scrolling is always conservative by
+default because <code class="code">scroll-minibuffer-conservatively</code> is non-<code class="code">nil</code>,
+which takes precedence over <code class="code">scroll-conservatively</code>.
+</p>
+<a class="index-entry-id" id="index-scroll_002dstep"></a>
+<p>Another way to control automatic scrolling is to customize the
+variable <code class="code">scroll-step</code>.  Its value determines the number of lines
+by which to automatically scroll, when point moves off the screen.  If
+scrolling by that number of lines fails to bring point back into view,
+point is centered instead.  The default value is zero, which (by
+default) causes point to always be centered after scrolling.
+</p>
+<a class="index-entry-id" id="index-aggressive-scrolling"></a>
+<a class="index-entry-id" id="index-scroll_002dup_002daggressively"></a>
+<a class="index-entry-id" id="index-scroll_002ddown_002daggressively"></a>
+<p>A third way to control automatic scrolling is to customize the
+variables <code class="code">scroll-up-aggressively</code> and
+<code class="code">scroll-down-aggressively</code>, which directly specify the vertical
+position of point after scrolling.  The value of
+<code class="code">scroll-up-aggressively</code> should be either <code class="code">nil</code> (the
+default), or a floating point number <var class="var">f</var> between 0 and 1.  The
+latter means that when point goes below the bottom window edge (i.e.,
+scrolling forward), Emacs scrolls the window so that point is <var class="var">f</var>
+parts of the window height from the bottom window edge.  Thus, larger
+<var class="var">f</var> means more aggressive scrolling: more new text is brought into
+view.  The default value, <code class="code">nil</code>, is equivalent to 0.5.
+</p>
+<p>Likewise, <code class="code">scroll-down-aggressively</code> is used when point goes
+above the top window edge (i.e., scrolling backward).  The value
+specifies how far point should be from the top margin of the window
+after scrolling.  Thus, as with <code class="code">scroll-up-aggressively</code>, a
+larger value is more aggressive.
+</p>
+<p>Note that the variables <code class="code">scroll-conservatively</code>,
+<code class="code">scroll-step</code>, and <code class="code">scroll-up-aggressively</code> /
+<code class="code">scroll-down-aggressively</code> control automatic scrolling in
+contradictory ways.  Therefore, you should pick no more than one of
+these methods to customize automatic scrolling.  In case you customize
+multiple variables, the order of priority is:
+<code class="code">scroll-conservatively</code>, then <code class="code">scroll-step</code>, and finally
+<code class="code">scroll-up-aggressively</code> / <code class="code">scroll-down-aggressively</code>.
+</p>
+<a class="index-entry-id" id="index-scroll_002dmargin"></a>
+<a class="index-entry-id" id="index-maximum_002dscroll_002dmargin"></a>
+<p>The variable <code class="code">scroll-margin</code> restricts how close point can come
+to the top or bottom of a window (even if aggressive scrolling
+specifies a fraction <var class="var">f</var> that is larger than the window portion
+between the top and the bottom margins).  Its value is a number of
+screen lines; if point comes within that many lines of the top or
+bottom of the window, Emacs performs automatic scrolling.  By default,
+<code class="code">scroll-margin</code> is 0.  The effective margin size is limited to a
+quarter of the window height by default, but this limit can be
+increased up to half (or decreased down to zero) by customizing
+<code class="code">maximum-scroll-margin</code>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Horizontal-Scrolling.html">Horizontal Scrolling</a>, Previous: <a href="Recentering.html">Recentering</a>, Up: <a href="Display.html">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

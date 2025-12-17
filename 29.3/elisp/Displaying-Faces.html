@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Displaying Faces (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Displaying Faces (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Displaying Faces (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Faces.html" rel="up" title="Faces">
+<link href="Face-Remapping.html" rel="next" title="Face Remapping">
+<link href="Attribute-Functions.html" rel="prev" title="Attribute Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Displaying-Faces">
+<div class="nav-panel">
+<p>
+Next: <a href="Face-Remapping.html" accesskey="n" rel="next">Face Remapping</a>, Previous: <a href="Attribute-Functions.html" accesskey="p" rel="prev">Face Attribute Functions</a>, Up: <a href="Faces.html" accesskey="u" rel="up">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Displaying-Faces-1"><span>41.12.4 Displaying Faces<a class="copiable-link" href="#Displaying-Faces-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-displaying-faces"></a>
+<a class="index-entry-id" id="index-face-merging"></a>
+
+<p>When Emacs displays a given piece of text, the visual appearance of
+the text may be determined by faces drawn from different sources.  If
+these various sources together specify more than one face for a
+particular character, Emacs merges the attributes of the various
+faces.  Here is the order in which Emacs merges the faces, from
+highest to lowest priority:
+</p>
+<ul class="itemize mark-bullet">
+<li>If the text consists of a special glyph, the glyph can specify a
+particular face.  See <a class="xref" href="Glyphs.html">Glyphs</a>.
+
+</li><li>If the text lies within an active region, Emacs highlights it using
+the <code class="code">region</code> face.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Standard-Faces.html#Standard-Faces">Standard Faces</a> in <cite class="cite">The GNU Emacs
+Manual</cite>.
+
+</li><li>If the text lies within an overlay with a non-<code class="code">nil</code> <code class="code">face</code>
+property, Emacs applies the face(s) specified by that property.  If
+the overlay has a <code class="code">mouse-face</code> property and the mouse is near
+enough to the overlay, Emacs applies the face or face attributes
+specified by the <code class="code">mouse-face</code> property instead.  See <a class="xref" href="Overlay-Properties.html">Overlay Properties</a>.
+
+<p>When multiple overlays cover the same character, an overlay with
+higher priority overrides those with lower priority.  See <a class="xref" href="Overlays.html">Overlays</a>.
+</p>
+</li><li>If the text contains a <code class="code">face</code> or <code class="code">mouse-face</code> property,
+Emacs applies the specified faces and face attributes.  See <a class="xref" href="Special-Properties.html">Properties with Special Meanings</a>.  (This is how Font Lock mode faces are applied.
+See <a class="xref" href="Font-Lock-Mode.html">Font Lock Mode</a>.)
+
+</li><li>If the text lies within the mode line of the selected window, Emacs
+applies the <code class="code">mode-line</code> face.  For the mode line of a
+non-selected window, Emacs applies the <code class="code">mode-line-inactive</code> face.
+For a header line, Emacs applies the <code class="code">header-line</code> face.
+For a tab line, Emacs applies the <code class="code">tab-line</code> face.
+
+</li><li>If the text comes from an overlay string via <code class="code">before-string</code> or
+<code class="code">after-string</code> properties (see <a class="pxref" href="Overlay-Properties.html">Overlay Properties</a>), or from a
+display string (see <a class="pxref" href="Other-Display-Specs.html">Other Display Specifications</a>), and the string doesn&rsquo;t
+contain a <code class="code">face</code> or <code class="code">mouse-face</code> property, or these
+properties leave some face attributes undefined, but the buffer text
+affected by the overlay/display property does define a face or those
+attributes, Emacs applies the face attributes of the &ldquo;underlying&rdquo;
+buffer text.  Note that this is so even if the overlay or display
+string is displayed in the display margins (see <a class="pxref" href="Display-Margins.html">Displaying in the Margins</a>).
+
+</li><li>If any given attribute has not been specified during the preceding
+steps, Emacs applies the attribute of the <code class="code">default</code> face.
+</li></ul>
+
+<p>At each stage, if a face has a valid <code class="code">:inherit</code> attribute,
+Emacs treats any attribute with an <code class="code">unspecified</code> value as having
+the corresponding value drawn from the parent face(s).  see <a class="pxref" href="Face-Attributes.html">Face Attributes</a>.  Note that the parent face(s) may also leave the
+attribute unspecified; in that case, the attribute remains unspecified
+at the next level of face merging.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Face-Remapping.html">Face Remapping</a>, Previous: <a href="Attribute-Functions.html">Face Attribute Functions</a>, Up: <a href="Faces.html">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Command Modes (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Command Modes (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Interactive-Examples.html" rel="prev" title="Interactive Examples">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,60 +49,69 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Command-Modes"></span><div class="header">
+<div class="subsection-level-extent" id="Command-Modes">
+<div class="nav-panel">
 <p>
-Next: <a href="Generic-Commands.html" accesskey="n" rel="next">Generic Commands</a>, Previous: <a href="Interactive-Examples.html" accesskey="p" rel="prev">Interactive Examples</a>, Up: <a href="Defining-Commands.html" accesskey="u" rel="up">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Generic-Commands.html" accesskey="n" rel="next">Select among Command Alternatives</a>, Previous: <a href="Interactive-Examples.html" accesskey="p" rel="prev">Examples of Using <code class="code">interactive</code></a>, Up: <a href="Defining-Commands.html" accesskey="u" rel="up">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Specifying-Modes-For-Commands"></span><h4 class="subsection">22.2.4 Specifying Modes For Commands</h4>
-<span id="index-commands_002c-mode_002dspecific"></span>
-<span id="index-commands_002c-specify-as-mode_002dspecific"></span>
-<span id="index-mode_002dspecific-commands"></span>
+<h4 class="subsection" id="Specifying-Modes-For-Commands"><span>22.2.4 Specifying Modes For Commands<a class="copiable-link" href="#Specifying-Modes-For-Commands"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-commands_002c-mode_002dspecific"></a>
+<a class="index-entry-id" id="index-commands_002c-specify-as-mode_002dspecific"></a>
+<a class="index-entry-id" id="index-mode_002dspecific-commands"></a>
 
 <p>Many commands in Emacs are general, and not tied to any specific mode.
-For instance, <kbd>M-x kill-region</kbd> can be used in pretty much any
+For instance, <kbd class="kbd">M-x kill-region</kbd> can be used in pretty much any
 mode that has editable text, and commands that display information
-(like <kbd>M-x list-buffers</kbd>) can be used in pretty much any context.
+(like <kbd class="kbd">M-x list-buffers</kbd>) can be used in pretty much any context.
 </p>
 <p>Many other commands, however, are specifically tied to a mode, and
-make no sense outside of that context.  For instance, <code>M-x
+make no sense outside of that context.  For instance, <code class="code">M-x
 dired-diff</code> will just signal an error if used outside of a Dired
 buffer.
 </p>
 <p>Emacs therefore has a mechanism for specifying what mode (or modes) a
 command &ldquo;belongs&rdquo; to:
 </p>
-<div class="lisp">
-<pre class="lisp">(defun dired-diff (...)
+<div class="example lisp">
+<pre class="lisp-preformatted">(defun dired-diff (...)
   ...
   (interactive &quot;p&quot; dired-mode)
   ...)
 </pre></div>
 
-<p>This will mark the command as applicable to <code>dired-mode</code> only (or
-any modes that are derived from <code>dired-mode</code>).  Any number of
-modes can be added to the <code>interactive</code> form.
+<p>This will mark the command as applicable to <code class="code">dired-mode</code> only (or
+any modes that are derived from <code class="code">dired-mode</code>).  Any number of
+modes can be added to the <code class="code">interactive</code> form.
 </p>
-<span id="index-read_002dextended_002dcommand_002dpredicate"></span>
-<p>Specifying modes may affect completion in <kbd>M-x</kbd>, depending on the
-value of <code>read-extended-command-predicate</code>.
+<a class="index-entry-id" id="index-read_002dextended_002dcommand_002dpredicate"></a>
+<p>Specifying modes affects command completion in <kbd class="kbd">M-S-x</kbd>
+(<code class="code">execute-extended-command-for-buffer</code>, see <a class="pxref" href="Interactive-Call.html">Interactive Call</a>).  It may also affect completion in <kbd class="kbd">M-x</kbd>, depending on the
+value of <code class="code">read-extended-command-predicate</code>.
 </p>
 <p>For instance, when using the
-<code>command-completion-default-include-p</code> predicate, <kbd>M-x</kbd> won&rsquo;t
-list commands that have been marked as being applicable to a specific
-mode (unless you are in a buffer that uses that mode, of course).
-This goes for both major and minor modes.
+<code class="code">command-completion-default-include-p</code> predicate as the value of
+<code class="code">read-extended-command-predicate</code>, <kbd class="kbd">M-x</kbd> won&rsquo;t list commands
+that have been marked as being applicable to a specific mode (unless
+you are in a buffer that uses that mode, of course).  This goes for
+both major and minor modes.  (By contrast, <kbd class="kbd">M-S-x</kbd> always omits
+inapplicable commands from the completion candidates.)
 </p>
-<p>Marking commands this way will also make <kbd>C-h m</kbd> list these
-commands (if they aren&rsquo;t bound to any keys).
+<p>By default, <code class="code">read-extended-command-predicate</code> is <code class="code">nil</code>, and
+completion in <kbd class="kbd">M-x</kbd> lists all the commands that match what the
+user has typed, whether those commands are or aren&rsquo;t marked as
+applicable to the current buffer&rsquo;s mode.
 </p>
-<p>If using this extended <code>interactive</code> form isn&rsquo;t convenient
+<p>Marking commands to be applicable to a mode will also make <kbd class="kbd">C-h m</kbd>
+list these commands (if they aren&rsquo;t bound to any keys).
+</p>
+<p>If using this extended <code class="code">interactive</code> form isn&rsquo;t convenient
 (because the code is supposed to work in older versions of Emacs that
-don&rsquo;t support the extended <code>interactive</code> form), the following
-equivalent declaration (see <a href="Declare-Form.html">Declare Form</a>) can be used instead:
+don&rsquo;t support the extended <code class="code">interactive</code> form), the following
+equivalent declaration (see <a class="pxref" href="Declare-Form.html">The <code class="code">declare</code> Form</a>) can be used instead:
 </p>
-<div class="lisp">
-<pre class="lisp">(declare (modes dired-mode))
+<div class="example lisp">
+<pre class="lisp-preformatted">(declare (modes dired-mode))
 </pre></div>
 
 <p>Which commands to tag with modes is to some degree a matter of taste,
@@ -123,22 +124,23 @@ commands that are written for special (i.e., non-editing) modes.)
 <p>Some commands may be harmless, and &ldquo;work&rdquo; when called from other
 modes, but should still be tagged with a mode if they don&rsquo;t actually
 make much sense to use elsewhere.  For instance, many special modes
-have commands to exit the buffer bound to <kbd>q</kbd>, and may not do
+have commands to exit the buffer bound to <kbd class="kbd">q</kbd>, and may not do
 anything but issue a message like &quot;Goodbye from this mode&quot; and then
-call <code>kill-buffer</code>.  This command will &ldquo;work&rdquo; from any mode,
+call <code class="code">kill-buffer</code>.  This command will &ldquo;work&rdquo; from any mode,
 but it is highly unlikely that anybody would actually want to use the
 command outside the context of this special mode.
 </p>
 <p>Many modes have a set of different commands that start the mode in
-different ways (e.g., <code>eww-open-in-new-buffer</code> and
-<code>eww-open-file</code>).  Commands like that should never be tagged as
+different ways (e.g., <code class="code">eww-open-in-new-buffer</code> and
+<code class="code">eww-open-file</code>).  Commands like that should never be tagged as
 mode-specific, as they can be issued by the user from pretty much any
 context.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Generic-Commands.html" accesskey="n" rel="next">Generic Commands</a>, Previous: <a href="Interactive-Examples.html" accesskey="p" rel="prev">Interactive Examples</a>, Up: <a href="Defining-Commands.html" accesskey="u" rel="up">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Generic-Commands.html">Select among Command Alternatives</a>, Previous: <a href="Interactive-Examples.html">Examples of Using <code class="code">interactive</code></a>, Up: <a href="Defining-Commands.html">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

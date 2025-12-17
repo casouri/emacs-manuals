@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Vertical Scrolling (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Vertical Scrolling (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Vertical Scrolling (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Windows.html" rel="up" title="Windows">
+<link href="Horizontal-Scrolling.html" rel="next" title="Horizontal Scrolling">
+<link href="Textual-Scrolling.html" rel="prev" title="Textual Scrolling">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Vertical-Scrolling">
+<div class="nav-panel">
+<p>
+Next: <a href="Horizontal-Scrolling.html" accesskey="n" rel="next">Horizontal Scrolling</a>, Previous: <a href="Textual-Scrolling.html" accesskey="p" rel="prev">Textual Scrolling</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Vertical-Fractional-Scrolling"><span>29.22 Vertical Fractional Scrolling<a class="copiable-link" href="#Vertical-Fractional-Scrolling"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-vertical-fractional-scrolling"></a>
+<a class="index-entry-id" id="index-vertical-scroll-position"></a>
+
+<p><em class="dfn">Vertical fractional scrolling</em> means shifting text in a window
+up or down by a specified multiple or fraction of a line.  Emacs uses
+it, for example, on images and screen lines which are taller than the
+window.  Each window has a <em class="dfn">vertical scroll position</em>, which is a
+number, never less than zero.  It specifies how far to raise the
+contents of the window when displaying them.  Raising the window
+contents generally makes all or part of some lines disappear off the
+top, and all or part of some other lines appear at the bottom.  The
+usual value is zero.
+</p>
+<p>The vertical scroll position is measured in units of the normal line
+height, which is the height of the default font.  Thus, if the value is
+.5, that means the window contents will be scrolled up half the normal
+line height.  If it is 3.3, that means the window contents are scrolled
+up somewhat over three times the normal line height.
+</p>
+<p>What fraction of a line the vertical scrolling covers, or how many
+lines, depends on what the lines contain.  A value of .5 could scroll a
+line whose height is very short off the screen, while a value of 3.3
+could scroll just part of the way through a tall line or an image.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dvscroll"><span class="category-def">Function: </span><span><strong class="def-name">window-vscroll</strong> <var class="def-var-arguments">&amp;optional window pixels-p</var><a class="copiable-link" href="#index-window_002dvscroll"> &para;</a></span></dt>
+<dd><p>This function returns the current vertical scroll position of
+<var class="var">window</var>.  The default for <var class="var">window</var> is the selected window.
+If <var class="var">pixels-p</var> is non-<code class="code">nil</code>, the return value is measured in
+pixels, rather than in units of the normal line height.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(window-vscroll)
+     &rArr; 0
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dwindow_002dvscroll"><span class="category-def">Function: </span><span><strong class="def-name">set-window-vscroll</strong> <var class="def-var-arguments">window lines &amp;optional pixels-p preserve-vscroll-p</var><a class="copiable-link" href="#index-set_002dwindow_002dvscroll"> &para;</a></span></dt>
+<dd><p>This function sets <var class="var">window</var>&rsquo;s vertical scroll position to
+<var class="var">lines</var>.  If <var class="var">window</var> is <code class="code">nil</code>, the selected window is
+used.  The argument <var class="var">lines</var> should be zero or positive; if not, it
+is taken as zero.
+</p>
+
+<p>The actual vertical scroll position must always correspond
+to an integral number of pixels, so the value you specify
+is rounded accordingly.
+</p>
+<p>The return value is the result of this rounding.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(set-window-vscroll (selected-window) 1.2)
+     &rArr; 1.13
+</pre></div></div>
+
+<p>If <var class="var">pixels-p</var> is non-<code class="code">nil</code>, <var class="var">lines</var> specifies a number of
+pixels.  In this case, the return value is <var class="var">lines</var>.
+</p>
+<p>Normally, the vscroll does not take effect on windows that aren&rsquo;t the
+<code class="code">minibuffer-scroll-window</code> or the selected window when the
+mini-window is resized (see <a class="pxref" href="Minibuffer-Windows.html">Minibuffer Windows</a>).  This &ldquo;frozen&rdquo;
+behavior is disabled when the <var class="var">preserve-vscroll-p</var> parameter is
+non-<code class="code">nil</code>, which means to set the vscroll as usual.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-auto_002dwindow_002dvscroll"><span class="category-def">Variable: </span><span><strong class="def-name">auto-window-vscroll</strong><a class="copiable-link" href="#index-auto_002dwindow_002dvscroll"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, the <code class="code">line-move</code>,
+<code class="code">scroll-up</code>, and <code class="code">scroll-down</code> functions will automatically
+modify the vertical scroll position to scroll through display rows
+that are taller than the height of the window, for example in the
+presence of large images.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Horizontal-Scrolling.html">Horizontal Scrolling</a>, Previous: <a href="Textual-Scrolling.html">Textual Scrolling</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

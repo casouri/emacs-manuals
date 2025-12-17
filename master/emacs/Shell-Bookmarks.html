@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Shell Bookmarks (GNU Emacs Manual)</title>
+
+<meta name="description" content="Shell Bookmarks (GNU Emacs Manual)">
+<meta name="keywords" content="Shell Bookmarks (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Shell.html" rel="up" title="Shell">
+<link href="Shell-Options.html" rel="next" title="Shell Options">
+<link href="Directory-Tracking.html" rel="prev" title="Directory Tracking">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Shell-Bookmarks">
+<div class="nav-panel">
+<p>
+Next: <a href="Shell-Options.html" accesskey="n" rel="next">Shell Mode Options</a>, Previous: <a href="Directory-Tracking.html" accesskey="p" rel="prev">Directory Tracking</a>, Up: <a href="Shell.html" accesskey="u" rel="up">Running Shell Commands from Emacs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section subsection-level-set-section" id="Shell-Bookmarks-1"><span>40.7 Shell Bookmarks<a class="copiable-link" href="#Shell-Bookmarks-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-shell-bookmarks"></a>
+
+<p>Shell mode buffers can be bookmarked, and both local and remote
+(see <a class="pxref" href="Remote-Files.html">Remote Files</a>) shell buffers are supported.  See <a class="xref" href="Bookmarks.html">Bookmarks</a>.
+</p>
+<p>Opening, or &ldquo;jumping&rdquo; to, a bookmarked shell restores its buffer
+name, its current directory, and will create a remote connection, as
+necessary, using the shell command you used to create the remote buffer.
+</p>
+<a class="index-entry-id" id="index-shell_002dbookmark_002dname_002dfunction"></a>
+<a class="index-entry-id" id="index-shell_002dbookmark_002dname_002dfrom_002ddefault_002ddirectory"></a>
+<a class="index-entry-id" id="index-shell_002dbookmark_002dname_002dfrom_002dbuffer_002dname"></a>
+<p>The option <code class="code">shell-bookmark-name-function</code> can be customized to
+suit your preferences.  It defaults to the function
+<code class="code">shell-bookmark-name-from-default-directory</code> which uses the final
+component of the buffer&rsquo;s <code class="code">default-directory</code>.  An alternate
+function, <code class="code">shell-bookmark-name-from-buffer-name</code>, uses the buffer&rsquo;s
+name with its <code class="code">rename-uniquely</code> suffix brackets &quot;&lt;&gt;&quot; stripped.  You
+can bind this option to your own function.
+</p>
+<p>You can inhibit remote connections when you open a remote shell
+bookmark.  This is useful when you restore sessions with
+<code class="code">desktop-load</code>, or via another session-management package, to avoid
+time delays establishing connections.  You can establish a connection on
+an unconnected remote buffer using the command <kbd class="kbd">C-x C-v</kbd>
+(<code class="code">find-alternate-file</code>).  To inhibit a connection interactively,
+give a prefix argument before invoking the open/jump bookmark menu item,
+or before invoking the command <code class="code">bookmark-jump</code>.  <a class="footnote" id="DOCF30" href="#FOOT30"><sup>30</sup></a>  <a class="footnote" id="DOCF31" href="#FOOT31"><sup>31</sup></a>
+</p>
+<p>Note: Before creating ad-hoc multi-hop remote connections, customize
+either or both:
+<code class="code">tramp-save-ad-hoc-proxies</code> to non-<code class="code">nil</code> to persist proxy
+routes.
+<code class="code">tramp-show-ad-hoc-proxies</code> to non-<code class="code">nil</code> to ensure connections
+are fully qualified.  This is helpful if you use the same persisted
+bookmarks file on multiple hosts.
+</p>
+<p>See <a data-manual="tramp" href="https://www.gnu.org/software/emacs/manual/html_node/tramp/Ad_002dhoc-multi_002dhops.html#Ad_002dhoc-multi_002dhops">Ad-hoc multi-hops</a> in <cite class="cite">The Tramp Manual</cite>.
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT30" href="#DOCF30">(30)</a></h5>
+<p>To
+inhibit a connection programmatically, refer to the documentation for
+the variable <code class="code">shell-bookmark-jump-non-essential</code>.</p>
+<h5 class="footnote-body-heading"><a id="FOOT31" href="#DOCF31">(31)</a></h5>
+<p>To
+properly handle multi-hop remote connections, refer to the documentation
+for the function <code class="code">shell-bookmark-jump</code>.</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Shell-Options.html">Shell Mode Options</a>, Previous: <a href="Directory-Tracking.html">Directory Tracking</a>, Up: <a href="Shell.html">Running Shell Commands from Emacs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

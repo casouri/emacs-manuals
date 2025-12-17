@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Tooltips (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Tooltips (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Tooltips (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Bidirectional-Display.html" rel="next" title="Bidirectional Display">
+<link href="Window-Systems.html" rel="prev" title="Window Systems">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Tooltips">
+<div class="nav-panel">
+<p>
+Next: <a href="Bidirectional-Display.html" accesskey="n" rel="next">Bidirectional Display</a>, Previous: <a href="Window-Systems.html" accesskey="p" rel="prev">Window Systems</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Tooltips-1"><span>40.25 Tooltips<a class="copiable-link" href="#Tooltips-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-tooltips"></a>
+<p><em class="dfn">Tooltips</em> are special frames (see <a class="pxref" href="Frames.html">Frames</a>) that are used to
+display helpful hints (a.k.a. &ldquo;tips&rdquo;) related to the current
+position of the mouse pointer.  Emacs uses tooltips to display help
+strings about active portions of text (see <a class="pxref" href="Special-Properties.html">Properties with Special Meanings</a>) and
+about various UI elements, such as menu items (see <a class="pxref" href="Extended-Menu-Items.html">Extended Menu Items</a>) and tool-bar buttons (see <a class="pxref" href="Tool-Bar.html">Tool bars</a>).
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-tooltip_002dmode"><span class="category-def">Function: </span><span><strong class="def-name">tooltip-mode</strong><a class="copiable-link" href="#index-tooltip_002dmode"> &para;</a></span></dt>
+<dd><p>Tooltip Mode is a minor mode that enables display of tooltips.
+Turning off this mode causes the tooltips be displayed in the echo
+area.  On text-mode (a.k.a. &ldquo;TTY&rdquo;) frames, tooltips are always
+displayed in the echo area.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-x_002dgtk_002duse_002dsystem_002dtooltips"></a>
+<p>When Emacs is built with GTK+ support, it by default displays tooltips
+using GTK+ functions, and the appearance of the tooltips is then
+controlled by GTK+ settings.  GTK+ tooltips can be disabled by
+changing the value of the variable <code class="code">x-gtk-use-system-tooltips</code> to
+<code class="code">nil</code>.  The rest of this subsection describes how to control
+non-GTK+ tooltips, which are presented by Emacs itself.
+</p>
+<a class="index-entry-id" id="index-tooltip-frames"></a>
+<p>Tooltips are displayed in special frames called tooltip frames, which
+have their own frame parameters (see <a class="pxref" href="Frame-Parameters.html">Frame Parameters</a>).  Unlike
+other frames, the default parameters for tooltip frames are stored in a
+special variable.
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-tooltip_002dframe_002dparameters"><span class="category-def">User Option: </span><span><strong class="def-name">tooltip-frame-parameters</strong><a class="copiable-link" href="#index-tooltip_002dframe_002dparameters"> &para;</a></span></dt>
+<dd><p>This customizable option holds the default frame parameters used for
+displaying tooltips.  Any font and color parameters are ignored, and the
+corresponding attributes of the <code class="code">tooltip</code> face are used instead.
+If <code class="code">left</code> or <code class="code">top</code> parameters are included, they are used as
+absolute frame-relative coordinates where the tooltip should be shown.
+(Mouse-relative position of the tooltip can be customized using the
+variables described in <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Tooltips.html#Tooltips">Tooltips</a> in <cite class="cite">The GNU Emacs Manual</cite>.)
+Note that the <code class="code">left</code> and <code class="code">top</code> parameters, if present,
+override the values of mouse-relative offsets.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-tooltip-face"></a>
+<p>The <code class="code">tooltip</code> face determines the appearance of text shown in
+tooltips.  It should generally use a variable-pitch font of size that
+is preferably smaller than the default frame font.
+</p>
+<a class="index-entry-id" id="index-tooltip_002dhelp_002dtips"></a>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-tooltip_002dfunctions"><span class="category-def">Variable: </span><span><strong class="def-name">tooltip-functions</strong><a class="copiable-link" href="#index-tooltip_002dfunctions"> &para;</a></span></dt>
+<dd><p>This abnormal hook is a list of functions to call when Emacs needs to
+display a tooltip.  Each function is called with a single argument
+<var class="var">event</var> which is a copy of the last mouse movement event.  If a
+function on this list actually displays the tooltip, it should return
+non-<code class="code">nil</code>, and then the rest of the functions will not be
+called.  The default value of this variable is a single function
+<code class="code">tooltip-help-tips</code>.
+</p></dd></dl>
+
+<p>If you write your own function to be put on the
+<code class="code">tooltip-functions</code> list, you may need to know the buffer of the
+mouse event that triggered the tooltip display.  The following
+function provides that information.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-tooltip_002devent_002dbuffer"><span class="category-def">Function: </span><span><strong class="def-name">tooltip-event-buffer</strong> <var class="def-var-arguments">event</var><a class="copiable-link" href="#index-tooltip_002devent_002dbuffer"> &para;</a></span></dt>
+<dd><p>This function returns the buffer over which <var class="var">event</var> occurred.
+Call it with the argument of the function from
+<code class="code">tooltip-functions</code> to obtain the buffer whose text triggered the
+tooltip.  Note that the event might occur not over a buffer (e.g.,
+over the tool bar), in which case this function will return
+<code class="code">nil</code>.
+</p></dd></dl>
+
+<p>Other aspects of tooltip display are controlled by several
+customizable settings; see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Tooltips.html#Tooltips">Tooltips</a> in <cite class="cite">The GNU Emacs
+Manual</cite>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Bidirectional-Display.html">Bidirectional Display</a>, Previous: <a href="Window-Systems.html">Window Systems</a>, Up: <a href="Display.html">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

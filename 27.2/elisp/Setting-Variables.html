@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.2.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Setting Variables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Setting Variables (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Accessing-Variables.html" rel="prev" title="Accessing Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,100 +50,102 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Setting-Variables"></span><div class="header">
+<div class="section-level-extent" id="Setting-Variables">
+<div class="nav-panel">
 <p>
-Next: <a href="Watching-Variables.html" accesskey="n" rel="next">Watching Variables</a>, Previous: <a href="Accessing-Variables.html" accesskey="p" rel="prev">Accessing Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Watching-Variables.html" accesskey="n" rel="next">Running a function when a variable is changed.</a>, Previous: <a href="Accessing-Variables.html" accesskey="p" rel="prev">Accessing Variable Values</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Setting-Variable-Values"></span><h3 class="section">12.8 Setting Variable Values</h3>
+<h3 class="section" id="Setting-Variable-Values"><span>12.8 Setting Variable Values<a class="copiable-link" href="#Setting-Variable-Values"> &para;</a></span></h3>
 
 <p>The usual way to change the value of a variable is with the special
-form <code>setq</code>.  When you need to compute the choice of variable at
-run time, use the function <code>set</code>.
+form <code class="code">setq</code>.  When you need to compute the choice of variable at
+run time, use the function <code class="code">set</code>.
 </p>
-<dl>
-<dt id="index-setq">Special Form: <strong>setq</strong> <em>[symbol form]&hellip;</em></dt>
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-setq"><span class="category-def">Special Form: </span><span><strong class="def-name">setq</strong> <var class="def-var-arguments">[symbol form]&hellip;</var><a class="copiable-link" href="#index-setq"> &para;</a></span></dt>
 <dd><p>This special form is the most common method of changing a variable&rsquo;s
-value.  Each <var>symbol</var> is given a new value, which is the result of
-evaluating the corresponding <var>form</var>.  The current binding of the
+value.  Each <var class="var">symbol</var> is given a new value, which is the result of
+evaluating the corresponding <var class="var">form</var>.  The current binding of the
 symbol is changed.
 </p>
-<p><code>setq</code> does not evaluate <var>symbol</var>; it sets the symbol that you
-write.  We say that this argument is <em>automatically quoted</em>.  The
-&lsquo;<samp>q</samp>&rsquo; in <code>setq</code> stands for &ldquo;quoted&rdquo;.
+<p><code class="code">setq</code> does not evaluate <var class="var">symbol</var>; it sets the symbol that you
+write.  We say that this argument is <em class="dfn">automatically quoted</em>.  The
+&lsquo;<samp class="samp">q</samp>&rsquo; in <code class="code">setq</code> stands for &ldquo;quoted&rdquo;.
 </p>
-<p>The value of the <code>setq</code> form is the value of the last <var>form</var>.
+<p>The value of the <code class="code">setq</code> form is the value of the last <var class="var">form</var>.
 </p>
 <div class="example">
-<pre class="example">(setq x (1+ 2))
+<div class="group"><pre class="example-preformatted">(setq x (1+ 2))
      &rArr; 3
-</pre><pre class="example">x                   ; <span class="roman"><code>x</code> now has a global value.</span>
+</pre></div><pre class="example-preformatted">x                   ; <span class="r"><code class="code">x</code> now has a global value.</span>
      &rArr; 3
-</pre><pre class="example">(let ((x 5))
-  (setq x 6)        ; <span class="roman">The local binding of <code>x</code> is set.</span>
+</pre><div class="group"><pre class="example-preformatted">(let ((x 5))
+  (setq x 6)        ; <span class="r">The local binding of <code class="code">x</code> is set.</span>
   x)
      &rArr; 6
-</pre><pre class="example">x                   ; <span class="roman">The global value is unchanged.</span>
+</pre></div><pre class="example-preformatted">x                   ; <span class="r">The global value is unchanged.</span>
      &rArr; 3
 </pre></div>
 
-<p>Note that the first <var>form</var> is evaluated, then the first
-<var>symbol</var> is set, then the second <var>form</var> is evaluated, then the
-second <var>symbol</var> is set, and so on:
+<p>Note that the first <var class="var">form</var> is evaluated, then the first
+<var class="var">symbol</var> is set, then the second <var class="var">form</var> is evaluated, then the
+second <var class="var">symbol</var> is set, and so on:
 </p>
 <div class="example">
-<pre class="example">(setq x 10          ; <span class="roman">Notice that <code>x</code> is set before</span>
-      y (1+ x))     ;   <span class="roman">the value of <code>y</code> is computed.</span>
+<div class="group"><pre class="example-preformatted">(setq x 10          ; <span class="r">Notice that <code class="code">x</code> is set before</span>
+      y (1+ x))     ;   <span class="r">the value of <code class="code">y</code> is computed.</span>
      &rArr; 11
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-set">Function: <strong>set</strong> <em>symbol value</em></dt>
-<dd><p>This function puts <var>value</var> in the value cell of <var>symbol</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set"><span class="category-def">Function: </span><span><strong class="def-name">set</strong> <var class="def-var-arguments">symbol value</var><a class="copiable-link" href="#index-set"> &para;</a></span></dt>
+<dd><p>This function puts <var class="var">value</var> in the value cell of <var class="var">symbol</var>.
 Since it is a function rather than a special form, the expression
-written for <var>symbol</var> is evaluated to obtain the symbol to set.
-The return value is <var>value</var>.
+written for <var class="var">symbol</var> is evaluated to obtain the symbol to set.
+The return value is <var class="var">value</var>.
 </p>
-<p>When dynamic variable binding is in effect (the default), <code>set</code>
-has the same effect as <code>setq</code>, apart from the fact that
-<code>set</code> evaluates its <var>symbol</var> argument whereas <code>setq</code>
-does not.  But when a variable is lexically bound, <code>set</code> affects
-its <em>dynamic</em> value, whereas <code>setq</code> affects its current
-(lexical) value.  See <a href="Variable-Scoping.html">Variable Scoping</a>.
+<p>When dynamic variable binding is in effect (the default), <code class="code">set</code>
+has the same effect as <code class="code">setq</code>, apart from the fact that
+<code class="code">set</code> evaluates its <var class="var">symbol</var> argument whereas <code class="code">setq</code>
+does not.  But when a variable is lexically bound, <code class="code">set</code> affects
+its <em class="emph">dynamic</em> value, whereas <code class="code">setq</code> affects its current
+(lexical) value.  See <a class="xref" href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a>.
 </p>
 <div class="example">
-<pre class="example">(set one 1)
+<div class="group"><pre class="example-preformatted">(set one 1)
 error&rarr; Symbol's value as variable is void: one
-</pre><pre class="example">(set 'one 1)
+</pre></div><div class="group"><pre class="example-preformatted">(set 'one 1)
      &rArr; 1
-</pre><pre class="example">(set 'two 'one)
+</pre></div><div class="group"><pre class="example-preformatted">(set 'two 'one)
      &rArr; one
-</pre><pre class="example">(set two 2)         ; <span class="roman"><code>two</code> evaluates to symbol <code>one</code>.</span>
+</pre></div><div class="group"><pre class="example-preformatted">(set two 2)         ; <span class="r"><code class="code">two</code> evaluates to symbol <code class="code">one</code>.</span>
      &rArr; 2
-</pre><pre class="example">one                 ; <span class="roman">So it is <code>one</code> that was set.</span>
+</pre></div><div class="group"><pre class="example-preformatted">one                 ; <span class="r">So it is <code class="code">one</code> that was set.</span>
      &rArr; 2
-(let ((one 1))      ; <span class="roman">This binding of <code>one</code> is set,</span>
-  (set 'one 3)      ;   <span class="roman">not the global value.</span>
+(let ((one 1))      ; <span class="r">This binding of <code class="code">one</code> is set,</span>
+  (set 'one 3)      ;   <span class="r">not the global value.</span>
   one)
      &rArr; 3
-</pre><pre class="example">one
+</pre></div><div class="group"><pre class="example-preformatted">one
      &rArr; 2
-</pre></div>
+</pre></div></div>
 
-<p>If <var>symbol</var> is not actually a symbol, a <code>wrong-type-argument</code>
+<p>If <var class="var">symbol</var> is not actually a symbol, a <code class="code">wrong-type-argument</code>
 error is signaled.
 </p>
 <div class="example">
-<pre class="example">(set '(x y) 'z)
+<pre class="example-preformatted">(set '(x y) 'z)
 error&rarr; Wrong type argument: symbolp, (x y)
 </pre></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Watching-Variables.html" accesskey="n" rel="next">Watching Variables</a>, Previous: <a href="Accessing-Variables.html" accesskey="p" rel="prev">Accessing Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Watching-Variables.html">Running a function when a variable is changed.</a>, Previous: <a href="Accessing-Variables.html">Accessing Variable Values</a>, Up: <a href="Variables.html">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

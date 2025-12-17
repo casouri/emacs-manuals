@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Search Customizations (GNU Emacs Manual)</title>
+
+<meta name="description" content="Search Customizations (GNU Emacs Manual)">
+<meta name="keywords" content="Search Customizations (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Search.html" rel="up" title="Search">
+<link href="Other-Repeating-Search.html" rel="prev" title="Other Repeating Search">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Search-Customizations">
+<div class="nav-panel">
+<p>
+Previous: <a href="Other-Repeating-Search.html" accesskey="p" rel="prev">Other Search-and-Loop Commands</a>, Up: <a href="Search.html" accesskey="u" rel="up">Searching and Replacement</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Tailoring-Search-to-Your-Needs"><span>16.12 Tailoring Search to Your Needs<a class="copiable-link" href="#Tailoring-Search-to-Your-Needs"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-search-customizations"></a>
+
+<p>This section describes miscellaneous search-related customizations
+not described elsewhere.
+</p>
+<a class="index-entry-id" id="index-default-search-mode"></a>
+<a class="index-entry-id" id="index-search-mode_002c-default"></a>
+<p>The default search mode for the incremental search is specified by
+the variable <code class="code">search-default-mode</code>.  It can be <code class="code">nil</code>,
+<code class="code">t</code>, or a function.  If it is <code class="code">nil</code>, the default mode is to
+do literal searches without character folding, but with case folding
+and lax-whitespace matches as determined by <code class="code">case-fold-search</code>
+and <code class="code">search-whitespace-regexp</code>, respectively (see <a class="pxref" href="Lax-Search.html">Lax Matching During Searching</a>).  If the value is <code class="code">t</code>, incremental search defaults to
+regexp searches.  The default value specifies a function that only
+performs case folding and lax-whitespace matching.
+</p>
+<a class="index-entry-id" id="index-search_002dhighlight"></a>
+<p>The current match of an on-going incremental search is highlighted
+using the <code class="code">isearch</code> face.  This highlighting can be disabled by
+setting the variable <code class="code">search-highlight</code> to <code class="code">nil</code>.
+</p>
+<a class="index-entry-id" id="index-search_002dhighlight_002dsubmatches"></a>
+<p>When searching for regular expressions (with <kbd class="kbd">C-M-s</kbd>, for
+instance), subexpressions receive special highlighting depending on
+the <code class="code">search-highlight-submatches</code> variable.  If this variable&rsquo;s
+value is <code class="code">nil</code>, no special highlighting is done, but if the value
+is non-<code class="code">nil</code>, text that matches &lsquo;<samp class="samp">\( &hellip; \)</samp>&rsquo; constructs
+(a.k.a. &ldquo;subexpressions&rdquo;) in the regular expression will be
+highlighted with distinct faces.  By default, two distinct faces are
+defined, named <code class="code">isearch-group-1</code> and <code class="code">isearch-group-2</code>.
+With these two faces, odd-numbered subexpressions will be highlighted
+using the <code class="code">isearch-group-1</code> face and even-numbered subexpressions
+will be highlighted using the <code class="code">isearch-group-2</code> face.  For
+instance, when searching for &lsquo;<samp class="samp">foo-\([0-9]+\)\([a-z]+\)</samp>&rsquo;, the part
+matched by &lsquo;<samp class="samp">[0-9]+</samp>&rsquo; will be highlighted with the
+<code class="code">isearch-group-1</code> face, and the part matched by &lsquo;<samp class="samp">[a-z]+</samp>&rsquo;
+will be highlighted using <code class="code">isearch-group-2</code>.  If you define
+additional faces using the same numbering scheme, i.e.
+<code class="code">isearch-group-3</code>, <code class="code">isearch-group-4</code>, &hellip;, then the face
+<code class="code">isearch-group-<var class="var">M</var></code> will be used to highlight the <var class="var">M</var>&rsquo;th,
+<code class="code"><var class="var">N</var>+<var class="var">M</var></code>&rsquo;th, <code class="code">2<var class="var">N</var>+<var class="var">M</var></code>&rsquo;th, &hellip;
+subexpressions, where <var class="var">N</var> is the total number of faces of the form
+<code class="code">isearch-group-<var class="var">M</var></code>.
+</p>
+<a class="index-entry-id" id="index-lazy-highlighting-customizations"></a>
+<a class="index-entry-id" id="index-isearch_002dlazy_002dhighlight"></a>
+<a class="index-entry-id" id="index-lazy_002dhighlight-face"></a>
+<p>The other matches for the search string that are visible on display
+are highlighted using the <code class="code">lazy-highlight</code> face.  Setting the
+variable <code class="code">isearch-lazy-highlight</code> to <code class="code">nil</code> disables this
+highlighting.  Here are some other variables that customize the lazy
+highlighting:
+</p>
+<dl class="table">
+<dt><a id="index-lazy_002dhighlight_002dinitial_002ddelay"></a><span><code class="code">lazy-highlight-initial-delay</code><a class="copiable-link" href="#index-lazy_002dhighlight_002dinitial_002ddelay"> &para;</a></span></dt>
+<dd><p>Time in seconds to wait before highlighting visible matches.
+Applies only if the search string is less than
+<code class="code">lazy-highlight-no-delay-length</code> characters long.
+</p>
+</dd>
+<dt><a id="index-lazy_002dhighlight_002dno_002ddelay_002dlength"></a><span><code class="code">lazy-highlight-no-delay-length</code><a class="copiable-link" href="#index-lazy_002dhighlight_002dno_002ddelay_002dlength"> &para;</a></span></dt>
+<dd><p>For search strings at least as long as the value of this variable,
+lazy highlighting of matches starts immediately.
+</p>
+</dd>
+<dt><a id="index-lazy_002dhighlight_002dinterval"></a><span><code class="code">lazy-highlight-interval</code><a class="copiable-link" href="#index-lazy_002dhighlight_002dinterval"> &para;</a></span></dt>
+<dd><p>Time in seconds between highlighting successive matches.
+</p>
+</dd>
+<dt><a id="index-lazy_002dhighlight_002dmax_002dat_002da_002dtime"></a><span><code class="code">lazy-highlight-max-at-a-time</code><a class="copiable-link" href="#index-lazy_002dhighlight_002dmax_002dat_002da_002dtime"> &para;</a></span></dt>
+<dd><p>The maximum number of matches to highlight before checking for input.
+A large number can take some time to highlight, so if you want to
+continue searching and type <kbd class="kbd">C-s</kbd> or <kbd class="kbd">C-r</kbd> during that time,
+Emacs will not respond until it finishes highlighting all those
+matches.  Thus, smaller values make Emacs more responsive.
+</p>
+</dd>
+<dt><a id="index-isearch_002dlazy_002dcount"></a><span><code class="code">isearch-lazy-count</code><a class="copiable-link" href="#index-isearch_002dlazy_002dcount"> &para;</a></span></dt>
+<dd><p>Show the current match number and the total number of matches in the
+search prompt.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-lazy_002dcount_002dsuffix_002dformat"></a>
+<a id="index-lazy_002dcount_002dprefix_002dformat"></a><span><code class="code">lazy-count-prefix-format</code><a class="copiable-link" href="#index-lazy_002dcount_002dprefix_002dformat"> &para;</a></span></dt>
+<dt><code class="code">lazy-count-suffix-format</code></dt>
+<dd><p>These two variables determine the format of showing the current and
+the total number of matches for <code class="code">isearch-lazy-count</code>.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-search_002dnonincremental_002dinstead"></a>
+<p>Normally, entering <kbd class="key">RET</kbd> within incremental search when the
+search string is empty launches a nonincremental search.  (Actually,
+it lets you edit the search string, and the next <kbd class="key">RET</kbd> does the
+search.)  However, if you customize the variable
+<code class="code">search-nonincremental-instead</code> to <code class="code">nil</code>, typing <kbd class="key">RET</kbd>
+will always exit the incremental search, even if the search string is
+empty.
+</p>
+<a class="index-entry-id" id="index-isearch_002dhide_002dimmediately"></a>
+<p>By default, incremental search and query-replace commands match
+invisible text, but hide any such matches as soon as the current match
+moves off the invisible text.  If you customize the variable
+<code class="code">isearch-hide-immediately</code> to <code class="code">nil</code>, any invisible text
+where matches were found stays on display until the search or the
+replace command exits.
+</p>
+<a class="index-entry-id" id="index-search-display-on-slow-terminals"></a>
+<a class="index-entry-id" id="index-search_002dslow_002dspeed"></a>
+<a class="index-entry-id" id="index-search_002dslow_002dwindow_002dlines"></a>
+<p>Searching incrementally on slow terminals, such as displays
+connected to remote machines over slow connection, could be annoying
+due to the need to redraw large portions of the display as the search
+proceeds.  Emacs provides a special display mode for slow terminals,
+whereby search pops up a separate small window and displays the text
+surrounding the match in that window.  Small windows display faster,
+so the annoying effect of slow speed is alleviated.  The variable
+<code class="code">search-slow-speed</code> determines the baud rate threshold below
+which Emacs will use this display mode.  The variable
+<code class="code">search-slow-window-lines</code> controls the number of lines in the
+window Emacs pops up for displaying the search results; the default is
+1 line.  Normally, this window will pop up at the bottom of the window
+that displays the buffer where you start searching, but if the value
+of <code class="code">search-slow-window-lines</code> is negative, that means to put the
+window at the top and give it the number of lines that is the absolute
+value of <code class="code">search-slow-window-lines</code>.
+</p></div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Other-Repeating-Search.html">Other Search-and-Loop Commands</a>, Up: <a href="Search.html">Searching and Replacement</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

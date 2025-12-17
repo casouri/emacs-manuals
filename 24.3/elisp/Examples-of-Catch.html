@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Examples of Catch (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Examples of Catch (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Catch-and-Throw.html" rel="prev" title="Catch and Throw">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,20 +46,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Examples-of-Catch"></span><div class="header">
+<div class="subsection-level-extent" id="Examples-of-Catch">
+<div class="nav-panel">
 <p>
-Next: <a href="Errors.html" accesskey="n" rel="next">Errors</a>, Previous: <a href="Catch-and-Throw.html" accesskey="p" rel="prev">Catch and Throw</a>, Up: <a href="Nonlocal-Exits.html" accesskey="u" rel="up">Nonlocal Exits</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Errors.html" accesskey="n" rel="next">Errors</a>, Previous: <a href="Catch-and-Throw.html" accesskey="p" rel="prev">Explicit Nonlocal Exits: <code class="code">catch</code> and <code class="code">throw</code></a>, Up: <a href="Nonlocal-Exits.html" accesskey="u" rel="up">Nonlocal Exits</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Examples-of-catch-and-throw"></span><h4 class="subsection">10.5.2 Examples of <code>catch</code> and <code>throw</code></h4>
+<h4 class="subsection" id="Examples-of-catch-and-throw"><span>10.5.2 Examples of <code class="code">catch</code> and <code class="code">throw</code><a class="copiable-link" href="#Examples-of-catch-and-throw"> &para;</a></span></h4>
 
-<p>One way to use <code>catch</code> and <code>throw</code> is to exit from a doubly
+<p>One way to use <code class="code">catch</code> and <code class="code">throw</code> is to exit from a doubly
 nested loop.  (In most languages, this would be done with a &ldquo;goto&rdquo;.)
-Here we compute <code>(foo <var>i</var> <var>j</var>)</code> for <var>i</var> and <var>j</var>
+Here we compute <code class="code">(foo <var class="var">i</var> <var class="var">j</var>)</code> for <var class="var">i</var> and <var class="var">j</var>
 varying from 0 to 9:
 </p>
 <div class="example">
-<pre class="example">(defun search-foo ()
+<div class="group"><pre class="example-preformatted">(defun search-foo ()
   (catch 'loop
     (let ((i 0))
       (while (&lt; i 10)
@@ -78,56 +70,57 @@ varying from 0 to 9:
                 (throw 'loop (list i j)))
             (setq j (1+ j))))
         (setq i (1+ i))))))
-</pre></div>
+</pre></div></div>
 
-<p>If <code>foo</code> ever returns non-<code>nil</code>, we stop immediately and return a
-list of <var>i</var> and <var>j</var>.  If <code>foo</code> always returns <code>nil</code>, the
-<code>catch</code> returns normally, and the value is <code>nil</code>, since that
-is the result of the <code>while</code>.
+<p>If <code class="code">foo</code> ever returns non-<code class="code">nil</code>, we stop immediately and return a
+list of <var class="var">i</var> and <var class="var">j</var>.  If <code class="code">foo</code> always returns <code class="code">nil</code>, the
+<code class="code">catch</code> returns normally, and the value is <code class="code">nil</code>, since that
+is the result of the <code class="code">while</code>.
 </p>
 <p>Here are two tricky examples, slightly different, showing two
 return points at once.  First, two return points with the same tag,
-<code>hack</code>:
+<code class="code">hack</code>:
 </p>
 <div class="example">
-<pre class="example">(defun catch2 (tag)
+<div class="group"><pre class="example-preformatted">(defun catch2 (tag)
   (catch tag
     (throw 'hack 'yes)))
 &rArr; catch2
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(catch 'hack
+</pre><div class="group"><pre class="example-preformatted">(catch 'hack
   (print (catch2 'hack))
   'no)
 -| yes
 &rArr; no
-</pre></div>
+</pre></div></div>
 
-<p>Since both return points have tags that match the <code>throw</code>, it goes to
-the inner one, the one established in <code>catch2</code>.  Therefore,
-<code>catch2</code> returns normally with value <code>yes</code>, and this value is
-printed.  Finally the second body form in the outer <code>catch</code>, which is
-<code>'no</code>, is evaluated and returned from the outer <code>catch</code>.
+<p>Since both return points have tags that match the <code class="code">throw</code>, it goes to
+the inner one, the one established in <code class="code">catch2</code>.  Therefore,
+<code class="code">catch2</code> returns normally with value <code class="code">yes</code>, and this value is
+printed.  Finally the second body form in the outer <code class="code">catch</code>, which is
+<code class="code">'no</code>, is evaluated and returned from the outer <code class="code">catch</code>.
 </p>
-<p>Now let&rsquo;s change the argument given to <code>catch2</code>:
+<p>Now let&rsquo;s change the argument given to <code class="code">catch2</code>:
 </p>
 <div class="example">
-<pre class="example">(catch 'hack
+<div class="group"><pre class="example-preformatted">(catch 'hack
   (print (catch2 'quux))
   'no)
 &rArr; yes
-</pre></div>
+</pre></div></div>
 
 <p>We still have two return points, but this time only the outer one has
-the tag <code>hack</code>; the inner one has the tag <code>quux</code> instead.
-Therefore, <code>throw</code> makes the outer <code>catch</code> return the value
-<code>yes</code>.  The function <code>print</code> is never called, and the
-body-form <code>'no</code> is never evaluated.
+the tag <code class="code">hack</code>; the inner one has the tag <code class="code">quux</code> instead.
+Therefore, <code class="code">throw</code> makes the outer <code class="code">catch</code> return the value
+<code class="code">yes</code>.  The function <code class="code">print</code> is never called, and the
+body-form <code class="code">'no</code> is never evaluated.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Errors.html" accesskey="n" rel="next">Errors</a>, Previous: <a href="Catch-and-Throw.html" accesskey="p" rel="prev">Catch and Throw</a>, Up: <a href="Nonlocal-Exits.html" accesskey="u" rel="up">Nonlocal Exits</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Errors.html">Errors</a>, Previous: <a href="Catch-and-Throw.html">Explicit Nonlocal Exits: <code class="code">catch</code> and <code class="code">throw</code></a>, Up: <a href="Nonlocal-Exits.html">Nonlocal Exits</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

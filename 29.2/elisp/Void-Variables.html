@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.2.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Void Variables (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Void Variables (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Void Variables (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Variables.html" rel="up" title="Variables">
+<link href="Defining-Variables.html" rel="next" title="Defining Variables">
+<link href="Local-Variables.html" rel="prev" title="Local Variables">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Void-Variables">
+<div class="nav-panel">
+<p>
+Next: <a href="Defining-Variables.html" accesskey="n" rel="next">Defining Global Variables</a>, Previous: <a href="Local-Variables.html" accesskey="p" rel="prev">Local Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="When-a-Variable-is-Void"><span>12.4 When a Variable is Void<a class="copiable-link" href="#When-a-Variable-is-Void"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-void_002dvariable-error"></a>
+<a class="index-entry-id" id="index-void-variable"></a>
+
+<p>We say that a variable is void if its symbol has an unassigned value
+cell (see <a class="pxref" href="Symbol-Components.html">Symbol Components</a>).
+</p>
+<p>Under Emacs Lisp&rsquo;s default dynamic scoping rule (see <a class="pxref" href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a>), the value cell stores the variable&rsquo;s current (local or
+global) value.  Note that an unassigned value cell is <em class="emph">not</em> the
+same as having <code class="code">nil</code> in the value cell.  The symbol <code class="code">nil</code> is
+a Lisp object and can be the value of a variable, just as any other
+object can be; but it is still a value.  If a variable is void, trying
+to evaluate the variable signals a <code class="code">void-variable</code> error, instead
+of returning a value.
+</p>
+<p>Under the optional lexical scoping rule, the value cell only holds
+the variable&rsquo;s global value&mdash;the value outside of any lexical binding
+construct.  When a variable is lexically bound, the local value is
+determined by the lexical environment; hence, variables can have local
+values even if their symbols&rsquo; value cells are unassigned.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-makunbound"><span class="category-def">Function: </span><span><strong class="def-name">makunbound</strong> <var class="def-var-arguments">symbol</var><a class="copiable-link" href="#index-makunbound"> &para;</a></span></dt>
+<dd><p>This function empties out the value cell of <var class="var">symbol</var>, making the
+variable void.  It returns <var class="var">symbol</var>.
+</p>
+<p>If <var class="var">symbol</var> has a dynamic local binding, <code class="code">makunbound</code> voids
+the current binding, and this voidness lasts only as long as the local
+binding is in effect.  Afterwards, the previously shadowed local or
+global binding is reexposed; then the variable will no longer be void,
+unless the reexposed binding is void too.
+</p>
+<p>Here are some examples (assuming dynamic binding is in effect):
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq x 1)               ; <span class="r">Put a value in the global binding.</span>
+     &rArr; 1
+(let ((x 2))             ; <span class="r">Locally bind it.</span>
+  (makunbound 'x)        ; <span class="r">Void the local binding.</span>
+  x)
+error&rarr; Symbol's value as variable is void: x
+</pre></div><div class="group"><pre class="example-preformatted">x                        ; <span class="r">The global binding is unchanged.</span>
+     &rArr; 1
+
+(let ((x 2))             ; <span class="r">Locally bind it.</span>
+  (let ((x 3))           ; <span class="r">And again.</span>
+    (makunbound 'x)      ; <span class="r">Void the innermost-local binding.</span>
+    x))                  ; <span class="r">And refer: it&rsquo;s void.</span>
+error&rarr; Symbol's value as variable is void: x
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(let ((x 2))
+  (let ((x 3))
+    (makunbound 'x))     ; <span class="r">Void inner binding, then remove it.</span>
+  x)                     ; <span class="r">Now outer <code class="code">let</code> binding is visible.</span>
+     &rArr; 2
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-boundp"><span class="category-def">Function: </span><span><strong class="def-name">boundp</strong> <var class="def-var-arguments">variable</var><a class="copiable-link" href="#index-boundp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">variable</var> (a symbol) is not
+void, and <code class="code">nil</code> if it is void.
+</p>
+<p>Here are some examples (assuming dynamic binding is in effect):
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(boundp 'abracadabra)          ; <span class="r">Starts out void.</span>
+     &rArr; nil
+</pre></div><div class="group"><pre class="example-preformatted">(let ((abracadabra 5))         ; <span class="r">Locally bind it.</span>
+  (boundp 'abracadabra))
+     &rArr; t
+</pre></div><div class="group"><pre class="example-preformatted">(boundp 'abracadabra)          ; <span class="r">Still globally void.</span>
+     &rArr; nil
+</pre></div><div class="group"><pre class="example-preformatted">(setq abracadabra 5)           ; <span class="r">Make it globally nonvoid.</span>
+     &rArr; 5
+</pre></div><div class="group"><pre class="example-preformatted">(boundp 'abracadabra)
+     &rArr; t
+</pre></div></div>
+</dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Defining-Variables.html">Defining Global Variables</a>, Previous: <a href="Local-Variables.html">Local Variables</a>, Up: <a href="Variables.html">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SMIE Indentation Example (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="SMIE Indentation Example (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="SMIE-Indentation-Helpers.html" rel="prev" title="SMIE Indentation Helpers">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,17 +48,18 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="SMIE-Indentation-Example"></span><div class="header">
+<div class="subsubsection-level-extent" id="SMIE-Indentation-Example">
+<div class="nav-panel">
 <p>
-Next: <a href="SMIE-Customization.html" accesskey="n" rel="next">SMIE Customization</a>, Previous: <a href="SMIE-Indentation-Helpers.html" accesskey="p" rel="prev">SMIE Indentation Helpers</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">SMIE</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="SMIE-Customization.html" accesskey="n" rel="next">Customizing Indentation</a>, Previous: <a href="SMIE-Indentation-Helpers.html" accesskey="p" rel="prev">Helper Functions for Indentation Rules</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">Simple Minded Indentation Engine</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Sample-Indentation-Rules"></span><h4 class="subsubsection">22.7.1.8 Sample Indentation Rules</h4>
+<h4 class="subsubsection" id="Sample-Indentation-Rules"><span>22.7.1.8 Sample Indentation Rules<a class="copiable-link" href="#Sample-Indentation-Rules"> &para;</a></span></h4>
 
 <p>Here is an example of an indentation function:
 </p>
 <div class="example">
-<pre class="example">(defun sample-smie-rules (kind token)
+<pre class="example-preformatted">(defun sample-smie-rules (kind token)
   (pcase (cons kind token)
     (`(:elem . basic) sample-indent-basic)
     (`(,_ . &quot;,&quot;) (smie-rule-separator kind))
@@ -80,60 +73,60 @@ Next: <a href="SMIE-Customization.html" accesskey="n" rel="next">SMIE Customizat
 
 <p>A few things to note:
 </p>
-<ul>
-<li> The first case indicates the basic indentation increment to use.
-If <code>sample-indent-basic</code> is <code>nil</code>, then SMIE uses the global
-setting <code>smie-indent-basic</code>.  The major mode could have set
-<code>smie-indent-basic</code> buffer-locally instead, but that
+<ul class="itemize mark-bullet">
+<li>The first case indicates the basic indentation increment to use.
+If <code class="code">sample-indent-basic</code> is <code class="code">nil</code>, then SMIE uses the global
+setting <code class="code">smie-indent-basic</code>.  The major mode could have set
+<code class="code">smie-indent-basic</code> buffer-locally instead, but that
 is discouraged.
 
-</li><li> The rule for the token <code>&quot;,&quot;</code> make SMIE try to be more clever when
+</li><li>The rule for the token <code class="code">&quot;,&quot;</code> make SMIE try to be more clever when
 the comma separator is placed at the beginning of lines.  It tries to
 outdent the separator so as to align the code after the comma; for
 example:
 
 <div class="example">
-<pre class="example">x = longfunctionname (
+<pre class="example-preformatted">x = longfunctionname (
         arg1
       , arg2
     );
 </pre></div>
 
-</li><li> The rule for indentation after <code>&quot;:=&quot;</code> exists because otherwise
-SMIE would treat <code>&quot;:=&quot;</code> as an infix operator and would align the
+</li><li>The rule for indentation after <code class="code">&quot;:=&quot;</code> exists because otherwise
+SMIE would treat <code class="code">&quot;:=&quot;</code> as an infix operator and would align the
 right argument with the left one.
 
-</li><li> The rule for indentation before <code>&quot;begin&quot;</code> is an example of the use
-of virtual indentation:  This rule is used only when <code>&quot;begin&quot;</code> is
-hanging, which can happen only when <code>&quot;begin&quot;</code> is not at the
+</li><li>The rule for indentation before <code class="code">&quot;begin&quot;</code> is an example of the use
+of virtual indentation:  This rule is used only when <code class="code">&quot;begin&quot;</code> is
+hanging, which can happen only when <code class="code">&quot;begin&quot;</code> is not at the
 beginning of a line.  So this is not used when indenting
-<code>&quot;begin&quot;</code> itself but only when indenting something relative to this
-<code>&quot;begin&quot;</code>.  Concretely, this rule changes the indentation from:
+<code class="code">&quot;begin&quot;</code> itself but only when indenting something relative to this
+<code class="code">&quot;begin&quot;</code>.  Concretely, this rule changes the indentation from:
 
 <div class="example">
-<pre class="example">    if x &gt; 0 then begin
+<pre class="example-preformatted">    if x &gt; 0 then begin
             dosomething(x);
         end
 </pre></div>
 <p>to
 </p><div class="example">
-<pre class="example">    if x &gt; 0 then begin
+<pre class="example-preformatted">    if x &gt; 0 then begin
         dosomething(x);
     end
 </pre></div>
 
-</li><li> The rule for indentation before <code>&quot;if&quot;</code> is similar to the one for
-<code>&quot;begin&quot;</code>, but where the purpose is to treat <code>&quot;else if&quot;</code>
+</li><li>The rule for indentation before <code class="code">&quot;if&quot;</code> is similar to the one for
+<code class="code">&quot;begin&quot;</code>, but where the purpose is to treat <code class="code">&quot;else if&quot;</code>
 as a single unit, so as to align a sequence of tests rather than indent
 each test further to the right.  This function does this only in the
-case where the <code>&quot;if&quot;</code> is not placed on a separate line, hence the
-<code>smie-rule-bolp</code> test.
+case where the <code class="code">&quot;if&quot;</code> is not placed on a separate line, hence the
+<code class="code">smie-rule-bolp</code> test.
 
-<p>If we know that the <code>&quot;else&quot;</code> is always aligned with its <code>&quot;if&quot;</code>
+<p>If we know that the <code class="code">&quot;else&quot;</code> is always aligned with its <code class="code">&quot;if&quot;</code>
 and is always at the beginning of a line, we can use a more efficient
 rule:
 </p><div class="example">
-<pre class="example">((equal token &quot;if&quot;)
+<pre class="example-preformatted">((equal token &quot;if&quot;)
  (and (not (smie-rule-bolp))
       (smie-rule-prev-p &quot;else&quot;)
       (save-excursion
@@ -142,14 +135,15 @@ rule:
 </pre></div>
 
 <p>The advantage of this formulation is that it reuses the indentation of
-the previous <code>&quot;else&quot;</code>, rather than going all the way back to the
-first <code>&quot;if&quot;</code> of the sequence.
+the previous <code class="code">&quot;else&quot;</code>, rather than going all the way back to the
+first <code class="code">&quot;if&quot;</code> of the sequence.
 </p></li></ul>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="SMIE-Customization.html" accesskey="n" rel="next">SMIE Customization</a>, Previous: <a href="SMIE-Indentation-Helpers.html" accesskey="p" rel="prev">SMIE Indentation Helpers</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">SMIE</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="SMIE-Customization.html">Customizing Indentation</a>, Previous: <a href="SMIE-Indentation-Helpers.html">Helper Functions for Indentation Rules</a>, Up: <a href="SMIE.html">Simple Minded Indentation Engine</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

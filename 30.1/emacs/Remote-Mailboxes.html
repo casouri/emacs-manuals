@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.1.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Remote Mailboxes (GNU Emacs Manual)</title>
+
+<meta name="description" content="Remote Mailboxes (GNU Emacs Manual)">
+<meta name="keywords" content="Remote Mailboxes (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Rmail.html" rel="up" title="Rmail">
+<link href="Other-Mailbox-Formats.html" rel="next" title="Other Mailbox Formats">
+<link href="Movemail.html" rel="prev" title="Movemail">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Remote-Mailboxes">
+<div class="nav-panel">
+<p>
+Next: <a href="Other-Mailbox-Formats.html" accesskey="n" rel="next">Retrieving Mail from Local Mailboxes in Various Formats</a>, Previous: <a href="Movemail.html" accesskey="p" rel="prev"><code class="command">movemail</code> program</a>, Up: <a href="Rmail.html" accesskey="u" rel="up">Reading Mail with Rmail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Retrieving-Mail-from-Remote-Mailboxes"><span>35.19 Retrieving Mail from Remote Mailboxes<a class="copiable-link" href="#Retrieving-Mail-from-Remote-Mailboxes"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-movemail"></a>
+<a class="index-entry-id" id="index-remote-mailboxes_002c-accessing-by-movemail"></a>
+
+<p>Some sites use a method called POP3 for accessing users&rsquo; inbox data
+instead of storing the data in inbox files.  The Mailutils
+<code class="command">movemail</code> by default supports POP3 with TLS encryption.
+<strong class="strong">Warning:</strong> Although the <code class="command">Emacs movemail</code> supports POP3,
+its use for this is not recommended since it does not support encrypted
+connections&mdash;the Mailutils version does.
+Both versions of <code class="command">movemail</code> work only with POP3, not with
+older versions of POP.
+</p>
+<a class="index-entry-id" id="index-MAILHOST-environment-variable"></a>
+<a class="index-entry-id" id="index-POP3-mailboxes"></a>
+<p>You can specify
+a POP3 inbox by using a POP3 <em class="dfn">URL</em> (see <a class="pxref" href="Movemail.html"><code class="command">movemail</code> program</a>).  A POP3
+<abbr class="acronym">URL</abbr> is of the form
+&lsquo;<samp class="samp">pop://<var class="var">username</var>@<var class="var">hostname</var>:<var class="var">port</var></samp>&rsquo;, where
+<var class="var">hostname</var> and <var class="var">port</var> are the host name (or IP address)
+and port number of the remote mail
+server and <var class="var">username</var> is the user name on that server.
+Additionally, you may specify the password in the mailbox <abbr class="acronym">URL</abbr>:
+&lsquo;<samp class="samp">pop://<var class="var">username</var>:<var class="var">password</var>@<var class="var">hostname</var>:<var class="var">port</var></samp>&rsquo;.  In this
+case, <var class="var">password</var> takes preference over the one set by
+<code class="code">rmail-remote-password</code> (see below).  This is especially useful
+if you have several remote mailboxes with different passwords.
+If using Mailutils <code class="command">movemail</code> and the server supports
+encrypted connections, <code class="command">movemail</code> tries to use it; specify
+&lsquo;<samp class="samp">pops:</samp>&rsquo; instead of &lsquo;<samp class="samp">pop:</samp>&rsquo; to require such a connection.
+</p>
+<p>For backward compatibility, Rmail also supports an alternative way of
+specifying remote POP3 mailboxes.  Specifying an inbox name in the form
+&lsquo;<samp class="samp">po:<var class="var">username</var>:<var class="var">hostname</var>:<var class="var">port</var></samp>&rsquo; is equivalent to
+&lsquo;<samp class="samp">pop://<var class="var">username</var>@<var class="var">hostname</var>:<var class="var">port</var></samp>&rsquo;.  If you omit the
+<var class="var">:hostname</var> part, the <code class="env">MAILHOST</code> environment variable specifies
+the machine on which to look for the POP3 server.
+</p>
+<a class="index-entry-id" id="index-IMAP-mailboxes"></a>
+<p>Another method for accessing remote mailboxes is IMAP.  This method
+is supported only by the Mailutils <code class="command">movemail</code>, and uses the
+IMAP4 protocol.  To specify an IMAP mailbox in the inbox list, use the
+following mailbox <abbr class="acronym">URL</abbr>:
+&lsquo;<samp class="samp">imap://<var class="var">username</var>[:<var class="var">password</var>]@<var class="var">hostname</var>:<var class="var">port</var></samp>&rsquo;.
+The <var class="var">password</var> part is optional, as described above.  If the
+server supports it, <code class="command">movemail</code> tries to use an encrypted
+connection&mdash;use the &lsquo;<samp class="samp">imaps:</samp>&rsquo; form to require one.
+</p>
+<a class="index-entry-id" id="index-rmail_002dremote_002dpassword"></a>
+<a class="index-entry-id" id="index-rmail_002dremote_002dpassword_002drequired"></a>
+<p>Accessing a remote mailbox may require a password.  Rmail uses the
+following algorithm to retrieve it:
+</p>
+<ol class="enumerate">
+<li> If a <var class="var">password</var> is present in the mailbox URL (see above), it is
+used.
+</li><li> If the variable <code class="code">rmail-remote-password-required</code> is <code class="code">nil</code>,
+Rmail assumes no password is required.
+</li><li> If the variable <code class="code">rmail-remote-password</code> is non-<code class="code">nil</code>, its
+value is used.
+</li><li> Otherwise, Rmail will ask you for the password to use.
+</li></ol>
+
+<p>On some mail servers the usernames include domain information, which
+can mean they contain the &lsquo;<samp class="samp">@</samp>&rsquo; character.  The inbox specifier
+string uses &lsquo;<samp class="samp">@</samp>&rsquo; to signal the start of the mailserver name.
+This creates confusion for movemail.  If your username contains
+&lsquo;<samp class="samp">@</samp>&rsquo; and you&rsquo;re using Mailutils <code class="command">movemail</code> then you can
+fix this: Replace <code class="code">@</code> in the user name with its <abbr class="acronym">URL</abbr>
+encoding &lsquo;<samp class="samp">%40</samp>&rsquo;.
+</p>
+<a class="index-entry-id" id="index-rmail_002dmovemail_002dflags"></a>
+<p>If you need to pass additional command-line flags to <code class="command">movemail</code>,
+set the variable <code class="code">rmail-movemail-flags</code> a list of the flags you
+wish to use.  Do not use this variable to pass the &lsquo;<samp class="samp">-p</samp>&rsquo; flag to
+preserve your inbox contents; use <code class="code">rmail-preserve-inbox</code> instead.
+</p>
+<a class="index-entry-id" id="index-Kerberos-POP3-authentication"></a>
+<p>The <code class="command">movemail</code> program installed at your site may support
+Kerberos authentication.  If it is supported, it is used by default
+whenever you attempt to retrieve POP3 mail when
+<code class="code">rmail-remote-password</code> and <code class="code">rmail-remote-password-required</code>
+are unset.
+</p>
+<a class="index-entry-id" id="index-reverse-order-in-POP3-inboxes"></a>
+<p>Some POP3 servers store messages in reverse order.  If your server does
+this, and you would rather read your mail in the order in which it was
+received, you can tell <code class="command">movemail</code> to reverse the order of
+downloaded messages by adding the &lsquo;<samp class="samp">-r</samp>&rsquo; flag to
+<code class="code">rmail-movemail-flags</code>.
+</p>
+<a class="index-entry-id" id="index-TLS-encryption-_0028Rmail_0029"></a>
+<p>Mailutils <code class="command">movemail</code> supports TLS encryption.  If you wish to
+use it, add the &lsquo;<samp class="samp">--tls</samp>&rsquo; flag to <code class="code">rmail-movemail-flags</code>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Other-Mailbox-Formats.html">Retrieving Mail from Local Mailboxes in Various Formats</a>, Previous: <a href="Movemail.html"><code class="command">movemail</code> program</a>, Up: <a href="Rmail.html">Reading Mail with Rmail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

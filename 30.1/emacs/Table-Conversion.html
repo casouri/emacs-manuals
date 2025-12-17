@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.1.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Table Conversion (GNU Emacs Manual)</title>
+
+<meta name="description" content="Table Conversion (GNU Emacs Manual)">
+<meta name="keywords" content="Table Conversion (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Text-Based-Tables.html" rel="up" title="Text Based Tables">
+<link href="Table-Misc.html" rel="next" title="Table Misc">
+<link href="Table-Rows-and-Columns.html" rel="prev" title="Table Rows and Columns">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Table-Conversion">
+<div class="nav-panel">
+<p>
+Next: <a href="Table-Misc.html" accesskey="n" rel="next">Table Miscellany</a>, Previous: <a href="Table-Rows-and-Columns.html" accesskey="p" rel="prev">Table Rows and Columns</a>, Up: <a href="Text-Based-Tables.html" accesskey="u" rel="up">Editing Text-based Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Converting-Between-Plain-Text-and-Tables"><span>27.15.7 Converting Between Plain Text and Tables<a class="copiable-link" href="#Converting-Between-Plain-Text-and-Tables"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-text-to-table"></a>
+<a class="index-entry-id" id="index-table-to-text"></a>
+
+<a class="index-entry-id" id="index-table_002dcapture"></a>
+<p>The command <kbd class="kbd">M-x table-capture</kbd> captures plain text in a region
+and turns it into a table.  Unlike <kbd class="kbd">M-x table-recognize</kbd>
+(see <a class="pxref" href="Table-Recognition.html">Table Recognition</a>), the original text does not need to have a
+table appearance; it only needs to have a logical table-like
+structure.
+</p>
+<p>For example, suppose we have the following numbers, which are
+divided into three lines and separated horizontally by commas:
+</p>
+<div class="example">
+<pre class="example-preformatted">1, 2, 3, 4
+5, 6, 7, 8
+, 9, 10
+</pre></div>
+
+<p>Invoking <kbd class="kbd">M-x table-capture</kbd> on that text produces this table:
+</p>
+<div class="example">
+<pre class="example-preformatted">+-----+-----+-----+-----+
+|1    |2    |3    |4    |
++-----+-----+-----+-----+
+|5    |6    |7    |8    |
++-----+-----+-----+-----+
+|     |9    |10   |     |
++-----+-----+-----+-----+
+</pre></div>
+
+<a class="index-entry-id" id="index-table_002drelease"></a>
+<p><kbd class="kbd">M-x table-release</kbd> does the opposite: it converts a table back
+to plain text, removing its cell borders.
+</p>
+<p>One application of this pair of commands is to edit a text in
+layout.  Look at the following three paragraphs:
+</p>
+<div class="example">
+<pre class="example-preformatted">table-capture is a powerful command.
+Here are some things it can do:
+
+Parse Cell Items   Using row and column delimiter regexps,
+                   it parses the specified text area and
+                   extracts cell items into a table.
+</pre></div>
+
+<p>Applying <code class="code">table-capture</code> to a region containing the above text,
+with empty strings for the column and row delimiter regexps, creates a
+table with a single cell like the following one.
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">+----------------------------------------------------------+
+|table-capture is a powerful command.                      |
+|Here are some things it can do:                           |
+|                                                          |
+|Parse Cell Items   Using row and column delimiter regexps,|
+|                   it parses the specified text area and  |
+|                   extracts cell items into a table.      |
++----------------------------------------------------------+
+</pre></div></div>
+
+<p>We can then use the cell splitting commands (see <a class="pxref" href="Cell-Commands.html">Commands for Table Cells</a>) to
+subdivide the table so that each paragraph occupies a cell:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">+----------------------------------------------------------+
+|table-capture is a powerful command.                      |
+|Here are some things it can do:                           |
++-----------------+----------------------------------------+
+|Parse Cell Items | Using row and column delimiter regexps,|
+|                 | it parses the specified text area and  |
+|                 | extracts cell items into a table.      |
++-----------------+----------------------------------------+
+</pre></div>
+
+<p>Each cell can now be edited independently without affecting the layout
+of other cells.  When finished, we can invoke <kbd class="kbd">M-x table-release</kbd>
+to convert the table back to plain text.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Table-Misc.html">Table Miscellany</a>, Previous: <a href="Table-Rows-and-Columns.html">Table Rows and Columns</a>, Up: <a href="Text-Based-Tables.html">Editing Text-based Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

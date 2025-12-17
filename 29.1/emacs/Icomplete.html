@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Icomplete (GNU Emacs Manual)</title>
+
+<meta name="description" content="Icomplete (GNU Emacs Manual)">
+<meta name="keywords" content="Icomplete (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Buffer-Convenience.html" rel="up" title="Buffer Convenience">
+<link href="Buffer-Menus.html" rel="next" title="Buffer Menus">
+<link href="Uniquify.html" rel="prev" title="Uniquify">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Icomplete">
+<div class="nav-panel">
+<p>
+Next: <a href="Buffer-Menus.html" accesskey="n" rel="next">Customizing Buffer Menus</a>, Previous: <a href="Uniquify.html" accesskey="p" rel="prev">Making Buffer Names Unique</a>, Up: <a href="Buffer-Convenience.html" accesskey="u" rel="up">Convenience Features and Customization of Buffer Handling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Fast-minibuffer-selection"><span>20.7.2 Fast minibuffer selection<a class="copiable-link" href="#Fast-minibuffer-selection"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-icomplete_002dmode"></a>
+<a class="index-entry-id" id="index-Icomplete-mode"></a>
+
+<p>Icomplete global minor mode provides a convenient way to quickly select an
+element among the possible completions in a minibuffer.  When enabled, typing
+in the minibuffer continuously displays a list of possible completions that
+match the string you have typed.
+</p>
+<p>At any time, you can type <kbd class="kbd">C-j</kbd> to select the first completion in
+the list.  So the way to select a particular completion is to make it the
+first in the list.  There are two ways to do this.  You can type more
+of the completion name and thus narrow down the list, excluding unwanted
+completions above the desired one.  Alternatively, you can use <kbd class="kbd">C-.</kbd>
+and <kbd class="kbd">C-,</kbd> to rotate the list until the desired buffer is first.
+</p>
+<p><kbd class="kbd">M-<kbd class="key">TAB</kbd></kbd> will select the first completion in the list, like
+<kbd class="kbd">C-j</kbd> but without exiting the minibuffer, so you can edit it
+further.  This is typically used when entering a file name, where
+<kbd class="kbd">M-<kbd class="key">TAB</kbd></kbd> can be used a few times to descend in the hierarchy
+of directories.
+</p>
+<p>To enable Icomplete mode, type <kbd class="kbd">M-x icomplete-mode</kbd>, or customize
+the variable <code class="code">icomplete-mode</code> to <code class="code">t</code> (see <a class="pxref" href="Easy-Customization.html">Easy Customization Interface</a>).
+</p>
+<a class="index-entry-id" id="index-fido_002dmode"></a>
+<a class="index-entry-id" id="index-fido-mode"></a>
+
+<p>An alternative to Icomplete mode is Fido mode.  This is very similar
+to Icomplete mode, but retains some functionality from a popular
+extension called Ido mode (in fact the name is derived from &ldquo;Fake
+Ido&rdquo;).  Among other things, in Fido mode, <kbd class="kbd">C-s</kbd> and <kbd class="kbd">C-r</kbd> are
+also used to rotate the completions list, <kbd class="kbd">C-k</kbd> can be used to
+delete files and kill buffers in-list.  Another noteworthy aspect is
+that <code class="code">flex</code> is used as the default completion style
+(see <a class="pxref" href="Completion-Styles.html">How Completion Alternatives Are Chosen</a>).  To change this, add the following to
+your initialization file (see <a class="pxref" href="Init-File.html">The Emacs Initialization File</a>):
+</p>
+<div class="example">
+<pre class="example-preformatted">(defun my-icomplete-styles ()
+  (setq-local completion-styles '(initials flex)))
+(add-hook 'icomplete-minibuffer-setup-hook 'my-icomplete-styles)
+</pre></div>
+
+<p>To enable Fido mode, type <kbd class="kbd">M-x fido-mode</kbd>, or customize
+the variable <code class="code">fido-mode</code> to <code class="code">t</code> (see <a class="pxref" href="Easy-Customization.html">Easy Customization Interface</a>).
+</p>
+<a class="index-entry-id" id="index-icomplete_002dvertical_002dmode"></a>
+<a class="index-entry-id" id="index-Icomplete-vertical-mode"></a>
+
+<p>Icomplete mode and Fido mode display the possible completions on the
+same line as the prompt by default.  To display the completion candidates
+vertically under the prompt, type <kbd class="kbd">M-x icomplete-vertical-mode</kbd>, or
+customize the variable <code class="code">icomplete-vertical-mode</code> to <code class="code">t</code>
+(see <a class="pxref" href="Easy-Customization.html">Easy Customization Interface</a>).
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Buffer-Menus.html">Customizing Buffer Menus</a>, Previous: <a href="Uniquify.html">Making Buffer Names Unique</a>, Up: <a href="Buffer-Convenience.html">Convenience Features and Customization of Buffer Handling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

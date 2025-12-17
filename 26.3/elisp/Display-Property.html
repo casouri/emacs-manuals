@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Display Property (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Display Property (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Display.html" rel="up" title="Display">
-<link href="Replacing-Specs.html" rel="next" title="Replacing Specs">
+<link href="Images.html" rel="next" title="Images">
 <link href="Window-Dividers.html" rel="prev" title="Window Dividers">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,58 +46,49 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Display-Property"></span><div class="header">
+<div class="section-level-extent" id="Display-Property">
+<div class="nav-panel">
 <p>
-Next: <a href="Images.html" accesskey="n" rel="next">Images</a>, Previous: <a href="Window-Dividers.html" accesskey="p" rel="prev">Window Dividers</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Images.html" accesskey="n" rel="next">Images</a>, Previous: <a href="Window-Dividers.html" accesskey="p" rel="prev">Window Dividers</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="The-display-Property"></span><h3 class="section">39.16 The <code>display</code> Property</h3>
-<span id="index-display-specification"></span>
-<span id="index-display-_0028text-property_0029"></span>
+<h3 class="section" id="The-display-Property"><span>39.16 The <code class="code">display</code> Property<a class="copiable-link" href="#The-display-Property"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-display-specification"></a>
+<a class="index-entry-id" id="index-display-_0028text-property_0029"></a>
 
-<p>The <code>display</code> text property (or overlay property) is used to
+<p>The <code class="code">display</code> text property (or overlay property) is used to
 insert images into text, and to control other aspects of how text
-displays.  The value of the <code>display</code> property should be a
+displays.  The value of the <code class="code">display</code> property should be a
 display specification, or a list or vector containing several display
-specifications.  Display specifications in the same <code>display</code>
+specifications.  Display specifications in the same <code class="code">display</code>
 property value generally apply in parallel to the text they cover.
 </p>
 <p>If several sources (overlays and/or a text property) specify values
-for the <code>display</code> property, only one of the values takes effect,
-following the rules of <code>get-char-property</code>.  See <a href="Examining-Properties.html">Examining Properties</a>.
+for the <code class="code">display</code> property, only one of the values takes effect,
+following the rules of <code class="code">get-char-property</code>.  See <a class="xref" href="Examining-Properties.html">Examining Text Properties</a>.
 </p>
-<span id="index-display-property_002c-unsafe-evaluation"></span>
-<span id="index-security_002c-and-display-specifications"></span>
+<a class="index-entry-id" id="index-display-property_002c-unsafe-evaluation"></a>
+<a class="index-entry-id" id="index-security_002c-and-display-specifications"></a>
 <p>Some of the display specifications allow inclusion of Lisp forms,
 which are evaluated at display time.  This could be unsafe in certain
 situations, e.g., when the display specification was generated by some
 external program/agent.  Wrapping a display specification in a list
-that begins with the special symbol <code>disable-eval</code>, as in
-<code><span class="nolinebreak">('disable-eval</span>&nbsp;<var>spec</var>)</code><!-- /@w -->, will disable evaluation of any
-Lisp in <var>spec</var>, while still supporting all the other display
+that begins with the special symbol <code class="code">disable-eval</code>, as in
+<code class="code">('disable-eval&nbsp;<var class="var">spec</var>)</code><!-- /@w -->, will disable evaluation of any
+Lisp in <var class="var">spec</var>, while still supporting all the other display
 property features.
 </p>
 <p>The rest of this section describes several kinds of
 display specifications and what they mean.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Replacing-Specs.html" accesskey="1">Replacing Specs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Display specs that replace the text.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Specified-Space.html" accesskey="2">Specified Space</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Displaying one space with a specified width.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Pixel-Specification.html" accesskey="3">Pixel Specification</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Specifying space width or height in pixels.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Other-Display-Specs.html" accesskey="4">Other Display Specs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Displaying an image; adjusting the height,
-                              spacing, and other properties of text.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Display-Margins.html" accesskey="5">Display Margins</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Displaying text or images to the side of the main text.
-</td></tr>
-</table>
 
-<hr>
-<div class="header">
-<p>
-Next: <a href="Images.html" accesskey="n" rel="next">Images</a>, Previous: <a href="Window-Dividers.html" accesskey="p" rel="prev">Window Dividers</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+<ul class="mini-toc">
+<li><a href="Replacing-Specs.html" accesskey="1">Display Specs That Replace The Text</a></li>
+<li><a href="Specified-Space.html" accesskey="2">Specified Spaces</a></li>
+<li><a href="Pixel-Specification.html" accesskey="3">Pixel Specification for Spaces</a></li>
+<li><a href="Other-Display-Specs.html" accesskey="4">Other Display Specifications</a></li>
+<li><a href="Display-Margins.html" accesskey="5">Displaying in the Margins</a></li>
+</ul>
 </div>
 
 

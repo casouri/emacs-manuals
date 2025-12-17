@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Low-Level Font (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Low-Level Font (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Faces.html" rel="up" title="Faces">
-<link href="Fringes.html" rel="next" title="Fringes">
 <link href="Fontsets.html" rel="prev" title="Fontsets">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,42 +46,43 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Low_002dLevel-Font"></span><div class="header">
+<div class="subsection-level-extent" id="Low_002dLevel-Font">
+<div class="nav-panel">
 <p>
 Previous: <a href="Fontsets.html" accesskey="p" rel="prev">Fontsets</a>, Up: <a href="Faces.html" accesskey="u" rel="up">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Low_002dLevel-Font-Representation"></span><h4 class="subsection">38.12.12 Low-Level Font Representation</h4>
+<h4 class="subsection" id="Low_002dLevel-Font-Representation"><span>38.12.12 Low-Level Font Representation<a class="copiable-link" href="#Low_002dLevel-Font-Representation"> &para;</a></span></h4>
 
 <p>Normally, it is not necessary to manipulate fonts directly.  In case
 you need to do so, this section explains how.
 </p>
 <p>In Emacs Lisp, fonts are represented using three different Lisp
-object types: <em>font objects</em>, <em>font specs</em>, and <em>font
+object types: <em class="dfn">font objects</em>, <em class="dfn">font specs</em>, and <em class="dfn">font
 entities</em>.
 </p>
-<dl>
-<dt id="index-fontp">Function: <strong>fontp</strong> <em>object &amp;optional type</em></dt>
-<dd><p>Return <code>t</code> if <var>object</var> is a font object, font spec, or font
-entity.  Otherwise, return <code>nil</code>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-fontp"><span class="category-def">Function: </span><span><strong class="def-name">fontp</strong> <var class="def-var-arguments">object &amp;optional type</var><a class="copiable-link" href="#index-fontp"> &para;</a></span></dt>
+<dd><p>Return <code class="code">t</code> if <var class="var">object</var> is a font object, font spec, or font
+entity.  Otherwise, return <code class="code">nil</code>.
 </p>
-<p>The optional argument <var>type</var>, if non-<code>nil</code>, determines the
-exact type of Lisp object to check for.  In that case, <var>type</var>
-should be one of <code>font-object</code>, <code>font-spec</code>, or
-<code>font-entity</code>.
+<p>The optional argument <var class="var">type</var>, if non-<code class="code">nil</code>, determines the
+exact type of Lisp object to check for.  In that case, <var class="var">type</var>
+should be one of <code class="code">font-object</code>, <code class="code">font-spec</code>, or
+<code class="code">font-entity</code>.
 </p></dd></dl>
 
 <p>A font object is a Lisp object that represents a font that Emacs has
-<em>opened</em>.  Font objects cannot be modified in Lisp, but they can
+<em class="dfn">opened</em>.  Font objects cannot be modified in Lisp, but they can
 be inspected.
 </p>
-<dl>
-<dt id="index-font_002dat">Function: <strong>font-at</strong> <em>position &amp;optional window string</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-font_002dat"><span class="category-def">Function: </span><span><strong class="def-name">font-at</strong> <var class="def-var-arguments">position &amp;optional window string</var><a class="copiable-link" href="#index-font_002dat"> &para;</a></span></dt>
 <dd><p>Return the font object that is being used to display the character at
-position <var>position</var> in the window <var>window</var>.  If <var>window</var>
-is <code>nil</code>, it defaults to the selected window.  If <var>string</var> is
-<code>nil</code>, <var>position</var> specifies a position in the current buffer;
-otherwise, <var>string</var> should be a string, and <var>position</var>
+position <var class="var">position</var> in the window <var class="var">window</var>.  If <var class="var">window</var>
+is <code class="code">nil</code>, it defaults to the selected window.  If <var class="var">string</var> is
+<code class="code">nil</code>, <var class="var">position</var> specifies a position in the current buffer;
+otherwise, <var class="var">string</var> should be a string, and <var class="var">position</var>
 specifies a position in that string.
 </p></dd></dl>
 
@@ -98,73 +90,73 @@ specifies a position in that string.
 that can be used to find a font.  More than one font may match the
 specifications in a font spec.
 </p>
-<dl>
-<dt id="index-font_002dspec">Function: <strong>font-spec</strong> <em>&amp;rest arguments</em></dt>
-<dd><p>Return a new font spec using the specifications in <var>arguments</var>,
-which should come in <code>property</code>-<code>value</code> pairs.  The possible
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-font_002dspec"><span class="category-def">Function: </span><span><strong class="def-name">font-spec</strong> <var class="def-var-arguments">&amp;rest arguments</var><a class="copiable-link" href="#index-font_002dspec"> &para;</a></span></dt>
+<dd><p>Return a new font spec using the specifications in <var class="var">arguments</var>,
+which should come in <code class="code">property</code>-<code class="code">value</code> pairs.  The possible
 specifications are as follows:
 </p>
-<dl compact="compact">
-<dt><code>:name</code></dt>
+<dl class="table">
+<dt><code class="code">:name</code></dt>
 <dd><p>The font name (a string), in either XLFD, Fontconfig, or GTK format.
-See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html#Fonts">Fonts</a> in <cite>The GNU Emacs Manual</cite>.
+See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html#Fonts">Fonts</a> in <cite class="cite">The GNU Emacs Manual</cite>.
 </p>
 </dd>
-<dt><code>:family</code></dt>
-<dt><code>:foundry</code></dt>
-<dt><code>:weight</code></dt>
-<dt><code>:slant</code></dt>
-<dt><code>:width</code></dt>
+<dt><code class="code">:family</code></dt>
+<dt><code class="code">:foundry</code></dt>
+<dt><code class="code">:weight</code></dt>
+<dt><code class="code">:slant</code></dt>
+<dt><code class="code">:width</code></dt>
 <dd><p>These have the same meanings as the face attributes of the same name.
-See <a href="Face-Attributes.html">Face Attributes</a>.
+See <a class="xref" href="Face-Attributes.html">Face Attributes</a>.
 </p>
 </dd>
-<dt><code>:size</code></dt>
+<dt><code class="code">:size</code></dt>
 <dd><p>The font size&mdash;either a non-negative integer that specifies the pixel
 size, or a floating point number that specifies the point size.
 </p>
 </dd>
-<dt><code>:adstyle</code></dt>
+<dt><code class="code">:adstyle</code></dt>
 <dd><p>Additional typographic style information for the font, such as
-&lsquo;<samp>sans</samp>&rsquo;.  The value should be a string or a symbol.
+&lsquo;<samp class="samp">sans</samp>&rsquo;.  The value should be a string or a symbol.
 </p>
 </dd>
-<dt><code>:registry</code></dt>
+<dt><code class="code">:registry</code></dt>
 <dd><p>The charset registry and encoding of the font, such as
-&lsquo;<samp>iso8859-1</samp>&rsquo;.  The value should be a string or a symbol.
+&lsquo;<samp class="samp">iso8859-1</samp>&rsquo;.  The value should be a string or a symbol.
 </p>
 </dd>
-<dt><code>:script</code></dt>
+<dt><code class="code">:script</code></dt>
 <dd><p>The script that the font must support (a symbol).
 </p>
 </dd>
-<dt><code>:otf</code></dt>
+<dt><code class="code">:otf</code></dt>
 <dd><p>The font must be an OpenType font that supports these OpenType
-features, provided Emacs is compiled with support for &lsquo;<samp>libotf</samp>&rsquo; (a
+features, provided Emacs is compiled with support for &lsquo;<samp class="samp">libotf</samp>&rsquo; (a
 library for performing complex text layout in certain scripts).  The
 value must be a list of the form
 </p>
-<div class="example">
-<pre class="example"><code>(<var>script-tag</var> <var>langsys-tag</var> <var>gsub</var> <var>gpos</var>)</code>
+<div class="example smallexample">
+<pre class="example-preformatted"><code class="code">(<var class="var">script-tag</var> <var class="var">langsys-tag</var> <var class="var">gsub</var> <var class="var">gpos</var>)</code>
 </pre></div>
 
-<p>where <var>script-tag</var> is the OpenType script tag symbol;
-<var>langsys-tag</var> is the OpenType language system tag symbol, or
-<code>nil</code> to use the default language system; <code>gsub</code> is a list
-of OpenType GSUB feature tag symbols, or <code>nil</code> if none is
-required; and <code>gpos</code> is a list of OpenType GPOS feature tag
-symbols, or <code>nil</code> if none is required.  If <code>gsub</code> or
-<code>gpos</code> is a list, a <code>nil</code> element in that list means that
+<p>where <var class="var">script-tag</var> is the OpenType script tag symbol;
+<var class="var">langsys-tag</var> is the OpenType language system tag symbol, or
+<code class="code">nil</code> to use the default language system; <code class="code">gsub</code> is a list
+of OpenType GSUB feature tag symbols, or <code class="code">nil</code> if none is
+required; and <code class="code">gpos</code> is a list of OpenType GPOS feature tag
+symbols, or <code class="code">nil</code> if none is required.  If <code class="code">gsub</code> or
+<code class="code">gpos</code> is a list, a <code class="code">nil</code> element in that list means that
 the font must not match any of the remaining tag symbols.  The
-<code>gpos</code> element may be omitted.
+<code class="code">gpos</code> element may be omitted.
 </p></dd>
 </dl>
 </dd></dl>
 
-<dl>
-<dt id="index-font_002dput">Function: <strong>font-put</strong> <em>font-spec property value</em></dt>
-<dd><p>Set the font property <var>property</var> in the font-spec <var>font-spec</var>
-to <var>value</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-font_002dput"><span class="category-def">Function: </span><span><strong class="def-name">font-put</strong> <var class="def-var-arguments">font-spec property value</var><a class="copiable-link" href="#index-font_002dput"> &para;</a></span></dt>
+<dd><p>Set the font property <var class="var">property</var> in the font-spec <var class="var">font-spec</var>
+to <var class="var">value</var>.
 </p></dd></dl>
 
 <p>A font entity is a reference to a font that need not be open.  Its
@@ -173,82 +165,83 @@ like a font object, and unlike a font spec, it refers to a single,
 specific font.  Unlike a font object, creating a font entity does not
 load the contents of that font into computer memory.
 </p>
-<dl>
-<dt id="index-find_002dfont">Function: <strong>find-font</strong> <em>font-spec &amp;optional frame</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-find_002dfont"><span class="category-def">Function: </span><span><strong class="def-name">find-font</strong> <var class="def-var-arguments">font-spec &amp;optional frame</var><a class="copiable-link" href="#index-find_002dfont"> &para;</a></span></dt>
 <dd><p>This function returns a font entity that best matches the font spec
-<var>font-spec</var> on frame <var>frame</var>.  If <var>frame</var> is <code>nil</code>,
+<var class="var">font-spec</var> on frame <var class="var">frame</var>.  If <var class="var">frame</var> is <code class="code">nil</code>,
 it defaults to the selected frame.
 </p></dd></dl>
 
-<dl>
-<dt id="index-list_002dfonts">Function: <strong>list-fonts</strong> <em>font-spec &amp;optional frame num prefer</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-list_002dfonts"><span class="category-def">Function: </span><span><strong class="def-name">list-fonts</strong> <var class="def-var-arguments">font-spec &amp;optional frame num prefer</var><a class="copiable-link" href="#index-list_002dfonts"> &para;</a></span></dt>
 <dd><p>This function returns a list of all font entities that match the font
-spec <var>font-spec</var>.
+spec <var class="var">font-spec</var>.
 </p>
-<p>The optional argument <var>frame</var>, if non-<code>nil</code>, specifies the
+<p>The optional argument <var class="var">frame</var>, if non-<code class="code">nil</code>, specifies the
 frame on which the fonts are to be displayed.  The optional argument
-<var>num</var>, if non-<code>nil</code>, should be an integer that specifies the
+<var class="var">num</var>, if non-<code class="code">nil</code>, should be an integer that specifies the
 maximum length of the returned list.  The optional argument
-<var>prefer</var>, if non-<code>nil</code>, should be another font spec, which is
+<var class="var">prefer</var>, if non-<code class="code">nil</code>, should be another font spec, which is
 used to control the order of the returned list; the returned font
 entities are sorted in order of decreasing &ldquo;closeness&rdquo; to that font
 spec.
 </p></dd></dl>
 
-<p>If you call <code>set-face-attribute</code> and pass a font spec, font
-entity, or font name string as the value of the <code>:font</code>
+<p>If you call <code class="code">set-face-attribute</code> and pass a font spec, font
+entity, or font name string as the value of the <code class="code">:font</code>
 attribute, Emacs opens the best &ldquo;matching&rdquo; font that is available
 for display.  It then stores the corresponding font object as the
-actual value of the <code>:font</code> attribute for that face.
+actual value of the <code class="code">:font</code> attribute for that face.
 </p>
 <p>The following functions can be used to obtain information about a
-font.  For these functions, the <var>font</var> argument can be a font
+font.  For these functions, the <var class="var">font</var> argument can be a font
 object, a font entity, or a font spec.
 </p>
-<dl>
-<dt id="index-font_002dget">Function: <strong>font-get</strong> <em>font property</em></dt>
-<dd><p>This function returns the value of the font property <var>property</var>
-for <var>font</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-font_002dget"><span class="category-def">Function: </span><span><strong class="def-name">font-get</strong> <var class="def-var-arguments">font property</var><a class="copiable-link" href="#index-font_002dget"> &para;</a></span></dt>
+<dd><p>This function returns the value of the font property <var class="var">property</var>
+for <var class="var">font</var>.
 </p>
-<p>If <var>font</var> is a font spec and the font spec does not specify
-<var>property</var>, the return value is <code>nil</code>.  If <var>font</var> is a
-font object or font entity, the value for the <var>:script</var> property
+<p>If <var class="var">font</var> is a font spec and the font spec does not specify
+<var class="var">property</var>, the return value is <code class="code">nil</code>.  If <var class="var">font</var> is a
+font object or font entity, the value for the <var class="var">:script</var> property
 may be a list of scripts supported by the font.
 </p></dd></dl>
 
-<dl>
-<dt id="index-font_002dface_002dattributes">Function: <strong>font-face-attributes</strong> <em>font &amp;optional frame</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-font_002dface_002dattributes"><span class="category-def">Function: </span><span><strong class="def-name">font-face-attributes</strong> <var class="def-var-arguments">font &amp;optional frame</var><a class="copiable-link" href="#index-font_002dface_002dattributes"> &para;</a></span></dt>
 <dd><p>This function returns a list of face attributes corresponding to
-<var>font</var>.  The optional argument <var>frame</var> specifies the frame on
-which the font is to be displayed.  If it is <code>nil</code>, the selected
+<var class="var">font</var>.  The optional argument <var class="var">frame</var> specifies the frame on
+which the font is to be displayed.  If it is <code class="code">nil</code>, the selected
 frame is used.  The return value has the form
 </p>
-<div class="example">
-<pre class="example">(:family <var>family</var> :height <var>height</var> :weight <var>weight</var>
-   :slant <var>slant</var> :width <var>width</var>)
+<div class="example smallexample">
+<pre class="example-preformatted">(:family <var class="var">family</var> :height <var class="var">height</var> :weight <var class="var">weight</var>
+   :slant <var class="var">slant</var> :width <var class="var">width</var>)
 </pre></div>
 
-<p>where the values of <var>family</var>, <var>height</var>, <var>weight</var>,
-<var>slant</var>, and <var>width</var> are face attribute values.  Some of these
+<p>where the values of <var class="var">family</var>, <var class="var">height</var>, <var class="var">weight</var>,
+<var class="var">slant</var>, and <var class="var">width</var> are face attribute values.  Some of these
 key-attribute pairs may be omitted from the list if they are not
-specified by <var>font</var>.
+specified by <var class="var">font</var>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-font_002dxlfd_002dname">Function: <strong>font-xlfd-name</strong> <em>font &amp;optional fold-wildcards</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-font_002dxlfd_002dname"><span class="category-def">Function: </span><span><strong class="def-name">font-xlfd-name</strong> <var class="def-var-arguments">font &amp;optional fold-wildcards</var><a class="copiable-link" href="#index-font_002dxlfd_002dname"> &para;</a></span></dt>
 <dd><p>This function returns the XLFD (X Logical Font Descriptor), a string,
-matching <var>font</var>.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html#Fonts">Fonts</a> in <cite>The GNU Emacs Manual</cite>, for
+matching <var class="var">font</var>.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html#Fonts">Fonts</a> in <cite class="cite">The GNU Emacs Manual</cite>, for
 information about XLFDs.  If the name is too long for an XLFD (which
-can contain at most 255 characters), the function returns <code>nil</code>.
+can contain at most 255 characters), the function returns <code class="code">nil</code>.
 </p>
-<p>If the optional argument <var>fold-wildcards</var> is non-<code>nil</code>,
+<p>If the optional argument <var class="var">fold-wildcards</var> is non-<code class="code">nil</code>,
 consecutive wildcards in the XLFD are folded into one.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Fontsets.html" accesskey="p" rel="prev">Fontsets</a>, Up: <a href="Faces.html" accesskey="u" rel="up">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Fontsets.html">Fontsets</a>, Up: <a href="Faces.html">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

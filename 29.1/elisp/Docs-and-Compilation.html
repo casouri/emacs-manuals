@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Docs and Compilation (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Docs and Compilation (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Docs and Compilation (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Byte-Compilation.html" rel="up" title="Byte Compilation">
+<link href="Dynamic-Loading.html" rel="next" title="Dynamic Loading">
+<link href="Compilation-Functions.html" rel="prev" title="Compilation Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Docs-and-Compilation">
+<div class="nav-panel">
+<p>
+Next: <a href="Dynamic-Loading.html" accesskey="n" rel="next">Dynamic Loading of Individual Functions</a>, Previous: <a href="Compilation-Functions.html" accesskey="p" rel="prev">Byte-Compilation Functions</a>, Up: <a href="Byte-Compilation.html" accesskey="u" rel="up">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Documentation-Strings-and-Compilation"><span>17.3 Documentation Strings and Compilation<a class="copiable-link" href="#Documentation-Strings-and-Compilation"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-dynamic-loading-of-documentation"></a>
+
+<p>When Emacs loads functions and variables from a byte-compiled file,
+it normally does not load their documentation strings into memory.
+Each documentation string is dynamically loaded from the
+byte-compiled file only when needed.  This saves memory, and speeds up
+loading by skipping the processing of the documentation strings.
+</p>
+<p>This feature has a drawback: if you delete, move, or alter the
+compiled file (such as by compiling a new version), Emacs may no
+longer be able to access the documentation string of previously-loaded
+functions or variables.  Such a problem normally only occurs if you
+build Emacs yourself, and happen to edit and/or recompile the Lisp
+source files.  To solve it, just reload each file after recompilation.
+</p>
+<p>Dynamic loading of documentation strings from byte-compiled files is
+determined, at compile time, for each byte-compiled file.  It can be
+disabled via the option <code class="code">byte-compile-dynamic-docstrings</code>.
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-byte_002dcompile_002ddynamic_002ddocstrings"><span class="category-def">User Option: </span><span><strong class="def-name">byte-compile-dynamic-docstrings</strong><a class="copiable-link" href="#index-byte_002dcompile_002ddynamic_002ddocstrings"> &para;</a></span></dt>
+<dd><p>If this is non-<code class="code">nil</code>, the byte compiler generates compiled files
+that are set up for dynamic loading of documentation strings.
+</p>
+<p>To disable the dynamic loading feature for a specific file, set this
+option to <code class="code">nil</code> in its header line (see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/File-Variables.html#File-Variables">Local Variables in Files</a> in <cite class="cite">The GNU Emacs Manual</cite>), like this:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">-*-byte-compile-dynamic-docstrings: nil;-*-
+</pre></div>
+
+<p>This is useful mainly if you expect to change the file, and you want
+Emacs sessions that have already loaded it to keep working when the
+file changes.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-_0023_0040count"></a>
+<a class="index-entry-id" id="index-_0023_0024"></a>
+<p>Internally, the dynamic loading of documentation strings is
+accomplished by writing compiled files with a special Lisp reader
+construct, &lsquo;<samp class="samp">#@<var class="var">count</var></samp>&rsquo;.  This construct skips the next
+<var class="var">count</var> characters.  It also uses the &lsquo;<samp class="samp">#$</samp>&rsquo; construct, which
+stands for the name of this file, as a string.  Do not use these
+constructs in Lisp source files; they are not designed to be clear to
+humans reading the file.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dynamic-Loading.html">Dynamic Loading of Individual Functions</a>, Previous: <a href="Compilation-Functions.html">Byte-Compilation Functions</a>, Up: <a href="Byte-Compilation.html">Byte Compilation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

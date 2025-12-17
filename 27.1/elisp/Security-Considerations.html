@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Security Considerations (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Security Considerations (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,17 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="System-Interface.html" rel="up" title="System Interface">
-<link href="Packaging.html" rel="next" title="Packaging">
 <link href="Dynamic-Libraries.html" rel="prev" title="Dynamic Libraries">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,14 +46,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Security-Considerations"></span><div class="header">
+<div class="section-level-extent" id="Security-Considerations">
+<div class="nav-panel">
 <p>
-Previous: <a href="Dynamic-Libraries.html" accesskey="p" rel="prev">Dynamic Libraries</a>, Up: <a href="System-Interface.html" accesskey="u" rel="up">System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Dynamic-Libraries.html" accesskey="p" rel="prev">Dynamically Loaded Libraries</a>, Up: <a href="System-Interface.html" accesskey="u" rel="up">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Security-Considerations-1"></span><h3 class="section">40.22 Security Considerations</h3>
-<span id="index-security"></span>
-<span id="index-hardening"></span>
+<h3 class="section" id="Security-Considerations-1"><span>40.22 Security Considerations<a class="copiable-link" href="#Security-Considerations-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-security"></a>
+<a class="index-entry-id" id="index-hardening"></a>
 
 <p>Like any application, Emacs can be run in a secure environment, where
 the operating system enforces rules about access and the like.  With
@@ -77,62 +67,61 @@ may be helpful if you are developing such applications.  It is by no
 means complete; it is intended to give you an idea of the security
 issues involved, rather than to be a security checklist.
 </p>
-<dl compact="compact">
-<dt>File local variables</dt>
-<dd><span id="index-file-local-variables-1"></span>
-<p>A file that Emacs visits can contain variable settings that affect
-the buffer visiting that file; See <a href="File-Local-Variables.html">File Local Variables</a>.
+<dl class="table">
+<dt><a id="index-file-local-variables-1"></a><span>File local variables<a class="copiable-link" href="#index-file-local-variables-1"> &para;</a></span></dt>
+<dd><p>A file that Emacs visits can contain variable settings that affect
+the buffer visiting that file; See <a class="xref" href="File-Local-Variables.html">File Local Variables</a>.
 Similarly, a directory can specify local variable values common to all
-files in that directory; see <a href="Directory-Local-Variables.html">Directory Local Variables</a>.  Although
+files in that directory; see <a class="ref" href="Directory-Local-Variables.html">Directory Local Variables</a>.  Although
 Emacs takes some effort to protect against misuse of these variables,
 a security hole can be created merely by a package setting
-<code>safe-local-variable</code> too optimistically, a problem that is all
+<code class="code">safe-local-variable</code> too optimistically, a problem that is all
 too common.  To disable this feature for both files and directories,
-set <code>enable-local-variables</code> to <code>nil</code>.
+set <code class="code">enable-local-variables</code> to <code class="code">nil</code>.
 </p>
 </dd>
 <dt>Access control</dt>
 <dd><p>Although Emacs normally respects access permissions of the underlying
 operating system, in some cases it handles accesses specially.  For
 example, file names can have handlers that treat the files specially,
-with their own access checking.  See <a href="Magic-File-Names.html">Magic File Names</a>.  Also, a
+with their own access checking.  See <a class="xref" href="Magic-File-Names.html">Making Certain File Names &ldquo;Magic&rdquo;</a>.  Also, a
 buffer can be read-only even if the corresponding file is writable,
-and vice versa, which can result in messages such as &lsquo;<samp>File passwd
-is write-protected; try to save anyway? (yes or no)</samp>&rsquo;.  See <a href="Read-Only-Buffers.html">Read Only Buffers</a>.
+and vice versa, which can result in messages such as &lsquo;<samp class="samp">File passwd
+is write-protected; try to save anyway? (yes or no)</samp>&rsquo;.  See <a class="xref" href="Read-Only-Buffers.html">Read-Only Buffers</a>.
 </p>
 </dd>
 <dt>Authentication</dt>
 <dd><p>Emacs has several functions that deal with passwords, e.g.,
-<code>read-passwd</code>.  See <a href="Reading-a-Password.html">Reading a Password</a>.
+<code class="code">read-passwd</code>.  See <a class="xref" href="Reading-a-Password.html">Reading a Password</a>.
 Although these functions do not attempt to
 broadcast passwords to the world, their implementations are not proof
 against determined attackers with access to Emacs internals.  For
-example, even if Elisp code uses <code>clear-string</code> to scrub a password from
+example, even if Elisp code uses <code class="code">clear-string</code> to scrub a password from
 its memory after using it, remnants of the password may still reside
-in the garbage-collected free list.  See <a href="Modifying-Strings.html">Modifying Strings</a>.
+in the garbage-collected free list.  See <a class="xref" href="Modifying-Strings.html">Modifying Strings</a>.
 </p>
 </dd>
 <dt>Code injection</dt>
 <dd><p>Emacs can send commands to many other applications, and applications
 should take care that strings sent as operands of these commands are
 not misinterpreted as directives.  For example, when using a shell
-command to rename a file <var>a</var> to <var>b</var>, do not simply use the
-string <code>mv <var>a</var> <var>b</var></code>, because either file name might start
-with &lsquo;<samp>-</samp>&rsquo;, or might contain shell metacharacters like &lsquo;<samp>;</samp>&rsquo;.
-Although functions like <code>shell-quote-argument</code> can help avoid
+command to rename a file <var class="var">a</var> to <var class="var">b</var>, do not simply use the
+string <code class="code">mv <var class="var">a</var> <var class="var">b</var></code>, because either file name might start
+with &lsquo;<samp class="samp">-</samp>&rsquo;, or might contain shell metacharacters like &lsquo;<samp class="samp">;</samp>&rsquo;.
+Although functions like <code class="code">shell-quote-argument</code> can help avoid
 this sort of problem, they are not panaceas; for example, on a POSIX
-platform <code>shell-quote-argument</code> quotes shell metacharacters but
-not leading &lsquo;<samp>-</samp>&rsquo;.  On MS-Windows, quoting for &lsquo;<samp>%</samp>&rsquo; assumes
-none of the environment variables have &lsquo;<samp>^</samp>&rsquo; in their name.
-See <a href="Shell-Arguments.html">Shell Arguments</a>.  Typically it is safer
-to use <code>call-process</code> than a subshell.  See <a href="Synchronous-Processes.html">Synchronous Processes</a>.  And it is safer yet to use builtin Emacs functions; for
-example, use <code>(rename-file &quot;<var>a</var>&quot; &quot;<var>b</var>&quot; t)</code> instead of
-invoking <code>mv</code>.  See <a href="Changing-Files.html">Changing Files</a>.
+platform <code class="code">shell-quote-argument</code> quotes shell metacharacters but
+not leading &lsquo;<samp class="samp">-</samp>&rsquo;.  On MS-Windows, quoting for &lsquo;<samp class="samp">%</samp>&rsquo; assumes
+none of the environment variables have &lsquo;<samp class="samp">^</samp>&rsquo; in their name.
+See <a class="xref" href="Shell-Arguments.html">Shell Arguments</a>.  Typically it is safer
+to use <code class="code">call-process</code> than a subshell.  See <a class="xref" href="Synchronous-Processes.html">Creating a Synchronous Process</a>.  And it is safer yet to use builtin Emacs functions; for
+example, use <code class="code">(rename-file &quot;<var class="var">a</var>&quot; &quot;<var class="var">b</var>&quot; t)</code> instead of
+invoking <code class="command">mv</code>.  See <a class="xref" href="Changing-Files.html">Changing File Names and Attributes</a>.
 </p>
 </dd>
 <dt>Coding systems</dt>
 <dd><p>Emacs attempts to infer the coding systems of the files and network
-connections it accesses.  See <a href="Coding-Systems.html">Coding Systems</a>.
+connections it accesses.  See <a class="xref" href="Coding-Systems.html">Coding Systems</a>.
 If Emacs infers incorrectly, or if the other
 parties to the network connection disagree with Emacs&rsquo;s inferences,
 the resulting system could be unreliable.  Also, even when it infers
@@ -147,15 +136,15 @@ terminator and mishandle strings or files containing null bytes.
 Emacs behaves.  Any environment variable whose name consists entirely
 of uppercase ASCII letters, digits, and the underscore may affect the
 internal behavior of Emacs.  Emacs uses several such variables, e.g.,
-<code>EMACSLOADPATH</code>.  See <a href="Library-Search.html">Library Search</a>.  On some platforms some
-environment variables (e.g., <code>PATH</code>, <code>POSIXLY_CORRECT</code>,
-<code>SHELL</code>, <code>TMPDIR</code>) need to have properly-configured values in
+<code class="env">EMACSLOADPATH</code>.  See <a class="xref" href="Library-Search.html">Library Search</a>.  On some platforms some
+environment variables (e.g., <code class="env">PATH</code>, <code class="env">POSIXLY_CORRECT</code>,
+<code class="env">SHELL</code>, <code class="env">TMPDIR</code>) need to have properly-configured values in
 order to get standard behavior for any utility Emacs might invoke.
-Even seemingly-benign variables like <code>TZ</code> may have security
-implications.  See <a href="System-Environment.html">System Environment</a>.
+Even seemingly-benign variables like <code class="env">TZ</code> may have security
+implications.  See <a class="xref" href="System-Environment.html">Operating System Environment</a>.
 </p>
 <p>Emacs has customization and other variables with similar
-considerations.  For example, if the variable <code>shell-file-name</code>
+considerations.  For example, if the variable <code class="code">shell-file-name</code>
 specifies a shell with nonstandard behavior, an Emacs-based
 application may misbehave.
 </p>
@@ -170,19 +159,19 @@ Emacs uses, and of the files that Emacs reads and writes.
 <dt>Network access</dt>
 <dd><p>Emacs often accesses the network, and you may want to configure it to
 avoid network accesses that it would normally do.  For example, unless
-you set <code>tramp-mode</code> to <code>nil</code>, file names using a certain
+you set <code class="code">tramp-mode</code> to <code class="code">nil</code>, file names using a certain
 syntax are interpreted as being network files, and are retrieved
-across the network.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/tramp/index.html#Top">The Tramp Manual</a> in <cite>The Tramp
+across the network.  See <a data-manual="tramp" href="https://www.gnu.org/software/emacs/manual/html_node/tramp/index.html#Top">The Tramp Manual</a> in <cite class="cite">The Tramp
 Manual</cite>.
 </p>
 </dd>
 <dt>Race conditions</dt>
 <dd><p>Emacs applications have the same sort of race-condition issues that
 other applications do.  For example, even when
-<code>(file-readable-p &quot;foo.txt&quot;)</code> returns <code>t</code>, it could be that
-<samp>foo.txt</samp> is unreadable because some other program changed the
-file&rsquo;s permissions between the call to <code>file-readable-p</code> and now.
-See <a href="Testing-Accessibility.html">Testing Accessibility</a>.
+<code class="code">(file-readable-p &quot;foo.txt&quot;)</code> returns <code class="code">t</code>, it could be that
+<samp class="file">foo.txt</samp> is unreadable because some other program changed the
+file&rsquo;s permissions between the call to <code class="code">file-readable-p</code> and now.
+See <a class="xref" href="Testing-Accessibility.html">Testing Accessibility</a>.
 </p>
 </dd>
 <dt>Resource limits</dt>
@@ -193,10 +182,11 @@ Emacs to neglect operations that it normally would have done.
 </p></dd>
 </dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Dynamic-Libraries.html" accesskey="p" rel="prev">Dynamic Libraries</a>, Up: <a href="System-Interface.html" accesskey="u" rel="up">System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Dynamic-Libraries.html">Dynamically Loaded Libraries</a>, Up: <a href="System-Interface.html">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

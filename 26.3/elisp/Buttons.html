@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Buttons (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Buttons (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Display.html" rel="up" title="Display">
-<link href="Button-Properties.html" rel="next" title="Button Properties">
+<link href="Abstract-Display.html" rel="next" title="Abstract Display">
 <link href="Xwidgets.html" rel="prev" title="Xwidgets">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,47 +46,44 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Buttons"></span><div class="header">
+<div class="section-level-extent" id="Buttons">
+<div class="nav-panel">
 <p>
-Next: <a href="Abstract-Display.html" accesskey="n" rel="next">Abstract Display</a>, Previous: <a href="Xwidgets.html" accesskey="p" rel="prev">Xwidgets</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Abstract-Display.html" accesskey="n" rel="next">Abstract Display</a>, Previous: <a href="Xwidgets.html" accesskey="p" rel="prev">Embedded Native Widgets</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Buttons-1"></span><h3 class="section">39.19 Buttons</h3>
-<span id="index-buttons-in-buffers"></span>
-<span id="index-clickable-buttons-in-buffers"></span>
+<h3 class="section" id="Buttons-1"><span>39.19 Buttons<a class="copiable-link" href="#Buttons-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-buttons-in-buffers"></a>
+<a class="index-entry-id" id="index-clickable-buttons-in-buffers"></a>
 
 <p>The Button package defines functions for inserting and manipulating
-<em>buttons</em> that can be activated with the mouse or via keyboard
+<em class="dfn">buttons</em> that can be activated with the mouse or via keyboard
 commands.  These buttons are typically used for various kinds of
 hyperlinks.
 </p>
 <p>A button is essentially a set of text or overlay properties,
 attached to a stretch of text in a buffer.  These properties are
-called <em>button properties</em>.  One of these properties, the
-<em>action property</em>, specifies a function which is called when the
+called <em class="dfn">button properties</em>.  One of these properties, the
+<em class="dfn">action property</em>, specifies a function which is called when the
 user invokes the button using the keyboard or the mouse.  The action
 function may examine the button and use its other properties as
 desired.
 </p>
 <p>In some ways, the Button package duplicates the functionality in the
-Widget package.  See <a href="../widget/index.html#Top">Introduction</a> in <cite>The Emacs Widget
+Widget package.  See <a data-manual="widget" href="https://www.gnu.org/software/emacs/manual/html_node/widget/index.html#Top">Introduction</a> in <cite class="cite">The Emacs Widget
 Library</cite>.  The advantage of the Button package is that it is faster,
 smaller, and simpler to program.  From the point of view of the user,
 the interfaces produced by the two packages are very similar.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Button-Properties.html" accesskey="1">Button Properties</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Button properties with special meanings.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Button-Types.html" accesskey="2">Button Types</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Defining common properties for classes of buttons.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Making-Buttons.html" accesskey="3">Making Buttons</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Adding buttons to Emacs buffers.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Manipulating-Buttons.html" accesskey="4">Manipulating Buttons</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Getting and setting properties of buttons.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Button-Buffer-Commands.html" accesskey="5">Button Buffer Commands</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Buffer-wide commands and bindings for buttons.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Button-Properties.html" accesskey="1">Button Properties</a></li>
+<li><a href="Button-Types.html" accesskey="2">Button Types</a></li>
+<li><a href="Making-Buttons.html" accesskey="3">Making Buttons</a></li>
+<li><a href="Manipulating-Buttons.html" accesskey="4">Manipulating Buttons</a></li>
+<li><a href="Button-Buffer-Commands.html" accesskey="5">Button Buffer Commands</a></li>
+</ul>
+</div>
 
 
 

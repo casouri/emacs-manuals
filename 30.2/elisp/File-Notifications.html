@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>File Notifications (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="File Notifications (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="File Notifications (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="System-Interface.html" rel="up" title="System Interface">
+<link href="Dynamic-Libraries.html" rel="next" title="Dynamic Libraries">
+<link href="Desktop-Notifications.html" rel="prev" title="Desktop Notifications">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="File-Notifications">
+<div class="nav-panel">
+<p>
+Next: <a href="Dynamic-Libraries.html" accesskey="n" rel="next">Dynamically Loaded Libraries</a>, Previous: <a href="Desktop-Notifications.html" accesskey="p" rel="prev">Desktop Notifications</a>, Up: <a href="System-Interface.html" accesskey="u" rel="up">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Notifications-on-File-Changes"><span>43.20 Notifications on File Changes<a class="copiable-link" href="#Notifications-on-File-Changes"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-file-notifications"></a>
+<a class="index-entry-id" id="index-watch_002c-for-filesystem-events"></a>
+
+<p>Several operating systems support watching of filesystems for changes
+to files or their attributes.  If configured properly, Emacs links a
+respective library like <samp class="file">inotify</samp>, <samp class="file">kqueue</samp>,
+<samp class="file">gfilenotify</samp>, or <samp class="file">w32notify</samp> statically.  These libraries
+enable watching of filesystems on the local machine.
+</p>
+<p>It is also possible to watch filesystems on remote machines,
+see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Remote-Files.html#Remote-Files">Remote Files</a> in <cite class="cite">The GNU Emacs Manual</cite>.
+This does not depend on one of the libraries linked to Emacs.
+</p>
+<p>Since all these libraries emit different events upon notified file
+changes, Emacs provides a special library <code class="code">filenotify</code> which
+presents a unified interface to applications.  Lisp programs that want
+to receive file notifications should always use this library in
+preference to the native ones.  This section documents the
+<code class="code">filenotify</code> library functions and variables.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dnotify_002dadd_002dwatch"><span class="category-def">Function: </span><span><strong class="def-name">file-notify-add-watch</strong> <var class="def-var-arguments">file flags callback</var><a class="copiable-link" href="#index-file_002dnotify_002dadd_002dwatch"> &para;</a></span></dt>
+<dd><p>Add a watch for filesystem events pertaining to <var class="var">file</var>.  This
+arranges for filesystem events pertaining to <var class="var">file</var> to be reported
+to Emacs.
+</p>
+<p>The returned value is a descriptor for the added watch.  Its type
+depends on the underlying library, and in general cannot be assumed to
+be an integer as in the example below.  It should be used for
+comparison by <code class="code">equal</code> only.
+</p>
+<p>If the <var class="var">file</var> cannot be watched for some reason, this function
+signals a <code class="code">file-notify-error</code> error.
+</p>
+<p>Sometimes, mounted filesystems cannot be watched for file changes.
+This is not detected by this function, and so a non-<code class="code">nil</code> return
+value does not guarantee that changes on <var class="var">file</var> will be actually
+notified.
+</p>
+<p>If <var class="var">file</var> is a symlink, it doesn&rsquo;t follow that link.  Just
+<var class="var">file</var> itself will be watched.
+</p>
+<p><var class="var">flags</var> is a list of conditions to set what will be watched for.
+It can include the following symbols:
+</p>
+<dl class="table">
+<dt><code class="code">change</code></dt>
+<dd><p>watch for changes in file&rsquo;s contents
+</p></dd>
+<dt><code class="code">attribute-change</code></dt>
+<dd><p>watch for changes in file attributes, like permissions or modification
+time
+</p></dd>
+</dl>
+
+<p>If <var class="var">file</var> is a directory, <code class="code">change</code> watches for file creation
+and deletion in that directory.  Some of the native file notification
+libraries also report file changes in that case.  This does not work
+recursively.
+</p>
+<p>When any event happens, Emacs will call the <var class="var">callback</var> function
+passing it a single argument <var class="var">event</var>, which is of the form
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(<var class="var">descriptor</var> <var class="var">action</var> <var class="var">file</var> [<var class="var">file1</var>])
+</pre></div>
+
+<p><var class="var">descriptor</var> is the same object as the one returned by this
+function.  <var class="var">action</var> is the description of the event.  It could be
+any one of the following symbols:
+</p>
+<dl class="table">
+<dt><code class="code">created</code></dt>
+<dd><p><var class="var">file</var> was created
+</p></dd>
+<dt><code class="code">deleted</code></dt>
+<dd><p><var class="var">file</var> was deleted
+</p></dd>
+<dt><code class="code">changed</code></dt>
+<dd><p><var class="var">file</var>&rsquo;s contents has changed; with <samp class="file">w32notify</samp> library,
+reports attribute changes as well
+</p></dd>
+<dt><code class="code">renamed</code></dt>
+<dd><p><var class="var">file</var> has been renamed to <var class="var">file1</var>
+</p></dd>
+<dt><code class="code">attribute-changed</code></dt>
+<dd><p>a <var class="var">file</var> attribute was changed
+</p></dd>
+<dt><code class="code">stopped</code></dt>
+<dd><p>watching <var class="var">file</var> has stopped
+</p></dd>
+</dl>
+
+<p>Note that the <samp class="file">w32notify</samp> library does not report
+<code class="code">attribute-changed</code> events.  When some file&rsquo;s attribute, like
+permissions or modification time, has changed, this library reports a
+<code class="code">changed</code> event.  Likewise, the <samp class="file">kqueue</samp> library does not
+reliably report file attribute changes when watching a directory.
+</p>
+<p>The <code class="code">stopped</code> event means that watching the file has been
+discontinued.  This could be because <code class="code">file-notify-rm-watch</code> was
+called (see below), or because the file being watched was deleted, or
+because the filesystem of the file being watched was unmounted, or due
+to another error reported from the underlying library which makes
+further watching impossible.
+</p>
+<p><var class="var">file</var> and <var class="var">file1</var> are the name of the file(s) whose event is
+being reported.  For example:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(require 'filenotify)
+     &rArr; filenotify
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(defun my-notify-callback (event)
+  (message &quot;Event %S&quot; event))
+     &rArr; my-notify-callback
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(file-notify-add-watch
+  &quot;/tmp&quot; '(change attribute-change) 'my-notify-callback)
+     &rArr; 35025468
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(write-region &quot;foo&quot; nil &quot;/tmp/foo&quot;)
+     &rArr; Event (35025468 created &quot;/tmp/.#foo&quot;)
+        Event (35025468 created &quot;/tmp/foo&quot;)
+        Event (35025468 changed &quot;/tmp/foo&quot;)
+        Event (35025468 deleted &quot;/tmp/.#foo&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(write-region &quot;bla&quot; nil &quot;/tmp/foo&quot;)
+     &rArr; Event (35025468 created &quot;/tmp/.#foo&quot;)
+        Event (35025468 changed &quot;/tmp/foo&quot;)
+        Event (35025468 deleted &quot;/tmp/.#foo&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(set-file-modes &quot;/tmp/foo&quot; (default-file-modes) 'nofollow)
+     &rArr; Event (35025468 attribute-changed &quot;/tmp/foo&quot;)
+</pre></div></div>
+
+<p>Whether the action <code class="code">renamed</code> is returned depends on the used
+watch library.  Otherwise, the actions <code class="code">deleted</code> and
+<code class="code">created</code> could be returned in a random order.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(rename-file &quot;/tmp/foo&quot; &quot;/tmp/bla&quot;)
+     &rArr; Event (35025468 renamed &quot;/tmp/foo&quot; &quot;/tmp/bla&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(delete-file &quot;/tmp/bla&quot;)
+     &rArr; Event (35025468 deleted &quot;/tmp/bla&quot;)
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dnotify_002drm_002dwatch"><span class="category-def">Function: </span><span><strong class="def-name">file-notify-rm-watch</strong> <var class="def-var-arguments">descriptor</var><a class="copiable-link" href="#index-file_002dnotify_002drm_002dwatch"> &para;</a></span></dt>
+<dd><p>Removes an existing file watch specified by its <var class="var">descriptor</var>.
+<var class="var">descriptor</var> should be an object returned by
+<code class="code">file-notify-add-watch</code>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-file_002dnotify_002drm_002dall_002dwatches"><span class="category-def">Command: </span><span><strong class="def-name">file-notify-rm-all-watches</strong><a class="copiable-link" href="#index-file_002dnotify_002drm_002dall_002dwatches"> &para;</a></span></dt>
+<dd><p>Removes all existing file notification watches from Emacs.
+</p>
+<p>Use this command with caution, because it could have unexpected side
+effects on packages relying on file watches.  It is intended mainly
+for debugging purposes, or when Emacs has been stalled.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dnotify_002dvalid_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-notify-valid-p</strong> <var class="def-var-arguments">descriptor</var><a class="copiable-link" href="#index-file_002dnotify_002dvalid_002dp"> &para;</a></span></dt>
+<dd><p>Checks a watch specified by its <var class="var">descriptor</var> for validity.
+<var class="var">descriptor</var> should be an object returned by
+<code class="code">file-notify-add-watch</code>.
+</p>
+<p>A watch can become invalid if the file or directory it watches is
+deleted, or if the watcher thread exits abnormally for any other
+reason.  Removing the watch by calling <code class="code">file-notify-rm-watch</code>
+also makes it invalid.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(make-directory &quot;/tmp/foo&quot;)
+     &rArr; Event (35025468 created &quot;/tmp/foo&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(setq desc
+      (file-notify-add-watch
+        &quot;/tmp/foo&quot; '(change) 'my-notify-callback))
+     &rArr; 11359632
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(file-notify-valid-p desc)
+     &rArr; t
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(write-region &quot;bla&quot; nil &quot;/tmp/foo/bla&quot;)
+     &rArr; Event (11359632 created &quot;/tmp/foo/.#bla&quot;)
+        Event (11359632 created &quot;/tmp/foo/bla&quot;)
+        Event (11359632 changed &quot;/tmp/foo/bla&quot;)
+        Event (11359632 deleted &quot;/tmp/foo/.#bla&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;; Deleting a file in the directory doesn't invalidate the watch.
+(delete-file &quot;/tmp/foo/bla&quot;)
+     &rArr; Event (11359632 deleted &quot;/tmp/foo/bla&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(write-region &quot;bla&quot; nil &quot;/tmp/foo/bla&quot;)
+     &rArr; Event (11359632 created &quot;/tmp/foo/.#bla&quot;)
+        Event (11359632 created &quot;/tmp/foo/bla&quot;)
+        Event (11359632 changed &quot;/tmp/foo/bla&quot;)
+        Event (11359632 deleted &quot;/tmp/foo/.#bla&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;; Deleting the directory invalidates the watch.
+;; Events arrive for different watch descriptors.
+(delete-directory &quot;/tmp/foo&quot; 'recursive)
+     &rArr; Event (35025468 deleted &quot;/tmp/foo&quot;)
+        Event (11359632 deleted &quot;/tmp/foo/bla&quot;)
+        Event (11359632 deleted &quot;/tmp/foo&quot;)
+        Event (11359632 stopped &quot;/tmp/foo&quot;)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(file-notify-valid-p desc)
+     &rArr; nil
+</pre></div></div>
+</dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dynamic-Libraries.html">Dynamically Loaded Libraries</a>, Previous: <a href="Desktop-Notifications.html">Desktop Notifications</a>, Up: <a href="System-Interface.html">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Rx Notation (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Rx Notation (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Rx Notation (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Regular-Expressions.html" rel="up" title="Regular Expressions">
+<link href="Regexp-Functions.html" rel="next" title="Regexp Functions">
+<link href="Regexp-Example.html" rel="prev" title="Regexp Example">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Rx-Notation">
+<div class="nav-panel">
+<p>
+Next: <a href="Regexp-Functions.html" accesskey="n" rel="next">Regular Expression Functions</a>, Previous: <a href="Regexp-Example.html" accesskey="p" rel="prev">Complex Regexp Example</a>, Up: <a href="Regular-Expressions.html" accesskey="u" rel="up">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="The-rx-Structured-Regexp-Notation"><span>35.3.3 The <code class="code">rx</code> Structured Regexp Notation<a class="copiable-link" href="#The-rx-Structured-Regexp-Notation"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-rx"></a>
+<a class="index-entry-id" id="index-regexp-syntax-1"></a>
+
+<p>As an alternative to the string-based syntax, Emacs provides the
+structured <code class="code">rx</code> notation based on Lisp S-expressions.  This
+notation is usually easier to read, write and maintain than regexp
+strings, and can be indented and commented freely.  It requires a
+conversion into string form since that is what regexp functions
+expect, but that conversion typically takes place during
+byte-compilation rather than when the Lisp code using the regexp is
+run.
+</p>
+<p>Here is an <code class="code">rx</code> regexp<a class="footnote" id="DOCF27" href="#FOOT27"><sup>27</sup></a> that matches a block comment in the C
+programming language:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(rx &quot;/*&quot;                    ; Initial /*
+    (zero-or-more
+     (or (not &quot;*&quot;)          ;  Either non-*,
+         (seq &quot;*&quot;           ;  or * followed by
+              (not &quot;/&quot;))))  ;     non-/
+    (one-or-more &quot;*&quot;)       ; At least one star,
+    &quot;/&quot;)                    ; and the final /
+</pre></div></div>
+
+<p>or, using shorter synonyms and written more compactly,
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(rx &quot;/*&quot;
+    (* (| (not &quot;*&quot;)
+          (: &quot;*&quot; (not &quot;/&quot;))))
+    (+ &quot;*&quot;) &quot;/&quot;)
+</pre></div></div>
+
+<p>In conventional string syntax, it would be written
+</p>
+<div class="example">
+<pre class="example-preformatted">&quot;/\\*\\(?:[^*]\\|\\*[^/]\\)*\\*+/&quot;
+</pre></div>
+
+<p>The <code class="code">rx</code> notation is mainly useful in Lisp code; it cannot be
+used in most interactive situations where a regexp is requested, such
+as when running <code class="code">query-replace-regexp</code> or in variable
+customization.
+</p>
+
+<ul class="mini-toc">
+<li><a href="Rx-Constructs.html" accesskey="1">Constructs in <code class="code">rx</code> regexps</a></li>
+<li><a href="Rx-Functions.html" accesskey="2">Functions and macros using <code class="code">rx</code> regexps</a></li>
+<li><a href="Extending-Rx.html" accesskey="3">Defining new <code class="code">rx</code> forms</a></li>
+</ul>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT27" href="#DOCF27">(27)</a></h5>
+<p>It could be written much
+simpler with non-greedy operators (how?), but that would make the
+example less interesting.</p>
+</div>
+
+
+
+</body>
+</html>

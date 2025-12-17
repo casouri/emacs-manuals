@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.2.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Terminal Init (GNU Emacs Manual)</title>
+
+<meta name="description" content="Terminal Init (GNU Emacs Manual)">
+<meta name="keywords" content="Terminal Init (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Init-File.html" rel="up" title="Init File">
+<link href="Find-Init.html" rel="next" title="Find Init">
+<link href="Init-Examples.html" rel="prev" title="Init Examples">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Terminal-Init">
+<div class="nav-panel">
+<p>
+Next: <a href="Find-Init.html" accesskey="n" rel="next">How Emacs Finds Your Init File</a>, Previous: <a href="Init-Examples.html" accesskey="p" rel="prev">Init File Examples</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Terminal_002dspecific-Initialization"><span>51.4.3 Terminal-specific Initialization<a class="copiable-link" href="#Terminal_002dspecific-Initialization"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-term_002dfile_002daliases"></a>
+<p>Each terminal type can have a Lisp library to be loaded into Emacs when
+it is run on that type of terminal.  For a terminal type named
+<var class="var">termtype</var>, the library is called <samp class="file">term/<var class="var">termtype</var></samp>.
+(If there is an entry of the form <code class="code">(<var class="var">termtype</var> . <var class="var">alias</var>)</code>
+in the <code class="code">term-file-aliases</code> association list, Emacs uses
+<var class="var">alias</var> in place of <var class="var">termtype</var>.)  The library is
+found by searching the directories <code class="code">load-path</code> as usual and trying the
+suffixes &lsquo;<samp class="samp">.elc</samp>&rsquo; and &lsquo;<samp class="samp">.el</samp>&rsquo;.  Normally it appears in the
+subdirectory <samp class="file">term</samp> of the directory where most Emacs libraries are
+kept.
+</p>
+<p>The usual purpose of the terminal-specific library is to map the
+escape sequences used by the terminal&rsquo;s function keys onto more
+meaningful names, using <code class="code">input-decode-map</code>.  See the file
+<samp class="file">term/lk201.el</samp> for an example of how this is done.  Many function
+keys are mapped automatically according to the information in the
+Termcap data base; the terminal-specific library needs to map only the
+function keys that Termcap does not specify.
+</p>
+<p>When the terminal type contains a hyphen, only the part of the name
+before the first hyphen is significant in choosing the library name.
+Thus, terminal types &lsquo;<samp class="samp">aaa-48</samp>&rsquo; and &lsquo;<samp class="samp">aaa-30-rv</samp>&rsquo; both use
+the library <samp class="file">term/aaa</samp>.  The code in the library can use
+<code class="code">(getenv &quot;TERM&quot;)</code> to find the full terminal type name.
+</p>
+<a class="index-entry-id" id="index-term_002dfile_002dprefix"></a>
+<p>The library&rsquo;s name is constructed by concatenating the value of the
+variable <code class="code">term-file-prefix</code> and the terminal type.  Your <samp class="file">.emacs</samp>
+file can prevent the loading of the terminal-specific library by setting
+<code class="code">term-file-prefix</code> to <code class="code">nil</code>.
+</p>
+<a class="index-entry-id" id="index-tty_002dsetup_002dhook"></a>
+<p>Emacs runs the hook <code class="code">tty-setup-hook</code> at the end of
+initialization, after both your <samp class="file">.emacs</samp> file and any
+terminal-specific library have been read in.  Add hook functions to this
+hook if you wish to override part of any of the terminal-specific
+libraries and to define initializations for terminals that do not have a
+library.  See <a class="xref" href="Hooks.html">Hooks</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Find-Init.html">How Emacs Finds Your Init File</a>, Previous: <a href="Init-Examples.html">Init File Examples</a>, Up: <a href="Init-File.html">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

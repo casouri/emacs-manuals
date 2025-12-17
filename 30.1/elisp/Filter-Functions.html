@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Filter Functions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Filter Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Filter Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Output-from-Processes.html" rel="up" title="Output from Processes">
+<link href="Decoding-Output.html" rel="next" title="Decoding Output">
+<link href="Process-Buffers.html" rel="prev" title="Process Buffers">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Filter-Functions">
+<div class="nav-panel">
+<p>
+Next: <a href="Decoding-Output.html" accesskey="n" rel="next">Decoding Process Output</a>, Previous: <a href="Process-Buffers.html" accesskey="p" rel="prev">Process Buffers</a>, Up: <a href="Output-from-Processes.html" accesskey="u" rel="up">Receiving Output from Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Process-Filter-Functions"><span>41.9.2 Process Filter Functions<a class="copiable-link" href="#Process-Filter-Functions"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-filter-function"></a>
+<a class="index-entry-id" id="index-process-filter"></a>
+
+<a class="index-entry-id" id="index-default-filter-function-of-a-process"></a>
+<p>A process <em class="dfn">filter function</em> is a function that receives the
+standard output from the associated process.  <em class="emph">All</em> output from
+that process is passed to the filter.  The default filter simply
+outputs directly to the process buffer.
+</p>
+<p>By default, the error output from the process, if any, is also
+passed to the filter function, unless the destination for the standard
+error stream of the process was separated from the standard output
+when the process was created.  Emacs will only call the filter
+function during certain function calls.  See <a class="xref" href="Output-from-Processes.html">Receiving Output from Processes</a>.
+Note that if any of those functions are called by the filter, the
+filter may be called recursively.
+</p>
+<p>A filter function must accept two arguments: the associated process
+and a string, which is output just received from it.  The function is
+then free to do whatever it chooses with the output.
+</p>
+<p>Quitting is normally inhibited within a filter function&mdash;otherwise,
+the effect of typing <kbd class="kbd">C-g</kbd> at command level or to quit a user
+command would be unpredictable.  If you want to permit quitting inside
+a filter function, bind <code class="code">inhibit-quit</code> to <code class="code">nil</code>.  In most
+cases, the right way to do this is with the macro
+<code class="code">with-local-quit</code>.  See <a class="xref" href="Quitting.html">Quitting</a>.
+</p>
+<p>If an error happens during execution of a filter function, it is
+caught automatically, so that it doesn&rsquo;t stop the execution of whatever
+program was running when the filter function was started.  However, if
+<code class="code">debug-on-error</code> is non-<code class="code">nil</code>, errors are not caught.
+This makes it possible to use the Lisp debugger to debug filter
+functions.  See <a class="xref" href="Debugger.html">The Lisp Debugger</a>.  If an error is caught, Emacs pauses for
+<code class="code">process-error-pause-time</code> seconds so that the user sees the
+error.  See <a class="xref" href="Asynchronous-Processes.html">Creating an Asynchronous Process</a>.
+</p>
+<p>Many filter functions sometimes (or always) insert the output in the
+process&rsquo;s buffer, mimicking the actions of the default filter.
+Such filter functions need to make sure that they save the
+current buffer, select the correct buffer (if different) before
+inserting output, and then restore the original buffer.
+They should also check whether the buffer is still alive, update the
+process marker, and in some cases update the value of point.  Here is
+how to do these things:
+</p>
+<a class="anchor" id="Process-Filter-Example"></a><div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun ordinary-insertion-filter (proc string)
+  (when (buffer-live-p (process-buffer proc))
+    (with-current-buffer (process-buffer proc)
+      (let ((moving (= (point) (process-mark proc))))
+</pre></div><div class="group"><pre class="example-preformatted">        (save-excursion
+          ;; <span class="r">Insert the text, advancing the process marker.</span>
+          (goto-char (process-mark proc))
+          (insert string)
+          (set-marker (process-mark proc) (point)))
+        (if moving (goto-char (process-mark proc)))))))
+</pre></div></div>
+
+<p>To make the filter force the process buffer to be visible whenever new
+text arrives, you could insert a line like the following just before the
+<code class="code">with-current-buffer</code> construct:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(display-buffer (process-buffer proc))
+</pre></div>
+
+<p>To force point to the end of the new output, no matter where it was
+previously, eliminate the variable <code class="code">moving</code> from the example and
+call <code class="code">goto-char</code> unconditionally.  Note that this doesn&rsquo;t
+necessarily move the window point.  The default filter actually uses
+<code class="code">insert-before-markers</code> which moves all markers, including the
+window point.  This may move unrelated markers, so it&rsquo;s generally
+better to move the window point explicitly, or set its insertion type
+to <code class="code">t</code> (see <a class="pxref" href="Window-Point.html">Windows and Point</a>).
+</p>
+<p>Note that Emacs automatically saves and restores the match data
+while executing filter functions.  See <a class="xref" href="Match-Data.html">The Match Data</a>.
+</p>
+<p>The output to the filter may come in chunks of any size.  A program
+that produces the same output twice in a row may send it as one batch of
+200 characters one time, and five batches of 40 characters the next.  If
+the filter looks for certain text strings in the subprocess output, make
+sure to handle the case where one of these strings is split across two
+or more batches of output; one way to do this is to insert the
+received text into a temporary buffer, which can then be searched.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dprocess_002dfilter"><span class="category-def">Function: </span><span><strong class="def-name">set-process-filter</strong> <var class="def-var-arguments">process filter</var><a class="copiable-link" href="#index-set_002dprocess_002dfilter"> &para;</a></span></dt>
+<dd><p>This function gives <var class="var">process</var> the filter function <var class="var">filter</var>.
+If <var class="var">filter</var> is <code class="code">nil</code>, it gives the process the default
+filter, which inserts the process output into the process buffer.  If
+<var class="var">filter</var> is <code class="code">t</code>, Emacs stops accepting output from the
+process, unless it&rsquo;s a network server process that listens for
+incoming connections.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-process_002dfilter"><span class="category-def">Function: </span><span><strong class="def-name">process-filter</strong> <var class="def-var-arguments">process</var><a class="copiable-link" href="#index-process_002dfilter"> &para;</a></span></dt>
+<dd><p>This function returns the filter function of <var class="var">process</var>.
+</p></dd></dl>
+
+<p>In case the process&rsquo;s output needs to be passed to several filters, you can
+use <code class="code">add-function</code> to combine an existing filter with a new one.
+See <a class="xref" href="Advising-Functions.html">Advising Emacs Lisp Functions</a>.
+</p>
+<p>Here is an example of the use of a filter function:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defun keep-output (process output)
+   (setq kept (cons output kept)))
+     &rArr; keep-output
+</pre></div><div class="group"><pre class="example-preformatted">(setq kept nil)
+     &rArr; nil
+</pre></div><div class="group"><pre class="example-preformatted">(set-process-filter (get-process &quot;shell&quot;) 'keep-output)
+     &rArr; keep-output
+</pre></div><div class="group"><pre class="example-preformatted">(process-send-string &quot;shell&quot; &quot;ls ~/other\n&quot;)
+     &rArr; nil
+kept
+     &rArr; (&quot;lewis@slug:$ &quot;
+</pre></div><div class="group"><pre class="example-preformatted">&quot;FINAL-W87-SHORT.MSS    backup.otl              kolstad.mss~
+address.txt             backup.psf              kolstad.psf
+backup.bib~             david.mss               resume-Dec-86.mss~
+backup.err              david.psf               resume-Dec.psf
+backup.mss              dland                   syllabus.mss
+&quot;
+&quot;#backups.mss#          backup.mss~             kolstad.mss
+&quot;)
+</pre></div></div>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Decoding-Output.html">Decoding Process Output</a>, Previous: <a href="Process-Buffers.html">Process Buffers</a>, Up: <a href="Output-from-Processes.html">Receiving Output from Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

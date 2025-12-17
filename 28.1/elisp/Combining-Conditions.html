@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.1.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Combining Conditions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Combining Conditions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Combining Conditions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Control-Structures.html" rel="up" title="Control Structures">
+<link href="Pattern_002dMatching-Conditional.html" rel="next" title="Pattern-Matching Conditional">
+<link href="Conditionals.html" rel="prev" title="Conditionals">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Combining-Conditions">
+<div class="nav-panel">
+<p>
+Next: <a href="Pattern_002dMatching-Conditional.html" accesskey="n" rel="next">Pattern-Matching Conditional</a>, Previous: <a href="Conditionals.html" accesskey="p" rel="prev">Conditionals</a>, Up: <a href="Control-Structures.html" accesskey="u" rel="up">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Constructs-for-Combining-Conditions"><span>11.3 Constructs for Combining Conditions<a class="copiable-link" href="#Constructs-for-Combining-Conditions"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-combining-conditions"></a>
+
+<p>This section describes constructs that are often used together with
+<code class="code">if</code> and <code class="code">cond</code> to express complicated conditions.  The
+constructs <code class="code">and</code> and <code class="code">or</code> can also be used individually as
+kinds of multiple conditional constructs.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-not"><span class="category-def">Function: </span><span><strong class="def-name">not</strong> <var class="def-var-arguments">condition</var><a class="copiable-link" href="#index-not"> &para;</a></span></dt>
+<dd><p>This function tests for the falsehood of <var class="var">condition</var>.  It returns
+<code class="code">t</code> if <var class="var">condition</var> is <code class="code">nil</code>, and <code class="code">nil</code> otherwise.
+The function <code class="code">not</code> is identical to <code class="code">null</code>, and we recommend
+using the name <code class="code">null</code> if you are testing for an empty list.
+</p></dd></dl>
+
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-and"><span class="category-def">Special Form: </span><span><strong class="def-name">and</strong> <var class="def-var-arguments">conditions&hellip;</var><a class="copiable-link" href="#index-and"> &para;</a></span></dt>
+<dd><p>The <code class="code">and</code> special form tests whether all the <var class="var">conditions</var> are
+true.  It works by evaluating the <var class="var">conditions</var> one by one in the
+order written.
+</p>
+<p>If any of the <var class="var">conditions</var> evaluates to <code class="code">nil</code>, then the result
+of the <code class="code">and</code> must be <code class="code">nil</code> regardless of the remaining
+<var class="var">conditions</var>; so <code class="code">and</code> returns <code class="code">nil</code> right away, ignoring
+the remaining <var class="var">conditions</var>.
+</p>
+<p>If all the <var class="var">conditions</var> turn out non-<code class="code">nil</code>, then the value of
+the last of them becomes the value of the <code class="code">and</code> form.  Just
+<code class="code">(and)</code>, with no <var class="var">conditions</var>, returns <code class="code">t</code>, appropriate
+because all the <var class="var">conditions</var> turned out non-<code class="code">nil</code>.  (Think
+about it; which one did not?)
+</p>
+<p>Here is an example.  The first condition returns the integer 1, which is
+not <code class="code">nil</code>.  Similarly, the second condition returns the integer 2,
+which is not <code class="code">nil</code>.  The third condition is <code class="code">nil</code>, so the
+remaining condition is never evaluated.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(and (print 1) (print 2) nil (print 3))
+     -| 1
+     -| 2
+&rArr; nil
+</pre></div></div>
+
+<p>Here is a more realistic example of using <code class="code">and</code>:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(if (and (consp foo) (eq (car foo) 'x))
+    (message &quot;foo is a list starting with x&quot;))
+</pre></div></div>
+
+<p>Note that <code class="code">(car foo)</code> is not executed if <code class="code">(consp foo)</code> returns
+<code class="code">nil</code>, thus avoiding an error.
+</p>
+<p><code class="code">and</code> expressions can also be written using either <code class="code">if</code> or
+<code class="code">cond</code>.  Here&rsquo;s how:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(and <var class="var">arg1</var> <var class="var">arg2</var> <var class="var">arg3</var>)
+&equiv;
+(if <var class="var">arg1</var> (if <var class="var">arg2</var> <var class="var">arg3</var>))
+&equiv;
+(cond (<var class="var">arg1</var> (cond (<var class="var">arg2</var> <var class="var">arg3</var>))))
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-or"><span class="category-def">Special Form: </span><span><strong class="def-name">or</strong> <var class="def-var-arguments">conditions&hellip;</var><a class="copiable-link" href="#index-or"> &para;</a></span></dt>
+<dd><p>The <code class="code">or</code> special form tests whether at least one of the
+<var class="var">conditions</var> is true.  It works by evaluating all the
+<var class="var">conditions</var> one by one in the order written.
+</p>
+<p>If any of the <var class="var">conditions</var> evaluates to a non-<code class="code">nil</code> value, then
+the result of the <code class="code">or</code> must be non-<code class="code">nil</code>; so <code class="code">or</code> returns
+right away, ignoring the remaining <var class="var">conditions</var>.  The value it
+returns is the non-<code class="code">nil</code> value of the condition just evaluated.
+</p>
+<p>If all the <var class="var">conditions</var> turn out <code class="code">nil</code>, then the <code class="code">or</code>
+expression returns <code class="code">nil</code>.  Just <code class="code">(or)</code>, with no
+<var class="var">conditions</var>, returns <code class="code">nil</code>, appropriate because all the
+<var class="var">conditions</var> turned out <code class="code">nil</code>.  (Think about it; which one
+did not?)
+</p>
+<p>For example, this expression tests whether <code class="code">x</code> is either
+<code class="code">nil</code> or the integer zero:
+</p>
+<div class="example">
+<pre class="example-preformatted">(or (eq x nil) (eq x 0))
+</pre></div>
+
+<p>Like the <code class="code">and</code> construct, <code class="code">or</code> can be written in terms of
+<code class="code">cond</code>.  For example:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(or <var class="var">arg1</var> <var class="var">arg2</var> <var class="var">arg3</var>)
+&equiv;
+(cond (<var class="var">arg1</var>)
+      (<var class="var">arg2</var>)
+      (<var class="var">arg3</var>))
+</pre></div></div>
+
+<p>You could almost write <code class="code">or</code> in terms of <code class="code">if</code>, but not quite:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(if <var class="var">arg1</var> <var class="var">arg1</var>
+  (if <var class="var">arg2</var> <var class="var">arg2</var>
+    <var class="var">arg3</var>))
+</pre></div></div>
+
+<p>This is not completely equivalent because it can evaluate <var class="var">arg1</var> or
+<var class="var">arg2</var> twice.  By contrast, <code class="code">(or <var class="var">arg1</var> <var class="var">arg2</var>
+<var class="var">arg3</var>)</code> never evaluates any argument more than once.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-xor"><span class="category-def">Function: </span><span><strong class="def-name">xor</strong> <var class="def-var-arguments">condition1 condition2</var><a class="copiable-link" href="#index-xor"> &para;</a></span></dt>
+<dd><p>This function returns the boolean exclusive-or of <var class="var">condition1</var> and
+<var class="var">condition2</var>.  That is, <code class="code">xor</code> returns <code class="code">nil</code> if either
+both arguments are <code class="code">nil</code>, or both are non-<code class="code">nil</code>.  Otherwise,
+it returns the value of that argument which is non-<code class="code">nil</code>.
+</p>
+<p>Note that in contrast to <code class="code">or</code>, both arguments are always evaluated.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Pattern_002dMatching-Conditional.html">Pattern-Matching Conditional</a>, Previous: <a href="Conditionals.html">Conditionals</a>, Up: <a href="Control-Structures.html">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Connection Local Variables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Connection Local Variables (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Directory-Local-Variables.html" rel="prev" title="Directory Local Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,167 +48,169 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Connection-Local-Variables"></span><div class="header">
+<div class="section-level-extent" id="Connection-Local-Variables">
+<div class="nav-panel">
 <p>
 Next: <a href="Variable-Aliases.html" accesskey="n" rel="next">Variable Aliases</a>, Previous: <a href="Directory-Local-Variables.html" accesskey="p" rel="prev">Directory Local Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Connection-Local-Variables-1"></span><h3 class="section">12.14 Connection Local Variables</h3>
-<span id="index-connection-local-variables"></span>
+<h3 class="section" id="Connection-Local-Variables-1"><span>12.14 Connection Local Variables<a class="copiable-link" href="#Connection-Local-Variables-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-connection-local-variables"></a>
 
 <p>Connection-local variables provide a general mechanism for different
 variable settings in buffers with a remote connection.  They are bound
 and set depending on the remote connection a buffer is dedicated to.
 </p>
-<dl>
-<dt id="index-connection_002dlocal_002dset_002dprofile_002dvariables">Function: <strong>connection-local-set-profile-variables</strong> <em>profile variables</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-connection_002dlocal_002dset_002dprofile_002dvariables"><span class="category-def">Function: </span><span><strong class="def-name">connection-local-set-profile-variables</strong> <var class="def-var-arguments">profile variables</var><a class="copiable-link" href="#index-connection_002dlocal_002dset_002dprofile_002dvariables"> &para;</a></span></dt>
 <dd><p>This function defines a set of variable settings for the connection
-<var>profile</var>, which is a symbol.  You can later assign the connection
+<var class="var">profile</var>, which is a symbol.  You can later assign the connection
 profile to one or more remote connections, and Emacs will apply those
 variable settings to all process buffers for those connections.  The
-list in <var>variables</var> is an alist of the form
-<code>(<var>name</var>&nbsp;.&nbsp;<var>value</var>)</code>.  Example:
+list in <var class="var">variables</var> is an alist of the form
+<code class="code">(<var class="var">name</var>&nbsp;.&nbsp;<var class="var">value</var>)</code>.  Example:
 </p>
 <div class="example">
-<pre class="example">(connection-local-set-profile-variables
+<div class="group"><pre class="example-preformatted">(connection-local-set-profile-variables
   'remote-bash
   '((shell-file-name . &quot;/bin/bash&quot;)
     (shell-command-switch . &quot;-c&quot;)
     (shell-interactive-switch . &quot;-i&quot;)
     (shell-login-switch . &quot;-l&quot;)))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(connection-local-set-profile-variables
+</pre><div class="group"><pre class="example-preformatted">(connection-local-set-profile-variables
   'remote-ksh
   '((shell-file-name . &quot;/bin/ksh&quot;)
     (shell-command-switch . &quot;-c&quot;)
     (shell-interactive-switch . &quot;-i&quot;)
     (shell-login-switch . &quot;-l&quot;)))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(connection-local-set-profile-variables
+</pre><div class="group"><pre class="example-preformatted">(connection-local-set-profile-variables
   'remote-null-device
   '((null-device . &quot;/dev/null&quot;)))
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-connection_002dlocal_002dprofile_002dalist">Variable: <strong>connection-local-profile-alist</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-connection_002dlocal_002dprofile_002dalist"><span class="category-def">Variable: </span><span><strong class="def-name">connection-local-profile-alist</strong><a class="copiable-link" href="#index-connection_002dlocal_002dprofile_002dalist"> &para;</a></span></dt>
 <dd><p>This alist holds the connection profile symbols and the associated
 variable settings.  It is updated by
-<code>connection-local-set-profile-variables</code>.
+<code class="code">connection-local-set-profile-variables</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-connection_002dlocal_002dset_002dprofiles">Function: <strong>connection-local-set-profiles</strong> <em>criteria &amp;rest profiles</em></dt>
-<dd><p>This function assigns <var>profiles</var>, which are symbols, to all remote
-connections identified by <var>criteria</var>.  <var>criteria</var> is a plist
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-connection_002dlocal_002dset_002dprofiles"><span class="category-def">Function: </span><span><strong class="def-name">connection-local-set-profiles</strong> <var class="def-var-arguments">criteria &amp;rest profiles</var><a class="copiable-link" href="#index-connection_002dlocal_002dset_002dprofiles"> &para;</a></span></dt>
+<dd><p>This function assigns <var class="var">profiles</var>, which are symbols, to all remote
+connections identified by <var class="var">criteria</var>.  <var class="var">criteria</var> is a plist
 identifying a connection and the application using this connection.
-Property names might be <code>:application</code>, <code>:protocol</code>,
-<code>:user</code> and <code>:machine</code>.  The property value of
-<code>:application</code> is a symbol, all other property values are
-strings.  All properties are optional; if <var>criteria</var> is <code>nil</code>, it
+Property names might be <code class="code">:application</code>, <code class="code">:protocol</code>,
+<code class="code">:user</code> and <code class="code">:machine</code>.  The property value of
+<code class="code">:application</code> is a symbol, all other property values are
+strings.  All properties are optional; if <var class="var">criteria</var> is <code class="code">nil</code>, it
 always applies.  Example:
 </p>
 <div class="example">
-<pre class="example">(connection-local-set-profiles
+<div class="group"><pre class="example-preformatted">(connection-local-set-profiles
   '(:application 'tramp :protocol &quot;ssh&quot; :machine &quot;localhost&quot;)
   'remote-bash 'remote-null-device)
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(connection-local-set-profiles
+</pre><div class="group"><pre class="example-preformatted">(connection-local-set-profiles
   '(:application 'tramp :protocol &quot;sudo&quot;
     :user &quot;root&quot; :machine &quot;localhost&quot;)
   'remote-ksh 'remote-null-device)
-</pre></div>
+</pre></div></div>
 
-<p>If <var>criteria</var> is <code>nil</code>, it applies for all remote connections.
+<p>If <var class="var">criteria</var> is <code class="code">nil</code>, it applies for all remote connections.
 Therefore, the example above would be equivalent to
 </p>
 <div class="example">
-<pre class="example">(connection-local-set-profiles
+<div class="group"><pre class="example-preformatted">(connection-local-set-profiles
   '(:application 'tramp :protocol &quot;ssh&quot; :machine &quot;localhost&quot;)
   'remote-bash)
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(connection-local-set-profiles
+</pre><div class="group"><pre class="example-preformatted">(connection-local-set-profiles
   '(:application 'tramp :protocol &quot;sudo&quot;
     :user &quot;root&quot; :machine &quot;localhost&quot;)
   'remote-ksh)
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(connection-local-set-profiles
+</pre><div class="group"><pre class="example-preformatted">(connection-local-set-profiles
   nil 'remote-null-device)
-</pre></div>
+</pre></div></div>
 
-<p>Any connection profile of <var>profiles</var> must have been already
-defined by <code>connection-local-set-profile-variables</code>.
+<p>Any connection profile of <var class="var">profiles</var> must have been already
+defined by <code class="code">connection-local-set-profile-variables</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-connection_002dlocal_002dcriteria_002dalist">Variable: <strong>connection-local-criteria-alist</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-connection_002dlocal_002dcriteria_002dalist"><span class="category-def">Variable: </span><span><strong class="def-name">connection-local-criteria-alist</strong><a class="copiable-link" href="#index-connection_002dlocal_002dcriteria_002dalist"> &para;</a></span></dt>
 <dd><p>This alist contains connection criteria and their assigned profile
-names.  The function <code>connection-local-set-profiles</code> updates this
+names.  The function <code class="code">connection-local-set-profiles</code> updates this
 list.
 </p></dd></dl>
 
-<dl>
-<dt id="index-hack_002dconnection_002dlocal_002dvariables">Function: <strong>hack-connection-local-variables</strong> <em>criteria</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-hack_002dconnection_002dlocal_002dvariables"><span class="category-def">Function: </span><span><strong class="def-name">hack-connection-local-variables</strong> <var class="def-var-arguments">criteria</var><a class="copiable-link" href="#index-hack_002dconnection_002dlocal_002dvariables"> &para;</a></span></dt>
 <dd><p>This function collects applicable connection-local variables
-associated with <var>criteria</var> in
-<code>connection-local-variables-alist</code>, without applying them.
+associated with <var class="var">criteria</var> in
+<code class="code">connection-local-variables-alist</code>, without applying them.
 Example:
 </p>
 <div class="example">
-<pre class="example">(hack-connection-local-variables
+<div class="group"><pre class="example-preformatted">(hack-connection-local-variables
   '(:application 'tramp :protocol &quot;ssh&quot; :machine &quot;localhost&quot;))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">connection-local-variables-alist
+</pre><div class="group"><pre class="example-preformatted">connection-local-variables-alist
      &rArr; ((null-device . &quot;/dev/null&quot;)
         (shell-login-switch . &quot;-l&quot;)
         (shell-interactive-switch . &quot;-i&quot;)
         (shell-command-switch . &quot;-c&quot;)
         (shell-file-name . &quot;/bin/bash&quot;))
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-hack_002dconnection_002dlocal_002dvariables_002dapply">Function: <strong>hack-connection-local-variables-apply</strong> <em>criteria</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-hack_002dconnection_002dlocal_002dvariables_002dapply"><span class="category-def">Function: </span><span><strong class="def-name">hack-connection-local-variables-apply</strong> <var class="def-var-arguments">criteria</var><a class="copiable-link" href="#index-hack_002dconnection_002dlocal_002dvariables_002dapply"> &para;</a></span></dt>
 <dd><p>This function looks for connection-local variables according to
-<var>criteria</var>, and immediately applies them in the current buffer.
+<var class="var">criteria</var>, and immediately applies them in the current buffer.
 </p></dd></dl>
 
-<dl>
-<dt id="index-with_002dconnection_002dlocal_002dprofiles">Macro: <strong>with-connection-local-profiles</strong> <em>profiles &amp;rest body</em></dt>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-with_002dconnection_002dlocal_002dprofiles"><span class="category-def">Macro: </span><span><strong class="def-name">with-connection-local-profiles</strong> <var class="def-var-arguments">profiles &amp;rest body</var><a class="copiable-link" href="#index-with_002dconnection_002dlocal_002dprofiles"> &para;</a></span></dt>
 <dd><p>All connection-local variables, which are specified by a connection
-profile in <var>profiles</var>, are applied.
+profile in <var class="var">profiles</var>, are applied.
 </p>
-<p>After that, <var>body</var> is executed, and the connection-local variables
+<p>After that, <var class="var">body</var> is executed, and the connection-local variables
 are unwound.  Example:
 </p>
 <div class="example">
-<pre class="example">(connection-local-set-profile-variables
+<div class="group"><pre class="example-preformatted">(connection-local-set-profile-variables
   'remote-perl
   '((perl-command-name . &quot;/usr/local/bin/perl&quot;)
     (perl-command-switch . &quot;-e %s&quot;)))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(with-connection-local-profiles '(remote-perl)
+</pre><div class="group"><pre class="example-preformatted">(with-connection-local-profiles '(remote-perl)
   do something useful)
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-enable_002dconnection_002dlocal_002dvariables">Variable: <strong>enable-connection-local-variables</strong></dt>
-<dd><p>If <code>nil</code>, connection-local variables are ignored.  This variable
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-enable_002dconnection_002dlocal_002dvariables"><span class="category-def">Variable: </span><span><strong class="def-name">enable-connection-local-variables</strong><a class="copiable-link" href="#index-enable_002dconnection_002dlocal_002dvariables"> &para;</a></span></dt>
+<dd><p>If <code class="code">nil</code>, connection-local variables are ignored.  This variable
 shall be changed temporarily only in special modes.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Variable-Aliases.html" accesskey="n" rel="next">Variable Aliases</a>, Previous: <a href="Directory-Local-Variables.html" accesskey="p" rel="prev">Directory Local Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Variable-Aliases.html">Variable Aliases</a>, Previous: <a href="Directory-Local-Variables.html">Directory Local Variables</a>, Up: <a href="Variables.html">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

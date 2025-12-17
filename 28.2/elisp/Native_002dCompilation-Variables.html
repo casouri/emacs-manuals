@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Native-Compilation Variables (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Native-Compilation Variables (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Native-Compilation Variables (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Native-Compilation.html" rel="up" title="Native Compilation">
+<link href="Native_002dCompilation-Functions.html" rel="prev" title="Native-Compilation Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Native_002dCompilation-Variables">
+<div class="nav-panel">
+<p>
+Previous: <a href="Native_002dCompilation-Functions.html" accesskey="p" rel="prev">Native-Compilation Functions</a>, Up: <a href="Native-Compilation.html" accesskey="u" rel="up">Compilation of Lisp to Native Code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Native_002dCompilation-Variables-1"><span>18.2 Native-Compilation Variables<a class="copiable-link" href="#Native_002dCompilation-Variables-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-native_002dcompilation-variables"></a>
+
+<p>This section documents the variables that control
+native-compilation.
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-native_002dcomp_002dspeed"><span class="category-def">User Option: </span><span><strong class="def-name">native-comp-speed</strong><a class="copiable-link" href="#index-native_002dcomp_002dspeed"> &para;</a></span></dt>
+<dd><p>This variable specifies the optimization level for native compilation.
+Its value should be a number between &minus;1 and 3.  Values between
+0 and 3 specify the optimization levels equivalent to the
+corresponding compiler <samp class="option">-O0</samp>, <samp class="option">-O1</samp>, etc. command-line
+options of the compiler.  The value &minus;1 means disable
+native-compilation: functions and files will be only byte-compiled;
+however, the <samp class="file">*.eln</samp> files will still be produced, they will just
+contain the compiled code in bytecode form.  (This can be achieved at
+function granularity by using the <code class="code">(declare&nbsp;(speed&nbsp;-1))</code><!-- /@w -->
+form, see <a class="pxref" href="Declare-Form.html">The <code class="code">declare</code> Form</a>.)
+The default value is 2.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-native_002dcomp_002ddebug"><span class="category-def">User Option: </span><span><strong class="def-name">native-comp-debug</strong><a class="copiable-link" href="#index-native_002dcomp_002ddebug"> &para;</a></span></dt>
+<dd><p>This variable specifies the level of debugging information produced by
+native-compilation.  Its value should be a number between zero and 3,
+with the following meaning:
+</p>
+<dl class="table">
+<dt>0</dt>
+<dd><p>No debugging output.  This is the default.
+</p></dd>
+<dt>1</dt>
+<dd><p>Emit debugging symbols with the native code.  This allows easier
+debugging of the native code with debuggers such as <code class="command">gdb</code>.
+</p></dd>
+<dt>2</dt>
+<dd><p>Like 1, and in addition dump pseudo-C code.
+</p></dd>
+<dt>3</dt>
+<dd><p>Like 2, and in addition dump the GCC intermediate passes and
+<samp class="file">libgccjit</samp> log file.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-native_002dcomp_002dverbose-1"><span class="category-def">User Option: </span><span><strong class="def-name">native-comp-verbose</strong><a class="copiable-link" href="#index-native_002dcomp_002dverbose-1"> &para;</a></span></dt>
+<dd><p>This variable controls the verbosity of native-compilation by
+suppressing some or all of the log messages emitted by it.  If its
+value is zero, the default, all of the log messages are suppressed.
+Setting it to a value between 1 and 3 will allow logging of the
+messages whose level is above the value.  The values have the
+following interpretations:
+</p>
+<dl class="table">
+<dt>0</dt>
+<dd><p>No logging.  This is the default.
+</p></dd>
+<dt>1</dt>
+<dd><p>Log the final <abbr class="acronym">LIMPLE</abbr> representation of the code.
+</p></dd>
+<dt>2</dt>
+<dd><p>Log the <abbr class="acronym">LAP</abbr>, the final <abbr class="acronym">LIMPLE</abbr>, and some additional
+pass info.
+</p></dd>
+<dt>3</dt>
+<dd><p>Maximum verbosity: log everything.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-native_002dcomp_002dasync_002djobs_002dnumber"><span class="category-def">User Option: </span><span><strong class="def-name">native-comp-async-jobs-number</strong><a class="copiable-link" href="#index-native_002dcomp_002dasync_002djobs_002dnumber"> &para;</a></span></dt>
+<dd><p>This variable determines the maximum number of native-compilation
+subprocesses that will be started simultaneously.  It should be a
+non-negative number.  The default value is zero, which means use half
+the number of the CPU execution units, or 1 if the CPU has only one
+execution unit.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-native_002dcomp_002dasync_002dreport_002dwarnings_002derrors"><span class="category-def">User Option: </span><span><strong class="def-name">native-comp-async-report-warnings-errors</strong><a class="copiable-link" href="#index-native_002dcomp_002dasync_002dreport_002dwarnings_002derrors"> &para;</a></span></dt>
+<dd><p>If this variable&rsquo;s value is non-<code class="code">nil</code>, warnings and errors from
+asynchronous native-compilation subprocesses are reported in the main
+Emacs session in a buffer named <samp class="file">*Warnings*</samp>.  The default value
+<code class="code">t</code> means display the resulting buffer.  To log warnings without
+popping up the <samp class="file">*Warnings*</samp> buffer, set this variable to
+<code class="code">silent</code>.
+</p>
+<p>A common cause for asynchronous native-compilation to produce
+warnings is compiling a file that is missing some <code class="code">require</code> of a
+necessary feature.  The feature may be loaded into the main emacs, but
+because native compilation always starts from a subprocess with a
+pristine environment, that may not be true for the subprocess.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-native_002dcomp_002dasync_002dquery_002don_002dexit"><span class="category-def">User Option: </span><span><strong class="def-name">native-comp-async-query-on-exit</strong><a class="copiable-link" href="#index-native_002dcomp_002dasync_002dquery_002don_002dexit"> &para;</a></span></dt>
+<dd><p>If this variable&rsquo;s value is non-nil, Emacs will query upon exiting
+whether to exit and kill any asynchronous native-compilation
+subprocesses that are still running, thus preventing the corresponding
+<samp class="file">.eln</samp> files from being written.  If the value is <code class="code">nil</code>, the
+default, Emacs will kill these subprocesses without querying.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Native_002dCompilation-Functions.html">Native-Compilation Functions</a>, Up: <a href="Native-Compilation.html">Compilation of Lisp to Native Code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Expansion (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Expansion (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Expansion (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Macros.html" rel="up" title="Macros">
+<link href="Compiling-Macros.html" rel="next" title="Compiling Macros">
+<link href="Simple-Macro.html" rel="prev" title="Simple Macro">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Expansion">
+<div class="nav-panel">
+<p>
+Next: <a href="Compiling-Macros.html" accesskey="n" rel="next">Macros and Byte Compilation</a>, Previous: <a href="Simple-Macro.html" accesskey="p" rel="prev">A Simple Example of a Macro</a>, Up: <a href="Macros.html" accesskey="u" rel="up">Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Expansion-of-a-Macro-Call"><span>14.2 Expansion of a Macro Call<a class="copiable-link" href="#Expansion-of-a-Macro-Call"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-expansion-of-macros"></a>
+<a class="index-entry-id" id="index-macro-call"></a>
+
+<p>A macro call looks just like a function call in that it is a list which
+starts with the name of the macro.  The rest of the elements of the list
+are the arguments of the macro.
+</p>
+<p>Evaluation of the macro call begins like evaluation of a function call
+except for one crucial difference: the macro arguments are the actual
+expressions appearing in the macro call.  They are not evaluated before
+they are given to the macro definition.  By contrast, the arguments of a
+function are results of evaluating the elements of the function call
+list.
+</p>
+<p>Having obtained the arguments, Lisp invokes the macro definition just
+as a function is invoked.  The argument variables of the macro are bound
+to the argument values from the macro call, or to a list of them in the
+case of a <code class="code">&amp;rest</code> argument.  And the macro body executes and
+returns its value just as a function body does.
+</p>
+<p>The second crucial difference between macros and functions is that
+the value returned by the macro body is an alternate Lisp expression,
+also known as the <em class="dfn">expansion</em> of the macro.  The Lisp interpreter
+proceeds to evaluate the expansion as soon as it comes back from the
+macro.
+</p>
+<p>Since the expansion is evaluated in the normal manner, it may contain
+calls to other macros.  It may even be a call to the same macro, though
+this is unusual.
+</p>
+<p>Note that Emacs tries to expand macros when loading an uncompiled
+Lisp file.  This is not always possible, but if it is, it speeds up
+subsequent execution.  See <a class="xref" href="How-Programs-Do-Loading.html">How Programs Do Loading</a>.
+</p>
+<p>You can see the expansion of a given macro call by calling
+<code class="code">macroexpand</code>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-macroexpand"><span class="category-def">Function: </span><span><strong class="def-name">macroexpand</strong> <var class="def-var-arguments">form &amp;optional environment</var><a class="copiable-link" href="#index-macroexpand"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-macro-expansion"></a>
+<p>This function expands <var class="var">form</var>, if it is a macro call.  If the result
+is another macro call, it is expanded in turn, until something which is
+not a macro call results.  That is the value returned by
+<code class="code">macroexpand</code>.  If <var class="var">form</var> is not a macro call to begin with, it
+is returned as given.
+</p>
+<p>Note that <code class="code">macroexpand</code> does not look at the subexpressions of
+<var class="var">form</var> (although some macro definitions may do so).  Even if they
+are macro calls themselves, <code class="code">macroexpand</code> does not expand them.
+</p>
+<p>The function <code class="code">macroexpand</code> does not expand calls to inline functions.
+Normally there is no need for that, since a call to an inline function is
+no harder to understand than a call to an ordinary function.
+</p>
+<p>If <var class="var">environment</var> is provided, it specifies an alist of macro
+definitions that shadow the currently defined macros.  Byte compilation
+uses this feature.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defmacro inc (var)
+    (list 'setq var (list '1+ var)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(macroexpand '(inc r))
+     &rArr; (setq r (1+ r))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(defmacro inc2 (var1 var2)
+    (list 'progn (list 'inc var1) (list 'inc var2)))
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(macroexpand '(inc2 r s))
+     &rArr; (progn (inc r) (inc s))  ; <span class="r"><code class="code">inc</code> not expanded here.</span>
+</pre></div></div>
+</dd></dl>
+
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-macroexpand_002dall"><span class="category-def">Function: </span><span><strong class="def-name">macroexpand-all</strong> <var class="def-var-arguments">form &amp;optional environment</var><a class="copiable-link" href="#index-macroexpand_002dall"> &para;</a></span></dt>
+<dd><p><code class="code">macroexpand-all</code> expands macros like <code class="code">macroexpand</code>, but
+will look for and expand all macros in <var class="var">form</var>, not just at the
+top-level.  If no macros are expanded, the return value is <code class="code">eq</code>
+to <var class="var">form</var>.
+</p>
+<p>Repeating the example used for <code class="code">macroexpand</code> above with
+<code class="code">macroexpand-all</code>, we see that <code class="code">macroexpand-all</code> <em class="emph">does</em>
+expand the embedded calls to <code class="code">inc</code>:
+</p>
+<div class="example">
+<pre class="example-preformatted">(macroexpand-all '(inc2 r s))
+     &rArr; (progn (setq r (1+ r)) (setq s (1+ s)))
+</pre></div>
+
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-macroexpand_002d1"><span class="category-def">Function: </span><span><strong class="def-name">macroexpand-1</strong> <var class="def-var-arguments">form &amp;optional environment</var><a class="copiable-link" href="#index-macroexpand_002d1"> &para;</a></span></dt>
+<dd><p>This function expands macros like <code class="code">macroexpand</code>, but it only
+performs one step of the expansion: if the result is another macro
+call, <code class="code">macroexpand-1</code> will not expand it.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Compiling-Macros.html">Macros and Byte Compilation</a>, Previous: <a href="Simple-Macro.html">A Simple Example of a Macro</a>, Up: <a href="Macros.html">Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

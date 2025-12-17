@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Frames (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Frames (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Frames (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Positions.html" rel="next" title="Positions">
+<link href="Windows.html" rel="prev" title="Windows">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="chapter-level-extent" id="Frames">
+<div class="nav-panel">
+<p>
+Next: <a href="Positions.html" accesskey="n" rel="next">Positions</a>, Previous: <a href="Windows.html" accesskey="p" rel="prev">Windows</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h2 class="chapter" id="Frames-1"><span>30 Frames<a class="copiable-link" href="#Frames-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-frame"></a>
+
+<p>A <em class="dfn">frame</em> is a screen object that contains one or more Emacs
+windows (see <a class="pxref" href="Windows.html">Windows</a>).  It is the kind of object called a
+&ldquo;window&rdquo; in the terminology of graphical environments; but we can&rsquo;t
+call it a &ldquo;window&rdquo; here, because Emacs uses that word in a different
+way.  In Emacs Lisp, a <em class="dfn">frame object</em> is a Lisp object that
+represents a frame on the screen.  See <a class="xref" href="Frame-Type.html">Frame Type</a>.
+</p>
+<p>A frame initially contains a single main window and/or a minibuffer
+window; you can subdivide the main window vertically or horizontally
+into smaller windows.  See <a class="xref" href="Splitting-Windows.html">Splitting Windows</a>.
+</p>
+<a class="index-entry-id" id="index-terminal"></a>
+<p>A <em class="dfn">terminal</em> is a display device capable of displaying one or
+more Emacs frames.  In Emacs Lisp, a <em class="dfn">terminal object</em> is a Lisp
+object that represents a terminal.  See <a class="xref" href="Terminal-Type.html">Terminal Type</a>.
+</p>
+<a class="index-entry-id" id="index-text-terminal"></a>
+<a class="index-entry-id" id="index-graphical-terminal"></a>
+<a class="index-entry-id" id="index-graphical-display"></a>
+<p>There are two classes of terminals: <em class="dfn">text terminals</em> and
+<em class="dfn">graphical terminals</em>.  Text terminals are non-graphics-capable
+displays, including <code class="command">xterm</code> and other terminal emulators.  On
+a text terminal, each Emacs frame occupies the terminal&rsquo;s entire
+screen; although you can create additional frames and switch between
+them, the terminal only shows one frame at a time.  Graphical
+terminals, on the other hand, are managed by graphical display systems
+such as the X Window System, which allow Emacs to show multiple frames
+simultaneously on the same display.
+</p>
+<p>On GNU and Unix systems, you can create additional frames on any
+available terminal, within a single Emacs session, regardless of
+whether Emacs was started on a text or graphical terminal.  Emacs can
+display on both graphical and text terminals simultaneously.  This
+comes in handy, for instance, when you connect to the same session
+from several remote locations.  See <a class="xref" href="Multiple-Terminals.html">Multiple Terminals</a>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-framep"><span class="category-def">Function: </span><span><strong class="def-name">framep</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-framep"> &para;</a></span></dt>
+<dd><p>This predicate returns a non-<code class="code">nil</code> value if <var class="var">object</var> is a
+frame, and <code class="code">nil</code> otherwise.  For a frame, the value indicates which
+kind of display the frame uses:
+</p>
+<dl class="table">
+<dt><code class="code">t</code></dt>
+<dd><p>The frame is displayed on a text terminal.
+</p></dd>
+<dt><code class="code">x</code></dt>
+<dd><p>The frame is displayed on an X graphical terminal.
+</p></dd>
+<dt><code class="code">w32</code></dt>
+<dd><p>The frame is displayed on a MS-Windows graphical terminal.
+</p></dd>
+<dt><code class="code">ns</code></dt>
+<dd><p>The frame is displayed on a GNUstep or Macintosh Cocoa graphical
+terminal.
+</p></dd>
+<dt><code class="code">pc</code></dt>
+<dd><p>The frame is displayed on an MS-DOS terminal.
+</p></dd>
+<dt><code class="code">pgtk</code></dt>
+<dd><p>The frame is displayed using pure GTK facilities.
+</p></dd>
+</dl>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-frame_002dterminal"><span class="category-def">Function: </span><span><strong class="def-name">frame-terminal</strong> <var class="def-var-arguments">&amp;optional frame</var><a class="copiable-link" href="#index-frame_002dterminal"> &para;</a></span></dt>
+<dd><p>This function returns the terminal object that displays <var class="var">frame</var>.
+If <var class="var">frame</var> is <code class="code">nil</code> or unspecified, it defaults to the
+selected frame.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-terminal_002dlive_002dp"><span class="category-def">Function: </span><span><strong class="def-name">terminal-live-p</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-terminal_002dlive_002dp"> &para;</a></span></dt>
+<dd><p>This predicate returns a non-<code class="code">nil</code> value if <var class="var">object</var> is a
+terminal that is live (i.e., not deleted), and <code class="code">nil</code> otherwise.
+For live terminals, the return value indicates what kind of frames are
+displayed on that terminal; the list of possible values is the same as
+for <code class="code">framep</code> above.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-top_002dlevel-frame"></a>
+<p>On a graphical terminal we distinguish two types of frames: A normal
+<em class="dfn">top-level frame</em> is a frame whose window-system window is a child
+of the window-system&rsquo;s root window for that terminal.  A child frame is
+a frame whose window-system window is the child of the window-system
+window of another Emacs frame.  See <a class="xref" href="Child-Frames.html">Child Frames</a>.
+</p>
+
+
+<ul class="mini-toc">
+<li><a href="Creating-Frames.html" accesskey="1">Creating Frames</a></li>
+<li><a href="Multiple-Terminals.html" accesskey="2">Multiple Terminals</a></li>
+<li><a href="Frame-Geometry.html" accesskey="3">Frame Geometry</a></li>
+<li><a href="Frame-Parameters.html" accesskey="4">Frame Parameters</a></li>
+<li><a href="Terminal-Parameters.html" accesskey="5">Terminal Parameters</a></li>
+<li><a href="Frame-Titles.html" accesskey="6">Frame Titles</a></li>
+<li><a href="Deleting-Frames.html" accesskey="7">Deleting Frames</a></li>
+<li><a href="Finding-All-Frames.html" accesskey="8">Finding All Frames</a></li>
+<li><a href="Minibuffers-and-Frames.html" accesskey="9">Minibuffers and Frames</a></li>
+<li><a href="Input-Focus.html">Input Focus</a></li>
+<li><a href="Visibility-of-Frames.html">Visibility of Frames</a></li>
+<li><a href="Raising-and-Lowering.html">Raising, Lowering and Restacking Frames</a></li>
+<li><a href="Frame-Configurations.html">Frame Configurations</a></li>
+<li><a href="Child-Frames.html">Child Frames</a></li>
+<li><a href="Mouse-Tracking.html">Mouse Tracking</a></li>
+<li><a href="Mouse-Position.html">Mouse Position</a></li>
+<li><a href="Pop_002dUp-Menus.html">Pop-Up Menus</a></li>
+<li><a href="Dialog-Boxes.html">Dialog Boxes</a></li>
+<li><a href="Pointer-Shape.html">Pointer Shape</a></li>
+<li><a href="Window-System-Selections.html">Window System Selections</a></li>
+<li><a href="Yanking-Media.html">Yanking Media</a></li>
+<li><a href="Drag-and-Drop.html">Drag and Drop</a></li>
+<li><a href="Color-Names.html">Color Names</a></li>
+<li><a href="Text-Terminal-Colors.html">Text Terminal Colors</a></li>
+<li><a href="Resources.html">X Resources</a></li>
+<li><a href="Display-Feature-Testing.html">Display Feature Testing</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Positions.html">Positions</a>, Previous: <a href="Windows.html">Windows</a>, Up: <a href="index.html">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

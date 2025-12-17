@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Interactive Examples (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Interactive Examples (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Interactive Examples (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Defining-Commands.html" rel="up" title="Defining Commands">
+<link href="Command-Modes.html" rel="next" title="Command Modes">
+<link href="Interactive-Codes.html" rel="prev" title="Interactive Codes">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Interactive-Examples">
+<div class="nav-panel">
+<p>
+Next: <a href="Command-Modes.html" accesskey="n" rel="next">Specifying Modes For Commands</a>, Previous: <a href="Interactive-Codes.html" accesskey="p" rel="prev">Code Characters for <code class="code">interactive</code></a>, Up: <a href="Defining-Commands.html" accesskey="u" rel="up">Defining Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Examples-of-Using-interactive"><span>22.2.3 Examples of Using <code class="code">interactive</code><a class="copiable-link" href="#Examples-of-Using-interactive"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-examples-of-using-interactive"></a>
+<a class="index-entry-id" id="index-interactive_002c-examples-of-using"></a>
+
+<p>Here are some examples of <code class="code">interactive</code>:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defun foo1 ()              ; <span class="r"><code class="code">foo1</code> takes no arguments,</span>
+    (interactive)           ;   <span class="r">just moves forward two words.</span>
+    (forward-word 2))
+     &rArr; foo1
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(defun foo2 (n)             ; <span class="r"><code class="code">foo2</code> takes one argument,</span>
+    (interactive &quot;^p&quot;)      ;   <span class="r">which is the numeric prefix.</span>
+                            ; <span class="r">under <code class="code">shift-select-mode</code>,</span>
+                            ;   <span class="r">will activate or extend region.</span>
+    (forward-word (* 2 n)))
+     &rArr; foo2
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(defun foo3 (n)             ; <span class="r"><code class="code">foo3</code> takes one argument,</span>
+    (interactive &quot;nCount:&quot;) ;   <span class="r">which is read with the Minibuffer.</span>
+    (forward-word (* 2 n)))
+     &rArr; foo3
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(defun three-b (b1 b2 b3)
+  &quot;Select three existing buffers.
+Put them into three windows, selecting the last one.&quot;
+</pre></div><pre class="example-preformatted">    (interactive &quot;bBuffer1:\nbBuffer2:\nbBuffer3:&quot;)
+    (delete-other-windows)
+    (split-window (selected-window) 8)
+    (switch-to-buffer b1)
+    (other-window 1)
+    (split-window (selected-window) 8)
+    (switch-to-buffer b2)
+    (other-window 1)
+    (switch-to-buffer b3))
+     &rArr; three-b
+</pre><div class="group"><pre class="example-preformatted">(three-b &quot;*scratch*&quot; &quot;declarations.texi&quot; &quot;*mail*&quot;)
+     &rArr; nil
+</pre></div></div>
+
+</div>
+
+
+
+</body>
+</html>

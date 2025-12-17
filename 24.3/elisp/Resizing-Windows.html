@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Resizing Windows (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Resizing Windows (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Window-Sizes.html" rel="prev" title="Window Sizes">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,89 +46,90 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Resizing-Windows"></span><div class="header">
+<div class="section-level-extent" id="Resizing-Windows">
+<div class="nav-panel">
 <p>
 Next: <a href="Splitting-Windows.html" accesskey="n" rel="next">Splitting Windows</a>, Previous: <a href="Window-Sizes.html" accesskey="p" rel="prev">Window Sizes</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Resizing-Windows-1"></span><h3 class="section">28.4 Resizing Windows</h3>
-<span id="index-window-resizing"></span>
-<span id="index-resize-window"></span>
-<span id="index-changing-window-size"></span>
-<span id="index-window-size_002c-changing"></span>
+<h3 class="section" id="Resizing-Windows-1"><span>28.4 Resizing Windows<a class="copiable-link" href="#Resizing-Windows-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-window-resizing"></a>
+<a class="index-entry-id" id="index-resize-window"></a>
+<a class="index-entry-id" id="index-changing-window-size"></a>
+<a class="index-entry-id" id="index-window-size_002c-changing"></a>
 
 <p>This section describes functions for resizing a window without
 changing the size of its frame.  Because live windows do not overlap,
 these functions are meaningful only on frames that contain two or more
 windows: resizing a window also changes the size of a neighboring
 window.  If there is just one window on a frame, its size cannot be
-changed except by resizing the frame (see <a href="Size-and-Position.html">Size and Position</a>).
+changed except by resizing the frame (see <a class="pxref" href="Size-and-Position.html">Frame Size And Position</a>).
 </p>
 <p>Except where noted, these functions also accept internal windows as
 arguments.  Resizing an internal window causes its child windows to be
 resized to fit the same space.
 </p>
-<dl>
-<dt id="index-window_002dresizable">Function: <strong>window-resizable</strong> <em>window delta &amp;optional horizontal ignore</em></dt>
-<dd><p>This function returns <var>delta</var> if the size of <var>window</var> can be
-changed vertically by <var>delta</var> lines.  If the optional argument
-<var>horizontal</var> is non-<code>nil</code>, it instead returns <var>delta</var> if
-<var>window</var> can be resized horizontally by <var>delta</var> columns.  It
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dresizable"><span class="category-def">Function: </span><span><strong class="def-name">window-resizable</strong> <var class="def-var-arguments">window delta &amp;optional horizontal ignore</var><a class="copiable-link" href="#index-window_002dresizable"> &para;</a></span></dt>
+<dd><p>This function returns <var class="var">delta</var> if the size of <var class="var">window</var> can be
+changed vertically by <var class="var">delta</var> lines.  If the optional argument
+<var class="var">horizontal</var> is non-<code class="code">nil</code>, it instead returns <var class="var">delta</var> if
+<var class="var">window</var> can be resized horizontally by <var class="var">delta</var> columns.  It
 does not actually change the window size.
 </p>
-<p>If <var>window</var> is <code>nil</code>, it defaults to the selected window.
+<p>If <var class="var">window</var> is <code class="code">nil</code>, it defaults to the selected window.
 </p>
-<p>A positive value of <var>delta</var> means to check whether the window can be
+<p>A positive value of <var class="var">delta</var> means to check whether the window can be
 enlarged by that number of lines or columns; a negative value of
-<var>delta</var> means to check whether the window can be shrunk by that many
-lines or columns.  If <var>delta</var> is non-zero, a return value of 0 means
+<var class="var">delta</var> means to check whether the window can be shrunk by that many
+lines or columns.  If <var class="var">delta</var> is non-zero, a return value of 0 means
 that the window cannot be resized.
 </p>
-<p>Normally, the variables <code>window-min-height</code> and
-<code>window-min-width</code> specify the smallest allowable window size.
-See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Change-Window.html#Change-Window">Deleting and Rearranging Windows</a> in <cite>The GNU
-Emacs Manual</cite>.  However, if the optional argument <var>ignore</var> is
-non-<code>nil</code>, this function ignores <code>window-min-height</code> and
-<code>window-min-width</code>, as well as <code>window-size-fixed</code>.
+<p>Normally, the variables <code class="code">window-min-height</code> and
+<code class="code">window-min-width</code> specify the smallest allowable window size.
+See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Change-Window.html#Change-Window">Deleting and Rearranging Windows</a> in <cite class="cite">The GNU
+Emacs Manual</cite>.  However, if the optional argument <var class="var">ignore</var> is
+non-<code class="code">nil</code>, this function ignores <code class="code">window-min-height</code> and
+<code class="code">window-min-width</code>, as well as <code class="code">window-size-fixed</code>.
 Instead, it considers the minimum-height window to be one consisting
 of a header (if any), a mode line, plus a text area one line tall; and
 a minimum-width window as one consisting of fringes, margins, and
 scroll bar (if any), plus a text area two columns wide.
 </p></dd></dl>
 
-<dl>
-<dt id="index-window_002dresize">Function: <strong>window-resize</strong> <em>window delta &amp;optional horizontal ignore</em></dt>
-<dd><p>This function resizes <var>window</var> by <var>delta</var> increments.  If
-<var>horizontal</var> is <code>nil</code>, it changes the height by <var>delta</var>
-lines; otherwise, it changes the width by <var>delta</var> columns.  A
-positive <var>delta</var> means to enlarge the window, and a negative
-<var>delta</var> means to shrink it.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dresize"><span class="category-def">Function: </span><span><strong class="def-name">window-resize</strong> <var class="def-var-arguments">window delta &amp;optional horizontal ignore</var><a class="copiable-link" href="#index-window_002dresize"> &para;</a></span></dt>
+<dd><p>This function resizes <var class="var">window</var> by <var class="var">delta</var> increments.  If
+<var class="var">horizontal</var> is <code class="code">nil</code>, it changes the height by <var class="var">delta</var>
+lines; otherwise, it changes the width by <var class="var">delta</var> columns.  A
+positive <var class="var">delta</var> means to enlarge the window, and a negative
+<var class="var">delta</var> means to shrink it.
 </p>
-<p>If <var>window</var> is <code>nil</code>, it defaults to the selected window.  If
+<p>If <var class="var">window</var> is <code class="code">nil</code>, it defaults to the selected window.  If
 the window cannot be resized as demanded, an error is signaled.
 </p>
-<p>The optional argument <var>ignore</var> has the same meaning as for the
-function <code>window-resizable</code> above.
+<p>The optional argument <var class="var">ignore</var> has the same meaning as for the
+function <code class="code">window-resizable</code> above.
 </p>
 <p>The choice of which window edges this function alters depends on the
-values of the option <code>window-combination-resize</code> and the
+values of the option <code class="code">window-combination-resize</code> and the
 combination limits of the involved windows; in some cases, it may alter
-both edges.  See <a href="Recombining-Windows.html">Recombining Windows</a>.  To resize by moving only the
+both edges.  See <a class="xref" href="Recombining-Windows.html">Recombining Windows</a>.  To resize by moving only the
 bottom or right edge of a window, use the function
-<code>adjust-window-trailing-edge</code>, below.
+<code class="code">adjust-window-trailing-edge</code>, below.
 </p></dd></dl>
 
 
-<dl>
-<dt id="index-adjust_002dwindow_002dtrailing_002dedge">Function: <strong>adjust-window-trailing-edge</strong> <em>window delta &amp;optional horizontal</em></dt>
-<dd><p>This function moves <var>window</var>&rsquo;s bottom edge by <var>delta</var> lines.
-If optional argument <var>horizontal</var> is non-<code>nil</code>, it instead
-moves the right edge by <var>delta</var> columns.  If <var>window</var> is
-<code>nil</code>, it defaults to the selected window.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-adjust_002dwindow_002dtrailing_002dedge"><span class="category-def">Function: </span><span><strong class="def-name">adjust-window-trailing-edge</strong> <var class="def-var-arguments">window delta &amp;optional horizontal</var><a class="copiable-link" href="#index-adjust_002dwindow_002dtrailing_002dedge"> &para;</a></span></dt>
+<dd><p>This function moves <var class="var">window</var>&rsquo;s bottom edge by <var class="var">delta</var> lines.
+If optional argument <var class="var">horizontal</var> is non-<code class="code">nil</code>, it instead
+moves the right edge by <var class="var">delta</var> columns.  If <var class="var">window</var> is
+<code class="code">nil</code>, it defaults to the selected window.
 </p>
-<p>A positive <var>delta</var> moves the edge downwards or to the right; a
-negative <var>delta</var> moves it upwards or to the left.  If the edge
-cannot be moved as far as specified by <var>delta</var>, this function
+<p>A positive <var class="var">delta</var> moves the edge downwards or to the right; a
+negative <var class="var">delta</var> moves it upwards or to the left.  If the edge
+cannot be moved as far as specified by <var class="var">delta</var>, this function
 moves it as far as possible but does not signal a error.
 </p>
 <p>This function tries to resize windows adjacent to the edge that is
@@ -148,36 +140,36 @@ window is fixed-size), it may resize other windows.
 <p>The following commands resize windows in more specific ways.  When
 called interactively, they act on the selected window.
 </p>
-<dl>
-<dt id="index-fit_002dwindow_002dto_002dbuffer">Command: <strong>fit-window-to-buffer</strong> <em>&amp;optional window max-height min-height override</em></dt>
-<dd><p>This command adjusts the height of <var>window</var> to fit the text in it.
-It returns non-<code>nil</code> if it was able to resize <var>window</var>, and
-<code>nil</code> otherwise.  If <var>window</var> is omitted or <code>nil</code>, it
+<dl class="first-deffn">
+<dt class="deffn" id="index-fit_002dwindow_002dto_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">fit-window-to-buffer</strong> <var class="def-var-arguments">&amp;optional window max-height min-height override</var><a class="copiable-link" href="#index-fit_002dwindow_002dto_002dbuffer"> &para;</a></span></dt>
+<dd><p>This command adjusts the height of <var class="var">window</var> to fit the text in it.
+It returns non-<code class="code">nil</code> if it was able to resize <var class="var">window</var>, and
+<code class="code">nil</code> otherwise.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it
 defaults to the selected window.  Otherwise, it should be a live
 window.
 </p>
-<p>The optional argument <var>max-height</var>, if non-<code>nil</code>, specifies
-the maximum total height that this function can give <var>window</var>.
-The optional argument <var>min-height</var>, if non-<code>nil</code>, specifies
+<p>The optional argument <var class="var">max-height</var>, if non-<code class="code">nil</code>, specifies
+the maximum total height that this function can give <var class="var">window</var>.
+The optional argument <var class="var">min-height</var>, if non-<code class="code">nil</code>, specifies
 the minimum total height that it can give, which overrides the
-variable <code>window-min-height</code>.
+variable <code class="code">window-min-height</code>.
 </p>
-<p>If the optional argument <var>override</var> is non-<code>nil</code>, this
+<p>If the optional argument <var class="var">override</var> is non-<code class="code">nil</code>, this
 function ignores any size restrictions imposed by
-<code>window-min-height</code> and <code>window-min-width</code>.
+<code class="code">window-min-height</code> and <code class="code">window-min-width</code>.
 </p>
-<span id="index-fit_002dframe_002dto_002dbuffer-1"></span>
-<p>If the option <code>fit-frame-to-buffer</code> is non-<code>nil</code>, this
+<a class="index-entry-id" id="index-fit_002dframe_002dto_002dbuffer-1"></a>
+<p>If the option <code class="code">fit-frame-to-buffer</code> is non-<code class="code">nil</code>, this
 command may resize the frame to fit its contents.
 </p></dd></dl>
 
-<dl>
-<dt id="index-shrink_002dwindow_002dif_002dlarger_002dthan_002dbuffer">Command: <strong>shrink-window-if-larger-than-buffer</strong> <em>&amp;optional window</em></dt>
-<dd><p>This command attempts to reduce <var>window</var>&rsquo;s height as much as
+<dl class="first-deffn">
+<dt class="deffn" id="index-shrink_002dwindow_002dif_002dlarger_002dthan_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">shrink-window-if-larger-than-buffer</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-shrink_002dwindow_002dif_002dlarger_002dthan_002dbuffer"> &para;</a></span></dt>
+<dd><p>This command attempts to reduce <var class="var">window</var>&rsquo;s height as much as
 possible while still showing its full buffer, but no less than
-<code>window-min-height</code> lines.  The return value is non-<code>nil</code> if
-the window was resized, and <code>nil</code> otherwise.  If <var>window</var> is
-omitted or <code>nil</code>, it defaults to the selected window.  Otherwise,
+<code class="code">window-min-height</code> lines.  The return value is non-<code class="code">nil</code> if
+the window was resized, and <code class="code">nil</code> otherwise.  If <var class="var">window</var> is
+omitted or <code class="code">nil</code>, it defaults to the selected window.  Otherwise,
 it should be a live window.
 </p>
 <p>This command does nothing if the window is already too short to
@@ -185,46 +177,47 @@ display all of its buffer, or if any of the buffer is scrolled
 off-screen, or if the window is the only live window in its frame.
 </p></dd></dl>
 
-<span id="index-balancing-window-sizes"></span>
-<dl>
-<dt id="index-balance_002dwindows">Command: <strong>balance-windows</strong> <em>&amp;optional window-or-frame</em></dt>
+<a class="index-entry-id" id="index-balancing-window-sizes"></a>
+<dl class="first-deffn">
+<dt class="deffn" id="index-balance_002dwindows"><span class="category-def">Command: </span><span><strong class="def-name">balance-windows</strong> <var class="def-var-arguments">&amp;optional window-or-frame</var><a class="copiable-link" href="#index-balance_002dwindows"> &para;</a></span></dt>
 <dd><p>This function balances windows in a way that gives more space to
-full-width and/or full-height windows.  If <var>window-or-frame</var>
+full-width and/or full-height windows.  If <var class="var">window-or-frame</var>
 specifies a frame, it balances all windows on that frame.  If
-<var>window-or-frame</var> specifies a window, it balances only that window
-and its siblings (see <a href="Windows-and-Frames.html">Windows and Frames</a>).
+<var class="var">window-or-frame</var> specifies a window, it balances only that window
+and its siblings (see <a class="pxref" href="Windows-and-Frames.html">Windows and Frames</a>).
 </p></dd></dl>
 
-<dl>
-<dt id="index-balance_002dwindows_002darea">Command: <strong>balance-windows-area</strong></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-balance_002dwindows_002darea"><span class="category-def">Command: </span><span><strong class="def-name">balance-windows-area</strong><a class="copiable-link" href="#index-balance_002dwindows_002darea"> &para;</a></span></dt>
 <dd><p>This function attempts to give all windows on the selected frame
 approximately the same share of the screen area.  Full-width or
 full-height windows are not given more space than other windows.
 </p></dd></dl>
 
-<span id="index-maximizing-windows"></span>
-<dl>
-<dt id="index-maximize_002dwindow">Command: <strong>maximize-window</strong> <em>&amp;optional window</em></dt>
-<dd><p>This function attempts to make <var>window</var> as large as possible, in
+<a class="index-entry-id" id="index-maximizing-windows"></a>
+<dl class="first-deffn">
+<dt class="deffn" id="index-maximize_002dwindow"><span class="category-def">Command: </span><span><strong class="def-name">maximize-window</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-maximize_002dwindow"> &para;</a></span></dt>
+<dd><p>This function attempts to make <var class="var">window</var> as large as possible, in
 both dimensions, without resizing its frame or deleting other windows.
-If <var>window</var> is omitted or <code>nil</code>, it defaults to the selected
+If <var class="var">window</var> is omitted or <code class="code">nil</code>, it defaults to the selected
 window.
 </p></dd></dl>
 
-<span id="index-minimizing-windows"></span>
-<dl>
-<dt id="index-minimize_002dwindow">Command: <strong>minimize-window</strong> <em>&amp;optional window</em></dt>
-<dd><p>This function attempts to make <var>window</var> as small as possible, in
+<a class="index-entry-id" id="index-minimizing-windows"></a>
+<dl class="first-deffn">
+<dt class="deffn" id="index-minimize_002dwindow"><span class="category-def">Command: </span><span><strong class="def-name">minimize-window</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-minimize_002dwindow"> &para;</a></span></dt>
+<dd><p>This function attempts to make <var class="var">window</var> as small as possible, in
 both dimensions, without deleting it or resizing its frame.  If
-<var>window</var> is omitted or <code>nil</code>, it defaults to the selected
+<var class="var">window</var> is omitted or <code class="code">nil</code>, it defaults to the selected
 window.
 </p></dd></dl>
 
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Splitting-Windows.html" accesskey="n" rel="next">Splitting Windows</a>, Previous: <a href="Window-Sizes.html" accesskey="p" rel="prev">Window Sizes</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Splitting-Windows.html">Splitting Windows</a>, Previous: <a href="Window-Sizes.html">Window Sizes</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

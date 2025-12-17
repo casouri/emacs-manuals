@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Symbol Forms (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Symbol Forms (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Self_002dEvaluating-Forms.html" rel="prev" title="Self-Evaluating Forms">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,40 +47,42 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Symbol-Forms"></span><div class="header">
+<div class="subsection-level-extent" id="Symbol-Forms">
+<div class="nav-panel">
 <p>
-Next: <a href="Classifying-Lists.html" accesskey="n" rel="next">Classifying Lists</a>, Previous: <a href="Self_002dEvaluating-Forms.html" accesskey="p" rel="prev">Self-Evaluating Forms</a>, Up: <a href="Forms.html" accesskey="u" rel="up">Forms</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Classifying-Lists.html" accesskey="n" rel="next">Classification of List Forms</a>, Previous: <a href="Self_002dEvaluating-Forms.html" accesskey="p" rel="prev">Self-Evaluating Forms</a>, Up: <a href="Forms.html" accesskey="u" rel="up">Kinds of Forms</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Symbol-Forms-1"></span><h4 class="subsection">9.2.2 Symbol Forms</h4>
-<span id="index-symbol-evaluation"></span>
+<h4 class="subsection" id="Symbol-Forms-1"><span>9.2.2 Symbol Forms<a class="copiable-link" href="#Symbol-Forms-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-symbol-evaluation"></a>
 
 <p>When a symbol is evaluated, it is treated as a variable.  The result
 is the variable&rsquo;s value, if it has one.  If the symbol has no value as
 a variable, the Lisp interpreter signals an error.  For more
-information on the use of variables, see <a href="Variables.html">Variables</a>.
+information on the use of variables, see <a class="ref" href="Variables.html">Variables</a>.
 </p>
 <p>In the following example, we set the value of a symbol with
-<code>setq</code>.  Then we evaluate the symbol, and get back the value that
-<code>setq</code> stored.
+<code class="code">setq</code>.  Then we evaluate the symbol, and get back the value that
+<code class="code">setq</code> stored.
 </p>
 <div class="example">
-<pre class="example">(setq a 123)
+<div class="group"><pre class="example-preformatted">(setq a 123)
      &rArr; 123
-</pre><pre class="example">(eval 'a)
+</pre></div><div class="group"><pre class="example-preformatted">(eval 'a)
      &rArr; 123
-</pre><pre class="example">a
+</pre></div><div class="group"><pre class="example-preformatted">a
      &rArr; 123
-</pre></div>
+</pre></div></div>
 
-<p>The symbols <code>nil</code> and <code>t</code> are treated specially, so that the
-value of <code>nil</code> is always <code>nil</code>, and the value of <code>t</code> is
-always <code>t</code>; you cannot set or bind them to any other values.  Thus,
+<p>The symbols <code class="code">nil</code> and <code class="code">t</code> are treated specially, so that the
+value of <code class="code">nil</code> is always <code class="code">nil</code>, and the value of <code class="code">t</code> is
+always <code class="code">t</code>; you cannot set or bind them to any other values.  Thus,
 these two symbols act like self-evaluating forms, even though
-<code>eval</code> treats them like any other symbol.  A symbol whose name
-starts with &lsquo;<samp>:</samp>&rsquo; also self-evaluates in the same way; likewise,
-its value ordinarily cannot be changed.  See <a href="Constant-Variables.html">Constant Variables</a>.
+<code class="code">eval</code> treats them like any other symbol.  A symbol whose name
+starts with &lsquo;<samp class="samp">:</samp>&rsquo; also self-evaluates in the same way; likewise,
+its value ordinarily cannot be changed.  See <a class="xref" href="Constant-Variables.html">Variables that Never Change</a>.
 </p>
+</div>
 
 
 

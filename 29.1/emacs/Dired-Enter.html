@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Dired Enter (GNU Emacs Manual)</title>
+
+<meta name="description" content="Dired Enter (GNU Emacs Manual)">
+<meta name="keywords" content="Dired Enter (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Dired.html" rel="up" title="Dired">
+<link href="Dired-Navigation.html" rel="next" title="Dired Navigation">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Dired-Enter">
+<div class="nav-panel">
+<p>
+Next: <a href="Dired-Navigation.html" accesskey="n" rel="next">Navigation in the Dired Buffer</a>, Up: <a href="Dired.html" accesskey="u" rel="up">Dired, the Directory Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Entering-Dired"><span>31.1 Entering Dired<a class="copiable-link" href="#Entering-Dired"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-dired"></a>
+<a class="index-entry-id" id="index-C_002dx-d"></a>
+<a class="index-entry-id" id="index-dired_002dlisting_002dswitches"></a>
+<p>To invoke Dired, type <kbd class="kbd">C-x d</kbd> (<code class="code">dired</code>).  This reads a
+directory&rsquo;s name using the minibuffer, and opens a <em class="dfn">Dired buffer</em>
+listing the files in that directory.  You can also supply a wildcard
+file name pattern as the minibuffer argument, in which case the Dired
+buffer lists all files matching that pattern.  A wildcard may appear
+in the directory part as well.
+For instance,
+</p>
+<div class="example">
+<pre class="example-preformatted">C-x d  ~/foo/*.el  <kbd class="key">RET</kbd>
+C-x d  ~/foo/*/*.el  <kbd class="key">RET</kbd>
+</pre></div>
+
+<p>The former lists all the files with extension &lsquo;<samp class="samp">.el</samp>&rsquo; in directory
+&lsquo;<samp class="samp">foo</samp>&rsquo;.  The latter lists the files with extension &lsquo;<samp class="samp">.el</samp>&rsquo;
+in all the subdirectories of &lsquo;<samp class="samp">foo</samp>&rsquo;.
+</p>
+<a class="index-entry-id" id="index-globstar_002c-in-Dired"></a>
+<p>On Posix systems, when the system shell supports <em class="dfn">globstar</em>, a
+recursive globbing feature, and that support is enabled, you can use
+recursive globbing in Dired:
+</p>
+<div class="example">
+<pre class="example-preformatted">C-x d  ~/foo/**/*.el  <kbd class="key">RET</kbd>
+</pre></div>
+
+<p>This command produces a directory listing with all the files with
+extension &lsquo;<samp class="samp">.el</samp>&rsquo;, descending recursively in all the subdirectories
+of &lsquo;<samp class="samp">foo</samp>&rsquo;.  Note that there are small differences in the
+implementation of globstar between different shells.  Check your shell
+manual to know the expected behavior.
+</p>
+<a class="index-entry-id" id="index-dired_002dmaybe_002duse_002dglobstar"></a>
+<a class="index-entry-id" id="index-dired_002denable_002dglobstar_002din_002dshell"></a>
+<p>If the shell supports globstar, but that support is disabled by
+default, you can still let Dired use this feature by customizing
+<code class="code">dired-maybe-use-globstar</code> to a non-<code class="code">nil</code> value; then Dired
+will enable globstar for those shells for which it knows how (see
+<code class="code">dired-enable-globstar-in-shell</code> for the list of those shells).
+</p>
+<p>The usual history and completion commands can be used in the minibuffer;
+in particular, <kbd class="kbd">M-n</kbd> puts the name of the visited file (if any) in
+the minibuffer (see <a class="pxref" href="Minibuffer-History.html">Minibuffer History</a>).
+</p>
+<p>You can also invoke Dired by giving <kbd class="kbd">C-x C-f</kbd> (<code class="code">find-file</code>)
+a directory&rsquo;s name.
+</p>
+<a class="index-entry-id" id="index-dired_002djump"></a>
+<a class="index-entry-id" id="index-dired_002djump_002dother_002dwindow"></a>
+<a class="index-entry-id" id="index-C_002dx-C_002dj"></a>
+<a class="index-entry-id" id="index-C_002dx-4-C_002dj"></a>
+<p>You can ask Emacs to invoke Dired on the default-directory
+(see <a class="pxref" href="File-Names.html">default-directory</a>) of any buffer, by typing
+<kbd class="kbd">C-x C-j</kbd> (<code class="code">dired-jump</code>).  If the buffer visits a file, this
+command will move point to that file&rsquo;s line in the Dired buffer it
+shows; otherwise, point will end up on the first file in the directory
+listing.  As an exception, if you type <kbd class="kbd">C-x C-j</kbd> in a Dired
+buffer, Emacs displays the directory listing of the parent directory
+and places point on the line that corresponds to the directory where
+you invoked <code class="code">dired-jump</code>.  Typing <kbd class="kbd">C-x 4 C-j</kbd>
+(<code class="code">dired-jump-other-window</code>) has the same effect, but displays the
+Dired buffer in a new window.
+</p>
+<p>The variable <code class="code">dired-listing-switches</code> specifies the options to
+give to <code class="command">ls</code> for listing the directory; this string
+<em class="emph">must</em> contain &lsquo;<samp class="samp">-l</samp>&rsquo;.  If you use a prefix argument with the
+<code class="code">dired</code> command, you can specify the <code class="command">ls</code> switches with the
+minibuffer before you enter the directory specification.  No matter
+how they are specified, the <code class="command">ls</code> switches can include short
+options (that is, single characters) requiring no arguments, and long
+options (starting with &lsquo;<samp class="samp">--</samp>&rsquo;) whose arguments are specified with
+&lsquo;<samp class="samp">=</samp>&rsquo;.
+</p>
+<p>Dired does not handle files that have names with embedded newline
+characters well.  If you have many such files, you may consider adding
+&lsquo;<samp class="samp">-b</samp>&rsquo; to <code class="code">dired-listing-switches</code>.  This will quote all
+special characters and allow Dired to handle them better.  (You can
+also use the <kbd class="kbd">C-u C-x d</kbd> command to add &lsquo;<samp class="samp">-b</samp>&rsquo; temporarily.)
+</p>
+<a class="index-entry-id" id="index-dired_002dswitches_002din_002dmode_002dline"></a>
+<p>Dired displays in the mode line an indication of what were the
+switches used to invoke <code class="command">ls</code>.  By default, Dired will try to
+determine whether the switches indicate sorting by name or date, and
+will say so in the mode line.  If the <code class="code">dired-switches-in-mode-line</code>
+variable is <code class="code">as-is</code>, the switches will be shown verbatim.  If
+this variable&rsquo;s value is an integer, the switch display will be
+truncated to that length.  This variable can also be a function, which
+will be called with <code class="code">dired-actual-switches</code> as the only
+parameter, and should return a string to display in the mode line.
+</p>
+<a class="index-entry-id" id="index-dired_002duse_002dls_002ddired"></a>
+<p>If your <code class="command">ls</code> program supports the &lsquo;<samp class="samp">--dired</samp>&rsquo; option,
+Dired automatically passes it that option; this causes <code class="command">ls</code> to
+emit special escape sequences for certain unusual file names, without
+which Dired will not be able to parse those names.  The first time you
+run Dired in an Emacs session, it checks whether <code class="command">ls</code> supports
+the &lsquo;<samp class="samp">--dired</samp>&rsquo; option by calling it once with that option.  If the
+exit code is 0, Dired will subsequently use the &lsquo;<samp class="samp">--dired</samp>&rsquo; option;
+otherwise it will not.  You can inhibit this check by customizing the
+variable <code class="code">dired-use-ls-dired</code>.  The value <code class="code">unspecified</code> (the
+default) means to perform the check; any other non-<code class="code">nil</code> value
+means to use the &lsquo;<samp class="samp">--dired</samp>&rsquo; option; and <code class="code">nil</code> means not to
+use the &lsquo;<samp class="samp">--dired</samp>&rsquo; option.
+</p>
+<p>On MS-Windows and MS-DOS systems, and also on some remote systems,
+Emacs emulates <code class="command">ls</code>.  See <a class="xref" href="ls-in-Lisp.html">Emulation of <code class="code">ls</code> on MS-Windows</a>, for options and
+peculiarities of this emulation.
+</p>
+<a class="index-entry-id" id="index-dired_002dother_002dwindow"></a>
+<a class="index-entry-id" id="index-C_002dx-4-d"></a>
+<a class="index-entry-id" id="index-dired_002dother_002dframe"></a>
+<a class="index-entry-id" id="index-C_002dx-5-d"></a>
+<p>To display the Dired buffer in another window, use <kbd class="kbd">C-x 4 d</kbd>
+(<code class="code">dired-other-window</code>).  <kbd class="kbd">C-x 5 d</kbd>
+(<code class="code">dired-other-frame</code>) displays the Dired buffer in a separate
+frame.
+</p>
+<a class="index-entry-id" id="index-q-_0028Dired_0029"></a>
+<a class="index-entry-id" id="index-quit_002dwindow_002c-in-Dired-buffers"></a>
+<p>Typing <kbd class="kbd">q</kbd> (<code class="code">quit-window</code>) buries the Dired buffer, and
+deletes its window if the window was created just for that buffer.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dired-Navigation.html">Navigation in the Dired Buffer</a>, Up: <a href="Dired.html">Dired, the Directory Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

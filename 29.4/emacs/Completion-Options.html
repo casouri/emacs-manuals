@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Completion Options (GNU Emacs Manual)</title>
+
+<meta name="description" content="Completion Options (GNU Emacs Manual)">
+<meta name="keywords" content="Completion Options (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Completion.html" rel="up" title="Completion">
+<link href="Completion-Styles.html" rel="prev" title="Completion Styles">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Completion-Options">
+<div class="nav-panel">
+<p>
+Previous: <a href="Completion-Styles.html" accesskey="p" rel="prev">How Completion Alternatives Are Chosen</a>, Up: <a href="Completion.html" accesskey="u" rel="up">Completion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Completion-Options-1"><span>9.4.5 Completion Options<a class="copiable-link" href="#Completion-Options-1"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-case_002dsensitivity-and-completion"></a>
+<a class="index-entry-id" id="index-case-in-completion"></a>
+<p>Case is significant when completing case-sensitive arguments, such
+as command names.  For example, when completing command names,
+&lsquo;<samp class="samp">AU</samp>&rsquo; does not complete to &lsquo;<samp class="samp">auto-fill-mode</samp>&rsquo;.  Case
+differences are ignored when completing arguments in which case does
+not matter.
+</p>
+<a class="index-entry-id" id="index-read_002dfile_002dname_002dcompletion_002dignore_002dcase"></a>
+<a class="index-entry-id" id="index-read_002dbuffer_002dcompletion_002dignore_002dcase"></a>
+<p>When completing file names, case differences are ignored if the
+variable <code class="code">read-file-name-completion-ignore-case</code> is
+non-<code class="code">nil</code>.  The default value is <code class="code">nil</code> on systems that have
+case-sensitive file-names, such as GNU/Linux; it is non-<code class="code">nil</code> on
+systems that have case-insensitive file-names, such as Microsoft
+Windows.  When completing buffer names, case differences are ignored
+if the variable <code class="code">read-buffer-completion-ignore-case</code> is
+non-<code class="code">nil</code>; the default is <code class="code">nil</code>.
+</p>
+<a class="index-entry-id" id="index-completion_002dignored_002dextensions"></a>
+<a class="index-entry-id" id="index-ignored-file-names_002c-in-completion"></a>
+<p>When completing file names, Emacs usually omits certain alternatives
+that are considered unlikely to be chosen, as determined by the list
+variable <code class="code">completion-ignored-extensions</code>.  Each element in the
+list should be a string; any file name ending in such a string is
+ignored as a completion alternative.  Any element ending in a slash
+(<samp class="file">/</samp>) represents a subdirectory name.  The standard value of
+<code class="code">completion-ignored-extensions</code> has several elements including
+<code class="code">&quot;.o&quot;</code>, <code class="code">&quot;.elc&quot;</code>, and <code class="code">&quot;~&quot;</code>.  For example, if a
+directory contains &lsquo;<samp class="samp">foo.c</samp>&rsquo; and &lsquo;<samp class="samp">foo.elc</samp>&rsquo;, &lsquo;<samp class="samp">foo</samp>&rsquo;
+completes to &lsquo;<samp class="samp">foo.c</samp>&rsquo;.  However, if <em class="emph">all</em> possible
+completions end in otherwise-ignored strings, they are not ignored: in the
+previous example, &lsquo;<samp class="samp">foo.e</samp>&rsquo; completes to &lsquo;<samp class="samp">foo.elc</samp>&rsquo;.  Emacs
+disregards <code class="code">completion-ignored-extensions</code> when showing
+completion alternatives in the completion list.
+</p>
+<p>Shell completion is an extended version of filename completion,
+see <a class="pxref" href="Shell-Options.html">Shell Mode Options</a>.
+</p>
+<a class="index-entry-id" id="index-completion_002dauto_002dhelp"></a>
+<p>If <code class="code">completion-auto-help</code> is set to <code class="code">nil</code>, the completion
+commands never display the completion list buffer; you must type
+<kbd class="kbd">?</kbd> to display the list.  If the value is <code class="code">lazy</code>, Emacs only
+shows the completion list buffer on the second attempt to complete.
+In other words, if there is nothing to complete, the first <kbd class="key">TAB</kbd>
+echoes &lsquo;<samp class="samp">Next char not unique</samp>&rsquo;; the second <kbd class="key">TAB</kbd> shows the
+completion list buffer.  If the value is <code class="code">always</code>, the completion
+list buffer is always shown when completion is attempted.
+</p>
+<p>The display of the completion list buffer after it is shown for the
+first time is also controlled by <code class="code">completion-auto-help</code>.  If the
+value is <code class="code">t</code> or <code class="code">lazy</code>, the window showing the completions
+pops down when Emacs is able to complete (and may pop up again if
+Emacs is again unable to complete after you type some more text); if
+the value is <code class="code">always</code>, the window pops down only when you exit
+the completion.  The value <code class="code">visible</code> is a hybrid: it behaves like
+<code class="code">t</code> when it decides whether to pop up the window showing the
+completion list buffer, and like <code class="code">always</code> when it decides whether
+to pop it down.
+</p>
+<a class="index-entry-id" id="index-completion_002dauto_002dselect"></a>
+<p>Emacs can optionally select the window showing the completions when
+it shows that window.  To enable this behavior, customize the user
+option <code class="code">completion-auto-select</code> to <code class="code">t</code>, which changes the
+behavior of <kbd class="key">TAB</kbd> when Emacs pops up the completions: pressing
+<kbd class="kbd"><kbd class="key">TAB</kbd></kbd> will switch to the completion list buffer, and you can
+then move to a candidate by cursor motion commands and select it with
+<kbd class="kbd"><kbd class="key">RET</kbd></kbd>.  If the value of <code class="code">completion-auto-select</code> is
+<code class="code">second-tab</code>, then the first <kbd class="kbd"><kbd class="key">TAB</kbd></kbd> will pop up the
+completions list buffer, and the second one will switch to it.
+</p>
+<a class="index-entry-id" id="index-completion_002dcycle_002dthreshold"></a>
+<p>If <code class="code">completion-cycle-threshold</code> is non-<code class="code">nil</code>, completion
+commands can cycle through completion alternatives.  Normally, if
+there is more than one completion alternative for the text in the
+minibuffer, a completion command completes up to the longest common
+substring.  If you change <code class="code">completion-cycle-threshold</code> to
+<code class="code">t</code>, the completion command instead completes to the first of
+those completion alternatives; each subsequent invocation of the
+completion command replaces that with the next completion alternative,
+in a cyclic manner.  If you give <code class="code">completion-cycle-threshold</code> a
+numeric value <var class="var">n</var>, completion commands switch to this cycling
+behavior only when there are <var class="var">n</var> or fewer alternatives.
+</p>
+<a class="index-entry-id" id="index-completions_002dformat"></a>
+<p>When displaying completions, Emacs will normally pop up a new buffer
+to display the completions.  The completions will by default be sorted
+horizontally, using as many columns as will fit in the window-width,
+but this can be changed by customizing the <code class="code">completions-format</code>
+user option.  If its value is <code class="code">vertical</code>, Emacs will sort the
+completions vertically instead, and if it&rsquo;s <code class="code">one-column</code>, Emacs
+will use just one column.
+</p>
+<a class="index-entry-id" id="index-completions_002dsort"></a>
+<p>The <code class="code">completions-sort</code> user option controls the order in which
+the completions are sorted in the &lsquo;<samp class="samp">*Completions*</samp>&rsquo; buffer.  The
+default is <code class="code">alphabetical</code>, which sorts in alphabetical order.
+The value <code class="code">nil</code> disables sorting.  The value can also be a
+function, which will be called with the list of completions, and
+should return the list in the desired order.
+</p>
+<a class="index-entry-id" id="index-completions_002dmax_002dheight"></a>
+<p>When <code class="code">completions-max-height</code> is non-<code class="code">nil</code>, it limits the
+size of the completions window.  It is specified in lines and include
+mode, header line and a bottom divider, if any.  For a more complex
+control of the Completion window display properties, you can use
+<code class="code">display-buffer-alist</code> (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Buffer-Display-Action-Alists.html#Buffer-Display-Action-Alists">Action Alists for Buffer Display</a> in <cite class="cite">The Emacs Lisp
+Reference Manual</cite>).
+</p>
+<a class="index-entry-id" id="index-completions_002dheader_002dformat"></a>
+<p>The variable <code class="code">completions-header-format</code> is a format spec string to
+control the informative line shown before the completions list of
+candidates.  If it contains a &lsquo;<samp class="samp">%s</samp>&rsquo; construct, that get replaced
+by the number of completions shown in the completion list buffer.  To
+suppress the display of the heading line, customize this variable to
+<code class="code">nil</code>.  The string that is the value of this variable can have
+text properties to change the visual appearance of the heading line;
+some useful properties <code class="code">face</code> or <code class="code">cursor-intangible</code>
+(see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Special-Properties.html#Special-Properties">Properties with Special Meanings</a> in <cite class="cite">The Emacs Lisp Reference Manual</cite>).
+</p>
+<a class="index-entry-id" id="index-completions_002dhighlight_002dface"></a>
+<p>When <code class="code">completions-highlight-face</code> names a face, the current
+completion candidate, the one that will be selected by typing
+<kbd class="kbd"><kbd class="key">RET</kbd></kbd> or clicking the mouse, will be highlighted using that
+face.  The default value of this variable is
+<code class="code">completions-highlight</code>; the value is <code class="code">nil</code> disables this
+highlighting.  This feature uses the special text property
+<code class="code">cursor-face</code>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Completion-Styles.html">How Completion Alternatives Are Chosen</a>, Up: <a href="Completion.html">Completion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

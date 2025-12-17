@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Semantic Font Lock (GNU Emacs Manual)</title>
+
+<meta name="description" content="Semantic Font Lock (GNU Emacs Manual)">
+<meta name="keywords" content="Semantic Font Lock (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Font-Lock.html" rel="up" title="Font Lock">
+<link href="Parser_002dbased-Font-Lock.html" rel="prev" title="Parser-based Font Lock">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Semantic-Font-Lock">
+<div class="nav-panel">
+<p>
+Previous: <a href="Parser_002dbased-Font-Lock.html" accesskey="p" rel="prev">Parser-based Font Lock</a>, Up: <a href="Font-Lock.html" accesskey="u" rel="up">Font Lock mode</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Semantic-Font-Lock-1"><span>16.13.3 Semantic Font Lock<a class="copiable-link" href="#Semantic-Font-Lock-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-semantic-highlighting"></a>
+
+<p><em class="dfn">Semantic highlighting</em> is feature in which
+an editor uses some kind of semantic analysis to understand a program&rsquo;s
+source code, and communicates useful information about the meaning of
+different tokens to the user by highlighting these tokens according to
+their specific role in the program.
+</p>
+<p>Semantic highlighting is more sophisticated than traditional &ldquo;syntax
+highlighting&rdquo;, which only considers the syntactic role of a token,
+i.e., how it affects the code&rsquo;s <em class="emph">parsing</em>, unlike semantic analysis
+which takes into account the token&rsquo;s effect on the program&rsquo;s
+<em class="emph">execution</em>.  For example, a semantic highlighting implementation
+may be able to tell apart local and global variables and give distinct
+highlighting to each category, even though the language&rsquo;s <em class="emph">syntax</em>
+doesn&rsquo;t make such a distinction.  Semantic highlighting is especially
+beneficial in languages in which syntactic constructs can mean
+completely different things depending on the context in which they
+occur, such as Lisp and Prolog.  In such languages, syntactic analysis
+alone misses a lot of important information that coders need to reason
+about their programs.
+</p>
+<p>Some language servers provide semantic highlighting information, which
+Emacs can leverage via its LSP client, Eglot.  See <a data-manual="eglot" href="../eglot_html/Eglot-Features.html#Eglot-Features">Eglot Features</a> in <cite class="cite">Eglot: The Emacs LSP Client</cite>.
+</p>
+<a class="index-entry-id" id="index-elisp_002dfontify_002dsemantically"></a>
+<p>Additionally, Emacs implements semantic highlighting for Emacs Lisp as
+an optional feature of <code class="code">emacs-lisp-mode</code> (see <a class="pxref" href="Executing-Lisp.html">Executing Lisp Expressions</a>).
+To enable it, customize the option <code class="code">elisp-fontify-semantically</code> to
+a non-<code class="code">nil</code> value.  The rest of this subsection describes the use
+of this Emacs Lisp-specific semantic highlighting support.
+</p>
+<p>When <code class="code">elisp-fontify-semantically</code> is enabled,
+<code class="code">emacs-lisp-mode</code> analyzes your code and highlights symbols
+according to their semantic roles, as part of the mode&rsquo;s usual Font Lock
+highlighting (see <a class="pxref" href="Font-Lock.html">Font Lock mode</a>).  It doesn&rsquo;t affect the highlighting of
+strings, comments and other syntactic elements such as brackets;
+<code class="code">elisp-fontify-semantically</code> only affects highlighting of symbols.
+</p>
+<a class="index-entry-id" id="index-symbol-role_002c-in-semantic-analysis"></a>
+<p>The semantic analysis assigns to each symbol a <em class="dfn">symbol role</em>, such
+as &ldquo;function&rdquo;, &ldquo;local variable&rdquo;, &ldquo;face name&rdquo;, etc.  Each symbol
+role has an associated face property, which is applied to symbols with
+that role during semantic highlighting.  By default, most of these faces
+inherit from appropriate <code class="code">font-lock-*</code> faces.  For example,
+locally-bound variables get the <code class="code">elisp-bound-variable</code> face, which
+inherits from <code class="code">font-lock-variable-use-face</code>.
+</p>
+<a class="index-entry-id" id="index-elisp_002dadd_002dhelp_002decho"></a>
+<p>The semantic analysis can differentiate between more than 50 such symbol roles,
+but you don&rsquo;t need to memorize the appearance of so many faces to
+leverage semantic highlighting: you can hover over an highlighted symbol
+with the mouse to see a tooltip with the exact role Emacs inferred for
+that symbol (see <a class="pxref" href="Tooltips.html">Tooltips</a>).  If you want to disable this extra
+information, customize <code class="code">elisp-add-help-echo</code> to the <code class="code">nil</code> value.
+</p>
+<p>There are a few more points you should keep in mind when using
+<code class="code">elisp-fontify-semantically</code>:
+</p>
+<ul class="itemize mark-bullet">
+<li>Syntax errors break semantic analysis, so for best results you may want
+to enable <code class="code">electric-pair-mode</code> to keep your code syntactically
+correct while you edit it.  See <a class="xref" href="Matching.html">Matching Parentheses</a>.
+
+</li><li><a class="index-entry-id" id="index-trusted-buffers_002c-and-semantic-highlighting"></a>
+<a class="index-entry-id" id="index-elisp_002dscope_002dsafe_002dmacros"></a>
+The analysis uses macro-expansion in some cases, but by default it only
+does so in trusted buffers (see <a class="pxref" href="Host-Security.html">Host Security</a>).  In <em class="emph">untrusted</em>
+buffers, some macro arguments may not be highlighted.  See the
+documentation string of <code class="code">elisp-scope-safe-macro-p</code> for more
+information about which macros Emacs considers safe to expand for
+analysis.  The user option <code class="code">elisp-scope-safe-macros</code> controls which
+macros are safe to expand during analysis in untrusted buffers.
+
+</li><li>The analysis is informed by definitions in the current Emacs session,
+hence code that uses unloaded libraries may miss some highlighting.
+
+</li><li>The analysis assumes that lexical binding is in effect (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Selecting-Lisp-Dialect.html#Selecting-Lisp-Dialect">Selecting
+Lisp Dialect</a> in <cite class="cite">the Emacs Lisp Reference Manual</cite>).
+
+</li><li>Semantic highlighting requires additional processing over traditional
+Font Lock&mdash;the current implementation might be slow when editing very
+large defuns.
+</li></ul>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Parser_002dbased-Font-Lock.html">Parser-based Font Lock</a>, Up: <a href="Font-Lock.html">Font Lock mode</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

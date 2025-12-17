@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.2.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Major Modes (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Major Modes (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Major Modes (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Modes.html" rel="up" title="Modes">
+<link href="Minor-Modes.html" rel="next" title="Minor Modes">
+<link href="Hooks.html" rel="prev" title="Hooks">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Major-Modes">
+<div class="nav-panel">
+<p>
+Next: <a href="Minor-Modes.html" accesskey="n" rel="next">Minor Modes</a>, Previous: <a href="Hooks.html" accesskey="p" rel="prev">Hooks</a>, Up: <a href="Modes.html" accesskey="u" rel="up">Major and Minor Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Major-Modes-1"><span>24.2 Major Modes<a class="copiable-link" href="#Major-Modes-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-major-mode"></a>
+
+<a class="index-entry-id" id="index-major-mode-command"></a>
+<a class="index-entry-id" id="index-suspend-major-mode-temporarily"></a>
+<p>Major modes specialize Emacs for editing or interacting with
+particular kinds of text.  Each buffer has exactly one major mode at a
+time.  Every major mode is associated with a <em class="dfn">major mode command</em>,
+whose name should end in &lsquo;<samp class="samp">-mode</samp>&rsquo;.  This command takes care of
+switching to that mode in the current buffer, by setting various
+buffer-local variables such as a local keymap.  See <a class="xref" href="Major-Mode-Conventions.html">Major Mode Conventions</a>.  Note that unlike minor modes there is no way to &ldquo;turn
+off&rdquo; a major mode, instead the buffer must be switched to a different
+one.  However, you can temporarily <em class="dfn">suspend</em> a major mode and later
+<em class="dfn">restore</em> the suspended mode, see below.
+</p>
+<p>The least specialized major mode is called <em class="dfn">Fundamental mode</em>,
+which has no mode-specific definitions or variable settings.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-fundamental_002dmode"><span class="category-def">Command: </span><span><strong class="def-name">fundamental-mode</strong><a class="copiable-link" href="#index-fundamental_002dmode"> &para;</a></span></dt>
+<dd><p>This is the major mode command for Fundamental mode.  Unlike other mode
+commands, it does <em class="emph">not</em> run any mode hooks (see <a class="pxref" href="Major-Mode-Conventions.html">Major Mode Conventions</a>), since you are not supposed to customize this mode.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-major_002dmode_002dsuspend"><span class="category-def">Function: </span><span><strong class="def-name">major-mode-suspend</strong><a class="copiable-link" href="#index-major_002dmode_002dsuspend"> &para;</a></span></dt>
+<dd><p>This function works like <code class="code">fundamental-mode</code>, in that it kills all
+buffer-local variables, but it also records the major mode in effect,
+so that it could subsequently be restored.  This function and
+<code class="code">major-mode-restore</code> (described next) are useful when you need to
+put a buffer under some specialized mode other than the one Emacs
+chooses for it automatically (see <a class="pxref" href="Auto-Major-Mode.html">How Emacs Chooses a Major Mode</a>), but would also
+like to be able to switch back to the original mode later.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-major_002dmode_002drestore"><span class="category-def">Function: </span><span><strong class="def-name">major-mode-restore</strong> <var class="def-var-arguments">&amp;optional avoided-modes</var><a class="copiable-link" href="#index-major_002dmode_002drestore"> &para;</a></span></dt>
+<dd><p>This function restores the major mode recorded by
+<code class="code">major-mode-suspend</code>.  If no major mode was recorded, this
+function calls <code class="code">normal-mode</code> (see <a class="pxref" href="Auto-Major-Mode.html">normal-mode</a>), but tries to force it not to choose any modes in
+<var class="var">avoided-modes</var>, if that argument is non-<code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-clean_002dmode"><span class="category-def">Function: </span><span><strong class="def-name">clean-mode</strong><a class="copiable-link" href="#index-clean_002dmode"> &para;</a></span></dt>
+<dd><p>Changing the major mode clears out most local variables, but it
+doesn&rsquo;t remove all artifacts in the buffer (like text properties and
+overlays).  It&rsquo;s rare to change a buffer from one major mode to
+another (except from <code class="code">fundamental-mode</code> to everything else), so
+this is usually not a concern.  It can sometimes be convenient (mostly
+when debugging a problem in a buffer) to do a &ldquo;full reset&rdquo; of the
+buffer, and that&rsquo;s what the <code class="code">clean-mode</code> major mode offers.  It
+will kill all local variables (even the permanently local ones), and
+also removes all overlays and text properties.
+</p></dd></dl>
+
+<p>The easiest way to write a major mode is to use the macro
+<code class="code">define-derived-mode</code>, which sets up the new mode as a variant of
+an existing major mode.  See <a class="xref" href="Derived-Modes.html">Defining Derived Modes</a>.  We recommend using
+<code class="code">define-derived-mode</code> even if the new mode is not an obvious
+derivative of another mode, as it automatically enforces many coding
+conventions for you.  See <a class="xref" href="Basic-Major-Modes.html">Basic Major Modes</a>, for common modes to
+derive from.
+</p>
+<p>The standard GNU Emacs Lisp directory tree contains the code for
+several major modes, in files such as <samp class="file">text-mode.el</samp>,
+<samp class="file">texinfo.el</samp>, <samp class="file">lisp-mode.el</samp>, and <samp class="file">rmail.el</samp>.  You can
+study these libraries to see how modes are written.
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-major_002dmode"><span class="category-def">User Option: </span><span><strong class="def-name">major-mode</strong><a class="copiable-link" href="#index-major_002dmode"> &para;</a></span></dt>
+<dd><p>The buffer-local value of this variable holds the symbol for the current
+major mode.  Its default value holds the default major mode for new
+buffers.  The standard default value is <code class="code">fundamental-mode</code>.
+</p>
+<p>If the default value is <code class="code">nil</code>, then whenever Emacs creates a new
+buffer via a command such as <kbd class="kbd">C-x b</kbd> (<code class="code">switch-to-buffer</code>), the
+new buffer is put in the major mode of the previously current buffer.
+As an exception, if the major mode of the previous buffer has a
+<code class="code">mode-class</code> symbol property with value <code class="code">special</code>, the new
+buffer is put in Fundamental mode (see <a class="pxref" href="Major-Mode-Conventions.html">Major Mode Conventions</a>).
+</p></dd></dl>
+
+
+<ul class="mini-toc">
+<li><a href="Major-Mode-Conventions.html" accesskey="1">Major Mode Conventions</a></li>
+<li><a href="Auto-Major-Mode.html" accesskey="2">How Emacs Chooses a Major Mode</a></li>
+<li><a href="Mode-Help.html" accesskey="3">Getting Help about a Major Mode</a></li>
+<li><a href="Derived-Modes.html" accesskey="4">Defining Derived Modes</a></li>
+<li><a href="Basic-Major-Modes.html" accesskey="5">Basic Major Modes</a></li>
+<li><a href="Mode-Hooks.html" accesskey="6">Mode Hooks</a></li>
+<li><a href="Tabulated-List-Mode.html" accesskey="7">Tabulated List mode</a></li>
+<li><a href="Generic-Modes.html" accesskey="8">Generic Modes</a></li>
+<li><a href="Example-Major-Modes.html" accesskey="9">Major Mode Examples</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Minor-Modes.html">Minor Modes</a>, Previous: <a href="Hooks.html">Hooks</a>, Up: <a href="Modes.html">Major and Minor Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

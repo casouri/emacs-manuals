@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.3.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Echo Area (GNU Emacs Manual)</title>
+
+<meta name="description" content="Echo Area (GNU Emacs Manual)">
+<meta name="keywords" content="Echo Area (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Screen.html" rel="up" title="Screen">
+<link href="Mode-Line.html" rel="next" title="Mode Line">
+<link href="Point.html" rel="prev" title="Point">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Echo-Area">
+<div class="nav-panel">
+<p>
+Next: <a href="Mode-Line.html" accesskey="n" rel="next">The Mode Line</a>, Previous: <a href="Point.html" accesskey="p" rel="prev">Point</a>, Up: <a href="Screen.html" accesskey="u" rel="up">The Organization of the Screen</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="The-Echo-Area"><span>1.2 The Echo Area<a class="copiable-link" href="#The-Echo-Area"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-echo-area"></a>
+
+<p>The line at the very bottom of the frame is the <em class="dfn">echo area</em>.  It
+is used to display small amounts of text for various purposes.
+</p>
+<a class="index-entry-id" id="index-echoing"></a>
+<p>The echo area is so-named because one of the things it is used for
+is <em class="dfn">echoing</em>, which means displaying the characters of a
+multi-character command as you type.  Single-character commands are
+not echoed.  Multi-character commands (see <a class="pxref" href="Keys.html">Keys</a>) are echoed if you
+pause for more than a second in the middle of a command.  Emacs then
+echoes all the characters of the command so far, to prompt you for the
+rest.  Once echoing has started, the rest of the command echoes
+immediately as you type it.  This behavior is designed to give
+confident users fast response, while giving hesitant users maximum
+feedback.
+</p>
+<a class="index-entry-id" id="index-error-message"></a>
+<a class="index-entry-id" id="index-echo-area-message"></a>
+<p>The echo area is also used to display an <em class="dfn">error message</em> when a
+command cannot do its job.  Error messages may be accompanied by
+beeping or by flashing the screen.
+</p>
+<p>Some commands display informative messages in the echo area to tell
+you what the command has done, or to provide you with some specific
+information.  These <em class="dfn">informative</em> messages, unlike error messages,
+are not accompanied with a beep or flash.  For example, <kbd class="kbd">C-x =</kbd>
+(hold down <kbd class="key">Ctrl</kbd> and type <kbd class="kbd">x</kbd>, then let go of <kbd class="key">Ctrl</kbd> and
+type <kbd class="kbd">=</kbd>) displays a message describing the character at point,
+its position in the buffer, and its current column in the window.
+Commands that take a long time often display messages ending in
+&lsquo;<samp class="samp">...</samp>&rsquo; while they are working (sometimes also indicating how much
+progress has been made, as a percentage), and add &lsquo;<samp class="samp">done</samp>&rsquo; when
+they are finished.
+</p>
+<a class="index-entry-id" id="index-_002aMessages_002a-buffer"></a>
+<a class="index-entry-id" id="index-saved-echo-area-messages"></a>
+<a class="index-entry-id" id="index-messages-saved-from-echo-area"></a>
+<a class="index-entry-id" id="index-message_002dlog_002dmax"></a>
+<p>Informative echo area messages are saved in a special buffer named
+<samp class="file">*Messages*</samp>.  (We have not explained buffers yet; see
+<a class="ref" href="Buffers.html">Using Multiple Buffers</a>, for more information about them.)  If you miss a
+message that appeared briefly on the screen, you can switch to the
+<samp class="file">*Messages*</samp> buffer to see it again.  The <samp class="file">*Messages*</samp>
+buffer is limited to a certain number of lines, specified by the
+variable <code class="code">message-log-max</code>.  (We have not explained variables
+either; see <a class="ref" href="Variables.html">Variables</a>, for more information about them.)  Beyond
+this limit, one line is deleted from the beginning whenever a new
+message line is added at the end.
+</p>
+<p>See <a class="xref" href="Display-Custom.html">Customization of Display</a>, for options that control how Emacs uses the
+echo area.
+</p>
+<p>The echo area is also used to display the <em class="dfn">minibuffer</em>, a
+special window where you can input arguments to commands, such as the
+name of a file to be edited.  When the minibuffer is in use, the text
+displayed in the echo area begins with a <em class="dfn">prompt string</em>, and the
+active cursor appears within the minibuffer, which is temporarily
+considered the selected window.  You can always get out of the
+minibuffer by typing <kbd class="kbd">C-g</kbd>.  See <a class="xref" href="Minibuffer.html">The Minibuffer</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Mode-Line.html">The Mode Line</a>, Previous: <a href="Point.html">Point</a>, Up: <a href="Screen.html">The Organization of the Screen</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

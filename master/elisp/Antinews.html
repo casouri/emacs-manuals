@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Antinews (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Antinews (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
 <link href="GNU-Free-Documentation-License.html" rel="next" title="GNU Free Documentation License">
-<link href="Archive-Web-Server.html" rel="prev" title="Archive Web Server">
+<link href="Packaging.html" rel="prev" title="Packaging">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,159 +48,112 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Antinews"></span><div class="header">
+<div class="appendix-level-extent" id="Antinews">
+<div class="nav-panel">
 <p>
-Next: <a href="GNU-Free-Documentation-License.html" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="Packaging.html" accesskey="p" rel="prev">Packaging</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GNU-Free-Documentation-License.html" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="Packaging.html" accesskey="p" rel="prev">Preparing Lisp code for distribution</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Emacs-27-Antinews"></span><h2 class="appendix">Appendix A Emacs 27 Antinews</h2>
+<h2 class="appendix" id="Emacs-29-Antinews"><span>Appendix A Emacs 29 Antinews<a class="copiable-link" href="#Emacs-29-Antinews"> &para;</a></span></h2>
 
 <p>For those users who live backwards in time, here is information about
-downgrading to Emacs version 27.2.  We hope you will enjoy the greater
-simplicity that results from the absence of many Emacs&nbsp;29.0.50<!-- /@w --> features.
+downgrading to Emacs version 29.4.  We hope you will enjoy the greater
+simplicity that results from the absence of many Emacs&nbsp;31.0.50<!-- /@w --> features.
 </p>
-<ul>
-<li> The annoying <code>lexical-binding</code> local variable now heeds the
-value of <code>enable-local-variables</code>: if it&rsquo;s <code>nil</code>, the
-<code>lexical-binding</code> cookie is ignored.  We are working hard on
-removing the lexical-binding support in some past Emacs version, and
-this small step advances us back to that change.
+<ul class="itemize mark-bullet">
+<li>Mouse wheel events once again follow the platform and window-system
+conventions: sometimes they are <code class="code">wheel-up/down</code> and sometimes
+<code class="code">mouse-4/5/6/7</code>.  Lisp programs which use these should once again
+be aware of the conventions in effect and behave accordingly.
 
-</li><li> The <code>load-dangerous-libraries</code> variable is not obsolete, as it
-must be used to allow loading Lisp compiled by XEmacs, which will
-become more and more important as you move back in time.
+</li><li>The command <code class="code">describe-function</code> no longer distracts you by showing
+unnecessary details like the type of the function&rsquo;s object.  Emacs
+hackers always know whether a function is a primitive, a native-compiled
+Lisp function, or any other kind.  Stating the obvious simply wastes the
+precious screen estate; as you move into the past, and the typical
+dimensions of the screen become smaller, that waste is less and less
+justified.  So we made the waste smaller.
 
-</li><li> The optional <var>modes</var> argument of <code>interactive</code> is not
-supported, and every command is deemed applicable to any major mode.
-We believe this makes the life of Lisp programmers much simpler, as
-there&rsquo;s now no need to tag commands with the modes where they make
-sense.
+</li><li>The support for styled underline in face attribute was dropped.  The
+simple underline should be enough; anything else is just code bloat and
+creeping featurism.  Colorful underlines on TTY frames are no longer
+supported for the same reason.
 
-</li><li> Shorthands for Lisp symbols have been removed, which makes loading
-Lisp files and handling Lisp symbols much simpler and more efficient.
-This is important for decent performance on slower CPUs as you move
-back in time.
+</li><li>IELM stopped recording its input history.  You will no longer be annoyed
+by inputs from your past sessions; each session starts with a clean
+slate.  What can be simpler and easier to remember?
 
-</li><li> To reduce the amount of code in Emacs related to unimportant features,
-we&rsquo;ve removed the variables <code>global-minor-modes</code> and
-<code>local-minor-modes</code>.  If your Lisp program needs to determine
-whether some minor mode is in effect, it will have to test explicitly
-for every mode.  We don&rsquo;t expect anyone to miss those fancy variables.
+</li><li>You can no longer disable JavaScript in xwidget Webkit sessions.  Since
+xwidgets are going away in one of the previous Emacs versions, we
+decided to make this one step in that direction and get rid of this
+complication.
 
-</li><li> The default preference for servicing sub-processes that produce output
-at a high rate, and the associated variable
-<code>process-prioritize-lower-fds</code>, have been removed.  Moving back
-in time means fewer and fewer programs can produce such high-rate
-output, so this features becomes just useless crud.
+</li><li>The <code class="code">minibuffer-regexp-mode</code> was removed.  Regular expressions are
+just strings, so no fancy mode should be needed for editing them.
 
-</li><li> The encodings that are variants of EBCDIC were removed.  This includes
-<code>ibm256</code>, <code>ibm273</code>, and others&mdash;variants of the EBCDIC
-encoding tailored for some Japanese and European locales.  You won&rsquo;t
-need those where you are going.
+</li><li>We removed the Compat package.  Forward compatibility for ELPA packages
+becomes less and less important as you move back through time, and soon
+enough ELPA will disappear entirely.  We decided it was prudent to start
+preparing for that now.
 
-</li><li> The &ldquo;Bindat type expression&rdquo; description language has been removed,
-as the existing data layout specifications are perfectly suited for
-this job.
+</li><li>We are back to interpreting <code class="code">\x</code> without any following hex digits
+as character code zero (<abbr class="acronym">NUL</abbr>), as it always was in Emacs.  The
+savings in typing due to this alone are enough to justify this
+simplification.
 
-</li><li> To simplify code and reduce complexity, we removed the capability of
-specifying the success handler in <code>condition-case</code> via the
-<code>:success</code> keyword.  If you really need this feature (why would
-you?), you can always write some simple Lisp that has the same effect.
+</li><li>To keep Emacs clean and elegant, we&rsquo;ve removed the ability to show
+tooltips for fringe bitmaps.  What important information cam be shown on
+the fringes, and why would it require tooltips to explain its purpose?
+We decided it isn&rsquo;t justified to keep this in past versions of Emacs.
 
-</li><li> Emacs modules can no longer provide interactive functions, or install
-finalizers, nor open channels to existing pipe sub-processes.  All
-this is extra ballast, especially since we plan on removing modules in
-some past Emacs version.  The <code>make_unibyte_string</code> module API
-was removed for the same reason.
+</li><li>Fancy sorting-related facilities, like the <code class="code">value&lt;</code> function and
+keyword arguments for <code class="code">sort</code>, were deleted as too complex.  The
+basic <code class="code">sort</code> function should all that&rsquo;s needed in the years to go.
 
-</li><li> To keep Emacs clean and elegant, we&rsquo;ve removed the
-<code>print-integers-as-characters</code> option.  Recognizing characters by
-their decimal codes is a basic requirement for Emacs Lisp programmers,
-and with the expected decrease in use of Unicode characters, this will
-be soon limited to ASCII only: surely something you all can master!
+</li><li>Features related to the inheritance graph of major modes were deemed
+unnecessary and thus were dropped.  This includes
+<code class="code">provided-mode-derived-p</code>, <code class="code">derived-mode-add-parents</code>, and
+others.  We decided that untangling the mode inheritance relationships
+by hand facilitates more clear code and makes the intent evident.
 
-</li><li> The optional <var>count</var> argument of the <code>directory-files</code>
-function has been removed.  Extracting the first <var>n</var> members from
-the full list is trivial, so this is a significant simplification for
-an insignificant cost.
+</li><li>We removed unnecessary functionality for handling touch screen events,
+as touch screens gradually disappear from view as you move back in time.
+There&rsquo;s no need to keep obsolete these new inventions in the past.
 
-</li><li> Functions that create sub-processes and network connections no longer
-accept the <code>:coding</code> argument; use
-<code>set-process-coding-system</code> or bind
-<code>coding-system-for-read/write</code> instead: again, a significant
-reduction in Emacs complexity for little or no cost.
+</li><li>Various new functions and variables for moving and transposing sexps and
+for moving by program statements were dropped as unnecessary.  The
+original commands that move by balanced expressions are more than
+enough.
 
-</li><li> We deleted from the macros <code>define-derived-mode</code> and
-<code>define-minor-mode</code> the code which allowed using the
-<code>:interactive</code> argument.  The possibility of marking a mode
-non-interactive makes very little sense,
+</li><li>We deleted some fancy <code class="code">declare</code> forms for functions, such as
+<code class="code">ftype</code>.  Emacs Lisp is not a string-typed language, which makes
+these declarations anathema.  The types <code class="code">closure</code> and
+<code class="code">interpreted-function</code> are gone for the same reason: no need to
+distinguish types of Lisp functions.
 
-</li><li> The possibility of having links to man pages in doc strings has been
-removed.  Use plain text instead, if you need such references.
+</li><li>The byte compiler stopped issuing warnings about practices some purists
+consider questionable.  This includes warnings about missing
+<code class="code">lexical-binding</code> cookies, empty bodies of special forms and
+macros, comparison with literals, <code class="code">condition-case</code> without
+handlers, mutation of constants, and some others.  As time moves into
+the past, the typical Emacs hacker knows best what&rsquo;s correct code and
+what isn&rsquo;t, and thus these warnings become useless annoyances.  Good
+riddance!
 
-</li><li> Temporary buffers are no longer exempt from running any buffer-related
-hooks.  Programs that don&rsquo;t want such hooks in some buffer can always
-disable it locally, whereas making that simpler complicates Emacs for
-no good reason.
+</li><li>The <code class="code">obarray</code> type is gone.  Obarrays are back to their original
+representation as vectors.  Each removed Lisp data type makes Emacs
+simpler and easier to use, so this is a welcome deletion.
 
-</li><li> Several features that complicated the byte compiler have been removed:
-
-<ul class="no-bullet">
-<li>− The checks for missing declarations of dynamic variables.  This will
-continue making less and less sense as we move away of lexical-binding
-support.
-
-</li><li>− The ability of compiling symlinked <samp>*.el</samp> files, which is really
-gross: copy the files instead.
-
-</li><li>− The warnings about too-wide doc strings&mdash;that is just a nuisance, as
-the programmers should be trusted to know what they are doing.
-</li></ul>
-
-
-</li><li> We deleted several features of the <code>pcase</code> macro, in accordance
-with our general plane to remove <code>pcase</code> from Emacs:
-
-<ul class="no-bullet">
-<li>− The <code>cl-type</code> pattern.
-
-</li><li>− the <code>pcase-setq</code> macro.
-
-</li><li>− The <code>pcase-compile-patterns</code> function.
-</li></ul>
-
-</li><li> Some of the keywords used in Edebug specification lists were deemed to
-be of little use, and were therefore removed: <code>&amp;interpose</code>,
-<code>&amp;error</code>, and <code>&amp;name</code>.  The long-term plane is for Emacs to
-drop Edebug entirely, leaving only the trusted Lisp debugger, and we
-continue working according to that plan.
-
-</li><li> The function <code>object-intervals</code> was dropped, as a Lisp program
-can easily collect the intervals of a buffer or a string by iterating
-through them one by one.
-
-</li><li> We decided that the <code>require-theme</code> function is an unnecessary
-complication, so we deleted it.  Lisp programs can easily search along
-<code>custom-theme-load-path</code> instead.
-
-</li><li> The convenience functions <code>length&lt;</code>, <code>length&gt;</code>, and
-<code>length=</code> were removed, as using <code>length</code> followed by a
-comparison should be good enough for everyone, especially considering
-that the typical length of a list keeps going down as you move back
-through time.
-
-</li><li> The variable <code>current-minibuffer-command</code> is no longer available,
-as we found little justification for keeping it.
-
-</li><li> As part of the ongoing quest for simplicity, many other functions and
+</li><li>As part of the ongoing quest for simplicity, many other functions and
 variables have been eliminated.  Other functions and variables, that
-were declared obsolete since Emacs 23, have been added back, in
-preparation for releasing Emacs 23 in some distant past.
+were declared obsolete since Emacs 24, have been added back, in
+preparation for releasing Emacs 24 in some distant past.
 </li></ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="GNU-Free-Documentation-License.html" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="Packaging.html" accesskey="p" rel="prev">Packaging</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GNU-Free-Documentation-License.html">GNU Free Documentation License</a>, Previous: <a href="Packaging.html">Preparing Lisp code for distribution</a>, Up: <a href="index.html">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

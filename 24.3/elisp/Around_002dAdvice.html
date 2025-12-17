@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Around-Advice (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Around-Advice (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Defining-Advice.html" rel="prev" title="Defining Advice">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,48 +47,50 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Around_002dAdvice"></span><div class="header">
+<div class="section-level-extent" id="Around_002dAdvice">
+<div class="nav-panel">
 <p>
-Next: <a href="Computed-Advice.html" accesskey="n" rel="next">Computed Advice</a>, Previous: <a href="Defining-Advice.html" accesskey="p" rel="prev">Defining Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Computed-Advice.html" accesskey="n" rel="next">Computed Advice</a>, Previous: <a href="Defining-Advice.html" accesskey="p" rel="prev">Defining Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Around_002dAdvice-1"></span><h3 class="section">17.3 Around-Advice</h3>
+<h3 class="section" id="Around_002dAdvice-1"><span>17.3 Around-Advice<a class="copiable-link" href="#Around_002dAdvice-1"> &para;</a></span></h3>
 
 <p>Around-advice lets you &ldquo;wrap&rdquo; a Lisp expression &ldquo;around&rdquo; the
 original function definition.  You specify where the original function
-definition should go by means of the special symbol <code>ad-do-it</code>.
+definition should go by means of the special symbol <code class="code">ad-do-it</code>.
 Where this symbol occurs inside the around-advice body, it is replaced
-with a <code>progn</code> containing the forms of the surrounded code.  Here
+with a <code class="code">progn</code> containing the forms of the surrounded code.  Here
 is an example:
 </p>
 <div class="example">
-<pre class="example">(defadvice foo (around foo-around)
+<pre class="example-preformatted">(defadvice foo (around foo-around)
   &quot;Ignore case in `foo'.&quot;
   (let ((case-fold-search t))
     ad-do-it))
 </pre></div>
 
 <p>Its effect is to make sure that case is ignored in
-searches when the original definition of <code>foo</code> is run.
+searches when the original definition of <code class="code">foo</code> is run.
 </p>
-<dl>
-<dt id="index-ad_002ddo_002dit">Variable: <strong>ad-do-it</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-ad_002ddo_002dit"><span class="category-def">Variable: </span><span><strong class="def-name">ad-do-it</strong><a class="copiable-link" href="#index-ad_002ddo_002dit"> &para;</a></span></dt>
 <dd><p>This is not really a variable, rather a place-holder that looks like a
 variable.  You use it in around-advice to specify the place to run the
 function&rsquo;s original definition and other &ldquo;earlier&rdquo; around-advice.
 </p></dd></dl>
 
-<p>If the around-advice does not use <code>ad-do-it</code>, then it does not run
+<p>If the around-advice does not use <code class="code">ad-do-it</code>, then it does not run
 the original function definition.  This provides a way to override the
 original definition completely.  (It also overrides lower-positioned
 pieces of around-advice).
 </p>
-<p>If the around-advice uses <code>ad-do-it</code> more than once, the original
+<p>If the around-advice uses <code class="code">ad-do-it</code> more than once, the original
 definition is run at each place.  In this way, around-advice can execute
 the original definition (and lower-positioned pieces of around-advice)
-several times.  Another way to do that is by using <code>ad-do-it</code>
+several times.  Another way to do that is by using <code class="code">ad-do-it</code>
 inside of a loop.
 </p>
+</div>
 
 
 

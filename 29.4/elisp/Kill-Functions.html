@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Kill Functions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Kill Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Kill Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="The-Kill-Ring.html" rel="up" title="The Kill Ring">
+<link href="Yanking.html" rel="next" title="Yanking">
+<link href="Kill-Ring-Concepts.html" rel="prev" title="Kill Ring Concepts">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Kill-Functions">
+<div class="nav-panel">
+<p>
+Next: <a href="Yanking.html" accesskey="n" rel="next">Yanking</a>, Previous: <a href="Kill-Ring-Concepts.html" accesskey="p" rel="prev">Kill Ring Concepts</a>, Up: <a href="The-Kill-Ring.html" accesskey="u" rel="up">The Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Functions-for-Killing"><span>33.8.2 Functions for Killing<a class="copiable-link" href="#Functions-for-Killing"> &para;</a></span></h4>
+
+<p><code class="code">kill-region</code> is the usual subroutine for killing text.  Any
+command that calls this function is a kill command (and should
+probably have &lsquo;<samp class="samp">kill</samp>&rsquo; in its name).  <code class="code">kill-region</code> puts the
+newly killed text in a new element at the beginning of the kill ring or
+adds it to the most recent element.  It determines automatically (using
+<code class="code">last-command</code>) whether the previous command was a kill command,
+and if so appends the killed text to the most recent entry.
+</p>
+<a class="index-entry-id" id="index-filtering-killed-text"></a>
+<p>The commands described below can filter the killed text before they
+save it in the kill ring.  They call <code class="code">filter-buffer-substring</code>
+(see <a class="pxref" href="Buffer-Contents.html">Examining Buffer Contents</a>) to perform the filtering.  By default,
+there&rsquo;s no filtering, but major and minor modes and hook functions can
+set up filtering, so that text saved in the kill ring is different
+from what was in the buffer.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-kill_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">kill-region</strong> <var class="def-var-arguments">start end &amp;optional region</var><a class="copiable-link" href="#index-kill_002dregion"> &para;</a></span></dt>
+<dd><p>This function kills the stretch of text between <var class="var">start</var> and
+<var class="var">end</var>; but if the optional argument <var class="var">region</var> is
+non-<code class="code">nil</code>, it ignores <var class="var">start</var> and <var class="var">end</var>, and kills the
+text in the current region instead.  The text is deleted but saved in
+the kill ring, along with its text properties.  The value is always
+<code class="code">nil</code>.
+</p>
+<p>In an interactive call, <var class="var">start</var> and <var class="var">end</var> are point and
+the mark, and <var class="var">region</var> is always non-<code class="code">nil</code>, so the command
+always kills the text in the current region.
+</p>
+<p>If the buffer or text is read-only, <code class="code">kill-region</code> modifies the kill
+ring just the same, then signals an error without modifying the buffer.
+This is convenient because it lets the user use a series of kill
+commands to copy text from a read-only buffer into the kill ring.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-kill_002dread_002donly_002dok"><span class="category-def">User Option: </span><span><strong class="def-name">kill-read-only-ok</strong><a class="copiable-link" href="#index-kill_002dread_002donly_002dok"> &para;</a></span></dt>
+<dd><p>If this option is non-<code class="code">nil</code>, <code class="code">kill-region</code> does not signal an
+error if the buffer or text is read-only.  Instead, it simply returns,
+updating the kill ring but not changing the buffer.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-copy_002dregion_002das_002dkill"><span class="category-def">Command: </span><span><strong class="def-name">copy-region-as-kill</strong> <var class="def-var-arguments">start end &amp;optional region</var><a class="copiable-link" href="#index-copy_002dregion_002das_002dkill"> &para;</a></span></dt>
+<dd><p>This function saves the stretch of text between <var class="var">start</var> and
+<var class="var">end</var> on the kill ring (including text properties), but does not
+delete the text from the buffer.  However, if the optional argument
+<var class="var">region</var> is non-<code class="code">nil</code>, the function ignores <var class="var">start</var> and
+<var class="var">end</var>, and saves the current region instead.  It always returns
+<code class="code">nil</code>.
+</p>
+<p>In an interactive call, <var class="var">start</var> and <var class="var">end</var> are point and
+the mark, and <var class="var">region</var> is always non-<code class="code">nil</code>, so the command
+always saves the text in the current region.
+</p>
+<p>The command does not set <code class="code">this-command</code> to <code class="code">kill-region</code>, so a
+subsequent kill command does not append to the same kill ring entry.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Yanking.html">Yanking</a>, Previous: <a href="Kill-Ring-Concepts.html">Kill Ring Concepts</a>, Up: <a href="The-Kill-Ring.html">The Kill Ring</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

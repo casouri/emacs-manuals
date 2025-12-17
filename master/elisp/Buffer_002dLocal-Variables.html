@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Buffer-Local Variables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Buffer-Local Variables (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Variables.html" rel="up" title="Variables">
-<link href="Intro-to-Buffer_002dLocal.html" rel="next" title="Intro to Buffer-Local">
-<link href="Converting-to-Lexical-Binding.html" rel="prev" title="Converting to Lexical Binding">
+<link href="File-Local-Variables.html" rel="next" title="File Local Variables">
+<link href="Variable-Scoping.html" rel="prev" title="Variable Scoping">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,33 +47,31 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Buffer_002dLocal-Variables"></span><div class="header">
+<div class="section-level-extent" id="Buffer_002dLocal-Variables">
+<div class="nav-panel">
 <p>
-Next: <a href="File-Local-Variables.html" accesskey="n" rel="next">File Local Variables</a>, Previous: <a href="Variable-Scoping.html" accesskey="p" rel="prev">Variable Scoping</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="File-Local-Variables.html" accesskey="n" rel="next">File Local Variables</a>, Previous: <a href="Variable-Scoping.html" accesskey="p" rel="prev">Scoping Rules for Variable Bindings</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Buffer_002dLocal-Variables-1"></span><h3 class="section">12.11 Buffer-Local Variables</h3>
-<span id="index-variable_002c-buffer_002dlocal"></span>
-<span id="index-buffer_002dlocal-variables"></span>
+<h3 class="section" id="Buffer_002dLocal-Variables-1"><span>12.11 Buffer-Local Variables<a class="copiable-link" href="#Buffer_002dLocal-Variables-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-variable_002c-buffer_002dlocal"></a>
+<a class="index-entry-id" id="index-buffer_002dlocal-variables"></a>
 
 <p>Global and local variable bindings are found in most programming
 languages in one form or another.  Emacs, however, also supports
 additional, unusual kinds of variable binding, such as
-<em>buffer-local</em> bindings, which apply only in one buffer.  Having
+<em class="dfn">buffer-local</em> bindings, which apply only in one buffer.  Having
 different values for a variable in different buffers is an important
 customization method.  (Variables can also have bindings that are
-local to each terminal.  See <a href="Multiple-Terminals.html">Multiple Terminals</a>.)
+local to each terminal.  See <a class="xref" href="Multiple-Terminals.html">Multiple Terminals</a>.)
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Intro-to-Buffer_002dLocal.html" accesskey="1">Intro to Buffer-Local</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Introduction and concepts.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Creating-Buffer_002dLocal.html" accesskey="2">Creating Buffer-Local</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Creating and destroying buffer-local bindings.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Default-Value.html" accesskey="3">Default Value</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The default value is seen in buffers
-                                 that don&rsquo;t have their own buffer-local values.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Intro-to-Buffer_002dLocal.html" accesskey="1">Introduction to Buffer-Local Variables</a></li>
+<li><a href="Creating-Buffer_002dLocal.html" accesskey="2">Creating and Deleting Buffer-Local Bindings</a></li>
+<li><a href="Default-Value.html" accesskey="3">The Default Value of a Buffer-Local Variable</a></li>
+</ul>
+</div>
 
 
 

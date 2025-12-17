@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 25.1.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>File Shadowing (GNU Emacs Manual)</title>
 
 <meta name="description" content="File Shadowing (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Interlocking.html" rel="prev" title="Interlocking">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,68 +49,70 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="File-Shadowing"></span><div class="header">
+<div class="subsection-level-extent" id="File-Shadowing">
+<div class="nav-panel">
 <p>
-Next: <a href="Time-Stamps.html" accesskey="n" rel="next">Time Stamps</a>, Previous: <a href="Interlocking.html" accesskey="p" rel="prev">Interlocking</a>, Up: <a href="Saving.html" accesskey="u" rel="up">Saving</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Time-Stamps.html" accesskey="n" rel="next">Updating Time Stamps Automatically</a>, Previous: <a href="Interlocking.html" accesskey="p" rel="prev">Protection against Simultaneous Editing</a>, Up: <a href="Saving.html" accesskey="u" rel="up">Saving Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Shadowing-Files"></span><h4 class="subsection">18.3.5 Shadowing Files</h4>
-<span id="index-shadow-files"></span>
-<span id="index-file-shadows"></span>
-<span id="index-shadow_002dinitialize"></span>
+<h4 class="subsection" id="Shadowing-Files"><span>18.3.5 Shadowing Files<a class="copiable-link" href="#Shadowing-Files"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-shadow-files"></a>
+<a class="index-entry-id" id="index-file-shadows"></a>
+<a class="index-entry-id" id="index-shadow_002dinitialize"></a>
 
-<dl compact="compact">
-<dt><kbd>M-x shadow-initialize</kbd></dt>
+<dl class="table">
+<dt><kbd class="kbd">M-x shadow-initialize</kbd></dt>
 <dd><p>Set up file shadowing.
 </p></dd>
-<dt><kbd>M-x shadow-define-literal-group</kbd></dt>
+<dt><kbd class="kbd">M-x shadow-define-literal-group</kbd></dt>
 <dd><p>Declare a single file to be shared between sites.
 </p></dd>
-<dt><kbd>M-x shadow-define-regexp-group</kbd></dt>
+<dt><kbd class="kbd">M-x shadow-define-regexp-group</kbd></dt>
 <dd><p>Make all files that match each of a group of files be shared between hosts.
 </p></dd>
-<dt><kbd>M-x shadow-define-cluster <span class="key">RET</span> <var>name</var> <span class="key">RET</span></kbd></dt>
-<dd><p>Define a shadow file cluster <var>name</var>.
+<dt><kbd class="kbd">M-x shadow-define-cluster <kbd class="key">RET</kbd> <var class="var">name</var> <kbd class="key">RET</kbd></kbd></dt>
+<dd><p>Define a shadow file cluster <var class="var">name</var>.
 </p></dd>
-<dt><kbd>M-x shadow-copy-files</kbd></dt>
+<dt><kbd class="kbd">M-x shadow-copy-files</kbd></dt>
 <dd><p>Copy all pending shadow files.
 </p></dd>
-<dt><kbd>M-x shadow-cancel</kbd></dt>
+<dt><kbd class="kbd">M-x shadow-cancel</kbd></dt>
 <dd><p>Cancel the instruction to shadow some files.
 </p></dd>
 </dl>
 
-<p>You can arrange to keep identical <em>shadow</em> copies of certain files
+<p>You can arrange to keep identical <em class="dfn">shadow</em> copies of certain files
 in more than one place&mdash;possibly on different machines.  To do this,
-first you must set up a <em>shadow file group</em>, which is a set of
+first you must set up a <em class="dfn">shadow file group</em>, which is a set of
 identically-named files shared between a list of sites.  The file
 group is permanent and applies to further Emacs sessions as well as
 the current one.  Once the group is set up, every time you exit Emacs,
 it will copy the file you edited to the other files in its group.  You
-can also do the copying without exiting Emacs, by typing <kbd>M-x
+can also do the copying without exiting Emacs, by typing <kbd class="kbd">M-x
 shadow-copy-files</kbd>.
 </p>
-<p>To set up a shadow file group, use <kbd>M-x
-shadow-define-literal-group</kbd> or <kbd>M-x shadow-define-regexp-group</kbd>.
+<p>To set up a shadow file group, use <kbd class="kbd">M-x
+shadow-define-literal-group</kbd> or <kbd class="kbd">M-x shadow-define-regexp-group</kbd>.
 See their documentation strings for further information.
 </p>
 <p>Before copying a file to its shadows, Emacs asks for confirmation.
 You can answer &ldquo;no&rdquo; to bypass copying of this file, this time.  If
 you want to cancel the shadowing permanently for a certain file, use
-<kbd>M-x shadow-cancel</kbd> to eliminate or change the shadow file group.
+<kbd class="kbd">M-x shadow-cancel</kbd> to eliminate or change the shadow file group.
 </p>
-<p>A <em>shadow cluster</em> is a group of hosts that share directories, so
+<p>A <em class="dfn">shadow cluster</em> is a group of hosts that share directories, so
 that copying to or from one of them is sufficient to update the file
 on all of them.  Each shadow cluster has a name, and specifies the
 network address of a primary host (the one we copy files to), and a
 regular expression that matches the host names of all the other hosts
-in the cluster.  You can define a shadow cluster with <kbd>M-x
+in the cluster.  You can define a shadow cluster with <kbd class="kbd">M-x
 shadow-define-cluster</kbd>.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Time-Stamps.html" accesskey="n" rel="next">Time Stamps</a>, Previous: <a href="Interlocking.html" accesskey="p" rel="prev">Interlocking</a>, Up: <a href="Saving.html" accesskey="u" rel="up">Saving</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Time-Stamps.html">Updating Time Stamps Automatically</a>, Previous: <a href="Interlocking.html">Protection against Simultaneous Editing</a>, Up: <a href="Saving.html">Saving Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

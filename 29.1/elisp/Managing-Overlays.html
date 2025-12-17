@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Managing Overlays (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Managing Overlays (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Managing Overlays (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Overlays.html" rel="up" title="Overlays">
+<link href="Overlay-Properties.html" rel="next" title="Overlay Properties">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Managing-Overlays">
+<div class="nav-panel">
+<p>
+Next: <a href="Overlay-Properties.html" accesskey="n" rel="next">Overlay Properties</a>, Up: <a href="Overlays.html" accesskey="u" rel="up">Overlays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Managing-Overlays-1"><span>41.9.1 Managing Overlays<a class="copiable-link" href="#Managing-Overlays-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-managing-overlays"></a>
+<a class="index-entry-id" id="index-overlays_002c-managing"></a>
+
+<p>This section describes the functions to create, delete and move
+overlays, and to examine their contents.  Overlay changes are not
+recorded in the buffer&rsquo;s undo list, since the overlays are not
+considered part of the buffer&rsquo;s contents.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-overlayp"><span class="category-def">Function: </span><span><strong class="def-name">overlayp</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-overlayp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">object</var> is an overlay.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002doverlay"><span class="category-def">Function: </span><span><strong class="def-name">make-overlay</strong> <var class="def-var-arguments">start end &amp;optional buffer front-advance rear-advance</var><a class="copiable-link" href="#index-make_002doverlay"> &para;</a></span></dt>
+<dd><p>This function creates and returns an overlay that belongs to
+<var class="var">buffer</var> and ranges from <var class="var">start</var> to <var class="var">end</var>.  Both <var class="var">start</var>
+and <var class="var">end</var> must specify buffer positions; they may be integers or
+markers.  If <var class="var">buffer</var> is omitted, the overlay is created in the
+current buffer.
+</p>
+<a class="index-entry-id" id="index-empty-overlay"></a>
+<a class="index-entry-id" id="index-overlay_002c-empty"></a>
+<p>An overlay whose <var class="var">start</var> and <var class="var">end</var> specify the same buffer
+position is known as <em class="dfn">empty</em>.  A non-empty overlay can become
+empty if the text between its <var class="var">start</var> and <var class="var">end</var> is deleted.
+When that happens, the overlay is by default not deleted, but you can
+cause it to be deleted by giving it the &lsquo;<samp class="samp">evaporate</samp>&rsquo; property
+(see <a class="pxref" href="Overlay-Properties.html">evaporate property</a>).
+</p>
+<p>The arguments <var class="var">front-advance</var> and <var class="var">rear-advance</var> specify what
+happens when text is inserted at the beginning (i.e., before
+<var class="var">start</var>) and at the end.  If they are both <code class="code">nil</code>, the
+default, then the overlay extends to include any text inserted at the
+beginning, but not text inserted at the end.  If <var class="var">front-advance</var>
+is non-<code class="code">nil</code>, text inserted at the beginning of the overlay is
+excluded from the overlay.  If <var class="var">rear-advance</var> is non-<code class="code">nil</code>,
+text inserted at the end of the overlay is included in the overlay.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-overlay_002dstart"><span class="category-def">Function: </span><span><strong class="def-name">overlay-start</strong> <var class="def-var-arguments">overlay</var><a class="copiable-link" href="#index-overlay_002dstart"> &para;</a></span></dt>
+<dd><p>This function returns the position at which <var class="var">overlay</var> starts,
+as an integer.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-overlay_002dend"><span class="category-def">Function: </span><span><strong class="def-name">overlay-end</strong> <var class="def-var-arguments">overlay</var><a class="copiable-link" href="#index-overlay_002dend"> &para;</a></span></dt>
+<dd><p>This function returns the position at which <var class="var">overlay</var> ends,
+as an integer.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-overlay_002dbuffer"><span class="category-def">Function: </span><span><strong class="def-name">overlay-buffer</strong> <var class="def-var-arguments">overlay</var><a class="copiable-link" href="#index-overlay_002dbuffer"> &para;</a></span></dt>
+<dd><p>This function returns the buffer that <var class="var">overlay</var> belongs to.  It
+returns <code class="code">nil</code> if <var class="var">overlay</var> has been deleted.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-delete_002doverlay"><span class="category-def">Function: </span><span><strong class="def-name">delete-overlay</strong> <var class="def-var-arguments">overlay</var><a class="copiable-link" href="#index-delete_002doverlay"> &para;</a></span></dt>
+<dd><p>This function deletes the specified <var class="var">overlay</var>.  The overlay
+continues to exist as a Lisp object, and its property list is
+unchanged, but it ceases to be attached to the buffer it belonged to,
+and ceases to have any effect on display.
+</p>
+<p>A deleted overlay is not permanently disconnected.  You can give it a
+position in a buffer again by calling <code class="code">move-overlay</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-move_002doverlay"><span class="category-def">Function: </span><span><strong class="def-name">move-overlay</strong> <var class="def-var-arguments">overlay start end &amp;optional buffer</var><a class="copiable-link" href="#index-move_002doverlay"> &para;</a></span></dt>
+<dd><p>This function moves <var class="var">overlay</var> to <var class="var">buffer</var>, and places its
+bounds at <var class="var">start</var> and <var class="var">end</var> in that buffer.  Both arguments
+<var class="var">start</var> and <var class="var">end</var> must specify buffer positions; they may be
+integers or markers.
+</p>
+<p>If <var class="var">buffer</var> is omitted, <var class="var">overlay</var> stays in the same buffer it
+was already associated with; if <var class="var">overlay</var> was previously deleted
+(and thus isn&rsquo;t associated with any buffer), it goes into the current
+buffer.
+</p>
+<p>The return value is <var class="var">overlay</var>.
+</p>
+<p>This function is the only valid way to change the endpoints of an
+overlay.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-remove_002doverlays"><span class="category-def">Function: </span><span><strong class="def-name">remove-overlays</strong> <var class="def-var-arguments">&amp;optional start end name value</var><a class="copiable-link" href="#index-remove_002doverlays"> &para;</a></span></dt>
+<dd><p>This function removes all the overlays between <var class="var">start</var> and
+<var class="var">end</var> whose property <var class="var">name</var> has the specified <var class="var">value</var>.  It
+can move the endpoints of the overlays in the region, or split them.
+</p>
+<p>If <var class="var">name</var> is omitted or <code class="code">nil</code>, it means to delete all overlays in
+the specified region.  If <var class="var">start</var> and/or <var class="var">end</var> are omitted or
+<code class="code">nil</code>, that means the beginning and end of the buffer respectively.
+Therefore, <code class="code">(remove-overlays)</code> removes all the overlays in the
+current buffer.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-copy_002doverlay"><span class="category-def">Function: </span><span><strong class="def-name">copy-overlay</strong> <var class="def-var-arguments">overlay</var><a class="copiable-link" href="#index-copy_002doverlay"> &para;</a></span></dt>
+<dd><p>This function returns a copy of <var class="var">overlay</var>.  The copy has the same
+endpoints and properties as <var class="var">overlay</var>.  However, the text
+insertion type for the start of the overlay and for the end of the
+overlay are set to their default values.
+</p></dd></dl>
+
+<p>Here are some examples:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">;; <span class="r">Create an overlay.</span>
+(setq foo (make-overlay 1 10))
+     &rArr; #&lt;overlay from 1 to 10 in display.texi&gt;
+</pre></div><div class="group"><pre class="example-preformatted">(overlay-start foo)
+     &rArr; 1
+</pre></div><div class="group"><pre class="example-preformatted">(overlay-end foo)
+     &rArr; 10
+(overlay-buffer foo)
+     &rArr; #&lt;buffer display.texi&gt;
+;; <span class="r">Give it a property we can check later.</span>
+(overlay-put foo 'happy t)
+     &rArr; t
+;; <span class="r">Verify the property is present.</span>
+(overlay-get foo 'happy)
+     &rArr; t
+</pre></div><div class="group"><pre class="example-preformatted">;; <span class="r">Move the overlay.</span>
+(move-overlay foo 5 20)
+     &rArr; #&lt;overlay from 5 to 20 in display.texi&gt;
+(overlay-start foo)
+     &rArr; 5
+(overlay-end foo)
+     &rArr; 20
+</pre></div><div class="group"><pre class="example-preformatted">;; <span class="r">Delete the overlay.</span>
+(delete-overlay foo)
+     &rArr; nil
+;; <span class="r">Verify it is deleted.</span>
+foo
+     &rArr; #&lt;overlay in no buffer&gt;
+;; <span class="r">A deleted overlay has no position.</span>
+(overlay-start foo)
+     &rArr; nil
+(overlay-end foo)
+     &rArr; nil
+(overlay-buffer foo)
+     &rArr; nil
+</pre></div><div class="group"><pre class="example-preformatted">;; <span class="r">Undelete the overlay.</span>
+(move-overlay foo 1 20)
+     &rArr; #&lt;overlay from 1 to 20 in display.texi&gt;
+;; <span class="r">Verify the results.</span>
+(overlay-start foo)
+     &rArr; 1
+(overlay-end foo)
+     &rArr; 20
+(overlay-buffer foo)
+     &rArr; #&lt;buffer display.texi&gt;
+</pre></div><div class="group"><pre class="example-preformatted">;; <span class="r">Moving and deleting the overlay does not change its properties.</span>
+(overlay-get foo 'happy)
+     &rArr; t
+</pre></div></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Overlay-Properties.html">Overlay Properties</a>, Up: <a href="Overlays.html">Overlays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

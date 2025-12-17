@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 26.1.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Displaying Buffers (GNU Emacs Manual)</title>
 
 <meta name="description" content="Displaying Buffers (GNU Emacs Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Windows.html" rel="up" title="Windows">
-<link href="Window-Choice.html" rel="next" title="Window Choice">
+<link href="Window-Convenience.html" rel="next" title="Window Convenience">
 <link href="Change-Window.html" rel="prev" title="Change Window">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,59 +49,59 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Displaying-Buffers"></span><div class="header">
+<div class="section-level-extent" id="Displaying-Buffers">
+<div class="nav-panel">
 <p>
-Next: <a href="Window-Convenience.html" accesskey="n" rel="next">Window Convenience</a>, Previous: <a href="Change-Window.html" accesskey="p" rel="prev">Change Window</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Window-Convenience.html" accesskey="n" rel="next">Convenience Features for Window Handling</a>, Previous: <a href="Change-Window.html" accesskey="p" rel="prev">Deleting and Resizing Windows</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Multiple Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Displaying-a-Buffer-in-a-Window"></span><h3 class="section">20.6 Displaying a Buffer in a Window</h3>
+<h3 class="section" id="Displaying-a-Buffer-in-a-Window"><span>20.6 Displaying a Buffer in a Window<a class="copiable-link" href="#Displaying-a-Buffer-in-a-Window"> &para;</a></span></h3>
 
 <p>It is a common Emacs operation to display or pop up some buffer
 in response to a user command.  There are several different ways in
 which commands do this.
 </p>
-<p>Many commands, like <kbd>C-x C-f</kbd> (<code>find-file</code>), display the
+<p>Many commands, like <kbd class="kbd">C-x C-f</kbd> (<code class="code">find-file</code>), display the
 buffer by &ldquo;taking over&rdquo; the selected window, expecting that the
 user&rsquo;s attention will be diverted to that buffer.  These commands
-usually work by calling <code>switch-to-buffer</code> internally
-(see <a href="Select-Buffer.html">Select Buffer</a>).
+usually work by calling <code class="code">switch-to-buffer</code> internally
+(see <a class="pxref" href="Select-Buffer.html">Creating and Selecting Buffers</a>).
 </p>
 <p>Some commands try to display intelligently, trying not to take
 over the selected window, e.g., by splitting off a new window and
 displaying the desired buffer there.  Such commands, which include the
-various help commands (see <a href="Help.html">Help</a>), work by calling
-<code>display-buffer</code> internally.  See <a href="Window-Choice.html">Window Choice</a>, for details.
+various help commands (see <a class="pxref" href="Help.html">Help</a>), work by calling
+<code class="code">display-buffer</code> internally.  See <a class="xref" href="Window-Choice.html">How <code class="code">display-buffer</code> works</a>, for details.
 </p>
-<p>Other commands do the same as <code>display-buffer</code>, and
+<p>Other commands do the same as <code class="code">display-buffer</code>, and
 additionally select the displaying window so that you can begin
-editing its buffer.  The command <kbd>C-x `</kbd> (<code>next-error</code>) is
-one example (see <a href="Compilation-Mode.html">Compilation Mode</a>).  Such commands work by calling
-the function <code>pop-to-buffer</code> internally.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Switching-Buffers.html#Switching-Buffers">Switching to a Buffer in a Window</a> in <cite>The Emacs Lisp
+editing its buffer.  The command <kbd class="kbd">C-x `</kbd> (<code class="code">next-error</code>) is
+one example (see <a class="pxref" href="Compilation-Mode.html">Compilation Mode</a>).  Such commands work by calling
+the function <code class="code">pop-to-buffer</code> internally.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Switching-Buffers.html#Switching-Buffers">Switching to a Buffer in a Window</a> in <cite class="cite">The Emacs Lisp
 Reference Manual</cite>.
 </p>
-<p>Commands with names ending in <code>-other-window</code> behave like
-<code>display-buffer</code>, except that they never display in the selected
-window.  Several of these commands are bound in the <kbd>C-x 4</kbd> prefix
-key (see <a href="Pop-Up-Window.html">Pop Up Window</a>).
+<p>Commands with names ending in <code class="code">-other-window</code> behave like
+<code class="code">display-buffer</code>, except that they never display in the selected
+window.  Several of these commands are bound in the <kbd class="kbd">C-x 4</kbd> prefix
+key (see <a class="pxref" href="Pop-Up-Window.html">Displaying in Another Window</a>).
 </p>
-<p>Commands with names ending in <code>-other-frame</code> behave like
-<code>display-buffer</code>, except that they (i) never display in the
+<p>Commands with names ending in <code class="code">-other-frame</code> behave like
+<code class="code">display-buffer</code>, except that they (i) never display in the
 selected window and (ii) prefer to create a new frame to display the
 desired buffer instead of splitting a window&mdash;as though the variable
-<code>pop-up-frames</code> is set to <code>t</code> (see <a href="Window-Choice.html">Window Choice</a>).
-Several of these commands are bound in the <kbd>C-x 5</kbd> prefix key.
+<code class="code">pop-up-frames</code> is set to <code class="code">t</code> (see <a class="pxref" href="Window-Choice.html">How <code class="code">display-buffer</code> works</a>).
+Several of these commands are bound in the <kbd class="kbd">C-x 5</kbd> prefix key.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Window-Choice.html" accesskey="1">Window Choice</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How <code>display-buffer</code> works.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Temporary-Displays.html" accesskey="2">Temporary Displays</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Displaying non-editable buffers.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Window-Choice.html" accesskey="1">How <code class="code">display-buffer</code> works</a></li>
+<li><a href="Temporary-Displays.html" accesskey="2">Displaying non-editable buffers.</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Window-Convenience.html" accesskey="n" rel="next">Window Convenience</a>, Previous: <a href="Change-Window.html" accesskey="p" rel="prev">Change Window</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Window-Convenience.html">Convenience Features for Window Handling</a>, Previous: <a href="Change-Window.html">Deleting and Resizing Windows</a>, Up: <a href="Windows.html">Multiple Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Integer Basics (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Integer Basics (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Numbers.html" rel="up" title="Numbers">
 <link href="Float-Basics.html" rel="next" title="Float Basics">
-<link href="Numbers.html" rel="prev" title="Numbers">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,146 +48,148 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Integer-Basics"></span><div class="header">
+<div class="section-level-extent" id="Integer-Basics">
+<div class="nav-panel">
 <p>
-Next: <a href="Float-Basics.html" accesskey="n" rel="next">Float Basics</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Float-Basics.html" accesskey="n" rel="next">Floating-Point Basics</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Integer-Basics-1"></span><h3 class="section">3.1 Integer Basics</h3>
+<h3 class="section" id="Integer-Basics-1"><span>3.1 Integer Basics<a class="copiable-link" href="#Integer-Basics-1"> &para;</a></span></h3>
 
 <p>The range of values for an integer depends on the machine.  The
-minimum range is −536,870,912 to 536,870,911 (30 bits; i.e.,
-−2**29
+minimum range is &minus;536,870,912 to 536,870,911 (30 bits; i.e.,
+&minus;2**29
 to
-2**29 − 1),
+2**29 &minus; 1),
 but many machines provide a wider range.  Many examples in this
 chapter assume the minimum integer width of 30 bits.
-<span id="index-overflow"></span>
+<a class="index-entry-id" id="index-overflow"></a>
 </p>
 <p>The Lisp reader reads an integer as a sequence of digits with optional
 initial sign and optional final period.  An integer that is out of the
 Emacs range is treated as a floating-point number.
 </p>
 <div class="example">
-<pre class="example"> 1               ; <span class="roman">The integer 1.</span>
- 1.              ; <span class="roman">The integer 1.</span>
-+1               ; <span class="roman">Also the integer 1.</span>
--1               ; <span class="roman">The integer −1.</span>
+<pre class="example-preformatted"> 1               ; <span class="r">The integer 1.</span>
+ 1.              ; <span class="r">The integer 1.</span>
++1               ; <span class="r">Also the integer 1.</span>
+-1               ; <span class="r">The integer &minus;1.</span>
  9000000000000000000
-                 ; <span class="roman">The floating-point number 9e18.</span>
- 0               ; <span class="roman">The integer 0.</span>
--0               ; <span class="roman">The integer 0.</span>
+                 ; <span class="r">The floating-point number 9e18.</span>
+ 0               ; <span class="r">The integer 0.</span>
+-0               ; <span class="r">The integer 0.</span>
 </pre></div>
 
-<span id="index-integers-in-specific-radix"></span>
-<span id="index-radix-for-reading-an-integer"></span>
-<span id="index-base-for-reading-an-integer"></span>
-<span id="index-hex-numbers"></span>
-<span id="index-octal-numbers"></span>
-<span id="index-reading-numbers-in-hex_002c-octal_002c-and-binary"></span>
-<p>The syntax for integers in bases other than 10 uses &lsquo;<samp>#</samp>&rsquo;
-followed by a letter that specifies the radix: &lsquo;<samp>b</samp>&rsquo; for binary,
-&lsquo;<samp>o</samp>&rsquo; for octal, &lsquo;<samp>x</samp>&rsquo; for hex, or &lsquo;<samp><var>radix</var>r</samp>&rsquo; to
-specify radix <var>radix</var>.  Case is not significant for the letter
-that specifies the radix.  Thus, &lsquo;<samp>#b<var>integer</var></samp>&rsquo; reads
-<var>integer</var> in binary, and &lsquo;<samp>#<var>radix</var>r<var>integer</var></samp>&rsquo; reads
-<var>integer</var> in radix <var>radix</var>.  Allowed values of <var>radix</var> run
+<a class="index-entry-id" id="index-integers-in-specific-radix"></a>
+<a class="index-entry-id" id="index-radix-for-reading-an-integer"></a>
+<a class="index-entry-id" id="index-base-for-reading-an-integer"></a>
+<a class="index-entry-id" id="index-hex-numbers"></a>
+<a class="index-entry-id" id="index-octal-numbers"></a>
+<a class="index-entry-id" id="index-reading-numbers-in-hex_002c-octal_002c-and-binary"></a>
+<p>The syntax for integers in bases other than 10 uses &lsquo;<samp class="samp">#</samp>&rsquo;
+followed by a letter that specifies the radix: &lsquo;<samp class="samp">b</samp>&rsquo; for binary,
+&lsquo;<samp class="samp">o</samp>&rsquo; for octal, &lsquo;<samp class="samp">x</samp>&rsquo; for hex, or &lsquo;<samp class="samp"><var class="var">radix</var>r</samp>&rsquo; to
+specify radix <var class="var">radix</var>.  Case is not significant for the letter
+that specifies the radix.  Thus, &lsquo;<samp class="samp">#b<var class="var">integer</var></samp>&rsquo; reads
+<var class="var">integer</var> in binary, and &lsquo;<samp class="samp">#<var class="var">radix</var>r<var class="var">integer</var></samp>&rsquo; reads
+<var class="var">integer</var> in radix <var class="var">radix</var>.  Allowed values of <var class="var">radix</var> run
 from 2 to 36.  For example:
 </p>
 <div class="example">
-<pre class="example">#b101100 &rArr; 44
+<pre class="example-preformatted">#b101100 &rArr; 44
 #o54 &rArr; 44
 #x2c &rArr; 44
 #24r1k &rArr; 44
 </pre></div>
 
 <p>To understand how various functions work on integers, especially the
-bitwise operators (see <a href="Bitwise-Operations.html">Bitwise Operations</a>), it is often helpful to
+bitwise operators (see <a class="pxref" href="Bitwise-Operations.html">Bitwise Operations on Integers</a>), it is often helpful to
 view the numbers in their binary form.
 </p>
 <p>In 30-bit binary, the decimal integer 5 looks like this:
 </p>
 <div class="example">
-<pre class="example">0000...000101 (30 bits total)
+<pre class="example-preformatted">0000...000101 (30 bits total)
 </pre></div>
 
-<p>(The &lsquo;<samp>...</samp>&rsquo; stands for enough bits to fill out a 30-bit word; in
-this case, &lsquo;<samp>...</samp>&rsquo; stands for twenty 0 bits.  Later examples also
-use the &lsquo;<samp>...</samp>&rsquo; notation to make binary integers easier to read.)
+<p>(The &lsquo;<samp class="samp">...</samp>&rsquo; stands for enough bits to fill out a 30-bit word; in
+this case, &lsquo;<samp class="samp">...</samp>&rsquo; stands for twenty 0 bits.  Later examples also
+use the &lsquo;<samp class="samp">...</samp>&rsquo; notation to make binary integers easier to read.)
 </p>
-<p>The integer −1 looks like this:
+<p>The integer &minus;1 looks like this:
 </p>
 <div class="example">
-<pre class="example">1111...111111 (30 bits total)
+<pre class="example-preformatted">1111...111111 (30 bits total)
 </pre></div>
 
-<p><span id="index-two_0027s-complement"></span>
-−1 is represented as 30 ones.  (This is called <em>two&rsquo;s
+<a class="index-entry-id" id="index-two_0027s-complement"></a>
+<p>&minus;1 is represented as 30 ones.  (This is called <em class="dfn">two&rsquo;s
 complement</em> notation.)
 </p>
-<p>Subtracting 4 from −1 returns the negative integer −5.
+<p>Subtracting 4 from &minus;1 returns the negative integer &minus;5.
 In binary, the decimal integer 4 is 100.  Consequently,
-−5 looks like this:
+&minus;5 looks like this:
 </p>
 <div class="example">
-<pre class="example">1111...111011 (30 bits total)
+<pre class="example-preformatted">1111...111011 (30 bits total)
 </pre></div>
 
 <p>In this implementation, the largest 30-bit binary integer is
 536,870,911 in decimal.  In binary, it looks like this:
 </p>
 <div class="example">
-<pre class="example">0111...111111 (30 bits total)
+<pre class="example-preformatted">0111...111111 (30 bits total)
 </pre></div>
 
 <p>Since the arithmetic functions do not check whether integers go
 outside their range, when you add 1 to 536,870,911, the value is the
-negative integer −536,870,912:
+negative integer &minus;536,870,912:
 </p>
 <div class="example">
-<pre class="example">(+ 1 536870911)
+<pre class="example-preformatted">(+ 1 536870911)
      &rArr; -536870912
      &rArr; 1000...000000 (30 bits total)
 </pre></div>
 
 <p>Many of the functions described in this chapter accept markers for
-arguments in place of numbers.  (See <a href="Markers.html">Markers</a>.)  Since the actual
+arguments in place of numbers.  (See <a class="xref" href="Markers.html">Markers</a>.)  Since the actual
 arguments to such functions may be either numbers or markers, we often
-give these arguments the name <var>number-or-marker</var>.  When the argument
+give these arguments the name <var class="var">number-or-marker</var>.  When the argument
 value is a marker, its position value is used and its buffer is ignored.
 </p>
-<span id="index-largest-Lisp-integer"></span>
-<span id="index-maximum-Lisp-integer"></span>
-<dl>
-<dt id="index-most_002dpositive_002dfixnum">Variable: <strong>most-positive-fixnum</strong></dt>
+<a class="index-entry-id" id="index-largest-Lisp-integer"></a>
+<a class="index-entry-id" id="index-maximum-Lisp-integer"></a>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-most_002dpositive_002dfixnum"><span class="category-def">Variable: </span><span><strong class="def-name">most-positive-fixnum</strong><a class="copiable-link" href="#index-most_002dpositive_002dfixnum"> &para;</a></span></dt>
 <dd><p>The value of this variable is the largest integer that Emacs Lisp can
 handle.  Typical values are
-2**29 − 1
+2**29 &minus; 1
 on 32-bit and
-2**61 − 1
+2**61 &minus; 1
 on 64-bit platforms.
 </p></dd></dl>
 
-<span id="index-smallest-Lisp-integer"></span>
-<span id="index-minimum-Lisp-integer"></span>
-<dl>
-<dt id="index-most_002dnegative_002dfixnum">Variable: <strong>most-negative-fixnum</strong></dt>
+<a class="index-entry-id" id="index-smallest-Lisp-integer"></a>
+<a class="index-entry-id" id="index-minimum-Lisp-integer"></a>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-most_002dnegative_002dfixnum"><span class="category-def">Variable: </span><span><strong class="def-name">most-negative-fixnum</strong><a class="copiable-link" href="#index-most_002dnegative_002dfixnum"> &para;</a></span></dt>
 <dd><p>The value of this variable is the smallest integer that Emacs Lisp can
 handle.  It is negative.  Typical values are
-−2**29
+&minus;2**29
 on 32-bit and
-−2**61
+&minus;2**61
 on 64-bit platforms.
 </p></dd></dl>
 
 <p>In Emacs Lisp, text characters are represented by integers.  Any
-integer between zero and the value of <code>(max-char)</code>, inclusive, is
-considered to be valid as a character.  See <a href="Character-Codes.html">Character Codes</a>.
+integer between zero and the value of <code class="code">(max-char)</code>, inclusive, is
+considered to be valid as a character.  See <a class="xref" href="Character-Codes.html">Character Codes</a>.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Float-Basics.html" accesskey="n" rel="next">Float Basics</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Float-Basics.html">Floating-Point Basics</a>, Up: <a href="Numbers.html">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

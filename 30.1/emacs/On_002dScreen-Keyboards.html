@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.1.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>On-Screen Keyboards (GNU Emacs Manual)</title>
+
+<meta name="description" content="On-Screen Keyboards (GNU Emacs Manual)">
+<meta name="keywords" content="On-Screen Keyboards (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Other-Input.html" rel="up" title="Other Input">
+<link href="Touchscreens.html" rel="prev" title="Touchscreens">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="On_002dScreen-Keyboards">
+<div class="nav-panel">
+<p>
+Previous: <a href="Touchscreens.html" accesskey="p" rel="prev">Using Emacs on Touchscreens</a>, Up: <a href="Other-Input.html" accesskey="u" rel="up">Touchscreen Input and Virtual Keyboards</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section subsection-level-set-section" id="Using-Emacs-with-Virtual-Keyboards"><span>6.2 Using Emacs with Virtual Keyboards<a class="copiable-link" href="#Using-Emacs-with-Virtual-Keyboards"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-virtual-keyboards"></a>
+<a class="index-entry-id" id="index-on_002dscreen-keyboards"></a>
+
+<p>When there is no physical keyboard attached to a system, its
+windowing system might provide an on-screen keyboard, widely known as
+a &ldquo;virtual keyboard&rdquo;, containing rows of clickable buttons that send
+keyboard input to the application, much as a real keyboard would.
+</p>
+<p>This virtual keyboard is hidden when the focused program is not
+requesting text input as it occupies scarce space on display, and
+programs are therefore enjoined to display it once they are ready to
+accept keyboard input.  Systems running X detect when the presence of
+the virtual keyboard is warranted, but on others such as Android Emacs
+is responsible for displaying it when need be, generally in reaction
+to a touch screen &ldquo;tap&rdquo; gesture (see <a class="pxref" href="Touchscreens.html">Using Emacs on Touchscreens</a>) or the
+minibuffer being brought into use (see <a class="pxref" href="Minibuffer.html">The Minibuffer</a>).
+</p>
+<a class="index-entry-id" id="index-touch_002dscreen_002dset_002dpoint_002dcommands"></a>
+<p>When a &ldquo;tap&rdquo; gesture results in a command being executed, Emacs
+checks whether the command is meant to set the point by searching for it
+in the list <code class="code">touch-screen-set-point-commands</code>.  If it is, and the
+text beneath the new point is not read-only, the virtual keyboard is
+activated, in anticipation of the user input there.
+</p>
+<p>The default value of <code class="code">touch-screen-set-point-commands</code> holds only
+the command <code class="code">mouse-set-point</code> (see <a class="pxref" href="Mouse-Commands.html">Mouse Commands for Editing</a>), which is
+the default binding of <code class="code">mouse-1</code>, and therefore of touchscreen tap
+gestures as well.
+</p>
+<a class="index-entry-id" id="index-touch_002dscreen_002ddisplay_002dkeyboard"></a>
+<p>The user option <code class="code">touch-screen-display-keyboard</code> compels Emacs to
+display the virtual keyboard on all tap gestures even if the text is
+read only; it may also be set buffer locally, in which case Emacs will
+always display the keyboard in response to a tap on a window displaying
+the buffer it is set in.
+</p>
+<p>There are moreover several functions that display or hide the
+on-screen keyboard.  For more details, See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/On_002dScreen-Keyboards.html#On_002dScreen-Keyboards">On-Screen Keyboards</a> in <cite class="cite">The Emacs Lisp Reference Manual</cite>.
+</p>
+<a class="index-entry-id" id="index-quitting_002c-without-a-keyboard"></a>
+<p>Since it may not be possible for Emacs to display the virtual
+keyboard while it is executing a command, Emacs implements a feature
+on window systems frequently equipped with no physical keyboard, by
+which two rapid clicks of a hardware button that is always present on
+the device induces a quit.  See <a class="xref" href="Quitting.html">Quitting and Aborting</a>.
+</p>
+<a class="index-entry-id" id="index-x_002dquit_002dkeysym"></a>
+<a class="index-entry-id" id="index-android_002dquit_002dkeycode"></a>
+<p>No such button is enabled on X, but one can be configured through the
+variable <code class="code">x-quit-keysym</code>, whereas the default key is the volume
+down button on Android, which is also configurable through a variable,
+<code class="code">android-quit-keycode</code>.
+</p>
+<a class="index-entry-id" id="index-text-conversion_002c-keyboards"></a>
+<p>Most input methods designed to work with virtual keyboards edit text
+differently from desktop input methods.
+</p>
+<p>On a conventional desktop windowing system, an input method will
+simply display the contents of any ongoing character composition on
+screen, and send key events reflecting its contents to Emacs after it
+is confirmed by the user.
+</p>
+<p>By contrast, virtual keyboard input methods directly perform edits
+to the selected window of each frame; this is known as &ldquo;text
+conversion&rdquo;, or &ldquo;string conversion&rdquo; under the X Window System.
+</p>
+<p>Emacs enables these input methods whenever the buffer local value of
+<code class="code">text-conversion-style</code> is non-<code class="code">nil</code>, that is to say,
+generally inside derivatives of <code class="code">text-mode</code> and <code class="code">prog-mode</code>.
+</p>
+<p>Text conversion is performed asynchronously whenever Emacs receives
+a request to perform the conversion from the input method, and Emacs
+is not currently reading a key sequence for which one prefix key has
+already been read (see <a class="pxref" href="Keys.html">Keys</a>).  After the conversion completes, a
+<code class="code">text-conversion</code> event is sent.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Misc-Events.html#Misc-Events">Misc Events</a> in <cite class="cite">the
+Emacs Reference Manual</cite>.
+</p>
+<a class="index-entry-id" id="index-text_002dconversion_002dface"></a>
+<p>If the input method needs to work on a region of the buffer, then
+the region is designated the &ldquo;composing region&rdquo; (or &ldquo;preconversion
+region&rdquo;).  The variable <code class="code">text-conversion-face</code> controls whether
+to display the composing region in a distinctive face, and if so,
+which face to employ.
+</p>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Touchscreens.html">Using Emacs on Touchscreens</a>, Up: <a href="Other-Input.html">Touchscreen Input and Virtual Keyboards</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 26.3.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Backup Deletion (GNU Emacs Manual)</title>
 
 <meta name="description" content="Backup Deletion (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Backup-Names.html" rel="prev" title="Backup Names">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,40 +49,42 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Backup-Deletion"></span><div class="header">
+<div class="subsubsection-level-extent" id="Backup-Deletion">
+<div class="nav-panel">
 <p>
-Next: <a href="Backup-Copying.html" accesskey="n" rel="next">Backup Copying</a>, Previous: <a href="Backup-Names.html" accesskey="p" rel="prev">Backup Names</a>, Up: <a href="Backup.html" accesskey="u" rel="up">Backup</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Backup-Copying.html" accesskey="n" rel="next">Copying vs. Renaming</a>, Previous: <a href="Backup-Names.html" accesskey="p" rel="prev">Single or Numbered Backups</a>, Up: <a href="Backup.html" accesskey="u" rel="up">Backup Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Automatic-Deletion-of-Backups"></span><h4 class="subsubsection">18.3.2.2 Automatic Deletion of Backups</h4>
+<h4 class="subsubsection" id="Automatic-Deletion-of-Backups"><span>18.3.2.2 Automatic Deletion of Backups<a class="copiable-link" href="#Automatic-Deletion-of-Backups"> &para;</a></span></h4>
 
 <p>To prevent excessive consumption of disk space, Emacs can delete numbered
 backup versions automatically.  Generally Emacs keeps the first few backups
 and the latest few backups, deleting any in between.  This happens every
 time a new backup is made.
 </p>
-<span id="index-kept_002dold_002dversions"></span>
-<span id="index-kept_002dnew_002dversions"></span>
-<p>The two variables <code>kept-old-versions</code> and
-<code>kept-new-versions</code> control this deletion.  Their values are,
+<a class="index-entry-id" id="index-kept_002dold_002dversions"></a>
+<a class="index-entry-id" id="index-kept_002dnew_002dversions"></a>
+<p>The two variables <code class="code">kept-old-versions</code> and
+<code class="code">kept-new-versions</code> control this deletion.  Their values are,
 respectively, the number of oldest (lowest-numbered) backups to keep
 and the number of newest (highest-numbered) ones to keep, each time a
 new backup is made.  The backups in the middle (excluding those oldest
 and newest) are the excess middle versions&mdash;those backups are
 deleted.  These variables&rsquo; values are used when it is time to delete
 excess versions, just after a new backup version is made; the newly
-made backup is included in the count in <code>kept-new-versions</code>.  By
+made backup is included in the count in <code class="code">kept-new-versions</code>.  By
 default, both variables are 2.
 </p>
-<span id="index-delete_002dold_002dversions"></span>
-<p>If <code>delete-old-versions</code> is <code>t</code>, Emacs deletes the excess
-backup files silently.  If it is <code>nil</code>, the default, Emacs asks
+<a class="index-entry-id" id="index-delete_002dold_002dversions"></a>
+<p>If <code class="code">delete-old-versions</code> is <code class="code">t</code>, Emacs deletes the excess
+backup files silently.  If it is <code class="code">nil</code>, the default, Emacs asks
 you whether it should delete the excess backup versions.  If it has
 any other value, then Emacs never automatically deletes backups.
 </p>
-<p>Dired&rsquo;s <kbd>.</kbd> (Period) command can also be used to delete old versions.
-See <a href="Flagging-Many-Files.html">Flagging Many Files</a>.
+<p>Dired&rsquo;s <kbd class="kbd">.</kbd> (Period) command can also be used to delete old versions.
+See <a class="xref" href="Flagging-Many-Files.html">Flagging Many Files at Once</a>.
 </p>
+</div>
 
 
 

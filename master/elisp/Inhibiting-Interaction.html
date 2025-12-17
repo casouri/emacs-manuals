@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Inhibiting Interaction (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Inhibiting Interaction (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,9 @@ developing GNU and promoting software freedom." -->
 <link href="Recursive-Mini.html" rel="prev" title="Recursive Mini">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,12 +48,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Inhibiting-Interaction"></span><div class="header">
+<div class="section-level-extent" id="Inhibiting-Interaction">
+<div class="nav-panel">
 <p>
-Next: <a href="Minibuffer-Misc.html" accesskey="n" rel="next">Minibuffer Misc</a>, Previous: <a href="Recursive-Mini.html" accesskey="p" rel="prev">Recursive Mini</a>, Up: <a href="Minibuffers.html" accesskey="u" rel="up">Minibuffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Minibuffer-Misc.html" accesskey="n" rel="next">Minibuffer Miscellany</a>, Previous: <a href="Recursive-Mini.html" accesskey="p" rel="prev">Recursive Minibuffers</a>, Up: <a href="Minibuffers.html" accesskey="u" rel="up">Minibuffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Inhibiting-Interaction-1"></span><h3 class="section">21.14 Inhibiting Interaction</h3>
+<h3 class="section" id="Inhibiting-Interaction-1"><span>21.14 Inhibiting Interaction<a class="copiable-link" href="#Inhibiting-Interaction-1"> &para;</a></span></h3>
 
 <p>It&rsquo;s sometimes useful to be able to run Emacs as a headless server
 process that responds to commands given over a network connection.
@@ -71,28 +63,29 @@ commands prompt the user for feedback in certain anomalous situations.
 This makes this use case more difficult, since the server process will
 just hang waiting for user input.
 </p>
-<span id="index-inhibit_002dinteraction"></span>
-<p>Binding the <code>inhibit-interaction</code> variable to something
-non-<code>nil</code> makes Emacs signal a <code>inhibited-interaction</code> error
+<a class="index-entry-id" id="index-inhibit_002dinteraction"></a>
+<p>Binding the <code class="code">inhibit-interaction</code> variable to something
+non-<code class="code">nil</code> makes Emacs signal a <code class="code">inhibited-interaction</code> error
 instead of prompting, which can then be used by the server process to
 handle these situations.
 </p>
 <p>Here&rsquo;s a typical use case:
 </p>
-<div class="lisp">
-<pre class="lisp">(let ((inhibit-interaction t))
+<div class="example lisp">
+<pre class="lisp-preformatted">(let ((inhibit-interaction t))
   (respond-to-client
    (condition-case err
        (my-client-handling-function)
      (inhibited-interaction err))))
 </pre></div>
 
-<p>If <code>my-client-handling-function</code> ends up calling something that
-asks the user for something (via <code>y-or-n-p</code> or
-<code>read-from-minibuffer</code> or the like), an
-<code>inhibited-interaction</code> error is signalled instead.  The server
+<p>If <code class="code">my-client-handling-function</code> ends up calling something that
+asks the user for something (via <code class="code">y-or-n-p</code> or
+<code class="code">read-from-minibuffer</code> or the like), an
+<code class="code">inhibited-interaction</code> error is signaled instead.  The server
 code then catches that error and reports it to the client.
 </p>
+</div>
 
 
 

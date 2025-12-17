@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 26.2.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Rmail Coding (GNU Emacs Manual)</title>
 
 <meta name="description" content="Rmail Coding (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Rmail-Display.html" rel="prev" title="Rmail Display">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,58 +49,60 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Rmail-Coding"></span><div class="header">
+<div class="section-level-extent" id="Rmail-Coding">
+<div class="nav-panel">
 <p>
-Next: <a href="Rmail-Editing.html" accesskey="n" rel="next">Rmail Editing</a>, Previous: <a href="Rmail-Display.html" accesskey="p" rel="prev">Rmail Display</a>, Up: <a href="Rmail.html" accesskey="u" rel="up">Rmail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Rmail-Editing.html" accesskey="n" rel="next">Editing Within a Message</a>, Previous: <a href="Rmail-Display.html" accesskey="p" rel="prev">Display of Messages</a>, Up: <a href="Rmail.html" accesskey="u" rel="up">Reading Mail with Rmail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Rmail-and-Coding-Systems"></span><h3 class="section">33.14 Rmail and Coding Systems</h3>
+<h3 class="section" id="Rmail-and-Coding-Systems"><span>33.14 Rmail and Coding Systems<a class="copiable-link" href="#Rmail-and-Coding-Systems"> &para;</a></span></h3>
 
-<span id="index-decoding-mail-messages-_0028Rmail_0029"></span>
-<p>Rmail automatically decodes messages which contain non-<acronym>ASCII</acronym>
+<a class="index-entry-id" id="index-decoding-mail-messages-_0028Rmail_0029"></a>
+<p>Rmail automatically decodes messages which contain non-<abbr class="acronym">ASCII</abbr>
 characters, just as Emacs does with files you visit and with subprocess
-output.  Rmail uses the standard &lsquo;<samp>charset=<var>charset</var></samp>&rsquo; header in
+output.  Rmail uses the standard &lsquo;<samp class="samp">charset=<var class="var">charset</var></samp>&rsquo; header in
 the message, if any, to determine how the message was encoded by the
-sender.  It maps <var>charset</var> into the corresponding Emacs coding
-system (see <a href="Coding-Systems.html">Coding Systems</a>), and uses that coding system to decode
-message text.  If the message header doesn&rsquo;t have the &lsquo;<samp>charset</samp>&rsquo;
-specification, or if <var>charset</var> is not recognized,
+sender.  It maps <var class="var">charset</var> into the corresponding Emacs coding
+system (see <a class="pxref" href="Coding-Systems.html">Coding Systems</a>), and uses that coding system to decode
+message text.  If the message header doesn&rsquo;t have the &lsquo;<samp class="samp">charset</samp>&rsquo;
+specification, or if <var class="var">charset</var> is not recognized,
 Rmail chooses the coding system with the usual Emacs heuristics and
-defaults (see <a href="Recognize-Coding.html">Recognize Coding</a>).
+defaults (see <a class="pxref" href="Recognize-Coding.html">Recognizing Coding Systems</a>).
 </p>
-<span id="index-fixing-incorrectly-decoded-mail-messages"></span>
+<a class="index-entry-id" id="index-fixing-incorrectly-decoded-mail-messages"></a>
 <p>Occasionally, a message is decoded incorrectly, either because Emacs
-guessed the wrong coding system in the absence of the &lsquo;<samp>charset</samp>&rsquo;
+guessed the wrong coding system in the absence of the &lsquo;<samp class="samp">charset</samp>&rsquo;
 specification, or because the specification was inaccurate.  For
 example, a misconfigured mailer could send a message with a
-&lsquo;<samp>charset=iso-8859-1</samp>&rsquo; header when the message is actually encoded
-in <code>koi8-r</code>.  When you see the message text garbled, or some of
+&lsquo;<samp class="samp">charset=iso-8859-1</samp>&rsquo; header when the message is actually encoded
+in <code class="code">koi8-r</code>.  When you see the message text garbled, or some of
 its characters displayed as hex codes or empty boxes, this may have
 happened.
 </p>
-<span id="index-rmail_002dredecode_002dbody"></span>
+<a class="index-entry-id" id="index-rmail_002dredecode_002dbody"></a>
 <p>You can correct the problem by decoding the message again using the
 right coding system, if you can figure out or guess which one is
-right.  To do this, invoke the <kbd>M-x rmail-redecode-body</kbd> command.
+right.  To do this, invoke the <kbd class="kbd">M-x rmail-redecode-body</kbd> command.
 It reads the name of a coding system, and then redecodes the message
 using the coding system you specified.  If you specified the right
 coding system, the result should be readable.
 </p>
-<span id="index-rmail_002dfile_002dcoding_002dsystem"></span>
+<a class="index-entry-id" id="index-rmail_002dfile_002dcoding_002dsystem"></a>
 <p>When you get new mail in Rmail, each message is translated
 automatically from the coding system it is written in, as if it were a
 separate file.  This uses the priority list of coding systems that you
 have specified.  If a MIME message specifies a character set, Rmail
 obeys that specification.  For reading and saving Rmail files
 themselves, Emacs uses the coding system specified by the variable
-<code>rmail-file-coding-system</code>.  The default value is <code>nil</code>,
+<code class="code">rmail-file-coding-system</code>.  The default value is <code class="code">nil</code>,
 which means that Rmail files are not translated (they are read and
 written in the Emacs internal character code).
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Rmail-Editing.html" accesskey="n" rel="next">Rmail Editing</a>, Previous: <a href="Rmail-Display.html" accesskey="p" rel="prev">Rmail Display</a>, Up: <a href="Rmail.html" accesskey="u" rel="up">Rmail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Rmail-Editing.html">Editing Within a Message</a>, Previous: <a href="Rmail-Display.html">Display of Messages</a>, Up: <a href="Rmail.html">Reading Mail with Rmail</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

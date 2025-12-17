@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Modifying Lists (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Modifying Lists (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Lists.html" rel="up" title="Lists">
-<link href="Setcar.html" rel="next" title="Setcar">
+<link href="Sets-And-Lists.html" rel="next" title="Sets And Lists">
 <link href="List-Variables.html" rel="prev" title="List Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,39 +46,37 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Modifying-Lists"></span><div class="header">
+<div class="section-level-extent" id="Modifying-Lists">
+<div class="nav-panel">
 <p>
-Next: <a href="Sets-And-Lists.html" accesskey="n" rel="next">Sets And Lists</a>, Previous: <a href="List-Variables.html" accesskey="p" rel="prev">List Variables</a>, Up: <a href="Lists.html" accesskey="u" rel="up">Lists</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Sets-And-Lists.html" accesskey="n" rel="next">Using Lists as Sets</a>, Previous: <a href="List-Variables.html" accesskey="p" rel="prev">Modifying List Variables</a>, Up: <a href="Lists.html" accesskey="u" rel="up">Lists</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Modifying-Existing-List-Structure"></span><h3 class="section">5.6 Modifying Existing List Structure</h3>
-<span id="index-destructive-list-operations"></span>
+<h3 class="section" id="Modifying-Existing-List-Structure"><span>5.6 Modifying Existing List Structure<a class="copiable-link" href="#Modifying-Existing-List-Structure"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-destructive-list-operations"></a>
 
-<p>You can modify the <small>CAR</small> and <small>CDR</small> contents of a cons cell with the
-primitives <code>setcar</code> and <code>setcdr</code>.  These are destructive
+<p>You can modify the <small class="sc">CAR</small> and <small class="sc">CDR</small> contents of a cons cell with the
+primitives <code class="code">setcar</code> and <code class="code">setcdr</code>.  These are destructive
 operations because they change existing list structure.
 </p>
-<span id="index-CL-note_002d_002d_002drplaca-vs-setcar"></span>
-<blockquote>
-<span id="index-rplaca"></span>
-<span id="index-rplacd"></span>
-<p><b>Common Lisp note:</b> Common Lisp uses functions <code>rplaca</code> and
-<code>rplacd</code> to alter list structure; they change structure the same
-way as <code>setcar</code> and <code>setcdr</code>, but the Common Lisp functions
-return the cons cell while <code>setcar</code> and <code>setcdr</code> return the
-new <small>CAR</small> or <small>CDR</small>.
+<a class="index-entry-id" id="index-CL-note_002d_002d_002drplaca-vs-setcar"></a>
+<blockquote class="quotation">
+<a class="index-entry-id" id="index-rplaca"></a>
+<a class="index-entry-id" id="index-rplacd"></a>
+<p><b class="b">Common Lisp note:</b> Common Lisp uses functions <code class="code">rplaca</code> and
+<code class="code">rplacd</code> to alter list structure; they change structure the same
+way as <code class="code">setcar</code> and <code class="code">setcdr</code>, but the Common Lisp functions
+return the cons cell while <code class="code">setcar</code> and <code class="code">setcdr</code> return the
+new <small class="sc">CAR</small> or <small class="sc">CDR</small>.
 </p></blockquote>
 
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Setcar.html" accesskey="1">Setcar</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Replacing an element in a list.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Setcdr.html" accesskey="2">Setcdr</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Replacing part of the list backbone.
-                      This can be used to remove or add elements.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Rearrangement.html" accesskey="3">Rearrangement</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Reordering the elements in a list; combining lists.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Setcar.html" accesskey="1">Altering List Elements with <code class="code">setcar</code></a></li>
+<li><a href="Setcdr.html" accesskey="2">Altering the CDR of a List</a></li>
+<li><a href="Rearrangement.html" accesskey="3">Functions that Rearrange Lists</a></li>
+</ul>
+</div>
 
 
 

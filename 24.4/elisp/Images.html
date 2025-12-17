@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Images (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Images (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Display.html" rel="up" title="Display">
-<link href="Image-Formats.html" rel="next" title="Image Formats">
-<link href="Display-Margins.html" rel="prev" title="Display Margins">
+<link href="Buttons.html" rel="next" title="Buttons">
+<link href="Display-Property.html" rel="prev" title="Display Property">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,54 +46,40 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Images"></span><div class="header">
+<div class="section-level-extent" id="Images">
+<div class="nav-panel">
 <p>
-Next: <a href="Buttons.html" accesskey="n" rel="next">Buttons</a>, Previous: <a href="Display-Property.html" accesskey="p" rel="prev">Display Property</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Buttons.html" accesskey="n" rel="next">Buttons</a>, Previous: <a href="Display-Property.html" accesskey="p" rel="prev">The <code class="code">display</code> Property</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Images-1"></span><h3 class="section">37.17 Images</h3>
-<span id="index-images-in-buffers"></span>
+<h3 class="section" id="Images-1"><span>37.17 Images<a class="copiable-link" href="#Images-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-images-in-buffers"></a>
 
 <p>To display an image in an Emacs buffer, you must first create an image
-descriptor, then use it as a display specifier in the <code>display</code>
-property of text that is displayed (see <a href="Display-Property.html">Display Property</a>).
+descriptor, then use it as a display specifier in the <code class="code">display</code>
+property of text that is displayed (see <a class="pxref" href="Display-Property.html">The <code class="code">display</code> Property</a>).
 </p>
 <p>Emacs is usually able to display images when it is run on a
 graphical terminal.  Images cannot be displayed in a text terminal, on
 certain graphical terminals that lack the support for this, or if
 Emacs is compiled without image support.  You can use the function
-<code>display-images-p</code> to determine if images can in principle be
-displayed (see <a href="Display-Feature-Testing.html">Display Feature Testing</a>).
+<code class="code">display-images-p</code> to determine if images can in principle be
+displayed (see <a class="pxref" href="Display-Feature-Testing.html">Display Feature Testing</a>).
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Image-Formats.html" accesskey="1">Image Formats</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Supported image formats.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Image-Descriptors.html" accesskey="2">Image Descriptors</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to specify an image for use in <code>:display</code>.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="XBM-Images.html" accesskey="3">XBM Images</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Special features for XBM format.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="XPM-Images.html" accesskey="4">XPM Images</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Special features for XPM format.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="PostScript-Images.html" accesskey="5">PostScript Images</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Special features for PostScript format.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="ImageMagick-Images.html" accesskey="6">ImageMagick Images</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Special features available through ImageMagick.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Other-Image-Types.html" accesskey="7">Other Image Types</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Various other formats are supported.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Defining-Images.html" accesskey="8">Defining Images</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Convenient ways to define an image for later use.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Showing-Images.html" accesskey="9">Showing Images</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Convenient ways to display an image once it is defined.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Multi_002dFrame-Images.html">Multi-Frame Images</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Some images contain more than one frame.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Image-Cache.html">Image Cache</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Internal mechanisms of image display.
-</td></tr>
-</table>
 
-<hr>
-<div class="header">
-<p>
-Next: <a href="Buttons.html" accesskey="n" rel="next">Buttons</a>, Previous: <a href="Display-Property.html" accesskey="p" rel="prev">Display Property</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+<ul class="mini-toc">
+<li><a href="Image-Formats.html" accesskey="1">Image Formats</a></li>
+<li><a href="Image-Descriptors.html" accesskey="2">Image Descriptors</a></li>
+<li><a href="XBM-Images.html" accesskey="3">XBM Images</a></li>
+<li><a href="XPM-Images.html" accesskey="4">XPM Images</a></li>
+<li><a href="PostScript-Images.html" accesskey="5">PostScript Images</a></li>
+<li><a href="ImageMagick-Images.html" accesskey="6">ImageMagick Images</a></li>
+<li><a href="Other-Image-Types.html" accesskey="7">Other Image Types</a></li>
+<li><a href="Defining-Images.html" accesskey="8">Defining Images</a></li>
+<li><a href="Showing-Images.html" accesskey="9">Showing Images</a></li>
+<li><a href="Multi_002dFrame-Images.html">Multi-Frame Images</a></li>
+<li><a href="Image-Cache.html">Image Cache</a></li>
+</ul>
 </div>
 
 

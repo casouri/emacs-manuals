@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.3.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Copying and Naming (GNU Emacs Manual)</title>
+
+<meta name="description" content="Copying and Naming (GNU Emacs Manual)">
+<meta name="keywords" content="Copying and Naming (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Files.html" rel="up" title="Files">
+<link href="Misc-File-Ops.html" rel="next" title="Misc File Ops">
+<link href="Diff-Mode.html" rel="prev" title="Diff Mode">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Copying-and-Naming">
+<div class="nav-panel">
+<p>
+Next: <a href="Misc-File-Ops.html" accesskey="n" rel="next">Miscellaneous File Operations</a>, Previous: <a href="Diff-Mode.html" accesskey="p" rel="prev">Diff Mode</a>, Up: <a href="Files.html" accesskey="u" rel="up">File Handling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Copying_002c-Naming-and-Renaming-Files"><span>19.11 Copying, Naming and Renaming Files<a class="copiable-link" href="#Copying_002c-Naming-and-Renaming-Files"> &para;</a></span></h3>
+
+<p>Emacs has several commands for copying, naming, and renaming files.
+All of them read two file names, <var class="var">old</var> (or <var class="var">target</var>) and
+<var class="var">new</var>, using the minibuffer, and then copy or adjust a file&rsquo;s name
+accordingly; they do not accept wildcard file names.
+</p>
+<p>In all these commands, if the argument <var class="var">new</var> is just a directory
+name (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Directory-Names.html#Directory-Names">Directory Names</a> in <cite class="cite">the Emacs Lisp Reference
+Manual</cite>), the real new name is in that directory, with the same
+non-directory component as <var class="var">old</var>.  For example, the command
+<kbd class="kbd">M-x&nbsp;rename-file&nbsp;<kbd class="key">RET</kbd>&nbsp;~/foo&nbsp;<kbd class="key">RET</kbd>&nbsp;/tmp/&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w -->
+renames <samp class="file">~/foo</samp> to <samp class="file">/tmp/foo</samp>.  On GNU and other POSIX-like
+systems, directory names end in &lsquo;<samp class="samp">/</samp>&rsquo;.
+</p>
+<p>All these commands ask for confirmation when the new file name already
+exists.
+</p>
+<a class="index-entry-id" id="index-copy_002dfile"></a>
+<a class="index-entry-id" id="index-copying-files"></a>
+<p><kbd class="kbd">M-x copy-file</kbd> copies the contents of the file <var class="var">old</var> to the
+file <var class="var">new</var>.
+</p>
+<a class="index-entry-id" id="index-copy_002ddirectory_002dcreate_002dsymlink"></a>
+<a class="index-entry-id" id="index-copy_002ddirectory"></a>
+<p><kbd class="kbd">M-x copy-directory</kbd> copies directories, similar to the
+<code class="command">cp -r</code> shell command.  If <var class="var">new</var> is a directory name, it
+creates a copy of the <var class="var">old</var> directory and puts it in <var class="var">new</var>.
+Otherwise it copies all the contents of <var class="var">old</var> into a new directory
+named <var class="var">new</var>.  If <code class="code">copy-directory-create-symlink</code> is
+non-<code class="code">nil</code> and <var class="var">old</var> is a symbolic link, this command will
+copy the symbolic link.  If <code class="code">nil</code>, this command will follow the
+link and copy the contents instead.  (This is the default.)
+</p>
+<a class="index-entry-id" id="index-renaming-files"></a>
+<a class="index-entry-id" id="index-rename_002dfile"></a>
+<p><kbd class="kbd">M-x rename-file</kbd> renames file <var class="var">old</var> as <var class="var">new</var>.  If the
+file name <var class="var">new</var> already exists, you must confirm with <kbd class="kbd">yes</kbd> or
+renaming is not done; this is because renaming causes the old meaning
+of the name <var class="var">new</var> to be lost.  If <var class="var">old</var> and <var class="var">new</var> are on
+different file systems, the file <var class="var">old</var> is copied and deleted.
+</p>
+<p>If a file is under version control (see <a class="pxref" href="Version-Control.html">Version Control</a>), you
+should rename it using <kbd class="kbd">M-x&nbsp;vc-rename-file</kbd><!-- /@w --> instead of
+<kbd class="kbd">M-x&nbsp;rename-file</kbd><!-- /@w -->.  See <a class="xref" href="VC-Delete_002fRename.html">Deleting and Renaming Version-Controlled Files</a>.
+</p>
+<a class="index-entry-id" id="index-add_002dname_002dto_002dfile"></a>
+<a class="index-entry-id" id="index-hard-links-_0028creation_0029"></a>
+<p><kbd class="kbd">M-x add-name-to-file</kbd> adds an additional name to an existing
+file without removing the old name.  The new name is created as a hard
+link to the existing file.  The new name must belong on the same file
+system that the file is on.  On MS-Windows, this command works only if
+the file resides in an NTFS file system.  On MS-DOS, and some remote
+system types, it works by copying the file.
+</p>
+<a class="index-entry-id" id="index-make_002dsymbolic_002dlink"></a>
+<a class="index-entry-id" id="index-symbolic-links-_0028creation_0029"></a>
+<p><kbd class="kbd">M-x make-symbolic-link</kbd> creates a symbolic link named
+<var class="var">new</var>, which points at <var class="var">target</var>.  The effect is that future
+attempts to open file <var class="var">new</var> will refer to whatever file is named
+<var class="var">target</var> at the time the opening is done, or will get an error if
+the name <var class="var">target</var> is nonexistent at that time.  This command does
+not expand the argument <var class="var">target</var>, so that it allows you to specify
+a relative name as the target of the link.  However, this command
+does expand leading &lsquo;<samp class="samp">~</samp>&rsquo; in <var class="var">target</var> so that you can easily
+specify home directories, and strips leading &lsquo;<samp class="samp">/:</samp>&rsquo; so that you can
+specify relative names beginning with literal &lsquo;<samp class="samp">~</samp>&rsquo; or &lsquo;<samp class="samp">/:</samp>&rsquo;.
+See <a class="xref" href="Quoted-File-Names.html">Quoted File Names</a>.  On MS-Windows, this command works only on
+MS Windows Vista and later.  When <var class="var">new</var> is remote,
+it works depending on the system type.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Misc-File-Ops.html">Miscellaneous File Operations</a>, Previous: <a href="Diff-Mode.html">Diff Mode</a>, Up: <a href="Files.html">File Handling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Window History (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Window History (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Window History (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Windows.html" rel="up" title="Windows">
+<link href="Dedicated-Windows.html" rel="next" title="Dedicated Windows">
+<link href="Displaying-Buffers.html" rel="prev" title="Displaying Buffers">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Window-History">
+<div class="nav-panel">
+<p>
+Next: <a href="Dedicated-Windows.html" accesskey="n" rel="next">Dedicated Windows</a>, Previous: <a href="Displaying-Buffers.html" accesskey="p" rel="prev">Displaying a Buffer in a Suitable Window</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Window-History-1"><span>29.14 Window History<a class="copiable-link" href="#Window-History-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-window-history"></a>
+
+<p>Each window remembers in a list the buffers it has previously
+displayed, and the order in which these buffers were removed from it.
+This history is used, for example, by <code class="code">replace-buffer-in-windows</code>
+(see <a class="pxref" href="Buffers-and-Windows.html">Buffers and Windows</a>), and when quitting windows
+(see <a class="pxref" href="Quitting-Windows.html">Quitting Windows</a>).  The list is automatically maintained by
+Emacs, but you can use the following functions to explicitly inspect
+or alter it:
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dprev_002dbuffers"><span class="category-def">Function: </span><span><strong class="def-name">window-prev-buffers</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dprev_002dbuffers"> &para;</a></span></dt>
+<dd><p>This function returns a list specifying the previous contents of
+<var class="var">window</var>.  The optional argument <var class="var">window</var> should be a live
+window and defaults to the selected one.
+</p>
+<p>Each list element has the form <code class="code">(<var class="var">buffer</var> <var class="var">window-start</var>
+<var class="var">window-pos</var>)</code>, where <var class="var">buffer</var> is a buffer previously shown in
+the window, <var class="var">window-start</var> is the window start position
+(see <a class="pxref" href="Window-Start-and-End.html">The Window Start and End Positions</a>) when that buffer was last shown, and
+<var class="var">window-pos</var> is the point position (see <a class="pxref" href="Window-Point.html">Windows and Point</a>) when
+that buffer was last shown in <var class="var">window</var>.
+</p>
+<p>The list is ordered so that earlier elements correspond to more
+recently-shown buffers, and the first element usually corresponds to the
+buffer most recently removed from the window.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dwindow_002dprev_002dbuffers"><span class="category-def">Function: </span><span><strong class="def-name">set-window-prev-buffers</strong> <var class="def-var-arguments">window prev-buffers</var><a class="copiable-link" href="#index-set_002dwindow_002dprev_002dbuffers"> &para;</a></span></dt>
+<dd><p>This function sets <var class="var">window</var>&rsquo;s previous buffers to the value of
+<var class="var">prev-buffers</var>.  The argument <var class="var">window</var> must be a live window
+and defaults to the selected one.  The argument <var class="var">prev-buffers</var>
+should be a list of the same form as that returned by
+<code class="code">window-prev-buffers</code>.
+</p></dd></dl>
+
+<p>In addition, each window maintains a list of <em class="dfn">next buffers</em>, which
+is a list of buffers re-shown by <code class="code">switch-to-prev-buffer</code> (see
+below).  This list is mainly used by <code class="code">switch-to-prev-buffer</code> and
+<code class="code">switch-to-next-buffer</code> for choosing buffers to switch to.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dnext_002dbuffers"><span class="category-def">Function: </span><span><strong class="def-name">window-next-buffers</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dnext_002dbuffers"> &para;</a></span></dt>
+<dd><p>This function returns the list of buffers recently re-shown in
+<var class="var">window</var> via <code class="code">switch-to-prev-buffer</code>.  The <var class="var">window</var>
+argument must denote a live window or <code class="code">nil</code> (meaning the selected
+window).
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dwindow_002dnext_002dbuffers"><span class="category-def">Function: </span><span><strong class="def-name">set-window-next-buffers</strong> <var class="def-var-arguments">window next-buffers</var><a class="copiable-link" href="#index-set_002dwindow_002dnext_002dbuffers"> &para;</a></span></dt>
+<dd><p>This function sets the next buffer list of <var class="var">window</var> to
+<var class="var">next-buffers</var>.  The <var class="var">window</var> argument should be a live window
+or <code class="code">nil</code> (meaning the selected window).  The argument
+<var class="var">next-buffers</var> should be a list of buffers.
+</p></dd></dl>
+
+<p>The following commands can be used to cycle through the global buffer
+list, much like <code class="code">bury-buffer</code> and <code class="code">unbury-buffer</code>.  However,
+they cycle according to the specified window&rsquo;s history list, rather
+than the global buffer list.  In addition, they restore
+window-specific window start and point positions, and may show a
+buffer even if it is already shown in another window.  The
+<code class="code">switch-to-prev-buffer</code> command, in particular, is used by
+<code class="code">replace-buffer-in-windows</code>, <code class="code">bury-buffer</code> and
+<code class="code">quit-window</code> to find a replacement buffer for a window.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-switch_002dto_002dprev_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">switch-to-prev-buffer</strong> <var class="def-var-arguments">&amp;optional window bury-or-kill</var><a class="copiable-link" href="#index-switch_002dto_002dprev_002dbuffer"> &para;</a></span></dt>
+<dd><p>This command displays the previous buffer in <var class="var">window</var>.  The
+argument <var class="var">window</var> should be a live window or <code class="code">nil</code> (meaning
+the selected window).  If the optional argument <var class="var">bury-or-kill</var> is
+non-<code class="code">nil</code>, this means that the buffer currently shown in
+<var class="var">window</var> is about to be buried or killed and consequently should
+not be switched to in future invocations of this command.
+</p>
+<p>The previous buffer is usually the buffer shown before the buffer
+currently shown in <var class="var">window</var>.  However, a buffer that has been buried
+or killed, or has been already shown by a recent invocation of
+<code class="code">switch-to-prev-buffer</code>, does not qualify as previous buffer.
+</p>
+<p>If repeated invocations of this command have already shown all buffers
+previously shown in <var class="var">window</var>, further invocations will show buffers
+from the buffer list of the frame <var class="var">window</var> appears on (see <a class="pxref" href="Buffer-List.html">The Buffer List</a>).
+</p>
+<p>The option <code class="code">switch-to-prev-buffer-skip</code> described below can be
+used to inhibit switching to certain buffers, for example, to those
+already shown in another window.  Also, if <var class="var">window</var>&rsquo;s frame has a
+<code class="code">buffer-predicate</code> parameter (see <a class="pxref" href="Buffer-Parameters.html">Buffer Parameters</a>), that
+predicate may inhibit switching to certain buffers.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-switch_002dto_002dnext_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">switch-to-next-buffer</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-switch_002dto_002dnext_002dbuffer"> &para;</a></span></dt>
+<dd><p>This command switches to the next buffer in <var class="var">window</var>, thus undoing
+the effect of the last <code class="code">switch-to-prev-buffer</code> command in
+<var class="var">window</var>.  The argument <var class="var">window</var> must be a live window and
+defaults to the selected one.
+</p>
+<p>If there is no recent invocation of <code class="code">switch-to-prev-buffer</code> that
+can be undone, this function tries to show a buffer from the buffer list
+of the frame <var class="var">window</var> appears on (see <a class="pxref" href="Buffer-List.html">The Buffer List</a>).
+</p>
+<p>The option <code class="code">switch-to-prev-buffer-skip</code> and the
+<code class="code">buffer-predicate</code> (see <a class="pxref" href="Buffer-Parameters.html">Buffer Parameters</a>) of <var class="var">window</var>&rsquo;s
+frame affect this command as they do for <code class="code">switch-to-prev-buffer</code>.
+</p></dd></dl>
+
+<p>By default <code class="code">switch-to-prev-buffer</code> and
+<code class="code">switch-to-next-buffer</code> can switch to a buffer that is already
+shown in another window.  The following option can be used to override
+this behavior.
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-switch_002dto_002dprev_002dbuffer_002dskip"><span class="category-def">User Option: </span><span><strong class="def-name">switch-to-prev-buffer-skip</strong><a class="copiable-link" href="#index-switch_002dto_002dprev_002dbuffer_002dskip"> &para;</a></span></dt>
+<dd><p>If this variable is <code class="code">nil</code>, <code class="code">switch-to-prev-buffer</code> may
+switch to any buffer, including those already shown in other windows.
+</p>
+<p>If this variable is non-<code class="code">nil</code>, <code class="code">switch-to-prev-buffer</code> will
+refrain from switching to certain buffers.  The following values can
+be used:
+</p>
+<ul class="itemize mark-bullet">
+<li><code class="code">this</code> means do not switch to a buffer shown on the frame that
+hosts the window <code class="code">switch-to-prev-buffer</code> is acting upon.
+
+</li><li><code class="code">visible</code> means do not switch to a buffer shown on any visible
+frame.
+
+</li><li>0 (the number zero) means do not switch to a buffer shown on any
+visible or iconified frame.
+
+</li><li><code class="code">t</code> means do not switch to a buffer shown on any live frame.
+
+</li><li>A function that takes three arguments&mdash;the <var class="var">window</var> argument of
+<code class="code">switch-to-prev-buffer</code>, a buffer <code class="code">switch-to-prev-buffer</code>
+intends to switch to and the <var class="var">bury-or-kill</var> argument of
+<code class="code">switch-to-prev-buffer</code>.  If that function returns
+non-<code class="code">nil</code>, <code class="code">switch-to-prev-buffer</code> will refrain from
+switching to the buffer specified by the second argument.
+</li></ul>
+
+<p>The command <code class="code">switch-to-next-buffer</code> obeys this option in a
+similar way.  If this option specifies a function,
+<code class="code">switch-to-next-buffer</code> will call that function with the third
+argument always <code class="code">nil</code>.
+</p>
+<p>Note that since <code class="code">switch-to-prev-buffer</code> is called by
+<code class="code">bury-buffer</code>, <code class="code">replace-buffer-in-windows</code> and
+<code class="code">quit-restore-window</code> as well, customizing this option may also
+affect the behavior of Emacs when a window is quit or a buffer gets
+buried or killed.
+</p>
+<p>Note also that under certain circumstances
+<code class="code">switch-to-prev-buffer</code> and <code class="code">switch-to-next-buffer</code> may
+ignore this option, for example, when there is only one buffer left
+these functions can switch to.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-switch_002dto_002dprev_002dbuffer_002dskip_002dregexp"><span class="category-def">User Option: </span><span><strong class="def-name">switch-to-prev-buffer-skip-regexp</strong><a class="copiable-link" href="#index-switch_002dto_002dprev_002dbuffer_002dskip_002dregexp"> &para;</a></span></dt>
+<dd><p>This user option should be either a regular expression or a list of
+regular expressions.  Buffers whose names match one of those regular
+expressions will be ignored by <code class="code">switch-to-prev-buffer</code> and
+<code class="code">switch-to-next-buffer</code> (except when there&rsquo;s no other buffer to
+switch to).
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dedicated-Windows.html">Dedicated Windows</a>, Previous: <a href="Displaying-Buffers.html">Displaying a Buffer in a Suitable Window</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Custom Format Strings (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Custom Format Strings (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,12 @@ developing GNU and promoting software freedom." -->
 <link href="Formatting-Strings.html" rel="prev" title="Formatting Strings">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,44 +51,45 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Custom-Format-Strings"></span><div class="header">
+<div class="section-level-extent" id="Custom-Format-Strings">
+<div class="nav-panel">
 <p>
-Next: <a href="Case-Conversion.html" accesskey="n" rel="next">Case Conversion</a>, Previous: <a href="Formatting-Strings.html" accesskey="p" rel="prev">Formatting Strings</a>, Up: <a href="Strings-and-Characters.html" accesskey="u" rel="up">Strings and Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Case-Conversion.html" accesskey="n" rel="next">Case Conversion in Lisp</a>, Previous: <a href="Formatting-Strings.html" accesskey="p" rel="prev">Formatting Strings</a>, Up: <a href="Strings-and-Characters.html" accesskey="u" rel="up">Strings and Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Custom-Format-Strings-1"></span><h3 class="section">4.8 Custom Format Strings</h3>
-<span id="index-custom-format-string"></span>
-<span id="index-custom-_0025_002dsequence-in-format"></span>
+<h3 class="section" id="Custom-Format-Strings-1"><span>4.8 Custom Format Strings<a class="copiable-link" href="#Custom-Format-Strings-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-custom-format-string"></a>
+<a class="index-entry-id" id="index-custom-_0025_002dsequence-in-format"></a>
 
 <p>Sometimes it is useful to allow users and Lisp programs alike to
 control how certain text is generated via custom format control
 strings.  For example, a format string could control how to display
 someone&rsquo;s forename, surname, and email address.  Using the function
-<code>format</code> described in the previous section, the format string
-could be something like <code>&quot;%s&nbsp;%s&nbsp;&lt;%s&gt;&quot;</code><!-- /@w -->.  This approach
+<code class="code">format</code> described in the previous section, the format string
+could be something like <code class="code">&quot;%s&nbsp;%s&nbsp;&lt;%s&gt;&quot;</code><!-- /@w -->.  This approach
 quickly becomes impractical, however, as it can be unclear which
 specification character corresponds to which piece of information.
 </p>
 <p>A more convenient format string for such cases would be something like
-<code>&quot;%f&nbsp;%l&nbsp;&lt;%e&gt;&quot;</code><!-- /@w -->, where each specification character carries
+<code class="code">&quot;%f&nbsp;%l&nbsp;&lt;%e&gt;&quot;</code><!-- /@w -->, where each specification character carries
 more semantic information and can easily be rearranged relative to
 other specification characters, making such format strings more easily
 customizable by the user.
 </p>
-<p>The function <code>format-spec</code> described in this section performs a
-similar function to <code>format</code>, except it operates on format
+<p>The function <code class="code">format-spec</code> described in this section performs a
+similar function to <code class="code">format</code>, except it operates on format
 control strings that use arbitrary specification characters.
 </p>
-<dl>
-<dt id="index-format_002dspec">Function: <strong>format-spec</strong> <em>template spec-alist &amp;optional ignore-missing split</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-format_002dspec"><span class="category-def">Function: </span><span><strong class="def-name">format-spec</strong> <var class="def-var-arguments">template spec-alist &amp;optional ignore-missing split</var><a class="copiable-link" href="#index-format_002dspec"> &para;</a></span></dt>
 <dd><p>This function returns a string produced from the format string
-<var>template</var> according to conversions specified in <var>spec-alist</var>,
-which is an alist (see <a href="Association-Lists.html">Association Lists</a>) of the form
-<code>(<var>letter</var>&nbsp;.&nbsp;<var>replacement</var>)</code><!-- /@w -->.  Each specification
-<code>%<var>letter</var></code> in <var>template</var> will be replaced by
-<var>replacement</var> when formatting the resulting string.
+<var class="var">template</var> according to conversions specified in <var class="var">spec-alist</var>,
+which is an alist (see <a class="pxref" href="Association-Lists.html">Association Lists</a>) of the form
+<code class="code">(<var class="var">letter</var>&nbsp;.&nbsp;<var class="var">replacement</var>)</code><!-- /@w -->.  Each specification
+<code class="code">%<var class="var">letter</var></code> in <var class="var">template</var> will be replaced by
+<var class="var">replacement</var> when formatting the resulting string.
 </p>
-<p>The characters in <var>template</var>, other than the format
+<p>The characters in <var class="var">template</var>, other than the format
 specifications, are copied directly into the output, including their
 text properties, if any.  Any text properties of the format
 specifications are copied to their replacements.
@@ -102,52 +97,57 @@ specifications are copied to their replacements.
 <p>Using an alist to specify conversions gives rise to some useful
 properties:
 </p>
-<ul>
-<li> If <var>spec-alist</var> contains more unique <var>letter</var> keys than there
-are unique specification characters in <var>template</var>, the unused keys
+<ul class="itemize mark-bullet">
+<li>If <var class="var">spec-alist</var> contains more unique <var class="var">letter</var> keys than there
+are unique specification characters in <var class="var">template</var>, the unused keys
 are simply ignored.
-</li><li> If <var>spec-alist</var> contains more than one association with the same
-<var>letter</var>, the closest one to the start of the list is used.
-</li><li> If <var>template</var> contains the same specification character more than
-once, then the same <var>replacement</var> found in <var>spec-alist</var> is
+</li><li>If <var class="var">spec-alist</var> contains more than one association with the same
+<var class="var">letter</var>, the closest one to the start of the list is used.
+</li><li>If <var class="var">template</var> contains the same specification character more than
+once, then the same <var class="var">replacement</var> found in <var class="var">spec-alist</var> is
 used as a basis for all of that character&rsquo;s substitutions.
-</li><li> The order of specifications in <var>template</var> need not correspond to
-the order of associations in <var>spec-alist</var>.
+</li><li>The order of specifications in <var class="var">template</var> need not correspond to
+the order of associations in <var class="var">spec-alist</var>.
 </li></ul>
 
-<p>The optional argument <var>ignore-missing</var> indicates how to handle
-specification characters in <var>template</var> that are not found in
-<var>spec-alist</var>.  If it is <code>nil</code> or omitted, the function
-signals an error; if it is <code>ignore</code>, those format specifications
+<p>REPLACEMENT can also be a function taking no arguments, and returning
+a string to be used for the replacement.  It will only be called when
+the corresponding LETTER is used in the TEMPLATE.  This is useful, for
+example, to avoid prompting for input unless it is needed.
+</p>
+<p>The optional argument <var class="var">ignore-missing</var> indicates how to handle
+specification characters in <var class="var">template</var> that are not found in
+<var class="var">spec-alist</var>.  If it is <code class="code">nil</code> or omitted, the function
+signals an error; if it is <code class="code">ignore</code>, those format specifications
 are left verbatim in the output, including their text properties, if
-any; if it is <code>delete</code>, those format specifications are removed
-from the output; any other non-<code>nil</code> value is handled like
-<code>ignore</code>, but any occurrences of &lsquo;<samp>%%</samp>&rsquo; are also left verbatim
+any; if it is <code class="code">delete</code>, those format specifications are removed
+from the output; any other non-<code class="code">nil</code> value is handled like
+<code class="code">ignore</code>, but any occurrences of &lsquo;<samp class="samp">%%</samp>&rsquo; are also left verbatim
 in the output.
 </p>
-<p>If the optional argument <var>split</var> is non-<code>nil</code>, instead of
-returning a single string, <code>format-spec</code> will split the result
+<p>If the optional argument <var class="var">split</var> is non-<code class="code">nil</code>, instead of
+returning a single string, <code class="code">format-spec</code> will split the result
 into a list of strings, based on where the substitutions were
 performed.  For instance:
 </p>
 <div class="example">
-<pre class="example">(format-spec &quot;foo %b bar&quot; '((?b . &quot;zot&quot;)) nil t)
+<pre class="example-preformatted">(format-spec &quot;foo %b bar&quot; '((?b . &quot;zot&quot;)) nil t)
      &rArr; (&quot;foo &quot; &quot;zot&quot; &quot; bar&quot;)
 </pre></div>
 </dd></dl>
 
-<p>The syntax of format specifications accepted by <code>format-spec</code> is
-similar, but not identical, to that accepted by <code>format</code>.  In
+<p>The syntax of format specifications accepted by <code class="code">format-spec</code> is
+similar, but not identical, to that accepted by <code class="code">format</code>.  In
 both cases, a format specification is a sequence of characters
-beginning with &lsquo;<samp>%</samp>&rsquo; and ending with an alphabetic letter such as
-&lsquo;<samp>s</samp>&rsquo;.
+beginning with &lsquo;<samp class="samp">%</samp>&rsquo; and ending with an alphabetic letter such as
+&lsquo;<samp class="samp">s</samp>&rsquo;.
 </p>
-<p>Unlike <code>format</code>, which assigns specific meanings to a fixed set
-of specification characters, <code>format-spec</code> accepts arbitrary
+<p>Unlike <code class="code">format</code>, which assigns specific meanings to a fixed set
+of specification characters, <code class="code">format-spec</code> accepts arbitrary
 specification characters and treats them all equally.  For example:
 </p>
 <div class="example">
-<pre class="example">(setq my-site-info
+<div class="group"><pre class="example-preformatted">(setq my-site-info
       (list (cons ?s system-name)
             (cons ?t (symbol-name system-type))
             (cons ?c system-configuration)
@@ -162,73 +162,73 @@ specification characters and treats them all equally.  For example:
 
 (format-spec &quot;%n &lt;%a&gt;&quot; my-site-info)
      &rArr; &quot;Emacs Developers &lt;emacs-devel@gnu.org&gt;&quot;
-</pre></div>
+</pre></div></div>
 
 <p>A format specification can include any number of the following flag
-characters immediately after the &lsquo;<samp>%</samp>&rsquo; to modify aspects of the
+characters immediately after the &lsquo;<samp class="samp">%</samp>&rsquo; to modify aspects of the
 substitution.
 </p>
-<dl compact="compact">
-<dt>&lsquo;<samp>0</samp>&rsquo;</dt>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">0</samp>&rsquo;</dt>
 <dd><p>This flag causes any padding specified by the width to consist of
-&lsquo;<samp>0</samp>&rsquo; characters instead of spaces.
+&lsquo;<samp class="samp">0</samp>&rsquo; characters instead of spaces.
 </p>
 </dd>
-<dt>&lsquo;<samp>-</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">-</samp>&rsquo;</dt>
 <dd><p>This flag causes any padding specified by the width to be inserted on
 the right rather than the left.
 </p>
 </dd>
-<dt>&lsquo;<samp>&lt;</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">&lt;</samp>&rsquo;</dt>
 <dd><p>This flag causes the substitution to be truncated on the left to the
 given width and precision, if specified.
 </p>
 </dd>
-<dt>&lsquo;<samp>&gt;</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">&gt;</samp>&rsquo;</dt>
 <dd><p>This flag causes the substitution to be truncated on the right to the
-given width, if specified.
+given width and precision, if specified.
 </p>
 </dd>
-<dt>&lsquo;<samp>^</samp>&rsquo;</dt>
-<dd><p>This flag converts the substituted text to upper case (see <a href="Case-Conversion.html">Case Conversion</a>).
+<dt>&lsquo;<samp class="samp">^</samp>&rsquo;</dt>
+<dd><p>This flag converts the substituted text to upper case (see <a class="pxref" href="Case-Conversion.html">Case Conversion in Lisp</a>).
 </p>
 </dd>
-<dt>&lsquo;<samp>_</samp>&rsquo;</dt>
-<dd><p>This flag converts the substituted text to lower case (see <a href="Case-Conversion.html">Case Conversion</a>).
+<dt>&lsquo;<samp class="samp">_<span class="r"> (underscore)</span></samp>&rsquo;</dt>
+<dd><p>This flag converts the substituted text to lower case (see <a class="pxref" href="Case-Conversion.html">Case Conversion in Lisp</a>).
 </p></dd>
 </dl>
 
 <p>The result of using contradictory flags (for instance, both upper and
 lower case) is undefined.
 </p>
-<p>As is the case with <code>format</code>, a format specification can include
+<p>As is the case with <code class="code">format</code>, a format specification can include
 a width, which is a decimal number that appears after any flags, and a
-precision, which is a decimal-point &lsquo;<samp>.</samp>&rsquo; followed by a decimal
+precision, which is a decimal-point &lsquo;<samp class="samp">.</samp>&rsquo; followed by a decimal
 number that appears after any flags and width.
 </p>
 <p>If a substitution contains fewer characters than its specified width,
 it is padded on the left:
 </p>
 <div class="example">
-<pre class="example">(format-spec &quot;%8a is padded on the left with spaces&quot;
+<div class="group"><pre class="example-preformatted">(format-spec &quot;%8a is padded on the left with spaces&quot;
              '((?a . &quot;alpha&quot;)))
      &rArr; &quot;   alpha is padded on the left with spaces&quot;
-</pre></div>
+</pre></div></div>
 
 <p>If a substitution contains more characters than its specified
 precision, it is truncated on the right:
 </p>
 <div class="example">
-<pre class="example">(format-spec &quot;%.2a is truncated on the right&quot;
+<div class="group"><pre class="example-preformatted">(format-spec &quot;%.2a is truncated on the right&quot;
              '((?a . &quot;alpha&quot;)))
      &rArr; &quot;al is truncated on the right&quot;
-</pre></div>
+</pre></div></div>
 
 <p>Here is a more complicated example that combines several
 aforementioned features:
 </p>
 <div class="example">
-<pre class="example">(setq my-battery-info
+<div class="group"><pre class="example-preformatted">(setq my-battery-info
       (list (cons ?p &quot;73&quot;)      ; Percentage
             (cons ?L &quot;Battery&quot;) ; Status
             (cons ?t &quot;2:23&quot;)    ; Remaining time
@@ -242,19 +242,20 @@ aforementioned features:
              (cons (cons ?L &quot;AC&quot;)
                    my-battery-info))
      &rArr; &quot;AC  :  73% (02:23 left)&quot;
-</pre></div>
+</pre></div></div>
 
-<p>As the examples in this section illustrate, <code>format-spec</code> is
+<p>As the examples in this section illustrate, <code class="code">format-spec</code> is
 often used for selectively formatting an assortment of different
 pieces of information.  This is useful in programs that provide
 user-customizable format strings, as the user can choose to format
 with a regular syntax and in any desired order only a subset of the
 information that the program makes available.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Case-Conversion.html" accesskey="n" rel="next">Case Conversion</a>, Previous: <a href="Formatting-Strings.html" accesskey="p" rel="prev">Formatting Strings</a>, Up: <a href="Strings-and-Characters.html" accesskey="u" rel="up">Strings and Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Case-Conversion.html">Case Conversion in Lisp</a>, Previous: <a href="Formatting-Strings.html">Formatting Strings</a>, Up: <a href="Strings-and-Characters.html">Strings and Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

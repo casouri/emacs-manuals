@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Expanding Abbrevs (GNU Emacs Manual)</title>
+
+<meta name="description" content="Expanding Abbrevs (GNU Emacs Manual)">
+<meta name="keywords" content="Expanding Abbrevs (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Abbrevs.html" rel="up" title="Abbrevs">
+<link href="Abbrevs-Suggestions.html" rel="next" title="Abbrevs Suggestions">
+<link href="Defining-Abbrevs.html" rel="prev" title="Defining Abbrevs">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Expanding-Abbrevs">
+<div class="nav-panel">
+<p>
+Next: <a href="Abbrevs-Suggestions.html" accesskey="n" rel="next">Abbrevs Suggestions</a>, Previous: <a href="Defining-Abbrevs.html" accesskey="p" rel="prev">Defining Abbrevs</a>, Up: <a href="Abbrevs.html" accesskey="u" rel="up">Abbrevs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Controlling-Abbrev-Expansion"><span>30.3 Controlling Abbrev Expansion<a class="copiable-link" href="#Controlling-Abbrev-Expansion"> &para;</a></span></h3>
+
+<p>When Abbrev mode is enabled, an abbrev expands whenever it is
+present in the buffer just before point and you type a self-inserting
+whitespace or punctuation character (<kbd class="key">SPC</kbd>, comma, etc.).  More
+precisely, any character that is not a word constituent expands an
+abbrev, and any word-constituent character can be part of an abbrev.
+The most common way to use an abbrev is to insert it and then insert a
+punctuation or whitespace character to expand it.
+</p>
+<a class="index-entry-id" id="index-abbrev_002dall_002dcaps"></a>
+<p>Abbrev expansion preserves case: &lsquo;<samp class="samp">foo</samp>&rsquo; expands to &lsquo;<samp class="samp">find
+outer otter</samp>&rsquo;, and &lsquo;<samp class="samp">Foo</samp>&rsquo; to &lsquo;<samp class="samp">Find outer otter</samp>&rsquo;.  &lsquo;<samp class="samp">FOO</samp>&rsquo;
+expands to &lsquo;<samp class="samp">Find Outer Otter</samp>&rsquo; by default, but if you change the
+variable <code class="code">abbrev-all-caps</code> to a non-<code class="code">nil</code> value, it expands
+to &lsquo;<samp class="samp">FIND OUTER OTTER</samp>&rsquo;.
+</p>
+<p>These commands are used to control abbrev expansion:
+</p>
+<dl class="table">
+<dt><kbd class="kbd">M-'</kbd></dt>
+<dd><p>Separate a prefix from a following abbrev to be expanded
+(<code class="code">abbrev-prefix-mark</code>).
+</p>
+</dd>
+<dt><a id="index-expand_002dabbrev"></a><span><kbd class="kbd">C-x a e</kbd><a class="copiable-link" href="#index-expand_002dabbrev"> &para;</a></span></dt>
+<dd><p>Expand the abbrev before point (<code class="code">expand-abbrev</code>).
+This is effective even when Abbrev mode is not enabled.
+</p>
+</dd>
+<dt><a id="index-unexpand_002dabbrev"></a><span><kbd class="kbd">M-x unexpand-abbrev</kbd><a class="copiable-link" href="#index-unexpand_002dabbrev"> &para;</a></span></dt>
+<dd><p>Undo the expansion of the last expanded abbrev.
+</p>
+</dd>
+<dt><kbd class="kbd">M-x expand-region-abbrevs</kbd></dt>
+<dd><p>Expand some or all abbrevs found in the region.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-M_002d_0027"></a>
+<a class="index-entry-id" id="index-abbrev_002dprefix_002dmark"></a>
+<p>You may wish to expand an abbrev and attach a prefix to the expansion;
+for example, if &lsquo;<samp class="samp">cnst</samp>&rsquo; expands into &lsquo;<samp class="samp">construction</samp>&rsquo;, you might want
+to use it to enter &lsquo;<samp class="samp">reconstruction</samp>&rsquo;.  It does not work to type
+<kbd class="kbd">recnst</kbd>, because that is not necessarily a defined abbrev.  What
+you can do is use the command <kbd class="kbd">M-'</kbd> (<code class="code">abbrev-prefix-mark</code>) in
+between the prefix &lsquo;<samp class="samp">re</samp>&rsquo; and the abbrev &lsquo;<samp class="samp">cnst</samp>&rsquo;.  First, insert
+&lsquo;<samp class="samp">re</samp>&rsquo;.  Then type <kbd class="kbd">M-'</kbd>; this inserts a hyphen in the buffer to
+indicate that it has done its work.  Then insert the abbrev &lsquo;<samp class="samp">cnst</samp>&rsquo;;
+the buffer now contains &lsquo;<samp class="samp">re-cnst</samp>&rsquo;.  Now insert a non-word character
+to expand the abbrev &lsquo;<samp class="samp">cnst</samp>&rsquo; into &lsquo;<samp class="samp">construction</samp>&rsquo;.  This
+expansion step also deletes the hyphen that indicated <kbd class="kbd">M-'</kbd> had been
+used.  The result is the desired &lsquo;<samp class="samp">reconstruction</samp>&rsquo;.
+</p>
+<p>If you actually want the text of the abbrev in the buffer, rather than
+its expansion, you can accomplish this by inserting the following
+punctuation with <kbd class="kbd">C-q</kbd>.  Thus, <kbd class="kbd">foo C-q ,</kbd> leaves &lsquo;<samp class="samp">foo,</samp>&rsquo; in
+the buffer, not expanding it.
+</p>
+<p>If you expand an abbrev by mistake, you can undo the expansion by
+typing <kbd class="kbd">C-/</kbd> (<code class="code">undo</code>).  See <a class="xref" href="Undo.html">Undo</a>.  This undoes the
+insertion of the abbrev expansion and brings back the abbrev text.  If
+the result you want is the terminating non-word character plus the
+unexpanded abbrev, you must reinsert the terminating character,
+quoting it with <kbd class="kbd">C-q</kbd>.  You can also use the command <kbd class="kbd">M-x
+unexpand-abbrev</kbd> to cancel the last expansion without deleting the
+terminating character.
+</p>
+<a class="index-entry-id" id="index-expand_002dregion_002dabbrevs"></a>
+<p><kbd class="kbd">M-x expand-region-abbrevs</kbd> searches through the region for defined
+abbrevs, and for each one found offers to replace it with its expansion.
+This command is useful if you have typed in text using abbrevs but forgot
+to turn on Abbrev mode first.  It may also be useful together with a
+special set of abbrev definitions for making several global replacements at
+once.  This command is effective even if Abbrev mode is not enabled.
+</p>
+<p>The function <code class="code">expand-abbrev</code> performs the expansion by calling
+the function that <code class="code">abbrev-expand-function</code> specifies.  By
+changing this function you can make arbitrary changes to
+the abbrev expansion.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Abbrev-Expansion.html#Abbrev-Expansion">Abbrev Expansion</a> in <cite class="cite">The Emacs Lisp
+Reference Manual</cite>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Abbrevs-Suggestions.html">Abbrevs Suggestions</a>, Previous: <a href="Defining-Abbrevs.html">Defining Abbrevs</a>, Up: <a href="Abbrevs.html">Abbrevs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

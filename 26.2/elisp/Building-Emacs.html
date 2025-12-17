@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Building Emacs (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Building Emacs (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="GNU-Emacs-Internals.html" rel="up" title="GNU Emacs Internals">
 <link href="Pure-Storage.html" rel="next" title="Pure Storage">
-<link href="GNU-Emacs-Internals.html" rel="prev" title="GNU Emacs Internals">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,14 +48,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Building-Emacs"></span><div class="header">
+<div class="section-level-extent" id="Building-Emacs">
+<div class="nav-panel">
 <p>
 Next: <a href="Pure-Storage.html" accesskey="n" rel="next">Pure Storage</a>, Up: <a href="GNU-Emacs-Internals.html" accesskey="u" rel="up">GNU Emacs Internals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Building-Emacs-1"></span><h3 class="section">E.1 Building Emacs</h3>
-<span id="index-building-Emacs"></span>
-<span id="index-temacs"></span>
+<h3 class="section" id="Building-Emacs-1"><span>E.1 Building Emacs<a class="copiable-link" href="#Building-Emacs-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-building-Emacs"></a>
+<a class="index-entry-id" id="index-temacs"></a>
 
 <p>This section explains the steps involved in building the Emacs
 executable.  You don&rsquo;t have to know this material to build and install
@@ -72,143 +65,144 @@ information is pertinent to Emacs developers.
 </p>
 <p>Building Emacs requires GNU Make version 3.81 or later.
 </p>
-<p>Compilation of the C source files in the <samp>src</samp> directory
-produces an executable file called <samp>temacs</samp>, also called a
-<em>bare impure Emacs</em>.  It contains the Emacs Lisp interpreter and
+<p>Compilation of the C source files in the <samp class="file">src</samp> directory
+produces an executable file called <samp class="file">temacs</samp>, also called a
+<em class="dfn">bare impure Emacs</em>.  It contains the Emacs Lisp interpreter and
 I/O routines, but not the editing commands.
 </p>
-<span id="index-loadup_002eel"></span>
-<p>The command <code>temacs&nbsp;<span class="nolinebreak">-l</span>&nbsp;loadup</code><!-- /@w --> would run <samp>temacs</samp>
-and direct it to load <samp>loadup.el</samp>.  The <code>loadup</code> library
+<a class="index-entry-id" id="index-loadup_002eel"></a>
+<p>The command <code class="command">temacs&nbsp;-l&nbsp;loadup</code><!-- /@w --> would run <samp class="file">temacs</samp>
+and direct it to load <samp class="file">loadup.el</samp>.  The <code class="code">loadup</code> library
 loads additional Lisp libraries, which set up the normal Emacs editing
 environment.  After this step, the Emacs executable is no longer
-<em>bare</em>.
+<em class="dfn">bare</em>.
 </p>
-<span id="index-dumping-Emacs"></span>
+<a class="index-entry-id" id="index-dumping-Emacs"></a>
 <p>Because it takes some time to load the standard Lisp files, the
-<samp>temacs</samp> executable usually isn&rsquo;t run directly by users.
+<samp class="file">temacs</samp> executable usually isn&rsquo;t run directly by users.
 Instead, as one of the last steps of building Emacs, the command
-&lsquo;<samp>temacs -batch -l loadup dump</samp>&rsquo; is run.  The special &lsquo;<samp>dump</samp>&rsquo;
-argument causes <code>temacs</code> to dump out an executable program,
-called <samp>emacs</samp>, which has all the standard Lisp files preloaded.
-(The &lsquo;<samp>-batch</samp>&rsquo; argument prevents <samp>temacs</samp> from trying to
+&lsquo;<samp class="samp">temacs -batch -l loadup dump</samp>&rsquo; is run.  The special &lsquo;<samp class="samp">dump</samp>&rsquo;
+argument causes <code class="command">temacs</code> to dump out an executable program,
+called <samp class="file">emacs</samp>, which has all the standard Lisp files preloaded.
+(The &lsquo;<samp class="samp">-batch</samp>&rsquo; argument prevents <samp class="file">temacs</samp> from trying to
 initialize any of its data on the terminal, so that the tables of
 terminal information are empty in the dumped Emacs.)
 </p>
-<span id="index-preloaded-Lisp-files"></span>
-<span id="index-preloaded_002dfile_002dlist"></span>
-<p>The dumped <samp>emacs</samp> executable (also called a <em>pure</em> Emacs)
+<a class="index-entry-id" id="index-preloaded-Lisp-files"></a>
+<a class="index-entry-id" id="index-preloaded_002dfile_002dlist"></a>
+<p>The dumped <samp class="file">emacs</samp> executable (also called a <em class="dfn">pure</em> Emacs)
 is the one which is installed.  The variable
-<code>preloaded-file-list</code> stores a list of the Lisp files preloaded
+<code class="code">preloaded-file-list</code> stores a list of the Lisp files preloaded
 into the dumped Emacs.  If you port Emacs to a new operating system,
 and are not able to implement dumping, then Emacs must load
-<samp>loadup.el</samp> each time it starts.
+<samp class="file">loadup.el</samp> each time it starts.
 </p>
-<span id="index-build-details"></span>
-<span id="index-deterministic-build"></span>
-<span id="index-_002d_002ddisable_002dbuild_002ddetails-option-to-configure"></span>
-<p>By default the dumped <samp>emacs</samp> executable records details such
+<a class="index-entry-id" id="index-build-details"></a>
+<a class="index-entry-id" id="index-deterministic-build"></a>
+<a class="index-entry-id" id="index-_002d_002ddisable_002dbuild_002ddetails-option-to-configure"></a>
+<p>By default the dumped <samp class="file">emacs</samp> executable records details such
 as the build time and host name.  Use the
-<samp>--disable-build-details</samp> option of <code>configure</code> to
+<samp class="option">--disable-build-details</samp> option of <code class="command">configure</code> to
 suppress these details, so that building and installing Emacs twice
 from the same sources is more likely to result in identical copies of
 Emacs.
 </p>
-<span id="index-site_002dload_002eel"></span>
+<a class="index-entry-id" id="index-site_002dload_002eel"></a>
 <p>You can specify additional files to preload by writing a library named
-<samp>site-load.el</samp> that loads them.  You may need to rebuild Emacs
+<samp class="file">site-load.el</samp> that loads them.  You may need to rebuild Emacs
 with an added definition
 </p>
 <div class="example">
-<pre class="example">#define SITELOAD_PURESIZE_EXTRA <var>n</var>
+<pre class="example-preformatted">#define SITELOAD_PURESIZE_EXTRA <var class="var">n</var>
 </pre></div>
 
-<p>to make <var>n</var> added bytes of pure space to hold the additional files;
-see <samp>src/puresize.h</samp>.
+<p>to make <var class="var">n</var> added bytes of pure space to hold the additional files;
+see <samp class="file">src/puresize.h</samp>.
 (Try adding increments of 20000 until it is big enough.)  However, the
 advantage of preloading additional files decreases as machines get
 faster.  On modern machines, it is usually not advisable.
 </p>
-<p>After <samp>loadup.el</samp> reads <samp>site-load.el</samp>, it finds the
+<p>After <samp class="file">loadup.el</samp> reads <samp class="file">site-load.el</samp>, it finds the
 documentation strings for primitive and preloaded functions (and
-variables) in the file <samp>etc/DOC</samp> where they are stored, by
-calling <code>Snarf-documentation</code> (see <a href="Accessing-Documentation.html#Definition-of-Snarf_002ddocumentation">Accessing Documentation</a>).
+variables) in the file <samp class="file">etc/DOC</samp> where they are stored, by
+calling <code class="code">Snarf-documentation</code> (see <a class="pxref" href="Accessing-Documentation.html#Definition-of-Snarf_002ddocumentation">Accessing Documentation</a>).
 </p>
-<span id="index-site_002dinit_002eel"></span>
-<span id="index-preloading-additional-functions-and-variables"></span>
+<a class="index-entry-id" id="index-site_002dinit_002eel"></a>
+<a class="index-entry-id" id="index-preloading-additional-functions-and-variables"></a>
 <p>You can specify other Lisp expressions to execute just before dumping
-by putting them in a library named <samp>site-init.el</samp>.  This file is
+by putting them in a library named <samp class="file">site-init.el</samp>.  This file is
 executed after the documentation strings are found.
 </p>
 <p>If you want to preload function or variable definitions, there are
 three ways you can do this and make their documentation strings
 accessible when you subsequently run Emacs:
 </p>
-<ul>
-<li> Arrange to scan these files when producing the <samp>etc/DOC</samp> file,
-and load them with <samp>site-load.el</samp>.
+<ul class="itemize mark-bullet">
+<li>Arrange to scan these files when producing the <samp class="file">etc/DOC</samp> file,
+and load them with <samp class="file">site-load.el</samp>.
 
-</li><li> Load the files with <samp>site-init.el</samp>, then copy the files into the
+</li><li>Load the files with <samp class="file">site-init.el</samp>, then copy the files into the
 installation directory for Lisp files when you install Emacs.
 
-</li><li> Specify a <code>nil</code> value for <code>byte-compile-dynamic-docstrings</code>
+</li><li>Specify a <code class="code">nil</code> value for <code class="code">byte-compile-dynamic-docstrings</code>
 as a local variable in each of these files, and load them with either
-<samp>site-load.el</samp> or <samp>site-init.el</samp>.  (This method has the
+<samp class="file">site-load.el</samp> or <samp class="file">site-init.el</samp>.  (This method has the
 drawback that the documentation strings take up space in Emacs all the
 time.)
 </li></ul>
 
-<span id="index-change-load_002dpath-at-configure-time"></span>
-<span id="index-_002d_002denable_002dlocallisppath-option-to-configure"></span>
-<p>It is not advisable to put anything in <samp>site-load.el</samp> or
-<samp>site-init.el</samp> that would alter any of the features that users
+<a class="index-entry-id" id="index-change-load_002dpath-at-configure-time"></a>
+<a class="index-entry-id" id="index-_002d_002denable_002dlocallisppath-option-to-configure"></a>
+<p>It is not advisable to put anything in <samp class="file">site-load.el</samp> or
+<samp class="file">site-init.el</samp> that would alter any of the features that users
 expect in an ordinary unmodified Emacs.  If you feel you must override
-normal features for your site, do it with <samp>default.el</samp>, so that
-users can override your changes if they wish.  See <a href="Startup-Summary.html">Startup Summary</a>.
-Note that if either <samp>site-load.el</samp> or <samp>site-init.el</samp> changes
-<code>load-path</code>, the changes will be lost after dumping.
-See <a href="Library-Search.html">Library Search</a>.  To make a permanent change to
-<code>load-path</code>, use the <samp>--enable-locallisppath</samp> option
-of <code>configure</code>.
+normal features for your site, do it with <samp class="file">default.el</samp>, so that
+users can override your changes if they wish.  See <a class="xref" href="Startup-Summary.html">Summary: Sequence of Actions at Startup</a>.
+Note that if either <samp class="file">site-load.el</samp> or <samp class="file">site-init.el</samp> changes
+<code class="code">load-path</code>, the changes will be lost after dumping.
+See <a class="xref" href="Library-Search.html">Library Search</a>.  To make a permanent change to
+<code class="code">load-path</code>, use the <samp class="option">--enable-locallisppath</samp> option
+of <code class="command">configure</code>.
 </p>
 <p>In a package that can be preloaded, it is sometimes necessary (or
 useful) to delay certain evaluations until Emacs subsequently starts
 up.  The vast majority of such cases relate to the values of
-customizable variables.  For example, <code>tutorial-directory</code> is a
-variable defined in <samp>startup.el</samp>, which is preloaded.  The default
-value is set based on <code>data-directory</code>.  The variable needs to
-access the value of <code>data-directory</code> when Emacs starts, not when
+customizable variables.  For example, <code class="code">tutorial-directory</code> is a
+variable defined in <samp class="file">startup.el</samp>, which is preloaded.  The default
+value is set based on <code class="code">data-directory</code>.  The variable needs to
+access the value of <code class="code">data-directory</code> when Emacs starts, not when
 it is dumped, because the Emacs executable has probably been installed
 in a different location since it was dumped.
 </p>
-<dl>
-<dt id="index-custom_002dinitialize_002ddelay">Function: <strong>custom-initialize-delay</strong> <em>symbol value</em></dt>
-<dd><p>This function delays the initialization of <var>symbol</var> to the next
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-custom_002dinitialize_002ddelay"><span class="category-def">Function: </span><span><strong class="def-name">custom-initialize-delay</strong> <var class="def-var-arguments">symbol value</var><a class="copiable-link" href="#index-custom_002dinitialize_002ddelay"> &para;</a></span></dt>
+<dd><p>This function delays the initialization of <var class="var">symbol</var> to the next
 Emacs start.  You normally use this function by specifying it as the
-<code>:initialize</code> property of a customizable variable.  (The argument
-<var>value</var> is unused, and is provided only for compatibility with the
+<code class="code">:initialize</code> property of a customizable variable.  (The argument
+<var class="var">value</var> is unused, and is provided only for compatibility with the
 form Custom expects.)
 </p></dd></dl>
 
 <p>In the unlikely event that you need a more general functionality than
-<code>custom-initialize-delay</code> provides, you can use
-<code>before-init-hook</code> (see <a href="Startup-Summary.html">Startup Summary</a>).
+<code class="code">custom-initialize-delay</code> provides, you can use
+<code class="code">before-init-hook</code> (see <a class="pxref" href="Startup-Summary.html">Summary: Sequence of Actions at Startup</a>).
 </p>
-<dl>
-<dt id="index-dump_002demacs">Function: <strong>dump-emacs</strong> <em>to-file from-file</em></dt>
-<dd><span id="index-unexec"></span>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-dump_002demacs"><span class="category-def">Function: </span><span><strong class="def-name">dump-emacs</strong> <var class="def-var-arguments">to-file from-file</var><a class="copiable-link" href="#index-dump_002demacs"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-unexec"></a>
 <p>This function dumps the current state of Emacs into an executable file
-<var>to-file</var>.  It takes symbols from <var>from-file</var> (this is normally
-the executable file <samp>temacs</samp>).
+<var class="var">to-file</var>.  It takes symbols from <var class="var">from-file</var> (this is normally
+the executable file <samp class="file">temacs</samp>).
 </p>
 <p>If you want to use this function in an Emacs that was already dumped,
-you must run Emacs with &lsquo;<samp>-batch</samp>&rsquo;.
+you must run Emacs with &lsquo;<samp class="samp">-batch</samp>&rsquo;.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Pure-Storage.html" accesskey="n" rel="next">Pure Storage</a>, Up: <a href="GNU-Emacs-Internals.html" accesskey="u" rel="up">GNU Emacs Internals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Pure-Storage.html">Pure Storage</a>, Up: <a href="GNU-Emacs-Internals.html">GNU Emacs Internals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

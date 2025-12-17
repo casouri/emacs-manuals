@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Mouse Tracking (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Mouse Tracking (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Mouse Tracking (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Frames.html" rel="up" title="Frames">
+<link href="Mouse-Position.html" rel="next" title="Mouse Position">
+<link href="Child-Frames.html" rel="prev" title="Child Frames">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Mouse-Tracking">
+<div class="nav-panel">
+<p>
+Next: <a href="Mouse-Position.html" accesskey="n" rel="next">Mouse Position</a>, Previous: <a href="Child-Frames.html" accesskey="p" rel="prev">Child Frames</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Mouse-Tracking-1"><span>30.15 Mouse Tracking<a class="copiable-link" href="#Mouse-Tracking-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-mouse-tracking"></a>
+
+<p>Sometimes it is useful to <em class="dfn">track</em> the mouse, which means to display
+something to indicate where the mouse is and move the indicator as the
+mouse moves.  For efficient mouse tracking, you need a way to wait until
+the mouse actually moves.
+</p>
+<p>The convenient way to track the mouse is to ask for events to represent
+mouse motion.  Then you can wait for motion by waiting for an event.  In
+addition, you can easily handle any other sorts of events that may
+occur.  That is useful, because normally you don&rsquo;t want to track the
+mouse forever&mdash;only until some other event, such as the release of a
+button.
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-track_002dmouse"><span class="category-def">Macro: </span><span><strong class="def-name">track-mouse</strong> <var class="def-var-arguments">body&hellip;</var><a class="copiable-link" href="#index-track_002dmouse"> &para;</a></span></dt>
+<dd><p>This macro executes <var class="var">body</var>, with generation of mouse motion events
+enabled.  Typically, <var class="var">body</var> would use <code class="code">read-event</code> to read
+the motion events and modify the display accordingly.  See <a class="xref" href="Motion-Events.html">Motion Events</a>, for the format of mouse motion events.
+</p>
+<p>The value of <code class="code">track-mouse</code> is that of the last form in
+<var class="var">body</var>.  You should design <var class="var">body</var> to return when it sees the
+up-event that indicates the release of the button, or whatever kind of
+event means it is time to stop tracking.  Its value also controls how
+mouse events are reported while a mouse button is held down: if it is
+<code class="code">dropping</code> or <code class="code">drag-source</code>, the motion events are reported
+relative to the frame underneath the pointer.  If there is no such
+frame, the events will be reported relative to the frame the mouse
+buttons were first pressed on.  In addition, the <code class="code">posn-window</code> of
+the mouse position list will be <code class="code">nil</code> if the value is
+<code class="code">drag-source</code>.  This is useful to determine if a frame is not
+directly visible underneath the mouse pointer.
+</p>
+<p>The <code class="code">track-mouse</code> macro causes Emacs to generate mouse motion
+events by binding the variable <code class="code">track-mouse</code> to a
+non-<code class="code">nil</code> value.  If that variable has the special value
+<code class="code">dragging</code>, it additionally instructs the display engine to
+refrain from changing the shape of the mouse pointer.  This is
+desirable in Lisp programs that require mouse dragging across large
+portions of Emacs display, which might otherwise cause the mouse
+pointer to change its shape according to the display portion it hovers
+on (see <a class="pxref" href="Pointer-Shape.html">Pointer Shape</a>).  Therefore, Lisp programs that need the
+mouse pointer to retain its original shape during dragging should bind
+<code class="code">track-mouse</code> to the value <code class="code">dragging</code> at the beginning of
+their <var class="var">body</var>.
+</p></dd></dl>
+
+<p>The usual purpose of tracking mouse motion is to indicate on the screen
+the consequences of pushing or releasing a button at the current
+position.
+</p>
+<p>In many cases, you can avoid the need to track the mouse by using
+the <code class="code">mouse-face</code> text property (see <a class="pxref" href="Special-Properties.html">Properties with Special Meanings</a>).
+That works at a much lower level and runs more smoothly than
+Lisp-level mouse tracking.
+</p>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Mouse-Position.html">Mouse Position</a>, Previous: <a href="Child-Frames.html">Child Frames</a>, Up: <a href="Frames.html">Frames</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

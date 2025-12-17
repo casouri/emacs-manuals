@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Lazy Properties (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Lazy Properties (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Lazy Properties (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Text-Properties.html" rel="up" title="Text Properties">
+<link href="Clickable-Text.html" rel="next" title="Clickable Text">
+<link href="Sticky-Properties.html" rel="prev" title="Sticky Properties">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Lazy-Properties">
+<div class="nav-panel">
+<p>
+Next: <a href="Clickable-Text.html" accesskey="n" rel="next">Defining Clickable Text</a>, Previous: <a href="Sticky-Properties.html" accesskey="p" rel="prev">Stickiness of Text Properties</a>, Up: <a href="Text-Properties.html" accesskey="u" rel="up">Text Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Lazy-Computation-of-Text-Properties"><span>33.19.7 Lazy Computation of Text Properties<a class="copiable-link" href="#Lazy-Computation-of-Text-Properties"> &para;</a></span></h4>
+
+<p>Instead of computing text properties for all the text in the buffer,
+you can arrange to compute the text properties for parts of the text
+when and if something depends on them.
+</p>
+<p>The primitive that extracts text from the buffer along with its
+properties is <code class="code">buffer-substring</code>.  Before examining the properties,
+this function runs the abnormal hook <code class="code">buffer-access-fontify-functions</code>.
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-buffer_002daccess_002dfontify_002dfunctions"><span class="category-def">Variable: </span><span><strong class="def-name">buffer-access-fontify-functions</strong><a class="copiable-link" href="#index-buffer_002daccess_002dfontify_002dfunctions"> &para;</a></span></dt>
+<dd><p>This variable holds a list of functions for computing text properties.
+Before <code class="code">buffer-substring</code> copies the text and text properties for a
+portion of the buffer, it calls all the functions in this list.  Each of
+the functions receives two arguments that specify the range of the
+buffer being accessed.  (The buffer itself is always the current
+buffer.)
+</p></dd></dl>
+
+<p>The function <code class="code">buffer-substring-no-properties</code> does not call these
+functions, since it ignores text properties anyway.
+</p>
+<p>In order to prevent the hook functions from being called more than
+once for the same part of the buffer, you can use the variable
+<code class="code">buffer-access-fontified-property</code>.
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-buffer_002daccess_002dfontified_002dproperty"><span class="category-def">Variable: </span><span><strong class="def-name">buffer-access-fontified-property</strong><a class="copiable-link" href="#index-buffer_002daccess_002dfontified_002dproperty"> &para;</a></span></dt>
+<dd><p>If this variable&rsquo;s value is non-<code class="code">nil</code>, it is a symbol which is used
+as a text property name.  A non-<code class="code">nil</code> value for that text property
+means the other text properties for this character have already been
+computed.
+</p>
+<p>If all the characters in the range specified for <code class="code">buffer-substring</code>
+have a non-<code class="code">nil</code> value for this property, <code class="code">buffer-substring</code>
+does not call the <code class="code">buffer-access-fontify-functions</code> functions.  It
+assumes these characters already have the right text properties, and
+just copies the properties they already have.
+</p>
+<p>The normal way to use this feature is that the
+<code class="code">buffer-access-fontify-functions</code> functions add this property, as
+well as others, to the characters they operate on.  That way, they avoid
+being called over and over for the same text.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Clickable-Text.html">Defining Clickable Text</a>, Previous: <a href="Sticky-Properties.html">Stickiness of Text Properties</a>, Up: <a href="Text-Properties.html">Text Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

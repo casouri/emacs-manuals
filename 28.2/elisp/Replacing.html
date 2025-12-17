@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Replacing (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Replacing (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Replacing (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Text.html" rel="up" title="Text">
+<link href="Decompression.html" rel="next" title="Decompression">
+<link href="Transposition.html" rel="prev" title="Transposition">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Replacing">
+<div class="nav-panel">
+<p>
+Next: <a href="Decompression.html" accesskey="n" rel="next">Dealing With Compressed Data</a>, Previous: <a href="Transposition.html" accesskey="p" rel="prev">Transposition of Text</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Replacing-Buffer-Text"><span>33.23 Replacing Buffer Text<a class="copiable-link" href="#Replacing-Buffer-Text"> &para;</a></span></h3>
+
+<p>You can use the following function to replace the text of one buffer
+with the text of another buffer:
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-replace_002dbuffer_002dcontents"><span class="category-def">Command: </span><span><strong class="def-name">replace-buffer-contents</strong> <var class="def-var-arguments">source &amp;optional max-secs max-costs</var><a class="copiable-link" href="#index-replace_002dbuffer_002dcontents"> &para;</a></span></dt>
+<dd><p>This function replaces the accessible portion of the current buffer
+with the accessible portion of the buffer <var class="var">source</var>.  <var class="var">source</var>
+may either be a buffer object or the name of a buffer.  When
+<code class="code">replace-buffer-contents</code> succeeds, the text of the accessible
+portion of the current buffer will be equal to the text of the
+accessible portion of the <var class="var">source</var> buffer.
+</p>
+<p>This function attempts to keep point, markers, text properties, and
+overlays in the current buffer intact.  One potential case where this
+behavior is useful is external code formatting programs: they
+typically write the reformatted text into a temporary buffer or file,
+and using <code class="code">delete-region</code> and <code class="code">insert-buffer-substring</code>
+would destroy these properties.  However, the latter combination is
+typically faster (See <a class="xref" href="Deletion.html">Deleting Text</a>, and <a class="ref" href="Insertion.html">Inserting Text</a>).
+</p>
+<p>For its working, <code class="code">replace-buffer-contents</code> needs to compare the
+contents of the original buffer with that of <var class="var">source</var> which is a
+costly operation if the buffers are huge and there is a high number of
+differences between them.  In order to keep
+<code class="code">replace-buffer-contents</code>&rsquo;s runtime in bounds, it has two
+optional arguments.
+</p>
+<p><var class="var">max-secs</var> defines a hard boundary in terms of seconds.  If given
+and exceeded, it will fall back to <code class="code">delete-region</code> and
+<code class="code">insert-buffer-substring</code>.
+</p>
+<p><var class="var">max-costs</var> defines the quality of the difference computation.  If
+the actual costs exceed this limit, heuristics are used to provide a
+faster but suboptimal solution.  The default value is 1000000.
+</p>
+<p><code class="code">replace-buffer-contents</code> returns t if a non-destructive
+replacement could be performed.  Otherwise, i.e., if <var class="var">max-secs</var>
+was exceeded, it returns nil.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-replace_002dregion_002dcontents"><span class="category-def">Function: </span><span><strong class="def-name">replace-region-contents</strong> <var class="def-var-arguments">beg end replace-fn &amp;optional max-secs max-costs</var><a class="copiable-link" href="#index-replace_002dregion_002dcontents"> &para;</a></span></dt>
+<dd><p>This function replaces the region between <var class="var">beg</var> and <var class="var">end</var>
+using the given <var class="var">replace-fn</var>.  The function <var class="var">replace-fn</var> is
+run in the current buffer narrowed to the specified region and it
+should return either a string or a buffer replacing the region.
+</p>
+<p>The replacement is performed using <code class="code">replace-buffer-contents</code> (see
+above) which also describes the <var class="var">max-secs</var> and <var class="var">max-costs</var>
+arguments and the return value.
+</p>
+<p>Note: If the replacement is a string, it will be placed in a temporary
+buffer so that <code class="code">replace-buffer-contents</code> can operate on it.
+Therefore, if you already have the replacement in a buffer, it makes
+no sense to convert it to a string using <code class="code">buffer-substring</code> or
+similar.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Decompression.html">Dealing With Compressed Data</a>, Previous: <a href="Transposition.html">Transposition of Text</a>, Up: <a href="Text.html">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Primitive Indent (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Primitive Indent (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Indentation.html" rel="up" title="Indentation">
 <link href="Mode_002dSpecific-Indent.html" rel="next" title="Mode-Specific Indent">
-<link href="Indentation.html" rel="prev" title="Indentation">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,45 +47,47 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Primitive-Indent"></span><div class="header">
+<div class="subsection-level-extent" id="Primitive-Indent">
+<div class="nav-panel">
 <p>
-Next: <a href="Mode_002dSpecific-Indent.html" accesskey="n" rel="next">Mode-Specific Indent</a>, Up: <a href="Indentation.html" accesskey="u" rel="up">Indentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Mode_002dSpecific-Indent.html" accesskey="n" rel="next">Indentation Controlled by Major Mode</a>, Up: <a href="Indentation.html" accesskey="u" rel="up">Indentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Indentation-Primitives"></span><h4 class="subsection">32.17.1 Indentation Primitives</h4>
+<h4 class="subsection" id="Indentation-Primitives"><span>32.17.1 Indentation Primitives<a class="copiable-link" href="#Indentation-Primitives"> &para;</a></span></h4>
 
 <p>This section describes the primitive functions used to count and
 insert indentation.  The functions in the following sections use these
-primitives.  See <a href="Size-of-Displayed-Text.html">Size of Displayed Text</a>, for related functions.
+primitives.  See <a class="xref" href="Size-of-Displayed-Text.html">Size of Displayed Text</a>, for related functions.
 </p>
-<dl>
-<dt id="index-current_002dindentation">Function: <strong>current-indentation</strong></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-current_002dindentation"><span class="category-def">Function: </span><span><strong class="def-name">current-indentation</strong><a class="copiable-link" href="#index-current_002dindentation"> &para;</a></span></dt>
 <dd><p>This function returns the indentation of the current line, which is
 the horizontal position of the first nonblank character.  If the
 contents are entirely blank, then this is the horizontal position of the
 end of the line.
 </p></dd></dl>
 
-<dl>
-<dt id="index-indent_002dto">Command: <strong>indent-to</strong> <em>column &amp;optional minimum</em></dt>
-<dd><p>This function indents from point with tabs and spaces until <var>column</var>
-is reached.  If <var>minimum</var> is specified and non-<code>nil</code>, then at
+<dl class="first-deffn">
+<dt class="deffn" id="index-indent_002dto"><span class="category-def">Command: </span><span><strong class="def-name">indent-to</strong> <var class="def-var-arguments">column &amp;optional minimum</var><a class="copiable-link" href="#index-indent_002dto"> &para;</a></span></dt>
+<dd><p>This function indents from point with tabs and spaces until <var class="var">column</var>
+is reached.  If <var class="var">minimum</var> is specified and non-<code class="code">nil</code>, then at
 least that many spaces are inserted even if this requires going beyond
-<var>column</var>.  Otherwise the function does nothing if point is already
-beyond <var>column</var>.  The value is the column at which the inserted
+<var class="var">column</var>.  Otherwise the function does nothing if point is already
+beyond <var class="var">column</var>.  The value is the column at which the inserted
 indentation ends.
 </p>
 <p>The inserted whitespace characters inherit text properties from the
-surrounding text (usually, from the preceding text only).  See <a href="Sticky-Properties.html">Sticky Properties</a>.
+surrounding text (usually, from the preceding text only).  See <a class="xref" href="Sticky-Properties.html">Stickiness of Text Properties</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-indent_002dtabs_002dmode">User Option: <strong>indent-tabs-mode</strong></dt>
-<dd><p>If this variable is non-<code>nil</code>, indentation functions can insert
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-indent_002dtabs_002dmode"><span class="category-def">User Option: </span><span><strong class="def-name">indent-tabs-mode</strong><a class="copiable-link" href="#index-indent_002dtabs_002dmode"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, indentation functions can insert
 tabs as well as spaces.  Otherwise, they insert only spaces.  Setting
 this variable automatically makes it buffer-local in the current buffer.
 </p></dd></dl>
 
+</div>
 
 
 

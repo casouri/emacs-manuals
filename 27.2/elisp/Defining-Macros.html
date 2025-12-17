@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.2.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Defining Macros (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Defining Macros (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Compiling-Macros.html" rel="prev" title="Compiling Macros">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,68 +49,70 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Defining-Macros"></span><div class="header">
+<div class="section-level-extent" id="Defining-Macros">
+<div class="nav-panel">
 <p>
-Next: <a href="Problems-with-Macros.html" accesskey="n" rel="next">Problems with Macros</a>, Previous: <a href="Compiling-Macros.html" accesskey="p" rel="prev">Compiling Macros</a>, Up: <a href="Macros.html" accesskey="u" rel="up">Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Problems-with-Macros.html" accesskey="n" rel="next">Common Problems Using Macros</a>, Previous: <a href="Compiling-Macros.html" accesskey="p" rel="prev">Macros and Byte Compilation</a>, Up: <a href="Macros.html" accesskey="u" rel="up">Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Defining-Macros-1"></span><h3 class="section">14.4 Defining Macros</h3>
-<span id="index-defining-macros"></span>
-<span id="index-macro_002c-how-to-define"></span>
+<h3 class="section" id="Defining-Macros-1"><span>14.4 Defining Macros<a class="copiable-link" href="#Defining-Macros-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-defining-macros"></a>
+<a class="index-entry-id" id="index-macro_002c-how-to-define"></a>
 
-<p>A Lisp macro object is a list whose <small>CAR</small> is <code>macro</code>, and
-whose <small>CDR</small> is a function.  Expansion of the macro works
-by applying the function (with <code>apply</code>) to the list of
-<em>unevaluated</em> arguments from the macro call.
+<p>A Lisp macro object is a list whose <small class="sc">CAR</small> is <code class="code">macro</code>, and
+whose <small class="sc">CDR</small> is a function.  Expansion of the macro works
+by applying the function (with <code class="code">apply</code>) to the list of
+<em class="emph">unevaluated</em> arguments from the macro call.
 </p>
 <p>It is possible to use an anonymous Lisp macro just like an anonymous
 function, but this is never done, because it does not make sense to
-pass an anonymous macro to functionals such as <code>mapcar</code>.  In
+pass an anonymous macro to functionals such as <code class="code">mapcar</code>.  In
 practice, all Lisp macros have names, and they are almost always
-defined with the <code>defmacro</code> macro.
+defined with the <code class="code">defmacro</code> macro.
 </p>
-<dl>
-<dt id="index-defmacro">Macro: <strong>defmacro</strong> <em>name args [doc] [declare] body&hellip;</em></dt>
-<dd><p><code>defmacro</code> defines the symbol <var>name</var> (which should not be
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-defmacro"><span class="category-def">Macro: </span><span><strong class="def-name">defmacro</strong> <var class="def-var-arguments">name args [doc] [declare] body&hellip;</var><a class="copiable-link" href="#index-defmacro"> &para;</a></span></dt>
+<dd><p><code class="code">defmacro</code> defines the symbol <var class="var">name</var> (which should not be
 quoted) as a macro that looks like this:
 </p>
 <div class="example">
-<pre class="example">(macro lambda <var>args</var> . <var>body</var>)
+<pre class="example-preformatted">(macro lambda <var class="var">args</var> . <var class="var">body</var>)
 </pre></div>
 
-<p>(Note that the <small>CDR</small> of this list is a lambda expression.)  This
-macro object is stored in the function cell of <var>name</var>.  The
-meaning of <var>args</var> is the same as in a function, and the keywords
-<code>&amp;rest</code> and <code>&amp;optional</code> may be used (see <a href="Argument-List.html">Argument List</a>).
-Neither <var>name</var> nor <var>args</var> should be quoted.  The return value
-of <code>defmacro</code> is undefined.
+<p>(Note that the <small class="sc">CDR</small> of this list is a lambda expression.)  This
+macro object is stored in the function cell of <var class="var">name</var>.  The
+meaning of <var class="var">args</var> is the same as in a function, and the keywords
+<code class="code">&amp;rest</code> and <code class="code">&amp;optional</code> may be used (see <a class="pxref" href="Argument-List.html">Features of Argument Lists</a>).
+Neither <var class="var">name</var> nor <var class="var">args</var> should be quoted.  The return value
+of <code class="code">defmacro</code> is undefined.
 </p>
-<p><var>doc</var>, if present, should be a string specifying the macro&rsquo;s
-documentation string.  <var>declare</var>, if present, should be a
-<code>declare</code> form specifying metadata for the macro (see <a href="Declare-Form.html">Declare Form</a>).  Note that macros cannot have interactive declarations, since
+<p><var class="var">doc</var>, if present, should be a string specifying the macro&rsquo;s
+documentation string.  <var class="var">declare</var>, if present, should be a
+<code class="code">declare</code> form specifying metadata for the macro (see <a class="pxref" href="Declare-Form.html">The <code class="code">declare</code> Form</a>).  Note that macros cannot have interactive declarations, since
 they cannot be called interactively.
 </p></dd></dl>
 
 <p>Macros often need to construct large list structures from a mixture
 of constants and nonconstant parts.  To make this easier, use the
-&lsquo;<samp>`</samp>&rsquo; syntax (see <a href="Backquote.html">Backquote</a>).  For example:
+&lsquo;<samp class="samp">`</samp>&rsquo; syntax (see <a class="pxref" href="Backquote.html">Backquote</a>).  For example:
 </p>
 <div class="example">
 <div class="example">
-<pre class="example">(defmacro t-becomes-nil (variable)
+<div class="group"><pre class="example-preformatted">(defmacro t-becomes-nil (variable)
   `(if (eq ,variable t)
        (setq ,variable nil)))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(t-becomes-nil foo)
+</pre><div class="group"><pre class="example-preformatted">(t-becomes-nil foo)
      &equiv; (if (eq foo t) (setq foo nil))
-</pre></div>
+</pre></div></div>
 </div>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Problems-with-Macros.html" accesskey="n" rel="next">Problems with Macros</a>, Previous: <a href="Compiling-Macros.html" accesskey="p" rel="prev">Compiling Macros</a>, Up: <a href="Macros.html" accesskey="u" rel="up">Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Problems-with-Macros.html">Common Problems Using Macros</a>, Previous: <a href="Compiling-Macros.html">Macros and Byte Compilation</a>, Up: <a href="Macros.html">Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

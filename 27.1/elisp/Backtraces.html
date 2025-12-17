@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Backtraces (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Backtraces (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Using-Debugger.html" rel="prev" title="Using Debugger">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,19 +49,20 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Backtraces"></span><div class="header">
+<div class="subsection-level-extent" id="Backtraces">
+<div class="nav-panel">
 <p>
-Next: <a href="Debugger-Commands.html" accesskey="n" rel="next">Debugger Commands</a>, Previous: <a href="Using-Debugger.html" accesskey="p" rel="prev">Using Debugger</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Debugger-Commands.html" accesskey="n" rel="next">Debugger Commands</a>, Previous: <a href="Using-Debugger.html" accesskey="p" rel="prev">Using the Debugger</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">The Lisp Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Backtraces-1"></span><h4 class="subsection">18.1.7 Backtraces</h4>
-<span id="index-backtrace-buffer"></span>
+<h4 class="subsection" id="Backtraces-1"><span>18.1.7 Backtraces<a class="copiable-link" href="#Backtraces-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-backtrace-buffer"></a>
 
 <p>Debugger mode is derived from Backtrace mode, which is also used to
-show backtraces by Edebug and ERT.  (see <a href="Edebug.html">Edebug</a>, and <a href="../ert/index.html#Top">the
-ERT manual</a> in <cite>ERT: Emacs Lisp Regression Testing</cite>.)
+show backtraces by Edebug and ERT.  (see <a class="pxref" href="Edebug.html">Edebug</a>, and <a data-manual="ert" href="https://www.gnu.org/software/emacs/manual/html_node/ert/index.html#Top">the
+ERT manual</a> in <cite class="cite">ERT: Emacs Lisp Regression Testing</cite>.)
 </p>
-<span id="index-stack-frame"></span>
+<a class="index-entry-id" id="index-stack-frame"></a>
 <p>The backtrace buffer shows you the functions that are executing and
 their argument values.  When a backtrace buffer is created, it shows
 each stack frame on one, possibly very long, line.  (A stack frame is
@@ -77,70 +70,71 @@ the place where the Lisp interpreter records information about a
 particular invocation of a function.)  The most recently called
 function will be at the top.
 </p>
-<span id="index-current-stack-frame"></span>
+<a class="index-entry-id" id="index-current-stack-frame"></a>
 <p>In a backtrace you can specify a stack frame by moving point to a line
 describing that frame.  The frame whose line point is on is considered
-the <em>current frame</em>.
+the <em class="dfn">current frame</em>.
 </p>
 <p>If a function name is underlined, that means Emacs knows where its
 source code is located.  You can click with the mouse on that name, or
-move to it and type <tt class="key">RET</tt>, to visit the source code.  You can also
-type <tt class="key">RET</tt> while point is on any name of a function or variable
+move to it and type <kbd class="key">RET</kbd>, to visit the source code.  You can also
+type <kbd class="key">RET</kbd> while point is on any name of a function or variable
 which is not underlined, to see help information for that symbol in a
-help buffer, if any exists.  The <code>xref-find-definitions</code> command,
-bound to <tt class="key">M-.</tt>, can also be used on any identifier in a backtrace
-(see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Looking-Up-Identifiers.html#Looking-Up-Identifiers">Looking Up Identifiers</a> in <cite>The GNU Emacs Manual</cite>).
+help buffer, if any exists.  The <code class="code">xref-find-definitions</code> command,
+bound to <kbd class="key">M-.</kbd>, can also be used on any identifier in a backtrace
+(see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Looking-Up-Identifiers.html#Looking-Up-Identifiers">Looking Up Identifiers</a> in <cite class="cite">The GNU Emacs Manual</cite>).
 </p>
 <p>In backtraces, the tails of long lists and the ends of long strings,
 vectors or structures, as well as objects which are deeply nested,
 will be printed as underlined &ldquo;...&rdquo;.  You can click with the mouse
-on a &ldquo;...&rdquo;, or type <tt class="key">RET</tt> while point is on it, to show the part
+on a &ldquo;...&rdquo;, or type <kbd class="key">RET</kbd> while point is on it, to show the part
 of the object that was hidden.  To control how much abbreviation is
-done, customize <code>backtrace-line-length</code>.
+done, customize <code class="code">backtrace-line-length</code>.
 </p>
 <p>Here is a list of commands for navigating and viewing backtraces:
 </p>
-<dl compact="compact">
-<dt><kbd>v</kbd></dt>
+<dl class="table">
+<dt><kbd class="kbd">v</kbd></dt>
 <dd><p>Toggle the display of local variables of the current stack frame.
 </p>
 </dd>
-<dt><kbd>p</kbd></dt>
+<dt><kbd class="kbd">p</kbd></dt>
 <dd><p>Move to the beginning of the frame, or to the beginning
 of the previous frame.
 </p>
 </dd>
-<dt><kbd>n</kbd></dt>
+<dt><kbd class="kbd">n</kbd></dt>
 <dd><p>Move to the beginning of the next frame.
 </p>
 </dd>
-<dt><kbd>+</kbd></dt>
+<dt><kbd class="kbd">+</kbd></dt>
 <dd><p>Add line breaks and indentation to the top-level Lisp form at point to
 make it more readable.
 </p>
 </dd>
-<dt><kbd>-</kbd></dt>
+<dt><kbd class="kbd">-</kbd></dt>
 <dd><p>Collapse the top-level Lisp form at point back to a single line.
 </p>
 </dd>
-<dt><kbd>#</kbd></dt>
-<dd><p>Toggle <code>print-circle</code> for the frame at point.
+<dt><kbd class="kbd">#</kbd></dt>
+<dd><p>Toggle <code class="code">print-circle</code> for the frame at point.
 </p>
 </dd>
-<dt><kbd>:</kbd></dt>
-<dd><p>Toggle <code>print-gensym</code> for the frame at point.
+<dt><kbd class="kbd">:</kbd></dt>
+<dd><p>Toggle <code class="code">print-gensym</code> for the frame at point.
 </p>
 </dd>
-<dt><kbd>.</kbd></dt>
+<dt><kbd class="kbd">.</kbd></dt>
 <dd><p>Expand all the forms abbreviated with &ldquo;...&rdquo; in the frame at point.
 </p>
 </dd>
 </dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Debugger-Commands.html" accesskey="n" rel="next">Debugger Commands</a>, Previous: <a href="Using-Debugger.html" accesskey="p" rel="prev">Using Debugger</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Debugger-Commands.html">Debugger Commands</a>, Previous: <a href="Using-Debugger.html">Using the Debugger</a>, Up: <a href="Debugger.html">The Lisp Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

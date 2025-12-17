@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.1.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Auto Revert (GNU Emacs Manual)</title>
+
+<meta name="description" content="Auto Revert (GNU Emacs Manual)">
+<meta name="keywords" content="Auto Revert (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Files.html" rel="up" title="Files">
+<link href="Auto-Save.html" rel="next" title="Auto Save">
+<link href="Reverting.html" rel="prev" title="Reverting">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Auto-Revert">
+<div class="nav-panel">
+<p>
+Next: <a href="Auto-Save.html" accesskey="n" rel="next">Auto-Saving: Protection Against Disasters</a>, Previous: <a href="Reverting.html" accesskey="p" rel="prev">Reverting a Buffer</a>, Up: <a href="Files.html" accesskey="u" rel="up">File Handling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Auto-Revert_003a-Keeping-buffers-automatically-up_002dto_002ddate"><span>20.5 Auto Revert: Keeping buffers automatically up-to-date<a class="copiable-link" href="#Auto-Revert_003a-Keeping-buffers-automatically-up_002dto_002ddate"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-Global-Auto-Revert-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Global-Auto-Revert"></a>
+<a class="index-entry-id" id="index-Auto-Revert-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Auto-Revert"></a>
+<a class="index-entry-id" id="index-global_002dauto_002drevert_002dmode"></a>
+<a class="index-entry-id" id="index-auto_002drevert_002dmode"></a>
+<a class="index-entry-id" id="index-auto_002drevert_002dtail_002dmode"></a>
+
+<p>A buffer can get out of sync with respect to its visited file on
+disk if that file is changed by another program.  To keep it up to
+date, you can enable Auto Revert mode by typing <kbd class="kbd">M-x auto-revert-mode</kbd>.
+This automatically reverts the buffer when its visited file changes on
+disk.  To do the same for all file buffers, type
+<kbd class="kbd">M-x global-auto-revert-mode</kbd> to enable Global Auto Revert mode.
+</p>
+<p>Auto Revert will not revert a buffer if it has unsaved changes, or if
+its file on disk is deleted or renamed.
+</p>
+<p>One use of Auto Revert mode is to &ldquo;tail&rdquo; a file such as a system
+log, so that changes made to that file by other programs are
+continuously displayed.  To do this, just move the point to the end of
+the buffer, and it will stay there as the file contents change.
+However, if you are sure that the file will only change by growing at
+the end, use Auto Revert Tail mode instead
+(<code class="code">auto-revert-tail-mode</code>).  It is more efficient for this.
+Auto Revert Tail mode also works for remote files.
+</p>
+<a class="index-entry-id" id="index-auto_002drevert_002dverbose"></a>
+<p>When a buffer is auto-reverted, a message is generated.  This can be
+suppressed by setting <code class="code">auto-revert-verbose</code> to <code class="code">nil</code>.
+</p>
+<a class="index-entry-id" id="index-auto_002drevert_002dremote_002dfiles"></a>
+<p>The Auto Revert modes do not check or revert remote files, because
+that is usually too slow.  This behavior can be changed by setting the
+variable <code class="code">auto-revert-remote-files</code> to non-<code class="code">nil</code>.
+</p>
+<a class="index-entry-id" id="index-file-notifications"></a>
+<a class="index-entry-id" id="index-auto_002drevert_002duse_002dnotify"></a>
+<a class="index-entry-id" id="index-auto_002drevert_002dinterval"></a>
+<p>By default, Auto Revert mode works using <em class="dfn">file notifications</em>,
+whereby changes in the filesystem are reported to Emacs by the OS.
+You can disable use of file notifications by customizing the variable
+<code class="code">auto-revert-use-notify</code> to a <code class="code">nil</code> value, then Emacs will
+check for file changes by polling every five seconds.  You can change
+the polling interval through the variable <code class="code">auto-revert-interval</code>.
+</p>
+<p>Not all systems support file notifications; where they are not
+supported, <code class="code">auto-revert-use-notify</code> will be <code class="code">nil</code> by
+default.
+</p>
+<a class="index-entry-id" id="index-auto_002drevert_002davoid_002dpolling"></a>
+<a class="index-entry-id" id="index-auto_002drevert_002dnotify_002dexclude_002ddir_002dregexp"></a>
+<p>By default, Auto Revert mode will poll files for changes
+periodically even when file notifications are used.  Polling is
+unnecessary in many cases, and turning it off may save power by
+relying on notifications only.  To do so, set the variable
+<code class="code">auto-revert-avoid-polling</code> to non-<code class="code">nil</code>.  However,
+notification is ineffective on certain file systems; mainly network
+file system on Unix-like machines, where files can be altered from
+other machines.  For such file systems, polling may be necessary.
+To force polling when
+<code class="code">auto-revert-avoid-polling</code> is non-<code class="code">nil</code>, set
+<code class="code">auto-revert-notify-exclude-dir-regexp</code> to match files that
+should be excluded from using notification.
+</p>
+<p>In Dired buffers (see <a class="pxref" href="Dired.html">Dired, the Directory Editor</a>), Auto Revert mode refreshes the
+buffer when a file is created or deleted in the buffer&rsquo;s directory.
+</p>
+<p>See <a class="xref" href="VC-Undo.html">Undoing Version Control Actions</a>, for commands to revert to earlier versions of files
+under version control.  See <a class="xref" href="VC-Mode-Line.html">Version Control and the Mode Line</a>, for Auto Revert
+peculiarities when visiting files under version control.
+</p>
+
+<ul class="mini-toc">
+<li><a href="Non_002dFile-Buffers.html" accesskey="1">Auto Reverting Non-File Buffers</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Auto-Save.html">Auto-Saving: Protection Against Disasters</a>, Previous: <a href="Reverting.html">Reverting a Buffer</a>, Up: <a href="Files.html">File Handling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

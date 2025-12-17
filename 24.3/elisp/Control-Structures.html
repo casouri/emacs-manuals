@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Control Structures (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Control Structures (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Sequencing.html" rel="next" title="Sequencing">
-<link href="Eval.html" rel="prev" title="Eval">
+<link href="Variables.html" rel="next" title="Variables">
+<link href="Evaluation.html" rel="prev" title="Evaluation">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,30 +45,31 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Control-Structures"></span><div class="header">
+<div class="chapter-level-extent" id="Control-Structures">
+<div class="nav-panel">
 <p>
-Next: <a href="Variables.html" accesskey="n" rel="next">Variables</a>, Previous: <a href="Evaluation.html" accesskey="p" rel="prev">Evaluation</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Variables.html" accesskey="n" rel="next">Variables</a>, Previous: <a href="Evaluation.html" accesskey="p" rel="prev">Evaluation</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Control-Structures-1"></span><h2 class="chapter">10 Control Structures</h2>
-<span id="index-special-forms-for-control-structures"></span>
-<span id="index-control-structures"></span>
+<h2 class="chapter" id="Control-Structures-1"><span>10 Control Structures<a class="copiable-link" href="#Control-Structures-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-special-forms-for-control-structures"></a>
+<a class="index-entry-id" id="index-control-structures"></a>
 
-<p>A Lisp program consists of a set of <em>expressions</em>, or
-<em>forms</em> (see <a href="Forms.html">Forms</a>).  We control the order of execution of
-these forms by enclosing them in <em>control structures</em>.  Control
+<p>A Lisp program consists of a set of <em class="dfn">expressions</em>, or
+<em class="dfn">forms</em> (see <a class="pxref" href="Forms.html">Kinds of Forms</a>).  We control the order of execution of
+these forms by enclosing them in <em class="dfn">control structures</em>.  Control
 structures are special forms which control when, whether, or how many
 times to execute the forms they contain.
 </p>
-<span id="index-textual-order"></span>
+<a class="index-entry-id" id="index-textual-order"></a>
 <p>The simplest order of execution is sequential execution: first form
-<var>a</var>, then form <var>b</var>, and so on.  This is what happens when you
+<var class="var">a</var>, then form <var class="var">b</var>, and so on.  This is what happens when you
 write several forms in succession in the body of a function, or at top
 level in a file of Lisp code&mdash;the forms are executed in the order
-written.  We call this <em>textual order</em>.  For example, if a function
-body consists of two forms <var>a</var> and <var>b</var>, evaluation of the
-function evaluates first <var>a</var> and then <var>b</var>.  The result of
-evaluating <var>b</var> becomes the value of the function.
+written.  We call this <em class="dfn">textual order</em>.  For example, if a function
+body consists of two forms <var class="var">a</var> and <var class="var">b</var>, evaluation of the
+function evaluates first <var class="var">a</var> and then <var class="var">b</var>.  The result of
+evaluating <var class="var">b</var> becomes the value of the function.
 </p>
 <p>Explicit control structures make possible an order of execution other
 than sequential.
@@ -88,25 +79,16 @@ other varieties of sequencing, conditionals, iteration, and (controlled)
 jumps&mdash;all discussed below.  The built-in control structures are
 special forms since their subforms are not necessarily evaluated or not
 evaluated sequentially.  You can use macros to define your own control
-structure constructs (see <a href="Macros.html">Macros</a>).
+structure constructs (see <a class="pxref" href="Macros.html">Macros</a>).
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Sequencing.html" accesskey="1">Sequencing</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Evaluation in textual order.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Conditionals.html" accesskey="2">Conditionals</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><code>if</code>, <code>cond</code>, <code>when</code>, <code>unless</code>.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Combining-Conditions.html" accesskey="3">Combining Conditions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><code>and</code>, <code>or</code>, <code>not</code>.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Iteration.html" accesskey="4">Iteration</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><code>while</code> loops.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Nonlocal-Exits.html" accesskey="5">Nonlocal Exits</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Jumping out of a sequence.
-</td></tr>
-</table>
 
-<hr>
-<div class="header">
-<p>
-Next: <a href="Variables.html" accesskey="n" rel="next">Variables</a>, Previous: <a href="Evaluation.html" accesskey="p" rel="prev">Evaluation</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+<ul class="mini-toc">
+<li><a href="Sequencing.html" accesskey="1">Sequencing</a></li>
+<li><a href="Conditionals.html" accesskey="2">Conditionals</a></li>
+<li><a href="Combining-Conditions.html" accesskey="3">Constructs for Combining Conditions</a></li>
+<li><a href="Iteration.html" accesskey="4">Iteration</a></li>
+<li><a href="Nonlocal-Exits.html" accesskey="5">Nonlocal Exits</a></li>
+</ul>
 </div>
 
 

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Memory Full (GNU Emacs Manual)</title>
+
+<meta name="description" content="Memory Full (GNU Emacs Manual)">
+<meta name="keywords" content="Memory Full (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Lossage.html" rel="up" title="Lossage">
+<link href="Crashing.html" rel="next" title="Crashing">
+<link href="Text-Garbled.html" rel="prev" title="Text Garbled">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Memory-Full">
+<div class="nav-panel">
+<p>
+Next: <a href="Crashing.html" accesskey="n" rel="next">When Emacs Crashes</a>, Previous: <a href="Text-Garbled.html" accesskey="p" rel="prev">Garbage in the Text</a>, Up: <a href="Lossage.html" accesskey="u" rel="up">Dealing with Emacs Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section subsection-level-set-section" id="Running-out-of-Memory"><span>52.4 Running out of Memory<a class="copiable-link" href="#Running-out-of-Memory"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-memory-full"></a>
+<a class="index-entry-id" id="index-out-of-memory"></a>
+
+<p>If you get the error message &lsquo;<samp class="samp">Virtual memory exceeded</samp>&rsquo;, save
+your modified buffers with <kbd class="kbd">C-x s</kbd> (<code class="code">save-some-buffers</code>).
+This method of saving them has the smallest need for additional
+memory.  Emacs keeps a reserve of memory which it makes available when
+this error happens; that should be enough to enable <kbd class="kbd">C-x s</kbd> to
+complete its work.  When the reserve has been used, &lsquo;<samp class="samp">!MEM FULL!</samp>&rsquo;
+appears at the beginning of the mode line, indicating there is no more
+reserve.
+</p>
+<p>Once you have saved your modified buffers, you can exit this Emacs
+session and start another, or you can use <kbd class="kbd">M-x kill-some-buffers</kbd>
+to free space in the current Emacs job.  If this frees up sufficient
+space, Emacs will refill its memory reserve, and &lsquo;<samp class="samp">!MEM FULL!</samp>&rsquo;
+will disappear from the mode line.  That means you can safely go on
+editing in the same Emacs session.
+</p>
+<p>Do not use <kbd class="kbd">M-x buffer-menu</kbd> to save or kill buffers when you run
+out of memory, because the Buffer Menu needs a fair amount of memory
+itself, and the reserve supply may not be enough.
+</p>
+<a class="index-entry-id" id="index-out-of-memory-killer_002c-GNU_002fLinux"></a>
+<a class="index-entry-id" id="index-OOM-killer"></a>
+<p>On GNU/Linux systems, Emacs does not normally get notified about
+out-of-memory situations; instead, the OS can kill the Emacs process
+when it runs out of memory.  This feature is known as the
+<em class="dfn">out-of-memory killer</em>, or <em class="dfn"><abbr class="acronym">OOM</abbr> killer</em>.  When this
+behavior is in effect, Emacs is unable to detect the out-of-memory
+situation in time, and won&rsquo;t be able to let you save your buffer as
+described above.  However, it is possible to turn off this behavior of
+the OS, and thus allow Emacs a chance to handle the out-of-memory
+situation in a more useful manner, before it is killed.  To do that,
+become the super user, edit the file <code class="code">/etc/sysctl.conf</code> to
+contain the lines shown below, and then invoke the command
+<kbd class="kbd">sysctl&nbsp;-p</kbd><!-- /@w --> from the shell prompt:
+</p>
+<div class="example">
+<pre class="example-preformatted">vm.overcommit_memory=2
+vm.overcommit_ratio=0
+</pre></div>
+
+<p>Please note that the above setting affects all the processes on the
+system, and in general the behavior of the system under memory
+pressure, not just the Emacs process alone.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Crashing.html">When Emacs Crashes</a>, Previous: <a href="Text-Garbled.html">Garbage in the Text</a>, Up: <a href="Lossage.html">Dealing with Emacs Trouble</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

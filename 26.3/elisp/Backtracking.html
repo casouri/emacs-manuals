@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Backtracking (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Backtracking (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,8 @@ developing GNU and promoting software freedom." -->
 <link href="Specification-List.html" rel="prev" title="Specification List">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,18 +46,19 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Backtracking"></span><div class="header">
+<div class="subsubsection-level-extent" id="Backtracking">
+<div class="nav-panel">
 <p>
 Next: <a href="Specification-Examples.html" accesskey="n" rel="next">Specification Examples</a>, Previous: <a href="Specification-List.html" accesskey="p" rel="prev">Specification List</a>, Up: <a href="Edebug-and-Macros.html" accesskey="u" rel="up">Edebug and Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Backtracking-in-Specifications"></span><h4 class="subsubsection">18.2.15.3 Backtracking in Specifications</h4>
+<h4 class="subsubsection" id="Backtracking-in-Specifications"><span>18.2.15.3 Backtracking in Specifications<a class="copiable-link" href="#Backtracking-in-Specifications"> &para;</a></span></h4>
 
-<span id="index-backtracking"></span>
-<span id="index-syntax-error-_0028Edebug_0029"></span>
+<a class="index-entry-id" id="index-backtracking"></a>
+<a class="index-entry-id" id="index-syntax-error-_0028Edebug_0029"></a>
 <p>If a specification fails to match at some point, this does not
 necessarily mean a syntax error will be signaled; instead,
-<em>backtracking</em> will take place until all alternatives have been
+<em class="dfn">backtracking</em> will take place until all alternatives have been
 exhausted.  Eventually every element of the argument list must be
 matched by some element in the specification, and every required element
 in the specification must match some argument.
@@ -77,15 +68,15 @@ later, after higher-level alternatives have been exhausted, and with the
 point positioned further from the real error.  But if backtracking is
 disabled when an error occurs, it can be reported immediately.  Note
 that backtracking is also reenabled automatically in several situations;
-when a new alternative is established by <code>&amp;optional</code>,
-<code>&amp;rest</code>, or <code>&amp;or</code>, or at the start of processing a sublist,
+when a new alternative is established by <code class="code">&amp;optional</code>,
+<code class="code">&amp;rest</code>, or <code class="code">&amp;or</code>, or at the start of processing a sublist,
 group, or indirect specification.  The effect of enabling or disabling
 backtracking is limited to the remainder of the level currently being
 processed and lower levels.
 </p>
 <p>Backtracking is disabled while matching any of the
-form specifications (that is, <code>form</code>, <code>body</code>, <code>def-form</code>, and
-<code>def-body</code>).  These specifications will match any form so any error
+form specifications (that is, <code class="code">form</code>, <code class="code">body</code>, <code class="code">def-form</code>, and
+<code class="code">def-body</code>).  These specifications will match any form so any error
 must be in the form itself rather than at a higher level.
 </p>
 <p>Backtracking is also disabled after successfully matching a quoted
@@ -93,18 +84,19 @@ symbol or string specification, since this usually indicates a
 recognized construct.  But if you have a set of alternative constructs that
 all begin with the same symbol, you can usually work around this
 constraint by factoring the symbol out of the alternatives, e.g.,
-<code>[&quot;foo&quot; &amp;or [first case] [second case] ...]</code>.
+<code class="code">[&quot;foo&quot; &amp;or [first case] [second case] ...]</code>.
 </p>
 <p>Most needs are satisfied by these two ways that backtracking is
 automatically disabled, but occasionally it is useful to explicitly
-disable backtracking by using the <code>gate</code> specification.  This is
+disable backtracking by using the <code class="code">gate</code> specification.  This is
 useful when you know that no higher alternatives could apply.  See the
-example of the <code>let</code> specification.
+example of the <code class="code">let</code> specification.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Specification-Examples.html" accesskey="n" rel="next">Specification Examples</a>, Previous: <a href="Specification-List.html" accesskey="p" rel="prev">Specification List</a>, Up: <a href="Edebug-and-Macros.html" accesskey="u" rel="up">Edebug and Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Specification-Examples.html">Specification Examples</a>, Previous: <a href="Specification-List.html">Specification List</a>, Up: <a href="Edebug-and-Macros.html">Edebug and Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

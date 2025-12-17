@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Showing Images (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Showing Images (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Showing Images (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Images.html" rel="up" title="Images">
+<link href="Multi_002dFrame-Images.html" rel="next" title="Multi-Frame Images">
+<link href="Defining-Images.html" rel="prev" title="Defining Images">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Showing-Images">
+<div class="nav-panel">
+<p>
+Next: <a href="Multi_002dFrame-Images.html" accesskey="n" rel="next">Multi-Frame Images</a>, Previous: <a href="Defining-Images.html" accesskey="p" rel="prev">Defining Images</a>, Up: <a href="Images.html" accesskey="u" rel="up">Images</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Showing-Images-1"><span>41.17.9 Showing Images<a class="copiable-link" href="#Showing-Images-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-show-image"></a>
+
+<p>You can use an image descriptor by setting up the <code class="code">display</code>
+property yourself, but it is easier to use the functions in this
+section.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-insert_002dimage"><span class="category-def">Function: </span><span><strong class="def-name">insert-image</strong> <var class="def-var-arguments">image &amp;optional string area slice inhibit-isearch</var><a class="copiable-link" href="#index-insert_002dimage"> &para;</a></span></dt>
+<dd><p>This function inserts <var class="var">image</var> in the current buffer at point.  The
+value <var class="var">image</var> should be an image descriptor; it could be a value
+returned by <code class="code">create-image</code>, or the value of a symbol defined with
+<code class="code">defimage</code>.  The argument <var class="var">string</var> specifies the text to put
+in the buffer to hold the image.  If it is omitted or <code class="code">nil</code>,
+<code class="code">insert-image</code> uses <code class="code">&quot; &quot;</code> by default.
+</p>
+<p>The argument <var class="var">area</var> specifies whether to put the image in a margin.
+If it is <code class="code">left-margin</code>, the image appears in the left margin;
+<code class="code">right-margin</code> specifies the right margin.  If <var class="var">area</var> is
+<code class="code">nil</code> or omitted, the image is displayed at point within the
+buffer&rsquo;s text.
+</p>
+<p>The argument <var class="var">slice</var> specifies a slice of the image to insert.  If
+<var class="var">slice</var> is <code class="code">nil</code> or omitted the whole image is inserted.
+(However, note that images are chopped on display at the window&rsquo;s
+right edge, because wrapping images is not supported.)  Otherwise,
+<var class="var">slice</var> is a list <code class="code">(<var class="var">x</var> <var class="var">y</var> <var class="var">width</var>
+<var class="var">height</var>)</code> which specifies the <var class="var">x</var> and <var class="var">y</var> positions and
+<var class="var">width</var> and <var class="var">height</var> of the image area to insert.  Integer
+values are in units of pixels.  A floating-point number in the range
+0.0&ndash;1.0 stands for that fraction of the width or height of the entire
+image.
+</p>
+<p>Internally, this function inserts <var class="var">string</var> in the buffer, and gives
+it a <code class="code">display</code> property which specifies <var class="var">image</var>.  See <a class="xref" href="Display-Property.html">The <code class="code">display</code> Property</a>.  By default, doing interactive searches in the buffer will
+consider <var class="var">string</var> when searching.  If <var class="var">inhibit-isearch</var> is
+non-<code class="code">nil</code>, this is inhibited.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-slice_002c-image"></a>
+<a class="index-entry-id" id="index-image-slice"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-insert_002dsliced_002dimage"><span class="category-def">Function: </span><span><strong class="def-name">insert-sliced-image</strong> <var class="def-var-arguments">image &amp;optional string area rows cols</var><a class="copiable-link" href="#index-insert_002dsliced_002dimage"> &para;</a></span></dt>
+<dd><p>This function inserts <var class="var">image</var> in the current buffer at point, like
+<code class="code">insert-image</code>, but splits the image into <var class="var">rows</var>x<var class="var">cols</var>
+equally sized slices.
+</p>
+<p>Emacs displays each slice as a
+separate image, and allows more intuitive scrolling up/down, instead of
+jumping up/down the entire image when paging through a buffer that
+displays (large) images.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-put_002dimage"><span class="category-def">Function: </span><span><strong class="def-name">put-image</strong> <var class="def-var-arguments">image pos &amp;optional string area</var><a class="copiable-link" href="#index-put_002dimage"> &para;</a></span></dt>
+<dd><p>This function puts image <var class="var">image</var> in front of <var class="var">pos</var> in the
+current buffer.  The argument <var class="var">pos</var> should be an integer or a
+marker.  It specifies the buffer position where the image should appear.
+The argument <var class="var">string</var> specifies the text that should hold the image
+as an alternative to the default &lsquo;<samp class="samp">x</samp>&rsquo;.
+</p>
+<p>The argument <var class="var">image</var> must be an image descriptor, perhaps returned
+by <code class="code">create-image</code> or stored by <code class="code">defimage</code>.
+</p>
+<p>The argument <var class="var">area</var> specifies whether to put the image in a margin.
+If it is <code class="code">left-margin</code>, the image appears in the left margin;
+<code class="code">right-margin</code> specifies the right margin.  If <var class="var">area</var> is
+<code class="code">nil</code> or omitted, the image is displayed at point within the
+buffer&rsquo;s text.
+</p>
+<p>Internally, this function creates an overlay, and gives it a
+<code class="code">before-string</code> property containing text that has a <code class="code">display</code>
+property whose value is the image.  (Whew! that was a mouthful&hellip;)
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-remove_002dimages"><span class="category-def">Function: </span><span><strong class="def-name">remove-images</strong> <var class="def-var-arguments">start end &amp;optional buffer</var><a class="copiable-link" href="#index-remove_002dimages"> &para;</a></span></dt>
+<dd><p>This function removes images in <var class="var">buffer</var> between positions
+<var class="var">start</var> and <var class="var">end</var>.  If <var class="var">buffer</var> is omitted or <code class="code">nil</code>,
+images are removed from the current buffer.
+</p>
+<p>This removes only images that were put into <var class="var">buffer</var> the way
+<code class="code">put-image</code> does it, not images that were inserted with
+<code class="code">insert-image</code> or in other ways.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-image_002dsize"><span class="category-def">Function: </span><span><strong class="def-name">image-size</strong> <var class="def-var-arguments">spec &amp;optional pixels frame</var><a class="copiable-link" href="#index-image_002dsize"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-size-of-image"></a>
+<p>This function returns the size of an image as a pair
+<code class="code">(<var class="var">width</var>&nbsp;.&nbsp;<var class="var">height</var>)</code><!-- /@w -->.  <var class="var">spec</var> is an image
+specification.  <var class="var">pixels</var> non-<code class="code">nil</code> means return sizes measured
+in pixels, otherwise return sizes measured in the default character size
+of <var class="var">frame</var> (see <a class="pxref" href="Frame-Font.html">Frame Font</a>).  <var class="var">frame</var> is the frame on which
+the image will be displayed.  <var class="var">frame</var> <code class="code">nil</code> or omitted means
+use the selected frame (see <a class="pxref" href="Input-Focus.html">Input Focus</a>).
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-max_002dimage_002dsize"><span class="category-def">Variable: </span><span><strong class="def-name">max-image-size</strong><a class="copiable-link" href="#index-max_002dimage_002dsize"> &para;</a></span></dt>
+<dd><p>This variable is used to define the maximum size of image that Emacs
+will load.  Emacs will refuse to load (and display) any image that is
+larger than this limit.
+</p>
+<p>If the value is an integer, it directly specifies the maximum
+image height and width, measured in pixels.  If it is floating
+point, it specifies the maximum image height and width
+as a ratio to the frame height and width.  If the value is
+non-numeric, there is no explicit limit on the size of images.
+</p>
+<p>The purpose of this variable is to prevent unreasonably large images
+from accidentally being loaded into Emacs.  It only takes effect the
+first time an image is loaded.  Once an image is placed in the image
+cache, it can always be displayed, even if the value of
+<code class="code">max-image-size</code> is subsequently changed (see <a class="pxref" href="Image-Cache.html">Image Cache</a>).
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-image_002dat_002dpoint_002dp"><span class="category-def">Function: </span><span><strong class="def-name">image-at-point-p</strong><a class="copiable-link" href="#index-image_002dat_002dpoint_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if point is on an image, and <code class="code">nil</code>
+otherwise.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-operations-on-images"></a>
+<p>Images inserted with the insertion functions above also get a local
+keymap installed in the text properties (or overlays) that span the
+displayed image.  This keymap defines the following commands:
+</p>
+<dl class="table">
+<dt><a id="index-image_002dincrease_002dsize"></a><span><kbd class="kbd">i +</kbd><a class="copiable-link" href="#index-image_002dincrease_002dsize"> &para;</a></span></dt>
+<dd><p>Increase the image size (<code class="code">image-increase-size</code>)
+</p>
+</dd>
+<dt><a id="index-image_002ddecrease_002dsize"></a><span><kbd class="kbd">i -</kbd><a class="copiable-link" href="#index-image_002ddecrease_002dsize"> &para;</a></span></dt>
+<dd><p>Decrease the image size (<code class="code">image-decrease-size</code>).
+</p>
+</dd>
+<dt><a id="index-image_002drotate"></a><span><kbd class="kbd">i r</kbd><a class="copiable-link" href="#index-image_002drotate"> &para;</a></span></dt>
+<dd><p>Rotate the image (<code class="code">image-rotate</code>).
+</p>
+</dd>
+<dt><a id="index-image_002dflip_002dhorizontally"></a><span><kbd class="kbd">i h</kbd><a class="copiable-link" href="#index-image_002dflip_002dhorizontally"> &para;</a></span></dt>
+<dd><p>Flip the image horizontally (<code class="code">image-flip-horizontally</code>).
+</p>
+</dd>
+<dt><a id="index-image_002dflip_002dvertically"></a><span><kbd class="kbd">i v</kbd><a class="copiable-link" href="#index-image_002dflip_002dvertically"> &para;</a></span></dt>
+<dd><p>Flip the image vertically (<code class="code">image-flip-vertically</code>).
+</p>
+</dd>
+<dt><a id="index-image_002dsave"></a><span><kbd class="kbd">i o</kbd><a class="copiable-link" href="#index-image_002dsave"> &para;</a></span></dt>
+<dd><p>Save the image to a file (<code class="code">image-save</code>).
+</p>
+</dd>
+<dt><a id="index-image_002dcrop"></a><span><kbd class="kbd">i c</kbd><a class="copiable-link" href="#index-image_002dcrop"> &para;</a></span></dt>
+<dd><p>Interactively crop the image (<code class="code">image-crop</code>).
+</p>
+</dd>
+<dt><a id="index-image_002dcut"></a><span><kbd class="kbd">i x</kbd><a class="copiable-link" href="#index-image_002dcut"> &para;</a></span></dt>
+<dd><p>Interactively cut a rectangle from the image (<code class="code">image-cut</code>).
+</p></dd>
+</dl>
+
+<p>See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Image-Mode.html#Image-Mode">Image Mode</a> in <cite class="cite">The GNU Emacs Manual</cite>, for more details
+about these image-specific key bindings.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Multi_002dFrame-Images.html">Multi-Frame Images</a>, Previous: <a href="Defining-Images.html">Defining Images</a>, Up: <a href="Images.html">Images</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

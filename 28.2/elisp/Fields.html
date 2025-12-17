@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Fields (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Fields (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Fields (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Text-Properties.html" rel="up" title="Text Properties">
+<link href="Not-Intervals.html" rel="next" title="Not Intervals">
+<link href="Clickable-Text.html" rel="prev" title="Clickable Text">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Fields">
+<div class="nav-panel">
+<p>
+Next: <a href="Not-Intervals.html" accesskey="n" rel="next">Why Text Properties are not Intervals</a>, Previous: <a href="Clickable-Text.html" accesskey="p" rel="prev">Defining Clickable Text</a>, Up: <a href="Text-Properties.html" accesskey="u" rel="up">Text Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Defining-and-Using-Fields"><span>33.19.9 Defining and Using Fields<a class="copiable-link" href="#Defining-and-Using-Fields"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-fields"></a>
+
+<p>A field is a range of consecutive characters in the buffer that are
+identified by having the same value (comparing with <code class="code">eq</code>) of the
+<code class="code">field</code> property (either a text-property or an overlay property).
+This section describes special functions that are available for
+operating on fields.
+</p>
+<p>You specify a field with a buffer position, <var class="var">pos</var>.  We think of
+each field as containing a range of buffer positions, so the position
+you specify stands for the field containing that position.
+</p>
+<p>When the characters before and after <var class="var">pos</var> are part of the same
+field, there is no doubt which field contains <var class="var">pos</var>: the one those
+characters both belong to.  When <var class="var">pos</var> is at a boundary between
+fields, which field it belongs to depends on the stickiness of the
+<code class="code">field</code> properties of the two surrounding characters (see <a class="pxref" href="Sticky-Properties.html">Stickiness of Text Properties</a>).  The field whose property would be inherited by text
+inserted at <var class="var">pos</var> is the field that contains <var class="var">pos</var>.
+</p>
+<p>There is an anomalous case where newly inserted text at <var class="var">pos</var>
+would not inherit the <code class="code">field</code> property from either side.  This
+happens if the previous character&rsquo;s <code class="code">field</code> property is not
+rear-sticky, and the following character&rsquo;s <code class="code">field</code> property is not
+front-sticky.  In this case, <var class="var">pos</var> belongs to neither the preceding
+field nor the following field; the field functions treat it as belonging
+to an empty field whose beginning and end are both at <var class="var">pos</var>.
+</p>
+<p>In all of these functions, if <var class="var">pos</var> is omitted or <code class="code">nil</code>, the
+value of point is used by default.  If narrowing is in effect, then
+<var class="var">pos</var> should fall within the accessible portion.  See <a class="xref" href="Narrowing.html">Narrowing</a>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-field_002dbeginning"><span class="category-def">Function: </span><span><strong class="def-name">field-beginning</strong> <var class="def-var-arguments">&amp;optional pos escape-from-edge limit</var><a class="copiable-link" href="#index-field_002dbeginning"> &para;</a></span></dt>
+<dd><p>This function returns the beginning of the field specified by <var class="var">pos</var>.
+</p>
+<p>If <var class="var">pos</var> is at the beginning of its field, and
+<var class="var">escape-from-edge</var> is non-<code class="code">nil</code>, then the return value is
+always the beginning of the preceding field that <em class="emph">ends</em> at <var class="var">pos</var>,
+regardless of the stickiness of the <code class="code">field</code> properties around
+<var class="var">pos</var>.
+</p>
+<p>If <var class="var">limit</var> is non-<code class="code">nil</code>, it is a buffer position; if the
+beginning of the field is before <var class="var">limit</var>, then <var class="var">limit</var> will be
+returned instead.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-field_002dend"><span class="category-def">Function: </span><span><strong class="def-name">field-end</strong> <var class="def-var-arguments">&amp;optional pos escape-from-edge limit</var><a class="copiable-link" href="#index-field_002dend"> &para;</a></span></dt>
+<dd><p>This function returns the end of the field specified by <var class="var">pos</var>.
+</p>
+<p>If <var class="var">pos</var> is at the end of its field, and <var class="var">escape-from-edge</var> is
+non-<code class="code">nil</code>, then the return value is always the end of the following
+field that <em class="emph">begins</em> at <var class="var">pos</var>, regardless of the stickiness of
+the <code class="code">field</code> properties around <var class="var">pos</var>.
+</p>
+<p>If <var class="var">limit</var> is non-<code class="code">nil</code>, it is a buffer position; if the end
+of the field is after <var class="var">limit</var>, then <var class="var">limit</var> will be returned
+instead.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-field_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">field-string</strong> <var class="def-var-arguments">&amp;optional pos</var><a class="copiable-link" href="#index-field_002dstring"> &para;</a></span></dt>
+<dd><p>This function returns the contents of the field specified by <var class="var">pos</var>,
+as a string.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-field_002dstring_002dno_002dproperties"><span class="category-def">Function: </span><span><strong class="def-name">field-string-no-properties</strong> <var class="def-var-arguments">&amp;optional pos</var><a class="copiable-link" href="#index-field_002dstring_002dno_002dproperties"> &para;</a></span></dt>
+<dd><p>This function returns the contents of the field specified by <var class="var">pos</var>,
+as a string, discarding text properties.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-delete_002dfield"><span class="category-def">Function: </span><span><strong class="def-name">delete-field</strong> <var class="def-var-arguments">&amp;optional pos</var><a class="copiable-link" href="#index-delete_002dfield"> &para;</a></span></dt>
+<dd><p>This function deletes the text of the field specified by <var class="var">pos</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-constrain_002dto_002dfield"><span class="category-def">Function: </span><span><strong class="def-name">constrain-to-field</strong> <var class="def-var-arguments">new-pos old-pos &amp;optional escape-from-edge only-in-line inhibit-capture-property</var><a class="copiable-link" href="#index-constrain_002dto_002dfield"> &para;</a></span></dt>
+<dd><p>This function constrains <var class="var">new-pos</var> to the field that
+<var class="var">old-pos</var> belongs to&mdash;in other words, it returns the position
+closest to <var class="var">new-pos</var> that is in the same field as <var class="var">old-pos</var>.
+</p>
+<p>If <var class="var">new-pos</var> is <code class="code">nil</code>, then <code class="code">constrain-to-field</code> uses
+the value of point instead, and moves point to the resulting position
+in addition to returning that position.
+</p>
+<p>If <var class="var">old-pos</var> is at the boundary of two fields, then the acceptable
+final positions depend on the argument <var class="var">escape-from-edge</var>.  If
+<var class="var">escape-from-edge</var> is <code class="code">nil</code>, then <var class="var">new-pos</var> must be in
+the field whose <code class="code">field</code> property equals what new characters
+inserted at <var class="var">old-pos</var> would inherit.  (This depends on the
+stickiness of the <code class="code">field</code> property for the characters before and
+after <var class="var">old-pos</var>.)  If <var class="var">escape-from-edge</var> is non-<code class="code">nil</code>,
+<var class="var">new-pos</var> can be anywhere in the two adjacent fields.
+Additionally, if two fields are separated by another field with the
+special value <code class="code">boundary</code>, then any point within this special
+field is also considered to be on the boundary.
+</p>
+<p>Commands like <kbd class="kbd">C-a</kbd> with no argument, that normally move backward
+to a specific kind of location and stay there once there, probably
+should specify <code class="code">nil</code> for <var class="var">escape-from-edge</var>.  Other motion
+commands that check fields should probably pass <code class="code">t</code>.
+</p>
+<p>If the optional argument <var class="var">only-in-line</var> is non-<code class="code">nil</code>, and
+constraining <var class="var">new-pos</var> in the usual way would move it to a different
+line, <var class="var">new-pos</var> is returned unconstrained.  This used in commands
+that move by line, such as <code class="code">next-line</code> and
+<code class="code">beginning-of-line</code>, so that they respect field boundaries only in
+the case where they can still move to the right line.
+</p>
+<p>If the optional argument <var class="var">inhibit-capture-property</var> is
+non-<code class="code">nil</code>, and <var class="var">old-pos</var> has a non-<code class="code">nil</code> property of that
+name, then any field boundaries are ignored.
+</p>
+<p>You can cause <code class="code">constrain-to-field</code> to ignore all field boundaries
+(and so never constrain anything) by binding the variable
+<code class="code">inhibit-field-text-motion</code> to a non-<code class="code">nil</code> value.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Not-Intervals.html">Why Text Properties are not Intervals</a>, Previous: <a href="Clickable-Text.html">Defining Clickable Text</a>, Up: <a href="Text-Properties.html">Text Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

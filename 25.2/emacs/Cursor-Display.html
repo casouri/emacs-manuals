@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 25.2.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Cursor Display (GNU Emacs Manual)</title>
 
 <meta name="description" content="Cursor Display (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Text-Display.html" rel="prev" title="Text Display">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,90 +50,92 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Cursor-Display"></span><div class="header">
+<div class="section-level-extent" id="Cursor-Display">
+<div class="nav-panel">
 <p>
-Next: <a href="Line-Truncation.html" accesskey="n" rel="next">Line Truncation</a>, Previous: <a href="Text-Display.html" accesskey="p" rel="prev">Text Display</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Line-Truncation.html" accesskey="n" rel="next">Line Truncation</a>, Previous: <a href="Text-Display.html" accesskey="p" rel="prev">How Text Is Displayed</a>, Up: <a href="Display.html" accesskey="u" rel="up">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Displaying-the-Cursor"></span><h3 class="section">14.20 Displaying the Cursor</h3>
-<span id="index-text-cursor"></span>
+<h3 class="section" id="Displaying-the-Cursor"><span>14.20 Displaying the Cursor<a class="copiable-link" href="#Displaying-the-Cursor"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-text-cursor"></a>
 
-<span id="index-visible_002dcursor"></span>
+<a class="index-entry-id" id="index-visible_002dcursor"></a>
 <p>On a text terminal, the cursor&rsquo;s appearance is controlled by the
 terminal, largely out of the control of Emacs.  Some terminals offer
 two different cursors: a visible static cursor, and a very
 visible blinking cursor.  By default, Emacs uses the very visible
 cursor, and switches to it when you start or resume Emacs.  If the
-variable <code>visible-cursor</code> is <code>nil</code> when Emacs starts or
+variable <code class="code">visible-cursor</code> is <code class="code">nil</code> when Emacs starts or
 resumes, it uses the normal cursor.
 </p>
-<span id="index-cursor-face-1"></span>
-<span id="index-cursor_002dtype"></span>
+<a class="index-entry-id" id="index-cursor-face-1"></a>
+<a class="index-entry-id" id="index-cursor_002dtype"></a>
 <p>On a graphical display, many more properties of the text cursor can
-be altered.  To customize its color, change the <code>:background</code>
-attribute of the face named <code>cursor</code> (see <a href="Face-Customization.html">Face Customization</a>).  (The other attributes of this face have no effect;
+be altered.  To customize its color, change the <code class="code">:background</code>
+attribute of the face named <code class="code">cursor</code> (see <a class="pxref" href="Face-Customization.html">Customizing Faces</a>).  (The other attributes of this face have no effect;
 the text shown under the cursor is drawn using the frame&rsquo;s background
 color.)  To change its shape, customize the buffer-local variable
-<code>cursor-type</code>; possible values are <code>box</code> (the default),
-<code>hollow</code> (a hollow box), <code>bar</code> (a vertical bar), <code>(bar
-. <var>n</var>)</code> (a vertical bar <var>n</var> pixels wide), <code>hbar</code> (a
-horizontal bar), <code>(hbar . <var>n</var>)</code> (a horizontal bar <var>n</var>
-pixels tall), or <code>nil</code> (no cursor at all).
+<code class="code">cursor-type</code>; possible values are <code class="code">box</code> (the default),
+<code class="code">hollow</code> (a hollow box), <code class="code">bar</code> (a vertical bar), <code class="code">(bar
+. <var class="var">n</var>)</code> (a vertical bar <var class="var">n</var> pixels wide), <code class="code">hbar</code> (a
+horizontal bar), <code class="code">(hbar . <var class="var">n</var>)</code> (a horizontal bar <var class="var">n</var>
+pixels tall), or <code class="code">nil</code> (no cursor at all).
 </p>
-<span id="index-blink_002dcursor_002dmode"></span>
-<span id="index-cursor_002c-blinking"></span>
-<span id="index-blinking-cursor"></span>
-<span id="index-blink_002dcursor_002dmode-1"></span>
-<span id="index-blink_002dcursor_002dblinks"></span>
-<span id="index-blink_002dcursor_002dalist"></span>
+<a class="index-entry-id" id="index-blink_002dcursor_002dmode"></a>
+<a class="index-entry-id" id="index-cursor_002c-blinking"></a>
+<a class="index-entry-id" id="index-blinking-cursor"></a>
+<a class="index-entry-id" id="index-blink_002dcursor_002dmode-1"></a>
+<a class="index-entry-id" id="index-blink_002dcursor_002dblinks"></a>
+<a class="index-entry-id" id="index-blink_002dcursor_002dalist"></a>
 <p>By default, the cursor stops blinking after 10 blinks, if Emacs does
 not get any input during that time; any input event restarts the
-count.  You can customize the variable <code>blink-cursor-blinks</code> to
+count.  You can customize the variable <code class="code">blink-cursor-blinks</code> to
 control that: its value says how many times to blink without input
 before stopping.  Setting that variable to a zero or negative value
 will make the cursor blink forever.  To disable cursor blinking
-altogether, change the variable <code>blink-cursor-mode</code> to <code>nil</code>
-(see <a href="Easy-Customization.html">Easy Customization</a>), or add the line
+altogether, change the variable <code class="code">blink-cursor-mode</code> to <code class="code">nil</code>
+(see <a class="pxref" href="Easy-Customization.html">Easy Customization Interface</a>), or add the line
 </p>
-<div class="lisp">
-<pre class="lisp">  (blink-cursor-mode 0)
+<div class="example lisp">
+<pre class="lisp-preformatted">  (blink-cursor-mode 0)
 </pre></div>
 
 <p>to your init file.  Alternatively, you can change how the cursor
 looks when it blinks off by customizing the list variable
-<code>blink-cursor-alist</code>.  Each element in the list should have the
-form <code>(<var>on-type</var> . <var>off-type</var>)</code>; this means that if the
-cursor is displayed as <var>on-type</var> when it blinks on (where
-<var>on-type</var> is one of the cursor types described above), then it is
-displayed as <var>off-type</var> when it blinks off.
+<code class="code">blink-cursor-alist</code>.  Each element in the list should have the
+form <code class="code">(<var class="var">on-type</var> . <var class="var">off-type</var>)</code>; this means that if the
+cursor is displayed as <var class="var">on-type</var> when it blinks on (where
+<var class="var">on-type</var> is one of the cursor types described above), then it is
+displayed as <var class="var">off-type</var> when it blinks off.
 </p>
-<span id="index-x_002dstretch_002dcursor"></span>
-<span id="index-wide-block-cursor"></span>
+<a class="index-entry-id" id="index-x_002dstretch_002dcursor"></a>
+<a class="index-entry-id" id="index-wide-block-cursor"></a>
 <p>Some characters, such as tab characters, are extra wide.  When
 the cursor is positioned over such a character, it is normally drawn
 with the default character width.  You can make the cursor stretch to
 cover wide characters, by changing the variable
-<code>x-stretch-cursor</code> to a non-<code>nil</code> value.
+<code class="code">x-stretch-cursor</code> to a non-<code class="code">nil</code> value.
 </p>
-<span id="index-cursor-in-non_002dselected-windows"></span>
-<span id="index-cursor_002din_002dnon_002dselected_002dwindows"></span>
+<a class="index-entry-id" id="index-cursor-in-non_002dselected-windows"></a>
+<a class="index-entry-id" id="index-cursor_002din_002dnon_002dselected_002dwindows"></a>
 <p>The cursor normally appears in non-selected windows as a
 non-blinking hollow box.  (For a bar cursor, it instead appears as a
 thinner bar.)  To turn off cursors in non-selected windows, change the
-variable <code>cursor-in-non-selected-windows</code> to <code>nil</code>.
+variable <code class="code">cursor-in-non-selected-windows</code> to <code class="code">nil</code>.
 </p>
-<span id="index-hl_002dline_002dmode"></span>
-<span id="index-global_002dhl_002dline_002dmode"></span>
-<span id="index-highlight-current-line"></span>
+<a class="index-entry-id" id="index-hl_002dline_002dmode"></a>
+<a class="index-entry-id" id="index-global_002dhl_002dline_002dmode"></a>
+<a class="index-entry-id" id="index-highlight-current-line"></a>
 <p>To make the cursor even more visible, you can use HL Line mode, a
-minor mode that highlights the line containing point.  Use <kbd>M-x
-hl-line-mode</kbd> to enable or disable it in the current buffer.  <kbd>M-x
+minor mode that highlights the line containing point.  Use <kbd class="kbd">M-x
+hl-line-mode</kbd> to enable or disable it in the current buffer.  <kbd class="kbd">M-x
 global-hl-line-mode</kbd> enables or disables the same mode globally.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Line-Truncation.html" accesskey="n" rel="next">Line Truncation</a>, Previous: <a href="Text-Display.html" accesskey="p" rel="prev">Text Display</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Line-Truncation.html">Line Truncation</a>, Previous: <a href="Text-Display.html">How Text Is Displayed</a>, Up: <a href="Display.html">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

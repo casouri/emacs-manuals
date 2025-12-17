@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.2.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Calling Functions (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Calling Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Calling Functions (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Functions.html" rel="up" title="Functions">
+<link href="Mapping-Functions.html" rel="next" title="Mapping Functions">
+<link href="Defining-Functions.html" rel="prev" title="Defining Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Calling-Functions">
+<div class="nav-panel">
+<p>
+Next: <a href="Mapping-Functions.html" accesskey="n" rel="next">Mapping Functions</a>, Previous: <a href="Defining-Functions.html" accesskey="p" rel="prev">Defining Functions</a>, Up: <a href="Functions.html" accesskey="u" rel="up">Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Calling-Functions-1"><span>13.5 Calling Functions<a class="copiable-link" href="#Calling-Functions-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-function-invocation"></a>
+<a class="index-entry-id" id="index-calling-a-function"></a>
+
+<p>Defining functions is only half the battle.  Functions don&rsquo;t do
+anything until you <em class="dfn">call</em> them, i.e., tell them to run.  Calling a
+function is also known as <em class="dfn">invocation</em>.
+</p>
+<p>The most common way of invoking a function is by evaluating a list.
+For example, evaluating the list <code class="code">(concat &quot;a&quot; &quot;b&quot;)</code> calls the
+function <code class="code">concat</code> with arguments <code class="code">&quot;a&quot;</code> and <code class="code">&quot;b&quot;</code>.
+See <a class="xref" href="Evaluation.html">Evaluation</a>, for a description of evaluation.
+</p>
+<p>When you write a list as an expression in your program, you specify
+which function to call, and how many arguments to give it, in the text
+of the program.  Usually that&rsquo;s just what you want.  Occasionally you
+need to compute at run time which function to call.  To do that, use
+the function <code class="code">funcall</code>.  When you also need to determine at run
+time how many arguments to pass, use <code class="code">apply</code>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-funcall"><span class="category-def">Function: </span><span><strong class="def-name">funcall</strong> <var class="def-var-arguments">function &amp;rest arguments</var><a class="copiable-link" href="#index-funcall"> &para;</a></span></dt>
+<dd><p><code class="code">funcall</code> calls <var class="var">function</var> with <var class="var">arguments</var>, and returns
+whatever <var class="var">function</var> returns.
+</p>
+<p>Since <code class="code">funcall</code> is a function, all of its arguments, including
+<var class="var">function</var>, are evaluated before <code class="code">funcall</code> is called.  This
+means that you can use any expression to obtain the function to be
+called.  It also means that <code class="code">funcall</code> does not see the
+expressions you write for the <var class="var">arguments</var>, only their values.
+These values are <em class="emph">not</em> evaluated a second time in the act of
+calling <var class="var">function</var>; the operation of <code class="code">funcall</code> is like the
+normal procedure for calling a function, once its arguments have
+already been evaluated.
+</p>
+<p>The argument <var class="var">function</var> must be either a Lisp function or a
+primitive function.  Special forms and macros are not allowed, because
+they make sense only when given the unevaluated argument
+expressions.  <code class="code">funcall</code> cannot provide these because, as we saw
+above, it never knows them in the first place.
+</p>
+<p>If you need to use <code class="code">funcall</code> to call a command and make it behave
+as if invoked interactively, use <code class="code">funcall-interactively</code>
+(see <a class="pxref" href="Interactive-Call.html">Interactive Call</a>).
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(setq f 'list)
+     &rArr; list
+</pre></div><div class="group"><pre class="example-preformatted">(funcall f 'x 'y 'z)
+     &rArr; (x y z)
+</pre></div><div class="group"><pre class="example-preformatted">(funcall f 'x 'y '(z))
+     &rArr; (x y (z))
+</pre></div><div class="group"><pre class="example-preformatted">(funcall 'and t nil)
+error&rarr; Invalid function: #&lt;subr and&gt;
+</pre></div></div>
+
+<p>Compare these examples with the examples of <code class="code">apply</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-apply"><span class="category-def">Function: </span><span><strong class="def-name">apply</strong> <var class="def-var-arguments">function &amp;rest arguments</var><a class="copiable-link" href="#index-apply"> &para;</a></span></dt>
+<dd><p><code class="code">apply</code> calls <var class="var">function</var> with <var class="var">arguments</var>, just like
+<code class="code">funcall</code> but with one difference: the last of <var class="var">arguments</var> is a
+list of objects, which are passed to <var class="var">function</var> as separate
+arguments, rather than a single list.  We say that <code class="code">apply</code>
+<em class="dfn">spreads</em> this list so that each individual element becomes an
+argument.
+</p>
+<p><code class="code">apply</code> with a single argument is special: the first element of
+the argument, which must be a non-empty list, is called as a function
+with the remaining elements as individual arguments.  Passing two or
+more arguments will be faster.
+</p>
+<p><code class="code">apply</code> returns the result of calling <var class="var">function</var>.  As with
+<code class="code">funcall</code>, <var class="var">function</var> must either be a Lisp function or a
+primitive function; special forms and macros do not make sense in
+<code class="code">apply</code>.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(setq f 'list)
+     &rArr; list
+</pre></div><div class="group"><pre class="example-preformatted">(apply f 'x 'y 'z)
+error&rarr; Wrong type argument: listp, z
+</pre></div><div class="group"><pre class="example-preformatted">(apply '+ 1 2 '(3 4))
+     &rArr; 10
+</pre></div><div class="group"><pre class="example-preformatted">(apply '+ '(1 2 3 4))
+     &rArr; 10
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(apply 'append '((a b c) nil (x y z) nil))
+     &rArr; (a b c x y z)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(apply '(+ 3 4))
+     &rArr; 7
+</pre></div></div>
+
+<p>For an interesting example of using <code class="code">apply</code>, see <a class="ref" href="Mapping-Functions.html#Definition-of-mapcar">Definition of mapcar</a>.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-partial-application-of-functions"></a>
+<a class="index-entry-id" id="index-currying"></a>
+<p>Sometimes it is useful to fix some of the function&rsquo;s arguments at
+certain values, and leave the rest of arguments for when the function
+is actually called.  The act of fixing some of the function&rsquo;s
+arguments is called <em class="dfn">partial application</em> of the function<a class="footnote" id="DOCF13" href="#FOOT13"><sup>13</sup></a>.
+The result is a new function that accepts the rest of
+arguments and calls the original function with all the arguments
+combined.
+</p>
+<p>Here&rsquo;s how to do partial application in Emacs Lisp:
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-apply_002dpartially"><span class="category-def">Function: </span><span><strong class="def-name">apply-partially</strong> <var class="def-var-arguments">func &amp;rest args</var><a class="copiable-link" href="#index-apply_002dpartially"> &para;</a></span></dt>
+<dd><p>This function returns a new function which, when called, will call
+<var class="var">func</var> with the list of arguments composed from <var class="var">args</var> and
+additional arguments specified at the time of the call.  If <var class="var">func</var>
+accepts <var class="var">n</var> arguments, then a call to <code class="code">apply-partially</code> with
+<code class="code"><var class="var">m</var>&nbsp;&lt;=&nbsp;<var class="var">n</var></code><!-- /@w --> arguments will produce a new function of
+<code class="code"><var class="var">n</var>&nbsp;-&nbsp;<var class="var">m</var></code><!-- /@w --> arguments<a class="footnote" id="DOCF14" href="#FOOT14"><sup>14</sup></a>.
+</p>
+<p>Here&rsquo;s how we could define the built-in function <code class="code">1+</code>, if it
+didn&rsquo;t exist, using <code class="code">apply-partially</code> and <code class="code">+</code>, another
+built-in function<a class="footnote" id="DOCF15" href="#FOOT15"><sup>15</sup></a>:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defalias '1+ (apply-partially '+ 1)
+  &quot;Increment argument by one.&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(1+ 10)
+     &rArr; 11
+</pre></div></div>
+</dd></dl>
+
+<a class="index-entry-id" id="index-functionals"></a>
+<p>It is common for Lisp functions to accept functions as arguments or
+find them in data structures (especially in hook variables and property
+lists) and call them using <code class="code">funcall</code> or <code class="code">apply</code>.  Functions
+that accept function arguments are often called <em class="dfn">functionals</em>.
+</p>
+<p>Sometimes, when you call a functional, it is useful to supply a no-op
+function as the argument.  Here are three different kinds of no-op
+functions:
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-identity"><span class="category-def">Function: </span><span><strong class="def-name">identity</strong> <var class="def-var-arguments">argument</var><a class="copiable-link" href="#index-identity"> &para;</a></span></dt>
+<dd><p>This function returns <var class="var">argument</var> and has no side effects.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ignore"><span class="category-def">Function: </span><span><strong class="def-name">ignore</strong> <var class="def-var-arguments">&amp;rest arguments</var><a class="copiable-link" href="#index-ignore"> &para;</a></span></dt>
+<dd><p>This function ignores any <var class="var">arguments</var> and returns <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-always"><span class="category-def">Function: </span><span><strong class="def-name">always</strong> <var class="def-var-arguments">&amp;rest arguments</var><a class="copiable-link" href="#index-always"> &para;</a></span></dt>
+<dd><p>This function ignores any <var class="var">arguments</var> and returns <code class="code">t</code>.
+</p></dd></dl>
+
+<p>Some functions are user-visible <em class="dfn">commands</em>, which can be called
+interactively (usually by a key sequence).  It is possible to invoke
+such a command exactly as though it was called interactively, by using
+the <code class="code">call-interactively</code> function.  See <a class="xref" href="Interactive-Call.html">Interactive Call</a>.
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT13" href="#DOCF13">(13)</a></h5>
+<p>This is related to, but different from <em class="dfn">currying</em>, which
+transforms a function that takes multiple arguments in such a way that
+it can be called as a chain of functions, each one with a single
+argument.</p>
+<h5 class="footnote-body-heading"><a id="FOOT14" href="#DOCF14">(14)</a></h5>
+<p>If the number of arguments that <var class="var">func</var> can accept is unlimited,
+then the new function will also accept an unlimited number of
+arguments, so in that case <code class="code">apply-partially</code> doesn&rsquo;t reduce the
+number of arguments that the new function could accept.
+</p>
+<h5 class="footnote-body-heading"><a id="FOOT15" href="#DOCF15">(15)</a></h5>
+<p>Note that unlike the built-in function, this version accepts any
+number of arguments.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Mapping-Functions.html">Mapping Functions</a>, Previous: <a href="Defining-Functions.html">Defining Functions</a>, Up: <a href="Functions.html">Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

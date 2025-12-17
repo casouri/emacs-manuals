@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.4.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Defining Hash (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Defining Hash (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Defining Hash (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Hash-Tables.html" rel="up" title="Hash Tables">
+<link href="Other-Hash.html" rel="next" title="Other Hash">
+<link href="Hash-Access.html" rel="prev" title="Hash Access">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Defining-Hash">
+<div class="nav-panel">
+<p>
+Next: <a href="Other-Hash.html" accesskey="n" rel="next">Other Hash Table Functions</a>, Previous: <a href="Hash-Access.html" accesskey="p" rel="prev">Hash Table Access</a>, Up: <a href="Hash-Tables.html" accesskey="u" rel="up">Hash Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Defining-Hash-Comparisons"><span>8.3 Defining Hash Comparisons<a class="copiable-link" href="#Defining-Hash-Comparisons"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-hash-code"></a>
+<a class="index-entry-id" id="index-define-hash-comparisons"></a>
+
+<p>You can define new methods of key lookup by means of
+<code class="code">define-hash-table-test</code>.  In order to use this feature, you need
+to understand how hash tables work, and what a <em class="dfn">hash code</em> means.
+</p>
+<p>You can think of a hash table conceptually as a large array of many
+slots, each capable of holding one association.  To look up a key,
+<code class="code">gethash</code> first computes an integer, the hash code, from the key.
+It can reduce this integer modulo the length of the array, to produce an
+index in the array.  Then it looks in that slot, and if necessary in
+other nearby slots, to see if it has found the key being sought.
+</p>
+<p>Thus, to define a new method of key lookup, you need to specify both a
+function to compute the hash code from a key, and a function to compare
+two keys directly.  The two functions should be consistent with each
+other: that is, two keys&rsquo; hash codes should be the same if the keys
+compare as equal.  Also, since the two functions can be called at any
+time (such as by the garbage collector), the functions should be free
+of side effects and should return quickly, and their behavior should
+depend on only on properties of the keys that do not change.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-define_002dhash_002dtable_002dtest"><span class="category-def">Function: </span><span><strong class="def-name">define-hash-table-test</strong> <var class="def-var-arguments">name test-fn hash-fn</var><a class="copiable-link" href="#index-define_002dhash_002dtable_002dtest"> &para;</a></span></dt>
+<dd><p>This function defines a new hash table test, named <var class="var">name</var>.
+</p>
+<p>After defining <var class="var">name</var> in this way, you can use it as the <var class="var">test</var>
+argument in <code class="code">make-hash-table</code>.  When you do that, the hash table
+will use <var class="var">test-fn</var> to compare key values, and <var class="var">hash-fn</var> to compute
+a hash code from a key value.
+</p>
+<p>The function <var class="var">test-fn</var> should accept two arguments, two keys, and
+return non-<code class="code">nil</code> if they are considered the same.
+</p>
+<p>The function <var class="var">hash-fn</var> should accept one argument, a key, and return
+an integer that is the hash code of that key.  For good results, the
+function should use the whole range of fixnums for hash codes,
+including negative fixnums.
+</p>
+<p>The specified functions are stored in the property list of <var class="var">name</var>
+under the property <code class="code">hash-table-test</code>; the property value&rsquo;s form is
+<code class="code">(<var class="var">test-fn</var> <var class="var">hash-fn</var>)</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-sxhash_002dequal"><span class="category-def">Function: </span><span><strong class="def-name">sxhash-equal</strong> <var class="def-var-arguments">obj</var><a class="copiable-link" href="#index-sxhash_002dequal"> &para;</a></span></dt>
+<dd><p>This function returns a hash code for Lisp object <var class="var">obj</var>.
+This is an integer that reflects the contents of <var class="var">obj</var>
+and the other Lisp objects it points to.
+</p>
+<p>If two objects <var class="var">obj1</var> and <var class="var">obj2</var> are <code class="code">equal</code>, then
+<code class="code">(sxhash-equal <var class="var">obj1</var>)</code> and <code class="code">(sxhash-equal <var class="var">obj2</var>)</code>
+are the same integer.
+</p>
+<p>If the two objects are not <code class="code">equal</code>, the values returned by
+<code class="code">sxhash-equal</code> are usually different, but not always.
+<code class="code">sxhash-equal</code> is designed to be reasonably fast (since it&rsquo;s used
+for indexing hash tables) so it won&rsquo;t recurse deeply into nested
+structures.  In addition; once in a rare while, by luck, you will
+encounter two distinct-looking simple objects that give the same
+result from <code class="code">sxhash-equal</code>.  So you can&rsquo;t, in general, use
+<code class="code">sxhash-equal</code> to check whether an object has changed.
+</p>
+<p><b class="b">Common Lisp note:</b> In Common Lisp a similar function is called
+<code class="code">sxhash</code>.  Emacs provides this name as a compatibility alias for
+<code class="code">sxhash-equal</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-sxhash_002deq"><span class="category-def">Function: </span><span><strong class="def-name">sxhash-eq</strong> <var class="def-var-arguments">obj</var><a class="copiable-link" href="#index-sxhash_002deq"> &para;</a></span></dt>
+<dd><p>This function returns a hash code for Lisp object <var class="var">obj</var>.  Its
+result reflects identity of <var class="var">obj</var>, but not its contents.
+</p>
+<p>If two objects <var class="var">obj1</var> and <var class="var">obj2</var> are <code class="code">eq</code>, then
+<code class="code">(sxhash-eq <var class="var">obj1</var>)</code> and <code class="code">(sxhash-eq <var class="var">obj2</var>)</code> are
+the same integer.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-sxhash_002deql"><span class="category-def">Function: </span><span><strong class="def-name">sxhash-eql</strong> <var class="def-var-arguments">obj</var><a class="copiable-link" href="#index-sxhash_002deql"> &para;</a></span></dt>
+<dd><p>This function returns a hash code for Lisp object <var class="var">obj</var> suitable
+for <code class="code">eql</code> comparison.  I.e. it reflects identity of <var class="var">obj</var>
+except for the case where the object is a bignum or a float number,
+in which case a hash code is generated for the value.
+</p>
+<p>If two objects <var class="var">obj1</var> and <var class="var">obj2</var> are <code class="code">eql</code>, then
+<code class="code">(sxhash-eql <var class="var">obj1</var>)</code> and <code class="code">(sxhash-eql <var class="var">obj2</var>)</code> are
+the same integer.
+</p></dd></dl>
+
+<p>This example creates a hash table whose keys are strings that are
+compared case-insensitively.
+</p>
+<div class="example">
+<pre class="example-preformatted">(defun string-hash-ignore-case (a)
+  (sxhash-equal (upcase a)))
+
+(define-hash-table-test 'ignore-case
+  'string-equal-ignore-case 'string-hash-ignore-case)
+
+(make-hash-table :test 'ignore-case)
+</pre></div>
+
+<p>Here is how you could define a hash table test equivalent to the
+predefined test value <code class="code">equal</code>.  The keys can be any Lisp object,
+and equal-looking objects are considered the same key.
+</p>
+<div class="example">
+<pre class="example-preformatted">(define-hash-table-test 'contents-hash 'equal 'sxhash-equal)
+
+(make-hash-table :test 'contents-hash)
+</pre></div>
+
+<p>Lisp programs should <em class="emph">not</em> rely on hash codes being preserved
+between Emacs sessions, as the implementation of the hash functions
+uses some details of the object storage that can change between
+sessions and between different architectures.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Other-Hash.html">Other Hash Table Functions</a>, Previous: <a href="Hash-Access.html">Hash Table Access</a>, Up: <a href="Hash-Tables.html">Hash Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

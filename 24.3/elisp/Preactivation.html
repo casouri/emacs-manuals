@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Preactivation (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Preactivation (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Enabling-Advice.html" rel="prev" title="Enabling Advice">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 
@@ -55,26 +46,27 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Preactivation"></span><div class="header">
+<div class="section-level-extent" id="Preactivation">
+<div class="nav-panel">
 <p>
-Next: <a href="Argument-Access-in-Advice.html" accesskey="n" rel="next">Argument Access in Advice</a>, Previous: <a href="Enabling-Advice.html" accesskey="p" rel="prev">Enabling Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Argument-Access-in-Advice.html" accesskey="n" rel="next">Argument Access in Advice</a>, Previous: <a href="Enabling-Advice.html" accesskey="p" rel="prev">Enabling and Disabling Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Preactivation-1"></span><h3 class="section">17.7 Preactivation</h3>
-<span id="index-preactivating-advice"></span>
-<span id="index-advice_002c-preactivating"></span>
+<h3 class="section" id="Preactivation-1"><span>17.7 Preactivation<a class="copiable-link" href="#Preactivation-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-preactivating-advice"></a>
+<a class="index-entry-id" id="index-advice_002c-preactivating"></a>
 
 <p>Constructing a combined definition to execute advice is moderately
 expensive.  When a library advises many functions, this can make loading
-the library slow.  In that case, you can use <em>preactivation</em> to
+the library slow.  In that case, you can use <em class="dfn">preactivation</em> to
 construct suitable combined definitions in advance.
 </p>
-<p>To use preactivation, specify the <code>preactivate</code> flag when you
-define the advice with <code>defadvice</code>.  This <code>defadvice</code> call
+<p>To use preactivation, specify the <code class="code">preactivate</code> flag when you
+define the advice with <code class="code">defadvice</code>.  This <code class="code">defadvice</code> call
 creates a combined definition which embodies this piece of advice
 (whether enabled or not) plus any other currently enabled advice for the
 same function, and the function&rsquo;s own definition.  If the
-<code>defadvice</code> is compiled, that compiles the combined definition
+<code class="code">defadvice</code> is compiled, that compiles the combined definition
 also.
 </p>
 <p>When the function&rsquo;s advice is subsequently activated, if the enabled
@@ -87,38 +79,39 @@ time of activation doesn&rsquo;t match what was used for preactivation.
 <p>Here are some symptoms that can indicate that a preactivation did not
 work properly, because of a mismatch.
 </p>
-<ul>
-<li> Activation of the advised
+<ul class="itemize mark-bullet">
+<li>Activation of the advised
 function takes longer than usual.
-</li><li> The byte compiler gets
+</li><li>The byte compiler gets
 loaded while an advised function gets activated.
-</li><li> <code>byte-compile</code> is included in the value of <code>features</code> even
+</li><li><code class="code">byte-compile</code> is included in the value of <code class="code">features</code> even
 though you did not ever explicitly use the byte compiler.
 </li></ul>
 
 <p>Compiled preactivated advice works properly even if the function itself
 is not defined until later; however, the function needs to be defined
-when you <em>compile</em> the preactivated advice.
+when you <em class="emph">compile</em> the preactivated advice.
 </p>
 <p>There is no elegant way to find out why preactivated advice is not being
 used.  What you can do is to trace the function
-<code>ad-cache-id-verification-code</code> (with the function
-<code>trace-function-background</code>) before the advised function&rsquo;s advice
+<code class="code">ad-cache-id-verification-code</code> (with the function
+<code class="code">trace-function-background</code>) before the advised function&rsquo;s advice
 is activated.  After activation, check the value returned by
-<code>ad-cache-id-verification-code</code> for that function: <code>verified</code>
+<code class="code">ad-cache-id-verification-code</code> for that function: <code class="code">verified</code>
 means that the preactivated advice was used, while other values give
 some information about why they were considered inappropriate.
 </p>
-<p><strong>Warning:</strong> There is one known case that can make preactivation
+<p><strong class="strong">Warning:</strong> There is one known case that can make preactivation
 fail, in that a preconstructed combined definition is used even though
 it fails to match the current state of advice.  This can happen when two
 packages define different pieces of advice with the same name, in the
 same class, for the same function.  But you should avoid that anyway.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Argument-Access-in-Advice.html" accesskey="n" rel="next">Argument Access in Advice</a>, Previous: <a href="Enabling-Advice.html" accesskey="p" rel="prev">Enabling Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Argument-Access-in-Advice.html">Argument Access in Advice</a>, Previous: <a href="Enabling-Advice.html">Enabling and Disabling Advice</a>, Up: <a href="Advising-Functions.html">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

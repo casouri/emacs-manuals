@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.5.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Invoking emacsclient (GNU Emacs Manual)</title>
 
 <meta name="description" content="Invoking emacsclient (GNU Emacs Manual)">
@@ -27,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Emacs-Server.html" rel="up" title="Emacs Server">
 <link href="emacsclient-Options.html" rel="next" title="emacsclient Options">
-<link href="Emacs-Server.html" rel="prev" title="Emacs Server">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,83 +48,85 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Invoking-emacsclient"></span><div class="header">
+<div class="section-level-extent" id="Invoking-emacsclient">
+<div class="nav-panel">
 <p>
-Next: <a href="emacsclient-Options.html" accesskey="n" rel="next">emacsclient Options</a>, Up: <a href="Emacs-Server.html" accesskey="u" rel="up">Emacs Server</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="emacsclient-Options.html" accesskey="n" rel="next"><code class="code">emacsclient</code> Options</a>, Up: <a href="Emacs-Server.html" accesskey="u" rel="up">Using Emacs as a Server</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Invoking-emacsclient-1"></span><h3 class="section">38.1 Invoking <code>emacsclient</code></h3>
-<span id="index-emacsclient-invocation"></span>
+<h3 class="section subsection-level-set-section" id="Invoking-emacsclient-1"><span>38.1 Invoking <code class="code">emacsclient</code><a class="copiable-link" href="#Invoking-emacsclient-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-emacsclient-invocation"></a>
 
-<p>The simplest way to use the <code>emacsclient</code> program is to run
-the shell command &lsquo;<samp>emacsclient <var>file</var></samp>&rsquo;, where <var>file</var> is a
+<p>The simplest way to use the <code class="command">emacsclient</code> program is to run
+the shell command &lsquo;<samp class="samp">emacsclient <var class="var">file</var></samp>&rsquo;, where <var class="var">file</var> is a
 file name.  This connects to an Emacs server, and tells that Emacs
-process to visit <var>file</var> in one of its existing frames&mdash;either a
-graphical frame, or one in a text terminal (see <a href="Frames.html">Frames</a>).  You
+process to visit <var class="var">file</var> in one of its existing frames&mdash;either a
+graphical frame, or one in a text terminal (see <a class="pxref" href="Frames.html">Frames and Graphical Displays</a>).  You
 can then select that frame to begin editing.
 </p>
-<p>If there is no Emacs server, the <code>emacsclient</code> program halts
+<p>If there is no Emacs server, the <code class="command">emacsclient</code> program halts
 with an error message.  If the Emacs process has no existing
-frame&mdash;which can happen if it was started as a daemon (see <a href="Emacs-Server.html">Emacs Server</a>)&mdash;then Emacs opens a frame on the terminal in which you
-called <code>emacsclient</code>.
+frame&mdash;which can happen if it was started as a daemon (see <a class="pxref" href="Emacs-Server.html">Using Emacs as a Server</a>)&mdash;then Emacs opens a frame on the terminal in which you
+called <code class="command">emacsclient</code>.
 </p>
-<p>You can also force <code>emacsclient</code> to open a new frame on a
-graphical display, or on a text terminal, using the &lsquo;<samp>-c</samp>&rsquo; and
-&lsquo;<samp>-t</samp>&rsquo; options.  See <a href="emacsclient-Options.html">emacsclient Options</a>.
+<p>You can also force <code class="command">emacsclient</code> to open a new frame on a
+graphical display, or on a text terminal, using the &lsquo;<samp class="samp">-c</samp>&rsquo; and
+&lsquo;<samp class="samp">-t</samp>&rsquo; options.  See <a class="xref" href="emacsclient-Options.html"><code class="code">emacsclient</code> Options</a>.
 </p>
 <p>If you are running on a single text terminal, you can switch between
-<code>emacsclient</code>&rsquo;s shell and the Emacs server using one of two
-methods: (i) run the Emacs server and <code>emacsclient</code> on
+<code class="command">emacsclient</code>&rsquo;s shell and the Emacs server using one of two
+methods: (i) run the Emacs server and <code class="command">emacsclient</code> on
 different virtual terminals, and switch to the Emacs server&rsquo;s virtual
-terminal after calling <code>emacsclient</code>; or (ii) call
-<code>emacsclient</code> from within the Emacs server itself, using Shell
-mode (see <a href="Interactive-Shell.html">Interactive Shell</a>) or Term mode (see <a href="Term-Mode.html">Term Mode</a>);
-<code>emacsclient</code> blocks only the subshell under Emacs, and you can
+terminal after calling <code class="command">emacsclient</code>; or (ii) call
+<code class="command">emacsclient</code> from within the Emacs server itself, using Shell
+mode (see <a class="pxref" href="Interactive-Shell.html">Interactive Subshell</a>) or Term mode (see <a class="pxref" href="Term-Mode.html">Term Mode</a>);
+<code class="code">emacsclient</code> blocks only the subshell under Emacs, and you can
 still use Emacs to edit the file.
 </p>
-<span id="index-C_002dx-_0023"></span>
-<span id="index-server_002dedit"></span>
-<p>When you finish editing <var>file</var> in the Emacs server, type
-<kbd>C-x #</kbd> (<code>server-edit</code>) in its buffer.  This saves the file
-and sends a message back to the <code>emacsclient</code> program, telling
-it to exit.  Programs that use <code>EDITOR</code> usually wait for the
-&ldquo;editor&rdquo;&mdash;in this case <code>emacsclient</code>&mdash;to exit before doing
+<a class="index-entry-id" id="index-C_002dx-_0023"></a>
+<a class="index-entry-id" id="index-server_002dedit"></a>
+<p>When you finish editing <var class="var">file</var> in the Emacs server, type
+<kbd class="kbd">C-x #</kbd> (<code class="code">server-edit</code>) in its buffer.  This saves the file
+and sends a message back to the <code class="command">emacsclient</code> program, telling
+it to exit.  Programs that use <code class="env">EDITOR</code> usually wait for the
+&ldquo;editor&rdquo;&mdash;in this case <code class="command">emacsclient</code>&mdash;to exit before doing
 something else.
 </p>
-<p>You can also call <code>emacsclient</code> with multiple file name
-arguments: &lsquo;<samp>emacsclient <var>file1</var> <var>file2</var> ...</samp>&rsquo; tells the
-Emacs server to visit <var>file1</var>, <var>file2</var>, and so forth.  Emacs
-selects the buffer visiting <var>file1</var>, and buries the other buffers
-at the bottom of the buffer list (see <a href="Buffers.html">Buffers</a>).  The
-<code>emacsclient</code> program exits once all the specified files are
-finished (i.e., once you have typed <kbd>C-x #</kbd> in each server
+<p>You can also call <code class="command">emacsclient</code> with multiple file name
+arguments: &lsquo;<samp class="samp">emacsclient <var class="var">file1</var> <var class="var">file2</var> ...</samp>&rsquo; tells the
+Emacs server to visit <var class="var">file1</var>, <var class="var">file2</var>, and so forth.  Emacs
+selects the buffer visiting <var class="var">file1</var>, and buries the other buffers
+at the bottom of the buffer list (see <a class="pxref" href="Buffers.html">Using Multiple Buffers</a>).  The
+<code class="command">emacsclient</code> program exits once all the specified files are
+finished (i.e., once you have typed <kbd class="kbd">C-x #</kbd> in each server
 buffer).
 </p>
-<span id="index-server_002dkill_002dnew_002dbuffers"></span>
-<span id="index-server_002dtemp_002dfile_002dregexp"></span>
+<a class="index-entry-id" id="index-server_002dkill_002dnew_002dbuffers"></a>
+<a class="index-entry-id" id="index-server_002dtemp_002dfile_002dregexp"></a>
 <p>Finishing with a server buffer also kills the buffer, unless it
 already existed in the Emacs session before the server was asked to
-create it.  However, if you set <code>server-kill-new-buffers</code> to
-<code>nil</code>, then a different criterion is used: finishing with a
+create it.  However, if you set <code class="code">server-kill-new-buffers</code> to
+<code class="code">nil</code>, then a different criterion is used: finishing with a
 server buffer kills it if the file name matches the regular expression
-<code>server-temp-file-regexp</code>.  This is set up to distinguish certain
+<code class="code">server-temp-file-regexp</code>.  This is set up to distinguish certain
 &ldquo;temporary&rdquo; files.
 </p>
-<p>Each <kbd>C-x #</kbd> checks for other pending external requests to edit
+<p>Each <kbd class="kbd">C-x #</kbd> checks for other pending external requests to edit
 various files, and selects the next such file.  You can switch to a
 server buffer manually if you wish; you don&rsquo;t have to arrive at it
-with <kbd>C-x #</kbd>.  But <kbd>C-x #</kbd> is the way to tell
-<code>emacsclient</code> that you are finished.
+with <kbd class="kbd">C-x #</kbd>.  But <kbd class="kbd">C-x #</kbd> is the way to tell
+<code class="command">emacsclient</code> that you are finished.
 </p>
-<span id="index-server_002dwindow"></span>
-<p>If you set the value of the variable <code>server-window</code> to a
-window or a frame, <kbd>C-x #</kbd> always displays the next server buffer
+<a class="index-entry-id" id="index-server_002dwindow"></a>
+<p>If you set the value of the variable <code class="code">server-window</code> to a
+window or a frame, <kbd class="kbd">C-x #</kbd> always displays the next server buffer
 in that window or in that frame.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="emacsclient-Options.html" accesskey="n" rel="next">emacsclient Options</a>, Up: <a href="Emacs-Server.html" accesskey="u" rel="up">Emacs Server</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="emacsclient-Options.html"><code class="code">emacsclient</code> Options</a>, Up: <a href="Emacs-Server.html">Using Emacs as a Server</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

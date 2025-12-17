@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.2.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Hooks for Loading (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Hooks for Loading (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Hooks for Loading (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Loading.html" rel="up" title="Loading">
+<link href="Dynamic-Modules.html" rel="next" title="Dynamic Modules">
+<link href="Unloading.html" rel="prev" title="Unloading">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Hooks-for-Loading">
+<div class="nav-panel">
+<p>
+Next: <a href="Dynamic-Modules.html" accesskey="n" rel="next">Emacs Dynamic Modules</a>, Previous: <a href="Unloading.html" accesskey="p" rel="prev">Unloading</a>, Up: <a href="Loading.html" accesskey="u" rel="up">Loading</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Hooks-for-Loading-1"><span>16.10 Hooks for Loading<a class="copiable-link" href="#Hooks-for-Loading-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-loading-hooks"></a>
+<a class="index-entry-id" id="index-hooks-for-loading"></a>
+
+<p>You can ask for code to be executed each time Emacs loads a library,
+by using the variable <code class="code">after-load-functions</code>:
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-after_002dload_002dfunctions"><span class="category-def">Variable: </span><span><strong class="def-name">after-load-functions</strong><a class="copiable-link" href="#index-after_002dload_002dfunctions"> &para;</a></span></dt>
+<dd><p>This abnormal hook is run after loading a file.  Each function in the
+hook is called with a single argument, the absolute filename of the
+file that was just loaded.
+</p></dd></dl>
+
+<p>If you want code to be executed when a <em class="emph">particular</em> library is
+loaded, use the macro <code class="code">with-eval-after-load</code>:
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-with_002deval_002dafter_002dload"><span class="category-def">Macro: </span><span><strong class="def-name">with-eval-after-load</strong> <var class="def-var-arguments">library body&hellip;</var><a class="copiable-link" href="#index-with_002deval_002dafter_002dload"> &para;</a></span></dt>
+<dd><p>This macro arranges to evaluate <var class="var">body</var> at the end of loading
+the file <var class="var">library</var>, each time <var class="var">library</var> is loaded.  If
+<var class="var">library</var> is already loaded, it evaluates <var class="var">body</var> right away.
+</p>
+<p>You don&rsquo;t need to give a directory or extension in the file name
+<var class="var">library</var>.  Normally, you just give a bare file name, like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(with-eval-after-load &quot;js&quot; (keymap-set js-mode-map &quot;C-c C-c&quot; 'js-eval))
+</pre></div>
+
+<p>To restrict which files can trigger the evaluation, include a
+directory or an extension or both in <var class="var">library</var>.  Only a file whose
+absolute true name (i.e., the name with all symbolic links chased out)
+matches all the given name components will match.  In the following
+example, <samp class="file">my_inst.elc</samp> or <samp class="file">my_inst.elc.gz</samp> in some directory
+<code class="code">..../foo/bar</code> will trigger the evaluation, but not
+<samp class="file">my_inst.el</samp>:
+</p>
+<div class="example">
+<pre class="example-preformatted">(with-eval-after-load &quot;foo/bar/my_inst.elc&quot; ...)
+</pre></div>
+
+<p><var class="var">library</var> can also be a feature (i.e., a symbol), in which case
+<var class="var">body</var> is evaluated at the end of any file where
+<code class="code">(provide <var class="var">library</var>)</code> is called.
+</p>
+<p>An error in <var class="var">body</var> does not undo the load, but does prevent
+execution of the rest of <var class="var">body</var>.
+</p></dd></dl>
+
+<p>Normally, well-designed Lisp programs should not use
+<code class="code">with-eval-after-load</code>.  If you need to examine and set the
+variables defined in another library (those meant for outside use),
+you can do it immediately&mdash;there is no need to wait until the library
+is loaded.  If you need to call functions defined by that library, you
+should load the library, preferably with <code class="code">require</code> (see <a class="pxref" href="Named-Features.html">Features</a>).
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dynamic-Modules.html">Emacs Dynamic Modules</a>, Previous: <a href="Unloading.html">Unloading</a>, Up: <a href="Loading.html">Loading</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

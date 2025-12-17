@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Changing Key Bindings (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Changing Key Bindings (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,22 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Keymaps.html" rel="up" title="Keymaps">
-<link href="Remapping-Commands.html" rel="next" title="Remapping Commands">
-<link href="Functions-for-Key-Lookup.html" rel="prev" title="Functions for Key Lookup">
+<link href="Format-of-Keymaps.html" rel="next" title="Format of Keymaps">
+<link href="Keymap-Basics.html" rel="prev" title="Keymap Basics">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,349 +51,272 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Changing-Key-Bindings"></span><div class="header">
+<div class="section-level-extent" id="Changing-Key-Bindings">
+<div class="nav-panel">
 <p>
-Next: <a href="Remapping-Commands.html" accesskey="n" rel="next">Remapping Commands</a>, Previous: <a href="Functions-for-Key-Lookup.html" accesskey="p" rel="prev">Functions for Key Lookup</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Format-of-Keymaps.html" accesskey="n" rel="next">Format of Keymaps</a>, Previous: <a href="Keymap-Basics.html" accesskey="p" rel="prev">Keymap Basics</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Changing-Key-Bindings-1"></span><h3 class="section">23.12 Changing Key Bindings</h3>
-<span id="index-changing-key-bindings"></span>
-<span id="index-rebinding"></span>
+<h3 class="section" id="Changing-Key-Bindings-1"><span>23.2 Changing Key Bindings<a class="copiable-link" href="#Changing-Key-Bindings-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-changing-key-bindings"></a>
+<a class="index-entry-id" id="index-rebinding"></a>
 
 <p>The way to rebind a key is to change its entry in a keymap.  If you
 change a binding in the global keymap, the change is effective in all
 buffers (though it has no direct effect in buffers that shadow the
 global binding with a local one).  If you change the current buffer&rsquo;s
 local map, that usually affects all buffers using the same major mode.
-The <code>global-set-key</code> and <code>local-set-key</code> functions are
-convenient interfaces for these operations (see <a href="Key-Binding-Commands.html">Key Binding Commands</a>).  You can also use <code>define-key</code>, a more general
+The <code class="code">keymap-global-set</code> and <code class="code">keymap-local-set</code> functions are
+convenient interfaces for these operations (see <a class="pxref" href="Key-Binding-Commands.html">Commands for Binding Keys</a>).  You can also use <code class="code">keymap-set</code>, a more general
 function; then you must explicitly specify the map to change.
 </p>
 <p>When choosing the key sequences for Lisp programs to rebind, please
-follow the Emacs conventions for use of various keys (see <a href="Key-Binding-Conventions.html">Key Binding Conventions</a>).
+follow the Emacs conventions for use of various keys (see <a class="pxref" href="Key-Binding-Conventions.html">Key Binding Conventions</a>).
 </p>
-<span id="index-meta-character-key-constants"></span>
-<span id="index-control-character-key-constants"></span>
-<p><code>define-key</code> (and other functions that are used to rebind keys)
-understand a number of different syntaxes for the keys.
+<p>The functions below signal an error if <var class="var">keymap</var> is not a keymap,
+or if <var class="var">key</var> is not a valid key.
 </p>
-<dl compact="compact">
-<dt>A vector containing a single string.</dt>
-<dd><p>This is the preferred way to represent a key sequence.  Here&rsquo;s a
-couple of examples:
+<p><var class="var">key</var> is a string representing a single key or a series of key
+strokes, and must satisfy <code class="code">key-valid-p</code>.  Key strokes are
+separated by a single space character.
 </p>
-<div class="example">
-<pre class="example">[&quot;C-c M-f&quot;]
-[&quot;S-&lt;home&gt;&quot;]
-</pre></div>
-
-<p>The syntax is the same as the one used by Emacs when displaying key
-bindings, for instance in &lsquo;<samp>*Help*</samp>&rsquo; buffers and help texts.
+<p>Each key stroke is either a single character, or the name of an
+event, surrounded by angle brackets.  In addition, any key stroke
+may be preceded by one or more modifier keys.  Finally, a limited
+number of characters have a special shorthand syntax.  Here&rsquo;s some
+example key sequences:
 </p>
-<p>If the syntax isn&rsquo;t valid, an error will be raised when running
-<code>define-key</code>, or when byte-compiling code that has these calls.
+<dl class="table">
+<dt><kbd class="kbd">f</kbd></dt>
+<dd><p>The key <kbd class="kbd">f</kbd>.
 </p>
 </dd>
-<dt>A vector containing lists of keys.</dt>
-<dd><p>You can use a list containing modifier names plus one base event (a
-character or function key name).  For example, <code>[(control ?a)
-(meta b)]</code> is equivalent to <kbd>C-a M-b</kbd> and <code>[(hyper control
-left)]</code> is equivalent to <kbd>C-H-left</kbd>.
+<dt><kbd class="kbd">S o m</kbd></dt>
+<dd><p>A three key sequence of the keys <kbd class="kbd">S</kbd>, <kbd class="kbd">o</kbd> and <kbd class="kbd">m</kbd>.
 </p>
 </dd>
-<dt>A string with control and meta characters.</dt>
-<dd><p>Internally, key sequences are often represented as strings using the
-special escape sequences for control and meta characters
-(see <a href="String-Type.html">String Type</a>), but this representation can also be used by
-users when rebinding keys.  A string like <code>&quot;\M-x&quot;</code> is read as
-containing a single <kbd>M-x</kbd>, <code>&quot;\C-f&quot;</code> is read as containing a
-single <kbd>C-f</kbd>, and <code>&quot;\M-\C-x&quot;</code> and <code>&quot;\C-\M-x&quot;</code> are both
-read as containing a single <kbd>C-M-x</kbd>.
+<dt><kbd class="kbd">C-c o</kbd></dt>
+<dd><p>A two key sequence of the keys <kbd class="kbd">c</kbd> with the control modifier and
+then the key <kbd class="kbd">o</kbd>
 </p>
 </dd>
-<dt>a vector of characters.</dt>
-<dd><p>This is the other internal representation of key sequences, and
-supports a fuller range of modifiers than the string representation.
-One example is &lsquo;<samp>[?\C-\H-x home]</samp>&rsquo;, which represents the <kbd>C-H-x
-home</kbd> key sequence.  See <a href="Character-Type.html">Character Type</a>.
+<dt><kbd class="kbd">H-&lt;left&gt;</kbd></dt>
+<dd><p>The key named <kbd class="kbd">left</kbd> with the hyper modifier.
+</p>
+</dd>
+<dt><kbd class="kbd">M-RET</kbd></dt>
+<dd><p>The <kbd class="kbd">return</kbd> key with a meta modifier.
+</p>
+</dd>
+<dt><kbd class="kbd">C-M-&lt;space&gt;</kbd></dt>
+<dd><p>The <kbd class="kbd">space</kbd> key with both the control and meta modifiers.
 </p></dd>
 </dl>
 
-<p>The functions below signal an error if <var>keymap</var> is not a keymap,
-or if <var>key</var> is not a string or vector representing a key sequence.
-You can use event types (symbols) as shorthand for events that are
-lists.  The <code>kbd</code> function (see <a href="Key-Sequences.html">Key Sequences</a>) is a
-convenient way to specify the key sequence.
+<p>The only keys that have a special shorthand syntax are <kbd class="kbd">NUL</kbd>,
+<kbd class="kbd">RET</kbd>, <kbd class="kbd">TAB</kbd>, <kbd class="kbd">LFD</kbd>, <kbd class="kbd">ESC</kbd>, <kbd class="kbd">SPC</kbd> and <kbd class="kbd">DEL</kbd>.
 </p>
-<dl>
-<dt id="index-define_002dkey">Function: <strong>define-key</strong> <em>keymap key binding</em></dt>
-<dd><p>This function sets the binding for <var>key</var> in <var>keymap</var>.  (If
-<var>key</var> is more than one event long, the change is actually made
-in another keymap reached from <var>keymap</var>.)  The argument
-<var>binding</var> can be any Lisp object, but only certain types are
-meaningful.  (For a list of meaningful types, see <a href="Key-Lookup.html">Key Lookup</a>.)
-The value returned by <code>define-key</code> is <var>binding</var>.
+<p>The modifiers have to be specified in alphabetical order:
+&lsquo;<samp class="samp">A-C-H-M-S-s</samp>&rsquo;, which is &lsquo;<samp class="samp">Alt-Control-Hyper-Meta-Shift-super</samp>&rsquo;.
 </p>
-<p>If <var>key</var> is <code>[t]</code>, this sets the default binding in
-<var>keymap</var>.  When an event has no binding of its own, the Emacs
+<a class="index-entry-id" id="index-keymap_002dset"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-keymap_002dset-1"><span class="category-def">Function: </span><span><strong class="def-name">keymap-set</strong> <var class="def-var-arguments">keymap key binding</var><a class="copiable-link" href="#index-keymap_002dset-1"> &para;</a></span></dt>
+<dd><p>This function sets the binding for <var class="var">key</var> in <var class="var">keymap</var>.  (If
+<var class="var">key</var> is more than one event long, the change is actually made
+in another keymap reached from <var class="var">keymap</var>.)  The argument
+<var class="var">binding</var> can be any Lisp object, but only certain types are
+meaningful.  (For a list of meaningful types, see <a class="ref" href="Key-Lookup.html">Key Lookup</a>.)
+The value returned by <code class="code">keymap-set</code> is <var class="var">binding</var>.
+</p>
+<p>If <var class="var">key</var> is <kbd class="kbd">&lt;t&gt;</kbd>, this sets the default binding in
+<var class="var">keymap</var>.  When an event has no binding of its own, the Emacs
 command loop uses the keymap&rsquo;s default binding, if there is one.
 </p>
-<span id="index-invalid-prefix-key-error"></span>
-<span id="index-key-sequence-error"></span>
-<p>Every prefix of <var>key</var> must be a prefix key (i.e., bound to a keymap)
+<a class="index-entry-id" id="index-invalid-prefix-key-error"></a>
+<a class="index-entry-id" id="index-key-sequence-error"></a>
+<p>Every prefix of <var class="var">key</var> must be a prefix key (i.e., bound to a keymap)
 or undefined; otherwise an error is signaled.  If some prefix of
-<var>key</var> is undefined, then <code>define-key</code> defines it as a prefix
-key so that the rest of <var>key</var> can be defined as specified.
+<var class="var">key</var> is undefined, then <code class="code">keymap-set</code> defines it as a prefix
+key so that the rest of <var class="var">key</var> can be defined as specified.
 </p>
-<p>If there was previously no binding for <var>key</var> in <var>keymap</var>, the
-new binding is added at the beginning of <var>keymap</var>.  The order of
+<p>If there was previously no binding for <var class="var">key</var> in <var class="var">keymap</var>, the
+new binding is added at the beginning of <var class="var">keymap</var>.  The order of
 bindings in a keymap makes no difference for keyboard input, but it
-does matter for menu keymaps (see <a href="Menu-Keymaps.html">Menu Keymaps</a>).
+does matter for menu keymaps (see <a class="pxref" href="Menu-Keymaps.html">Menu Keymaps</a>).
 </p></dd></dl>
 
+<a class="index-entry-id" id="index-keymap_002dunset"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-keymap_002dunset-1"><span class="category-def">Function: </span><span><strong class="def-name">keymap-unset</strong> <var class="def-var-arguments">keymap key &amp;optional remove</var><a class="copiable-link" href="#index-keymap_002dunset-1"> &para;</a></span></dt>
+<dd><p>This function is the inverse of <code class="code">keymap-set</code>, it unsets the
+binding for <var class="var">key</var> in <var class="var">keymap</var>, which is the same as setting
+the binding to <code class="code">nil</code>.  In order to instead remove the binding
+completely, specify <var class="var">remove</var> as non-<code class="code">nil</code>.  This only makes a
+difference if <var class="var">keymap</var> has a parent keymap: if you just unset a key
+in a child map, it will still shadow the same key in the parent
+keymap; using <var class="var">remove</var> instead will allow the key in the parent keymap
+to be used.
+</p></dd></dl>
+
+<p>Note: using <code class="code">keymap-unset</code> with <var class="var">remove</var> non-<code class="code">nil</code> is
+intended for users to put in their init file; Emacs packages should
+avoid using it if possible, since they have complete control over
+their own keymaps anyway, and they should not be altering other
+packages&rsquo; keymaps.
+</p>
 <p>This example creates a sparse keymap and makes a number of
 bindings in it:
 </p>
-<div class="example">
-<pre class="example">(setq map (make-sparse-keymap))
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq map (make-sparse-keymap))
     &rArr; (keymap)
-</pre><pre class="example">(define-key map [&quot;C-f&quot;] 'forward-char)
+</pre></div><div class="group"><pre class="example-preformatted">(keymap-set map &quot;C-f&quot; 'forward-char)
     &rArr; forward-char
-</pre><pre class="example">map
+</pre></div><div class="group"><pre class="example-preformatted">map
     &rArr; (keymap (6 . forward-char))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">;; <span class="roman">Build sparse submap for <kbd>C-x</kbd> and bind <kbd>f</kbd> in that.</span>
-(define-key map [&quot;C-x f&quot;] 'forward-word)
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">Build sparse submap for <kbd class="kbd">C-x</kbd> and bind <kbd class="kbd">f</kbd> in that.</span>
+(keymap-set map &quot;C-x f&quot; 'forward-word)
     &rArr; forward-word
-</pre><pre class="example">map
+</pre></div><div class="group"><pre class="example-preformatted">map
 &rArr; (keymap
-    (24 keymap                ; <kbd>C-x</kbd>
-        (102 . forward-word)) ;      <kbd>f</kbd>
-    (6 . forward-char))       ; <kbd>C-f</kbd>
-</pre><pre class="example">
+    (24 keymap                ; <kbd class="kbd">C-x</kbd>
+        (102 . forward-word)) ;      <kbd class="kbd">f</kbd>
+    (6 . forward-char))       ; <kbd class="kbd">C-f</kbd>
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">;; <span class="roman">Bind <kbd>C-p</kbd> to the <code>ctl-x-map</code>.</span>
-(define-key map [&quot;C-p&quot;] ctl-x-map)
-;; <code>ctl-x-map</code>
-&rArr; [nil &hellip; find-file &hellip; backward-kill-sentence]
-</pre><pre class="example">
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">Bind <kbd class="kbd">C-p</kbd> to the <code class="code">ctl-x-map</code>.</span>
+(keymap-set map &quot;C-p&quot; ctl-x-map)
+;; <code class="code">ctl-x-map</code>
+&rArr; [nil ... find-file ... backward-kill-sentence]
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">;; <span class="roman">Bind <kbd>C-f</kbd> to <code>foo</code> in the <code>ctl-x-map</code>.</span>
-(define-key map [&quot;C-p C-f&quot;] 'foo)
+</pre><div class="group"><pre class="example-preformatted">;; <span class="r">Bind <kbd class="kbd">C-f</kbd> to <code class="code">foo</code> in the <code class="code">ctl-x-map</code>.</span>
+(keymap-set map &quot;C-p C-f&quot; 'foo)
 &rArr; 'foo
-</pre><pre class="example">map
-&rArr; (keymap     ; <span class="roman">Note <code>foo</code> in <code>ctl-x-map</code>.</span>
-    (16 keymap [nil &hellip; foo &hellip; backward-kill-sentence])
+</pre></div><div class="group"><pre class="example-preformatted">map
+&rArr; (keymap     ; <span class="r">Note <code class="code">foo</code> in <code class="code">ctl-x-map</code>.</span>
+    (16 keymap [nil ... foo ... backward-kill-sentence])
     (24 keymap
         (102 . forward-word))
     (6 . forward-char))
-</pre></div>
+</pre></div></div>
 
-<p>Note that storing a new binding for <kbd>C-p C-f</kbd> actually works by
-changing an entry in <code>ctl-x-map</code>, and this has the effect of
-changing the bindings of both <kbd>C-p C-f</kbd> and <kbd>C-x C-f</kbd> in the
+<p>Note that storing a new binding for <kbd class="kbd">C-p C-f</kbd> actually works by
+changing an entry in <code class="code">ctl-x-map</code>, and this has the effect of
+changing the bindings of both <kbd class="kbd">C-p C-f</kbd> and <kbd class="kbd">C-x C-f</kbd> in the
 default global map.
 </p>
-<dl>
-<dt id="index-define_002dkeymap">Function: <strong>define-keymap</strong> <em>&amp;key options... &amp;rest pairs...</em></dt>
-<dd><p><code>define-key</code> is the general work horse for defining a key in a
+<p><code class="code">keymap-set</code> is the general work horse for defining a key in a
 keymap.  When writing modes, however, you frequently have to bind a
-large number of keys at once, and using <code>define-key</code> on them all
+large number of keys at once, and using <code class="code">keymap-set</code> on them all
 can be tedious and error-prone.  Instead you can use
-<code>define-keymap</code>, which creates a keymaps and binds a number of
-keys.  Here&rsquo;s a very basic example:
+<code class="code">define-keymap</code>, which creates a keymap and binds a number of
+keys.  See <a class="xref" href="Creating-Keymaps.html">Creating Keymaps</a>, for details.
 </p>
-<div class="lisp">
-<pre class="lisp">(define-keymap
-  &quot;n&quot; #'forward-line
-  &quot;f&quot; #'previous-line
-  [&quot;C-c C-c&quot;] #'quit-window)
-</pre></div>
-
-<p>This function creates a new sparse keymap, defines the two keystrokes
-in <var>pairs</var>, and returns the new keymap.
-</p>
-<p><var>pairs</var> is a list of alternating key bindings and key definitions,
-as accepted by <code>define-key</code>.  In addition the key can be the
-special symbol <code>:menu</code>, in which case the definition should be a
-menu definition as accepted by <code>easy-menu-define</code> (see <a href="Easy-Menu.html">Easy Menu</a>).  Here&rsquo;s a brief example:
-</p>
-<div class="lisp">
-<pre class="lisp">(define-keymap :full t
-  &quot;g&quot; #'eww-reload
-  :menu '(&quot;Eww&quot;
-          [&quot;Exit&quot; quit-window t]
-          [&quot;Reload&quot; eww-reload t]))
-</pre></div>
-
-<p>A number of keywords can be used before the key/definition pairs to
-changes features of the new keymap.  If the keyword is missing, the
-default value for the feature is <code>nil</code>.  Here&rsquo;s a list of the
-available keywords:
-</p>
-<dl compact="compact">
-<dt><code>:full</code></dt>
-<dd><p>If non-<code>nil</code>, create a chartable keymap (as from
-<code>make-keymap</code>) instead of a sparse keymap (as from
-<code>make-sparse-keymap</code> (see <a href="Creating-Keymaps.html">Creating Keymaps</a>).  A sparse keymap
-is the default.
-</p>
-</dd>
-<dt><code>:parent</code></dt>
-<dd><p>If non-<code>nil</code>, this should be a keymap to use as the parent
-(see <a href="Inheritance-and-Keymaps.html">Inheritance and Keymaps</a>).
-</p>
-</dd>
-<dt><code>:keymap</code></dt>
-<dd><p>If non-<code>nil</code>, this should be a keymap.  Instead of creating a new
-keymap, this keymap is modified instead.
-</p>
-</dd>
-<dt><code>:suppress</code></dt>
-<dd><p>If non-<code>nil</code>, the keymap will be suppressed with
-<code>suppress-keymap</code> (see <a href="#Changing-Key-Bindings">Changing Key Bindings</a>).  If
-<code>nodigits</code>, treat digits like other chars.
-</p>
-</dd>
-<dt><code>:name</code></dt>
-<dd><p>If non-<code>nil</code>, this should be a string to use as the menu for the
-keymap if you use it as a menu with <code>x-popup-menu</code> (see <a href="Pop_002dUp-Menus.html">Pop-Up Menus</a>).
-</p>
-</dd>
-<dt><code>:prefix</code></dt>
-<dd><p>If non-<code>nil</code>, this should be a symbol to be used as a prefix
-command (see <a href="Prefix-Keys.html">Prefix Keys</a>).  If this is the case, this symbol is
-returned by <code>define-keymap</code> instead of the map itself.
-</p></dd>
-</dl>
-
-</dd></dl>
-
-<dl>
-<dt id="index-defvar_002dkeymap">Macro: <strong>defvar-keymap</strong> <em>name &amp;key options... &amp;rest pairs...</em></dt>
-<dd><p>By far, the most common thing to do with a keymap is to bind it to a
-variable.  This is what virtually all modes do&mdash;a mode called
-<code>foo</code> almost always has a variable called <code>foo-mode-map</code>.
-</p>
-<p>This macro defines <var>name</var> as a variable, and passes <var>options</var>
-and <var>pars</var> to <code>define-keymap</code>, and uses the result as the
-default value for the variable.
-</p>
-<p><var>options</var> is like the keywords in <code>define-keymap</code>, but adds a
-<code>:doc</code> keyword that says what the doc string for the <var>name</var>
-variable should be.
-</p>
-<p>Here&rsquo;s an example:
-</p>
-<div class="lisp">
-<pre class="lisp">(defvar-keymap eww-textarea-map
-  :parent text-mode-map
-  &quot;\r&quot; #'forward-line
-  [?\t] #'shr-next-link)
-</pre></div>
-</dd></dl>
-
-<p>The function <code>substitute-key-definition</code> scans a keymap for
+<p>The function <code class="code">substitute-key-definition</code> scans a keymap for
 keys that have a certain binding and rebinds them with a different
 binding.  Another feature which is cleaner and can often produce the
-same results is to remap one command into another (see <a href="Remapping-Commands.html">Remapping Commands</a>).
+same results is to remap one command into another (see <a class="pxref" href="Remapping-Commands.html">Remapping Commands</a>).
 </p>
-<dl>
-<dt id="index-substitute_002dkey_002ddefinition">Function: <strong>substitute-key-definition</strong> <em>olddef newdef keymap &amp;optional oldmap</em></dt>
-<dd><span id="index-replace-bindings"></span>
-<p>This function replaces <var>olddef</var> with <var>newdef</var> for any keys in
-<var>keymap</var> that were bound to <var>olddef</var>.  In other words,
-<var>olddef</var> is replaced with <var>newdef</var> wherever it appears.  The
-function returns <code>nil</code>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-substitute_002dkey_002ddefinition"><span class="category-def">Function: </span><span><strong class="def-name">substitute-key-definition</strong> <var class="def-var-arguments">olddef newdef keymap &amp;optional oldmap</var><a class="copiable-link" href="#index-substitute_002dkey_002ddefinition"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-replace-bindings"></a>
+<p>This function replaces <var class="var">olddef</var> with <var class="var">newdef</var> for any keys in
+<var class="var">keymap</var> that were bound to <var class="var">olddef</var>.  In other words,
+<var class="var">olddef</var> is replaced with <var class="var">newdef</var> wherever it appears.  The
+function returns <code class="code">nil</code>.
 </p>
-<p>For example, this redefines <kbd>C-x C-f</kbd>, if you do it in an Emacs with
+<p>For example, this redefines <kbd class="kbd">C-x C-f</kbd>, if you do it in an Emacs with
 standard bindings:
 </p>
-<div class="example">
-<pre class="example">(substitute-key-definition
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(substitute-key-definition
  'find-file 'find-file-read-only (current-global-map))
-</pre></div>
+</pre></div></div>
 
-<p>If <var>oldmap</var> is non-<code>nil</code>, that changes the behavior of
-<code>substitute-key-definition</code>: the bindings in <var>oldmap</var> determine
-which keys to rebind.  The rebindings still happen in <var>keymap</var>, not
-in <var>oldmap</var>.  Thus, you can change one map under the control of the
+<p>If <var class="var">oldmap</var> is non-<code class="code">nil</code>, that changes the behavior of
+<code class="code">substitute-key-definition</code>: the bindings in <var class="var">oldmap</var> determine
+which keys to rebind.  The rebindings still happen in <var class="var">keymap</var>, not
+in <var class="var">oldmap</var>.  Thus, you can change one map under the control of the
 bindings in another.  For example,
 </p>
-<div class="example">
-<pre class="example">(substitute-key-definition
+<div class="example smallexample">
+<pre class="example-preformatted">(substitute-key-definition
   'delete-backward-char 'my-funny-delete
   my-map global-map)
 </pre></div>
 
-<p>puts the special deletion command in <code>my-map</code> for whichever keys
+<p>puts the special deletion command in <code class="code">my-map</code> for whichever keys
 are globally bound to the standard deletion command.
 </p>
 <p>Here is an example showing a keymap before and after substitution:
 </p>
-<div class="example">
-<pre class="example">(setq map (list 'keymap
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(setq map (list 'keymap
                 (cons ?1 olddef-1)
                 (cons ?2 olddef-2)
                 (cons ?3 olddef-1)))
 &rArr; (keymap (49 . olddef-1) (50 . olddef-2) (51 . olddef-1))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(substitute-key-definition 'olddef-1 'newdef map)
+</pre><div class="group"><pre class="example-preformatted">(substitute-key-definition 'olddef-1 'newdef map)
 &rArr; nil
-</pre><pre class="example">map
+</pre></div><div class="group"><pre class="example-preformatted">map
 &rArr; (keymap (49 . newdef) (50 . olddef-2) (51 . newdef))
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-suppress_002dkeymap">Function: <strong>suppress-keymap</strong> <em>keymap &amp;optional nodigits</em></dt>
-<dd><span id="index-self_002dinsert_002dcommand-override"></span>
-<p>This function changes the contents of the full keymap <var>keymap</var> by
-remapping <code>self-insert-command</code> to the command <code>undefined</code>
-(see <a href="Remapping-Commands.html">Remapping Commands</a>).  This has the effect of undefining all
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-suppress_002dkeymap"><span class="category-def">Function: </span><span><strong class="def-name">suppress-keymap</strong> <var class="def-var-arguments">keymap &amp;optional nodigits</var><a class="copiable-link" href="#index-suppress_002dkeymap"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-self_002dinsert_002dcommand-override"></a>
+<p>This function changes the contents of the full keymap <var class="var">keymap</var> by
+remapping <code class="code">self-insert-command</code> to the command <code class="code">undefined</code>
+(see <a class="pxref" href="Remapping-Commands.html">Remapping Commands</a>).  This has the effect of undefining all
 printing characters, thus making ordinary insertion of text impossible.
-<code>suppress-keymap</code> returns <code>nil</code>.
+<code class="code">suppress-keymap</code> returns <code class="code">nil</code>.
 </p>
-<p>If <var>nodigits</var> is <code>nil</code>, then <code>suppress-keymap</code> defines
-digits to run <code>digit-argument</code>, and <kbd>-</kbd> to run
-<code>negative-argument</code>.  Otherwise it makes them undefined like the
+<p>If <var class="var">nodigits</var> is <code class="code">nil</code>, then <code class="code">suppress-keymap</code> defines
+digits to run <code class="code">digit-argument</code>, and <kbd class="kbd">-</kbd> to run
+<code class="code">negative-argument</code>.  Otherwise it makes them undefined like the
 rest of the printing characters.
 </p>
-<span id="index-yank-suppression"></span>
-<span id="index-quoted_002dinsert-suppression"></span>
-<p>The <code>suppress-keymap</code> function does not make it impossible to
-modify a buffer, as it does not suppress commands such as <code>yank</code>
-and <code>quoted-insert</code>.  To prevent any modification of a buffer, make
-it read-only (see <a href="Read-Only-Buffers.html">Read Only Buffers</a>).
+<a class="index-entry-id" id="index-yank-suppression"></a>
+<a class="index-entry-id" id="index-quoted_002dinsert-suppression"></a>
+<p>The <code class="code">suppress-keymap</code> function does not make it impossible to
+modify a buffer, as it does not suppress commands such as <code class="code">yank</code>
+and <code class="code">quoted-insert</code>.  To prevent any modification of a buffer, make
+it read-only (see <a class="pxref" href="Read-Only-Buffers.html">Read-Only Buffers</a>).
 </p>
-<p>Since this function modifies <var>keymap</var>, you would normally use it
+<p>Since this function modifies <var class="var">keymap</var>, you would normally use it
 on a newly created keymap.  Operating on an existing keymap
 that is used for some other purpose is likely to cause trouble; for
-example, suppressing <code>global-map</code> would make it impossible to use
+example, suppressing <code class="code">global-map</code> would make it impossible to use
 most of Emacs.
 </p>
 <p>This function can be used to initialize the local keymap of a major
 mode for which insertion of text is not desirable.  But usually such a
-mode should be derived from <code>special-mode</code> (see <a href="Basic-Major-Modes.html">Basic Major Modes</a>); then its keymap will automatically inherit from
-<code>special-mode-map</code>, which is already suppressed.  Here is how
-<code>special-mode-map</code> is defined:
+mode should be derived from <code class="code">special-mode</code> (see <a class="pxref" href="Basic-Major-Modes.html">Basic Major Modes</a>); then its keymap will automatically inherit from
+<code class="code">special-mode-map</code>, which is already suppressed.  Here is how
+<code class="code">special-mode-map</code> is defined:
 </p>
-<div class="example">
-<pre class="example">(defvar special-mode-map
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(defvar special-mode-map
   (let ((map (make-sparse-keymap)))
     (suppress-keymap map)
-    (define-key map &quot;q&quot; 'quit-window)
-    &hellip;
+    (keymap-set map &quot;q&quot; 'quit-window)
+    ...
     map))
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Remapping-Commands.html" accesskey="n" rel="next">Remapping Commands</a>, Previous: <a href="Functions-for-Key-Lookup.html" accesskey="p" rel="prev">Functions for Key Lookup</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Format-of-Keymaps.html">Format of Keymaps</a>, Previous: <a href="Keymap-Basics.html">Keymap Basics</a>, Up: <a href="Keymaps.html">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

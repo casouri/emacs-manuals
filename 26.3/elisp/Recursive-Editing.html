@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Recursive Editing (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Recursive Editing (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Prefix-Command-Arguments.html" rel="prev" title="Prefix Command Arguments">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,21 +49,22 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Recursive-Editing"></span><div class="header">
+<div class="section-level-extent" id="Recursive-Editing">
+<div class="nav-panel">
 <p>
 Next: <a href="Disabling-Commands.html" accesskey="n" rel="next">Disabling Commands</a>, Previous: <a href="Prefix-Command-Arguments.html" accesskey="p" rel="prev">Prefix Command Arguments</a>, Up: <a href="Command-Loop.html" accesskey="u" rel="up">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Recursive-Editing-1"></span><h3 class="section">21.13 Recursive Editing</h3>
-<span id="index-recursive-command-loop"></span>
-<span id="index-recursive-editing-level"></span>
-<span id="index-command-loop_002c-recursive"></span>
+<h3 class="section" id="Recursive-Editing-1"><span>21.13 Recursive Editing<a class="copiable-link" href="#Recursive-Editing-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-recursive-command-loop"></a>
+<a class="index-entry-id" id="index-recursive-editing-level"></a>
+<a class="index-entry-id" id="index-command-loop_002c-recursive"></a>
 
 <p>The Emacs command loop is entered automatically when Emacs starts up.
 This top-level invocation of the command loop never exits; it keeps
 running as long as Emacs does.  Lisp programs can also invoke the
 command loop.  Since this makes more than one activation of the command
-loop, we call it <em>recursive editing</em>.  A recursive editing level has
+loop, we call it <em class="dfn">recursive editing</em>.  A recursive editing level has
 the effect of suspending whatever command invoked it and permitting the
 user to do arbitrary editing before resuming that command.
 </p>
@@ -85,7 +79,7 @@ recursive editing is not in progress.)
 handlers so that an error in a command run from the command loop will
 not exit the loop.
 </p>
-<span id="index-minibuffer-input"></span>
+<a class="index-entry-id" id="index-minibuffer-input"></a>
 <p>Minibuffer input is a special kind of recursive editing.  It has a few
 special wrinkles, such as enabling display of the minibuffer and the
 minibuffer window, but fewer than you might suppose.  Certain keys
@@ -93,59 +87,59 @@ behave differently in the minibuffer, but that is only because of the
 minibuffer&rsquo;s local map; if you switch windows, you get the usual Emacs
 commands.
 </p>
-<span id="index-throw-example"></span>
-<span id="index-exit"></span>
-<span id="index-exit-recursive-editing"></span>
-<span id="index-aborting"></span>
+<a class="index-entry-id" id="index-throw-example"></a>
+<a class="index-entry-id" id="index-exit"></a>
+<a class="index-entry-id" id="index-exit-recursive-editing"></a>
+<a class="index-entry-id" id="index-aborting"></a>
 <p>To invoke a recursive editing level, call the function
-<code>recursive-edit</code>.  This function contains the command loop; it also
-contains a call to <code>catch</code> with tag <code>exit</code>, which makes it
-possible to exit the recursive editing level by throwing to <code>exit</code>
-(see <a href="Catch-and-Throw.html">Catch and Throw</a>).  If you throw a value other than <code>t</code>,
-then <code>recursive-edit</code> returns normally to the function that called
-it.  The command <kbd>C-M-c</kbd> (<code>exit-recursive-edit</code>) does this.
-Throwing a <code>t</code> value causes <code>recursive-edit</code> to quit, so that
+<code class="code">recursive-edit</code>.  This function contains the command loop; it also
+contains a call to <code class="code">catch</code> with tag <code class="code">exit</code>, which makes it
+possible to exit the recursive editing level by throwing to <code class="code">exit</code>
+(see <a class="pxref" href="Catch-and-Throw.html">Explicit Nonlocal Exits: <code class="code">catch</code> and <code class="code">throw</code></a>).  If you throw a value other than <code class="code">t</code>,
+then <code class="code">recursive-edit</code> returns normally to the function that called
+it.  The command <kbd class="kbd">C-M-c</kbd> (<code class="code">exit-recursive-edit</code>) does this.
+Throwing a <code class="code">t</code> value causes <code class="code">recursive-edit</code> to quit, so that
 control returns to the command loop one level up.  This is called
-<em>aborting</em>, and is done by <kbd>C-]</kbd> (<code>abort-recursive-edit</code>).
+<em class="dfn">aborting</em>, and is done by <kbd class="kbd">C-]</kbd> (<code class="code">abort-recursive-edit</code>).
 </p>
 <p>Most applications should not use recursive editing, except as part of
 using the minibuffer.  Usually it is more convenient for the user if you
 change the major mode of the current buffer temporarily to a special
 major mode, which should have a command to go back to the previous mode.
-(The <kbd>e</kbd> command in Rmail uses this technique.)  Or, if you wish to
+(The <kbd class="kbd">e</kbd> command in Rmail uses this technique.)  Or, if you wish to
 give the user different text to edit recursively, create and select
 a new buffer in a special mode.  In this mode, define a command to
 complete the processing and go back to the previous buffer.  (The
-<kbd>m</kbd> command in Rmail does this.)
+<kbd class="kbd">m</kbd> command in Rmail does this.)
 </p>
 <p>Recursive edits are useful in debugging.  You can insert a call to
-<code>debug</code> into a function definition as a sort of breakpoint, so that
-you can look around when the function gets there.  <code>debug</code> invokes
+<code class="code">debug</code> into a function definition as a sort of breakpoint, so that
+you can look around when the function gets there.  <code class="code">debug</code> invokes
 a recursive edit but also provides the other features of the debugger.
 </p>
-<p>Recursive editing levels are also used when you type <kbd>C-r</kbd> in
-<code>query-replace</code> or use <kbd>C-x q</kbd> (<code>kbd-macro-query</code>).
+<p>Recursive editing levels are also used when you type <kbd class="kbd">C-r</kbd> in
+<code class="code">query-replace</code> or use <kbd class="kbd">C-x q</kbd> (<code class="code">kbd-macro-query</code>).
 </p>
-<dl>
-<dt id="index-recursive_002dedit">Command: <strong>recursive-edit</strong></dt>
-<dd><span id="index-suspend-evaluation"></span>
+<dl class="first-deffn">
+<dt class="deffn" id="index-recursive_002dedit"><span class="category-def">Command: </span><span><strong class="def-name">recursive-edit</strong><a class="copiable-link" href="#index-recursive_002dedit"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-suspend-evaluation"></a>
 <p>This function invokes the editor command loop.  It is called
 automatically by the initialization of Emacs, to let the user begin
 editing.  When called from a Lisp program, it enters a recursive editing
 level.
 </p>
 <p>If the current buffer is not the same as the selected window&rsquo;s buffer,
-<code>recursive-edit</code> saves and restores the current buffer.  Otherwise,
+<code class="code">recursive-edit</code> saves and restores the current buffer.  Otherwise,
 if you switch buffers, the buffer you switched to is current after
-<code>recursive-edit</code> returns.
+<code class="code">recursive-edit</code> returns.
 </p>
-<p>In the following example, the function <code>simple-rec</code> first
+<p>In the following example, the function <code class="code">simple-rec</code> first
 advances point one word, then enters a recursive edit, printing out a
 message in the echo area.  The user can then do any editing desired, and
-then type <kbd>C-M-c</kbd> to exit and continue executing <code>simple-rec</code>.
+then type <kbd class="kbd">C-M-c</kbd> to exit and continue executing <code class="code">simple-rec</code>.
 </p>
 <div class="example">
-<pre class="example">(defun simple-rec ()
+<pre class="example-preformatted">(defun simple-rec ()
   (forward-word 1)
   (message &quot;Recursive edit in progress&quot;)
   (recursive-edit)
@@ -156,38 +150,39 @@ then type <kbd>C-M-c</kbd> to exit and continue executing <code>simple-rec</code
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-exit_002drecursive_002dedit">Command: <strong>exit-recursive-edit</strong></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-exit_002drecursive_002dedit"><span class="category-def">Command: </span><span><strong class="def-name">exit-recursive-edit</strong><a class="copiable-link" href="#index-exit_002drecursive_002dedit"> &para;</a></span></dt>
 <dd><p>This function exits from the innermost recursive edit (including
-minibuffer input).  Its definition is effectively <code>(throw 'exit
+minibuffer input).  Its definition is effectively <code class="code">(throw 'exit
 nil)</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-abort_002drecursive_002dedit">Command: <strong>abort-recursive-edit</strong></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-abort_002drecursive_002dedit"><span class="category-def">Command: </span><span><strong class="def-name">abort-recursive-edit</strong><a class="copiable-link" href="#index-abort_002drecursive_002dedit"> &para;</a></span></dt>
 <dd><p>This function aborts the command that requested the innermost recursive
-edit (including minibuffer input), by signaling <code>quit</code>
+edit (including minibuffer input), by signaling <code class="code">quit</code>
 after exiting the recursive edit.  Its definition is effectively
-<code>(throw 'exit t)</code>.  See <a href="Quitting.html">Quitting</a>.
+<code class="code">(throw 'exit t)</code>.  See <a class="xref" href="Quitting.html">Quitting</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-top_002dlevel">Command: <strong>top-level</strong></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-top_002dlevel"><span class="category-def">Command: </span><span><strong class="def-name">top-level</strong><a class="copiable-link" href="#index-top_002dlevel"> &para;</a></span></dt>
 <dd><p>This function exits all recursive editing levels; it does not return a
 value, as it jumps completely out of any computation directly back to
 the main command loop.
 </p></dd></dl>
 
-<dl>
-<dt id="index-recursion_002ddepth">Function: <strong>recursion-depth</strong></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-recursion_002ddepth"><span class="category-def">Function: </span><span><strong class="def-name">recursion-depth</strong><a class="copiable-link" href="#index-recursion_002ddepth"> &para;</a></span></dt>
 <dd><p>This function returns the current depth of recursive edits.  When no
 recursive edit is active, it returns 0.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Disabling-Commands.html" accesskey="n" rel="next">Disabling Commands</a>, Previous: <a href="Prefix-Command-Arguments.html" accesskey="p" rel="prev">Prefix Command Arguments</a>, Up: <a href="Command-Loop.html" accesskey="u" rel="up">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Disabling-Commands.html">Disabling Commands</a>, Previous: <a href="Prefix-Command-Arguments.html">Prefix Command Arguments</a>, Up: <a href="Command-Loop.html">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Format Conversion (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Format Conversion (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,17 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Files.html" rel="up" title="Files">
-<link href="Format-Conversion-Overview.html" rel="next" title="Format Conversion Overview">
 <link href="Magic-File-Names.html" rel="prev" title="Magic File Names">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,34 +44,33 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Format-Conversion"></span><div class="header">
+<div class="section-level-extent" id="Format-Conversion">
+<div class="nav-panel">
 <p>
-Previous: <a href="Magic-File-Names.html" accesskey="p" rel="prev">Magic File Names</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Magic-File-Names.html" accesskey="p" rel="prev">Making Certain File Names &ldquo;Magic&rdquo;</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="File-Format-Conversion"></span><h3 class="section">25.12 File Format Conversion</h3>
+<h3 class="section" id="File-Format-Conversion"><span>25.12 File Format Conversion<a class="copiable-link" href="#File-Format-Conversion"> &para;</a></span></h3>
 
-<span id="index-file-format-conversion"></span>
-<span id="index-encoding-file-formats"></span>
-<span id="index-decoding-file-formats"></span>
-<span id="index-text-properties-in-files"></span>
-<span id="index-saving-text-properties"></span>
+<a class="index-entry-id" id="index-file-format-conversion"></a>
+<a class="index-entry-id" id="index-encoding-file-formats"></a>
+<a class="index-entry-id" id="index-decoding-file-formats"></a>
+<a class="index-entry-id" id="index-text-properties-in-files"></a>
+<a class="index-entry-id" id="index-saving-text-properties"></a>
 <p>Emacs performs several steps to convert the data in a buffer (text,
 text properties, and possibly other information) to and from a
 representation suitable for storing into a file.  This section describes
-the fundamental functions that perform this <em>format conversion</em>,
-namely <code>insert-file-contents</code> for reading a file into a buffer,
-and <code>write-region</code> for writing a buffer into a file.
+the fundamental functions that perform this <em class="dfn">format conversion</em>,
+namely <code class="code">insert-file-contents</code> for reading a file into a buffer,
+and <code class="code">write-region</code> for writing a buffer into a file.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Format-Conversion-Overview.html" accesskey="1">Overview</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><code>insert-file-contents</code> and <code>write-region</code>.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Format-Conversion-Round_002dTrip.html" accesskey="2">Round-Trip</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Using <code>format-alist</code>.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Format-Conversion-Piecemeal.html" accesskey="3">Piecemeal</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Specifying non-paired conversion.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Format-Conversion-Overview.html" accesskey="1">Overview</a></li>
+<li><a href="Format-Conversion-Round_002dTrip.html" accesskey="2">Round-Trip Specification</a></li>
+<li><a href="Format-Conversion-Piecemeal.html" accesskey="3">Piecemeal Specification</a></li>
+</ul>
+</div>
 
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.3.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Disabling (GNU Emacs Manual)</title>
 
 <meta name="description" content="Disabling (GNU Emacs Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Key-Bindings.html" rel="up" title="Key Bindings">
-<link href="Init-File.html" rel="next" title="Init File">
 <link href="Mouse-Buttons.html" rel="prev" title="Mouse Buttons">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -56,13 +48,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Disabling"></span><div class="header">
+<div class="subsection-level-extent" id="Disabling">
+<div class="nav-panel">
 <p>
-Previous: <a href="Mouse-Buttons.html" accesskey="p" rel="prev">Mouse Buttons</a>, Up: <a href="Key-Bindings.html" accesskey="u" rel="up">Key Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Mouse-Buttons.html" accesskey="p" rel="prev">Rebinding Mouse Buttons</a>, Up: <a href="Key-Bindings.html" accesskey="u" rel="up">Customizing Key Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Disabling-Commands"></span><h4 class="subsection">48.3.11 Disabling Commands</h4>
-<span id="index-disabled-command"></span>
+<h4 class="subsection" id="Disabling-Commands"><span>48.3.11 Disabling Commands<a class="copiable-link" href="#Disabling-Commands"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-disabled-command"></a>
 
 <p>Disabling a command means that invoking it interactively asks for
 confirmation from the user.  The purpose of disabling a command is to
@@ -77,46 +70,47 @@ and execute it, or cancel.  If you decide to enable the command, you
 must then answer another question&mdash;whether to do this permanently, or
 just for the current session.  (Enabling permanently works by
 automatically editing your initialization file.)  You can also type
-<kbd>!</kbd> to enable <em>all</em> commands, for the current session only.
+<kbd class="kbd">!</kbd> to enable <em class="emph">all</em> commands, for the current session only.
 </p>
 <p>The direct mechanism for disabling a command is to put a
-non-<code>nil</code> <code>disabled</code> property on the Lisp symbol for the
+non-<code class="code">nil</code> <code class="code">disabled</code> property on the Lisp symbol for the
 command.  Here is the Lisp program to do this:
 </p>
 <div class="example">
-<pre class="example">(put 'delete-region 'disabled t)
+<pre class="example-preformatted">(put 'delete-region 'disabled t)
 </pre></div>
 
-<p>If the value of the <code>disabled</code> property is a string, that string
+<p>If the value of the <code class="code">disabled</code> property is a string, that string
 is included in the message displayed when the command is used:
 </p>
 <div class="example">
-<pre class="example">(put 'delete-region 'disabled
+<pre class="example-preformatted">(put 'delete-region 'disabled
      &quot;It's better to use `kill-region' instead.\n&quot;)
 </pre></div>
 
-<span id="index-disable_002dcommand"></span>
-<span id="index-enable_002dcommand"></span>
+<a class="index-entry-id" id="index-disable_002dcommand"></a>
+<a class="index-entry-id" id="index-enable_002dcommand"></a>
 <p>You can make a command disabled either by editing the initialization
-file directly, or with the command <kbd>M-x disable-command</kbd>, which
-edits the initialization file for you.  Likewise, <kbd>M-x
+file directly, or with the command <kbd class="kbd">M-x disable-command</kbd>, which
+edits the initialization file for you.  Likewise, <kbd class="kbd">M-x
 enable-command</kbd> edits the initialization file to enable a command
-permanently.  See <a href="Init-File.html">Init File</a>.
+permanently.  See <a class="xref" href="Init-File.html">The Emacs Initialization File</a>.
 </p>
-<p>If Emacs was invoked with the <samp>-q</samp> or <samp>--no-init-file</samp>
-options (see <a href="Initial-Options.html">Initial Options</a>), it will not edit your
+<p>If Emacs was invoked with the <samp class="option">-q</samp> or <samp class="option">--no-init-file</samp>
+options (see <a class="pxref" href="Initial-Options.html">Initial Options</a>), it will not edit your
 initialization file.  Doing so could lose information because Emacs
 has not read your initialization file.
 </p>
 <p>Whether a command is disabled is independent of what key is used to
 invoke it; disabling also applies if the command is invoked using
-<kbd>M-x</kbd>.  However, disabling a command has no effect on calling it
+<kbd class="kbd">M-x</kbd>.  However, disabling a command has no effect on calling it
 as a function from Lisp programs.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Mouse-Buttons.html" accesskey="p" rel="prev">Mouse Buttons</a>, Up: <a href="Key-Bindings.html" accesskey="u" rel="up">Key Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Mouse-Buttons.html">Rebinding Mouse Buttons</a>, Up: <a href="Key-Bindings.html">Customizing Key Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Imenu (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Imenu (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Imenu (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Modes.html" rel="up" title="Modes">
+<link href="Font-Lock-Mode.html" rel="next" title="Font Lock Mode">
+<link href="Mode-Line-Format.html" rel="prev" title="Mode Line Format">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Imenu">
+<div class="nav-panel">
+<p>
+Next: <a href="Font-Lock-Mode.html" accesskey="n" rel="next">Font Lock Mode</a>, Previous: <a href="Mode-Line-Format.html" accesskey="p" rel="prev">Mode Line Format</a>, Up: <a href="Modes.html" accesskey="u" rel="up">Major and Minor Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Imenu-1"><span>24.5 Imenu<a class="copiable-link" href="#Imenu-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-Imenu"></a>
+<p><em class="dfn">Imenu</em> is a feature that lets users select a definition or
+section in the buffer, from a menu which lists all of them, to go
+directly to that location in the buffer.  Imenu works by constructing
+a buffer index which lists the names and buffer positions of the
+definitions, or other named portions of the buffer; then the user can
+choose one of them and move point to it.  Major modes can add a menu
+bar item to use Imenu using <code class="code">imenu-add-to-menubar</code>.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-imenu_002dadd_002dto_002dmenubar"><span class="category-def">Command: </span><span><strong class="def-name">imenu-add-to-menubar</strong> <var class="def-var-arguments">name</var><a class="copiable-link" href="#index-imenu_002dadd_002dto_002dmenubar"> &para;</a></span></dt>
+<dd><p>This function defines a local menu bar item named <var class="var">name</var>
+to run Imenu.
+</p></dd></dl>
+
+<p>The user-level commands for using Imenu are described in the Emacs
+Manual (see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html#Imenu">Imenu</a> in <cite class="cite">the Emacs Manual</cite>).  This section
+explains how to customize Imenu&rsquo;s method of finding definitions or
+buffer portions for a particular major mode.
+</p>
+<p>The usual and simplest way is to set the variable
+<code class="code">imenu-generic-expression</code>:
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-imenu_002dgeneric_002dexpression"><span class="category-def">Variable: </span><span><strong class="def-name">imenu-generic-expression</strong><a class="copiable-link" href="#index-imenu_002dgeneric_002dexpression"> &para;</a></span></dt>
+<dd><p>This variable, if non-<code class="code">nil</code>, is a list that specifies regular
+expressions for finding definitions for Imenu.  Simple elements of
+<code class="code">imenu-generic-expression</code> look like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">menu-title</var> <var class="var">regexp</var> <var class="var">index</var>)
+</pre></div>
+
+<p>Here, if <var class="var">menu-title</var> is non-<code class="code">nil</code>, it says that the matches
+for this element should go in a submenu of the buffer index;
+<var class="var">menu-title</var> itself specifies the name for the submenu.  If
+<var class="var">menu-title</var> is <code class="code">nil</code>, the matches for this element go directly
+in the top level of the buffer index.
+</p>
+<p>The second item in the list, <var class="var">regexp</var>, is a regular expression
+(see <a class="pxref" href="Regular-Expressions.html">Regular Expressions</a>); anything in the buffer that it matches
+is considered a definition, something to mention in the buffer index.
+The third item, <var class="var">index</var>, is a non-negative integer that indicates
+which subexpression in <var class="var">regexp</var> matches the definition&rsquo;s name.
+</p>
+<p>An element can also look like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">menu-title</var> <var class="var">regexp</var> <var class="var">index</var> <var class="var">function</var> <var class="var">arguments</var>...)
+</pre></div>
+
+<p>Each match for this element creates an index item, and when the index
+item is selected by the user, it calls <var class="var">function</var> with arguments
+consisting of the item name, the buffer position, and <var class="var">arguments</var>.
+</p>
+<p>For Emacs Lisp mode, <code class="code">imenu-generic-expression</code> could look like
+this:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">((nil &quot;^\\s-*(def\\(un\\|subst\\|macro\\|advice\\)\
+\\s-+\\([-A-Za-z0-9+]+\\)&quot; 2)
+</pre></div><div class="group"><pre class="example-preformatted"> (&quot;*Vars*&quot; &quot;^\\s-*(def\\(var\\|const\\)\
+\\s-+\\([-A-Za-z0-9+]+\\)&quot; 2)
+</pre></div><div class="group"><pre class="example-preformatted"> (&quot;*Types*&quot;
+  &quot;^\\s-*\
+(def\\(type\\|struct\\|class\\|ine-condition\\)\
+\\s-+\\([-A-Za-z0-9+]+\\)&quot; 2))
+</pre></div></div>
+
+<p>Setting this variable makes it buffer-local in the current buffer.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-imenu_002dcase_002dfold_002dsearch"><span class="category-def">Variable: </span><span><strong class="def-name">imenu-case-fold-search</strong><a class="copiable-link" href="#index-imenu_002dcase_002dfold_002dsearch"> &para;</a></span></dt>
+<dd><p>This variable controls whether matching against the regular
+expressions in the value of <code class="code">imenu-generic-expression</code> is
+case-sensitive: <code class="code">t</code>, the default, means matching should ignore
+case.
+</p>
+<p>Setting this variable makes it buffer-local in the current buffer.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-imenu_002dsyntax_002dalist"><span class="category-def">Variable: </span><span><strong class="def-name">imenu-syntax-alist</strong><a class="copiable-link" href="#index-imenu_002dsyntax_002dalist"> &para;</a></span></dt>
+<dd><p>This variable is an alist of syntax table modifiers to use while
+processing <code class="code">imenu-generic-expression</code>, to override the syntax table
+of the current buffer.  Each element should have this form:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">characters</var> . <var class="var">syntax-description</var>)
+</pre></div>
+
+<p>The <small class="sc">CAR</small>, <var class="var">characters</var>, can be either a character or a string.
+The element says to give that character or characters the syntax
+specified by <var class="var">syntax-description</var>, which is passed to
+<code class="code">modify-syntax-entry</code> (see <a class="pxref" href="Syntax-Table-Functions.html">Syntax Table Functions</a>).
+</p>
+<p>This feature is typically used to give word syntax to characters which
+normally have symbol syntax, and thus to simplify
+<code class="code">imenu-generic-expression</code> and speed up matching.
+For example, Fortran mode uses it this way:
+</p>
+<div class="example">
+<pre class="example-preformatted">(setq imenu-syntax-alist '((&quot;_$&quot; . &quot;w&quot;)))
+</pre></div>
+
+<p>The <code class="code">imenu-generic-expression</code> regular expressions can then use
+&lsquo;<samp class="samp">\\sw+</samp>&rsquo; instead of &lsquo;<samp class="samp">\\(\\sw\\|\\s_\\)+</samp>&rsquo;.  Note that this
+technique may be inconvenient when the mode needs to limit the initial
+character of a name to a smaller set of characters than are allowed in
+the rest of a name.
+</p>
+<p>Setting this variable makes it buffer-local in the current buffer.
+</p></dd></dl>
+
+<p>Another way to customize Imenu for a major mode is to set the
+variables <code class="code">imenu-prev-index-position-function</code> and
+<code class="code">imenu-extract-index-name-function</code>:
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-imenu_002dprev_002dindex_002dposition_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">imenu-prev-index-position-function</strong><a class="copiable-link" href="#index-imenu_002dprev_002dindex_002dposition_002dfunction"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, its value should be a function that
+finds the next definition to put in the buffer index, scanning
+backward in the buffer from point.  It should return <code class="code">nil</code> if it
+doesn&rsquo;t find another definition before point.  Otherwise it should
+leave point at the place it finds a definition and return any
+non-<code class="code">nil</code> value.
+</p>
+<p>Setting this variable makes it buffer-local in the current buffer.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-imenu_002dextract_002dindex_002dname_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">imenu-extract-index-name-function</strong><a class="copiable-link" href="#index-imenu_002dextract_002dindex_002dname_002dfunction"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, its value should be a function to
+return the name for a definition, assuming point is in that definition
+as the <code class="code">imenu-prev-index-position-function</code> function would leave
+it.
+</p>
+<p>Setting this variable makes it buffer-local in the current buffer.
+</p></dd></dl>
+
+<p>The last way to customize Imenu for a major mode is to set the
+variable <code class="code">imenu-create-index-function</code>:
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-imenu_002dcreate_002dindex_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">imenu-create-index-function</strong><a class="copiable-link" href="#index-imenu_002dcreate_002dindex_002dfunction"> &para;</a></span></dt>
+<dd><p>This variable specifies the function to use for creating a buffer
+index.  The function should take no arguments, and return an index
+alist for the current buffer.  It is called within
+<code class="code">save-excursion</code>, so where it leaves point makes no difference.
+</p>
+<p>The index alist can have three types of elements.  Simple elements
+look like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">index-name</var> . <var class="var">index-position</var>)
+</pre></div>
+
+<p>Selecting a simple element has the effect of moving to position
+<var class="var">index-position</var> in the buffer.  Special elements look like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">index-name</var> <var class="var">index-position</var> <var class="var">function</var> <var class="var">arguments</var>...)
+</pre></div>
+
+<p>Selecting a special element performs:
+</p>
+<div class="example">
+<pre class="example-preformatted">(funcall <var class="var">function</var>
+         <var class="var">index-name</var> <var class="var">index-position</var> <var class="var">arguments</var>...)
+</pre></div>
+
+<p>A nested sub-alist element looks like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">menu-title</var> . <var class="var">sub-alist</var>)
+</pre></div>
+
+<p>It creates the submenu <var class="var">menu-title</var> specified by <var class="var">sub-alist</var>.
+</p>
+<p>The default value of <code class="code">imenu-create-index-function</code> is
+<code class="code">imenu-default-create-index-function</code>.  This function calls the
+value of <code class="code">imenu-prev-index-position-function</code> and the value of
+<code class="code">imenu-extract-index-name-function</code> to produce the index alist.
+However, if either of these two variables is <code class="code">nil</code>, the default
+function uses <code class="code">imenu-generic-expression</code> instead.
+</p>
+<p>Setting this variable makes it buffer-local in the current buffer.
+</p></dd></dl>
+
+<p>If built with tree-sitter, Emacs can automatically generate an Imenu
+index if the major mode sets relevant variables.
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-treesit_002dsimple_002dimenu_002dsettings"><span class="category-def">Variable: </span><span><strong class="def-name">treesit-simple-imenu-settings</strong><a class="copiable-link" href="#index-treesit_002dsimple_002dimenu_002dsettings"> &para;</a></span></dt>
+<dd><p>This variable instructs Emacs how to generate Imenu indexes.  It
+should be a list of (<var class="var">category</var>&nbsp;<var class="var">regexp</var>&nbsp;<var class="var">pred</var>&nbsp;<var class="var">name-fn</var>)<!-- /@w -->.
+</p>
+<p><var class="var">category</var> should be the name of a category, like &quot;Function&quot;,
+&quot;Class&quot;, etc.  <var class="var">regexp</var> should be a regexp matching the type of
+nodes that belong to <var class="var">category</var>.  <var class="var">pred</var> should be either
+<code class="code">nil</code> or a function that takes a node as the argument.  It should
+return non-<code class="code">nil</code> if the node is a valid node for <var class="var">category</var>,
+or <code class="code">nil</code> if not.
+</p>
+<p><var class="var">category</var> could also be <code class="code">nil</code>, in which case the entries
+matched by <var class="var">regexp</var> and <var class="var">pred</var> are not grouped under
+<var class="var">category</var>.
+</p>
+<p><var class="var">name-fn</var> should be either <code class="code">nil</code> or a function that takes a
+defun node and returns the name of that defun, e.g., the function name
+for a function definition.  If <var class="var">name-fn</var> is <code class="code">nil</code>,
+<code class="code">treesit-defun-name</code> (see <a class="pxref" href="Tree_002dsitter-Major-Modes.html">Developing major modes with tree-sitter</a>) is used
+instead.
+</p>
+<p><code class="code">treesit-major-mode-setup</code> (see <a class="pxref" href="Tree_002dsitter-Major-Modes.html">Developing major modes with tree-sitter</a>)
+automatically sets up Imenu if this variable is non-<code class="code">nil</code>.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Font-Lock-Mode.html">Font Lock Mode</a>, Previous: <a href="Mode-Line-Format.html">Mode Line Format</a>, Up: <a href="Modes.html">Major and Minor Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

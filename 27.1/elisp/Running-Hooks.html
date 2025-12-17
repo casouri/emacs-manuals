@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Running Hooks (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Running Hooks (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Hooks.html" rel="up" title="Hooks">
 <link href="Setting-Hooks.html" rel="next" title="Setting Hooks">
-<link href="Hooks.html" rel="prev" title="Hooks">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,67 +47,69 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Running-Hooks"></span><div class="header">
+<div class="subsection-level-extent" id="Running-Hooks">
+<div class="nav-panel">
 <p>
 Next: <a href="Setting-Hooks.html" accesskey="n" rel="next">Setting Hooks</a>, Up: <a href="Hooks.html" accesskey="u" rel="up">Hooks</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Running-Hooks-1"></span><h4 class="subsection">23.1.1 Running Hooks</h4>
+<h4 class="subsection" id="Running-Hooks-1"><span>23.1.1 Running Hooks<a class="copiable-link" href="#Running-Hooks-1"> &para;</a></span></h4>
 
-<p>In this section, we document the <code>run-hooks</code> function, which is
+<p>In this section, we document the <code class="code">run-hooks</code> function, which is
 used to run a normal hook.  We also document the functions for running
 various kinds of abnormal hooks.
 </p>
-<dl>
-<dt id="index-run_002dhooks">Function: <strong>run-hooks</strong> <em>&amp;rest hookvars</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-run_002dhooks"><span class="category-def">Function: </span><span><strong class="def-name">run-hooks</strong> <var class="def-var-arguments">&amp;rest hookvars</var><a class="copiable-link" href="#index-run_002dhooks"> &para;</a></span></dt>
 <dd><p>This function takes one or more normal hook variable names as
 arguments, and runs each hook in turn.  Each argument should be a
 symbol that is a normal hook variable.  These arguments are processed
 in the order specified.
 </p>
-<p>If a hook variable has a non-<code>nil</code> value, that value should be a
-list of functions.  <code>run-hooks</code> calls all the functions, one by
+<p>If a hook variable has a non-<code class="code">nil</code> value, that value should be a
+list of functions.  <code class="code">run-hooks</code> calls all the functions, one by
 one, with no arguments.
 </p>
 <p>The hook variable&rsquo;s value can also be a single function&mdash;either a
 lambda expression or a symbol with a function definition&mdash;which
-<code>run-hooks</code> calls.  But this usage is obsolete.
+<code class="code">run-hooks</code> calls.  But this usage is obsolete.
 </p>
 <p>If the hook variable is buffer-local, the buffer-local variable will
 be used instead of the global variable.  However, if the buffer-local
-variable contains the element <code>t</code>, the global hook variable will
+variable contains the element <code class="code">t</code>, the global hook variable will
 be run as well.
 </p></dd></dl>
 
-<dl>
-<dt id="index-run_002dhook_002dwith_002dargs">Function: <strong>run-hook-with-args</strong> <em>hook &amp;rest args</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-run_002dhook_002dwith_002dargs"><span class="category-def">Function: </span><span><strong class="def-name">run-hook-with-args</strong> <var class="def-var-arguments">hook &amp;rest args</var><a class="copiable-link" href="#index-run_002dhook_002dwith_002dargs"> &para;</a></span></dt>
 <dd><p>This function runs an abnormal hook by calling all the hook functions in
-<var>hook</var>, passing each one the arguments <var>args</var>.
+<var class="var">hook</var>, passing each one the arguments <var class="var">args</var>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-run_002dhook_002dwith_002dargs_002duntil_002dfailure">Function: <strong>run-hook-with-args-until-failure</strong> <em>hook &amp;rest args</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-run_002dhook_002dwith_002dargs_002duntil_002dfailure"><span class="category-def">Function: </span><span><strong class="def-name">run-hook-with-args-until-failure</strong> <var class="def-var-arguments">hook &amp;rest args</var><a class="copiable-link" href="#index-run_002dhook_002dwith_002dargs_002duntil_002dfailure"> &para;</a></span></dt>
 <dd><p>This function runs an abnormal hook by calling each hook function in
-turn, stopping if one of them fails by returning <code>nil</code>.  Each
-hook function is passed the arguments <var>args</var>.  If this function
-stops because one of the hook functions fails, it returns <code>nil</code>;
-otherwise it returns a non-<code>nil</code> value.
+turn, stopping if one of them fails by returning <code class="code">nil</code>.  Each
+hook function is passed the arguments <var class="var">args</var>.  If this function
+stops because one of the hook functions fails, it returns <code class="code">nil</code>;
+otherwise it returns a non-<code class="code">nil</code> value.
 </p></dd></dl>
 
-<dl>
-<dt id="index-run_002dhook_002dwith_002dargs_002duntil_002dsuccess">Function: <strong>run-hook-with-args-until-success</strong> <em>hook &amp;rest args</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-run_002dhook_002dwith_002dargs_002duntil_002dsuccess"><span class="category-def">Function: </span><span><strong class="def-name">run-hook-with-args-until-success</strong> <var class="def-var-arguments">hook &amp;rest args</var><a class="copiable-link" href="#index-run_002dhook_002dwith_002dargs_002duntil_002dsuccess"> &para;</a></span></dt>
 <dd><p>This function runs an abnormal hook by calling each hook function,
-stopping if one of them succeeds by returning a non-<code>nil</code>
-value.  Each hook function is passed the arguments <var>args</var>.  If this
+stopping if one of them succeeds by returning a non-<code class="code">nil</code>
+value.  Each hook function is passed the arguments <var class="var">args</var>.  If this
 function stops because one of the hook functions returns a
-non-<code>nil</code> value, it returns that value; otherwise it returns
-<code>nil</code>.
+non-<code class="code">nil</code> value, it returns that value; otherwise it returns
+<code class="code">nil</code>.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Setting-Hooks.html" accesskey="n" rel="next">Setting Hooks</a>, Up: <a href="Hooks.html" accesskey="u" rel="up">Hooks</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Setting-Hooks.html">Setting Hooks</a>, Up: <a href="Hooks.html">Hooks</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

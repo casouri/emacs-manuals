@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>File Locks (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="File Locks (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Writing-to-Files.html" rel="prev" title="Writing to Files">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,34 +49,35 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="File-Locks"></span><div class="header">
+<div class="section-level-extent" id="File-Locks">
+<div class="nav-panel">
 <p>
 Next: <a href="Information-about-Files.html" accesskey="n" rel="next">Information about Files</a>, Previous: <a href="Writing-to-Files.html" accesskey="p" rel="prev">Writing to Files</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="File-Locks-1"></span><h3 class="section">25.5 File Locks</h3>
-<span id="index-file-locks"></span>
-<span id="index-lock-file"></span>
-<span id="index-_002e_0023_002c-lock-file-names"></span>
+<h3 class="section" id="File-Locks-1"><span>25.5 File Locks<a class="copiable-link" href="#File-Locks-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-file-locks"></a>
+<a class="index-entry-id" id="index-lock-file"></a>
+<a class="index-entry-id" id="index-_002e_0023_002c-lock-file-names"></a>
 
 <p>When two users edit the same file at the same time, they are likely
 to interfere with each other.  Emacs tries to prevent this situation
-from arising by recording a <em>file lock</em> when a file is being
+from arising by recording a <em class="dfn">file lock</em> when a file is being
 modified.
 Emacs can then detect the first attempt to modify a buffer visiting a
 file that is locked by another Emacs job, and ask the user what to do.
 The file lock is really a file, a symbolic link with a special name,
 stored in the same directory as the file you are editing.  The name is
-constructed by prepending <samp>.#</samp> to the filename of the buffer.
+constructed by prepending <samp class="file">.#</samp> to the filename of the buffer.
 The target of the symbolic link will be of the form
-<code><var>user</var>@<var>host</var>.<var>pid</var>:<var>boot</var></code>, where <var>user</var>
-is replaced with the current username (from <code>user-login-name</code>),
-<var>host</var> with the name of the host where Emacs is running (from
-<code>system-name</code>), <var>pid</var> with Emacs&rsquo;s process id, and <var>boot</var>
-with the time since the last reboot.  <code>:<var>boot</var></code> is omitted if
+<code class="code"><var class="var">user</var>@<var class="var">host</var>.<var class="var">pid</var>:<var class="var">boot</var></code>, where <var class="var">user</var>
+is replaced with the current username (from <code class="code">user-login-name</code>),
+<var class="var">host</var> with the name of the host where Emacs is running (from
+<code class="code">system-name</code>), <var class="var">pid</var> with Emacs&rsquo;s process id, and <var class="var">boot</var>
+with the time since the last reboot.  <code class="code">:<var class="var">boot</var></code> is omitted if
 the boot time is unavailable.  (On file systems that do not support
 symbolic links, a regular file is used instead, with contents of the
-form <code><var>user</var>@<var>host</var>.<var>pid</var>:<var>boot</var></code>.)
+form <code class="code"><var class="var">user</var>@<var class="var">host</var>.<var class="var">pid</var>:<var class="var">boot</var></code>.)
 </p>
 <p>When you access files using NFS, there may be a small probability that
 you and another user will both lock the same file simultaneously.
@@ -91,79 +85,80 @@ If this happens, it is possible for the two users to make changes
 simultaneously, but Emacs will still warn the user who saves second.
 Also, the detection of modification of a buffer visiting a file changed
 on disk catches some cases of simultaneous editing; see
-<a href="Modification-Time.html">Modification Time</a>.
+<a class="ref" href="Modification-Time.html">Buffer Modification Time</a>.
 </p>
-<dl>
-<dt id="index-file_002dlocked_002dp">Function: <strong>file-locked-p</strong> <em>filename</em></dt>
-<dd><p>This function returns <code>nil</code> if the file <var>filename</var> is not
-locked.  It returns <code>t</code> if it is locked by this Emacs process, and
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dlocked_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-locked-p</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-file_002dlocked_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">nil</code> if the file <var class="var">filename</var> is not
+locked.  It returns <code class="code">t</code> if it is locked by this Emacs process, and
 it returns the name of the user who has locked it if it is locked by
 some other job.
 </p>
 <div class="example">
-<pre class="example">(file-locked-p &quot;foo&quot;)
+<div class="group"><pre class="example-preformatted">(file-locked-p &quot;foo&quot;)
      &rArr; nil
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-lock_002dbuffer">Function: <strong>lock-buffer</strong> <em>&amp;optional filename</em></dt>
-<dd><p>This function locks the file <var>filename</var>, if the current buffer is
-modified.  The argument <var>filename</var> defaults to the current buffer&rsquo;s
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-lock_002dbuffer"><span class="category-def">Function: </span><span><strong class="def-name">lock-buffer</strong> <var class="def-var-arguments">&amp;optional filename</var><a class="copiable-link" href="#index-lock_002dbuffer"> &para;</a></span></dt>
+<dd><p>This function locks the file <var class="var">filename</var>, if the current buffer is
+modified.  The argument <var class="var">filename</var> defaults to the current buffer&rsquo;s
 visited file.  Nothing is done if the current buffer is not visiting a
-file, or is not modified, or if the option <code>create-lockfiles</code> is
-<code>nil</code>.
+file, or is not modified, or if the option <code class="code">create-lockfiles</code> is
+<code class="code">nil</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-unlock_002dbuffer">Function: <strong>unlock-buffer</strong></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-unlock_002dbuffer"><span class="category-def">Function: </span><span><strong class="def-name">unlock-buffer</strong><a class="copiable-link" href="#index-unlock_002dbuffer"> &para;</a></span></dt>
 <dd><p>This function unlocks the file being visited in the current buffer,
 if the buffer is modified.  If the buffer is not modified, then
 the file should not be locked, so this function does nothing.  It also
 does nothing if the current buffer is not visiting a file, or is not locked.
 </p></dd></dl>
 
-<dl>
-<dt id="index-create_002dlockfiles">User Option: <strong>create-lockfiles</strong></dt>
-<dd><p>If this variable is <code>nil</code>, Emacs does not lock files.
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-create_002dlockfiles"><span class="category-def">User Option: </span><span><strong class="def-name">create-lockfiles</strong><a class="copiable-link" href="#index-create_002dlockfiles"> &para;</a></span></dt>
+<dd><p>If this variable is <code class="code">nil</code>, Emacs does not lock files.
 </p></dd></dl>
 
-<dl>
-<dt id="index-ask_002duser_002dabout_002dlock">Function: <strong>ask-user-about-lock</strong> <em>file other-user</em></dt>
-<dd><p>This function is called when the user tries to modify <var>file</var>, but it
-is locked by another user named <var>other-user</var>.  The default
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ask_002duser_002dabout_002dlock"><span class="category-def">Function: </span><span><strong class="def-name">ask-user-about-lock</strong> <var class="def-var-arguments">file other-user</var><a class="copiable-link" href="#index-ask_002duser_002dabout_002dlock"> &para;</a></span></dt>
+<dd><p>This function is called when the user tries to modify <var class="var">file</var>, but it
+is locked by another user named <var class="var">other-user</var>.  The default
 definition of this function asks the user to say what to do.  The value
 this function returns determines what Emacs does next:
 </p>
-<ul>
-<li> A value of <code>t</code> says to grab the lock on the file.  Then
-this user may edit the file and <var>other-user</var> loses the lock.
+<ul class="itemize mark-bullet">
+<li>A value of <code class="code">t</code> says to grab the lock on the file.  Then
+this user may edit the file and <var class="var">other-user</var> loses the lock.
 
-</li><li> A value of <code>nil</code> says to ignore the lock and let this
+</li><li>A value of <code class="code">nil</code> says to ignore the lock and let this
 user edit the file anyway.
 
-</li><li> <span id="index-file_002dlocked"></span>
-This function may instead signal a <code>file-locked</code> error, in which
+</li><li><a class="index-entry-id" id="index-file_002dlocked"></a>
+This function may instead signal a <code class="code">file-locked</code> error, in which
 case the change that the user was about to make does not take place.
 
 <p>The error message for this error looks like this:
 </p>
 <div class="example">
-<pre class="example">error&rarr; File is locked: <var>file</var> <var>other-user</var>
+<pre class="example-preformatted">error&rarr; File is locked: <var class="var">file</var> <var class="var">other-user</var>
 </pre></div>
 
-<p>where <code>file</code> is the name of the file and <var>other-user</var> is the
+<p>where <code class="code">file</code> is the name of the file and <var class="var">other-user</var> is the
 name of the user who has locked the file.
 </p></li></ul>
 
-<p>If you wish, you can replace the <code>ask-user-about-lock</code> function
+<p>If you wish, you can replace the <code class="code">ask-user-about-lock</code> function
 with your own version that makes the decision in another way.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Information-about-Files.html" accesskey="n" rel="next">Information about Files</a>, Previous: <a href="Writing-to-Files.html" accesskey="p" rel="prev">Writing to Files</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Information-about-Files.html">Information about Files</a>, Previous: <a href="Writing-to-Files.html">Writing to Files</a>, Up: <a href="Files.html">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

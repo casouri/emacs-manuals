@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Modifying Menus (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Modifying Menus (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Tool-Bar.html" rel="prev" title="Tool Bar">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,51 +49,53 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Modifying-Menus"></span><div class="header">
+<div class="subsection-level-extent" id="Modifying-Menus">
+<div class="nav-panel">
 <p>
-Next: <a href="Easy-Menu.html" accesskey="n" rel="next">Easy Menu</a>, Previous: <a href="Tool-Bar.html" accesskey="p" rel="prev">Tool Bar</a>, Up: <a href="Menu-Keymaps.html" accesskey="u" rel="up">Menu Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Easy-Menu.html" accesskey="n" rel="next">Easy Menu</a>, Previous: <a href="Tool-Bar.html" accesskey="p" rel="prev">Tool bars</a>, Up: <a href="Menu-Keymaps.html" accesskey="u" rel="up">Menu Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Modifying-Menus-1"></span><h4 class="subsection">21.17.7 Modifying Menus</h4>
-<span id="index-menu-modification"></span>
+<h4 class="subsection" id="Modifying-Menus-1"><span>21.17.7 Modifying Menus<a class="copiable-link" href="#Modifying-Menus-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-menu-modification"></a>
 
 <p>When you insert a new item in an existing menu, you probably want to
 put it in a particular place among the menu&rsquo;s existing items.  If you
-use <code>define-key</code> to add the item, it normally goes at the front of
-the menu.  To put it elsewhere in the menu, use <code>define-key-after</code>:
+use <code class="code">define-key</code> to add the item, it normally goes at the front of
+the menu.  To put it elsewhere in the menu, use <code class="code">define-key-after</code>:
 </p>
-<dl>
-<dt id="index-define_002dkey_002dafter">Function: <strong>define-key-after</strong> <em>map key binding &amp;optional after</em></dt>
-<dd><p>Define a binding in <var>map</var> for <var>key</var>, with value <var>binding</var>,
-just like <code>define-key</code>, but position the binding in <var>map</var> after
-the binding for the event <var>after</var>.  The argument <var>key</var> should be
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-define_002dkey_002dafter"><span class="category-def">Function: </span><span><strong class="def-name">define-key-after</strong> <var class="def-var-arguments">map key binding &amp;optional after</var><a class="copiable-link" href="#index-define_002dkey_002dafter"> &para;</a></span></dt>
+<dd><p>Define a binding in <var class="var">map</var> for <var class="var">key</var>, with value <var class="var">binding</var>,
+just like <code class="code">define-key</code>, but position the binding in <var class="var">map</var> after
+the binding for the event <var class="var">after</var>.  The argument <var class="var">key</var> should be
 of length one&mdash;a vector or string with just one element.  But
-<var>after</var> should be a single event type&mdash;a symbol or a character, not
-a sequence.  The new binding goes after the binding for <var>after</var>.  If
-<var>after</var> is <code>t</code> or is omitted, then the new binding goes last, at
+<var class="var">after</var> should be a single event type&mdash;a symbol or a character, not
+a sequence.  The new binding goes after the binding for <var class="var">after</var>.  If
+<var class="var">after</var> is <code class="code">t</code> or is omitted, then the new binding goes last, at
 the end of the keymap.  However, new bindings are added before any
 inherited keymap.
 </p>
 <p>Here is an example:
 </p>
 <div class="example">
-<pre class="example">(define-key-after my-menu [drink]
+<pre class="example-preformatted">(define-key-after my-menu [drink]
   '(&quot;Drink&quot; . drink-command) 'eat)
 </pre></div>
 
-<p>makes a binding for the fake function key <tt class="key">DRINK</tt> and puts it
-right after the binding for <tt class="key">EAT</tt>.
+<p>makes a binding for the fake function key <kbd class="key">DRINK</kbd> and puts it
+right after the binding for <kbd class="key">EAT</kbd>.
 </p>
-<p>Here is how to insert an item called &lsquo;<samp>Work</samp>&rsquo; in the &lsquo;<samp>Signals</samp>&rsquo;
-menu of Shell mode, after the item <code>break</code>:
+<p>Here is how to insert an item called &lsquo;<samp class="samp">Work</samp>&rsquo; in the &lsquo;<samp class="samp">Signals</samp>&rsquo;
+menu of Shell mode, after the item <code class="code">break</code>:
 </p>
 <div class="example">
-<pre class="example">(define-key-after
+<pre class="example-preformatted">(define-key-after
   (lookup-key shell-mode-map [menu-bar signals])
   [work] '(&quot;Work&quot; . work-command) 'break)
 </pre></div>
 </dd></dl>
 
+</div>
 
 
 

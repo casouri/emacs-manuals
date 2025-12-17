@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Sequencing (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Sequencing (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Control-Structures.html" rel="up" title="Control Structures">
 <link href="Conditionals.html" rel="next" title="Conditionals">
-<link href="Control-Structures.html" rel="prev" title="Control Structures">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,107 +47,109 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Sequencing"></span><div class="header">
+<div class="section-level-extent" id="Sequencing">
+<div class="nav-panel">
 <p>
 Next: <a href="Conditionals.html" accesskey="n" rel="next">Conditionals</a>, Up: <a href="Control-Structures.html" accesskey="u" rel="up">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Sequencing-1"></span><h3 class="section">10.1 Sequencing</h3>
-<span id="index-sequencing"></span>
-<span id="index-sequential-execution"></span>
+<h3 class="section" id="Sequencing-1"><span>10.1 Sequencing<a class="copiable-link" href="#Sequencing-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-sequencing"></a>
+<a class="index-entry-id" id="index-sequential-execution"></a>
 
 <p>Evaluating forms in the order they appear is the most common way
 control passes from one form to another.  In some contexts, such as in a
 function body, this happens automatically.  Elsewhere you must use a
-control structure construct to do this: <code>progn</code>, the simplest
+control structure construct to do this: <code class="code">progn</code>, the simplest
 control construct of Lisp.
 </p>
-<p>A <code>progn</code> special form looks like this:
+<p>A <code class="code">progn</code> special form looks like this:
 </p>
 <div class="example">
-<pre class="example">(progn <var>a</var> <var>b</var> <var>c</var> &hellip;)
-</pre></div>
+<div class="group"><pre class="example-preformatted">(progn <var class="var">a</var> <var class="var">b</var> <var class="var">c</var> ...)
+</pre></div></div>
 
-<p>and it says to execute the forms <var>a</var>, <var>b</var>, <var>c</var>, and so on, in
-that order.  These forms are called the <em>body</em> of the <code>progn</code> form.
+<p>and it says to execute the forms <var class="var">a</var>, <var class="var">b</var>, <var class="var">c</var>, and so on, in
+that order.  These forms are called the <em class="dfn">body</em> of the <code class="code">progn</code> form.
 The value of the last form in the body becomes the value of the entire
-<code>progn</code>.  <code>(progn)</code> returns <code>nil</code>.
+<code class="code">progn</code>.  <code class="code">(progn)</code> returns <code class="code">nil</code>.
 </p>
-<span id="index-implicit-progn"></span>
-<p>In the early days of Lisp, <code>progn</code> was the only way to execute
+<a class="index-entry-id" id="index-implicit-progn"></a>
+<p>In the early days of Lisp, <code class="code">progn</code> was the only way to execute
 two or more forms in succession and use the value of the last of them.
-But programmers found they often needed to use a <code>progn</code> in the
+But programmers found they often needed to use a <code class="code">progn</code> in the
 body of a function, where (at that time) only one form was allowed.  So
-the body of a function was made into an implicit <code>progn</code>:
-several forms are allowed just as in the body of an actual <code>progn</code>.
-Many other control structures likewise contain an implicit <code>progn</code>.
-As a result, <code>progn</code> is not used as much as it was many years ago.
-It is needed now most often inside an <code>unwind-protect</code>, <code>and</code>,
-<code>or</code>, or in the <var>then</var>-part of an <code>if</code>.
+the body of a function was made into an implicit <code class="code">progn</code>:
+several forms are allowed just as in the body of an actual <code class="code">progn</code>.
+Many other control structures likewise contain an implicit <code class="code">progn</code>.
+As a result, <code class="code">progn</code> is not used as much as it was many years ago.
+It is needed now most often inside an <code class="code">unwind-protect</code>, <code class="code">and</code>,
+<code class="code">or</code>, or in the <var class="var">then</var>-part of an <code class="code">if</code>.
 </p>
-<dl>
-<dt id="index-progn">Special Form: <strong>progn</strong> <em>forms&hellip;</em></dt>
-<dd><p>This special form evaluates all of the <var>forms</var>, in textual
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-progn"><span class="category-def">Special Form: </span><span><strong class="def-name">progn</strong> <var class="def-var-arguments">forms&hellip;</var><a class="copiable-link" href="#index-progn"> &para;</a></span></dt>
+<dd><p>This special form evaluates all of the <var class="var">forms</var>, in textual
 order, returning the result of the final form.
 </p>
 <div class="example">
-<pre class="example">(progn (print &quot;The first form&quot;)
+<div class="group"><pre class="example-preformatted">(progn (print &quot;The first form&quot;)
        (print &quot;The second form&quot;)
        (print &quot;The third form&quot;))
-     ⊣ &quot;The first form&quot;
-     ⊣ &quot;The second form&quot;
-     ⊣ &quot;The third form&quot;
+     -| &quot;The first form&quot;
+     -| &quot;The second form&quot;
+     -| &quot;The third form&quot;
 &rArr; &quot;The third form&quot;
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
 <p>Two other constructs likewise evaluate a series of forms but return
 different values:
 </p>
-<dl>
-<dt id="index-prog1">Special Form: <strong>prog1</strong> <em>form1 forms&hellip;</em></dt>
-<dd><p>This special form evaluates <var>form1</var> and all of the <var>forms</var>, in
-textual order, returning the result of <var>form1</var>.
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-prog1"><span class="category-def">Special Form: </span><span><strong class="def-name">prog1</strong> <var class="def-var-arguments">form1 forms&hellip;</var><a class="copiable-link" href="#index-prog1"> &para;</a></span></dt>
+<dd><p>This special form evaluates <var class="var">form1</var> and all of the <var class="var">forms</var>, in
+textual order, returning the result of <var class="var">form1</var>.
 </p>
 <div class="example">
-<pre class="example">(prog1 (print &quot;The first form&quot;)
+<div class="group"><pre class="example-preformatted">(prog1 (print &quot;The first form&quot;)
        (print &quot;The second form&quot;)
        (print &quot;The third form&quot;))
-     ⊣ &quot;The first form&quot;
-     ⊣ &quot;The second form&quot;
-     ⊣ &quot;The third form&quot;
+     -| &quot;The first form&quot;
+     -| &quot;The second form&quot;
+     -| &quot;The third form&quot;
 &rArr; &quot;The first form&quot;
-</pre></div>
+</pre></div></div>
 
 <p>Here is a way to remove the first element from a list in the variable
-<code>x</code>, then return the value of that former element:
+<code class="code">x</code>, then return the value of that former element:
 </p>
 <div class="example">
-<pre class="example">(prog1 (car x) (setq x (cdr x)))
+<pre class="example-preformatted">(prog1 (car x) (setq x (cdr x)))
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-prog2">Special Form: <strong>prog2</strong> <em>form1 form2 forms&hellip;</em></dt>
-<dd><p>This special form evaluates <var>form1</var>, <var>form2</var>, and all of the
-following <var>forms</var>, in textual order, returning the result of
-<var>form2</var>.
+<dl class="first-deffn first-defspec-alias-first-deffn">
+<dt class="deffn defspec-alias-deffn" id="index-prog2"><span class="category-def">Special Form: </span><span><strong class="def-name">prog2</strong> <var class="def-var-arguments">form1 form2 forms&hellip;</var><a class="copiable-link" href="#index-prog2"> &para;</a></span></dt>
+<dd><p>This special form evaluates <var class="var">form1</var>, <var class="var">form2</var>, and all of the
+following <var class="var">forms</var>, in textual order, returning the result of
+<var class="var">form2</var>.
 </p>
 <div class="example">
-<pre class="example">(prog2 (print &quot;The first form&quot;)
+<div class="group"><pre class="example-preformatted">(prog2 (print &quot;The first form&quot;)
        (print &quot;The second form&quot;)
        (print &quot;The third form&quot;))
-     ⊣ &quot;The first form&quot;
-     ⊣ &quot;The second form&quot;
-     ⊣ &quot;The third form&quot;
+     -| &quot;The first form&quot;
+     -| &quot;The second form&quot;
+     -| &quot;The third form&quot;
 &rArr; &quot;The second form&quot;
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Conditionals.html" accesskey="n" rel="next">Conditionals</a>, Up: <a href="Control-Structures.html" accesskey="u" rel="up">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Conditionals.html">Conditionals</a>, Up: <a href="Control-Structures.html">Control Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

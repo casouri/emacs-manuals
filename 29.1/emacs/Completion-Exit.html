@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Completion Exit (GNU Emacs Manual)</title>
+
+<meta name="description" content="Completion Exit (GNU Emacs Manual)">
+<meta name="keywords" content="Completion Exit (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Completion.html" rel="up" title="Completion">
+<link href="Completion-Styles.html" rel="next" title="Completion Styles">
+<link href="Completion-Commands.html" rel="prev" title="Completion Commands">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Completion-Exit">
+<div class="nav-panel">
+<p>
+Next: <a href="Completion-Styles.html" accesskey="n" rel="next">How Completion Alternatives Are Chosen</a>, Previous: <a href="Completion-Commands.html" accesskey="p" rel="prev">Completion Commands</a>, Up: <a href="Completion.html" accesskey="u" rel="up">Completion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Completion-Exit-1"><span>9.4.3 Completion Exit<a class="copiable-link" href="#Completion-Exit-1"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-RET-_0028completion-in-minibuffer_0029"></a>
+<a class="index-entry-id" id="index-minibuffer_002dcomplete_002dand_002dexit"></a>
+<p>When a command reads an argument using the minibuffer with
+completion, it also controls what happens when you type <kbd class="key">RET</kbd>
+(<code class="code">minibuffer-complete-and-exit</code>) to submit the argument.  There
+are four types of behavior:
+</p>
+<ul class="itemize mark-bullet">
+<li><em class="dfn">Strict completion</em> accepts only exact completion matches.  Typing
+<kbd class="key">RET</kbd> exits the minibuffer only if the minibuffer text is an exact
+match, or completes to one.  Otherwise, Emacs refuses to exit the
+minibuffer; instead it tries to complete, and if no completion can be
+done it momentarily displays &lsquo;<samp class="samp">[No match]</samp>&rsquo; after the minibuffer
+text.  (You can still leave the minibuffer by typing <kbd class="kbd">C-g</kbd> to
+cancel the command.)
+
+<p>An example of a command that uses this behavior is <kbd class="kbd">M-x</kbd>, since it
+is meaningless for it to accept a non-existent command name.
+</p>
+</li><li><em class="dfn">Cautious completion</em> is like strict completion, except <kbd class="key">RET</kbd>
+exits only if the text is already an exact match.  If the text
+completes to an exact match, <kbd class="key">RET</kbd> performs that completion but
+does not exit yet; you must type a second <kbd class="key">RET</kbd> to exit.
+
+<p>Cautious completion is used for reading file names for files that must
+already exist, for example.
+</p>
+</li><li><em class="dfn">Permissive completion</em> allows any input; the completion
+candidates are just suggestions.  Typing <kbd class="key">RET</kbd> does not complete,
+it just submits the argument as you have entered it.
+
+</li><li><a class="index-entry-id" id="index-minibuffer-confirmation"></a>
+<a class="index-entry-id" id="index-confirming-in-the-minibuffer"></a>
+<em class="dfn">Permissive completion with confirmation</em> is like permissive
+completion, with an exception: if you typed <kbd class="key">TAB</kbd> and this
+completed the text up to some intermediate state (i.e., one that is not
+yet an exact completion match), typing <kbd class="key">RET</kbd> right afterward does
+not submit the argument.  Instead, Emacs asks for confirmation by
+momentarily displaying &lsquo;<samp class="samp">[Confirm]</samp>&rsquo; after the text; type <kbd class="key">RET</kbd>
+again to confirm and submit the text.  This catches a common mistake,
+in which one types <kbd class="key">RET</kbd> before realizing that <kbd class="key">TAB</kbd> did not
+complete as far as desired.
+
+<a class="index-entry-id" id="index-confirm_002dnonexistent_002dfile_002dor_002dbuffer"></a>
+<p>You can tweak the confirmation behavior by customizing the variable
+<code class="code">confirm-nonexistent-file-or-buffer</code>.  The default value,
+<code class="code">after-completion</code>, gives the behavior we have just described.
+If you change it to <code class="code">nil</code>, Emacs does not ask for confirmation,
+falling back on permissive completion.  If you change it to any other
+non-<code class="code">nil</code> value, Emacs asks for confirmation whether or not the
+preceding command was <kbd class="key">TAB</kbd>.
+</p>
+<p>This behavior is used by most commands that read file names, like
+<kbd class="kbd">C-x C-f</kbd>, and commands that read buffer names, like <kbd class="kbd">C-x b</kbd>.
+</p></li></ul>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Completion-Styles.html">How Completion Alternatives Are Chosen</a>, Previous: <a href="Completion-Commands.html">Completion Commands</a>, Up: <a href="Completion.html">Completion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

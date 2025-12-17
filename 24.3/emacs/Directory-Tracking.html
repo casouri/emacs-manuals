@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.3.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Directory Tracking (GNU Emacs Manual)</title>
 
 <meta name="description" content="Directory Tracking (GNU Emacs Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Shell.html" rel="up" title="Shell">
 <link href="Shell-Options.html" rel="next" title="Shell Options">
-<link href="History-References.html" rel="prev" title="History References">
+<link href="Shell-History.html" rel="prev" title="Shell History">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -56,57 +48,59 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Directory-Tracking"></span><div class="header">
+<div class="section-level-extent" id="Directory-Tracking">
+<div class="nav-panel">
 <p>
-Next: <a href="Shell-Options.html" accesskey="n" rel="next">Shell Options</a>, Previous: <a href="Shell-History.html" accesskey="p" rel="prev">Shell History</a>, Up: <a href="Shell.html" accesskey="u" rel="up">Shell</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Shell-Options.html" accesskey="n" rel="next">Shell Mode Options</a>, Previous: <a href="Shell-History.html" accesskey="p" rel="prev">Shell Command History</a>, Up: <a href="Shell.html" accesskey="u" rel="up">Running Shell Commands from Emacs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Directory-Tracking-1"></span><h3 class="section">36.6 Directory Tracking</h3>
-<span id="index-directory-tracking"></span>
+<h3 class="section subsection-level-set-section" id="Directory-Tracking-1"><span>36.6 Directory Tracking<a class="copiable-link" href="#Directory-Tracking-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-directory-tracking"></a>
 
-<span id="index-shell_002dpushd_002dregexp"></span>
-<span id="index-shell_002dpopd_002dregexp"></span>
-<span id="index-shell_002dcd_002dregexp"></span>
-<p>Shell mode keeps track of &lsquo;<samp>cd</samp>&rsquo;, &lsquo;<samp>pushd</samp>&rsquo; and &lsquo;<samp>popd</samp>&rsquo;
+<a class="index-entry-id" id="index-shell_002dpushd_002dregexp"></a>
+<a class="index-entry-id" id="index-shell_002dpopd_002dregexp"></a>
+<a class="index-entry-id" id="index-shell_002dcd_002dregexp"></a>
+<p>Shell mode keeps track of &lsquo;<samp class="samp">cd</samp>&rsquo;, &lsquo;<samp class="samp">pushd</samp>&rsquo; and &lsquo;<samp class="samp">popd</samp>&rsquo;
 commands given to the subshell, in order to keep the Shell buffer&rsquo;s
-default directory (see <a href="File-Names.html">File Names</a>) the same as the shell&rsquo;s working
+default directory (see <a class="pxref" href="File-Names.html">File Names</a>) the same as the shell&rsquo;s working
 directory.  It recognizes these commands by examining lines of input
 that you send.
 </p>
 <p>If you use aliases for these commands, you can tell Emacs to
 recognize them also, by setting the variables
-<code>shell-pushd-regexp</code>, <code>shell-popd-regexp</code>, and
-<code>shell-cd-regexp</code> to the appropriate regular expressions
-(see <a href="Regexps.html">Regexps</a>).  For example, if <code>shell-pushd-regexp</code> matches
+<code class="code">shell-pushd-regexp</code>, <code class="code">shell-popd-regexp</code>, and
+<code class="code">shell-cd-regexp</code> to the appropriate regular expressions
+(see <a class="pxref" href="Regexps.html">Syntax of Regular Expressions</a>).  For example, if <code class="code">shell-pushd-regexp</code> matches
 the beginning of a shell command line, that line is regarded as a
-<code>pushd</code> command.  These commands are recognized only at the
+<code class="code">pushd</code> command.  These commands are recognized only at the
 beginning of a shell command line.
 </p>
-<span id="index-dirs"></span>
+<a class="index-entry-id" id="index-dirs"></a>
 <p>If Emacs gets confused about changes in the working directory of the
-subshell, type <kbd>M-x dirs</kbd>.  This command asks the shell for its
+subshell, type <kbd class="kbd">M-x dirs</kbd>.  This command asks the shell for its
 working directory and updates the default directory accordingly.  It
 works for shells that support the most common command syntax, but may
 not work for unusual shells.
 </p>
-<span id="index-dirtrack_002dmode"></span>
-<span id="index-Dirtrack-mode"></span>
-<span id="index-mode_002c-Dirtrack"></span>
-<span id="index-dirtrack_002dlist"></span>
+<a class="index-entry-id" id="index-dirtrack_002dmode"></a>
+<a class="index-entry-id" id="index-Dirtrack-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Dirtrack"></a>
+<a class="index-entry-id" id="index-dirtrack_002dlist"></a>
 <p>You can also use Dirtrack mode, a buffer-local minor mode that
 implements an alternative method of tracking the shell&rsquo;s working
 directory.  To use this method, your shell prompt must contain the
 working directory at all times, and you must supply a regular
 expression for recognizing which part of the prompt contains the
 working directory; see the documentation of the variable
-<code>dirtrack-list</code> for details.  To use Dirtrack mode, type <kbd>M-x
-dirtrack-mode</kbd> in the Shell buffer, or add <code>dirtrack-mode</code> to
-<code>shell-mode-hook</code> (see <a href="Hooks.html">Hooks</a>).
+<code class="code">dirtrack-list</code> for details.  To use Dirtrack mode, type <kbd class="kbd">M-x
+dirtrack-mode</kbd> in the Shell buffer, or add <code class="code">dirtrack-mode</code> to
+<code class="code">shell-mode-hook</code> (see <a class="pxref" href="Hooks.html">Hooks</a>).
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Shell-Options.html" accesskey="n" rel="next">Shell Options</a>, Previous: <a href="Shell-History.html" accesskey="p" rel="prev">Shell History</a>, Up: <a href="Shell.html" accesskey="u" rel="up">Shell</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Shell-Options.html">Shell Mode Options</a>, Previous: <a href="Shell-History.html">Shell Command History</a>, Up: <a href="Shell.html">Running Shell Commands from Emacs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

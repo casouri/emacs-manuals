@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 26.3.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Compilation Shell (GNU Emacs Manual)</title>
 
 <meta name="description" content="Compilation Shell (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,12 @@ developing GNU and promoting software freedom." -->
 <link href="Compilation-Mode.html" rel="prev" title="Compilation Mode">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,12 +51,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Compilation-Shell"></span><div class="header">
+<div class="section-level-extent" id="Compilation-Shell">
+<div class="nav-panel">
 <p>
-Next: <a href="Grep-Searching.html" accesskey="n" rel="next">Grep Searching</a>, Previous: <a href="Compilation-Mode.html" accesskey="p" rel="prev">Compilation Mode</a>, Up: <a href="Building.html" accesskey="u" rel="up">Building</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Grep-Searching.html" accesskey="n" rel="next">Searching with Grep under Emacs</a>, Previous: <a href="Compilation-Mode.html" accesskey="p" rel="prev">Compilation Mode</a>, Up: <a href="Building.html" accesskey="u" rel="up">Compiling and Testing Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Subshells-for-Compilation"></span><h3 class="section">27.3 Subshells for Compilation</h3>
+<h3 class="section" id="Subshells-for-Compilation"><span>27.3 Subshells for Compilation<a class="copiable-link" href="#Subshells-for-Compilation"> &para;</a></span></h3>
 
 <p>This section includes various techniques and advice for using a
 shell and its features in compilation buffers.  This material is
@@ -70,45 +65,45 @@ specific to local compilations, and will most probably not work in (or
 be irrelevant to) compilation buffers whose default directory is on
 remote hosts.
 </p>
-<p>The <kbd>M-x compile</kbd> command uses a shell to run the compilation
+<p>The <kbd class="kbd">M-x compile</kbd> command uses a shell to run the compilation
 command, but specifies the option for a noninteractive shell.  This
 means, in particular, that the shell should start with no prompt.  If
 you find your usual shell prompt making an unsightly appearance in the
-<samp>*compilation*</samp> buffer, it means you have made a mistake in your
+<samp class="file">*compilation*</samp> buffer, it means you have made a mistake in your
 shell&rsquo;s init file by setting the prompt unconditionally.  (This init
-file may be named <samp>.bashrc</samp>, <samp>.profile</samp>, <samp>.cshrc</samp>,
-<samp>.shrc</samp>, etc., depending on what shell you use.)  The shell init
+file may be named <samp class="file">.bashrc</samp>, <samp class="file">.profile</samp>, <samp class="file">.cshrc</samp>,
+<samp class="file">.shrc</samp>, etc., depending on what shell you use.)  The shell init
 file should set the prompt only if there already is a prompt.  Here&rsquo;s
 how to do it in bash:
 </p>
 <div class="example">
-<pre class="example">if [ &quot;${PS1+set}&quot; = set ]
-then PS1=&hellip;
+<pre class="example-preformatted">if [ &quot;${PS1+set}&quot; = set ]
+then PS1=...
 fi
 </pre></div>
 
 <p>And here&rsquo;s how to do it in csh:
 </p>
 <div class="example">
-<pre class="example">if ($?prompt) set prompt = &hellip;
+<pre class="example-preformatted">if ($?prompt) set prompt = ...
 </pre></div>
 
-<span id="index-TERM_002c-environment-variable_002c-in-compilation-mode"></span>
-<p>If you want to customize the value of the <code>TERM</code> environment
+<a class="index-entry-id" id="index-TERM_002c-environment-variable_002c-in-compilation-mode"></a>
+<p>If you want to customize the value of the <code class="env">TERM</code> environment
 variable passed to the compilation subshell, customize the variable
-<code>comint-terminfo-terminal</code> (see <a href="Shell-Options.html">Shell Options</a>).
+<code class="code">comint-terminfo-terminal</code> (see <a class="pxref" href="Shell-Options.html">Shell Mode Options</a>).
 </p>
 <p>Emacs does not expect a compiler process to launch asynchronous
 subprocesses; if it does, and they keep running after the main
 compiler process has terminated, Emacs may kill them or their output
 may not arrive in Emacs.  To avoid this problem, make the main
 compilation process wait for its subprocesses to finish.  In a shell
-script, you can do this using &lsquo;<samp>$!</samp>&rsquo; and &lsquo;<samp>wait</samp>&rsquo;, like this:
+script, you can do this using &lsquo;<samp class="samp">$!</samp>&rsquo; and &lsquo;<samp class="samp">wait</samp>&rsquo;, like this:
 </p>
 <div class="example">
-<pre class="example">(sleep 10; echo 2nd)&amp; pid=$!  # <span class="roman">Record pid of subprocess</span>
+<pre class="example-preformatted">(sleep 10; echo 2nd)&amp; pid=$!  # <span class="r">Record pid of subprocess</span>
 echo first message
-wait $pid                     # <span class="roman">Wait for subprocess</span>
+wait $pid                     # <span class="r">Wait for subprocess</span>
 </pre></div>
 
 <p>If the background process does not output to the compilation buffer,
@@ -116,18 +111,19 @@ so you only need to prevent it from being killed when the main
 compilation process terminates, this is sufficient:
 </p>
 <div class="example">
-<pre class="example">nohup <var>command</var>; sleep 1
+<pre class="example-preformatted">nohup <var class="var">command</var>; sleep 1
 </pre></div>
 
 <p>On MS-DOS, asynchronous subprocesses are
-not supported, so <kbd>M-x compile</kbd> runs the compilation command
+not supported, so <kbd class="kbd">M-x compile</kbd> runs the compilation command
 synchronously (i.e., you must wait until the command finishes before
-you can do anything else in Emacs).  See <a href="MS_002dDOS.html">MS-DOS</a>.
+you can do anything else in Emacs).  See <a class="xref" href="MS_002dDOS.html">Emacs and MS-DOS</a>.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Grep-Searching.html" accesskey="n" rel="next">Grep Searching</a>, Previous: <a href="Compilation-Mode.html" accesskey="p" rel="prev">Compilation Mode</a>, Up: <a href="Building.html" accesskey="u" rel="up">Building</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Grep-Searching.html">Searching with Grep under Emacs</a>, Previous: <a href="Compilation-Mode.html">Compilation Mode</a>, Up: <a href="Building.html">Compiling and Testing Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

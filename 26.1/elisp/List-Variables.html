@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>List Variables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="List Variables (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Building-Lists.html" rel="prev" title="Building Lists">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,28 +49,29 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="List-Variables"></span><div class="header">
+<div class="section-level-extent" id="List-Variables">
+<div class="nav-panel">
 <p>
-Next: <a href="Modifying-Lists.html" accesskey="n" rel="next">Modifying Lists</a>, Previous: <a href="Building-Lists.html" accesskey="p" rel="prev">Building Lists</a>, Up: <a href="Lists.html" accesskey="u" rel="up">Lists</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Modifying-Lists.html" accesskey="n" rel="next">Modifying Existing List Structure</a>, Previous: <a href="Building-Lists.html" accesskey="p" rel="prev">Building Cons Cells and Lists</a>, Up: <a href="Lists.html" accesskey="u" rel="up">Lists</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Modifying-List-Variables"></span><h3 class="section">5.5 Modifying List Variables</h3>
-<span id="index-modify-a-list"></span>
-<span id="index-list-modification"></span>
+<h3 class="section" id="Modifying-List-Variables"><span>5.5 Modifying List Variables<a class="copiable-link" href="#Modifying-List-Variables"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-modify-a-list"></a>
+<a class="index-entry-id" id="index-list-modification"></a>
 
 <p>These functions, and one macro, provide convenient ways
 to modify a list which is stored in a variable.
 </p>
-<dl>
-<dt id="index-push">Macro: <strong>push</strong> <em>element listname</em></dt>
-<dd><p>This macro creates a new list whose <small>CAR</small> is <var>element</var> and
-whose <small>CDR</small> is the list specified by <var>listname</var>, and saves that
-list in <var>listname</var>.  In the simplest case, <var>listname</var> is an
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-push"><span class="category-def">Macro: </span><span><strong class="def-name">push</strong> <var class="def-var-arguments">element listname</var><a class="copiable-link" href="#index-push"> &para;</a></span></dt>
+<dd><p>This macro creates a new list whose <small class="sc">CAR</small> is <var class="var">element</var> and
+whose <small class="sc">CDR</small> is the list specified by <var class="var">listname</var>, and saves that
+list in <var class="var">listname</var>.  In the simplest case, <var class="var">listname</var> is an
 unquoted symbol naming a list, and this macro is equivalent
-to <code>(setq&nbsp;<var>listname</var>&nbsp;(cons&nbsp;<var>element</var>&nbsp;<var>listname</var>))</code><!-- /@w -->.
+to <code class="code">(setq&nbsp;<var class="var">listname</var>&nbsp;(cons&nbsp;<var class="var">element</var>&nbsp;<var class="var">listname</var>))</code><!-- /@w -->.
 </p>
 <div class="example">
-<pre class="example">(setq l '(a b))
+<pre class="example-preformatted">(setq l '(a b))
      &rArr; (a b)
 (push 'c l)
      &rArr; (c a b)
@@ -85,119 +79,120 @@ l
      &rArr; (c a b)
 </pre></div>
 
-<p>More generally, <code>listname</code> can be a generalized variable.  In
-that case, this macro does the equivalent of <code>(setf&nbsp;<var>listname</var>&nbsp;(cons&nbsp;<var>element</var>&nbsp;<var>listname</var>))</code><!-- /@w -->.
-See <a href="Generalized-Variables.html">Generalized Variables</a>.
+<p>More generally, <code class="code">listname</code> can be a generalized variable.  In
+that case, this macro does the equivalent of <code class="code">(setf&nbsp;<var class="var">listname</var>&nbsp;(cons&nbsp;<var class="var">element</var>&nbsp;<var class="var">listname</var>))</code><!-- /@w -->.
+See <a class="xref" href="Generalized-Variables.html">Generalized Variables</a>.
 </p>
-<p>For the <code>pop</code> macro, which removes the first element from a list,
-See <a href="List-Elements.html">List Elements</a>.
+<p>For the <code class="code">pop</code> macro, which removes the first element from a list,
+See <a class="xref" href="List-Elements.html">Accessing Elements of Lists</a>.
 </p></dd></dl>
 
 <p>Two functions modify lists that are the values of variables.
 </p>
-<dl>
-<dt id="index-add_002dto_002dlist">Function: <strong>add-to-list</strong> <em>symbol element &amp;optional append compare-fn</em></dt>
-<dd><p>This function sets the variable <var>symbol</var> by consing <var>element</var>
-onto the old value, if <var>element</var> is not already a member of that
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-add_002dto_002dlist"><span class="category-def">Function: </span><span><strong class="def-name">add-to-list</strong> <var class="def-var-arguments">symbol element &amp;optional append compare-fn</var><a class="copiable-link" href="#index-add_002dto_002dlist"> &para;</a></span></dt>
+<dd><p>This function sets the variable <var class="var">symbol</var> by consing <var class="var">element</var>
+onto the old value, if <var class="var">element</var> is not already a member of that
 value.  It returns the resulting list, whether updated or not.  The
-value of <var>symbol</var> had better be a list already before the call.
-<code>add-to-list</code> uses <var>compare-fn</var> to compare <var>element</var>
-against existing list members; if <var>compare-fn</var> is <code>nil</code>, it
-uses <code>equal</code>.
+value of <var class="var">symbol</var> had better be a list already before the call.
+<code class="code">add-to-list</code> uses <var class="var">compare-fn</var> to compare <var class="var">element</var>
+against existing list members; if <var class="var">compare-fn</var> is <code class="code">nil</code>, it
+uses <code class="code">equal</code>.
 </p>
-<p>Normally, if <var>element</var> is added, it is added to the front of
-<var>symbol</var>, but if the optional argument <var>append</var> is
-non-<code>nil</code>, it is added at the end.
+<p>Normally, if <var class="var">element</var> is added, it is added to the front of
+<var class="var">symbol</var>, but if the optional argument <var class="var">append</var> is
+non-<code class="code">nil</code>, it is added at the end.
 </p>
-<p>The argument <var>symbol</var> is not implicitly quoted; <code>add-to-list</code>
-is an ordinary function, like <code>set</code> and unlike <code>setq</code>.  Quote
+<p>The argument <var class="var">symbol</var> is not implicitly quoted; <code class="code">add-to-list</code>
+is an ordinary function, like <code class="code">set</code> and unlike <code class="code">setq</code>.  Quote
 the argument yourself if that is what you want.
 </p></dd></dl>
 
-<p>Here&rsquo;s a scenario showing how to use <code>add-to-list</code>:
+<p>Here&rsquo;s a scenario showing how to use <code class="code">add-to-list</code>:
 </p>
 <div class="example">
-<pre class="example">(setq foo '(a b))
+<pre class="example-preformatted">(setq foo '(a b))
      &rArr; (a b)
 
-(add-to-list 'foo 'c)     ;; <span class="roman">Add <code>c</code>.</span>
+(add-to-list 'foo 'c)     ;; <span class="r">Add <code class="code">c</code>.</span>
      &rArr; (c a b)
 
-(add-to-list 'foo 'b)     ;; <span class="roman">No effect.</span>
+(add-to-list 'foo 'b)     ;; <span class="r">No effect.</span>
      &rArr; (c a b)
 
-foo                       ;; <span class="roman"><code>foo</code> was changed.</span>
+foo                       ;; <span class="r"><code class="code">foo</code> was changed.</span>
      &rArr; (c a b)
 </pre></div>
 
-<p>An equivalent expression for <code>(add-to-list '<var>var</var>
-<var>value</var>)</code> is this:
+<p>An equivalent expression for <code class="code">(add-to-list '<var class="var">var</var>
+<var class="var">value</var>)</code> is this:
 </p>
 <div class="example">
-<pre class="example">(or (member <var>value</var> <var>var</var>)
-    (setq <var>var</var> (cons <var>value</var> <var>var</var>)))
+<pre class="example-preformatted">(or (member <var class="var">value</var> <var class="var">var</var>)
+    (setq <var class="var">var</var> (cons <var class="var">value</var> <var class="var">var</var>)))
 </pre></div>
 
-<dl>
-<dt id="index-add_002dto_002dordered_002dlist">Function: <strong>add-to-ordered-list</strong> <em>symbol element &amp;optional order</em></dt>
-<dd><p>This function sets the variable <var>symbol</var> by inserting
-<var>element</var> into the old value, which must be a list, at the
-position specified by <var>order</var>.  If <var>element</var> is already a
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-add_002dto_002dordered_002dlist"><span class="category-def">Function: </span><span><strong class="def-name">add-to-ordered-list</strong> <var class="def-var-arguments">symbol element &amp;optional order</var><a class="copiable-link" href="#index-add_002dto_002dordered_002dlist"> &para;</a></span></dt>
+<dd><p>This function sets the variable <var class="var">symbol</var> by inserting
+<var class="var">element</var> into the old value, which must be a list, at the
+position specified by <var class="var">order</var>.  If <var class="var">element</var> is already a
 member of the list, its position in the list is adjusted according
-to <var>order</var>.  Membership is tested using <code>eq</code>.
+to <var class="var">order</var>.  Membership is tested using <code class="code">eq</code>.
 This function returns the resulting list, whether updated or not.
 </p>
-<p>The <var>order</var> is typically a number (integer or float), and the
+<p>The <var class="var">order</var> is typically a number (integer or float), and the
 elements of the list are sorted in non-decreasing numerical order.
 </p>
-<p><var>order</var> may also be omitted or <code>nil</code>.  Then the numeric order
-of <var>element</var> stays unchanged if it already has one; otherwise,
-<var>element</var> has no numeric order.  Elements without a numeric list
+<p><var class="var">order</var> may also be omitted or <code class="code">nil</code>.  Then the numeric order
+of <var class="var">element</var> stays unchanged if it already has one; otherwise,
+<var class="var">element</var> has no numeric order.  Elements without a numeric list
 order are placed at the end of the list, in no particular order.
 </p>
-<p>Any other value for <var>order</var> removes the numeric order of <var>element</var>
-if it already has one; otherwise, it is equivalent to <code>nil</code>.
+<p>Any other value for <var class="var">order</var> removes the numeric order of <var class="var">element</var>
+if it already has one; otherwise, it is equivalent to <code class="code">nil</code>.
 </p>
-<p>The argument <var>symbol</var> is not implicitly quoted;
-<code>add-to-ordered-list</code> is an ordinary function, like <code>set</code>
-and unlike <code>setq</code>.  Quote the argument yourself if necessary.
+<p>The argument <var class="var">symbol</var> is not implicitly quoted;
+<code class="code">add-to-ordered-list</code> is an ordinary function, like <code class="code">set</code>
+and unlike <code class="code">setq</code>.  Quote the argument yourself if necessary.
 </p>
-<p>The ordering information is stored in a hash table on <var>symbol</var>&rsquo;s
-<code>list-order</code> property.
+<p>The ordering information is stored in a hash table on <var class="var">symbol</var>&rsquo;s
+<code class="code">list-order</code> property.
 </p></dd></dl>
 
-<p>Here&rsquo;s a scenario showing how to use <code>add-to-ordered-list</code>:
+<p>Here&rsquo;s a scenario showing how to use <code class="code">add-to-ordered-list</code>:
 </p>
 <div class="example">
-<pre class="example">(setq foo '())
+<pre class="example-preformatted">(setq foo '())
      &rArr; nil
 
-(add-to-ordered-list 'foo 'a 1)     ;; <span class="roman">Add <code>a</code>.</span>
+(add-to-ordered-list 'foo 'a 1)     ;; <span class="r">Add <code class="code">a</code>.</span>
      &rArr; (a)
 
-(add-to-ordered-list 'foo 'c 3)     ;; <span class="roman">Add <code>c</code>.</span>
+(add-to-ordered-list 'foo 'c 3)     ;; <span class="r">Add <code class="code">c</code>.</span>
      &rArr; (a c)
 
-(add-to-ordered-list 'foo 'b 2)     ;; <span class="roman">Add <code>b</code>.</span>
+(add-to-ordered-list 'foo 'b 2)     ;; <span class="r">Add <code class="code">b</code>.</span>
      &rArr; (a b c)
 
-(add-to-ordered-list 'foo 'b 4)     ;; <span class="roman">Move <code>b</code>.</span>
+(add-to-ordered-list 'foo 'b 4)     ;; <span class="r">Move <code class="code">b</code>.</span>
      &rArr; (a c b)
 
-(add-to-ordered-list 'foo 'd)       ;; <span class="roman">Append <code>d</code>.</span>
+(add-to-ordered-list 'foo 'd)       ;; <span class="r">Append <code class="code">d</code>.</span>
      &rArr; (a c b d)
 
-(add-to-ordered-list 'foo 'e)       ;; <span class="roman">Add <code>e</code></span>.
+(add-to-ordered-list 'foo 'e)       ;; <span class="r">Add <code class="code">e</code></span>.
      &rArr; (a c b e d)
 
-foo                       ;; <span class="roman"><code>foo</code> was changed.</span>
+foo                       ;; <span class="r"><code class="code">foo</code> was changed.</span>
      &rArr; (a c b e d)
 </pre></div>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Modifying-Lists.html" accesskey="n" rel="next">Modifying Lists</a>, Previous: <a href="Building-Lists.html" accesskey="p" rel="prev">Building Lists</a>, Up: <a href="Lists.html" accesskey="u" rel="up">Lists</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Modifying-Lists.html">Modifying Existing List Structure</a>, Previous: <a href="Building-Lists.html">Building Cons Cells and Lists</a>, Up: <a href="Lists.html">Lists</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

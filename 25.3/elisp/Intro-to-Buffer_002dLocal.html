@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Intro to Buffer-Local (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Intro to Buffer-Local (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Buffer_002dLocal-Variables.html" rel="up" title="Buffer-Local Variables">
 <link href="Creating-Buffer_002dLocal.html" rel="next" title="Creating Buffer-Local">
-<link href="Buffer_002dLocal-Variables.html" rel="prev" title="Buffer-Local Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,12 +47,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Intro-to-Buffer_002dLocal"></span><div class="header">
+<div class="subsection-level-extent" id="Intro-to-Buffer_002dLocal">
+<div class="nav-panel">
 <p>
-Next: <a href="Creating-Buffer_002dLocal.html" accesskey="n" rel="next">Creating Buffer-Local</a>, Up: <a href="Buffer_002dLocal-Variables.html" accesskey="u" rel="up">Buffer-Local Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Creating-Buffer_002dLocal.html" accesskey="n" rel="next">Creating and Deleting Buffer-Local Bindings</a>, Up: <a href="Buffer_002dLocal-Variables.html" accesskey="u" rel="up">Buffer-Local Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Introduction-to-Buffer_002dLocal-Variables"></span><h4 class="subsection">11.10.1 Introduction to Buffer-Local Variables</h4>
+<h4 class="subsection" id="Introduction-to-Buffer_002dLocal-Variables"><span>11.10.1 Introduction to Buffer-Local Variables<a class="copiable-link" href="#Introduction-to-Buffer_002dLocal-Variables"> &para;</a></span></h4>
 
 <p>A buffer-local variable has a buffer-local binding associated with a
 particular buffer.  The binding is in effect when that buffer is
@@ -71,7 +63,7 @@ so its other bindings are unchanged.  This means that the change is
 visible only in the buffer where you made it.
 </p>
 <p>The variable&rsquo;s ordinary binding, which is not associated with any
-specific buffer, is called the <em>default binding</em>.  In most cases,
+specific buffer, is called the <em class="dfn">default binding</em>.  In most cases,
 this is the global binding.
 </p>
 <p>A variable can have buffer-local bindings in some buffers but not in
@@ -84,21 +76,21 @@ binding.
 </p>
 <p>The most common use of buffer-local bindings is for major modes to change
 variables that control the behavior of commands.  For example, C mode and
-Lisp mode both set the variable <code>paragraph-start</code> to specify that only
+Lisp mode both set the variable <code class="code">paragraph-start</code> to specify that only
 blank lines separate paragraphs.  They do this by making the variable
 buffer-local in the buffer that is being put into C mode or Lisp mode, and
-then setting it to the new value for that mode.  See <a href="Major-Modes.html">Major Modes</a>.
+then setting it to the new value for that mode.  See <a class="xref" href="Major-Modes.html">Major Modes</a>.
 </p>
 <p>The usual way to make a buffer-local binding is with
-<code>make-local-variable</code>, which is what major mode commands typically
+<code class="code">make-local-variable</code>, which is what major mode commands typically
 use.  This affects just the current buffer; all other buffers (including
 those yet to be created) will continue to share the default value unless
 they are explicitly given their own buffer-local bindings.
 </p>
-<span id="index-automatically-buffer_002dlocal"></span>
+<a class="index-entry-id" id="index-automatically-buffer_002dlocal"></a>
 <p>A more powerful operation is to mark the variable as
-<em>automatically buffer-local</em> by calling
-<code>make-variable-buffer-local</code>.  You can think of this as making the
+<em class="dfn">automatically buffer-local</em> by calling
+<code class="code">make-variable-buffer-local</code>.  You can think of this as making the
 variable local in all buffers, even those yet to be created.  More
 precisely, the effect is that setting the variable automatically makes
 the variable local to the current buffer if it is not already so.  All
@@ -106,51 +98,52 @@ buffers start out by sharing the default value of the variable as usual,
 but setting the variable creates a buffer-local binding for the current
 buffer.  The new value is stored in the buffer-local binding, leaving
 the default binding untouched.  This means that the default value cannot
-be changed with <code>setq</code> in any buffer; the only way to change it is
-with <code>setq-default</code>.
+be changed with <code class="code">setq</code> in any buffer; the only way to change it is
+with <code class="code">setq-default</code>.
 </p>
-<p><strong>Warning:</strong> When a variable has buffer-local
-bindings in one or more buffers, <code>let</code> rebinds the binding that&rsquo;s
+<p><strong class="strong">Warning:</strong> When a variable has buffer-local
+bindings in one or more buffers, <code class="code">let</code> rebinds the binding that&rsquo;s
 currently in effect.  For instance, if the current buffer has a
-buffer-local value, <code>let</code> temporarily rebinds that.  If no
-buffer-local bindings are in effect, <code>let</code> rebinds
-the default value.  If inside the <code>let</code> you then change to a
+buffer-local value, <code class="code">let</code> temporarily rebinds that.  If no
+buffer-local bindings are in effect, <code class="code">let</code> rebinds
+the default value.  If inside the <code class="code">let</code> you then change to a
 different current buffer in which a different binding is in effect,
-you won&rsquo;t see the <code>let</code> binding any more.  And if you exit the
-<code>let</code> while still in the other buffer, you won&rsquo;t see the
+you won&rsquo;t see the <code class="code">let</code> binding any more.  And if you exit the
+<code class="code">let</code> while still in the other buffer, you won&rsquo;t see the
 unbinding occur (though it will occur properly).  Here is an example
 to illustrate:
 </p>
 <div class="example">
-<pre class="example">(setq foo 'g)
+<div class="group"><pre class="example-preformatted">(setq foo 'g)
 (set-buffer &quot;a&quot;)
 (make-local-variable 'foo)
-</pre><pre class="example">(setq foo 'a)
+</pre></div><pre class="example-preformatted">(setq foo 'a)
 (let ((foo 'temp))
-  ;; foo &rArr; 'temp  ; <span class="roman">let binding in buffer &lsquo;<samp>a</samp>&rsquo;</span>
+  ;; foo &rArr; 'temp  ; <span class="r">let binding in buffer &lsquo;<samp class="samp">a</samp>&rsquo;</span>
   (set-buffer &quot;b&quot;)
-  ;; foo &rArr; 'g     ; <span class="roman">the global value since foo is not local in &lsquo;<samp>b</samp>&rsquo;</span>
-  <var>body</var>&hellip;)
-</pre><pre class="example">foo &rArr; 'g        ; <span class="roman">exiting restored the local value in buffer &lsquo;<samp>a</samp>&rsquo;,</span>
-                 ; <span class="roman">but we don&rsquo;t see that in buffer &lsquo;<samp>b</samp>&rsquo;</span>
-</pre><pre class="example">(set-buffer &quot;a&quot;) ; <span class="roman">verify the local value was restored</span>
+  ;; foo &rArr; 'g     ; <span class="r">the global value since foo is not local in &lsquo;<samp class="samp">b</samp>&rsquo;</span>
+  <var class="var">body</var>...)
+</pre><div class="group"><pre class="example-preformatted">foo &rArr; 'g        ; <span class="r">exiting restored the local value in buffer &lsquo;<samp class="samp">a</samp>&rsquo;,</span>
+                 ; <span class="r">but we don&rsquo;t see that in buffer &lsquo;<samp class="samp">b</samp>&rsquo;</span>
+</pre></div><div class="group"><pre class="example-preformatted">(set-buffer &quot;a&quot;) ; <span class="r">verify the local value was restored</span>
 foo &rArr; 'a
-</pre></div>
+</pre></div></div>
 
-<p>Note that references to <code>foo</code> in <var>body</var> access the
-buffer-local binding of buffer &lsquo;<samp>b</samp>&rsquo;.
+<p>Note that references to <code class="code">foo</code> in <var class="var">body</var> access the
+buffer-local binding of buffer &lsquo;<samp class="samp">b</samp>&rsquo;.
 </p>
 <p>When a file specifies local variable values, these become buffer-local
-values when you visit the file.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/File-Variables.html#File-Variables">File Variables</a> in <cite>The
+values when you visit the file.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/File-Variables.html#File-Variables">File Variables</a> in <cite class="cite">The
 GNU Emacs Manual</cite>.
 </p>
 <p>A buffer-local variable cannot be made terminal-local
-(see <a href="Multiple-Terminals.html">Multiple Terminals</a>).
+(see <a class="pxref" href="Multiple-Terminals.html">Multiple Terminals</a>).
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Creating-Buffer_002dLocal.html" accesskey="n" rel="next">Creating Buffer-Local</a>, Up: <a href="Buffer_002dLocal-Variables.html" accesskey="u" rel="up">Buffer-Local Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Creating-Buffer_002dLocal.html">Creating and Deleting Buffer-Local Bindings</a>, Up: <a href="Buffer_002dLocal-Variables.html">Buffer-Local Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

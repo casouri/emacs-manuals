@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>POSIX Regexps (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="POSIX Regexps (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="POSIX Regexps (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Searching-and-Matching.html" rel="up" title="Searching and Matching">
+<link href="Standard-Regexps.html" rel="prev" title="Standard Regexps">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="POSIX-Regexps">
+<div class="nav-panel">
+<p>
+Previous: <a href="Standard-Regexps.html" accesskey="p" rel="prev">Standard Regular Expressions Used in Editing</a>, Up: <a href="Searching-and-Matching.html" accesskey="u" rel="up">Searching and Matching</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Emacs-versus-POSIX-Regular-Expressions"><span>35.9 Emacs versus POSIX Regular Expressions<a class="copiable-link" href="#Emacs-versus-POSIX-Regular-Expressions"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-POSIX-regular-expressions"></a>
+
+<p>Regular expression syntax varies significantly among computer programs.
+When writing Elisp code that generates regular expressions for use by other
+programs, it is helpful to know how syntax variants differ.
+To give a feel for the variation, this section discusses how
+Emacs regular expressions differ from two syntax variants standarded by POSIX:
+basic regular expressions (BREs) and extended regular expressions (EREs).
+Plain <code class="command">grep</code> uses BREs, and &lsquo;<samp class="samp">grep -E</samp>&rsquo; uses EREs.
+</p>
+<p>Emacs regular expressions have a syntax closer to EREs than to BREs,
+with some extensions.  Here is a summary of how POSIX BREs and EREs
+differ from Emacs regular expressions.
+</p>
+<ul class="itemize mark-bullet">
+<li>In POSIX BREs &lsquo;<samp class="samp">+</samp>&rsquo; and &lsquo;<samp class="samp">?</samp>&rsquo; are not special.
+The only backslash escape sequences are &lsquo;<samp class="samp">\(&hellip;\)</samp>&rsquo;,
+&lsquo;<samp class="samp">\{&hellip;\}</samp>&rsquo;, &lsquo;<samp class="samp">\1</samp>&rsquo; through &lsquo;<samp class="samp">\9</samp>&rsquo;, along with the
+escaped special characters &lsquo;<samp class="samp">\$</samp>&rsquo;, &lsquo;<samp class="samp">\*</samp>&rsquo;, &lsquo;<samp class="samp">\.</samp>&rsquo;, &lsquo;<samp class="samp">\[</samp>&rsquo;,
+&lsquo;<samp class="samp">\\</samp>&rsquo;, and &lsquo;<samp class="samp">\^</samp>&rsquo;.
+Therefore &lsquo;<samp class="samp">\(?:</samp>&rsquo; acts like &lsquo;<samp class="samp">\([?]:</samp>&rsquo;.
+POSIX does not define how other BRE escapes behave;
+for example, GNU <code class="command">grep</code> treats &lsquo;<samp class="samp">\|</samp>&rsquo; like Emacs does,
+but does not support all the Emacs escapes.
+
+</li><li>In POSIX BREs, it is an implementation option whether &lsquo;<samp class="samp">^</samp>&rsquo; is special
+after &lsquo;<samp class="samp">\(</samp>&rsquo;; GNU <code class="command">grep</code> treats it like Emacs does.
+In POSIX EREs, &lsquo;<samp class="samp">^</samp>&rsquo; is always special outside of bracket expressions,
+which means the ERE &lsquo;<samp class="samp">x^</samp>&rsquo; never matches.
+In Emacs regular expressions, &lsquo;<samp class="samp">^</samp>&rsquo; is special only at the
+beginning of the regular expression, or after &lsquo;<samp class="samp">\(</samp>&rsquo;, &lsquo;<samp class="samp">\(?:</samp>&rsquo;
+or &lsquo;<samp class="samp">\|</samp>&rsquo;.
+
+</li><li>In POSIX BREs, it is an implementation option whether &lsquo;<samp class="samp">$</samp>&rsquo; is
+special before &lsquo;<samp class="samp">\)</samp>&rsquo;; GNU <code class="command">grep</code> treats it like Emacs
+does.  In POSIX EREs, &lsquo;<samp class="samp">$</samp>&rsquo; is always special outside of bracket
+expressions (see <a class="pxref" href="Regexp-Special.html">bracket expressions</a>), which means
+the ERE &lsquo;<samp class="samp">$x</samp>&rsquo; never matches.  In Emacs regular expressions,
+&lsquo;<samp class="samp">$</samp>&rsquo; is special only at the end of the regular expression, or
+before &lsquo;<samp class="samp">\)</samp>&rsquo; or &lsquo;<samp class="samp">\|</samp>&rsquo;.
+
+</li><li>In POSIX EREs &lsquo;<samp class="samp">{</samp>&rsquo;, &lsquo;<samp class="samp">(</samp>&rsquo; and &lsquo;<samp class="samp">|</samp>&rsquo; are special,
+and &lsquo;<samp class="samp">)</samp>&rsquo; is special when matched with a preceding &lsquo;<samp class="samp">(</samp>&rsquo;.
+These special characters do not use preceding backslashes;
+&lsquo;<samp class="samp">(?</samp>&rsquo; produces undefined results.
+The only backslash escape sequences are the escaped special characters
+&lsquo;<samp class="samp">\$</samp>&rsquo;, &lsquo;<samp class="samp">\(</samp>&rsquo;, &lsquo;<samp class="samp">\)</samp>&rsquo;, &lsquo;<samp class="samp">\*</samp>&rsquo;, &lsquo;<samp class="samp">\+</samp>&rsquo;, &lsquo;<samp class="samp">\.</samp>&rsquo;,
+&lsquo;<samp class="samp">\?</samp>&rsquo;, &lsquo;<samp class="samp">\[</samp>&rsquo;, &lsquo;<samp class="samp">\\</samp>&rsquo;, &lsquo;<samp class="samp">\^</samp>&rsquo;, &lsquo;<samp class="samp">\{</samp>&rsquo; and &lsquo;<samp class="samp">\|</samp>&rsquo;.
+POSIX does not define how other ERE escapes behave;
+for example, GNU &lsquo;<samp class="samp">grep -E</samp>&rsquo; treats &lsquo;<samp class="samp">\1</samp>&rsquo; like Emacs does,
+but does not support all the Emacs escapes.
+
+</li><li>In POSIX BREs and EREs, undefined results are produced by repetition
+operators at the start of a regular expression or subexpression
+(possibly preceded by &lsquo;<samp class="samp">^</samp>&rsquo;), except that the repetition operator
+&lsquo;<samp class="samp">*</samp>&rsquo; has the same behavior in BREs as in Emacs.
+In Emacs, these operators are treated as ordinary.
+
+</li><li>In BREs and EREs, undefined results are produced by two repetition
+operators in sequence.  In Emacs, these have well-defined behavior,
+e.g., &lsquo;<samp class="samp">a**</samp>&rsquo; is equivalent to &lsquo;<samp class="samp">a*</samp>&rsquo;.
+
+</li><li>In BREs and EREs, undefined results are produced by empty regular
+expressions or subexpressions.  In Emacs these have well-defined
+behavior, e.g., &lsquo;<samp class="samp">\(\)*</samp>&rsquo; matches the empty string,
+
+</li><li>In BREs and EREs, undefined results are produced for the named
+character classes &lsquo;<samp class="samp">[:ascii:]</samp>&rsquo;, &lsquo;<samp class="samp">[:multibyte:]</samp>&rsquo;,
+&lsquo;<samp class="samp">[:nonascii:]</samp>&rsquo;, &lsquo;<samp class="samp">[:unibyte:]</samp>&rsquo;, and &lsquo;<samp class="samp">[:word:]</samp>&rsquo;.
+
+</li><li>BREs and EREs can contain collating symbols and equivalence
+class expressions within bracket expressions, e.g., &lsquo;<samp class="samp">[[.ch.]d[=a=]]</samp>&rsquo;.
+Emacs regular expressions do not support this.
+
+</li><li>BREs, EREs, and the strings they match cannot contain encoding errors
+or NUL bytes.  In Emacs these constructs simply match themselves.
+
+</li><li>BRE and ERE searching always finds the longest match.
+Emacs searching by default does not necessarily do so.
+See <a class="xref" href="Longest-Match.html">Longest-match searching for regular expression matches</a>.
+</li></ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Standard-Regexps.html">Standard Regular Expressions Used in Editing</a>, Up: <a href="Searching-and-Matching.html">Searching and Matching</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

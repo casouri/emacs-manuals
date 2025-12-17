@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>VC-Aware Project Backend (GNU Emacs Manual)</title>
+
+<meta name="description" content="VC-Aware Project Backend (GNU Emacs Manual)">
+<meta name="keywords" content="VC-Aware Project Backend (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Projects.html" rel="up" title="Projects">
+<link href="Managing-Projects.html" rel="prev" title="Managing Projects">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="VC_002dAware-Project-Backend">
+<div class="nav-panel">
+<p>
+Previous: <a href="Managing-Projects.html" accesskey="p" rel="prev">Managing the Project List File</a>, Up: <a href="Projects.html" accesskey="u" rel="up">Working with Projects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="VC_002dAware-Project-Backend-1"><span>30.2.5 VC-Aware Project Backend<a class="copiable-link" href="#VC_002dAware-Project-Backend-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-VC_002daware-project-backend"></a>
+<a class="index-entry-id" id="index-project-backend_002c-VC_002daware"></a>
+<p>This backend is part of Emacs and is enabled by default.  (Other
+backends may need installation of add-on packages and their proper
+configuration.)
+</p>
+<p>It determines the contents of the project based on the VCS repository&rsquo;s
+configuration (if any), excluding the &ldquo;ignored&rdquo; files from the output.
+</p>
+<p>It has some performance optimizations for listing the files with some of
+the popular VCS systems (currently Git and Mercurial).
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-project_002dvc_002dinclude_002duntracked"><span class="category-def">User Option: </span><span><strong class="def-name">project-vc-include-untracked</strong><a class="copiable-link" href="#index-project_002dvc_002dinclude_002duntracked"> &para;</a></span></dt>
+<dd><p>By default, files which are neither registered with nor ignored by the
+VCS are considered part of the project.  Customize this variable to nil
+to change that.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-project_002dvc_002dignores"><span class="category-def">User Option: </span><span><strong class="def-name">project-vc-ignores</strong><a class="copiable-link" href="#index-project_002dvc_002dignores"> &para;</a></span></dt>
+<dd><p>Using this variable you can add more ignore patterns to the project, to
+exclude more files from the project&rsquo;s file listing.  The value is a list
+of glob strings.  They can match both regular files and directories.  To
+anchor an entry to the project root, start it with <code class="code">./</code>.  To match
+directories only, end it with <code class="code">/</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-project_002dvc_002dname"><span class="category-def">User Option: </span><span><strong class="def-name">project-vc-name</strong><a class="copiable-link" href="#index-project_002dvc_002dname"> &para;</a></span></dt>
+<dd><p>This variable allows you to change the automatically detected name of
+the project to a string of your choice.  By default the name is the base
+name of its root directory.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-project_002dvc_002dextra_002droot_002dmarkers"><span class="category-def">User Option: </span><span><strong class="def-name">project-vc-extra-root-markers</strong><a class="copiable-link" href="#index-project_002dvc_002dextra_002droot_002dmarkers"> &para;</a></span></dt>
+<dd><p>This variable allows you to set up detection of non-VC projects in this
+backend, and also to have some subdirectories detected as separate
+projects.  The value is a list.
+</p>
+<p>Each element is either a base file name or a glob pattern for such.
+</p>
+<p>Example values: <samp class="file">.dir-locals.el</samp>, <samp class="file">package.json</samp>,
+<samp class="file">requirements.txt</samp>, <samp class="file">*.gemspec</samp>.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Managing-Projects.html">Managing the Project List File</a>, Up: <a href="Projects.html">Working with Projects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

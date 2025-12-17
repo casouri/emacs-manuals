@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>SMIE Indentation Helpers (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="SMIE Indentation Helpers (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="SMIE Indentation Helpers (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="SMIE.html" rel="up" title="SMIE">
+<link href="SMIE-Indentation-Example.html" rel="next" title="SMIE Indentation Example">
+<link href="SMIE-Indentation.html" rel="prev" title="SMIE Indentation">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="SMIE-Indentation-Helpers">
+<div class="nav-panel">
+<p>
+Next: <a href="SMIE-Indentation-Example.html" accesskey="n" rel="next">Sample Indentation Rules</a>, Previous: <a href="SMIE-Indentation.html" accesskey="p" rel="prev">Specifying Indentation Rules</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">Simple Minded Indentation Engine</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Helper-Functions-for-Indentation-Rules"><span>24.7.1.7 Helper Functions for Indentation Rules<a class="copiable-link" href="#Helper-Functions-for-Indentation-Rules"> &para;</a></span></h4>
+
+<p>SMIE provides various functions designed specifically for use in the
+indentation rules function (several of those functions break if used in
+another context).  These functions all start with the prefix
+<code class="code">smie-rule-</code>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-smie_002drule_002dbolp"><span class="category-def">Function: </span><span><strong class="def-name">smie-rule-bolp</strong><a class="copiable-link" href="#index-smie_002drule_002dbolp"> &para;</a></span></dt>
+<dd><p>Return non-<code class="code">nil</code> if the current token is the first on the line.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-smie_002drule_002dhanging_002dp"><span class="category-def">Function: </span><span><strong class="def-name">smie-rule-hanging-p</strong><a class="copiable-link" href="#index-smie_002drule_002dhanging_002dp"> &para;</a></span></dt>
+<dd><p>Return non-<code class="code">nil</code> if the current token is <em class="emph">hanging</em>.
+A token is <em class="emph">hanging</em> if it is the last token on the line
+and if it is preceded by other tokens: a lone token on a line is not
+hanging.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-smie_002drule_002dnext_002dp"><span class="category-def">Function: </span><span><strong class="def-name">smie-rule-next-p</strong> <var class="def-var-arguments">&amp;rest tokens</var><a class="copiable-link" href="#index-smie_002drule_002dnext_002dp"> &para;</a></span></dt>
+<dd><p>Return non-<code class="code">nil</code> if the next token is among <var class="var">tokens</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-smie_002drule_002dprev_002dp"><span class="category-def">Function: </span><span><strong class="def-name">smie-rule-prev-p</strong> <var class="def-var-arguments">&amp;rest tokens</var><a class="copiable-link" href="#index-smie_002drule_002dprev_002dp"> &para;</a></span></dt>
+<dd><p>Return non-<code class="code">nil</code> if the previous token is among <var class="var">tokens</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-smie_002drule_002dparent_002dp"><span class="category-def">Function: </span><span><strong class="def-name">smie-rule-parent-p</strong> <var class="def-var-arguments">&amp;rest parents</var><a class="copiable-link" href="#index-smie_002drule_002dparent_002dp"> &para;</a></span></dt>
+<dd><p>Return non-<code class="code">nil</code> if the current token&rsquo;s parent is among <var class="var">parents</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-smie_002drule_002dsibling_002dp"><span class="category-def">Function: </span><span><strong class="def-name">smie-rule-sibling-p</strong><a class="copiable-link" href="#index-smie_002drule_002dsibling_002dp"> &para;</a></span></dt>
+<dd><p>Return non-<code class="code">nil</code> if the current token&rsquo;s parent is actually a
+sibling.  This is the case for example when the parent of a <code class="code">&quot;,&quot;</code>
+is just the previous <code class="code">&quot;,&quot;</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-smie_002drule_002dparent"><span class="category-def">Function: </span><span><strong class="def-name">smie-rule-parent</strong> <var class="def-var-arguments">&amp;optional offset</var><a class="copiable-link" href="#index-smie_002drule_002dparent"> &para;</a></span></dt>
+<dd><p>Return the proper offset to align the current token with the parent.
+If non-<code class="code">nil</code>, <var class="var">offset</var> should be an integer giving an
+additional offset to apply.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-smie_002drule_002dseparator"><span class="category-def">Function: </span><span><strong class="def-name">smie-rule-separator</strong> <var class="def-var-arguments">method</var><a class="copiable-link" href="#index-smie_002drule_002dseparator"> &para;</a></span></dt>
+<dd><p>Indent current token as a <em class="emph">separator</em>.
+</p>
+<p>By <em class="emph">separator</em>, we mean here a token whose sole purpose is to
+separate various elements within some enclosing syntactic construct, and
+which does not have any semantic significance in itself (i.e., it would
+typically not exist as a node in an abstract syntax tree).
+</p>
+<p>Such a token is expected to have an associative syntax and be closely
+tied to its syntactic parent.  Typical examples are <code class="code">&quot;,&quot;</code> in lists
+of arguments (enclosed inside parentheses), or <code class="code">&quot;;&quot;</code> in sequences
+of instructions (enclosed in a <code class="code">{...}</code> or <code class="code">begin...end</code>
+block).
+</p>
+<p><var class="var">method</var> should be the method name that was passed to
+<code class="code">smie-rules-function</code>.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="SMIE-Indentation-Example.html">Sample Indentation Rules</a>, Previous: <a href="SMIE-Indentation.html">Specifying Indentation Rules</a>, Up: <a href="SMIE.html">Simple Minded Indentation Engine</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Window Configurations (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Window Configurations (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Mouse-Window-Auto_002dselection.html" rel="prev" title="Mouse Window Auto-selection">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,188 +49,292 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Window-Configurations"></span><div class="header">
+<div class="section-level-extent" id="Window-Configurations">
+<div class="nav-panel">
 <p>
 Next: <a href="Window-Parameters.html" accesskey="n" rel="next">Window Parameters</a>, Previous: <a href="Mouse-Window-Auto_002dselection.html" accesskey="p" rel="prev">Mouse Window Auto-selection</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Window-Configurations-1"></span><h3 class="section">29.26 Window Configurations</h3>
-<span id="index-window-configurations"></span>
-<span id="index-saving-window-information"></span>
+<h3 class="section" id="Window-Configurations-1"><span>29.28 Window Configurations<a class="copiable-link" href="#Window-Configurations-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-window-configurations"></a>
+<a class="index-entry-id" id="index-saving-window-information"></a>
 
-<p>A <em>window configuration</em> records the entire layout of one
-frame&mdash;all windows, their sizes, which buffers they contain, how those
-buffers are scrolled, and their value of point; also their
-fringes, margins, and scroll bar settings.  It also includes the value
-of <code>minibuffer-scroll-window</code>.  As a special exception, the window
-configuration does not record the value of point in the selected window
-for the current buffer.
+<p>A <em class="dfn">window configuration</em> records the entire layout of one
+frame&mdash;all windows, their sizes, their decorations, which buffers they
+contain, how those buffers are scrolled, and their value of point, It
+also includes the value of <code class="code">minibuffer-scroll-window</code>.  As a
+special exception, the window configuration does not record the value of
+point in the selected window for the current buffer.
 </p>
 <p>You can bring back an entire frame layout by restoring a previously
 saved window configuration.  If you want to record the layout of all
 frames instead of just one, use a frame configuration instead of a
-window configuration.  See <a href="Frame-Configurations.html">Frame Configurations</a>.
+window configuration.  See <a class="xref" href="Frame-Configurations.html">Frame Configurations</a>.
 </p>
-<dl>
-<dt id="index-current_002dwindow_002dconfiguration">Function: <strong>current-window-configuration</strong> <em>&amp;optional frame</em></dt>
-<dd><p>This function returns a new object representing <var>frame</var>&rsquo;s current
-window configuration.  The default for <var>frame</var> is the selected
-frame.  The variable <code>window-persistent-parameters</code> specifies
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-current_002dwindow_002dconfiguration"><span class="category-def">Function: </span><span><strong class="def-name">current-window-configuration</strong> <var class="def-var-arguments">&amp;optional frame</var><a class="copiable-link" href="#index-current_002dwindow_002dconfiguration"> &para;</a></span></dt>
+<dd><p>This function returns a new object representing <var class="var">frame</var>&rsquo;s current
+window configuration.  The default for <var class="var">frame</var> is the selected
+frame.  The variable <code class="code">window-persistent-parameters</code> specifies
 which window parameters (if any) are saved by this function.
-See <a href="Window-Parameters.html">Window Parameters</a>.
+See <a class="xref" href="Window-Parameters.html">Window Parameters</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-set_002dwindow_002dconfiguration">Function: <strong>set-window-configuration</strong> <em>configuration &amp;optional dont-set-frame dont-set-miniwindow</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dwindow_002dconfiguration"><span class="category-def">Function: </span><span><strong class="def-name">set-window-configuration</strong> <var class="def-var-arguments">configuration &amp;optional dont-set-frame dont-set-miniwindow</var><a class="copiable-link" href="#index-set_002dwindow_002dconfiguration"> &para;</a></span></dt>
 <dd><p>This function restores the configuration of windows and buffers as
-specified by <var>configuration</var>, for the frame that
-<var>configuration</var> was created for, regardless of whether that frame
-is selected or not.  The argument <var>configuration</var> must be a value
-that was previously returned by <code>current-window-configuration</code>
+specified by <var class="var">configuration</var>, for the frame that
+<var class="var">configuration</var> was created for, regardless of whether that frame
+is selected or not.  The argument <var class="var">configuration</var> must be a value
+that was previously returned by <code class="code">current-window-configuration</code>
 for that frame.  Normally the function also selects the frame which is
-recorded in the configuration, but if <var>dont-set-frame</var> is
-non-<code>nil</code>, it leaves selected the frame which was already
+recorded in the configuration, but if <var class="var">dont-set-frame</var> is
+non-<code class="code">nil</code>, it leaves selected the frame which was already
 selected at the start of the function.
 </p>
 <p>Normally the function restores the saved minibuffer (if any), but if
-<var>dont-set-miniwindow</var> is non-<code>nil</code>, the minibuffer current
+<var class="var">dont-set-miniwindow</var> is non-<code class="code">nil</code>, the minibuffer current
 at the start of the function (if any) remains in the mini-window.
 </p>
-<p>If the frame from which <var>configuration</var> was saved is dead, all
+<p>If the frame from which <var class="var">configuration</var> was saved is dead, all
 this function does is to restore the value of the variable
-<code>minibuffer-scroll-window</code> and to adjust the value returned by
-<code>minibuffer-selected-window</code>.  In this case, the function returns
-<code>nil</code>.  Otherwise, it returns <code>t</code>.
+<code class="code">minibuffer-scroll-window</code> and to adjust the value returned by
+<code class="code">minibuffer-selected-window</code>.  In this case, the function returns
+<code class="code">nil</code>.  Otherwise, it returns <code class="code">t</code>.
 </p>
-<p>If the buffer of a window of <var>configuration</var> has been killed since
-<var>configuration</var> was made, that window is, as a rule, removed from
-the restored configuration.  However, if that window is the last
-window remaining in the restored configuration, another live buffer is
-shown in it.
+<p>This function consults the variable
+<code class="code">window-restore-killed-buffer-windows</code> (see below) when it tries to
+restore a window whose buffer was killed after <var class="var">configuration</var> was
+recorded.
 </p>
 <p>Here is a way of using this function to get the same effect as
-<code>save-window-excursion</code>:
+<code class="code">save-window-excursion</code>:
 </p>
 <div class="example">
-<pre class="example">(let ((config (current-window-configuration)))
+<div class="group"><pre class="example-preformatted">(let ((config (current-window-configuration)))
   (unwind-protect
       (progn (split-window-below nil)
-             &hellip;)
+             ...)
     (set-window-configuration config)))
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-save_002dwindow_002dexcursion">Macro: <strong>save-window-excursion</strong> <em>forms&hellip;</em></dt>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-save_002dwindow_002dexcursion"><span class="category-def">Macro: </span><span><strong class="def-name">save-window-excursion</strong> <var class="def-var-arguments">forms&hellip;</var><a class="copiable-link" href="#index-save_002dwindow_002dexcursion"> &para;</a></span></dt>
 <dd><p>This macro records the window configuration of the selected frame,
-executes <var>forms</var> in sequence, then restores the earlier window
+executes <var class="var">forms</var> in sequence, then restores the earlier window
 configuration.  The return value is the value of the final form in
-<var>forms</var>.
+<var class="var">forms</var>.
 </p>
-<p>Most Lisp code should not use this macro; <code>save-selected-window</code>
+<p>Most Lisp code should not use this macro; <code class="code">save-selected-window</code>
 is typically sufficient.  In particular, this macro cannot reliably
-prevent the code in <var>forms</var> from opening new windows, because new
-windows might be opened in other frames (see <a href="Choosing-Window.html">Choosing Window</a>), and
-<code>save-window-excursion</code> only saves and restores the window
+prevent the code in <var class="var">forms</var> from opening new windows, because new
+windows might be opened in other frames (see <a class="pxref" href="Choosing-Window.html">Choosing a Window for Displaying a Buffer</a>), and
+<code class="code">save-window-excursion</code> only saves and restores the window
 configuration on the current frame.
 </p></dd></dl>
 
-<dl>
-<dt id="index-window_002dconfiguration_002dp">Function: <strong>window-configuration-p</strong> <em>object</em></dt>
-<dd><p>This function returns <code>t</code> if <var>object</var> is a window configuration.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dconfiguration_002dp"><span class="category-def">Function: </span><span><strong class="def-name">window-configuration-p</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-window_002dconfiguration_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">object</var> is a window configuration.
 </p></dd></dl>
 
-<dl>
-<dt id="index-compare_002dwindow_002dconfigurations">Function: <strong>compare-window-configurations</strong> <em>config1 config2</em></dt>
-<dd><p>This function compares two window configurations as regards the
-structure of windows, but ignores the values of point and the
-saved scrolling positions&mdash;it can return <code>t</code> even if those
-aspects differ.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dconfiguration_002dequal_002dp"><span class="category-def">Function: </span><span><strong class="def-name">window-configuration-equal-p</strong> <var class="def-var-arguments">config1 config2</var><a class="copiable-link" href="#index-window_002dconfiguration_002dequal_002dp"> &para;</a></span></dt>
+<dd><p>This function says whether two window configurations have the same
+window layout, but ignores the values of point and the saved scrolling
+positions&mdash;it can return <code class="code">t</code> even if those aspects differ.
 </p></dd></dl>
 
-<dl>
-<dt id="index-window_002dconfiguration_002dframe">Function: <strong>window-configuration-frame</strong> <em>config</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dconfiguration_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">window-configuration-frame</strong> <var class="def-var-arguments">config</var><a class="copiable-link" href="#index-window_002dconfiguration_002dframe"> &para;</a></span></dt>
 <dd><p>This function returns the frame for which the window configuration
-<var>config</var> was made.
+<var class="var">config</var> was made.
 </p></dd></dl>
 
 <p>Other primitives to look inside of window configurations would make
 sense, but are not implemented because we did not need them.  See the
-file <samp>winner.el</samp> for some more operations on windows
+file <samp class="file">winner.el</samp> for some more operations on windows
 configurations.
 </p>
-<p>The objects returned by <code>current-window-configuration</code> die
+<p>The objects returned by <code class="code">current-window-configuration</code> die
 together with the Emacs process.  In order to store a window
 configuration on disk and read it back in another Emacs session, you
 can use the functions described next.  These functions are also useful
 to clone the state of a frame into an arbitrary live window
-(<code>set-window-configuration</code> effectively clones the windows of a
+(<code class="code">set-window-configuration</code> effectively clones the windows of a
 frame into the root window of that very frame only).
 </p>
-<span id="index-window-state"></span>
-<dl>
-<dt id="index-window_002dstate_002dget">Function: <strong>window-state-get</strong> <em>&amp;optional window writable</em></dt>
-<dd><p>This function returns the state of <var>window</var> as a Lisp object.  The
-argument <var>window</var> must be a valid window and defaults to the root
+<a class="index-entry-id" id="index-window-state"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dstate_002dget"><span class="category-def">Function: </span><span><strong class="def-name">window-state-get</strong> <var class="def-var-arguments">&amp;optional window writable</var><a class="copiable-link" href="#index-window_002dstate_002dget"> &para;</a></span></dt>
+<dd><p>This function returns the state of <var class="var">window</var> as a Lisp object.  The
+argument <var class="var">window</var> must be a valid window and defaults to the root
 window of the selected frame.
 </p>
-<p>If the optional argument <var>writable</var> is non-<code>nil</code>, this means to
-not use markers for sampling positions like <code>window-point</code> or
-<code>window-start</code>.  This argument should be non-<code>nil</code> when the
+<p>If the optional argument <var class="var">writable</var> is non-<code class="code">nil</code>, this means to
+not use markers for sampling positions like <code class="code">window-point</code> or
+<code class="code">window-start</code>.  This argument should be non-<code class="code">nil</code> when the
 state will be written to disk and read back in another session.
 </p>
-<p>Together, the argument <var>writable</var> and the variable
-<code>window-persistent-parameters</code> specify which window parameters are
-saved by this function.  See <a href="Window-Parameters.html">Window Parameters</a>.
+<p>Together, <var class="var">writable</var> and the variable
+<code class="code">window-persistent-parameters</code> specify which window parameters are
+saved by this function.  The default is to save the <code class="code">clone-of</code>
+parameter if <var class="var">writable</var> is <code class="code">nil</code>.  See <a class="xref" href="Window-Parameters.html">Window Parameters</a>.
+</p>
+<a class="index-entry-id" id="index-window_002dstate_002dnormalize_002dbuffer_002dname"></a>
+<p>Bind <code class="code">window-state-normalize-buffer-name</code> to non-<code class="code">nil</code> to
+normalize buffer names under <samp class="file">uniquify</samp> management by removing its
+prefixes and suffixes.  This helps restore window buffers across Emacs
+sessions.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Uniquify.html#Uniquify">Uniquify</a> in <cite class="cite">The GNU Emacs Manual</cite>.
 </p></dd></dl>
 
-<p>The value returned by <code>window-state-get</code> can be used in the same
-session to make a clone of a window in another window.  It can be also
-written to disk and read back in another session.  In either case, use
-the following function to restore the state of the window.
+<p>The value returned by <code class="code">window-state-get</code> can be used in the same
+session to clone a window (see below).  It can be also written to disk
+and read back in another session.  In either case, use the following
+function to restore the state of the window.
 </p>
-<dl>
-<dt id="index-window_002dstate_002dput">Function: <strong>window-state-put</strong> <em>state &amp;optional window ignore</em></dt>
-<dd><p>This function puts the window state <var>state</var> into <var>window</var>.
-The argument <var>state</var> should be the state of a window returned by
-an earlier invocation of <code>window-state-get</code>, see above.  The
-optional argument <var>window</var> can be either a live window or an
-internal window (see <a href="Windows-and-Frames.html">Windows and Frames</a>).  If <var>window</var> is not
-a live window, it is replaced by a new live window created on the same
-frame before putting <var>state</var> into it.  If <var>window</var> is <code>nil</code>,
-it puts the window state into a new window.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dstate_002dput"><span class="category-def">Function: </span><span><strong class="def-name">window-state-put</strong> <var class="def-var-arguments">state &amp;optional window ignore</var><a class="copiable-link" href="#index-window_002dstate_002dput"> &para;</a></span></dt>
+<dd><p>This function puts the window state <var class="var">state</var> into <var class="var">window</var>.  The
+argument <var class="var">state</var> should be the state of a window returned by an
+earlier invocation of <code class="code">window-state-get</code>, see above.  The optional
+argument <var class="var">window</var> can be either a live window or an internal window
+(see <a class="pxref" href="Windows-and-Frames.html">Windows and Frames</a>).  If <var class="var">window</var> is not a live window, it
+is replaced by a new live window created on the same frame before
+putting <var class="var">state</var> into it.  If <var class="var">window</var> is <code class="code">nil</code>, it puts the
+window state into a new window.
 </p>
-<p>If the optional argument <var>ignore</var> is non-<code>nil</code>, it means to ignore
-minimum window sizes and fixed-size restrictions.  If <var>ignore</var>
-is <code>safe</code>, this means windows can get as small as one line
+<p>This function assigns all window parameters that have been stored in
+<var class="var">state</var>.  By default, this is the <code class="code">clone-of</code> parameter provided
+<var class="var">state</var> was obtained from an invocation of <code class="code">window-state-get</code>
+with the argument <var class="var">writable</var> <code class="code">nil</code>.  See <a class="xref" href="Window-Parameters.html">Window Parameters</a>.
+</p>
+<p>This function consults the variable
+<code class="code">window-restore-killed-buffer-windows</code> (see below) when it tries to
+restore a window whose buffer was killed after <var class="var">state</var> was recorded.
+</p>
+<p>If the optional argument <var class="var">ignore</var> is non-<code class="code">nil</code>, it means to ignore
+minimum window sizes and fixed-size restrictions.  If <var class="var">ignore</var>
+is <code class="code">safe</code>, this means windows can get as small as one line
 and/or two columns.
 </p></dd></dl>
 
-<p>The functions <code>window-state-get</code> and <code>window-state-put</code> also
-allow to exchange the contents of two live windows.  The following
+<a class="index-entry-id" id="index-window-clone"></a>
+<a class="index-entry-id" id="index-clone-of-window"></a>
+<p>In the context of window states, the <em class="dfn">clone of a window</em> is a window
+that has the same decorations and contents as the window whose state was
+used to produce it, but is actually represented by another window
+object.  Operating on the original or the clone of a window does not
+affect the other in any way.  Note that while <code class="code">window-state-get</code>
+clones existing windows, these clones are not yet valid windows.  They
+become valid only after <code class="code">window-state-put</code> has put them into a live
+frame.
+</p>
+<p>By default, <code class="code">set-window-configuration</code> and <code class="code">window-state-put</code>
+may delete a window from the restored configuration or state when they
+find out that its buffer was killed since the corresponding
+configuration or state has been recorded.  The variable described next
+can be used to fine-tune that behavior.
+</p>
+<a class="index-entry-id" id="index-restoring-windows-whose-buffers-have-been-killed"></a>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-window_002drestore_002dkilled_002dbuffer_002dwindows"><span class="category-def">Variable: </span><span><strong class="def-name">window-restore-killed-buffer-windows</strong><a class="copiable-link" href="#index-window_002drestore_002dkilled_002dbuffer_002dwindows"> &para;</a></span></dt>
+<dd><p>This variable specifies how <code class="code">set-window-configuration</code> and
+<code class="code">window-state-put</code> shall handle a window whose buffer has been
+killed since the corresponding configuration or state was recorded.  Any
+such window may be live&mdash;in which case it shows some other buffer&mdash;or
+dead at the time one of these functions is called.  Usually,
+<code class="code">set-window-configuration</code> leaves the window alone if it is live
+while <code class="code">window-state-put</code> deletes it.
+</p>
+<p>The following values can be used to override the default behavior for
+dead windows in the case of <code class="code">set-window-configuration</code> and for dead
+and live windows in the case of <code class="code">window-state-put</code>.
+</p>
+<dl class="table">
+<dt><code class="code">t</code></dt>
+<dd><p>This value means to unconditionally restore the window and show some
+other buffer in it.
+</p>
+</dd>
+<dt><code class="code">delete</code></dt>
+<dd><p>This means to unconditionally try to delete the window.
+</p>
+</dd>
+<dt><code class="code">dedicated</code></dt>
+<dd><p>This means to try to delete the window if and only if it is dedicated to
+its buffer.
+</p>
+</dd>
+<dt><code class="code">nil</code></dt>
+<dd><p>This is the default, and it means that <code class="code">set-window-configuration</code>
+will try to delete the window if and only if it is dedicated to its
+buffer, and <code class="code">window-state-put</code> will unconditionally try to delete
+it.
+</p>
+</dd>
+<dt>a function</dt>
+<dd><p>This means to restore the window and show some other buffer in it, like
+if the value is <code class="code">t</code>, and also add an entry for that window to a
+list that will be later passed as the second argument to that function.
+</p></dd>
+</dl>
+
+<p>If a window cannot be deleted (typically, because it is the last window
+on its frame), <code class="code">set-window-configuration</code> and
+<code class="code">window-state-put</code> will show another buffer in it.
+</p>
+<p>If the value of this variable is a function, that function should take
+three arguments.  The first argument specifies the frame whose windows
+have been restored.  The third argument is either the symbol
+<code class="code">configuration</code> if the windows are restored by
+<code class="code">set-window-configuration</code>, or the symbol <code class="code">state</code> if the
+windows are restored by <code class="code">window-state-put</code>.
+</p>
+<p>The second argument specifies a list of entries for <em class="emph">all</em> windows
+whose previous buffers have been found dead at the time
+<code class="code">set-window-configuration</code> or <code class="code">window-state-put</code> tried to
+restore them (minibuffer windows are excluded).  This means that the
+function may also delete windows which were found live by
+<code class="code">set-window-configuration</code>.
+</p>
+<p>Each entry in the list that is passed as the second argument to the
+function is itself a list of six values: the window whose buffer was
+found dead, the dead buffer or its name, the positions of window-start
+(see <a class="pxref" href="Window-Start-and-End.html">The Window Start and End Positions</a>) and window-point (see <a class="pxref" href="Window-Point.html">Windows and Point</a>)
+of the buffer in that window, the dedicated state of the window as
+previously reported by <code class="code">window-dedicated-p</code> and a flag that is
+<code class="code">t</code> if the window has been found to be alive by
+<code class="code">set-window-configuration</code> and <code class="code">nil</code> otherwise.
+</p></dd></dl>
+
+<p>The functions <code class="code">window-state-get</code> and <code class="code">window-state-put</code> also
+allow exchanging the contents of two live windows.  The following
 function does precisely that:
 </p>
-<dl>
-<dt id="index-window_002dswap_002dstates">Command: <strong>window-swap-states</strong> <em>&amp;optional window-1 window-2 size</em></dt>
-<dd><p>This command swaps the states of the two live windows <var>window-1</var> and
-<var>window-2</var>.  <var>window-1</var> must specify a live window and defaults
-to the selected one.  <var>window-2</var> must specify a live window and
-defaults to the window following <var>window-1</var> in the cyclic ordering
+<dl class="first-deffn">
+<dt class="deffn" id="index-window_002dswap_002dstates"><span class="category-def">Command: </span><span><strong class="def-name">window-swap-states</strong> <var class="def-var-arguments">&amp;optional window-1 window-2 size</var><a class="copiable-link" href="#index-window_002dswap_002dstates"> &para;</a></span></dt>
+<dd><p>This command swaps the states of the two live windows <var class="var">window-1</var> and
+<var class="var">window-2</var>.  <var class="var">window-1</var> must specify a live window and defaults
+to the selected one.  <var class="var">window-2</var> must specify a live window and
+defaults to the window following <var class="var">window-1</var> in the cyclic ordering
 of windows, excluding minibuffer windows and including live windows on
 all visible frames.
 </p>
-<p>Optional argument <var>size</var> non-<code>nil</code> means to try swapping the
-sizes of <var>window-1</var> and <var>window-2</var> as well.  A value of
-<code>height</code> means to swap heights only, a value of <code>width</code>
-means to swap widths only, while <code>t</code> means to swap both widths
+<p>Optional argument <var class="var">size</var> non-<code class="code">nil</code> means to try swapping the
+sizes of <var class="var">window-1</var> and <var class="var">window-2</var> as well.  A value of
+<code class="code">height</code> means to swap heights only, a value of <code class="code">width</code>
+means to swap widths only, while <code class="code">t</code> means to swap both widths
 and heights, if possible.  Frames are not resized by this function.
 </p></dd></dl>
 
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Window-Parameters.html" accesskey="n" rel="next">Window Parameters</a>, Previous: <a href="Mouse-Window-Auto_002dselection.html" accesskey="p" rel="prev">Mouse Window Auto-selection</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Window-Parameters.html">Window Parameters</a>, Previous: <a href="Mouse-Window-Auto_002dselection.html">Mouse Window Auto-selection</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

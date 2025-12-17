@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Scroll Bars (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Scroll Bars (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Display.html" rel="up" title="Display">
 <link href="Display-Property.html" rel="next" title="Display Property">
-<link href="Overlay-Arrow.html" rel="prev" title="Overlay Arrow">
+<link href="Fringes.html" rel="prev" title="Fringes">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,110 +46,112 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Scroll-Bars"></span><div class="header">
+<div class="section-level-extent" id="Scroll-Bars">
+<div class="nav-panel">
 <p>
-Next: <a href="Display-Property.html" accesskey="n" rel="next">Display Property</a>, Previous: <a href="Fringes.html" accesskey="p" rel="prev">Fringes</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Display-Property.html" accesskey="n" rel="next">The <code class="code">display</code> Property</a>, Previous: <a href="Fringes.html" accesskey="p" rel="prev">Fringes</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Scroll-Bars-1"></span><h3 class="section">38.14 Scroll Bars</h3>
-<span id="index-scroll-bars"></span>
+<h3 class="section" id="Scroll-Bars-1"><span>38.14 Scroll Bars<a class="copiable-link" href="#Scroll-Bars-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-scroll-bars"></a>
 
-<p>Normally the frame parameter <code>vertical-scroll-bars</code> controls
+<p>Normally the frame parameter <code class="code">vertical-scroll-bars</code> controls
 whether the windows in the frame have vertical scroll bars, and
 whether they are on the left or right.  The frame parameter
-<code>scroll-bar-width</code> specifies how wide they are (<code>nil</code>
-meaning the default).  See <a href="Layout-Parameters.html">Layout Parameters</a>.
+<code class="code">scroll-bar-width</code> specifies how wide they are (<code class="code">nil</code>
+meaning the default).  See <a class="xref" href="Layout-Parameters.html">Layout Parameters</a>.
 </p>
-<dl>
-<dt id="index-frame_002dcurrent_002dscroll_002dbars">Function: <strong>frame-current-scroll-bars</strong> <em>&amp;optional frame</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-frame_002dcurrent_002dscroll_002dbars"><span class="category-def">Function: </span><span><strong class="def-name">frame-current-scroll-bars</strong> <var class="def-var-arguments">&amp;optional frame</var><a class="copiable-link" href="#index-frame_002dcurrent_002dscroll_002dbars"> &para;</a></span></dt>
 <dd><p>This function reports the scroll bar type settings for frame
-<var>frame</var>.  The value is a cons cell
-<code>(<var>vertical-type</var> . <var>horizontal-type</var>)</code>, where
-<var>vertical-type</var> is either <code>left</code>, <code>right</code>, or <code>nil</code>
-(which means no scroll bar.)  <var>horizontal-type</var> is meant to
+<var class="var">frame</var>.  The value is a cons cell
+<code class="code">(<var class="var">vertical-type</var> . <var class="var">horizontal-type</var>)</code>, where
+<var class="var">vertical-type</var> is either <code class="code">left</code>, <code class="code">right</code>, or <code class="code">nil</code>
+(which means no scroll bar.)  <var class="var">horizontal-type</var> is meant to
 specify the horizontal scroll bar type, but since they are not
-implemented, it is always <code>nil</code>.
+implemented, it is always <code class="code">nil</code>.
 </p></dd></dl>
 
-<span id="index-vertical_002dscroll_002dbar"></span>
+<a class="index-entry-id" id="index-vertical_002dscroll_002dbar"></a>
 <p>You can enable or disable scroll bars for a particular buffer,
-by setting the variable <code>vertical-scroll-bar</code>.  This variable
+by setting the variable <code class="code">vertical-scroll-bar</code>.  This variable
 automatically becomes buffer-local when set.  The possible values are
-<code>left</code>, <code>right</code>, <code>t</code>, which means to use the
-frame&rsquo;s default, and <code>nil</code> for no scroll bar.
+<code class="code">left</code>, <code class="code">right</code>, <code class="code">t</code>, which means to use the
+frame&rsquo;s default, and <code class="code">nil</code> for no scroll bar.
 </p>
 <p>You can also control this for individual windows.  Call the function
-<code>set-window-scroll-bars</code> to specify what to do for a specific window:
+<code class="code">set-window-scroll-bars</code> to specify what to do for a specific window:
 </p>
-<dl>
-<dt id="index-set_002dwindow_002dscroll_002dbars">Function: <strong>set-window-scroll-bars</strong> <em>window width &amp;optional vertical-type horizontal-type</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dwindow_002dscroll_002dbars"><span class="category-def">Function: </span><span><strong class="def-name">set-window-scroll-bars</strong> <var class="def-var-arguments">window width &amp;optional vertical-type horizontal-type</var><a class="copiable-link" href="#index-set_002dwindow_002dscroll_002dbars"> &para;</a></span></dt>
 <dd><p>This function sets the width and type of scroll bars for window
-<var>window</var>.
+<var class="var">window</var>.
 </p>
-<p><var>width</var> specifies the scroll bar width in pixels (<code>nil</code> means
-use the width specified for the frame).  <var>vertical-type</var> specifies
+<p><var class="var">width</var> specifies the scroll bar width in pixels (<code class="code">nil</code> means
+use the width specified for the frame).  <var class="var">vertical-type</var> specifies
 whether to have a vertical scroll bar and, if so, where.  The possible
-values are <code>left</code>, <code>right</code> and <code>nil</code>, just like the
-values of the <code>vertical-scroll-bars</code> frame parameter.
+values are <code class="code">left</code>, <code class="code">right</code> and <code class="code">nil</code>, just like the
+values of the <code class="code">vertical-scroll-bars</code> frame parameter.
 </p>
-<p>The argument <var>horizontal-type</var> is meant to specify whether and
+<p>The argument <var class="var">horizontal-type</var> is meant to specify whether and
 where to have horizontal scroll bars, but since they are not
-implemented, it has no effect.  If <var>window</var> is <code>nil</code>, the
+implemented, it has no effect.  If <var class="var">window</var> is <code class="code">nil</code>, the
 selected window is used.
 </p></dd></dl>
 
-<dl>
-<dt id="index-window_002dscroll_002dbars">Function: <strong>window-scroll-bars</strong> <em>&amp;optional window</em></dt>
-<dd><p>Report the width and type of scroll bars specified for <var>window</var>.
-If <var>window</var> is omitted or <code>nil</code>, the selected window is used.
-The value is a list of the form <code>(<var>width</var>
-<var>cols</var> <var>vertical-type</var> <var>horizontal-type</var>)</code>.  The value
-<var>width</var> is the value that was specified for the width (which may
-be <code>nil</code>); <var>cols</var> is the number of columns that the scroll
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dscroll_002dbars"><span class="category-def">Function: </span><span><strong class="def-name">window-scroll-bars</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dscroll_002dbars"> &para;</a></span></dt>
+<dd><p>Report the width and type of scroll bars specified for <var class="var">window</var>.
+If <var class="var">window</var> is omitted or <code class="code">nil</code>, the selected window is used.
+The value is a list of the form <code class="code">(<var class="var">width</var>
+<var class="var">cols</var> <var class="var">vertical-type</var> <var class="var">horizontal-type</var>)</code>.  The value
+<var class="var">width</var> is the value that was specified for the width (which may
+be <code class="code">nil</code>); <var class="var">cols</var> is the number of columns that the scroll
 bar actually occupies.
 </p>
-<p><var>horizontal-type</var> is not actually meaningful.
+<p><var class="var">horizontal-type</var> is not actually meaningful.
 </p></dd></dl>
 
 <p>If you don&rsquo;t specify these values for a window with
-<code>set-window-scroll-bars</code>, the buffer-local variables
-<code>scroll-bar-mode</code> and <code>scroll-bar-width</code> in the buffer being
+<code class="code">set-window-scroll-bars</code>, the buffer-local variables
+<code class="code">scroll-bar-mode</code> and <code class="code">scroll-bar-width</code> in the buffer being
 displayed control the window&rsquo;s vertical scroll bars.  The function
-<code>set-window-buffer</code> examines these variables.  If you change them
+<code class="code">set-window-buffer</code> examines these variables.  If you change them
 in a buffer that is already visible in a window, you can make the
-window take note of the new values by calling <code>set-window-buffer</code>
+window take note of the new values by calling <code class="code">set-window-buffer</code>
 specifying the same buffer that is already displayed.
 </p>
-<dl>
-<dt id="index-scroll_002dbar_002dmode">User Option: <strong>scroll-bar-mode</strong></dt>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-scroll_002dbar_002dmode"><span class="category-def">User Option: </span><span><strong class="def-name">scroll-bar-mode</strong><a class="copiable-link" href="#index-scroll_002dbar_002dmode"> &para;</a></span></dt>
 <dd><p>This variable, always local in all buffers, controls whether and where
 to put scroll bars in windows displaying the buffer.  The possible values
-are <code>nil</code> for no scroll bar, <code>left</code> to put a scroll bar on
-the left, and <code>right</code> to put a scroll bar on the right.
+are <code class="code">nil</code> for no scroll bar, <code class="code">left</code> to put a scroll bar on
+the left, and <code class="code">right</code> to put a scroll bar on the right.
 </p></dd></dl>
 
-<dl>
-<dt id="index-window_002dcurrent_002dscroll_002dbars">Function: <strong>window-current-scroll-bars</strong> <em>&amp;optional window</em></dt>
-<dd><p>This function reports the scroll bar type for window <var>window</var>.
-If <var>window</var> is omitted or <code>nil</code>, the selected window is used.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dcurrent_002dscroll_002dbars"><span class="category-def">Function: </span><span><strong class="def-name">window-current-scroll-bars</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dcurrent_002dscroll_002dbars"> &para;</a></span></dt>
+<dd><p>This function reports the scroll bar type for window <var class="var">window</var>.
+If <var class="var">window</var> is omitted or <code class="code">nil</code>, the selected window is used.
 The value is a cons cell
-<code>(<var>vertical-type</var> . <var>horizontal-type</var>)</code>.  Unlike
-<code>window-scroll-bars</code>, this reports the scroll bar type actually
-used, once frame defaults and <code>scroll-bar-mode</code> are taken into
+<code class="code">(<var class="var">vertical-type</var> . <var class="var">horizontal-type</var>)</code>.  Unlike
+<code class="code">window-scroll-bars</code>, this reports the scroll bar type actually
+used, once frame defaults and <code class="code">scroll-bar-mode</code> are taken into
 account.
 </p></dd></dl>
 
-<dl>
-<dt id="index-scroll_002dbar_002dwidth">Variable: <strong>scroll-bar-width</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-scroll_002dbar_002dwidth"><span class="category-def">Variable: </span><span><strong class="def-name">scroll-bar-width</strong><a class="copiable-link" href="#index-scroll_002dbar_002dwidth"> &para;</a></span></dt>
 <dd><p>This variable, always local in all buffers, specifies the width of the
-buffer&rsquo;s scroll bars, measured in pixels.  A value of <code>nil</code> means
+buffer&rsquo;s scroll bars, measured in pixels.  A value of <code class="code">nil</code> means
 to use the value specified by the frame.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Display-Property.html" accesskey="n" rel="next">Display Property</a>, Previous: <a href="Fringes.html" accesskey="p" rel="prev">Fringes</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Display-Property.html">The <code class="code">display</code> Property</a>, Previous: <a href="Fringes.html">Fringes</a>, Up: <a href="Display.html">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

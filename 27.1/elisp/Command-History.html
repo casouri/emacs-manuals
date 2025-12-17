@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Command History (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Command History (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Disabling-Commands.html" rel="prev" title="Disabling Commands">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,52 +50,54 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Command-History"></span><div class="header">
+<div class="section-level-extent" id="Command-History">
+<div class="nav-panel">
 <p>
 Next: <a href="Keyboard-Macros.html" accesskey="n" rel="next">Keyboard Macros</a>, Previous: <a href="Disabling-Commands.html" accesskey="p" rel="prev">Disabling Commands</a>, Up: <a href="Command-Loop.html" accesskey="u" rel="up">Command Loop</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Command-History-1"></span><h3 class="section">21.15 Command History</h3>
-<span id="index-command-history"></span>
-<span id="index-complex-command"></span>
-<span id="index-history-of-commands"></span>
+<h3 class="section" id="Command-History-1"><span>21.15 Command History<a class="copiable-link" href="#Command-History-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-command-history"></a>
+<a class="index-entry-id" id="index-complex-command"></a>
+<a class="index-entry-id" id="index-history-of-commands"></a>
 
 <p>The command loop keeps a history of the complex commands that have
 been executed, to make it convenient to repeat these commands.  A
-<em>complex command</em> is one for which the interactive argument reading
-uses the minibuffer.  This includes any <kbd>M-x</kbd> command, any
-<kbd>M-:</kbd> command, and any command whose <code>interactive</code>
+<em class="dfn">complex command</em> is one for which the interactive argument reading
+uses the minibuffer.  This includes any <kbd class="kbd">M-x</kbd> command, any
+<kbd class="kbd">M-:</kbd> command, and any command whose <code class="code">interactive</code>
 specification reads an argument from the minibuffer.  Explicit use of
 the minibuffer during the execution of the command itself does not cause
 the command to be considered complex.
 </p>
-<dl>
-<dt id="index-command_002dhistory">Variable: <strong>command-history</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-command_002dhistory"><span class="category-def">Variable: </span><span><strong class="def-name">command-history</strong><a class="copiable-link" href="#index-command_002dhistory"> &para;</a></span></dt>
 <dd><p>This variable&rsquo;s value is a list of recent complex commands, each
 represented as a form to evaluate.  It continues to accumulate all
 complex commands for the duration of the editing session, but when it
-reaches the maximum size (see <a href="Minibuffer-History.html">Minibuffer History</a>), the oldest
+reaches the maximum size (see <a class="pxref" href="Minibuffer-History.html">Minibuffer History</a>), the oldest
 elements are deleted as new ones are added.
 </p>
 <div class="example">
-<pre class="example">command-history
+<div class="group"><pre class="example-preformatted">command-history
 &rArr; ((switch-to-buffer &quot;chistory.texi&quot;)
     (describe-key &quot;^X^[&quot;)
     (visit-tags-table &quot;~/emacs/src/&quot;)
     (find-tag &quot;repeat-complex-command&quot;))
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
 <p>This history list is actually a special case of minibuffer history
-(see <a href="Minibuffer-History.html">Minibuffer History</a>), with one special twist: the elements are
+(see <a class="pxref" href="Minibuffer-History.html">Minibuffer History</a>), with one special twist: the elements are
 expressions rather than strings.
 </p>
 <p>There are a number of commands devoted to the editing and recall of
-previous commands.  The commands <code>repeat-complex-command</code>, and
-<code>list-command-history</code> are described in the user manual
-(see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Repetition.html#Repetition">Repetition</a> in <cite>The GNU Emacs Manual</cite>).  Within the
+previous commands.  The commands <code class="code">repeat-complex-command</code>, and
+<code class="code">list-command-history</code> are described in the user manual
+(see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Repetition.html#Repetition">Repetition</a> in <cite class="cite">The GNU Emacs Manual</cite>).  Within the
 minibuffer, the usual minibuffer history commands are available.
 </p>
+</div>
 
 
 

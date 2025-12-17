@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Displaying Buffers (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Displaying Buffers (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Windows.html" rel="up" title="Windows">
-<link href="Choosing-Window.html" rel="next" title="Choosing Window">
+<link href="Window-History.html" rel="next" title="Window History">
 <link href="Switching-Buffers.html" rel="prev" title="Switching Buffers">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,56 +47,50 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Displaying-Buffers"></span><div class="header">
+<div class="section-level-extent" id="Displaying-Buffers">
+<div class="nav-panel">
 <p>
-Next: <a href="Window-History.html" accesskey="n" rel="next">Window History</a>, Previous: <a href="Switching-Buffers.html" accesskey="p" rel="prev">Switching Buffers</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Window-History.html" accesskey="n" rel="next">Window History</a>, Previous: <a href="Switching-Buffers.html" accesskey="p" rel="prev">Switching to a Buffer in a Window</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Displaying-a-Buffer-in-a-Suitable-Window"></span><h3 class="section">28.13 Displaying a Buffer in a Suitable Window</h3>
-<span id="index-buffer-display"></span>
-<span id="index-displaying-a-buffer"></span>
+<h3 class="section" id="Displaying-a-Buffer-in-a-Suitable-Window"><span>28.13 Displaying a Buffer in a Suitable Window<a class="copiable-link" href="#Displaying-a-Buffer-in-a-Suitable-Window"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-buffer-display"></a>
+<a class="index-entry-id" id="index-displaying-a-buffer"></a>
 
 <p>This section describes lower-level functions Emacs uses to find or
 create a window for displaying a specified buffer.  The common
-workhorse of these functions is <code>display-buffer</code> which eventually
-handles all incoming requests for buffer display (see <a href="Choosing-Window.html">Choosing Window</a>).
+workhorse of these functions is <code class="code">display-buffer</code> which eventually
+handles all incoming requests for buffer display (see <a class="pxref" href="Choosing-Window.html">Choosing a Window for Displaying a Buffer</a>).
 </p>
-<p><code>display-buffer</code> delegates the task of finding a suitable
-window to so-called action functions (see <a href="Buffer-Display-Action-Functions.html">Buffer Display Action Functions</a>).  First, <code>display-buffer</code> compiles a so-called action
+<p><code class="code">display-buffer</code> delegates the task of finding a suitable
+window to so-called action functions (see <a class="pxref" href="Buffer-Display-Action-Functions.html">Action Functions for Buffer Display</a>).  First, <code class="code">display-buffer</code> compiles a so-called action
 alist&mdash;a special association list that action functions can use to
 fine-tune their behavior.  Then it passes that alist on to each action
-function it calls (see <a href="Buffer-Display-Action-Alists.html">Buffer Display Action Alists</a>).
+function it calls (see <a class="pxref" href="Buffer-Display-Action-Alists.html">Action Alists for Buffer Display</a>).
 </p>
-<p>The behavior of <code>display-buffer</code> is highly customizable.  To
+<p>The behavior of <code class="code">display-buffer</code> is highly customizable.  To
 understand how customizations are used in practice, you may wish to
 study examples illustrating the order of precedence which
-<code>display-buffer</code> uses to call action functions (see <a href="Precedence-of-Action-Functions.html">Precedence of Action Functions</a>).  To avoid conflicts between Lisp programs
-calling <code>display-buffer</code> and user customizations of its behavior,
+<code class="code">display-buffer</code> uses to call action functions (see <a class="pxref" href="Precedence-of-Action-Functions.html">Precedence of Action Functions</a>).  To avoid conflicts between Lisp programs
+calling <code class="code">display-buffer</code> and user customizations of its behavior,
 it may make sense to follow a number of guidelines which are sketched
-in the final part of this section (see <a href="The-Zen-of-Buffer-Display.html">The Zen of Buffer Display</a>).
+in the final part of this section (see <a class="pxref" href="The-Zen-of-Buffer-Display.html">The Zen of Buffer Display</a>).
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Choosing-Window.html" accesskey="1">Choosing Window</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to choose a window for displaying a buffer.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Buffer-Display-Action-Functions.html" accesskey="2">Buffer Display Action Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Support functions for buffer display.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Buffer-Display-Action-Alists.html" accesskey="3">Buffer Display Action Alists</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Alists for fine-tuning buffer display.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Choosing-Window-Options.html" accesskey="4">Choosing Window Options</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Extra options affecting how buffers are displayed.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Precedence-of-Action-Functions.html" accesskey="5">Precedence of Action Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Examples to explain the precedence of
-                              action functions.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="The-Zen-of-Buffer-Display.html" accesskey="6">The Zen of Buffer Display</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to avoid that buffers get lost in between
-                              windows.
-</td></tr>
-</table>
 
 
+<ul class="mini-toc">
+<li><a href="Choosing-Window.html" accesskey="1">Choosing a Window for Displaying a Buffer</a></li>
+<li><a href="Buffer-Display-Action-Functions.html" accesskey="2">Action Functions for Buffer Display</a></li>
+<li><a href="Buffer-Display-Action-Alists.html" accesskey="3">Action Alists for Buffer Display</a></li>
+<li><a href="Choosing-Window-Options.html" accesskey="4">Additional Options for Displaying Buffers</a></li>
+<li><a href="Precedence-of-Action-Functions.html" accesskey="5">Precedence of Action Functions</a></li>
+<li><a href="The-Zen-of-Buffer-Display.html" accesskey="6">The Zen of Buffer Display</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Window-History.html" accesskey="n" rel="next">Window History</a>, Previous: <a href="Switching-Buffers.html" accesskey="p" rel="prev">Switching Buffers</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Window-History.html">Window History</a>, Previous: <a href="Switching-Buffers.html">Switching to a Buffer in a Window</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

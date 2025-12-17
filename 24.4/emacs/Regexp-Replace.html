@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.4.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Regexp Replace (GNU Emacs Manual)</title>
 
 <meta name="description" content="Regexp Replace (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Unconditional-Replace.html" rel="prev" title="Unconditional Replace">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,60 +50,61 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Regexp-Replace"></span><div class="header">
+<div class="subsection-level-extent" id="Regexp-Replace">
+<div class="nav-panel">
 <p>
-Next: <a href="Replacement-and-Case.html" accesskey="n" rel="next">Replacement and Case</a>, Previous: <a href="Unconditional-Replace.html" accesskey="p" rel="prev">Unconditional Replace</a>, Up: <a href="Replace.html" accesskey="u" rel="up">Replace</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Replacement-and-Case.html" accesskey="n" rel="next">Replace Commands and Case</a>, Previous: <a href="Unconditional-Replace.html" accesskey="p" rel="prev">Unconditional Replacement</a>, Up: <a href="Replace.html" accesskey="u" rel="up">Replacement Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Regexp-Replacement"></span><h4 class="subsection">15.10.2 Regexp Replacement</h4>
-<span id="index-replace_002dregexp"></span>
+<h4 class="subsection" id="Regexp-Replacement"><span>15.10.2 Regexp Replacement<a class="copiable-link" href="#Regexp-Replacement"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-replace_002dregexp"></a>
 
-<p>The <kbd>M-x replace-string</kbd> command replaces exact matches for a
-single string.  The similar command <kbd>M-x replace-regexp</kbd> replaces
+<p>The <kbd class="kbd">M-x replace-string</kbd> command replaces exact matches for a
+single string.  The similar command <kbd class="kbd">M-x replace-regexp</kbd> replaces
 any match for a specified pattern.
 </p>
-<dl compact="compact">
-<dt><kbd>M-x replace-regexp <span class="key">RET</span> <var>regexp</var> <span class="key">RET</span> <var>newstring</var> <span class="key">RET</span></kbd></dt>
-<dd><p>Replace every match for <var>regexp</var> with <var>newstring</var>.
+<dl class="table">
+<dt><kbd class="kbd">M-x replace-regexp <kbd class="key">RET</kbd> <var class="var">regexp</var> <kbd class="key">RET</kbd> <var class="var">newstring</var> <kbd class="key">RET</kbd></kbd></dt>
+<dd><p>Replace every match for <var class="var">regexp</var> with <var class="var">newstring</var>.
 </p></dd>
 </dl>
 
-<span id="index-back-reference_002c-in-regexp-replacement"></span>
-<p>In <code>replace-regexp</code>, the <var>newstring</var> need not be constant:
-it can refer to all or part of what is matched by the <var>regexp</var>.
-&lsquo;<samp>\&amp;</samp>&rsquo; in <var>newstring</var> stands for the entire match being
-replaced.  &lsquo;<samp>\<var>d</var></samp>&rsquo; in <var>newstring</var>, where <var>d</var> is a
-digit, stands for whatever matched the <var>d</var>th parenthesized
-grouping in <var>regexp</var>.  (This is called a &ldquo;back reference&rdquo;.)
-&lsquo;<samp>\#</samp>&rsquo; refers to the count of replacements already made in this
-command, as a decimal number.  In the first replacement, &lsquo;<samp>\#</samp>&rsquo;
-stands for &lsquo;<samp>0</samp>&rsquo;; in the second, for &lsquo;<samp>1</samp>&rsquo;; and so on.  For
+<a class="index-entry-id" id="index-back-reference_002c-in-regexp-replacement"></a>
+<p>In <code class="code">replace-regexp</code>, the <var class="var">newstring</var> need not be constant:
+it can refer to all or part of what is matched by the <var class="var">regexp</var>.
+&lsquo;<samp class="samp">\&amp;</samp>&rsquo; in <var class="var">newstring</var> stands for the entire match being
+replaced.  &lsquo;<samp class="samp">\<var class="var">d</var></samp>&rsquo; in <var class="var">newstring</var>, where <var class="var">d</var> is a
+digit, stands for whatever matched the <var class="var">d</var>th parenthesized
+grouping in <var class="var">regexp</var>.  (This is called a &ldquo;back reference&rdquo;.)
+&lsquo;<samp class="samp">\#</samp>&rsquo; refers to the count of replacements already made in this
+command, as a decimal number.  In the first replacement, &lsquo;<samp class="samp">\#</samp>&rsquo;
+stands for &lsquo;<samp class="samp">0</samp>&rsquo;; in the second, for &lsquo;<samp class="samp">1</samp>&rsquo;; and so on.  For
 example,
 </p>
 <div class="example">
-<pre class="example">M-x replace-regexp <span class="key">RET</span> c[ad]+r <span class="key">RET</span> \&amp;-safe <span class="key">RET</span>
+<pre class="example-preformatted">M-x replace-regexp <kbd class="key">RET</kbd> c[ad]+r <kbd class="key">RET</kbd> \&amp;-safe <kbd class="key">RET</kbd>
 </pre></div>
 
-<p>replaces (for example) &lsquo;<samp>cadr</samp>&rsquo; with &lsquo;<samp>cadr-safe</samp>&rsquo; and &lsquo;<samp>cddr</samp>&rsquo;
-with &lsquo;<samp>cddr-safe</samp>&rsquo;.
+<p>replaces (for example) &lsquo;<samp class="samp">cadr</samp>&rsquo; with &lsquo;<samp class="samp">cadr-safe</samp>&rsquo; and &lsquo;<samp class="samp">cddr</samp>&rsquo;
+with &lsquo;<samp class="samp">cddr-safe</samp>&rsquo;.
 </p>
 <div class="example">
-<pre class="example">M-x replace-regexp <span class="key">RET</span> \(c[ad]+r\)-safe <span class="key">RET</span> \1 <span class="key">RET</span>
+<pre class="example-preformatted">M-x replace-regexp <kbd class="key">RET</kbd> \(c[ad]+r\)-safe <kbd class="key">RET</kbd> \1 <kbd class="key">RET</kbd>
 </pre></div>
 
-<p>performs the inverse transformation.  To include a &lsquo;<samp>\</samp>&rsquo; in the
-text to replace with, you must enter &lsquo;<samp>\\</samp>&rsquo;.
+<p>performs the inverse transformation.  To include a &lsquo;<samp class="samp">\</samp>&rsquo; in the
+text to replace with, you must enter &lsquo;<samp class="samp">\\</samp>&rsquo;.
 </p>
 <p>If you want to enter part of the replacement string by hand each
-time, use &lsquo;<samp>\?</samp>&rsquo; in the replacement string.  Each replacement will
+time, use &lsquo;<samp class="samp">\?</samp>&rsquo; in the replacement string.  Each replacement will
 ask you to edit the replacement string in the minibuffer, putting
-point where the &lsquo;<samp>\?</samp>&rsquo; was.
+point where the &lsquo;<samp class="samp">\?</samp>&rsquo; was.
 </p>
 <p>The remainder of this subsection is intended for specialized tasks
 and requires knowledge of Lisp.  Most readers can skip it.
 </p>
 <p>You can use Lisp expressions to calculate parts of the
-replacement string.  To do this, write &lsquo;<samp>\,</samp>&rsquo; followed by the
+replacement string.  To do this, write &lsquo;<samp class="samp">\,</samp>&rsquo; followed by the
 expression in the replacement string.  Each replacement calculates the
 value of the expression and converts it to text without quoting (if
 it&rsquo;s a string, this means using the string&rsquo;s contents), and uses it in
@@ -120,37 +114,38 @@ symbol name goes with the symbol name, so the value replaces them
 both.
 </p>
 <p>Inside such an expression, you can use some special sequences.
-&lsquo;<samp>\&amp;</samp>&rsquo; and &lsquo;<samp>\<var>n</var></samp>&rsquo; refer here, as usual, to the entire
-match as a string, and to a submatch as a string.  <var>n</var> may be
-multiple digits, and the value of &lsquo;<samp>\<var>n</var></samp>&rsquo; is <code>nil</code> if
-subexpression <var>n</var> did not match.  You can also use &lsquo;<samp>\#&amp;</samp>&rsquo; and
-&lsquo;<samp>\#<var>n</var></samp>&rsquo; to refer to those matches as numbers (this is valid
-when the match or submatch has the form of a numeral).  &lsquo;<samp>\#</samp>&rsquo; here
+&lsquo;<samp class="samp">\&amp;</samp>&rsquo; and &lsquo;<samp class="samp">\<var class="var">n</var></samp>&rsquo; refer here, as usual, to the entire
+match as a string, and to a submatch as a string.  <var class="var">n</var> may be
+multiple digits, and the value of &lsquo;<samp class="samp">\<var class="var">n</var></samp>&rsquo; is <code class="code">nil</code> if
+subexpression <var class="var">n</var> did not match.  You can also use &lsquo;<samp class="samp">\#&amp;</samp>&rsquo; and
+&lsquo;<samp class="samp">\#<var class="var">n</var></samp>&rsquo; to refer to those matches as numbers (this is valid
+when the match or submatch has the form of a numeral).  &lsquo;<samp class="samp">\#</samp>&rsquo; here
 too stands for the number of already-completed replacements.
 </p>
-<p>Repeating our example to exchange &lsquo;<samp>x</samp>&rsquo; and &lsquo;<samp>y</samp>&rsquo;, we can thus
+<p>Repeating our example to exchange &lsquo;<samp class="samp">x</samp>&rsquo; and &lsquo;<samp class="samp">y</samp>&rsquo;, we can thus
 do it also this way:
 </p>
 <div class="example">
-<pre class="example">M-x replace-regexp <span class="key">RET</span> \(x\)\|y <span class="key">RET</span>
-\,(if \1 &quot;y&quot; &quot;x&quot;) <span class="key">RET</span>
+<pre class="example-preformatted">M-x replace-regexp <kbd class="key">RET</kbd> \(x\)\|y <kbd class="key">RET</kbd>
+\,(if \1 &quot;y&quot; &quot;x&quot;) <kbd class="key">RET</kbd>
 </pre></div>
 
-<p>For computing replacement strings for &lsquo;<samp>\,</samp>&rsquo;, the <code>format</code>
-function is often useful (see <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Formatting-Strings.html#Formatting-Strings">Formatting Strings</a> in <cite>The Emacs
+<p>For computing replacement strings for &lsquo;<samp class="samp">\,</samp>&rsquo;, the <code class="code">format</code>
+function is often useful (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Formatting-Strings.html#Formatting-Strings">Formatting Strings</a> in <cite class="cite">The Emacs
 Lisp Reference Manual</cite>).  For example, to add consecutively numbered
-strings like &lsquo;<samp>ABC00042</samp>&rsquo; to columns 73 to&nbsp;80<!-- /@w --> (unless they are
+strings like &lsquo;<samp class="samp">ABC00042</samp>&rsquo; to columns 73 to&nbsp;80<!-- /@w --> (unless they are
 already occupied), you can use
 </p>
 <div class="example">
-<pre class="example">M-x replace-regexp <span class="key">RET</span> ^.\{0,72\}$ <span class="key">RET</span>
-\,(format &quot;%-72sABC%05d&quot; \&amp; \#) <span class="key">RET</span>
+<pre class="example-preformatted">M-x replace-regexp <kbd class="key">RET</kbd> ^.\{0,72\}$ <kbd class="key">RET</kbd>
+\,(format &quot;%-72sABC%05d&quot; \&amp; \#) <kbd class="key">RET</kbd>
 </pre></div>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Replacement-and-Case.html" accesskey="n" rel="next">Replacement and Case</a>, Previous: <a href="Unconditional-Replace.html" accesskey="p" rel="prev">Unconditional Replace</a>, Up: <a href="Replace.html" accesskey="u" rel="up">Replace</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Replacement-and-Case.html">Replace Commands and Case</a>, Previous: <a href="Unconditional-Replace.html">Unconditional Replacement</a>, Up: <a href="Replace.html">Replacement Commands</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

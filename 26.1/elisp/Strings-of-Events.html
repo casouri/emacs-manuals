@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Strings of Events (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Strings of Events (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Input-Events.html" rel="up" title="Input Events">
-<link href="Reading-Input.html" rel="next" title="Reading Input">
 <link href="Accessing-Scroll.html" rel="prev" title="Accessing Scroll">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,14 +46,15 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Strings-of-Events"></span><div class="header">
+<div class="subsection-level-extent" id="Strings-of-Events">
+<div class="nav-panel">
 <p>
-Previous: <a href="Accessing-Scroll.html" accesskey="p" rel="prev">Accessing Scroll</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Accessing-Scroll.html" accesskey="p" rel="prev">Accessing Scroll Bar Events</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Putting-Keyboard-Events-in-Strings"></span><h4 class="subsection">21.7.15 Putting Keyboard Events in Strings</h4>
-<span id="index-keyboard-events-in-strings"></span>
-<span id="index-strings-with-keyboard-events"></span>
+<h4 class="subsection" id="Putting-Keyboard-Events-in-Strings"><span>21.7.15 Putting Keyboard Events in Strings<a class="copiable-link" href="#Putting-Keyboard-Events-in-Strings"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-keyboard-events-in-strings"></a>
+<a class="index-entry-id" id="index-strings-with-keyboard-events"></a>
 
 <p>In most of the places where strings are used, we conceptualize the
 string as containing text characters&mdash;the same kind of characters found
@@ -76,18 +67,18 @@ compatibility, and it is not always possible.
 <p>We recommend that new programs avoid dealing with these complexities
 by not storing keyboard events in strings.  Here is how to do that:
 </p>
-<ul>
-<li> Use vectors instead of strings for key sequences, when you plan to use
-them for anything other than as arguments to <code>lookup-key</code> and
-<code>define-key</code>.  For example, you can use
-<code>read-key-sequence-vector</code> instead of <code>read-key-sequence</code>, and
-<code>this-command-keys-vector</code> instead of <code>this-command-keys</code>.
+<ul class="itemize mark-bullet">
+<li>Use vectors instead of strings for key sequences, when you plan to use
+them for anything other than as arguments to <code class="code">lookup-key</code> and
+<code class="code">define-key</code>.  For example, you can use
+<code class="code">read-key-sequence-vector</code> instead of <code class="code">read-key-sequence</code>, and
+<code class="code">this-command-keys-vector</code> instead of <code class="code">this-command-keys</code>.
 
-</li><li> Use vectors to write key sequence constants containing meta characters,
-even when passing them directly to <code>define-key</code>.
+</li><li>Use vectors to write key sequence constants containing meta characters,
+even when passing them directly to <code class="code">define-key</code>.
 
-</li><li> When you have to look at the contents of a key sequence that might be a
-string, use <code>listify-key-sequence</code> (see <a href="Event-Input-Misc.html">Event Input Misc</a>)
+</li><li>When you have to look at the contents of a key sequence that might be a
+string, use <code class="code">listify-key-sequence</code> (see <a class="pxref" href="Event-Input-Misc.html">Miscellaneous Event Input Features</a>)
 first, to convert it to a list.
 </li></ul>
 
@@ -99,8 +90,8 @@ allowed only in special cases.
 <p>The earliest GNU Emacs versions represented meta characters as codes
 in the range of 128 to 255.  At that time, the basic character codes
 ranged from 0 to 127, so all keyboard character codes did fit in a
-string.  Many Lisp programs used &lsquo;<samp>\M-</samp>&rsquo; in string constants to stand
-for meta characters, especially in arguments to <code>define-key</code> and
+string.  Many Lisp programs used &lsquo;<samp class="samp">\M-</samp>&rsquo; in string constants to stand
+for meta characters, especially in arguments to <code class="code">define-key</code> and
 similar functions, and key sequences and sequences of events were always
 represented as strings.
 </p>
@@ -111,16 +102,16 @@ character is
 2**27
 and such numbers cannot be included in a string.
 </p>
-<p>To support programs with &lsquo;<samp>\M-</samp>&rsquo; in string constants, there are
+<p>To support programs with &lsquo;<samp class="samp">\M-</samp>&rsquo; in string constants, there are
 special rules for including certain meta characters in a string.
 Here are the rules for interpreting a string as a sequence of input
 characters:
 </p>
-<ul>
-<li> If the keyboard character value is in the range of 0 to 127, it can go
+<ul class="itemize mark-bullet">
+<li>If the keyboard character value is in the range of 0 to 127, it can go
 in the string unchanged.
 
-</li><li> The meta variants of those characters, with codes in the range of
+</li><li>The meta variants of those characters, with codes in the range of
 2**27
 to
 2**27+127,
@@ -132,17 +123,17 @@ bit instead of the
 bit, resulting in a value between 128 and 255.  Only a unibyte string
 can include these codes.
 
-</li><li> Non-<acronym>ASCII</acronym> characters above 256 can be included in a multibyte string.
+</li><li>Non-<abbr class="acronym">ASCII</abbr> characters above 256 can be included in a multibyte string.
 
-</li><li> Other keyboard character events cannot fit in a string.  This includes
+</li><li>Other keyboard character events cannot fit in a string.  This includes
 keyboard events in the range of 128 to 255.
 </li></ul>
 
-<p>Functions such as <code>read-key-sequence</code> that construct strings of
+<p>Functions such as <code class="code">read-key-sequence</code> that construct strings of
 keyboard input characters follow these rules: they construct vectors
 instead of strings, when the events won&rsquo;t fit in a string.
 </p>
-<p>When you use the read syntax &lsquo;<samp>\M-</samp>&rsquo; in a string, it produces a
+<p>When you use the read syntax &lsquo;<samp class="samp">\M-</samp>&rsquo; in a string, it produces a
 code in the range of 128 to 255&mdash;the same code that you get if you
 modify the corresponding keyboard event to put it in the string.  Thus,
 meta events in strings work consistently regardless of how they get into
@@ -151,10 +142,11 @@ the strings.
 <p>However, most programs would do well to avoid these issues by
 following the recommendations at the beginning of this section.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Accessing-Scroll.html" accesskey="p" rel="prev">Accessing Scroll</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Accessing-Scroll.html">Accessing Scroll Bar Events</a>, Up: <a href="Input-Events.html">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

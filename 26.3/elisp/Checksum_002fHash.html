@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Checksum/Hash (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Checksum/Hash (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Base-64.html" rel="prev" title="Base 64">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,26 +47,27 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Checksum_002fHash"></span><div class="header">
+<div class="section-level-extent" id="Checksum_002fHash">
+<div class="nav-panel">
 <p>
-Next: <a href="GnuTLS-Cryptography.html" accesskey="n" rel="next">GnuTLS Cryptography</a>, Previous: <a href="Base-64.html" accesskey="p" rel="prev">Base 64</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GnuTLS-Cryptography.html" accesskey="n" rel="next">GnuTLS Cryptography</a>, Previous: <a href="Base-64.html" accesskey="p" rel="prev">Base 64 Encoding</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Checksum_002fHash-1"></span><h3 class="section">32.26 Checksum/Hash</h3>
-<span id="index-MD5-checksum"></span>
-<span id="index-SHA-hash"></span>
-<span id="index-hash_002c-cryptographic"></span>
-<span id="index-cryptographic-hash"></span>
+<h3 class="section" id="Checksum_002fHash-1"><span>32.26 Checksum/Hash<a class="copiable-link" href="#Checksum_002fHash-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-MD5-checksum"></a>
+<a class="index-entry-id" id="index-SHA-hash"></a>
+<a class="index-entry-id" id="index-hash_002c-cryptographic"></a>
+<a class="index-entry-id" id="index-cryptographic-hash"></a>
 
-<p>Emacs has built-in support for computing <em>cryptographic hashes</em>.
-A cryptographic hash, or <em>checksum</em>, is a digital fingerprint
+<p>Emacs has built-in support for computing <em class="dfn">cryptographic hashes</em>.
+A cryptographic hash, or <em class="dfn">checksum</em>, is a digital fingerprint
 of a piece of data (e.g., a block of text) which can be used to check
 that you have an unaltered copy of that data.
 </p>
-<span id="index-message-digest"></span>
+<a class="index-entry-id" id="index-message-digest"></a>
 <p>Emacs supports several common cryptographic hash algorithms: MD5,
 SHA-1, SHA-2, SHA-224, SHA-256, SHA-384 and SHA-512.  MD5 is the
-oldest of these algorithms, and is commonly used in <em>message
+oldest of these algorithms, and is commonly used in <em class="dfn">message
 digests</em> to check the integrity of messages transmitted over a
 network.  MD5 is not collision resistant (i.e., it is possible to
 deliberately design different pieces of data which have the same MD5
@@ -84,73 +76,74 @@ similar theoretical weakness also exists in SHA-1.  Therefore, for
 security-related applications you should use the other hash types,
 such as SHA-2.
 </p>
-<dl>
-<dt id="index-secure_002dhash_002dalgorithms">Function: <strong>secure-hash-algorithms</strong></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-secure_002dhash_002dalgorithms"><span class="category-def">Function: </span><span><strong class="def-name">secure-hash-algorithms</strong><a class="copiable-link" href="#index-secure_002dhash_002dalgorithms"> &para;</a></span></dt>
 <dd><p>This function returns a list of symbols representing algorithms that
-<code>secure-hash</code> can use.
+<code class="code">secure-hash</code> can use.
 </p></dd></dl>
 
-<dl>
-<dt id="index-secure_002dhash">Function: <strong>secure-hash</strong> <em>algorithm object &amp;optional start end binary</em></dt>
-<dd><p>This function returns a hash for <var>object</var>.  The argument
-<var>algorithm</var> is a symbol stating which hash to compute: one of
-<code>md5</code>, <code>sha1</code>, <code>sha224</code>, <code>sha256</code>, <code>sha384</code>
-or <code>sha512</code>.  The argument <var>object</var> should be a buffer or a
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-secure_002dhash"><span class="category-def">Function: </span><span><strong class="def-name">secure-hash</strong> <var class="def-var-arguments">algorithm object &amp;optional start end binary</var><a class="copiable-link" href="#index-secure_002dhash"> &para;</a></span></dt>
+<dd><p>This function returns a hash for <var class="var">object</var>.  The argument
+<var class="var">algorithm</var> is a symbol stating which hash to compute: one of
+<code class="code">md5</code>, <code class="code">sha1</code>, <code class="code">sha224</code>, <code class="code">sha256</code>, <code class="code">sha384</code>
+or <code class="code">sha512</code>.  The argument <var class="var">object</var> should be a buffer or a
 string.
 </p>
-<p>The optional arguments <var>start</var> and <var>end</var> are character
-positions specifying the portion of <var>object</var> to compute the
-message digest for.  If they are <code>nil</code> or omitted, the hash is
-computed for the whole of <var>object</var>.
+<p>The optional arguments <var class="var">start</var> and <var class="var">end</var> are character
+positions specifying the portion of <var class="var">object</var> to compute the
+message digest for.  If they are <code class="code">nil</code> or omitted, the hash is
+computed for the whole of <var class="var">object</var>.
 </p>
-<p>If the argument <var>binary</var> is omitted or <code>nil</code>, the function
-returns the <em>text form</em> of the hash, as an ordinary Lisp string.
-If <var>binary</var> is non-<code>nil</code>, it returns the hash in <em>binary
+<p>If the argument <var class="var">binary</var> is omitted or <code class="code">nil</code>, the function
+returns the <em class="dfn">text form</em> of the hash, as an ordinary Lisp string.
+If <var class="var">binary</var> is non-<code class="code">nil</code>, it returns the hash in <em class="dfn">binary
 form</em>, as a sequence of bytes stored in a unibyte string.
 </p>
 <p>This function does not compute the hash directly from the internal
-representation of <var>object</var>&rsquo;s text (see <a href="Text-Representations.html">Text Representations</a>).
-Instead, it encodes the text using a coding system (see <a href="Coding-Systems.html">Coding Systems</a>), and computes the hash from that encoded text.  If
-<var>object</var> is a buffer, the coding system used is the one which
+representation of <var class="var">object</var>&rsquo;s text (see <a class="pxref" href="Text-Representations.html">Text Representations</a>).
+Instead, it encodes the text using a coding system (see <a class="pxref" href="Coding-Systems.html">Coding Systems</a>), and computes the hash from that encoded text.  If
+<var class="var">object</var> is a buffer, the coding system used is the one which
 would be chosen by default for writing the text into a file.  If
-<var>object</var> is a string, the user&rsquo;s preferred coding system is used
-(see <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Recognize-Coding.html#Recognize-Coding">Recognize Coding</a> in <cite>GNU Emacs Manual</cite>).
+<var class="var">object</var> is a string, the user&rsquo;s preferred coding system is used
+(see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Recognize-Coding.html#Recognize-Coding">Recognize Coding</a> in <cite class="cite">GNU Emacs Manual</cite>).
 </p></dd></dl>
 
-<dl>
-<dt id="index-md5">Function: <strong>md5</strong> <em>object &amp;optional start end coding-system noerror</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-md5"><span class="category-def">Function: </span><span><strong class="def-name">md5</strong> <var class="def-var-arguments">object &amp;optional start end coding-system noerror</var><a class="copiable-link" href="#index-md5"> &para;</a></span></dt>
 <dd><p>This function returns an MD5 hash.  It is semi-obsolete, since for
-most purposes it is equivalent to calling <code>secure-hash</code> with
-<code>md5</code> as the <var>algorithm</var> argument.  The <var>object</var>,
-<var>start</var> and <var>end</var> arguments have the same meanings as in
-<code>secure-hash</code>.
+most purposes it is equivalent to calling <code class="code">secure-hash</code> with
+<code class="code">md5</code> as the <var class="var">algorithm</var> argument.  The <var class="var">object</var>,
+<var class="var">start</var> and <var class="var">end</var> arguments have the same meanings as in
+<code class="code">secure-hash</code>.
 </p>
-<p>If <var>coding-system</var> is non-<code>nil</code>, it specifies a coding system
-to use to encode the text; if omitted or <code>nil</code>, the default
-coding system is used, like in <code>secure-hash</code>.
+<p>If <var class="var">coding-system</var> is non-<code class="code">nil</code>, it specifies a coding system
+to use to encode the text; if omitted or <code class="code">nil</code>, the default
+coding system is used, like in <code class="code">secure-hash</code>.
 </p>
-<p>Normally, <code>md5</code> signals an error if the text can&rsquo;t be encoded
+<p>Normally, <code class="code">md5</code> signals an error if the text can&rsquo;t be encoded
 using the specified or chosen coding system.  However, if
-<var>noerror</var> is non-<code>nil</code>, it silently uses <code>raw-text</code>
+<var class="var">noerror</var> is non-<code class="code">nil</code>, it silently uses <code class="code">raw-text</code>
 coding instead.
 </p></dd></dl>
 
-<dl>
-<dt id="index-buffer_002dhash">Function: <strong>buffer-hash</strong> <em>&amp;optional buffer-or-name</em></dt>
-<dd><p>Return a hash of <var>buffer-or-name</var>.  If <code>nil</code>, this defaults
-to the current buffer.  As opposed to <code>secure-hash</code>, this
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-buffer_002dhash"><span class="category-def">Function: </span><span><strong class="def-name">buffer-hash</strong> <var class="def-var-arguments">&amp;optional buffer-or-name</var><a class="copiable-link" href="#index-buffer_002dhash"> &para;</a></span></dt>
+<dd><p>Return a hash of <var class="var">buffer-or-name</var>.  If <code class="code">nil</code>, this defaults
+to the current buffer.  As opposed to <code class="code">secure-hash</code>, this
 function computes the hash based on the internal representation of the
 buffer, disregarding any coding systems.  It&rsquo;s therefore only useful
 when comparing two buffers running in the same Emacs, and is not
 guaranteed to return the same hash between different Emacs versions.
 It should be somewhat more efficient on larger buffers than
-<code>secure-hash</code> is, and should not allocate more memory.
+<code class="code">secure-hash</code> is, and should not allocate more memory.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="GnuTLS-Cryptography.html" accesskey="n" rel="next">GnuTLS Cryptography</a>, Previous: <a href="Base-64.html" accesskey="p" rel="prev">Base 64</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="GnuTLS-Cryptography.html">GnuTLS Cryptography</a>, Previous: <a href="Base-64.html">Base 64 Encoding</a>, Up: <a href="Text.html">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

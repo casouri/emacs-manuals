@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.1.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Keymaps (GNU Emacs Manual)</title>
+
+<meta name="description" content="Keymaps (GNU Emacs Manual)">
+<meta name="keywords" content="Keymaps (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Key-Bindings.html" rel="up" title="Key Bindings">
+<link href="Prefix-Keymaps.html" rel="next" title="Prefix Keymaps">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Keymaps">
+<div class="nav-panel">
+<p>
+Next: <a href="Prefix-Keymaps.html" accesskey="n" rel="next">Prefix Keymaps</a>, Up: <a href="Key-Bindings.html" accesskey="u" rel="up">Customizing Key Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Keymaps-1"><span>51.3.1 Keymaps<a class="copiable-link" href="#Keymaps-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-keymap"></a>
+
+<p>As described in <a class="ref" href="Commands.html">Keys and Commands</a>, each Emacs command is a Lisp
+function whose definition provides for interactive use.  Like every
+Lisp function, a command has a function name, which usually consists
+of lower-case letters and hyphens.
+</p>
+<p>A <em class="dfn">key sequence</em> (<em class="dfn">key</em>, for short) is a sequence of
+<em class="dfn">input events</em> that have a meaning as a unit.  Input events
+include characters, function keys, and mouse buttons&mdash;all the inputs
+that you can send to the computer.  A key sequence gets its meaning
+from its <em class="dfn">binding</em>, which says what command it runs.
+</p>
+<p>The bindings between key sequences and command functions are
+recorded in data structures called <em class="dfn">keymaps</em>.  Emacs has many of
+these, each used on particular occasions.
+</p>
+<a class="index-entry-id" id="index-global-keymap"></a>
+<p>The <em class="dfn">global</em> keymap is the most important keymap because it is
+always in effect.  The global keymap defines keys for Fundamental mode
+(see <a class="pxref" href="Major-Modes.html">Major Modes</a>); most of these definitions are common to most or
+all major modes.  Each major or minor mode can have its own keymap
+which overrides the global definitions of some keys.
+</p>
+<p>For example, a self-inserting character such as <kbd class="kbd">g</kbd> is
+self-inserting because the global keymap binds it to the command
+<code class="code">self-insert-command</code>.  The standard Emacs editing characters
+such as <kbd class="kbd">C-a</kbd> also get their standard meanings from the global
+keymap.  Commands to rebind keys, such as <kbd class="kbd">M-x keymap-global-set</kbd>,
+work by storing the new binding in the proper place in the global map
+(see <a class="pxref" href="Rebinding.html">Changing Key Bindings Interactively</a>).  To view the current key bindings, use the
+<kbd class="kbd">C-h b</kbd> command.
+</p>
+<a class="index-entry-id" id="index-function-key"></a>
+<p>Most modern keyboards have function keys as well as character keys.
+Function keys send input events just as character keys do, and keymaps
+can have bindings for them.  Key sequences can mix function keys and
+characters.  For example, if your keyboard has a <kbd class="key">Home</kbd> function
+key, Emacs can recognize key sequences like <kbd class="kbd">C-x <kbd class="key">Home</kbd></kbd>.  You
+can even mix mouse events with keyboard events, such as
+<kbd class="kbd">S-down-mouse-1</kbd>.
+</p>
+<p>On text terminals, typing a function key actually sends the computer
+a sequence of characters; the precise details of the sequence depend
+on the function key and on the terminal type.  (Often the sequence
+starts with <kbd class="kbd"><kbd class="key">ESC</kbd> [</kbd>.)  If Emacs understands your terminal
+type properly, it automatically handles such sequences as single input
+events.
+</p>
+<p>Key sequences that consist of <kbd class="kbd">C-c</kbd> followed by a letter (upper
+or lower case; <abbr class="acronym">ASCII</abbr> or non-<abbr class="acronym">ASCII</abbr>) are reserved
+for users.  Emacs itself will never bind those key sequences, and
+Emacs extensions should avoid binding them.  In other words, users can
+bind key sequences like <kbd class="kbd">C-c a</kbd> or <kbd class="kbd">C-c &ccedil;</kbd> and rely on these
+never being shadowed by other Emacs bindings.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Prefix-Keymaps.html">Prefix Keymaps</a>, Up: <a href="Key-Bindings.html">Customizing Key Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

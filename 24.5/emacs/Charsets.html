@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.5.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Charsets (GNU Emacs Manual)</title>
 
 <meta name="description" content="Charsets (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Unibyte-Mode.html" rel="prev" title="Unibyte Mode">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,63 +49,65 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Charsets"></span><div class="header">
+<div class="section-level-extent" id="Charsets">
+<div class="nav-panel">
 <p>
-Next: <a href="Bidirectional-Editing.html" accesskey="n" rel="next">Bidirectional Editing</a>, Previous: <a href="Unibyte-Mode.html" accesskey="p" rel="prev">Unibyte Mode</a>, Up: <a href="International.html" accesskey="u" rel="up">International</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Bidirectional-Editing.html" accesskey="n" rel="next">Bidirectional Editing</a>, Previous: <a href="Unibyte-Mode.html" accesskey="p" rel="prev">Unibyte Editing Mode</a>, Up: <a href="International.html" accesskey="u" rel="up">International Character Set Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Charsets-1"></span><h3 class="section">22.18 Charsets</h3>
-<span id="index-charsets"></span>
+<h3 class="section" id="Charsets-1"><span>22.18 Charsets<a class="copiable-link" href="#Charsets-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-charsets"></a>
 
-<p>In Emacs, <em>charset</em> is short for &ldquo;character set&rdquo;.  Emacs
-supports most popular charsets (such as <code>ascii</code>,
-<code>iso-8859-1</code>, <code>cp1250</code>, <code>big5</code>, and <code>unicode</code>), in
-addition to some charsets of its own (such as <code>emacs</code>,
-<code>unicode-bmp</code>, and <code>eight-bit</code>).  All supported characters
+<p>In Emacs, <em class="dfn">charset</em> is short for &ldquo;character set&rdquo;.  Emacs
+supports most popular charsets (such as <code class="code">ascii</code>,
+<code class="code">iso-8859-1</code>, <code class="code">cp1250</code>, <code class="code">big5</code>, and <code class="code">unicode</code>), in
+addition to some charsets of its own (such as <code class="code">emacs</code>,
+<code class="code">unicode-bmp</code>, and <code class="code">eight-bit</code>).  All supported characters
 belong to one or more charsets.
 </p>
 <p>Emacs normally &ldquo;does the right thing&rdquo; with respect to charsets, so
 that you don&rsquo;t have to worry about them.  However, it is sometimes
 helpful to know some of the underlying details about charsets.
 </p>
-<p>One example is font selection (see <a href="Fonts.html">Fonts</a>).  Each language
-environment (see <a href="Language-Environments.html">Language Environments</a>) defines a &ldquo;priority
+<p>One example is font selection (see <a class="pxref" href="Fonts.html">Fonts</a>).  Each language
+environment (see <a class="pxref" href="Language-Environments.html">Language Environments</a>) defines a &ldquo;priority
 list&rdquo; for the various charsets.  When searching for a font, Emacs
 initially attempts to find one that can display the highest-priority
 charsets.  For instance, in the Japanese language environment, the
-charset <code>japanese-jisx0208</code> has the highest priority, so Emacs
-tries to use a font whose <code>registry</code> property is
-&lsquo;<samp>JISX0208.1983-0</samp>&rsquo;.
+charset <code class="code">japanese-jisx0208</code> has the highest priority, so Emacs
+tries to use a font whose <code class="code">registry</code> property is
+&lsquo;<samp class="samp">JISX0208.1983-0</samp>&rsquo;.
 </p>
-<span id="index-list_002dcharset_002dchars"></span>
-<span id="index-characters-in-a-certain-charset"></span>
-<span id="index-describe_002dcharacter_002dset"></span>
+<a class="index-entry-id" id="index-list_002dcharset_002dchars"></a>
+<a class="index-entry-id" id="index-characters-in-a-certain-charset"></a>
+<a class="index-entry-id" id="index-describe_002dcharacter_002dset"></a>
 <p>There are two commands that can be used to obtain information about
-charsets.  The command <kbd>M-x list-charset-chars</kbd> prompts for a
+charsets.  The command <kbd class="kbd">M-x list-charset-chars</kbd> prompts for a
 charset name, and displays all the characters in that character set.
-The command <kbd>M-x describe-character-set</kbd> prompts for a charset
+The command <kbd class="kbd">M-x describe-character-set</kbd> prompts for a charset
 name, and displays information about that charset, including its
 internal representation within Emacs.
 </p>
-<span id="index-list_002dcharacter_002dsets"></span>
-<p><kbd>M-x list-character-sets</kbd> displays a list of all supported
+<a class="index-entry-id" id="index-list_002dcharacter_002dsets"></a>
+<p><kbd class="kbd">M-x list-character-sets</kbd> displays a list of all supported
 charsets.  The list gives the names of charsets and additional
 information to identity each charset; see the
-<a href="http://www.itscj.ipsj.or.jp/ISO-IR/">International Register of
+<a class="url" href="http://www.itscj.ipsj.or.jp/ISO-IR/">International Register of
 Coded Character Sets</a> for more details.  In this list,
-charsets are divided into two categories: <em>normal charsets</em> are
-listed first, followed by <em>supplementary charsets</em>.  A
+charsets are divided into two categories: <em class="dfn">normal charsets</em> are
+listed first, followed by <em class="dfn">supplementary charsets</em>.  A
 supplementary charset is one that is used to define another charset
 (as a parent or a subset), or to provide backward-compatibility for
 older Emacs versions.
 </p>
 <p>To find out which charset a character in the buffer belongs to, put
-point before it and type <kbd>C-u C-x =</kbd> (see <a href="International-Chars.html">International Chars</a>).
+point before it and type <kbd class="kbd">C-u C-x =</kbd> (see <a class="pxref" href="International-Chars.html">Introduction to International Character Sets</a>).
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Bidirectional-Editing.html" accesskey="n" rel="next">Bidirectional Editing</a>, Previous: <a href="Unibyte-Mode.html" accesskey="p" rel="prev">Unibyte Mode</a>, Up: <a href="International.html" accesskey="u" rel="up">International</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Bidirectional-Editing.html">Bidirectional Editing</a>, Previous: <a href="Unibyte-Mode.html">Unibyte Editing Mode</a>, Up: <a href="International.html">International Character Set Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

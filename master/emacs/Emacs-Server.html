@@ -1,10 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
-updated for Emacs version 29.0.50.
+updated for Emacs version 31.0.50.
 
-Copyright © 1985-1987, 1993-2021 Free Software Foundation,
-Inc.
+Copyright © 1985-2025 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -18,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Emacs Server (GNU Emacs Manual)</title>
 
 <meta name="description" content="Emacs Server (GNU Emacs Manual)">
@@ -28,28 +27,22 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="TCP-Emacs-server.html" rel="next" title="TCP Emacs server">
-<link href="Serial-Terminal.html" rel="prev" title="Serial Terminal">
+<link href="Printing.html" rel="next" title="Printing">
+<link href="Shell.html" rel="prev" title="Shell">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,70 +51,75 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Emacs-Server"></span><div class="header">
+<div class="chapter-level-extent" id="Emacs-Server">
+<div class="nav-panel">
 <p>
-Next: <a href="Printing.html" accesskey="n" rel="next">Printing</a>, Previous: <a href="Shell.html" accesskey="p" rel="prev">Shell</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Printing.html" accesskey="n" rel="next">Printing Hard Copies</a>, Previous: <a href="Shell.html" accesskey="p" rel="prev">Running Shell Commands from Emacs</a>, Up: <a href="index.html" accesskey="u" rel="up">The Emacs Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Using-Emacs-as-a-Server"></span><h2 class="chapter">39 Using Emacs as a Server</h2>
-<span id="index-emacsclient"></span>
-<span id="index-Emacs-as-a-server"></span>
-<span id="index-server_002c-using-Emacs-as"></span>
-<span id="index-EDITOR-environment-variable"></span>
+<h2 class="chapter section-level-set-chapter" id="Using-Emacs-as-a-Server"><span>41 Using Emacs as a Server<a class="copiable-link" href="#Using-Emacs-as-a-Server"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-emacsclient"></a>
+<a class="index-entry-id" id="index-Emacs-as-a-server"></a>
+<a class="index-entry-id" id="index-server_002c-using-Emacs-as"></a>
+<a class="index-entry-id" id="index-EDITOR-environment-variable"></a>
 
 <p>Various programs can invoke your choice of editor to edit a
 particular piece of text.  For instance, version control programs
-invoke an editor to enter version control logs (see <a href="Version-Control.html">Version Control</a>), and the Unix <code>mail</code> utility invokes an editor to
+invoke an editor to enter version control logs (see <a class="pxref" href="Version-Control.html">Version Control</a>), and the Unix <code class="command">mail</code> utility invokes an editor to
 enter a message to send.  By convention, your choice of editor is
-specified by the environment variable <code>EDITOR</code>.  If you set
-<code>EDITOR</code> to &lsquo;<samp>emacs</samp>&rsquo;, Emacs would be invoked, but in an
+specified by the environment variable <code class="env">EDITOR</code>.  If you set
+<code class="env">EDITOR</code> to &lsquo;<samp class="samp">emacs</samp>&rsquo;, Emacs would be invoked, but in an
 inconvenient way&mdash;by starting a new Emacs process.  This is
 inconvenient because the new Emacs process doesn&rsquo;t share buffers, a
 command history, or other kinds of information with any existing Emacs
 process.
 </p>
-<p>You can solve this problem by setting up Emacs as an <em>edit
+<p>You can solve this problem by setting up Emacs as an <em class="dfn">edit
 server</em>, so that it &ldquo;listens&rdquo; for external edit requests and acts
 accordingly.  There are various ways to start an Emacs server:
 </p>
-<ul>
-<li> <span id="index-server_002dstart"></span>
-Run the command <code>server-start</code> in an existing Emacs process:
-either type <kbd>M-x server-start</kbd>, or put the expression
-<code>(server-start)</code> in your init file (see <a href="Init-File.html">Init File</a>).  The
+<ul class="itemize mark-bullet">
+<li><a class="index-entry-id" id="index-server_002dstart"></a>
+Run the command <code class="code">server-start</code> in an existing Emacs process:
+either type <kbd class="kbd">M-x server-start</kbd>, or put the expression
+<code class="code">(server-start)</code> in your init file (see <a class="pxref" href="Init-File.html">The Emacs Initialization File</a>).  The
 existing Emacs process is the server; when you exit Emacs, the server
 dies with the Emacs process.
 
-</li><li> <span id="index-daemon_002c-Emacs"></span>
-Run Emacs as a <em>daemon</em>, using one of the &lsquo;<samp>--daemon</samp>&rsquo; command-line
-options.  See <a href="Initial-Options.html">Initial Options</a>.  When Emacs is started this way, it
-calls <code>server-start</code> after initialization and does not open an
+</li><li><a class="index-entry-id" id="index-daemon_002c-Emacs"></a>
+Run Emacs as a <em class="dfn">daemon</em>, using one of the &lsquo;<samp class="samp">--daemon</samp>&rsquo; command-line
+options.  See <a class="xref" href="Initial-Options.html">Initial Options</a>.  When Emacs is started this way, it
+calls <code class="code">server-start</code> after initialization and does not open an
 initial frame.  It then waits for edit requests from clients.
 
-</li><li> <span id="index-systemd-unit-file"></span>
-If your operating system uses <code>systemd</code> to manage startup,
+</li><li>Run the command <code class="code">emacsclient</code> with the &lsquo;<samp class="samp">--alternate-editor=&quot;&quot;</samp>&rsquo;
+command-line option.  This starts an Emacs daemon only if no Emacs daemon
+is already running.
+
+</li><li><a class="index-entry-id" id="index-systemd-unit-file"></a>
+If your operating system uses <code class="command">systemd</code> to manage startup,
 you can automatically start Emacs in daemon mode when you login
-using the supplied <em>systemd unit file</em>.  To activate this:
+using the supplied <em class="dfn">systemd unit file</em>.  To activate this:
 <div class="example">
-<pre class="example">systemctl --user enable emacs
+<pre class="example-preformatted">systemctl --user enable emacs
 </pre></div>
 <p>(If your Emacs was installed into a non-standard location, you may
-need to copy the <samp>emacs.service</samp> file to a standard directory
-such as <samp>~/.config/systemd/user/</samp>.)
+need to copy the <samp class="file">emacs.service</samp> file to a standard directory
+such as <samp class="file">~/.config/systemd/user/</samp>.)
 </p>
-</li><li> <span id="index-socket-activation_002c-systemd_002c-Emacs"></span>
+</li><li><a class="index-entry-id" id="index-socket-activation_002c-systemd_002c-Emacs"></a>
 An external process can invoke the Emacs server when a connection
 event occurs upon a specified socket and pass the socket to the new
 Emacs server process.  An instance of this is the socket functionality
-of <code>systemd</code>: the <code>systemd</code> service creates a socket and
-listens for connections on it; when <code>emacsclient</code> connects to
-it for the first time, <code>systemd</code> can launch the Emacs server
-and hand over the socket to it for servicing <code>emacsclient</code>
+of <code class="command">systemd</code>: the <code class="command">systemd</code> service creates a socket and
+listens for connections on it; when <code class="command">emacsclient</code> connects to
+it for the first time, <code class="command">systemd</code> can launch the Emacs server
+and hand over the socket to it for servicing <code class="command">emacsclient</code>
 connections.  A setup to use this functionality could be:
 
-<p><samp>~/.config/systemd/user/emacs.socket</samp>:
+<p><samp class="file">~/.config/systemd/user/emacs.socket</samp>:
 </p><div class="example">
-<pre class="example">[Socket]
+<pre class="example-preformatted">[Socket]
 ListenStream=/path/to/.emacs.socket
 DirectoryMode=0700
 
@@ -129,74 +127,98 @@ DirectoryMode=0700
 WantedBy=sockets.target
 </pre></div>
 
-<p>(The <samp>emacs.service</samp> file described above must also be installed.)
+<p>(The <samp class="file">emacs.service</samp> file described above must also be installed.)
 </p>
-<p>The <code>ListenStream</code> path will be the path that Emacs listens for
-connections from <code>emacsclient</code>; this is a file of your choice.
+<p>The <code class="code">ListenStream</code> path will be the path that Emacs listens for
+connections from <code class="command">emacsclient</code>; this is a file of your choice.
 </p></li></ul>
 
-<span id="index-TEXEDIT-environment-variable"></span>
+<a class="index-entry-id" id="index-TEXEDIT-environment-variable"></a>
 <p>Once an Emacs server is started, you can use a shell
-command called <code>emacsclient</code> to connect to the Emacs process
-and tell it to visit a file.  You can then set the <code>EDITOR</code>
-environment variable to &lsquo;<samp>emacsclient</samp>&rsquo;, so that external programs
-will use the existing Emacs process for editing.<a id="DOCF21" href="#FOOT21"><sup>21</sup></a>
+command called <code class="command">emacsclient</code> to connect to the Emacs process
+and tell it to visit a file.  You can then set the <code class="env">EDITOR</code>
+environment variable to &lsquo;<samp class="samp">emacsclient</samp>&rsquo;, so that external programs
+will use the existing Emacs process for editing.<a class="footnote" id="DOCF32" href="#FOOT32"><sup>32</sup></a>
 </p>
-<span id="index-server_002dname"></span>
+<a class="index-entry-id" id="index-server_002dname"></a>
 <p>You can run multiple Emacs servers on the same machine by giving
-each one a unique <em>server name</em>, using the variable
-<code>server-name</code>.  For example, <kbd>M-x set-variable <span class="key">RET</span>
-server-name <span class="key">RET</span> &quot;foo&quot; <span class="key">RET</span></kbd> sets the server name to
-&lsquo;<samp>foo</samp>&rsquo;.  The <code>emacsclient</code> program can specify a server by
-name, using the &lsquo;<samp>-s</samp>&rsquo; or the &lsquo;<samp>-f</samp>&rsquo; option (see <a href="emacsclient-Options.html">emacsclient Options</a>), depending on whether or not the server uses a TCP socket
-(see <a href="TCP-Emacs-server.html">TCP Emacs server</a>).
+each one a unique <em class="dfn">server name</em>, using the variable
+<code class="code">server-name</code>.  For example, <kbd class="kbd">M-x set-variable <kbd class="key">RET</kbd>
+server-name <kbd class="key">RET</kbd> &quot;foo&quot; <kbd class="key">RET</kbd></kbd> sets the server name to
+&lsquo;<samp class="samp">foo</samp>&rsquo;.  The <code class="code">emacsclient</code> program can specify a server by
+name, using the &lsquo;<samp class="samp">-s</samp>&rsquo; or the &lsquo;<samp class="samp">-f</samp>&rsquo; option (see <a class="pxref" href="emacsclient-Options.html"><code class="code">emacsclient</code> Options</a>), depending on whether or not the server uses a TCP socket
+(see <a class="pxref" href="TCP-Emacs-server.html">TCP Emacs server</a>).
 </p>
-<p>If you want to run multiple Emacs daemons (see <a href="Initial-Options.html">Initial Options</a>),
+<p>If you want to run multiple Emacs daemons (see <a class="pxref" href="Initial-Options.html">Initial Options</a>),
 you can give each daemon its own server name like this:
 </p>
 <div class="example">
-<pre class="example">  emacs --daemon=foo
+<pre class="example-preformatted">  emacs --daemon=foo
 </pre></div>
 
-<span id="index-server_002deval_002dat"></span>
+<a class="index-entry-id" id="index-server_002dstop_002dautomatically"></a>
+<p>The Emacs server can optionally be stopped automatically when
+certain conditions are met.  To do this, set the option
+<code class="code">server-stop-automatically</code> to one of the following values:
+</p>
+<dl class="table">
+<dt><code class="code">empty</code></dt>
+<dd><p>This value causes the server to be stopped when it has no clients, no
+unsaved file-visiting buffers and no running processes anymore.
+</p>
+</dd>
+<dt><code class="code">delete-frame</code></dt>
+<dd><p>This value means that when the last client frame is being closed, you
+are asked whether each unsaved file-visiting buffer must be saved and
+each unfinished process can be stopped, and if so, the server is
+stopped.
+</p>
+</dd>
+<dt><code class="code">kill-terminal</code></dt>
+<dd><p>This value means that when the last client frame is being closed with
+<kbd class="kbd">C-x C-c</kbd> (<code class="code">save-buffers-kill-terminal</code>), you are asked
+whether each unsaved file-visiting buffer must be saved and each
+unfinished process can be stopped, and if so, the server is stopped.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-server_002deval_002dat"></a>
 <p>If you have defined a server by a unique server name, it is possible
 to connect to the server from another Emacs instance and evaluate Lisp
-expressions on the server, using the <code>server-eval-at</code> function.
-For instance, <code>(server-eval-at &quot;foo&quot; '(+ 1 2))</code> evaluates the
-expression <code>(+ 1 2)</code> on the &lsquo;<samp>foo</samp>&rsquo; server, and returns
-<code>3</code>.  (If there is no server with that name, an error is
+expressions on the server, using the <code class="code">server-eval-at</code> function.
+For instance, <code class="code">(server-eval-at &quot;foo&quot; '(+ 1 2))</code> evaluates the
+expression <code class="code">(+ 1 2)</code> on the &lsquo;<samp class="samp">foo</samp>&rsquo; server, and returns
+<code class="code">3</code>.  (If there is no server with that name, an error is
 signaled.)  Currently, this feature is mainly useful for developers.
 </p>
 <p>If your operating system’s desktop environment is
-<a href="https://www.freedesktop.org/wiki/Specifications/">freedesktop.org-compatible</a>
+<a class="url" href="https://www.freedesktop.org/wiki/Specifications/">freedesktop.org-compatible</a>
 (which is true of most GNU/Linux and other recent Unix-like GUIs), you
-may use the &lsquo;<samp>Emacs (Client)</samp>&rsquo; menu entry to connect to an Emacs
-server with <code>emacsclient</code>.  The daemon starts if not
+may use the &lsquo;<samp class="samp">Emacs (Client)</samp>&rsquo; menu entry to connect to an Emacs
+server with <code class="command">emacsclient</code>.  The daemon starts if not
 already running.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="TCP-Emacs-server.html" accesskey="1">TCP Emacs server</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Listening to a TCP socket.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Invoking-emacsclient.html" accesskey="2">Invoking emacsclient</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Connecting to the Emacs server.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="emacsclient-Options.html" accesskey="3">emacsclient Options</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Emacs client startup options.
-</td></tr>
-</table>
 
-<div class="footnote">
+<ul class="mini-toc">
+<li><a href="TCP-Emacs-server.html" accesskey="1">TCP Emacs server</a></li>
+<li><a href="Invoking-emacsclient.html" accesskey="2">Invoking <code class="command">emacsclient</code></a></li>
+<li><a href="emacsclient-Options.html" accesskey="3"><code class="code">emacsclient</code> Options</a></li>
+</ul>
+</div>
+<div class="footnotes-segment">
 <hr>
 <h4 class="footnotes-heading">Footnotes</h4>
 
-<h5><a id="FOOT21" href="#DOCF21">(21)</a></h3>
+<h5 class="footnote-body-heading"><a id="FOOT32" href="#DOCF32">(32)</a></h5>
 <p>Some
 programs use a different environment variable; for example, to make
-TeX use &lsquo;<samp>emacsclient</samp>&rsquo;, set the <code>TEXEDIT</code> environment
-variable to &lsquo;<samp>emacsclient +%d %s</samp>&rsquo;.</p>
+TeX use &lsquo;<samp class="samp">emacsclient</samp>&rsquo;, set the <code class="env">TEXEDIT</code> environment
+variable to &lsquo;<samp class="samp">emacsclient +%d %s</samp>&rsquo;.</p>
 </div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Printing.html" accesskey="n" rel="next">Printing</a>, Previous: <a href="Shell.html" accesskey="p" rel="prev">Shell</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Printing.html">Printing Hard Copies</a>, Previous: <a href="Shell.html">Running Shell Commands from Emacs</a>, Up: <a href="index.html">The Emacs Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

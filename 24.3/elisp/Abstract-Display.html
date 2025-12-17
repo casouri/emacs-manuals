@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Abstract Display (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Abstract Display (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Display.html" rel="up" title="Display">
-<link href="Abstract-Display-Functions.html" rel="next" title="Abstract Display Functions">
-<link href="Button-Buffer-Commands.html" rel="prev" title="Button Buffer Commands">
+<link href="Blinking.html" rel="next" title="Blinking">
+<link href="Buttons.html" rel="prev" title="Buttons">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 
@@ -55,94 +47,94 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Abstract-Display"></span><div class="header">
+<div class="section-level-extent" id="Abstract-Display">
+<div class="nav-panel">
 <p>
-Next: <a href="Blinking.html" accesskey="n" rel="next">Blinking</a>, Previous: <a href="Buttons.html" accesskey="p" rel="prev">Buttons</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Blinking.html" accesskey="n" rel="next">Blinking Parentheses</a>, Previous: <a href="Buttons.html" accesskey="p" rel="prev">Buttons</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Abstract-Display-1"></span><h3 class="section">38.18 Abstract Display</h3>
-<span id="index-ewoc"></span>
-<span id="index-display_002c-abstract"></span>
-<span id="index-display_002c-arbitrary-objects"></span>
-<span id="index-model_002fview_002fcontroller"></span>
-<span id="index-view-part_002c-model_002fview_002fcontroller"></span>
+<h3 class="section" id="Abstract-Display-1"><span>38.18 Abstract Display<a class="copiable-link" href="#Abstract-Display-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-ewoc"></a>
+<a class="index-entry-id" id="index-display_002c-abstract"></a>
+<a class="index-entry-id" id="index-display_002c-arbitrary-objects"></a>
+<a class="index-entry-id" id="index-model_002fview_002fcontroller"></a>
+<a class="index-entry-id" id="index-view-part_002c-model_002fview_002fcontroller"></a>
 
 <p>The Ewoc package constructs buffer text that represents a structure
 of Lisp objects, and updates the text to follow changes in that
 structure.  This is like the &ldquo;view&rdquo; component in the
 &ldquo;model/view/controller&rdquo; design paradigm.
 </p>
-<p>An <em>ewoc</em> is a structure that organizes information required to
+<p>An <em class="dfn">ewoc</em> is a structure that organizes information required to
 construct buffer text that represents certain Lisp data.  The buffer
-text of the ewoc has three parts, in order: first, fixed <em>header</em>
+text of the ewoc has three parts, in order: first, fixed <em class="dfn">header</em>
 text; next, textual descriptions of a series of data elements (Lisp
-objects that you specify); and last, fixed <em>footer</em> text.
+objects that you specify); and last, fixed <em class="dfn">footer</em> text.
 Specifically, an ewoc contains information on:
 </p>
-<ul>
-<li> The buffer which its text is generated in.
+<ul class="itemize mark-bullet">
+<li>The buffer which its text is generated in.
 
-</li><li> The text&rsquo;s start position in the buffer.
+</li><li>The text&rsquo;s start position in the buffer.
 
-</li><li> The header and footer strings.
+</li><li>The header and footer strings.
 
-</li><li> A doubly-linked chain of <em>nodes</em>, each of which contains:
+</li><li>A doubly-linked chain of <em class="dfn">nodes</em>, each of which contains:
 
-<ul>
-<li> A <em>data element</em>, a single Lisp object.
+<ul class="itemize mark-bullet">
+<li>A <em class="dfn">data element</em>, a single Lisp object.
 
-</li><li> Links to the preceding and following nodes in the chain.
+</li><li>Links to the preceding and following nodes in the chain.
 </li></ul>
 
-</li><li> A <em>pretty-printer</em> function which is responsible for
+</li><li>A <em class="dfn">pretty-printer</em> function which is responsible for
 inserting the textual representation of a data
 element value into the current buffer.
 </li></ul>
 
-<p>Typically, you define an ewoc with <code>ewoc-create</code>, and then pass
+<p>Typically, you define an ewoc with <code class="code">ewoc-create</code>, and then pass
 the resulting ewoc structure to other functions in the Ewoc package to
 build nodes within it, and display it in the buffer.  Once it is
 displayed in the buffer, other functions determine the correspondence
 between buffer positions and nodes, move point from one node&rsquo;s textual
-representation to another, and so forth.  See <a href="Abstract-Display-Functions.html">Abstract Display Functions</a>.
+representation to another, and so forth.  See <a class="xref" href="Abstract-Display-Functions.html">Abstract Display Functions</a>.
 </p>
-<p>A node <em>encapsulates</em> a data element much the way a variable
+<p>A node <em class="dfn">encapsulates</em> a data element much the way a variable
 holds a value.  Normally, encapsulation occurs as a part of adding a
 node to the ewoc.  You can retrieve the data element value and place a
 new value in its place, like so:
 </p>
-<div class="lisp">
-<pre class="lisp">(ewoc-data <var>node</var>)
+<div class="example lisp">
+<pre class="lisp-preformatted">(ewoc-data <var class="var">node</var>)
 &rArr; value
 
-(ewoc-set-data <var>node</var> <var>new-value</var>)
-&rArr; <var>new-value</var>
+(ewoc-set-data <var class="var">node</var> <var class="var">new-value</var>)
+&rArr; <var class="var">new-value</var>
 </pre></div>
 
 <p>You can also use, as the data element value, a Lisp object (list or
 vector) that is a container for the &ldquo;real&rdquo; value, or an index into
-some other structure.  The example (see <a href="Abstract-Display-Example.html">Abstract Display Example</a>)
+some other structure.  The example (see <a class="pxref" href="Abstract-Display-Example.html">Abstract Display Example</a>)
 uses the latter approach.
 </p>
 <p>When the data changes, you will want to update the text in the
-buffer.  You can update all nodes by calling <code>ewoc-refresh</code>, or
-just specific nodes using <code>ewoc-invalidate</code>, or all nodes
-satisfying a predicate using <code>ewoc-map</code>.  Alternatively, you can
-delete invalid nodes using <code>ewoc-delete</code> or <code>ewoc-filter</code>,
+buffer.  You can update all nodes by calling <code class="code">ewoc-refresh</code>, or
+just specific nodes using <code class="code">ewoc-invalidate</code>, or all nodes
+satisfying a predicate using <code class="code">ewoc-map</code>.  Alternatively, you can
+delete invalid nodes using <code class="code">ewoc-delete</code> or <code class="code">ewoc-filter</code>,
 and add new nodes in their place.  Deleting a node from an ewoc deletes
 its associated textual description from buffer, as well.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Abstract-Display-Functions.html" accesskey="1">Abstract Display Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions in the Ewoc package.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Abstract-Display-Example.html" accesskey="2">Abstract Display Example</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Example of using Ewoc.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Abstract-Display-Functions.html" accesskey="1">Abstract Display Functions</a></li>
+<li><a href="Abstract-Display-Example.html" accesskey="2">Abstract Display Example</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Blinking.html" accesskey="n" rel="next">Blinking</a>, Previous: <a href="Buttons.html" accesskey="p" rel="prev">Buttons</a>, Up: <a href="Display.html" accesskey="u" rel="up">Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Blinking.html">Blinking Parentheses</a>, Previous: <a href="Buttons.html">Buttons</a>, Up: <a href="Display.html">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Using Region (GNU Emacs Manual)</title>
+
+<meta name="description" content="Using Region (GNU Emacs Manual)">
+<meta name="keywords" content="Using Region (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Mark.html" rel="up" title="Mark">
+<link href="Mark-Ring.html" rel="next" title="Mark Ring">
+<link href="Marking-Objects.html" rel="prev" title="Marking Objects">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Using-Region">
+<div class="nav-panel">
+<p>
+Next: <a href="Mark-Ring.html" accesskey="n" rel="next">The Mark Ring</a>, Previous: <a href="Marking-Objects.html" accesskey="p" rel="prev">Commands to Mark Textual Objects</a>, Up: <a href="Mark.html" accesskey="u" rel="up">The Mark and the Region</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Operating-on-the-Region"><span>12.3 Operating on the Region<a class="copiable-link" href="#Operating-on-the-Region"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-operations-on-a-marked-region"></a>
+<p>Once you have a region, here are some of the ways you can operate on
+it:
+</p>
+<ul class="itemize mark-bullet">
+<li>Kill it with <kbd class="kbd">C-w</kbd> (see <a class="pxref" href="Killing.html">Killing and Moving Text</a>).
+</li><li>Copy it to the kill ring with <kbd class="kbd">M-w</kbd> (see <a class="pxref" href="Yanking.html">Yanking</a>).
+</li><li>Convert case with <kbd class="kbd">C-x C-l</kbd> or <kbd class="kbd">C-x C-u</kbd> (see <a class="pxref" href="Case.html">Case Conversion Commands</a>).
+</li><li>Undo changes within it using <kbd class="kbd">C-u C-/</kbd> (see <a class="pxref" href="Undo.html">Undo</a>).
+</li><li>Replace text within it using <kbd class="kbd">M-%</kbd> (see <a class="pxref" href="Query-Replace.html">Query Replace</a>).
+</li><li>Indent it with <kbd class="kbd">C-x <kbd class="key">TAB</kbd></kbd> or <kbd class="kbd">C-M-\</kbd> (see <a class="pxref" href="Indentation.html">Indentation</a>).
+</li><li>Fill it as text with <kbd class="kbd">M-x fill-region</kbd> (see <a class="pxref" href="Filling.html">Filling Text</a>).
+</li><li>Check the spelling of words within it with <kbd class="kbd">M-$</kbd> (see <a class="pxref" href="Spelling.html">Checking and Correcting Spelling</a>).
+</li><li>Evaluate it as Lisp code with <kbd class="kbd">M-x eval-region</kbd> (see <a class="pxref" href="Lisp-Eval.html">Evaluating Emacs Lisp Expressions</a>).
+</li><li>Save it in a register with <kbd class="kbd">C-x r s</kbd> (see <a class="pxref" href="Registers.html">Registers</a>).
+</li><li>Save it in a buffer or a file (see <a class="pxref" href="Accumulating-Text.html">Accumulating Text</a>).
+</li></ul>
+
+<p>Some commands have a default behavior when the mark is inactive, but
+operate on the region if the mark is active.  For example, <kbd class="kbd">M-$</kbd>
+(<code class="code">ispell-word</code>) normally checks the spelling of the word at
+point, but it checks the text in the region if the mark is active
+(see <a class="pxref" href="Spelling.html">Checking and Correcting Spelling</a>).  Normally, such commands use their default
+behavior if the region is empty (i.e., if mark and point are at the
+same position).  If you want them to operate on the empty region,
+change the variable <code class="code">use-empty-active-region</code> to <code class="code">t</code>.
+</p>
+<a class="index-entry-id" id="index-delete_002dactive_002dregion"></a>
+<p>As described in <a class="ref" href="Erasing.html">Erasing Text</a>, the <kbd class="key">DEL</kbd>
+(<code class="code">backward-delete-char</code>) and <kbd class="key">Delete</kbd>
+(<code class="code">delete-forward-char</code>) commands also act this way.  If the mark
+is active, they delete the text in the region.  (As an exception, if
+you supply a numeric argument <var class="var">n</var>, where <var class="var">n</var> is not one, these
+commands delete <var class="var">n</var> characters regardless of whether the mark is
+active).  If you change the variable <code class="code">delete-active-region</code> to
+<code class="code">nil</code>, then these commands don&rsquo;t act differently when the mark is
+active.  If you change the value to <code class="code">kill</code>, these commands
+<em class="dfn">kill</em> the region instead of deleting it (see <a class="pxref" href="Killing.html">Killing and Moving Text</a>).
+</p>
+<a class="index-entry-id" id="index-mark_002deven_002dif_002dinactive"></a>
+<p>Other commands always operate on the region, and have no default
+behavior.  Such commands usually have the word <code class="code">region</code> in their
+names, like <kbd class="kbd">C-w</kbd> (<code class="code">kill-region</code>) and <kbd class="kbd">C-x C-u</kbd>
+(<code class="code">upcase-region</code>).  If the mark is inactive, they operate on the
+<em class="dfn">inactive region</em>&mdash;that is, on the text between point and the
+position at which the mark was last set (see <a class="pxref" href="Mark-Ring.html">The Mark Ring</a>).  To
+disable this behavior, change the variable
+<code class="code">mark-even-if-inactive</code> to <code class="code">nil</code>.  Then these commands will
+instead signal an error if the mark is inactive.
+</p>
+<a class="index-entry-id" id="index-Delete-Selection-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Delete-Selection"></a>
+<a class="index-entry-id" id="index-delete_002dselection_002dmode"></a>
+<a class="index-entry-id" id="index-delete_002dselection_002dtemporary_002dregion"></a>
+<p>By default, text insertion occurs normally even if the mark is
+active&mdash;for example, typing <kbd class="kbd">a</kbd> inserts the character &lsquo;<samp class="samp">a</samp>&rsquo;,
+then deactivates the mark.  Delete Selection mode, a minor mode,
+modifies this behavior: if you enable that mode, then inserting text
+while the mark is active causes the text in the region to be deleted
+first.  However, you can tune this behavior by customizing the
+<code class="code">delete-selection-temporary-region</code> option.  Its default value is
+<code class="code">nil</code>, but you can set it to <code class="code">t</code>, in which case only
+temporarily-active regions will be replaced: those which are set by
+dragging the mouse (see <a class="pxref" href="Setting-Mark.html">Setting the Mark</a>) or by shift-selection
+(see <a class="pxref" href="Shift-Selection.html">Shift Selection</a>), as well as by <kbd class="kbd">C-u C-x C-x</kbd> when
+Transient Mark Mode is disabled.  You can further tune the behavior by
+setting <code class="code">delete-selection-temporary-region</code> to <code class="code">selection</code>:
+then temporary regions by <kbd class="kbd">C-u C-x C-x</kbd> won&rsquo;t be replaced, only
+the ones activated by dragging the mouse or shift-selection.  To
+toggle Delete Selection mode on or off, type <kbd class="kbd">M-x
+delete-selection-mode</kbd>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Mark-Ring.html">The Mark Ring</a>, Previous: <a href="Marking-Objects.html">Commands to Mark Textual Objects</a>, Up: <a href="Mark.html">The Mark and the Region</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

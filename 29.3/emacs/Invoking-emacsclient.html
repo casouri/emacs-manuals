@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.3.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Invoking emacsclient (GNU Emacs Manual)</title>
+
+<meta name="description" content="Invoking emacsclient (GNU Emacs Manual)">
+<meta name="keywords" content="Invoking emacsclient (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Emacs-Server.html" rel="up" title="Emacs Server">
+<link href="emacsclient-Options.html" rel="next" title="emacsclient Options">
+<link href="TCP-Emacs-server.html" rel="prev" title="TCP Emacs server">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Invoking-emacsclient">
+<div class="nav-panel">
+<p>
+Next: <a href="emacsclient-Options.html" accesskey="n" rel="next"><code class="code">emacsclient</code> Options</a>, Previous: <a href="TCP-Emacs-server.html" accesskey="p" rel="prev">TCP Emacs server</a>, Up: <a href="Emacs-Server.html" accesskey="u" rel="up">Using Emacs as a Server</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section subsection-level-set-section" id="Invoking-emacsclient-1"><span>40.2 Invoking <code class="code">emacsclient</code><a class="copiable-link" href="#Invoking-emacsclient-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-emacsclient-invocation"></a>
+
+<p>The simplest way to use the <code class="command">emacsclient</code> program is to run
+the shell command &lsquo;<samp class="samp">emacsclient <var class="var">file</var></samp>&rsquo;, where <var class="var">file</var> is a
+file name.  This connects to an Emacs server, and tells that Emacs
+process to visit <var class="var">file</var> in one of its existing frames&mdash;either a
+graphical frame, or one in a text terminal (see <a class="pxref" href="Frames.html">Frames and Graphical Displays</a>).  You
+can then select that frame to begin editing.
+</p>
+<p>If there is no Emacs server, the <code class="command">emacsclient</code> program halts
+with an error message (you can prevent this from happening by using
+the &lsquo;<samp class="samp">--alternate-editor=&quot;&quot;</samp>&rsquo; option to <code class="command">emacsclient</code>,
+see <a class="pxref" href="emacsclient-Options.html"><code class="code">emacsclient</code> Options</a>).  If the Emacs process has no existing
+frame&mdash;which can happen if it was started as a daemon (see <a class="pxref" href="Emacs-Server.html">Using Emacs as a Server</a>)&mdash;then Emacs opens a frame on the terminal in which you
+called <code class="command">emacsclient</code>.
+</p>
+<p>You can also force <code class="command">emacsclient</code> to open a new frame on a
+graphical display using the &lsquo;<samp class="samp">-c</samp>&rsquo; option, or on a text terminal
+using the &lsquo;<samp class="samp">-t</samp>&rsquo; option.  See <a class="xref" href="emacsclient-Options.html"><code class="code">emacsclient</code> Options</a>.
+</p>
+<p>If you are running on a single text terminal, you can switch between
+<code class="command">emacsclient</code>&rsquo;s shell and the Emacs server using one of two
+methods: (i) run the Emacs server and <code class="command">emacsclient</code> on
+different virtual terminals, and switch to the Emacs server&rsquo;s virtual
+terminal after calling <code class="command">emacsclient</code>; or (ii) call
+<code class="command">emacsclient</code> from within the Emacs server itself, using Shell
+mode (see <a class="pxref" href="Interactive-Shell.html">Interactive Subshell</a>) or Term mode (see <a class="pxref" href="Term-Mode.html">Term Mode</a>);
+<code class="command">emacsclient</code> blocks only the subshell under Emacs, and you can
+still use Emacs to edit the file.
+</p>
+<a class="index-entry-id" id="index-C_002dx-_0023"></a>
+<a class="index-entry-id" id="index-server_002dedit"></a>
+<p>When you finish editing <var class="var">file</var> in the Emacs server, type
+<kbd class="kbd">C-x #</kbd> (<code class="code">server-edit</code>) in its buffer.  This saves the file
+and sends a message back to the <code class="command">emacsclient</code> program, telling
+it to exit.  Programs that use <code class="env">EDITOR</code> usually wait for the
+editor&mdash;in this case <code class="command">emacsclient</code>&mdash;to exit before doing
+something else.
+</p>
+<a class="index-entry-id" id="index-server_002dedit_002dabort"></a>
+<p>If you want to abandon the edit instead, use the <kbd class="kbd">M-x&nbsp;server-edit-abort</kbd><!-- /@w --> command.  This sends a message back to the
+<code class="command">emacsclient</code> program, telling it to exit with abnormal exit
+status, and doesn&rsquo;t save any buffers.
+</p>
+<p>You can also call <code class="command">emacsclient</code> with multiple file name
+arguments: &lsquo;<samp class="samp">emacsclient <var class="var">file1</var> <var class="var">file2</var> ...</samp>&rsquo; tells the
+Emacs server to visit <var class="var">file1</var>, <var class="var">file2</var>, and so forth.  Emacs
+selects the buffer visiting <var class="var">file1</var>, and buries the other buffers
+at the bottom of the buffer list (see <a class="pxref" href="Buffers.html">Using Multiple Buffers</a>).  The
+<code class="command">emacsclient</code> program exits once all the specified files are
+finished (i.e., once you have typed <kbd class="kbd">C-x #</kbd> in each server
+buffer).
+</p>
+<a class="index-entry-id" id="index-server_002dkill_002dnew_002dbuffers"></a>
+<a class="index-entry-id" id="index-server_002dtemp_002dfile_002dregexp"></a>
+<p>Finishing with a server buffer also kills the buffer, unless it
+already existed in the Emacs session before the server was asked to
+create it.  However, if you set <code class="code">server-kill-new-buffers</code> to
+<code class="code">nil</code>, then a different criterion is used: finishing with a
+server buffer kills it if the file name matches the regular expression
+<code class="code">server-temp-file-regexp</code>.  This is set up to distinguish certain
+temporary files.
+</p>
+<p>Each <kbd class="kbd">C-x #</kbd> checks for other pending external requests to edit
+various files, and selects the next such file.  You can switch to a
+server buffer manually if you wish; you don&rsquo;t have to arrive at it
+with <kbd class="kbd">C-x #</kbd>.  But <kbd class="kbd">C-x #</kbd> is the way to tell
+<code class="command">emacsclient</code> that you are finished.
+</p>
+<a class="index-entry-id" id="index-server_002dwindow"></a>
+<p>If you set the value of the variable <code class="code">server-window</code> to a
+window or a frame, <kbd class="kbd">C-x #</kbd> always displays the next server buffer
+in that window or in that frame.
+</p>
+<a class="index-entry-id" id="index-server_002dclient_002dinstructions"></a>
+<p>When <code class="command">emacsclient</code> connects, the server will normally output
+a message that says how to exit the client frame.  If
+<code class="code">server-client-instructions</code> is set to <code class="code">nil</code>, this message
+is inhibited.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="emacsclient-Options.html"><code class="code">emacsclient</code> Options</a>, Previous: <a href="TCP-Emacs-server.html">TCP Emacs server</a>, Up: <a href="Emacs-Server.html">Using Emacs as a Server</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

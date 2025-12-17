@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Converting Representations (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Converting Representations (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Disabling-Multibyte.html" rel="prev" title="Disabling Multibyte">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,16 +47,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Converting-Representations"></span><div class="header">
+<div class="section-level-extent" id="Converting-Representations">
+<div class="nav-panel">
 <p>
-Next: <a href="Selecting-a-Representation.html" accesskey="n" rel="next">Selecting a Representation</a>, Previous: <a href="Disabling-Multibyte.html" accesskey="p" rel="prev">Disabling Multibyte</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-ASCII Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Selecting-a-Representation.html" accesskey="n" rel="next">Selecting a Representation</a>, Previous: <a href="Disabling-Multibyte.html" accesskey="p" rel="prev">Disabling Multibyte Characters</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-<abbr class="acronym">ASCII</abbr> Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Converting-Text-Representations"></span><h3 class="section">32.3 Converting Text Representations</h3>
+<h3 class="section" id="Converting-Text-Representations"><span>32.3 Converting Text Representations<a class="copiable-link" href="#Converting-Text-Representations"> &para;</a></span></h3>
 
 <p>Emacs can convert unibyte text to multibyte; it can also convert
 multibyte text to unibyte, provided that the multibyte text contains
-only <acronym>ASCII</acronym> and 8-bit raw bytes.  In general, these
+only <abbr class="acronym">ASCII</abbr> and 8-bit raw bytes.  In general, these
 conversions happen when inserting text into a buffer, or when putting
 text from several strings together in one string.  You can also
 explicitly convert a string&rsquo;s contents to either representation.
@@ -78,7 +70,7 @@ characters the unibyte text has.
 </p>
 <p>When inserting text into a buffer, Emacs converts the text to the
 buffer&rsquo;s representation, as specified by
-<code>enable-multibyte-characters</code> in that buffer.  In particular, when
+<code class="code">enable-multibyte-characters</code> in that buffer.  In particular, when
 you insert multibyte text into a unibyte buffer, Emacs converts the text
 to unibyte, even though this conversion cannot in general preserve all
 the characters that might be in the multibyte text.  The other natural
@@ -86,66 +78,67 @@ alternative, to convert the buffer contents to multibyte, is not
 acceptable because the buffer&rsquo;s representation is a choice made by the
 user that cannot be overridden automatically.
 </p>
-<p>Converting unibyte text to multibyte text leaves <acronym>ASCII</acronym>
+<p>Converting unibyte text to multibyte text leaves <abbr class="acronym">ASCII</abbr>
 characters unchanged, and converts bytes with codes 128 through 255 to
 the multibyte representation of raw eight-bit bytes.
 </p>
-<p>Converting multibyte text to unibyte converts all <acronym>ASCII</acronym>
+<p>Converting multibyte text to unibyte converts all <abbr class="acronym">ASCII</abbr>
 and eight-bit characters to their single-byte form, but loses
-information for non-<acronym>ASCII</acronym> characters by discarding all but
+information for non-<abbr class="acronym">ASCII</abbr> characters by discarding all but
 the low 8 bits of each character&rsquo;s codepoint.  Converting unibyte text
 to multibyte and back to unibyte reproduces the original unibyte text.
 </p>
-<p>The next two functions either return the argument <var>string</var>, or a
+<p>The next two functions either return the argument <var class="var">string</var>, or a
 newly created string with no text properties.
 </p>
-<dl>
-<dt id="index-string_002dto_002dmultibyte">Function: <strong>string-to-multibyte</strong> <em>string</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-string_002dto_002dmultibyte"><span class="category-def">Function: </span><span><strong class="def-name">string-to-multibyte</strong> <var class="def-var-arguments">string</var><a class="copiable-link" href="#index-string_002dto_002dmultibyte"> &para;</a></span></dt>
 <dd><p>This function returns a multibyte string containing the same sequence
-of characters as <var>string</var>.  If <var>string</var> is a multibyte string,
-it is returned unchanged.  The function assumes that <var>string</var>
-includes only <acronym>ASCII</acronym> characters and raw 8-bit bytes; the
+of characters as <var class="var">string</var>.  If <var class="var">string</var> is a multibyte string,
+it is returned unchanged.  The function assumes that <var class="var">string</var>
+includes only <abbr class="acronym">ASCII</abbr> characters and raw 8-bit bytes; the
 latter are converted to their multibyte representation corresponding
-to the codepoints <code>#x3FFF80</code> through <code>#x3FFFFF</code>, inclusive
-(see <a href="Text-Representations.html">codepoints</a>).
+to the codepoints <code class="code">#x3FFF80</code> through <code class="code">#x3FFFFF</code>, inclusive
+(see <a class="pxref" href="Text-Representations.html">codepoints</a>).
 </p></dd></dl>
 
-<dl>
-<dt id="index-string_002dto_002dunibyte">Function: <strong>string-to-unibyte</strong> <em>string</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-string_002dto_002dunibyte"><span class="category-def">Function: </span><span><strong class="def-name">string-to-unibyte</strong> <var class="def-var-arguments">string</var><a class="copiable-link" href="#index-string_002dto_002dunibyte"> &para;</a></span></dt>
 <dd><p>This function returns a unibyte string containing the same sequence of
-characters as <var>string</var>.  It signals an error if <var>string</var>
-contains a non-<acronym>ASCII</acronym> character.  If <var>string</var> is a
+characters as <var class="var">string</var>.  It signals an error if <var class="var">string</var>
+contains a non-<abbr class="acronym">ASCII</abbr> character.  If <var class="var">string</var> is a
 unibyte string, it is returned unchanged.  Use this function for
-<var>string</var> arguments that contain only <acronym>ASCII</acronym> and eight-bit
+<var class="var">string</var> arguments that contain only <abbr class="acronym">ASCII</abbr> and eight-bit
 characters.
 </p></dd></dl>
 
-<dl>
-<dt id="index-byte_002dto_002dstring">Function: <strong>byte-to-string</strong> <em>byte</em></dt>
-<dd><span id="index-byte-to-string"></span>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-byte_002dto_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">byte-to-string</strong> <var class="def-var-arguments">byte</var><a class="copiable-link" href="#index-byte_002dto_002dstring"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-byte-to-string"></a>
 <p>This function returns a unibyte string containing a single byte of
-character data, <var>character</var>.  It signals an error if
-<var>character</var> is not an integer between 0 and 255.
+character data, <var class="var">character</var>.  It signals an error if
+<var class="var">character</var> is not an integer between 0 and 255.
 </p></dd></dl>
 
-<dl>
-<dt id="index-multibyte_002dchar_002dto_002dunibyte">Function: <strong>multibyte-char-to-unibyte</strong> <em>char</em></dt>
-<dd><p>This converts the multibyte character <var>char</var> to a unibyte
-character, and returns that character.  If <var>char</var> is neither
-<acronym>ASCII</acronym> nor eight-bit, the function returns −1.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-multibyte_002dchar_002dto_002dunibyte"><span class="category-def">Function: </span><span><strong class="def-name">multibyte-char-to-unibyte</strong> <var class="def-var-arguments">char</var><a class="copiable-link" href="#index-multibyte_002dchar_002dto_002dunibyte"> &para;</a></span></dt>
+<dd><p>This converts the multibyte character <var class="var">char</var> to a unibyte
+character, and returns that character.  If <var class="var">char</var> is neither
+<abbr class="acronym">ASCII</abbr> nor eight-bit, the function returns &minus;1.
 </p></dd></dl>
 
-<dl>
-<dt id="index-unibyte_002dchar_002dto_002dmultibyte">Function: <strong>unibyte-char-to-multibyte</strong> <em>char</em></dt>
-<dd><p>This convert the unibyte character <var>char</var> to a multibyte
-character, assuming <var>char</var> is either <acronym>ASCII</acronym> or raw 8-bit
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-unibyte_002dchar_002dto_002dmultibyte"><span class="category-def">Function: </span><span><strong class="def-name">unibyte-char-to-multibyte</strong> <var class="def-var-arguments">char</var><a class="copiable-link" href="#index-unibyte_002dchar_002dto_002dmultibyte"> &para;</a></span></dt>
+<dd><p>This convert the unibyte character <var class="var">char</var> to a multibyte
+character, assuming <var class="var">char</var> is either <abbr class="acronym">ASCII</abbr> or raw 8-bit
 byte.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Selecting-a-Representation.html" accesskey="n" rel="next">Selecting a Representation</a>, Previous: <a href="Disabling-Multibyte.html" accesskey="p" rel="prev">Disabling Multibyte</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-ASCII Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Selecting-a-Representation.html">Selecting a Representation</a>, Previous: <a href="Disabling-Multibyte.html">Disabling Multibyte Characters</a>, Up: <a href="Non_002dASCII-Characters.html">Non-<abbr class="acronym">ASCII</abbr> Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Loading (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Loading (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="How-Programs-Do-Loading.html" rel="next" title="How Programs Do Loading">
-<link href="Custom-Themes.html" rel="prev" title="Custom Themes">
+<link href="Byte-Compilation.html" rel="next" title="Byte Compilation">
+<link href="Customization.html" rel="prev" title="Customization">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,31 +47,32 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Loading"></span><div class="header">
+<div class="chapter-level-extent" id="Loading">
+<div class="nav-panel">
 <p>
-Next: <a href="Byte-Compilation.html" accesskey="n" rel="next">Byte Compilation</a>, Previous: <a href="Customization.html" accesskey="p" rel="prev">Customization</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Byte-Compilation.html" accesskey="n" rel="next">Byte Compilation</a>, Previous: <a href="Customization.html" accesskey="p" rel="prev">Customization Settings</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Loading-1"></span><h2 class="chapter">16 Loading</h2>
-<span id="index-loading"></span>
-<span id="index-library"></span>
-<span id="index-Lisp-library"></span>
+<h2 class="chapter" id="Loading-1"><span>16 Loading<a class="copiable-link" href="#Loading-1"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-loading"></a>
+<a class="index-entry-id" id="index-library"></a>
+<a class="index-entry-id" id="index-Lisp-library"></a>
 
 <p>Loading a file of Lisp code means bringing its contents into the
 Lisp environment in the form of Lisp objects.  Emacs finds and opens
 the file, reads the text, evaluates each form, and then closes the
-file.  Such a file is also called a <em>Lisp library</em>.
+file.  Such a file is also called a <em class="dfn">Lisp library</em>.
 </p>
 <p>The load functions evaluate all the expressions in a file just
-as the <code>eval-buffer</code> function evaluates all the
+as the <code class="code">eval-buffer</code> function evaluates all the
 expressions in a buffer.  The difference is that the load functions
 read and evaluate the text in the file as found on disk, not the text
 in an Emacs buffer.
 </p>
-<span id="index-top_002dlevel-form"></span>
+<a class="index-entry-id" id="index-top_002dlevel-form"></a>
 <p>The loaded file must contain Lisp expressions, either as source code
 or as byte-compiled code.  Each form in the file is called a
-<em>top-level form</em>.  There is no special format for the forms in a
+<em class="dfn">top-level form</em>.  There is no special format for the forms in a
 loadable file; any form in a file may equally well be typed directly
 into a buffer and evaluated there.  (Indeed, most code is tested this
 way.)  Most often, the forms are function definitions and variable
@@ -95,38 +86,27 @@ the module needs to implement, and which exposes the additional
 functions and variables to Emacs Lisp programs.
 </p>
 <p>For on-demand loading of external libraries which are known in advance
-to be required by certain Emacs primitives, see <a href="Dynamic-Libraries.html">Dynamic Libraries</a>.
+to be required by certain Emacs primitives, see <a class="pxref" href="Dynamic-Libraries.html">Dynamically Loaded Libraries</a>.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="How-Programs-Do-Loading.html" accesskey="1">How Programs Do Loading</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The <code>load</code> function and others.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Load-Suffixes.html" accesskey="2">Load Suffixes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Details about the suffixes that <code>load</code> tries.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Library-Search.html" accesskey="3">Library Search</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Finding a library to load.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Loading-Non_002dASCII.html" accesskey="4">Loading Non-ASCII</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Non-<acronym>ASCII</acronym> characters in Emacs Lisp files.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Autoload.html" accesskey="5">Autoload</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Setting up a function to autoload.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Repeated-Loading.html" accesskey="6">Repeated Loading</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Precautions about loading a file twice.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Named-Features.html" accesskey="7">Named Features</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Loading a library if it isn&rsquo;t already loaded.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Where-Defined.html" accesskey="8">Where Defined</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Finding which file defined a certain symbol.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Unloading.html" accesskey="9">Unloading</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to unload a library that was loaded.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Hooks-for-Loading.html">Hooks for Loading</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Providing code to be run when
-                              particular libraries are loaded.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Dynamic-Modules.html">Dynamic Modules</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Modules provide additional Lisp primitives.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="How-Programs-Do-Loading.html" accesskey="1">How Programs Do Loading</a></li>
+<li><a href="Load-Suffixes.html" accesskey="2">Load Suffixes</a></li>
+<li><a href="Library-Search.html" accesskey="3">Library Search</a></li>
+<li><a href="Loading-Non_002dASCII.html" accesskey="4">Loading Non-<abbr class="acronym">ASCII</abbr> Characters</a></li>
+<li><a href="Autoload.html" accesskey="5">Autoload</a></li>
+<li><a href="Repeated-Loading.html" accesskey="6">Repeated Loading</a></li>
+<li><a href="Named-Features.html" accesskey="7">Features</a></li>
+<li><a href="Where-Defined.html" accesskey="8">Which File Defined a Certain Symbol</a></li>
+<li><a href="Unloading.html" accesskey="9">Unloading</a></li>
+<li><a href="Hooks-for-Loading.html">Hooks for Loading</a></li>
+<li><a href="Dynamic-Modules.html">Emacs Dynamic Modules</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Byte-Compilation.html" accesskey="n" rel="next">Byte Compilation</a>, Previous: <a href="Customization.html" accesskey="p" rel="prev">Customization</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Byte-Compilation.html">Byte Compilation</a>, Previous: <a href="Customization.html">Customization Settings</a>, Up: <a href="index.html">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

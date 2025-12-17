@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.2.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Output Functions (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Output Functions (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Output-Streams.html" rel="prev" title="Output Streams">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,25 +49,26 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Output-Functions"></span><div class="header">
+<div class="section-level-extent" id="Output-Functions">
+<div class="nav-panel">
 <p>
-Next: <a href="Output-Variables.html" accesskey="n" rel="next">Output Variables</a>, Previous: <a href="Output-Streams.html" accesskey="p" rel="prev">Output Streams</a>, Up: <a href="Read-and-Print.html" accesskey="u" rel="up">Read and Print</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Output-Variables.html" accesskey="n" rel="next">Variables Affecting Output</a>, Previous: <a href="Output-Streams.html" accesskey="p" rel="prev">Output Streams</a>, Up: <a href="Read-and-Print.html" accesskey="u" rel="up">Reading and Printing Lisp Objects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Output-Functions-1"></span><h3 class="section">19.5 Output Functions</h3>
+<h3 class="section" id="Output-Functions-1"><span>19.5 Output Functions<a class="copiable-link" href="#Output-Functions-1"> &para;</a></span></h3>
 
 <p>This section describes the Lisp functions for printing Lisp
 objects&mdash;converting objects into their printed representation.
 </p>
-<span id="index-_0022-in-printing"></span>
-<span id="index-_005c-in-printing"></span>
-<span id="index-quoting-characters-in-printing"></span>
-<span id="index-escape-characters-in-printing"></span>
+<a class="index-entry-id" id="index-_0022-in-printing"></a>
+<a class="index-entry-id" id="index-_005c-in-printing"></a>
+<a class="index-entry-id" id="index-quoting-characters-in-printing"></a>
+<a class="index-entry-id" id="index-escape-characters-in-printing"></a>
 <p>Some of the Emacs printing functions add quoting characters to the
 output when necessary so that it can be read properly.  The quoting
-characters used are &lsquo;<samp>&quot;</samp>&rsquo; and &lsquo;<samp>\</samp>&rsquo;; they distinguish strings from
+characters used are &lsquo;<samp class="samp">&quot;</samp>&rsquo; and &lsquo;<samp class="samp">\</samp>&rsquo;; they distinguish strings from
 symbols, and prevent punctuation characters in strings and symbols from
-being taken as delimiters when reading.  See <a href="Printed-Representation.html">Printed Representation</a>,
+being taken as delimiters when reading.  See <a class="xref" href="Printed-Representation.html">Printed Representation and Read Syntax</a>,
 for full details.  You specify quoting or no quoting by the choice of
 printing function.
 </p>
@@ -88,157 +81,158 @@ better to print without quoting.
 <p>Lisp objects can refer to themselves.  Printing a self-referential
 object in the normal way would require an infinite amount of text, and
 the attempt could cause infinite recursion.  Emacs detects such
-recursion and prints &lsquo;<samp>#<var>level</var></samp>&rsquo; instead of recursively printing
-an object already being printed.  For example, here &lsquo;<samp>#0</samp>&rsquo; indicates
+recursion and prints &lsquo;<samp class="samp">#<var class="var">level</var></samp>&rsquo; instead of recursively printing
+an object already being printed.  For example, here &lsquo;<samp class="samp">#0</samp>&rsquo; indicates
 a recursive reference to the object at level 0 of the current print
 operation:
 </p>
 <div class="example">
-<pre class="example">(setq foo (list nil))
+<pre class="example-preformatted">(setq foo (list nil))
      &rArr; (nil)
 (setcar foo foo)
      &rArr; (#0)
 </pre></div>
 
-<p>In the functions below, <var>stream</var> stands for an output stream.
+<p>In the functions below, <var class="var">stream</var> stands for an output stream.
 (See the previous section for a description of output streams.  Also
-See <a href="Output-Streams.html#external_002ddebugging_002doutput">external-debugging-output</a>, a useful stream value for debugging.)
-If <var>stream</var> is <code>nil</code> or omitted, it defaults to the value of
-<code>standard-output</code>.
+See <a class="xref" href="Output-Streams.html#external_002ddebugging_002doutput">external-debugging-output</a>, a useful stream value for debugging.)
+If <var class="var">stream</var> is <code class="code">nil</code> or omitted, it defaults to the value of
+<code class="code">standard-output</code>.
 </p>
-<dl>
-<dt id="index-print">Function: <strong>print</strong> <em>object &amp;optional stream</em></dt>
-<dd><span id="index-Lisp-printer"></span>
-<p>The <code>print</code> function is a convenient way of printing.  It outputs
-the printed representation of <var>object</var> to <var>stream</var>, printing in
-addition one newline before <var>object</var> and another after it.  Quoting
-characters are used.  <code>print</code> returns <var>object</var>.  For example:
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-print"><span class="category-def">Function: </span><span><strong class="def-name">print</strong> <var class="def-var-arguments">object &amp;optional stream</var><a class="copiable-link" href="#index-print"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-Lisp-printer"></a>
+<p>The <code class="code">print</code> function is a convenient way of printing.  It outputs
+the printed representation of <var class="var">object</var> to <var class="var">stream</var>, printing in
+addition one newline before <var class="var">object</var> and another after it.  Quoting
+characters are used.  <code class="code">print</code> returns <var class="var">object</var>.  For example:
 </p>
 <div class="example">
-<pre class="example">(progn (print 'The\ cat\ in)
+<div class="group"><pre class="example-preformatted">(progn (print 'The\ cat\ in)
        (print &quot;the hat&quot;)
        (print &quot; came back&quot;))
-     ⊣
-     ⊣ The\ cat\ in
-     ⊣
-     ⊣ &quot;the hat&quot;
-     ⊣
-     ⊣ &quot; came back&quot;
+     -|
+     -| The\ cat\ in
+     -|
+     -| &quot;the hat&quot;
+     -|
+     -| &quot; came back&quot;
      &rArr; &quot; came back&quot;
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-prin1">Function: <strong>prin1</strong> <em>object &amp;optional stream</em></dt>
-<dd><p>This function outputs the printed representation of <var>object</var> to
-<var>stream</var>.  It does not print newlines to separate output as
-<code>print</code> does, but it does use quoting characters just like
-<code>print</code>.  It returns <var>object</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-prin1"><span class="category-def">Function: </span><span><strong class="def-name">prin1</strong> <var class="def-var-arguments">object &amp;optional stream</var><a class="copiable-link" href="#index-prin1"> &para;</a></span></dt>
+<dd><p>This function outputs the printed representation of <var class="var">object</var> to
+<var class="var">stream</var>.  It does not print newlines to separate output as
+<code class="code">print</code> does, but it does use quoting characters just like
+<code class="code">print</code>.  It returns <var class="var">object</var>.
 </p>
 <div class="example">
-<pre class="example">(progn (prin1 'The\ cat\ in)
+<div class="group"><pre class="example-preformatted">(progn (prin1 'The\ cat\ in)
        (prin1 &quot;the hat&quot;)
        (prin1 &quot; came back&quot;))
-     ⊣ The\ cat\ in&quot;the hat&quot;&quot; came back&quot;
+     -| The\ cat\ in&quot;the hat&quot;&quot; came back&quot;
      &rArr; &quot; came back&quot;
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-princ">Function: <strong>princ</strong> <em>object &amp;optional stream</em></dt>
-<dd><p>This function outputs the printed representation of <var>object</var> to
-<var>stream</var>.  It returns <var>object</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-princ"><span class="category-def">Function: </span><span><strong class="def-name">princ</strong> <var class="def-var-arguments">object &amp;optional stream</var><a class="copiable-link" href="#index-princ"> &para;</a></span></dt>
+<dd><p>This function outputs the printed representation of <var class="var">object</var> to
+<var class="var">stream</var>.  It returns <var class="var">object</var>.
 </p>
 <p>This function is intended to produce output that is readable by people,
-not by <code>read</code>, so it doesn&rsquo;t insert quoting characters and doesn&rsquo;t
+not by <code class="code">read</code>, so it doesn&rsquo;t insert quoting characters and doesn&rsquo;t
 put double-quotes around the contents of strings.  It does not add any
 spacing between calls.
 </p>
 <div class="example">
-<pre class="example">(progn
+<div class="group"><pre class="example-preformatted">(progn
   (princ 'The\ cat)
   (princ &quot; in the \&quot;hat\&quot;&quot;))
-     ⊣ The cat in the &quot;hat&quot;
+     -| The cat in the &quot;hat&quot;
      &rArr; &quot; in the \&quot;hat\&quot;&quot;
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-terpri">Function: <strong>terpri</strong> <em>&amp;optional stream ensure</em></dt>
-<dd><span id="index-newline-in-print"></span>
-<p>This function outputs a newline to <var>stream</var>.  The name stands for
-&ldquo;terminate print&rdquo;.  If <var>ensure</var> is non-<code>nil</code> no newline is printed
-if <var>stream</var> is already at the beginning of a line.  Note in this
-case <var>stream</var> can not be a function and an error is signaled if
-it is.  This function returns <code>t</code> if a newline is printed.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-terpri"><span class="category-def">Function: </span><span><strong class="def-name">terpri</strong> <var class="def-var-arguments">&amp;optional stream ensure</var><a class="copiable-link" href="#index-terpri"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-newline-in-print"></a>
+<p>This function outputs a newline to <var class="var">stream</var>.  The name stands for
+&ldquo;terminate print&rdquo;.  If <var class="var">ensure</var> is non-<code class="code">nil</code> no newline is printed
+if <var class="var">stream</var> is already at the beginning of a line.  Note in this
+case <var class="var">stream</var> can not be a function and an error is signaled if
+it is.  This function returns <code class="code">t</code> if a newline is printed.
 </p></dd></dl>
 
-<dl>
-<dt id="index-write_002dchar">Function: <strong>write-char</strong> <em>character &amp;optional stream</em></dt>
-<dd><p>This function outputs <var>character</var> to <var>stream</var>.  It returns
-<var>character</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-write_002dchar"><span class="category-def">Function: </span><span><strong class="def-name">write-char</strong> <var class="def-var-arguments">character &amp;optional stream</var><a class="copiable-link" href="#index-write_002dchar"> &para;</a></span></dt>
+<dd><p>This function outputs <var class="var">character</var> to <var class="var">stream</var>.  It returns
+<var class="var">character</var>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-prin1_002dto_002dstring">Function: <strong>prin1-to-string</strong> <em>object &amp;optional noescape</em></dt>
-<dd><span id="index-object-to-string"></span>
-<p>This function returns a string containing the text that <code>prin1</code>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-prin1_002dto_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">prin1-to-string</strong> <var class="def-var-arguments">object &amp;optional noescape</var><a class="copiable-link" href="#index-prin1_002dto_002dstring"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-object-to-string"></a>
+<p>This function returns a string containing the text that <code class="code">prin1</code>
 would have printed for the same argument.
 </p>
 <div class="example">
-<pre class="example">(prin1-to-string 'foo)
+<div class="group"><pre class="example-preformatted">(prin1-to-string 'foo)
      &rArr; &quot;foo&quot;
-</pre><pre class="example">(prin1-to-string (mark-marker))
+</pre></div><div class="group"><pre class="example-preformatted">(prin1-to-string (mark-marker))
      &rArr; &quot;#&lt;marker at 2773 in strings.texi&gt;&quot;
-</pre></div>
+</pre></div></div>
 
-<p>If <var>noescape</var> is non-<code>nil</code>, that inhibits use of quoting
+<p>If <var class="var">noescape</var> is non-<code class="code">nil</code>, that inhibits use of quoting
 characters in the output.  (This argument is supported in Emacs versions
 19 and later.)
 </p>
 <div class="example">
-<pre class="example">(prin1-to-string &quot;foo&quot;)
+<div class="group"><pre class="example-preformatted">(prin1-to-string &quot;foo&quot;)
      &rArr; &quot;\&quot;foo\&quot;&quot;
-</pre><pre class="example">(prin1-to-string &quot;foo&quot; t)
+</pre></div><div class="group"><pre class="example-preformatted">(prin1-to-string &quot;foo&quot; t)
      &rArr; &quot;foo&quot;
-</pre></div>
+</pre></div></div>
 
-<p>See <code>format</code>, in <a href="Formatting-Strings.html">Formatting Strings</a>, for other ways to obtain
+<p>See <code class="code">format</code>, in <a class="ref" href="Formatting-Strings.html">Formatting Strings</a>, for other ways to obtain
 the printed representation of a Lisp object as a string.
 </p></dd></dl>
 
-<dl>
-<dt id="index-with_002doutput_002dto_002dstring">Macro: <strong>with-output-to-string</strong> <em>body&hellip;</em></dt>
-<dd><p>This macro executes the <var>body</var> forms with <code>standard-output</code> set
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-with_002doutput_002dto_002dstring"><span class="category-def">Macro: </span><span><strong class="def-name">with-output-to-string</strong> <var class="def-var-arguments">body&hellip;</var><a class="copiable-link" href="#index-with_002doutput_002dto_002dstring"> &para;</a></span></dt>
+<dd><p>This macro executes the <var class="var">body</var> forms with <code class="code">standard-output</code> set
 up to feed output into a string.  Then it returns that string.
 </p>
-<p>For example, if the current buffer name is &lsquo;<samp>foo</samp>&rsquo;,
+<p>For example, if the current buffer name is &lsquo;<samp class="samp">foo</samp>&rsquo;,
 </p>
 <div class="example">
-<pre class="example">(with-output-to-string
+<pre class="example-preformatted">(with-output-to-string
   (princ &quot;The buffer is &quot;)
   (princ (buffer-name)))
 </pre></div>
 
-<p>returns <code>&quot;The buffer is foo&quot;</code>.
+<p>returns <code class="code">&quot;The buffer is foo&quot;</code>.
 </p></dd></dl>
 
-<span id="index-pretty_002dprinter"></span>
-<dl>
-<dt id="index-pp">Function: <strong>pp</strong> <em>object &amp;optional stream</em></dt>
-<dd><p>This function outputs <var>object</var> to <var>stream</var>, just like
-<code>prin1</code>, but does it in a prettier way.  That is, it&rsquo;ll
+<a class="index-entry-id" id="index-pretty_002dprinter"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-pp"><span class="category-def">Function: </span><span><strong class="def-name">pp</strong> <var class="def-var-arguments">object &amp;optional stream</var><a class="copiable-link" href="#index-pp"> &para;</a></span></dt>
+<dd><p>This function outputs <var class="var">object</var> to <var class="var">stream</var>, just like
+<code class="code">prin1</code>, but does it in a prettier way.  That is, it&rsquo;ll
 indent and fill the object to make it more readable for humans.
 </p></dd></dl>
 
 <p>If you need to use binary I/O in batch mode, e.g., use the functions
 described in this section to write out arbitrary binary data or avoid
-conversion of newlines on non-POSIX hosts, see <a href="Input-Functions.html">set-binary-mode</a>.
+conversion of newlines on non-POSIX hosts, see <a class="ref" href="Input-Functions.html">set-binary-mode</a>.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Output-Variables.html" accesskey="n" rel="next">Output Variables</a>, Previous: <a href="Output-Streams.html" accesskey="p" rel="prev">Output Streams</a>, Up: <a href="Read-and-Print.html" accesskey="u" rel="up">Read and Print</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Output-Variables.html">Variables Affecting Output</a>, Previous: <a href="Output-Streams.html">Output Streams</a>, Up: <a href="Read-and-Print.html">Reading and Printing Lisp Objects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

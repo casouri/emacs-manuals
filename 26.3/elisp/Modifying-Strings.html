@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Modifying Strings (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Modifying Strings (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Creating-Strings.html" rel="prev" title="Creating Strings">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,45 +47,47 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Modifying-Strings"></span><div class="header">
+<div class="section-level-extent" id="Modifying-Strings">
+<div class="nav-panel">
 <p>
-Next: <a href="Text-Comparison.html" accesskey="n" rel="next">Text Comparison</a>, Previous: <a href="Creating-Strings.html" accesskey="p" rel="prev">Creating Strings</a>, Up: <a href="Strings-and-Characters.html" accesskey="u" rel="up">Strings and Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Text-Comparison.html" accesskey="n" rel="next">Comparison of Characters and Strings</a>, Previous: <a href="Creating-Strings.html" accesskey="p" rel="prev">Creating Strings</a>, Up: <a href="Strings-and-Characters.html" accesskey="u" rel="up">Strings and Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Modifying-Strings-1"></span><h3 class="section">4.4 Modifying Strings</h3>
-<span id="index-modifying-strings"></span>
-<span id="index-string-modification"></span>
+<h3 class="section" id="Modifying-Strings-1"><span>4.4 Modifying Strings<a class="copiable-link" href="#Modifying-Strings-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-modifying-strings"></a>
+<a class="index-entry-id" id="index-string-modification"></a>
 
 <p>The most basic way to alter the contents of an existing string is with
-<code>aset</code> (see <a href="Array-Functions.html">Array Functions</a>).  <code>(aset <var>string</var>
-<var>idx</var> <var>char</var>)</code> stores <var>char</var> into <var>string</var> at index
-<var>idx</var>.  Each character occupies one or more bytes, and if <var>char</var>
+<code class="code">aset</code> (see <a class="pxref" href="Array-Functions.html">Functions that Operate on Arrays</a>).  <code class="code">(aset <var class="var">string</var>
+<var class="var">idx</var> <var class="var">char</var>)</code> stores <var class="var">char</var> into <var class="var">string</var> at index
+<var class="var">idx</var>.  Each character occupies one or more bytes, and if <var class="var">char</var>
 needs a different number of bytes from the character already present at
-that index, <code>aset</code> signals an error.
+that index, <code class="code">aset</code> signals an error.
 </p>
-<p>A more powerful function is <code>store-substring</code>:
+<p>A more powerful function is <code class="code">store-substring</code>:
 </p>
-<dl>
-<dt id="index-store_002dsubstring">Function: <strong>store-substring</strong> <em>string idx obj</em></dt>
-<dd><p>This function alters part of the contents of the string <var>string</var>, by
-storing <var>obj</var> starting at index <var>idx</var>.  The argument <var>obj</var>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-store_002dsubstring"><span class="category-def">Function: </span><span><strong class="def-name">store-substring</strong> <var class="def-var-arguments">string idx obj</var><a class="copiable-link" href="#index-store_002dsubstring"> &para;</a></span></dt>
+<dd><p>This function alters part of the contents of the string <var class="var">string</var>, by
+storing <var class="var">obj</var> starting at index <var class="var">idx</var>.  The argument <var class="var">obj</var>
 may be either a character or a (smaller) string.
 </p>
 <p>Since it is impossible to change the length of an existing string, it is
-an error if <var>obj</var> doesn&rsquo;t fit within <var>string</var>&rsquo;s actual length,
+an error if <var class="var">obj</var> doesn&rsquo;t fit within <var class="var">string</var>&rsquo;s actual length,
 or if any new character requires a different number of bytes from the
-character currently present at that point in <var>string</var>.
+character currently present at that point in <var class="var">string</var>.
 </p></dd></dl>
 
 <p>To clear out a string that contained a password, use
-<code>clear-string</code>:
+<code class="code">clear-string</code>:
 </p>
-<dl>
-<dt id="index-clear_002dstring">Function: <strong>clear-string</strong> <em>string</em></dt>
-<dd><p>This makes <var>string</var> a unibyte string and clears its contents to
-zeros.  It may also change <var>string</var>&rsquo;s length.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-clear_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">clear-string</strong> <var class="def-var-arguments">string</var><a class="copiable-link" href="#index-clear_002dstring"> &para;</a></span></dt>
+<dd><p>This makes <var class="var">string</var> a unibyte string and clears its contents to
+zeros.  It may also change <var class="var">string</var>&rsquo;s length.
 </p></dd></dl>
 
+</div>
 
 
 

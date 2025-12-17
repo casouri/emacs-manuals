@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 26.3.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Printing Package (GNU Emacs Manual)</title>
 
 <meta name="description" content="Printing Package (GNU Emacs Manual)">
@@ -27,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Printing.html" rel="up" title="Printing">
-<link href="Sorting.html" rel="next" title="Sorting">
 <link href="PostScript-Variables.html" rel="prev" title="PostScript Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,37 +48,39 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Printing-Package"></span><div class="header">
+<div class="section-level-extent" id="Printing-Package">
+<div class="nav-panel">
 <p>
-Previous: <a href="PostScript-Variables.html" accesskey="p" rel="prev">PostScript Variables</a>, Up: <a href="Printing.html" accesskey="u" rel="up">Printing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="PostScript-Variables.html" accesskey="p" rel="prev">Variables for PostScript Hardcopy</a>, Up: <a href="Printing.html" accesskey="u" rel="up">Printing Hard Copies</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Printing-Package-1"></span><h3 class="section">40.3 Printing Package</h3>
-<span id="index-Printing-package"></span>
+<h3 class="section subsection-level-set-section" id="Printing-Package-1"><span>40.3 Printing Package<a class="copiable-link" href="#Printing-Package-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-Printing-package"></a>
 
 <p>The basic Emacs facilities for printing hardcopy can be extended
 using the Printing package.  This provides an easy-to-use interface
 for choosing what to print, previewing PostScript files before
 printing, and setting various printing options such as print headers,
 landscape or portrait modes, duplex modes, and so forth.  On GNU/Linux
-or Unix systems, the Printing package relies on the <samp>gs</samp> and
-<samp>gv</samp> utilities, which are distributed as part of the GhostScript
-program.  On MS-Windows, the <samp>gstools</samp> port of Ghostscript can be
+or Unix systems, the Printing package relies on the <samp class="file">gs</samp> and
+<samp class="file">gv</samp> utilities, which are distributed as part of the GhostScript
+program.  On MS-Windows, the <samp class="file">gstools</samp> port of Ghostscript can be
 used.
 </p>
-<span id="index-pr_002dinterface"></span>
-<p>To use the Printing package, add <code>(require 'printing)</code> to your
-init file (see <a href="Init-File.html">Init File</a>), followed by <code>(pr-update-menus)</code>.
+<a class="index-entry-id" id="index-pr_002dinterface"></a>
+<p>To use the Printing package, add <code class="code">(require 'printing)</code> to your
+init file (see <a class="pxref" href="Init-File.html">The Emacs Initialization File</a>), followed by <code class="code">(pr-update-menus)</code>.
 This function replaces the usual printing commands in the menu bar
-with a &lsquo;<samp>Printing</samp>&rsquo; submenu that contains various printing options.
-You can also type <kbd>M-x pr-interface <span class="key">RET</span></kbd>; this creates a
-<samp>*Printing Interface*</samp> buffer, similar to a customization buffer,
+with a &lsquo;<samp class="samp">Printing</samp>&rsquo; submenu that contains various printing options.
+You can also type <kbd class="kbd">M-x pr-interface <kbd class="key">RET</kbd></kbd>; this creates a
+<samp class="file">*Printing Interface*</samp> buffer, similar to a customization buffer,
 where you can set the printing options.  After selecting what and how
-to print, you start the print job using the &lsquo;<samp>Print</samp>&rsquo; button (click
-<kbd>mouse-2</kbd> on it, or move point over it and type <tt class="key">RET</tt>).  For
-further information on the various options, use the &lsquo;<samp>Interface
+to print, you start the print job using the &lsquo;<samp class="samp">Print</samp>&rsquo; button (click
+<kbd class="kbd">mouse-2</kbd> on it, or move point over it and type <kbd class="key">RET</kbd>).  For
+further information on the various options, use the &lsquo;<samp class="samp">Interface
 Help</samp>&rsquo; button.
 </p>
+</div>
 
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Comparison of Numbers (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Comparison of Numbers (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Predicates-on-Numbers.html" rel="prev" title="Predicates on Numbers">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,36 +48,37 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Comparison-of-Numbers"></span><div class="header">
+<div class="section-level-extent" id="Comparison-of-Numbers">
+<div class="nav-panel">
 <p>
-Next: <a href="Numeric-Conversions.html" accesskey="n" rel="next">Numeric Conversions</a>, Previous: <a href="Predicates-on-Numbers.html" accesskey="p" rel="prev">Predicates on Numbers</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Numeric-Conversions.html" accesskey="n" rel="next">Numeric Conversions</a>, Previous: <a href="Predicates-on-Numbers.html" accesskey="p" rel="prev">Type Predicates for Numbers</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Comparison-of-Numbers-1"></span><h3 class="section">3.4 Comparison of Numbers</h3>
-<span id="index-number-comparison"></span>
-<span id="index-comparing-numbers"></span>
+<h3 class="section" id="Comparison-of-Numbers-1"><span>3.4 Comparison of Numbers<a class="copiable-link" href="#Comparison-of-Numbers-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-number-comparison"></a>
+<a class="index-entry-id" id="index-comparing-numbers"></a>
 
 <p>To test numbers for numerical equality, you should normally use
-<code>=</code>, not <code>eq</code>.  There can be many distinct floating-point
-objects with the same numeric value.  If you use <code>eq</code> to
+<code class="code">=</code>, not <code class="code">eq</code>.  There can be many distinct floating-point
+objects with the same numeric value.  If you use <code class="code">eq</code> to
 compare them, then you test whether two values are the same
-<em>object</em>.  By contrast, <code>=</code> compares only the numeric values
+<em class="emph">object</em>.  By contrast, <code class="code">=</code> compares only the numeric values
 of the objects.
 </p>
 <p>In Emacs Lisp, each integer is a unique Lisp object.
-Therefore, <code>eq</code> is equivalent to <code>=</code> where integers are
-concerned.  It is sometimes convenient to use <code>eq</code> for comparing
-an unknown value with an integer, because <code>eq</code> does not report an
+Therefore, <code class="code">eq</code> is equivalent to <code class="code">=</code> where integers are
+concerned.  It is sometimes convenient to use <code class="code">eq</code> for comparing
+an unknown value with an integer, because <code class="code">eq</code> does not report an
 error if the unknown value is not a number&mdash;it accepts arguments of
-any type.  By contrast, <code>=</code> signals an error if the arguments are
+any type.  By contrast, <code class="code">=</code> signals an error if the arguments are
 not numbers or markers.  However, it is better programming practice to
-use <code>=</code> if you can, even for comparing integers.
+use <code class="code">=</code> if you can, even for comparing integers.
 </p>
-<p>Sometimes it is useful to compare numbers with <code>equal</code>, which
+<p>Sometimes it is useful to compare numbers with <code class="code">equal</code>, which
 treats two numbers as equal if they have the same data type (both
 integers, or both floating point) and the same value.  By contrast,
-<code>=</code> can treat an integer and a floating-point number as equal.
-See <a href="Equality-Predicates.html">Equality Predicates</a>.
+<code class="code">=</code> can treat an integer and a floating-point number as equal.
+See <a class="xref" href="Equality-Predicates.html">Equality Predicates</a>.
 </p>
 <p>There is another wrinkle: because floating-point arithmetic is not
 exact, it is often a bad idea to check for equality of floating-point
@@ -93,7 +86,7 @@ values.  Usually it is better to test for approximate equality.
 Here&rsquo;s a function to do this:
 </p>
 <div class="example">
-<pre class="example">(defvar fuzz-factor 1.0e-6)
+<pre class="example-preformatted">(defvar fuzz-factor 1.0e-6)
 (defun approx-equal (x y)
   (or (= x y)
       (&lt; (/ (abs (- x y))
@@ -101,67 +94,67 @@ Here&rsquo;s a function to do this:
          fuzz-factor)))
 </pre></div>
 
-<span id="index-CL-note_002d_002d_002dintegers-vrs-eq"></span>
-<blockquote>
-<p><b>Common Lisp note:</b> Comparing numbers in Common Lisp always requires
-<code>=</code> because Common Lisp implements multi-word integers, and two
+<a class="index-entry-id" id="index-CL-note_002d_002d_002dintegers-vrs-eq"></a>
+<blockquote class="quotation">
+<p><b class="b">Common Lisp note:</b> Comparing numbers in Common Lisp always requires
+<code class="code">=</code> because Common Lisp implements multi-word integers, and two
 distinct integer objects can have the same numeric value.  Emacs Lisp
 can have just one integer object for any given value because it has a
 limited range of integers.
 </p></blockquote>
 
-<dl>
-<dt id="index-_003d">Function: <strong>=</strong> <em>number-or-marker &amp;rest number-or-markers</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-_003d"><span class="category-def">Function: </span><span><strong class="def-name">=</strong> <var class="def-var-arguments">number-or-marker &amp;rest number-or-markers</var><a class="copiable-link" href="#index-_003d"> &para;</a></span></dt>
 <dd><p>This function tests whether all its arguments are numerically equal,
-and returns <code>t</code> if so, <code>nil</code> otherwise.
+and returns <code class="code">t</code> if so, <code class="code">nil</code> otherwise.
 </p></dd></dl>
 
-<dl>
-<dt id="index-eql">Function: <strong>eql</strong> <em>value1 value2</em></dt>
-<dd><p>This function acts like <code>eq</code> except when both arguments are
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-eql"><span class="category-def">Function: </span><span><strong class="def-name">eql</strong> <var class="def-var-arguments">value1 value2</var><a class="copiable-link" href="#index-eql"> &para;</a></span></dt>
+<dd><p>This function acts like <code class="code">eq</code> except when both arguments are
 numbers.  It compares numbers by type and numeric value, so that
-<code>(eql 1.0 1)</code> returns <code>nil</code>, but <code>(eql 1.0 1.0)</code> and
-<code>(eql 1 1)</code> both return <code>t</code>.
+<code class="code">(eql 1.0 1)</code> returns <code class="code">nil</code>, but <code class="code">(eql 1.0 1.0)</code> and
+<code class="code">(eql 1 1)</code> both return <code class="code">t</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-_002f_003d">Function: <strong>/=</strong> <em>number-or-marker1 number-or-marker2</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-_002f_003d"><span class="category-def">Function: </span><span><strong class="def-name">/=</strong> <var class="def-var-arguments">number-or-marker1 number-or-marker2</var><a class="copiable-link" href="#index-_002f_003d"> &para;</a></span></dt>
 <dd><p>This function tests whether its arguments are numerically equal, and
-returns <code>t</code> if they are not, and <code>nil</code> if they are.
+returns <code class="code">t</code> if they are not, and <code class="code">nil</code> if they are.
 </p></dd></dl>
 
-<dl>
-<dt id="index-_003c">Function: <strong>&lt;</strong> <em>number-or-marker &amp;rest number-or-markers</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-_003c"><span class="category-def">Function: </span><span><strong class="def-name">&lt;</strong> <var class="def-var-arguments">number-or-marker &amp;rest number-or-markers</var><a class="copiable-link" href="#index-_003c"> &para;</a></span></dt>
 <dd><p>This function tests whether each argument is strictly less than the
-following argument.  It returns <code>t</code> if so, <code>nil</code> otherwise.
+following argument.  It returns <code class="code">t</code> if so, <code class="code">nil</code> otherwise.
 </p></dd></dl>
 
-<dl>
-<dt id="index-_003c_003d">Function: <strong>&lt;=</strong> <em>number-or-marker &amp;rest number-or-markers</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-_003c_003d"><span class="category-def">Function: </span><span><strong class="def-name">&lt;=</strong> <var class="def-var-arguments">number-or-marker &amp;rest number-or-markers</var><a class="copiable-link" href="#index-_003c_003d"> &para;</a></span></dt>
 <dd><p>This function tests whether each argument is less than or equal to
-the following argument.  It returns <code>t</code> if so, <code>nil</code> otherwise.
+the following argument.  It returns <code class="code">t</code> if so, <code class="code">nil</code> otherwise.
 </p></dd></dl>
 
-<dl>
-<dt id="index-_003e">Function: <strong>&gt;</strong> <em>number-or-marker &amp;rest number-or-markers</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-_003e"><span class="category-def">Function: </span><span><strong class="def-name">&gt;</strong> <var class="def-var-arguments">number-or-marker &amp;rest number-or-markers</var><a class="copiable-link" href="#index-_003e"> &para;</a></span></dt>
 <dd><p>This function tests whether each argument is strictly greater than
-the following argument.  It returns <code>t</code> if so, <code>nil</code> otherwise.
+the following argument.  It returns <code class="code">t</code> if so, <code class="code">nil</code> otherwise.
 </p></dd></dl>
 
-<dl>
-<dt id="index-_003e_003d">Function: <strong>&gt;=</strong> <em>number-or-marker &amp;rest number-or-markers</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-_003e_003d"><span class="category-def">Function: </span><span><strong class="def-name">&gt;=</strong> <var class="def-var-arguments">number-or-marker &amp;rest number-or-markers</var><a class="copiable-link" href="#index-_003e_003d"> &para;</a></span></dt>
 <dd><p>This function tests whether each argument is greater than or equal to
-the following argument.  It returns <code>t</code> if so, <code>nil</code> otherwise.
+the following argument.  It returns <code class="code">t</code> if so, <code class="code">nil</code> otherwise.
 </p></dd></dl>
 
-<dl>
-<dt id="index-max">Function: <strong>max</strong> <em>number-or-marker &amp;rest numbers-or-markers</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-max"><span class="category-def">Function: </span><span><strong class="def-name">max</strong> <var class="def-var-arguments">number-or-marker &amp;rest numbers-or-markers</var><a class="copiable-link" href="#index-max"> &para;</a></span></dt>
 <dd><p>This function returns the largest of its arguments.
 If any of the arguments is floating point, the value is returned
 as floating point, even if it was given as an integer.
 </p>
 <div class="example">
-<pre class="example">(max 20)
+<pre class="example-preformatted">(max 20)
      &rArr; 20
 (max 1 2.5)
      &rArr; 2.5
@@ -170,27 +163,28 @@ as floating point, even if it was given as an integer.
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-min">Function: <strong>min</strong> <em>number-or-marker &amp;rest numbers-or-markers</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-min"><span class="category-def">Function: </span><span><strong class="def-name">min</strong> <var class="def-var-arguments">number-or-marker &amp;rest numbers-or-markers</var><a class="copiable-link" href="#index-min"> &para;</a></span></dt>
 <dd><p>This function returns the smallest of its arguments.
 If any of the arguments is floating point, the value is returned
 as floating point, even if it was given as an integer.
 </p>
 <div class="example">
-<pre class="example">(min -4 1)
+<pre class="example-preformatted">(min -4 1)
      &rArr; -4
 </pre></div>
 </dd></dl>
 
-<dl>
-<dt id="index-abs">Function: <strong>abs</strong> <em>number</em></dt>
-<dd><p>This function returns the absolute value of <var>number</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-abs"><span class="category-def">Function: </span><span><strong class="def-name">abs</strong> <var class="def-var-arguments">number</var><a class="copiable-link" href="#index-abs"> &para;</a></span></dt>
+<dd><p>This function returns the absolute value of <var class="var">number</var>.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Numeric-Conversions.html" accesskey="n" rel="next">Numeric Conversions</a>, Previous: <a href="Predicates-on-Numbers.html" accesskey="p" rel="prev">Predicates on Numbers</a>, Up: <a href="Numbers.html" accesskey="u" rel="up">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Numeric-Conversions.html">Numeric Conversions</a>, Previous: <a href="Predicates-on-Numbers.html">Type Predicates for Numbers</a>, Up: <a href="Numbers.html">Numbers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

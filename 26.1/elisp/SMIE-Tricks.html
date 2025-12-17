@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SMIE Tricks (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="SMIE Tricks (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="SMIE-Lexer.html" rel="prev" title="SMIE Lexer">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,12 +47,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="SMIE-Tricks"></span><div class="header">
+<div class="subsubsection-level-extent" id="SMIE-Tricks">
+<div class="nav-panel">
 <p>
-Next: <a href="SMIE-Indentation.html" accesskey="n" rel="next">SMIE Indentation</a>, Previous: <a href="SMIE-Lexer.html" accesskey="p" rel="prev">SMIE Lexer</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">SMIE</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="SMIE-Indentation.html" accesskey="n" rel="next">Specifying Indentation Rules</a>, Previous: <a href="SMIE-Lexer.html" accesskey="p" rel="prev">Defining Tokens</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">Simple Minded Indentation Engine</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Living-With-a-Weak-Parser"></span><h4 class="subsubsection">23.7.1.5 Living With a Weak Parser</h4>
+<h4 class="subsubsection" id="Living-With-a-Weak-Parser"><span>23.7.1.5 Living With a Weak Parser<a class="copiable-link" href="#Living-With-a-Weak-Parser"> &para;</a></span></h4>
 
 <p>The parsing technique used by SMIE does not allow tokens to behave
 differently in different contexts.  For most programming languages, this
@@ -73,7 +65,7 @@ grammar slightly differently.  For example, for Modula-2 it might seem
 natural to have a BNF grammar that looks like this:
 </p>
 <div class="example">
-<pre class="example">  ...
+<pre class="example-preformatted">  ...
   (inst (&quot;IF&quot; exp &quot;THEN&quot; insts &quot;ELSE&quot; insts &quot;END&quot;)
         (&quot;CASE&quot; exp &quot;OF&quot; cases &quot;END&quot;)
         ...)
@@ -83,13 +75,13 @@ natural to have a BNF grammar that looks like this:
   ...
 </pre></div>
 
-<p>But this will create conflicts for <code>&quot;ELSE&quot;</code>: on the one hand, the
-IF rule implies (among many other things) that <code>&quot;ELSE&quot; = &quot;END&quot;</code>;
-but on the other hand, since <code>&quot;ELSE&quot;</code> appears within <code>cases</code>,
-which appears left of <code>&quot;END&quot;</code>, we also have <code>&quot;ELSE&quot; &gt; &quot;END&quot;</code>.
+<p>But this will create conflicts for <code class="code">&quot;ELSE&quot;</code>: on the one hand, the
+IF rule implies (among many other things) that <code class="code">&quot;ELSE&quot; = &quot;END&quot;</code>;
+but on the other hand, since <code class="code">&quot;ELSE&quot;</code> appears within <code class="code">cases</code>,
+which appears left of <code class="code">&quot;END&quot;</code>, we also have <code class="code">&quot;ELSE&quot; &gt; &quot;END&quot;</code>.
 We can solve the conflict either by using:
 </p><div class="example">
-<pre class="example">  ...
+<pre class="example-preformatted">  ...
   (inst (&quot;IF&quot; exp &quot;THEN&quot; insts &quot;ELSE&quot; insts &quot;END&quot;)
         (&quot;CASE&quot; exp &quot;OF&quot; cases &quot;END&quot;)
         (&quot;CASE&quot; exp &quot;OF&quot; cases &quot;ELSE&quot; insts &quot;END&quot;)
@@ -99,7 +91,7 @@ We can solve the conflict either by using:
 </pre></div>
 <p>or
 </p><div class="example">
-<pre class="example">  ...
+<pre class="example-preformatted">  ...
   (inst (&quot;IF&quot; exp &quot;THEN&quot; else &quot;END&quot;)
         (&quot;CASE&quot; exp &quot;OF&quot; cases &quot;END&quot;)
         ...)
@@ -115,13 +107,13 @@ abstract syntax tree.
 </p>
 <p>Other times, after careful consideration you may conclude that those
 conflicts are not serious and simply resolve them via the
-<var>resolvers</var> argument of <code>smie-bnf-&gt;prec2</code>.  Usually this is
+<var class="var">resolvers</var> argument of <code class="code">smie-bnf-&gt;prec2</code>.  Usually this is
 because the grammar is simply ambiguous: the conflict does not affect
 the set of programs described by the grammar, but only the way those
 programs are parsed.  This is typically the case for separators and
 associative infix operators, where you want to add a resolver like
-<code>'((assoc &quot;|&quot;))</code>.  Another case where this can happen is for the
-classic <em>dangling else</em> problem, where you will use <code>'((assoc
+<code class="code">'((assoc &quot;|&quot;))</code>.  Another case where this can happen is for the
+classic <em class="emph">dangling else</em> problem, where you will use <code class="code">'((assoc
 &quot;else&quot; &quot;then&quot;))</code>.  It can also happen for cases where the conflict is
 real and cannot really be resolved, but it is unlikely to pose a problem
 in practice.
@@ -132,16 +124,17 @@ made more clever, you can make the lexer as smart as you want.  So, the
 solution is then to look at the tokens involved in the conflict and to
 split one of those tokens into 2 (or more) different tokens.  E.g., if
 the grammar needs to distinguish between two incompatible uses of the
-token <code>&quot;begin&quot;</code>, make the lexer return different tokens (say
-<code>&quot;begin-fun&quot;</code> and <code>&quot;begin-plain&quot;</code>) depending on which kind of
-<code>&quot;begin&quot;</code> it finds.  This pushes the work of distinguishing the
+token <code class="code">&quot;begin&quot;</code>, make the lexer return different tokens (say
+<code class="code">&quot;begin-fun&quot;</code> and <code class="code">&quot;begin-plain&quot;</code>) depending on which kind of
+<code class="code">&quot;begin&quot;</code> it finds.  This pushes the work of distinguishing the
 different cases to the lexer, which will thus have to look at the
 surrounding text to find ad-hoc clues.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="SMIE-Indentation.html" accesskey="n" rel="next">SMIE Indentation</a>, Previous: <a href="SMIE-Lexer.html" accesskey="p" rel="prev">SMIE Lexer</a>, Up: <a href="SMIE.html" accesskey="u" rel="up">SMIE</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="SMIE-Indentation.html">Specifying Indentation Rules</a>, Previous: <a href="SMIE-Lexer.html">Defining Tokens</a>, Up: <a href="SMIE.html">Simple Minded Indentation Engine</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

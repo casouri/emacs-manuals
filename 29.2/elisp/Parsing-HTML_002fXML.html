@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.2.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Parsing HTML/XML (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Parsing HTML/XML (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Parsing HTML/XML (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Text.html" rel="up" title="Text">
+<link href="Parsing-JSON.html" rel="next" title="Parsing JSON">
+<link href="Database.html" rel="prev" title="Database">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Parsing-HTML_002fXML">
+<div class="nav-panel">
+<p>
+Next: <a href="Parsing-JSON.html" accesskey="n" rel="next">Parsing and generating JSON values</a>, Previous: <a href="Database.html" accesskey="p" rel="prev">Database</a>, Up: <a href="Text.html" accesskey="u" rel="up">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Parsing-HTML-and-XML"><span>33.30 Parsing HTML and XML<a class="copiable-link" href="#Parsing-HTML-and-XML"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-parsing-html"></a>
+
+<p>Emacs can be compiled with built-in <samp class="file">libxml2</samp> support.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-libxml_002davailable_002dp"><span class="category-def">Function: </span><span><strong class="def-name">libxml-available-p</strong><a class="copiable-link" href="#index-libxml_002davailable_002dp"> &para;</a></span></dt>
+<dd><p>This function returns non-<code class="code">nil</code> if built-in libxml2 support is
+available in this Emacs session.
+</p></dd></dl>
+
+<p>When libxml2 support is available, the following functions can be used
+to parse HTML or XML text into Lisp object trees.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-libxml_002dparse_002dhtml_002dregion"><span class="category-def">Function: </span><span><strong class="def-name">libxml-parse-html-region</strong> <var class="def-var-arguments">&amp;optional start end base-url discard-comments</var><a class="copiable-link" href="#index-libxml_002dparse_002dhtml_002dregion"> &para;</a></span></dt>
+<dd><p>This function parses the text between <var class="var">start</var> and <var class="var">end</var> as
+HTML, and returns a list representing the HTML <em class="dfn">parse tree</em>.  It
+attempts to handle real-world HTML by robustly coping with syntax
+mistakes.
+</p>
+<p>If <var class="var">start</var> or <var class="var">end</var> are <code class="code">nil</code>, they default to the values
+from <code class="code">point-min</code> and <code class="code">point-max</code>, respectively.
+</p>
+<p>The optional argument <var class="var">base-url</var>, if non-<code class="code">nil</code>, should be
+used for warnings and errors reported by the <samp class="file">libxml2</samp> library,
+but Emacs currently calls the library with errors and warnings
+disabled, so this argument is not used.
+</p>
+<p>If the optional argument <var class="var">discard-comments</var> is non-<code class="code">nil</code>,
+any top-level comment is discarded.  (This argument is obsolete and
+will be removed in future Emacs versions.  To remove comments, use the
+<code class="code">xml-remove-comments</code> utility function on the data before you
+call the parsing function.)
+</p>
+<p>In the parse tree, each HTML node is represented by a list in which
+the first element is a symbol representing the node name, the second
+element is an alist of node attributes, and the remaining elements are
+the subnodes.
+</p>
+<p>The following example demonstrates this.  Given this (malformed) HTML
+document:
+</p>
+<div class="example">
+<pre class="example-preformatted">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body width=101&gt;&lt;div class=thing&gt;Foo&lt;div&gt;Yes
+</pre></div>
+
+<p>A call to <code class="code">libxml-parse-html-region</code> returns this <abbr class="acronym">DOM</abbr>
+(document object model):
+</p>
+<div class="example">
+<pre class="example-preformatted">(html nil
+ (head nil)
+ (body ((width . &quot;101&quot;))
+  (div ((class . &quot;thing&quot;))
+   &quot;Foo&quot;
+   (div nil
+    &quot;Yes&quot;))))
+</pre></div>
+</dd></dl>
+
+<a class="index-entry-id" id="index-rendering-html"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-shr_002dinsert_002ddocument"><span class="category-def">Function: </span><span><strong class="def-name">shr-insert-document</strong> <var class="def-var-arguments">dom</var><a class="copiable-link" href="#index-shr_002dinsert_002ddocument"> &para;</a></span></dt>
+<dd><p>This function renders the parsed HTML in <var class="var">dom</var> into the current
+buffer.  The argument <var class="var">dom</var> should be a list as generated by
+<code class="code">libxml-parse-html-region</code>.  This function is, e.g., used by
+<a data-manual="eww" href="https://www.gnu.org/software/emacs/manual/html_node/eww/index.html#Top">EWW</a> in <cite class="cite">The Emacs Web Wowser Manual</cite>.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-parsing-xml"></a>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-libxml_002dparse_002dxml_002dregion"><span class="category-def">Function: </span><span><strong class="def-name">libxml-parse-xml-region</strong> <var class="def-var-arguments">&amp;optional start end base-url discard-comments</var><a class="copiable-link" href="#index-libxml_002dparse_002dxml_002dregion"> &para;</a></span></dt>
+<dd><p>This function is the same as <code class="code">libxml-parse-html-region</code>, except
+that it parses the text as XML rather than HTML (so it is stricter
+about syntax).
+</p></dd></dl>
+
+
+<ul class="mini-toc">
+<li><a href="Document-Object-Model.html" accesskey="1">Document Object Model</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Parsing-JSON.html">Parsing and generating JSON values</a>, Previous: <a href="Database.html">Database</a>, Up: <a href="Text.html">Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

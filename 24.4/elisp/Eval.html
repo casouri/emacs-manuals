@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.4.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Eval (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Eval (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,21 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Evaluation.html" rel="up" title="Evaluation">
-<link href="Control-Structures.html" rel="next" title="Control Structures">
 <link href="Backquote.html" rel="prev" title="Backquote">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,131 +49,132 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Eval"></span><div class="header">
+<div class="section-level-extent" id="Eval">
+<div class="nav-panel">
 <p>
 Previous: <a href="Backquote.html" accesskey="p" rel="prev">Backquote</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Eval-1"></span><h3 class="section">9.5 Eval</h3>
+<h3 class="section" id="Eval-1"><span>9.5 Eval<a class="copiable-link" href="#Eval-1"> &para;</a></span></h3>
 
 <p>Most often, forms are evaluated automatically, by virtue of their
 occurrence in a program being run.  On rare occasions, you may need to
 write code that evaluates a form that is computed at run time, such as
 after reading a form from text being edited or getting one from a
-property list.  On these occasions, use the <code>eval</code> function.
-Often <code>eval</code> is not needed and something else should be used instead.
-For example, to get the value of a variable, while <code>eval</code> works,
-<code>symbol-value</code> is preferable; or rather than store expressions
-in a property list that then need to go through <code>eval</code>, it is better to
-store functions instead that are then passed to <code>funcall</code>.
+property list.  On these occasions, use the <code class="code">eval</code> function.
+Often <code class="code">eval</code> is not needed and something else should be used instead.
+For example, to get the value of a variable, while <code class="code">eval</code> works,
+<code class="code">symbol-value</code> is preferable; or rather than store expressions
+in a property list that then need to go through <code class="code">eval</code>, it is better to
+store functions instead that are then passed to <code class="code">funcall</code>.
 </p>
 <p>The functions and variables described in this section evaluate forms,
 specify limits to the evaluation process, or record recently returned
-values.  Loading a file also does evaluation (see <a href="Loading.html">Loading</a>).
+values.  Loading a file also does evaluation (see <a class="pxref" href="Loading.html">Loading</a>).
 </p>
 <p>It is generally cleaner and more flexible to store a function in a
-data structure, and call it with <code>funcall</code> or <code>apply</code>, than
+data structure, and call it with <code class="code">funcall</code> or <code class="code">apply</code>, than
 to store an expression in the data structure and evaluate it.  Using
 functions provides the ability to pass information to them as
 arguments.
 </p>
-<dl>
-<dt id="index-eval">Function: <strong>eval</strong> <em>form &amp;optional lexical</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-eval"><span class="category-def">Function: </span><span><strong class="def-name">eval</strong> <var class="def-var-arguments">form &amp;optional lexical</var><a class="copiable-link" href="#index-eval"> &para;</a></span></dt>
 <dd><p>This is the basic function for evaluating an expression.  It evaluates
-<var>form</var> in the current environment, and returns the result.  The
-type of the <var>form</var> object determines how it is evaluated.
-See <a href="Forms.html">Forms</a>.
+<var class="var">form</var> in the current environment, and returns the result.  The
+type of the <var class="var">form</var> object determines how it is evaluated.
+See <a class="xref" href="Forms.html">Kinds of Forms</a>.
 </p>
-<p>The argument <var>lexical</var> specifies the scoping rule for local
-variables (see <a href="Variable-Scoping.html">Variable Scoping</a>).  If it is omitted or <code>nil</code>,
-that means to evaluate <var>form</var> using the default dynamic scoping
-rule.  If it is <code>t</code>, that means to use the lexical scoping rule.
-The value of <var>lexical</var> can also be a non-empty alist specifying a
-particular <em>lexical environment</em> for lexical bindings; however,
+<p>The argument <var class="var">lexical</var> specifies the scoping rule for local
+variables (see <a class="pxref" href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a>).  If it is omitted or <code class="code">nil</code>,
+that means to evaluate <var class="var">form</var> using the default dynamic scoping
+rule.  If it is <code class="code">t</code>, that means to use the lexical scoping rule.
+The value of <var class="var">lexical</var> can also be a non-empty alist specifying a
+particular <em class="dfn">lexical environment</em> for lexical bindings; however,
 this feature is only useful for specialized purposes, such as in Emacs
-Lisp debuggers.  See <a href="Lexical-Binding.html">Lexical Binding</a>.
+Lisp debuggers.  See <a class="xref" href="Lexical-Binding.html">Lexical Binding</a>.
 </p>
-<p>Since <code>eval</code> is a function, the argument expression that appears
-in a call to <code>eval</code> is evaluated twice: once as preparation before
-<code>eval</code> is called, and again by the <code>eval</code> function itself.
+<p>Since <code class="code">eval</code> is a function, the argument expression that appears
+in a call to <code class="code">eval</code> is evaluated twice: once as preparation before
+<code class="code">eval</code> is called, and again by the <code class="code">eval</code> function itself.
 Here is an example:
 </p>
 <div class="example">
-<pre class="example">(setq foo 'bar)
+<div class="group"><pre class="example-preformatted">(setq foo 'bar)
      &rArr; bar
-</pre><pre class="example">(setq bar 'baz)
+</pre></div><div class="group"><pre class="example-preformatted">(setq bar 'baz)
      &rArr; baz
-;; <span class="roman">Here <code>eval</code> receives argument <code>foo</code></span>
+;; <span class="r">Here <code class="code">eval</code> receives argument <code class="code">foo</code></span>
 (eval 'foo)
      &rArr; bar
-;; <span class="roman">Here <code>eval</code> receives argument <code>bar</code>, which is the value of <code>foo</code></span>
+;; <span class="r">Here <code class="code">eval</code> receives argument <code class="code">bar</code>, which is the value of <code class="code">foo</code></span>
 (eval foo)
      &rArr; baz
-</pre></div>
+</pre></div></div>
 
-<p>The number of currently active calls to <code>eval</code> is limited to
-<code>max-lisp-eval-depth</code> (see below).
+<p>The number of currently active calls to <code class="code">eval</code> is limited to
+<code class="code">max-lisp-eval-depth</code> (see below).
 </p></dd></dl>
 
-<dl>
-<dt id="index-eval_002dregion">Command: <strong>eval-region</strong> <em>start end &amp;optional stream read-function</em></dt>
-<dd><span id="Definition-of-eval_002dregion"></span><p>This function evaluates the forms in the current buffer in the region
-defined by the positions <var>start</var> and <var>end</var>.  It reads forms from
-the region and calls <code>eval</code> on them until the end of the region is
+<dl class="first-deffn">
+<dt class="deffn" id="index-eval_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">eval-region</strong> <var class="def-var-arguments">start end &amp;optional stream read-function</var><a class="copiable-link" href="#index-eval_002dregion"> &para;</a></span></dt>
+<dd><a class="anchor" id="Definition-of-eval_002dregion"></a><p>This function evaluates the forms in the current buffer in the region
+defined by the positions <var class="var">start</var> and <var class="var">end</var>.  It reads forms from
+the region and calls <code class="code">eval</code> on them until the end of the region is
 reached, or until an error is signaled and not handled.
 </p>
-<p>By default, <code>eval-region</code> does not produce any output.  However,
-if <var>stream</var> is non-<code>nil</code>, any output produced by output
-functions (see <a href="Output-Functions.html">Output Functions</a>), as well as the values that
+<p>By default, <code class="code">eval-region</code> does not produce any output.  However,
+if <var class="var">stream</var> is non-<code class="code">nil</code>, any output produced by output
+functions (see <a class="pxref" href="Output-Functions.html">Output Functions</a>), as well as the values that
 result from evaluating the expressions in the region are printed using
-<var>stream</var>.  See <a href="Output-Streams.html">Output Streams</a>.
+<var class="var">stream</var>.  See <a class="xref" href="Output-Streams.html">Output Streams</a>.
 </p>
-<p>If <var>read-function</var> is non-<code>nil</code>, it should be a function,
-which is used instead of <code>read</code> to read expressions one by one.
+<p>If <var class="var">read-function</var> is non-<code class="code">nil</code>, it should be a function,
+which is used instead of <code class="code">read</code> to read expressions one by one.
 This function is called with one argument, the stream for reading
-input.  You can also use the variable <code>load-read-function</code>
-(see <a href="How-Programs-Do-Loading.html#Definition-of-load_002dread_002dfunction">How Programs Do Loading</a>)
+input.  You can also use the variable <code class="code">load-read-function</code>
+(see <a class="pxref" href="How-Programs-Do-Loading.html#Definition-of-load_002dread_002dfunction">How Programs Do Loading</a>)
 to specify this function, but it is more robust to use the
-<var>read-function</var> argument.
+<var class="var">read-function</var> argument.
 </p>
-<p><code>eval-region</code> does not move point.  It always returns <code>nil</code>.
+<p><code class="code">eval-region</code> does not move point.  It always returns <code class="code">nil</code>.
 </p></dd></dl>
 
-<span id="index-evaluation-of-buffer-contents"></span>
-<dl>
-<dt id="index-eval_002dbuffer">Command: <strong>eval-buffer</strong> <em>&amp;optional buffer-or-name stream filename unibyte print</em></dt>
-<dd><p>This is similar to <code>eval-region</code>, but the arguments provide
-different optional features.  <code>eval-buffer</code> operates on the
-entire accessible portion of buffer <var>buffer-or-name</var>.
-<var>buffer-or-name</var> can be a buffer, a buffer name (a string), or
-<code>nil</code> (or omitted), which means to use the current buffer.
-<var>stream</var> is used as in <code>eval-region</code>, unless <var>stream</var> is
-<code>nil</code> and <var>print</var> non-<code>nil</code>.  In that case, values that
+<a class="index-entry-id" id="index-evaluation-of-buffer-contents"></a>
+<dl class="first-deffn">
+<dt class="deffn" id="index-eval_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">eval-buffer</strong> <var class="def-var-arguments">&amp;optional buffer-or-name stream filename unibyte print</var><a class="copiable-link" href="#index-eval_002dbuffer"> &para;</a></span></dt>
+<dd><p>This is similar to <code class="code">eval-region</code>, but the arguments provide
+different optional features.  <code class="code">eval-buffer</code> operates on the
+entire accessible portion of buffer <var class="var">buffer-or-name</var>.
+<var class="var">buffer-or-name</var> can be a buffer, a buffer name (a string), or
+<code class="code">nil</code> (or omitted), which means to use the current buffer.
+<var class="var">stream</var> is used as in <code class="code">eval-region</code>, unless <var class="var">stream</var> is
+<code class="code">nil</code> and <var class="var">print</var> non-<code class="code">nil</code>.  In that case, values that
 result from evaluating the expressions are still discarded, but the
 output of the output functions is printed in the echo area.
-<var>filename</var> is the file name to use for <code>load-history</code>
-(see <a href="Unloading.html">Unloading</a>), and defaults to <code>buffer-file-name</code>
-(see <a href="Buffer-File-Name.html">Buffer File Name</a>).  If <var>unibyte</var> is non-<code>nil</code>,
-<code>read</code> converts strings to unibyte whenever possible.
+<var class="var">filename</var> is the file name to use for <code class="code">load-history</code>
+(see <a class="pxref" href="Unloading.html">Unloading</a>), and defaults to <code class="code">buffer-file-name</code>
+(see <a class="pxref" href="Buffer-File-Name.html">Buffer File Name</a>).  If <var class="var">unibyte</var> is non-<code class="code">nil</code>,
+<code class="code">read</code> converts strings to unibyte whenever possible.
 </p>
-<span id="index-eval_002dcurrent_002dbuffer"></span>
-<p><code>eval-current-buffer</code> is an alias for this command.
+<a class="index-entry-id" id="index-eval_002dcurrent_002dbuffer"></a>
+<p><code class="code">eval-current-buffer</code> is an alias for this command.
 </p></dd></dl>
 
-<dl>
-<dt id="index-max_002dlisp_002deval_002ddepth">User Option: <strong>max-lisp-eval-depth</strong></dt>
-<dd><span id="Definition-of-max_002dlisp_002deval_002ddepth"></span><p>This variable defines the maximum depth allowed in calls to <code>eval</code>,
-<code>apply</code>, and <code>funcall</code> before an error is signaled (with error
-message <code>&quot;Lisp nesting exceeds max-lisp-eval-depth&quot;</code>).
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-max_002dlisp_002deval_002ddepth"><span class="category-def">User Option: </span><span><strong class="def-name">max-lisp-eval-depth</strong><a class="copiable-link" href="#index-max_002dlisp_002deval_002ddepth"> &para;</a></span></dt>
+<dd><a class="anchor" id="Definition-of-max_002dlisp_002deval_002ddepth"></a><p>This variable defines the maximum depth allowed in calls to <code class="code">eval</code>,
+<code class="code">apply</code>, and <code class="code">funcall</code> before an error is signaled (with error
+message <code class="code">&quot;Lisp nesting exceeds max-lisp-eval-depth&quot;</code>).
 </p>
 <p>This limit, with the associated error when it is exceeded, is one way
 Emacs Lisp avoids infinite recursion on an ill-defined function.  If
-you increase the value of <code>max-lisp-eval-depth</code> too much, such
+you increase the value of <code class="code">max-lisp-eval-depth</code> too much, such
 code can cause stack overflow instead.
-<span id="index-Lisp-nesting-error"></span>
+<a class="index-entry-id" id="index-Lisp-nesting-error"></a>
 </p>
-<p>The depth limit counts internal uses of <code>eval</code>, <code>apply</code>, and
-<code>funcall</code>, such as for calling the functions mentioned in Lisp
+<p>The depth limit counts internal uses of <code class="code">eval</code>, <code class="code">apply</code>, and
+<code class="code">funcall</code>, such as for calling the functions mentioned in Lisp
 expressions, and recursive evaluation of function call arguments and
 function body forms, as well as explicit calls in Lisp code.
 </p>
@@ -190,53 +184,54 @@ reached.  Entry to the Lisp debugger increases the value, if there is
 little room left, to make sure the debugger itself has room to
 execute.
 </p>
-<p><code>max-specpdl-size</code> provides another limit on nesting.
-See <a href="Local-Variables.html#Definition-of-max_002dspecpdl_002dsize">Local Variables</a>.
+<p><code class="code">max-specpdl-size</code> provides another limit on nesting.
+See <a class="xref" href="Local-Variables.html#Definition-of-max_002dspecpdl_002dsize">Local Variables</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-values">Variable: <strong>values</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-values"><span class="category-def">Variable: </span><span><strong class="def-name">values</strong><a class="copiable-link" href="#index-values"> &para;</a></span></dt>
 <dd><p>The value of this variable is a list of the values returned by all the
 expressions that were read, evaluated, and printed from buffers
 (including the minibuffer) by the standard Emacs commands which do
-this.  (Note that this does <em>not</em> include evaluation in
-<samp>*ielm*</samp> buffers, nor evaluation using <kbd>C-j</kbd> in
-<code>lisp-interaction-mode</code>.)  The elements are ordered most recent
+this.  (Note that this does <em class="emph">not</em> include evaluation in
+<samp class="file">*ielm*</samp> buffers, nor evaluation using <kbd class="kbd">C-j</kbd> in
+<code class="code">lisp-interaction-mode</code>.)  The elements are ordered most recent
 first.
 </p>
 <div class="example">
-<pre class="example">(setq x 1)
+<div class="group"><pre class="example-preformatted">(setq x 1)
      &rArr; 1
-</pre><pre class="example">(list 'A (1+ 2) auto-save-default)
+</pre></div><div class="group"><pre class="example-preformatted">(list 'A (1+ 2) auto-save-default)
      &rArr; (A 3 t)
-</pre><pre class="example">values
-     &rArr; ((A 3 t) 1 &hellip;)
-</pre></div>
+</pre></div><div class="group"><pre class="example-preformatted">values
+     &rArr; ((A 3 t) 1 ...)
+</pre></div></div>
 
 <p>This variable is useful for referring back to values of forms recently
 evaluated.  It is generally a bad idea to print the value of
-<code>values</code> itself, since this may be very long.  Instead, examine
+<code class="code">values</code> itself, since this may be very long.  Instead, examine
 particular elements, like this:
 </p>
 <div class="example">
-<pre class="example">;; <span class="roman">Refer to the most recent evaluation result.</span>
+<div class="group"><pre class="example-preformatted">;; <span class="r">Refer to the most recent evaluation result.</span>
 (nth 0 values)
      &rArr; (A 3 t)
-</pre><pre class="example">;; <span class="roman">That put a new element on,</span>
-;;   <span class="roman">so all elements move back one.</span>
+</pre></div><div class="group"><pre class="example-preformatted">;; <span class="r">That put a new element on,</span>
+;;   <span class="r">so all elements move back one.</span>
 (nth 1 values)
      &rArr; (A 3 t)
-</pre><pre class="example">;; <span class="roman">This gets the element that was next-to-most-recent</span>
-;;   <span class="roman">before this example.</span>
+</pre></div><div class="group"><pre class="example-preformatted">;; <span class="r">This gets the element that was next-to-most-recent</span>
+;;   <span class="r">before this example.</span>
 (nth 3 values)
      &rArr; 1
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Backquote.html" accesskey="p" rel="prev">Backquote</a>, Up: <a href="Evaluation.html" accesskey="u" rel="up">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Backquote.html">Backquote</a>, Up: <a href="Evaluation.html">Evaluation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

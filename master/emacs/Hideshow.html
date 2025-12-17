@@ -1,10 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
-updated for Emacs version 29.0.50.
+updated for Emacs version 31.0.50.
 
-Copyright © 1985-1987, 1993-2021 Free Software Foundation,
-Inc.
+Copyright © 1985-2025 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -18,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Hideshow (GNU Emacs Manual)</title>
 
 <meta name="description" content="Hideshow (GNU Emacs Manual)">
@@ -28,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Programs.html" rel="up" title="Programs">
 <link href="Symbol-Completion.html" rel="next" title="Symbol Completion">
-<link href="Lisp-Doc.html" rel="prev" title="Lisp Doc">
+<link href="Documentation.html" rel="prev" title="Documentation">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,20 +49,21 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Hideshow"></span><div class="header">
+<div class="section-level-extent" id="Hideshow">
+<div class="nav-panel">
 <p>
-Next: <a href="Symbol-Completion.html" accesskey="n" rel="next">Symbol Completion</a>, Previous: <a href="Documentation.html" accesskey="p" rel="prev">Documentation</a>, Up: <a href="Programs.html" accesskey="u" rel="up">Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Symbol-Completion.html" accesskey="n" rel="next">Completion for Symbol Names</a>, Previous: <a href="Documentation.html" accesskey="p" rel="prev">Documentation Lookup</a>, Up: <a href="Programs.html" accesskey="u" rel="up">Editing Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Hideshow-minor-mode"></span><h3 class="section">26.7 Hideshow minor mode</h3>
-<span id="index-Hideshow-mode"></span>
-<span id="index-mode_002c-Hideshow"></span>
+<h3 class="section" id="Hideshow-minor-mode"><span>28.7 Hideshow minor mode<a class="copiable-link" href="#Hideshow-minor-mode"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-Hideshow-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Hideshow"></a>
 
-<span id="index-hs_002dminor_002dmode"></span>
+<a class="index-entry-id" id="index-hs_002dminor_002dmode"></a>
 <p>Hideshow mode is a buffer-local minor mode that allows you to
 selectively display portions of a program, which are referred to as
-<em>blocks</em>.  Type <kbd>M-x hs-minor-mode</kbd> to toggle this minor mode
-(see <a href="Minor-Modes.html">Minor Modes</a>).
+<em class="dfn">blocks</em>.  Type <kbd class="kbd">M-x hs-minor-mode</kbd> to toggle this minor mode
+(see <a class="pxref" href="Minor-Modes.html">Minor Modes</a>).
 </p>
 <p>When you use Hideshow mode to hide a block, the block disappears
 from the screen, to be replaced by an ellipsis (three periods in a
@@ -79,79 +71,136 @@ row).  Just what constitutes a block depends on the major mode.  In C
 mode and related modes, blocks are delimited by braces, while in Lisp
 mode they are delimited by parentheses.  Multi-line comments also
 count as blocks.
+<a class="index-entry-id" id="index-hs_002dprefix_002dmap"></a>
 </p>
-<p>Hideshow mode provides the following commands:
+<p>Hideshow mode provides the following commands (defined in <code class="code">hs-prefix-map</code>):
 </p>
-<span id="index-hs_002dhide_002dall"></span>
-<span id="index-hs_002dhide_002dblock"></span>
-<span id="index-hs_002dshow_002dall"></span>
-<span id="index-hs_002dshow_002dblock"></span>
-<span id="index-hs_002dshow_002dregion"></span>
-<span id="index-hs_002dhide_002dlevel"></span>
-<span id="index-hs_002dtoggle_002dhiding"></span>
-<span id="index-hs_002dmouse_002dtoggle_002dhiding"></span>
-<span id="index-C_002dc-_0040-C_002dh"></span>
-<span id="index-C_002dc-_0040-C_002ds"></span>
-<span id="index-C_002dc-_0040-C_002dc"></span>
-<span id="index-C_002dc-_0040-C_002dM_002dh"></span>
-<span id="index-C_002dc-_0040-C_002dM_002ds"></span>
-<span id="index-C_002dc-_0040-C_002dr"></span>
-<span id="index-C_002dc-_0040-C_002dl"></span>
-<span id="index-S_002dmouse_002d2"></span>
-<dl compact="compact">
-<dt><kbd>C-c @ C-h</kbd></dt>
-<dt><kbd>C-c @ C-d</kbd></dt>
-<dd><p>Hide the current block (<code>hs-hide-block</code>).
+<a class="index-entry-id" id="index-hs_002dhide_002dall"></a>
+<a class="index-entry-id" id="index-hs_002dhide_002dblock"></a>
+<a class="index-entry-id" id="index-hs_002dshow_002dall"></a>
+<a class="index-entry-id" id="index-hs_002dshow_002dblock"></a>
+<a class="index-entry-id" id="index-hs_002dshow_002dregion"></a>
+<a class="index-entry-id" id="index-hs_002dhide_002dlevel"></a>
+<a class="index-entry-id" id="index-hs_002dtoggle_002dhiding"></a>
+<a class="index-entry-id" id="index-hs_002dcycle"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-C_002dh"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-C_002ds"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-C_002dc"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-C_002dM_002dh"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-C_002dM_002ds"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-C_002dr"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-C_002dl"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-TAB"></a>
+<a class="index-entry-id" id="index-C_002dc-_0040-_003cbacktab_003e"></a>
+<a class="index-entry-id" id="index-S_002dmouse_002d2"></a>
+<dl class="table">
+<dt><kbd class="kbd">C-c @ C-h</kbd></dt>
+<dt><kbd class="kbd">C-c @ C-d</kbd></dt>
+<dd><p>Hide the current block (<code class="code">hs-hide-block</code>).
 </p></dd>
-<dt><kbd>C-c @ C-s</kbd></dt>
-<dd><p>Show the current block (<code>hs-show-block</code>).
+<dt><kbd class="kbd">C-c @ C-s</kbd></dt>
+<dd><p>Show the current block (<code class="code">hs-show-block</code>).
 </p></dd>
-<dt><kbd>C-c @ C-c</kbd></dt>
-<dt><kbd>C-c @ C-e</kbd></dt>
-<dd><p>Either hide or show the current block (<code>hs-toggle-hiding</code>).
+<dt><kbd class="kbd">C-c @ C-c</kbd></dt>
+<dt><kbd class="kbd">C-c @ C-e</kbd></dt>
+<dt><kbd class="kbd">S-mouse-2</kbd></dt>
+<dd><p>Either hide or show the current block (<code class="code">hs-toggle-hiding</code>).
 </p></dd>
-<dt><kbd>S-mouse-2</kbd></dt>
-<dd><p>Toggle hiding for the block you click on (<code>hs-mouse-toggle-hiding</code>).
+<dt><kbd class="kbd">C-c @ C-M-h</kbd></dt>
+<dt><kbd class="kbd">C-c @ C-t</kbd></dt>
+<dd><p>Hide all top-level blocks (<code class="code">hs-hide-all</code>).
 </p></dd>
-<dt><kbd>C-c @ C-M-h</kbd></dt>
-<dt><kbd>C-c @ C-t</kbd></dt>
-<dd><p>Hide all top-level blocks (<code>hs-hide-all</code>).
+<dt><kbd class="kbd">C-c @ C-M-s</kbd></dt>
+<dt><kbd class="kbd">C-c @ C-a</kbd></dt>
+<dd><p>Show all blocks in the buffer (<code class="code">hs-show-all</code>).
 </p></dd>
-<dt><kbd>C-c @ C-M-s</kbd></dt>
-<dt><kbd>C-c @ C-a</kbd></dt>
-<dd><p>Show all blocks in the buffer (<code>hs-show-all</code>).
+<dt><kbd class="kbd">C-u <var class="var">n</var> C-c @ C-l</kbd></dt>
+<dd><p>Hide all blocks <var class="var">n</var> levels below this block
+(<code class="code">hs-hide-level</code>).
 </p></dd>
-<dt><kbd>C-u <var>n</var> C-c @ C-l</kbd></dt>
-<dd><p>Hide all blocks <var>n</var> levels below this block
-(<code>hs-hide-level</code>).
+<dt><kbd class="kbd">C-c @ TAB</kbd></dt>
+<dd><p>Cycle the visibility state of the current block (<code class="code">hs-cycle</code>).
+</p></dd>
+<dt><kbd class="kbd">C-c @ &lt;backtab&gt;</kbd></dt>
+<dd><p>Either hide or show all the blocks in the current buffer. (<code class="code">hs-toggle-all</code>).
 </p></dd>
 </dl>
 
-<span id="index-hs_002dhide_002dcomments_002dwhen_002dhiding_002dall"></span>
-<span id="index-hs_002disearch_002dopen"></span>
-<span id="index-hs_002dspecial_002dmodes_002dalist"></span>
+<a class="index-entry-id" id="index-hs_002dhide_002dcomments_002dwhen_002dhiding_002dall"></a>
+<a class="index-entry-id" id="index-hs_002ddisplay_002dlines_002dhidden"></a>
+<a class="index-entry-id" id="index-hs_002dshow_002dindicators"></a>
+<a class="index-entry-id" id="index-hs_002dindicator_002dtype"></a>
+<a class="index-entry-id" id="index-hs_002dindicator_002dmaximum_002dbuffer_002dsize"></a>
+<a class="index-entry-id" id="index-hs_002disearch_002dopen"></a>
+<a class="index-entry-id" id="index-hs_002dhide_002dblock_002dbehavior"></a>
+<a class="index-entry-id" id="index-hs_002dcycle_002dfilter"></a>
 <p>These variables can be used to customize Hideshow mode:
 </p>
-<dl compact="compact">
-<dt><code>hs-hide-comments-when-hiding-all</code></dt>
-<dd><p>If non-<code>nil</code>, <kbd>C-c @ C-M-h</kbd> (<code>hs-hide-all</code>) hides
+<dl class="table">
+<dt><code class="code">hs-hide-comments-when-hiding-all</code></dt>
+<dd><p>If non-<code class="code">nil</code>, <kbd class="kbd">C-c @ C-M-h</kbd> (<code class="code">hs-hide-all</code>) hides
 comments too.
 </p>
 </dd>
-<dt><code>hs-isearch-open</code></dt>
+<dt><code class="code">hs-hide-block-behavior</code></dt>
+<dd><p>This variable controls how <code class="code">hs-hide-block</code> and
+<code class="code">hs-toggle-hiding</code> should hide a block.  The possible values can be
+&rsquo;after-bol&rsquo;, hide the innermost block to which the current line belongs;
+or &rsquo;after-cursor&rsquo;, hide the block after cursor position.
+</p>
+</dd>
+<dt><code class="code">hs-display-lines-hidden</code></dt>
+<dd><p>If non-<code class="code">nil</code>, display the number of hidden lines next to the
+ellipsis.
+</p>
+</dd>
+<dt><code class="code">hs-show-indicators</code></dt>
+<dd><p>This variable controls whether Hideshow mode should display indicators
+of hidden and shown blocks.  The indicators also allow toggling the
+hide/show state of each block.  If the value is non-<code class="code">nil</code>, it enables
+the indicators.  The default is <code class="code">nil</code>, which disables
+the indicators.
+</p>
+</dd>
+<dt><code class="code">hs-indicator-type</code></dt>
+<dd><p>This variable controls where to show the indicators, if they are
+enabled.  You can show them on the fringe (see <a class="pxref" href="Fringes.html">Window Fringes</a>) or
+in the window&rsquo;s margin.  The default is to use the fringe if it&rsquo;s
+available, otherwise to use the margin.
+</p>
+</dd>
+<dt><code class="code">hs-indicator-maximum-buffer-size</code></dt>
+<dd><p>This variable limits the display of hideshow indicators to buffers that
+are not too large.  (Larger buffers might adversely affect redisplay
+performance.)  By default, buffers larger than 2MB have the indicators
+disabled; the value of <code class="code">nil</code> will activate the indicators
+regardless of the buffer size.
+</p>
+</dd>
+<dt><code class="code">hs-cycle-filter</code></dt>
+<dd><p>This variable controls where on the line with hideable blocks typing the
+<kbd class="kbd"><kbd class="key">TAB</kbd></kbd> key will cycle the visibility of the blocks.  Depending
+on its non-<code class="code">nil</code> value, <kbd class="key">TAB</kbd> can be active on different parts
+of such lines.  Anywhere else on the line <kbd class="key">TAB</kbd> has its default key
+binding.  The value <code class="code">nil</code> means <kbd class="key">TAB</kbd> cannot cycle the
+visibility of the blocks anywhere on the heading line.
+</p>
+</dd>
+<dt><code class="code">hs-isearch-open</code></dt>
 <dd><p>This variable specifies the conditions under which incremental search
 should unhide a hidden block when matching text occurs within the
-block.  Its value should be either <code>code</code> (unhide only code
-blocks), <code>comment</code> (unhide only comments), <code>t</code> (unhide both
-code blocks and comments), or <code>nil</code> (unhide neither code blocks
-nor comments).  The default value is <code>code</code>.
+block.  Its value should be either <code class="code">code</code> (unhide only code
+blocks), <code class="code">comment</code> (unhide only comments), <code class="code">t</code> (unhide both
+code blocks and comments), or <code class="code">nil</code> (unhide neither code blocks
+nor comments).  The default value is <code class="code">code</code>.
 </p></dd>
 </dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Symbol-Completion.html" accesskey="n" rel="next">Symbol Completion</a>, Previous: <a href="Documentation.html" accesskey="p" rel="prev">Documentation</a>, Up: <a href="Programs.html" accesskey="u" rel="up">Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Symbol-Completion.html">Completion for Symbol Names</a>, Previous: <a href="Documentation.html">Documentation Lookup</a>, Up: <a href="Programs.html">Editing Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

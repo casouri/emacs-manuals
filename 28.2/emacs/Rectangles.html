@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.2.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Rectangles (GNU Emacs Manual)</title>
+
+<meta name="description" content="Rectangles (GNU Emacs Manual)">
+<meta name="keywords" content="Rectangles (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Killing.html" rel="up" title="Killing">
+<link href="CUA-Bindings.html" rel="next" title="CUA Bindings">
+<link href="Accumulating-Text.html" rel="prev" title="Accumulating Text">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Rectangles">
+<div class="nav-panel">
+<p>
+Next: <a href="CUA-Bindings.html" accesskey="n" rel="next">CUA Bindings</a>, Previous: <a href="Accumulating-Text.html" accesskey="p" rel="prev">Accumulating Text</a>, Up: <a href="Killing.html" accesskey="u" rel="up">Killing and Moving Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Rectangles-1"><span>12.5 Rectangles<a class="copiable-link" href="#Rectangles-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-rectangle"></a>
+<a class="index-entry-id" id="index-columns-_0028and-rectangles_0029"></a>
+<a class="index-entry-id" id="index-killing-rectangular-areas-of-text"></a>
+
+<p><em class="dfn">Rectangle</em> commands operate on rectangular areas of the text:
+all the characters between a certain pair of columns, in a certain
+range of lines.  Emacs has commands to kill rectangles, yank killed
+rectangles, clear them out, fill them with blanks or text, or delete
+them.  Rectangle commands are useful with text in multicolumn formats,
+and for changing text into or out of such formats.
+</p>
+<a class="index-entry-id" id="index-mark-rectangle"></a>
+<a class="index-entry-id" id="index-region_002drectangle"></a>
+<a class="index-entry-id" id="index-rectangular-region"></a>
+<p>To specify a rectangle for a command to work on, set the mark at one
+corner and point at the opposite corner.  The rectangle thus specified
+is called the <em class="dfn">region-rectangle</em>.  If point and the mark are in
+the same column, the region-rectangle is empty.  If they are in the
+same line, the region-rectangle is one line high.
+</p>
+<p>The region-rectangle is controlled in much the same way as the
+region is controlled.  But remember that a given combination of point
+and mark values can be interpreted either as a region or as a
+rectangle, depending on the command that uses them.
+</p>
+<p>A rectangular region can also be marked using the mouse: click and drag
+<kbd class="kbd">C-M-mouse-1</kbd> from one corner of the rectangle to the opposite.
+</p>
+<dl class="table">
+<dt><kbd class="kbd">C-x r k</kbd></dt>
+<dd><p>Kill the text of the region-rectangle, saving its contents as the
+last killed rectangle (<code class="code">kill-rectangle</code>).
+</p></dd>
+<dt><kbd class="kbd">C-x r M-w</kbd></dt>
+<dd><p>Save the text of the region-rectangle as the last killed rectangle
+(<code class="code">copy-rectangle-as-kill</code>).
+</p></dd>
+<dt><kbd class="kbd">C-x r d</kbd></dt>
+<dd><p>Delete the text of the region-rectangle (<code class="code">delete-rectangle</code>).
+</p></dd>
+<dt><kbd class="kbd">C-x r y</kbd></dt>
+<dd><p>Yank the last killed rectangle with its upper left corner at point
+(<code class="code">yank-rectangle</code>).
+</p></dd>
+<dt><kbd class="kbd">C-x r o</kbd></dt>
+<dd><p>Insert blank space to fill the space of the region-rectangle
+(<code class="code">open-rectangle</code>).  This pushes the previous contents of the
+region-rectangle to the right.
+</p></dd>
+<dt><kbd class="kbd">C-x r N</kbd></dt>
+<dd><p>Insert line numbers along the left edge of the region-rectangle
+(<code class="code">rectangle-number-lines</code>).  This pushes the previous contents of
+the region-rectangle to the right.
+</p></dd>
+<dt><kbd class="kbd">C-x r c</kbd></dt>
+<dd><p>Clear the region-rectangle by replacing all of its contents with spaces
+(<code class="code">clear-rectangle</code>).
+</p></dd>
+<dt><kbd class="kbd">M-x delete-whitespace-rectangle</kbd></dt>
+<dd><p>Delete whitespace in each of the lines on the specified rectangle,
+starting from the left edge column of the rectangle.
+</p></dd>
+<dt><kbd class="kbd">C-x r t <var class="var">string</var> <kbd class="key">RET</kbd></kbd></dt>
+<dd><p>Replace rectangle contents with <var class="var">string</var> on each line
+(<code class="code">string-rectangle</code>).
+</p></dd>
+<dt><kbd class="kbd">M-x string-insert-rectangle <kbd class="key">RET</kbd> <var class="var">string</var> <kbd class="key">RET</kbd></kbd></dt>
+<dd><p>Insert <var class="var">string</var> on each line of the rectangle.
+</p></dd>
+<dt><kbd class="kbd">C-x <kbd class="key">SPC</kbd></kbd></dt>
+<dd><p>Toggle Rectangle Mark mode (<code class="code">rectangle-mark-mode</code>).
+When this mode is active, the region-rectangle is highlighted and can
+be shrunk/grown, and the standard kill and yank commands operate on it.
+</p></dd>
+</dl>
+
+<p>The rectangle operations fall into two classes: commands to erase or
+insert rectangles, and commands to make blank rectangles.
+</p>
+<a class="index-entry-id" id="index-C_002dx-r-k"></a>
+<a class="index-entry-id" id="index-C_002dx-r-d"></a>
+<a class="index-entry-id" id="index-kill_002drectangle"></a>
+<a class="index-entry-id" id="index-delete_002drectangle"></a>
+<p>There are two ways to erase the text in a rectangle: <kbd class="kbd">C-x r d</kbd>
+(<code class="code">delete-rectangle</code>) to delete the text outright, or <kbd class="kbd">C-x r
+k</kbd> (<code class="code">kill-rectangle</code>) to remove the text and save it as the
+<em class="dfn">last killed rectangle</em>.  In both cases, erasing the
+region-rectangle is like erasing the specified text on each line of
+the rectangle; if there is any following text on the line, it moves
+backwards to fill the gap.
+</p>
+<p>Killing a rectangle is not killing in the usual sense; the
+rectangle is not stored in the kill ring, but in a special place that
+only records the most recent rectangle killed.  This is because
+yanking a rectangle is so different from yanking linear text that
+different yank commands have to be used.  Yank-popping is not defined
+for rectangles.
+</p>
+<a class="index-entry-id" id="index-C_002dx-r-M_002dw"></a>
+<a class="index-entry-id" id="index-copy_002drectangle_002das_002dkill"></a>
+<p><kbd class="kbd">C-x r M-w</kbd> (<code class="code">copy-rectangle-as-kill</code>) is the equivalent of
+<kbd class="kbd">M-w</kbd> for rectangles: it records the rectangle as the last
+killed rectangle, without deleting the text from the buffer.
+</p>
+<a class="index-entry-id" id="index-C_002dx-r-y"></a>
+<a class="index-entry-id" id="index-yank_002drectangle"></a>
+<p>To yank the last killed rectangle, type <kbd class="kbd">C-x r y</kbd>
+(<code class="code">yank-rectangle</code>).  The rectangle&rsquo;s first line is inserted at
+point, the rectangle&rsquo;s second line is inserted at the same horizontal
+position one line vertically below, and so on.  The number of lines
+affected is determined by the height of the saved rectangle.
+</p>
+<p>For example, you can convert two single-column lists into a
+double-column list by killing one of the single-column lists as a
+rectangle, and then yanking it beside the other list.
+</p>
+<p>You can also copy rectangles into and out of registers with <kbd class="kbd">C-x r
+r <var class="var">r</var></kbd> and <kbd class="kbd">C-x r i <var class="var">r</var></kbd>.  See <a class="xref" href="Rectangle-Registers.html">Saving Rectangles in Registers</a>.
+</p>
+<a class="index-entry-id" id="index-C_002dx-r-o"></a>
+<a class="index-entry-id" id="index-open_002drectangle"></a>
+<a class="index-entry-id" id="index-C_002dx-r-c"></a>
+<a class="index-entry-id" id="index-clear_002drectangle"></a>
+<p>There are two commands you can use for making blank rectangles:
+<kbd class="kbd">C-x r c</kbd> (<code class="code">clear-rectangle</code>) blanks out existing text in the
+region-rectangle, and <kbd class="kbd">C-x r o</kbd> (<code class="code">open-rectangle</code>) inserts a
+blank rectangle.
+</p>
+<a class="index-entry-id" id="index-delete_002dwhitespace_002drectangle"></a>
+<p><kbd class="kbd">M-x delete-whitespace-rectangle</kbd> deletes horizontal whitespace
+starting from a particular column.  This applies to each of the lines
+in the rectangle, and the column is specified by the left edge of the
+rectangle.  The right edge of the rectangle does not make any
+difference to this command.
+</p>
+<a class="index-entry-id" id="index-C_002dx-r-N"></a>
+<a class="index-entry-id" id="index-rectangle-1"></a>
+<p>The command <kbd class="kbd">C-x r N</kbd> (<code class="code">rectangle-number-lines</code>) inserts
+line numbers along the left edge of the region-rectangle.  Normally,
+the numbering begins from 1 (for the first line of the rectangle).
+With a prefix argument, the command prompts for a number to begin
+from, and for a format string with which to print the numbers
+(see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Formatting-Strings.html#Formatting-Strings">Formatting Strings</a> in <cite class="cite">The Emacs Lisp Reference
+Manual</cite>).
+</p>
+<a class="index-entry-id" id="index-C_002dx-r-t"></a>
+<a class="index-entry-id" id="index-string_002drectangle"></a>
+<p>The command <kbd class="kbd">C-x r t</kbd> (<code class="code">string-rectangle</code>) replaces the
+contents of a region-rectangle with a string on each line.  The
+string&rsquo;s width need not be the same as the width of the rectangle.  If
+the string&rsquo;s width is less, the text after the rectangle shifts left;
+if the string is wider than the rectangle, the text after the
+rectangle shifts right.
+</p>
+<a class="index-entry-id" id="index-string_002dinsert_002drectangle"></a>
+<p>The command <kbd class="kbd">M-x string-insert-rectangle</kbd> is similar to
+<code class="code">string-rectangle</code>, but inserts the string on each line,
+shifting the original text to the right.
+</p>
+<a class="index-entry-id" id="index-rectangle_002dmark_002dmode"></a>
+<p>The command <kbd class="kbd">C-x <kbd class="key">SPC</kbd></kbd> (<code class="code">rectangle-mark-mode</code>) toggles
+whether the region-rectangle or the standard region is highlighted
+(first activating the region if necessary).  When this mode is enabled,
+commands that resize the region (<kbd class="kbd">C-f</kbd>, <kbd class="kbd">C-n</kbd> etc.) do
+so in a rectangular fashion, and killing and yanking operate on the
+rectangle.  See <a class="xref" href="Killing.html">Killing and Moving Text</a>.  The mode persists only as long as the
+region is active.
+</p>
+<p>The region-rectangle works only when the mark is active.  In
+particular, when Transient Mark mode is off (see <a class="pxref" href="Disabled-Transient-Mark.html">Disabling Transient Mark Mode</a>), in addition to typing <kbd class="kbd">C-x <kbd class="key">SPC</kbd></kbd> you will need to
+activate the mark.
+</p>
+<p>Unlike the standard region, the region-rectangle can have its corners
+extended past the end of buffer, or inside stretches of white space
+that point normally cannot enter, like in the middle of a TAB
+character.
+</p>
+<a class="index-entry-id" id="index-rectangle_002dexchange_002dpoint_002dand_002dmark"></a>
+<a class="index-entry-id" id="index-exchange_002dpoint_002dand_002dmark_002c-in-rectangle_002dmark_002dmode"></a>
+<a class="index-entry-id" id="index-C_002dx-C_002dx_002c-in-rectangle_002dmark_002dmode"></a>
+<p>When the region is active (see <a class="pxref" href="Mark.html">The Mark and the Region</a>) and in rectangle-mark-mode,
+<kbd class="kbd">C-x C-x</kbd> runs the command
+<code class="code">rectangle-exchange-point-and-mark</code>, which cycles between the
+four corners of the region-rectangle.  This comes in handy if you want
+to modify the dimensions of the region-rectangle before invoking an
+operation on the marked text.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="CUA-Bindings.html">CUA Bindings</a>, Previous: <a href="Accumulating-Text.html">Accumulating Text</a>, Up: <a href="Killing.html">Killing and Moving Text</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

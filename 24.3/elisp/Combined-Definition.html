@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Combined Definition (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Combined Definition (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,21 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Advising-Functions.html" rel="up" title="Advising Functions">
-<link href="Debugging.html" rel="next" title="Debugging">
 <link href="Argument-Access-in-Advice.html" rel="prev" title="Argument Access in Advice">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+pre.display-preformatted {font-family: inherit}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,77 +48,79 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Combined-Definition"></span><div class="header">
+<div class="section-level-extent" id="Combined-Definition">
+<div class="nav-panel">
 <p>
-Previous: <a href="Argument-Access-in-Advice.html" accesskey="p" rel="prev">Argument Access in Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Argument-Access-in-Advice.html" accesskey="p" rel="prev">Argument Access in Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="The-Combined-Definition"></span><h3 class="section">17.9 The Combined Definition</h3>
+<h3 class="section" id="The-Combined-Definition"><span>17.9 The Combined Definition<a class="copiable-link" href="#The-Combined-Definition"> &para;</a></span></h3>
 
-<p>Suppose that a function has <var>n</var> pieces of before-advice
-(numbered from 0 through <var>n</var>-1), <var>m</var> pieces of
-around-advice and <var>k</var> pieces of after-advice.  Assuming no piece
+<p>Suppose that a function has <var class="var">n</var> pieces of before-advice
+(numbered from 0 through <var class="var">n</var>&minus;1), <var class="var">m</var> pieces of
+around-advice and <var class="var">k</var> pieces of after-advice.  Assuming no piece
 of advice is protected, the combined definition produced to implement
 the advice for a function looks like this:
 </p>
 <div class="example">
-<pre class="example">(lambda <var>arglist</var>
-  <span class="roman">[</span> <span class="roman">[</span><var>advised-docstring</var><span class="roman">]</span> <span class="roman">[</span>(interactive ...)<span class="roman">]</span> <span class="roman">]</span>
+<pre class="example-preformatted">(lambda <var class="var">arglist</var>
+  <span class="r">[</span> <span class="r">[</span><var class="var">advised-docstring</var><span class="r">]</span> <span class="r">[</span>(interactive ...)<span class="r">]</span> <span class="r">]</span>
   (let (ad-return-value)
-    <span class="roman">before-0-body-form</span>...
+    <span class="r">before-0-body-form</span>...
          ....
-    <span class="roman">before-<var>n</var>-1-body-form</span>...
-    <span class="roman">around-0-body-form</span>...
-       <span class="roman">around-1-body-form</span>...
+    <span class="r">before-<var class="var">n</var>&minus;1-body-form</span>...
+    <span class="r">around-0-body-form</span>...
+       <span class="r">around-1-body-form</span>...
              ....
-          <span class="roman">around-<var>m</var>-1-body-form</span>...
+          <span class="r">around-<var class="var">m</var>&minus;1-body-form</span>...
              (setq ad-return-value
-                   <span class="roman">apply original definition to <var>arglist</var></span>)
-          <span class="roman">end-of-around-<var>m</var>-1-body-form</span>...
+                   <span class="r">apply original definition to <var class="var">arglist</var></span>)
+          <span class="r">end-of-around-<var class="var">m</var>&minus;1-body-form</span>...
              ....
-       <span class="roman">end-of-around-1-body-form</span>...
-    <span class="roman">end-of-around-0-body-form</span>...
-    <span class="roman">after-0-body-form</span>...
+       <span class="r">end-of-around-1-body-form</span>...
+    <span class="r">end-of-around-0-body-form</span>...
+    <span class="r">after-0-body-form</span>...
           ....
-    <span class="roman">after-<var>k</var>-1-body-form</span>...
+    <span class="r">after-<var class="var">k</var>&minus;1-body-form</span>...
     ad-return-value))
 </pre></div>
 
-<p>Macros are redefined as macros, which means adding <code>macro</code> to
+<p>Macros are redefined as macros, which means adding <code class="code">macro</code> to
 the beginning of the combined definition.
 </p>
 <p>The interactive form is present if the original function or some piece
 of advice specifies one.  When an interactive primitive function is
 advised, advice uses a special method: it calls the primitive with
-<code>call-interactively</code> so that it will read its own arguments.
+<code class="code">call-interactively</code> so that it will read its own arguments.
 In this case, the advice cannot access the arguments.
 </p>
 <p>The body forms of the various advice in each class are assembled
-according to their specified order.  The forms of around-advice <var>l</var>
-are included in one of the forms of around-advice <var>l</var> - 1.
+according to their specified order.  The forms of around-advice <var class="var">l</var>
+are included in one of the forms of around-advice <var class="var">l</var> &minus; 1.
 </p>
 <p>The innermost part of the around advice onion is
 </p>
 <div class="display">
-<pre class="display">apply original definition to <var>arglist</var>
+<pre class="display-preformatted">apply original definition to <var class="var">arglist</var>
 </pre></div>
 
 <p>whose form depends on the type of the original function.  The variable
-<code>ad-return-value</code> is set to whatever this returns.  The variable is
+<code class="code">ad-return-value</code> is set to whatever this returns.  The variable is
 visible to all pieces of advice, which can access and modify it before
 it is actually returned from the advised function.
 </p>
 <p>The semantic structure of advised functions that contain protected
 pieces of advice is the same.  The only difference is that
-<code>unwind-protect</code> forms ensure that the protected advice gets
+<code class="code">unwind-protect</code> forms ensure that the protected advice gets
 executed even if some previous piece of advice had an error or a
 non-local exit.  If any around-advice is protected, then the whole
 around-advice onion is protected as a result.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Argument-Access-in-Advice.html" accesskey="p" rel="prev">Argument Access in Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Argument-Access-in-Advice.html">Argument Access in Advice</a>, Up: <a href="Advising-Functions.html">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

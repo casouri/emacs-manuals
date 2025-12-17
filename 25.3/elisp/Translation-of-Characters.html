@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Translation of Characters (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Translation of Characters (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Scanning-Charsets.html" rel="prev" title="Scanning Charsets">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,16 +47,17 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Translation-of-Characters"></span><div class="header">
+<div class="section-level-extent" id="Translation-of-Characters">
+<div class="nav-panel">
 <p>
-Next: <a href="Coding-Systems.html" accesskey="n" rel="next">Coding Systems</a>, Previous: <a href="Scanning-Charsets.html" accesskey="p" rel="prev">Scanning Charsets</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-ASCII Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Coding-Systems.html" accesskey="n" rel="next">Coding Systems</a>, Previous: <a href="Scanning-Charsets.html" accesskey="p" rel="prev">Scanning for Character Sets</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-<abbr class="acronym">ASCII</abbr> Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Translation-of-Characters-1"></span><h3 class="section">32.9 Translation of Characters</h3>
-<span id="index-character-translation-tables"></span>
-<span id="index-translation-tables"></span>
+<h3 class="section" id="Translation-of-Characters-1"><span>32.9 Translation of Characters<a class="copiable-link" href="#Translation-of-Characters-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-character-translation-tables"></a>
+<a class="index-entry-id" id="index-translation-tables"></a>
 
-<p>A <em>translation table</em> is a char-table (see <a href="Char_002dTables.html">Char-Tables</a>) that
+<p>A <em class="dfn">translation table</em> is a char-table (see <a class="pxref" href="Char_002dTables.html">Char-Tables</a>) that
 specifies a mapping of characters into characters.  These tables are
 used in encoding and decoding, and for other purposes.  Some coding
 systems specify their own particular translation tables; there are
@@ -73,60 +65,60 @@ also default translation tables which apply to all other coding
 systems.
 </p>
 <p>A translation table has two extra slots.  The first is either
-<code>nil</code> or a translation table that performs the reverse
+<code class="code">nil</code> or a translation table that performs the reverse
 translation; the second is the maximum number of characters to look up
 for translating sequences of characters (see the description of
-<code>make-translation-table-from-alist</code> below).
+<code class="code">make-translation-table-from-alist</code> below).
 </p>
-<dl>
-<dt id="index-make_002dtranslation_002dtable">Function: <strong>make-translation-table</strong> <em>&amp;rest translations</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dtranslation_002dtable"><span class="category-def">Function: </span><span><strong class="def-name">make-translation-table</strong> <var class="def-var-arguments">&amp;rest translations</var><a class="copiable-link" href="#index-make_002dtranslation_002dtable"> &para;</a></span></dt>
 <dd><p>This function returns a translation table based on the argument
-<var>translations</var>.  Each element of <var>translations</var> should be a
-list of elements of the form <code>(<var>from</var> . <var>to</var>)</code>; this says
-to translate the character <var>from</var> into <var>to</var>.
+<var class="var">translations</var>.  Each element of <var class="var">translations</var> should be a
+list of elements of the form <code class="code">(<var class="var">from</var> . <var class="var">to</var>)</code>; this says
+to translate the character <var class="var">from</var> into <var class="var">to</var>.
 </p>
 <p>The arguments and the forms in each argument are processed in order,
-and if a previous form already translates <var>to</var> to some other
-character, say <var>to-alt</var>, <var>from</var> is also translated to
-<var>to-alt</var>.
+and if a previous form already translates <var class="var">to</var> to some other
+character, say <var class="var">to-alt</var>, <var class="var">from</var> is also translated to
+<var class="var">to-alt</var>.
 </p></dd></dl>
 
 <p>During decoding, the translation table&rsquo;s translations are applied to
 the characters that result from ordinary decoding.  If a coding system
-has the property <code>:decode-translation-table</code>, that specifies the
+has the property <code class="code">:decode-translation-table</code>, that specifies the
 translation table to use, or a list of translation tables to apply in
 sequence.  (This is a property of the coding system, as returned by
-<code>coding-system-get</code>, not a property of the symbol that is the
-coding system&rsquo;s name.  See <a href="Coding-System-Basics.html">Basic Concepts of
+<code class="code">coding-system-get</code>, not a property of the symbol that is the
+coding system&rsquo;s name.  See <a class="xref" href="Coding-System-Basics.html">Basic Concepts of
 Coding Systems</a>.)  Finally, if
-<code>standard-translation-table-for-decode</code> is non-<code>nil</code>, the
+<code class="code">standard-translation-table-for-decode</code> is non-<code class="code">nil</code>, the
 resulting characters are translated by that table.
 </p>
 <p>During encoding, the translation table&rsquo;s translations are applied to
 the characters in the buffer, and the result of translation is
 actually encoded.  If a coding system has property
-<code>:encode-translation-table</code>, that specifies the translation table
+<code class="code">:encode-translation-table</code>, that specifies the translation table
 to use, or a list of translation tables to apply in sequence.  In
-addition, if the variable <code>standard-translation-table-for-encode</code>
-is non-<code>nil</code>, it specifies the translation table to use for
+addition, if the variable <code class="code">standard-translation-table-for-encode</code>
+is non-<code class="code">nil</code>, it specifies the translation table to use for
 translating the result.
 </p>
-<dl>
-<dt id="index-standard_002dtranslation_002dtable_002dfor_002ddecode">Variable: <strong>standard-translation-table-for-decode</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-standard_002dtranslation_002dtable_002dfor_002ddecode"><span class="category-def">Variable: </span><span><strong class="def-name">standard-translation-table-for-decode</strong><a class="copiable-link" href="#index-standard_002dtranslation_002dtable_002dfor_002ddecode"> &para;</a></span></dt>
 <dd><p>This is the default translation table for decoding.  If a coding
 systems specifies its own translation tables, the table that is the
-value of this variable, if non-<code>nil</code>, is applied after them.
+value of this variable, if non-<code class="code">nil</code>, is applied after them.
 </p></dd></dl>
 
-<dl>
-<dt id="index-standard_002dtranslation_002dtable_002dfor_002dencode">Variable: <strong>standard-translation-table-for-encode</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-standard_002dtranslation_002dtable_002dfor_002dencode"><span class="category-def">Variable: </span><span><strong class="def-name">standard-translation-table-for-encode</strong><a class="copiable-link" href="#index-standard_002dtranslation_002dtable_002dfor_002dencode"> &para;</a></span></dt>
 <dd><p>This is the default translation table for encoding.  If a coding
 systems specifies its own translation tables, the table that is the
-value of this variable, if non-<code>nil</code>, is applied after them.
+value of this variable, if non-<code class="code">nil</code>, is applied after them.
 </p></dd></dl>
 
-<dl>
-<dt id="index-translation_002dtable_002dfor_002dinput">Variable: <strong>translation-table-for-input</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-translation_002dtable_002dfor_002dinput"><span class="category-def">Variable: </span><span><strong class="def-name">translation-table-for-input</strong><a class="copiable-link" href="#index-translation_002dtable_002dfor_002dinput"> &para;</a></span></dt>
 <dd><p>Self-inserting characters are translated through this translation
 table before they are inserted.  Search commands also translate their
 input through this table, so they can compare more reliably with
@@ -135,41 +127,42 @@ what&rsquo;s in the buffer.
 <p>This variable automatically becomes buffer-local when set.
 </p></dd></dl>
 
-<dl>
-<dt id="index-make_002dtranslation_002dtable_002dfrom_002dvector">Function: <strong>make-translation-table-from-vector</strong> <em>vec</em></dt>
-<dd><p>This function returns a translation table made from <var>vec</var> that is
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dtranslation_002dtable_002dfrom_002dvector"><span class="category-def">Function: </span><span><strong class="def-name">make-translation-table-from-vector</strong> <var class="def-var-arguments">vec</var><a class="copiable-link" href="#index-make_002dtranslation_002dtable_002dfrom_002dvector"> &para;</a></span></dt>
+<dd><p>This function returns a translation table made from <var class="var">vec</var> that is
 an array of 256 elements to map bytes (values 0 through #xFF) to
-characters.  Elements may be <code>nil</code> for untranslated bytes.  The
+characters.  Elements may be <code class="code">nil</code> for untranslated bytes.  The
 returned table has a translation table for reverse mapping in the
-first extra slot, and the value <code>1</code> in the second extra slot.
+first extra slot, and the value <code class="code">1</code> in the second extra slot.
 </p>
 <p>This function provides an easy way to make a private coding system
 that maps each byte to a specific character.  You can specify the
 returned table and the reverse translation table using the properties
-<code>:decode-translation-table</code> and <code>:encode-translation-table</code>
-respectively in the <var>props</var> argument to
-<code>define-coding-system</code>.
+<code class="code">:decode-translation-table</code> and <code class="code">:encode-translation-table</code>
+respectively in the <var class="var">props</var> argument to
+<code class="code">define-coding-system</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-make_002dtranslation_002dtable_002dfrom_002dalist">Function: <strong>make-translation-table-from-alist</strong> <em>alist</em></dt>
-<dd><p>This function is similar to <code>make-translation-table</code> but returns
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dtranslation_002dtable_002dfrom_002dalist"><span class="category-def">Function: </span><span><strong class="def-name">make-translation-table-from-alist</strong> <var class="def-var-arguments">alist</var><a class="copiable-link" href="#index-make_002dtranslation_002dtable_002dfrom_002dalist"> &para;</a></span></dt>
+<dd><p>This function is similar to <code class="code">make-translation-table</code> but returns
 a complex translation table rather than a simple one-to-one mapping.
-Each element of <var>alist</var> is of the form <code>(<var>from</var>
-. <var>to</var>)</code>, where <var>from</var> and <var>to</var> are either characters or
-vectors specifying a sequence of characters.  If <var>from</var> is a
-character, that character is translated to <var>to</var> (i.e., to a
-character or a character sequence).  If <var>from</var> is a vector of
-characters, that sequence is translated to <var>to</var>.  The returned
+Each element of <var class="var">alist</var> is of the form <code class="code">(<var class="var">from</var>
+. <var class="var">to</var>)</code>, where <var class="var">from</var> and <var class="var">to</var> are either characters or
+vectors specifying a sequence of characters.  If <var class="var">from</var> is a
+character, that character is translated to <var class="var">to</var> (i.e., to a
+character or a character sequence).  If <var class="var">from</var> is a vector of
+characters, that sequence is translated to <var class="var">to</var>.  The returned
 table has a translation table for reverse mapping in the first extra
-slot, and the maximum length of all the <var>from</var> character sequences
+slot, and the maximum length of all the <var class="var">from</var> character sequences
 in the second extra slot.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Coding-Systems.html" accesskey="n" rel="next">Coding Systems</a>, Previous: <a href="Scanning-Charsets.html" accesskey="p" rel="prev">Scanning Charsets</a>, Up: <a href="Non_002dASCII-Characters.html" accesskey="u" rel="up">Non-ASCII Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Coding-Systems.html">Coding Systems</a>, Previous: <a href="Scanning-Charsets.html">Scanning for Character Sets</a>, Up: <a href="Non_002dASCII-Characters.html">Non-<abbr class="acronym">ASCII</abbr> Characters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

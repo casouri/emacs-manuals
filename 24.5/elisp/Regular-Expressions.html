@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Regular Expressions (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Regular Expressions (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Searching-and-Matching.html" rel="up" title="Searching and Matching">
-<link href="Syntax-of-Regexps.html" rel="next" title="Syntax of Regexps">
+<link href="Regexp-Search.html" rel="next" title="Regexp Search">
 <link href="Searching-and-Case.html" rel="prev" title="Searching and Case">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,39 +47,38 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Regular-Expressions"></span><div class="header">
+<div class="section-level-extent" id="Regular-Expressions">
+<div class="nav-panel">
 <p>
-Next: <a href="Regexp-Search.html" accesskey="n" rel="next">Regexp Search</a>, Previous: <a href="Searching-and-Case.html" accesskey="p" rel="prev">Searching and Case</a>, Up: <a href="Searching-and-Matching.html" accesskey="u" rel="up">Searching and Matching</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Regexp-Search.html" accesskey="n" rel="next">Regular Expression Searching</a>, Previous: <a href="Searching-and-Case.html" accesskey="p" rel="prev">Searching and Case</a>, Up: <a href="Searching-and-Matching.html" accesskey="u" rel="up">Searching and Matching</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Regular-Expressions-1"></span><h3 class="section">33.3 Regular Expressions</h3>
-<span id="index-regular-expression"></span>
-<span id="index-regexp"></span>
+<h3 class="section" id="Regular-Expressions-1"><span>33.3 Regular Expressions<a class="copiable-link" href="#Regular-Expressions-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-regular-expression"></a>
+<a class="index-entry-id" id="index-regexp"></a>
 
-<p>A <em>regular expression</em>, or <em>regexp</em> for short, is a pattern that
+<p>A <em class="dfn">regular expression</em>, or <em class="dfn">regexp</em> for short, is a pattern that
 denotes a (possibly infinite) set of strings.  Searching for matches for
 a regexp is a very powerful operation.  This section explains how to write
 regexps; the following section says how to search for them.
 </p>
-<span id="index-re_002dbuilder"></span>
-<span id="index-regular-expressions_002c-developing"></span>
+<a class="index-entry-id" id="index-re_002dbuilder"></a>
+<a class="index-entry-id" id="index-regular-expressions_002c-developing"></a>
 <p>For interactive development of regular expressions, you
-can use the <kbd>M-x re-builder</kbd> command.  It provides a convenient
+can use the <kbd class="kbd">M-x re-builder</kbd> command.  It provides a convenient
 interface for creating regular expressions, by giving immediate visual
 feedback in a separate buffer.  As you edit the regexp, all its
 matches in the target buffer are highlighted.  Each parenthesized
 sub-expression of the regexp is shown in a distinct face, which makes
 it easier to verify even very complex regexps.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Syntax-of-Regexps.html" accesskey="1">Syntax of Regexps</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Rules for writing regular expressions.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Regexp-Example.html" accesskey="2">Regexp Example</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Illustrates regular expression syntax.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Regexp-Functions.html" accesskey="3">Regexp Functions</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Functions for operating on regular expressions.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Syntax-of-Regexps.html" accesskey="1">Syntax of Regular Expressions</a></li>
+<li><a href="Regexp-Example.html" accesskey="2">Complex Regexp Example</a></li>
+<li><a href="Regexp-Functions.html" accesskey="3">Regular Expression Functions</a></li>
+</ul>
+</div>
 
 
 

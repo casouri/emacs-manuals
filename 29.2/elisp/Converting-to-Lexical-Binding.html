@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.2.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Converting to Lexical Binding (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Converting to Lexical Binding (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Converting to Lexical Binding (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Variable-Scoping.html" rel="up" title="Variable Scoping">
+<link href="Using-Lexical-Binding.html" rel="prev" title="Using Lexical Binding">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Converting-to-Lexical-Binding">
+<div class="nav-panel">
+<p>
+Previous: <a href="Using-Lexical-Binding.html" accesskey="p" rel="prev">Using Lexical Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Converting-to-Lexical-Binding-1"><span>12.10.5 Converting to Lexical Binding<a class="copiable-link" href="#Converting-to-Lexical-Binding-1"> &para;</a></span></h4>
+
+<p>Converting an Emacs Lisp program to lexical binding is easy.  First,
+add a file-local variable setting of <code class="code">lexical-binding</code> to
+<code class="code">t</code> in the header line of the Emacs Lisp source file (see <a class="pxref" href="File-Local-Variables.html">File Local Variables</a>).  Second, check that every variable in the program
+which needs to be dynamically bound has a variable definition, so that
+it is not inadvertently bound lexically.
+</p>
+<a class="index-entry-id" id="index-free-variable"></a>
+<a class="index-entry-id" id="index-unused-lexical-variable"></a>
+<p>A simple way to find out which variables need a variable definition
+is to byte-compile the source file.  See <a class="xref" href="Byte-Compilation.html">Byte Compilation</a>.  If a
+non-special variable is used outside of a <code class="code">let</code> form, the
+byte-compiler will warn about reference or assignment to a free
+variable.  If a non-special variable is bound but not used within a
+<code class="code">let</code> form, the byte-compiler will warn about an unused lexical
+variable.  The byte-compiler will also issue a warning if you use a
+special variable as a function argument.
+</p>
+<p>A warning about a reference or an assignment to a free variable is
+usually a clear sign that that variable should be marked as
+dynamically scoped, so you need to add an appropriate <code class="code">defvar</code>
+before the first use of that variable.
+</p>
+<p>A warning about an unused variable may be a good hint that the
+variable was intended to be dynamically scoped (because it is actually
+used, but in another function), but it may also be an indication that
+the variable is simply really not used and could simply be removed.
+So you need to find out which case it is, and based on that, either
+add a <code class="code">defvar</code> or remove the variable altogether.  If removal is
+not possible or not desirable (typically because it is a formal
+argument and that we cannot or don&rsquo;t want to change all the callers),
+you can also add a leading underscore to the variable&rsquo;s name to
+indicate to the compiler that this is a variable known not to
+be used.)
+</p>
+<h4 class="subsubheading" id="Cross_002dfile-variable-checking"><span>Cross-file variable checking<a class="copiable-link" href="#Cross_002dfile-variable-checking"> &para;</a></span></h4>
+
+<p><strong class="strong">Caution:</strong> This is an experimental feature that may change or
+disappear without prior notice.
+</p>
+<p>The byte-compiler can also warn about lexical variables that are
+special in other Emacs Lisp files, often indicating a missing
+<code class="code">defvar</code> declaration.  This useful but somewhat specialized check
+requires three steps:
+</p>
+<ol class="enumerate">
+<li> Byte-compile all files whose special variable declarations may be of
+interest, with the environment variable <code class="env">EMACS_GENERATE_DYNVARS</code>
+set to a nonempty string.  These are typically all the files in the
+same package or related packages or Emacs subsystems.  The process
+will generate a file whose name ends in <samp class="file">.dynvars</samp> for each
+compiled Emacs Lisp file.
+
+</li><li> Concatenate the <samp class="file">.dynvars</samp> files into a single file.
+
+</li><li> Byte-compile the files that need to be checked, this time with
+the environment variable <code class="env">EMACS_DYNVARS_FILE</code> set to the name
+of the aggregated file created in step 2.
+</li></ol>
+
+<p>Here is an example illustrating how this could be done, assuming that
+a Unix shell and <code class="command">make</code> are used for byte-compilation:
+</p>
+<div class="example">
+<pre class="example-preformatted">$ rm *.elc                                # force recompilation
+$ EMACS_GENERATE_DYNVARS=1 make           # generate .dynvars
+$ cat *.dynvars &gt; ~/my-dynvars            # combine .dynvars
+$ rm *.elc                                # force recompilation
+$ EMACS_DYNVARS_FILE=~/my-dynvars make    # perform checks
+</pre></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Using-Lexical-Binding.html">Using Lexical Binding</a>, Up: <a href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

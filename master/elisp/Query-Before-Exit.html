@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Query Before Exit (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Query Before Exit (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Sentinels.html" rel="prev" title="Sentinels">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,49 +49,51 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Query-Before-Exit"></span><div class="header">
+<div class="section-level-extent" id="Query-Before-Exit">
+<div class="nav-panel">
 <p>
-Next: <a href="System-Processes.html" accesskey="n" rel="next">System Processes</a>, Previous: <a href="Sentinels.html" accesskey="p" rel="prev">Sentinels</a>, Up: <a href="Processes.html" accesskey="u" rel="up">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="System-Processes.html" accesskey="n" rel="next">Accessing Other Processes</a>, Previous: <a href="Sentinels.html" accesskey="p" rel="prev">Sentinels: Detecting Process Status Changes</a>, Up: <a href="Processes.html" accesskey="u" rel="up">Processes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Querying-Before-Exit"></span><h3 class="section">39.11 Querying Before Exit</h3>
+<h3 class="section" id="Querying-Before-Exit"><span>41.11 Querying Before Exit<a class="copiable-link" href="#Querying-Before-Exit"> &para;</a></span></h3>
 
 <p>When Emacs exits, it terminates all its subprocesses.  For
-subprocesses that run a program, it sends them the <code>SIGHUP</code>
+subprocesses that run a program, it sends them the <code class="code">SIGHUP</code>
 signal; connections are simply closed.  Because subprocesses may be
 doing valuable work, Emacs normally asks the user to confirm that it
 is ok to terminate them.  Each process has a query flag, which, if
-non-<code>nil</code>, says that Emacs should ask for confirmation before
+non-<code class="code">nil</code>, says that Emacs should ask for confirmation before
 exiting and thus killing that process.  The default for the query flag
-is <code>t</code>, meaning <em>do</em> query.
+is <code class="code">t</code>, meaning <em class="emph">do</em> query.
 </p>
-<dl>
-<dt id="index-process_002dquery_002don_002dexit_002dflag">Function: <strong>process-query-on-exit-flag</strong> <em>process</em></dt>
-<dd><p>This returns the query flag of <var>process</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-process_002dquery_002don_002dexit_002dflag"><span class="category-def">Function: </span><span><strong class="def-name">process-query-on-exit-flag</strong> <var class="def-var-arguments">process</var><a class="copiable-link" href="#index-process_002dquery_002don_002dexit_002dflag"> &para;</a></span></dt>
+<dd><p>This returns the query flag of <var class="var">process</var>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-set_002dprocess_002dquery_002don_002dexit_002dflag">Function: <strong>set-process-query-on-exit-flag</strong> <em>process flag</em></dt>
-<dd><p>This function sets the query flag of <var>process</var> to <var>flag</var>.  It
-returns <var>flag</var>.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dprocess_002dquery_002don_002dexit_002dflag"><span class="category-def">Function: </span><span><strong class="def-name">set-process-query-on-exit-flag</strong> <var class="def-var-arguments">process flag</var><a class="copiable-link" href="#index-set_002dprocess_002dquery_002don_002dexit_002dflag"> &para;</a></span></dt>
+<dd><p>This function sets the query flag of <var class="var">process</var> to <var class="var">flag</var>.  It
+returns <var class="var">flag</var>.
 </p>
-<p>Here is an example of using <code>set-process-query-on-exit-flag</code> on a
+<p>Here is an example of using <code class="code">set-process-query-on-exit-flag</code> on a
 shell process to avoid querying:
 </p>
-<div class="example">
-<pre class="example">(set-process-query-on-exit-flag (get-process &quot;shell&quot;) nil)
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(set-process-query-on-exit-flag (get-process &quot;shell&quot;) nil)
      &rArr; nil
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-confirm_002dkill_002dprocesses">User Option: <strong>confirm-kill-processes</strong></dt>
-<dd><p>If this user option is set to <code>t</code> (the default), then Emacs asks
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-confirm_002dkill_002dprocesses"><span class="category-def">User Option: </span><span><strong class="def-name">confirm-kill-processes</strong><a class="copiable-link" href="#index-confirm_002dkill_002dprocesses"> &para;</a></span></dt>
+<dd><p>If this user option is set to <code class="code">t</code> (the default), then Emacs asks
 for confirmation before killing processes on exit.  If it is
-<code>nil</code>, Emacs kills processes without confirmation, i.e., the
+<code class="code">nil</code>, Emacs kills processes without confirmation, i.e., the
 query flag of all processes is ignored.
 </p></dd></dl>
 
+</div>
 
 
 

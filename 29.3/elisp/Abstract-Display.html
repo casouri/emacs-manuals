@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.3.
+
+Copyright © 1990-1996, 1998-2024 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Abstract Display (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Abstract Display (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Abstract Display (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Blinking.html" rel="next" title="Blinking">
+<link href="Buttons.html" rel="prev" title="Buttons">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Abstract-Display">
+<div class="nav-panel">
+<p>
+Next: <a href="Blinking.html" accesskey="n" rel="next">Blinking Parentheses</a>, Previous: <a href="Buttons.html" accesskey="p" rel="prev">Buttons</a>, Up: <a href="Display.html" accesskey="u" rel="up">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Abstract-Display-1"><span>41.21 Abstract Display<a class="copiable-link" href="#Abstract-Display-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-ewoc"></a>
+<a class="index-entry-id" id="index-display_002c-abstract"></a>
+<a class="index-entry-id" id="index-display_002c-arbitrary-objects"></a>
+<a class="index-entry-id" id="index-model_002fview_002fcontroller"></a>
+<a class="index-entry-id" id="index-view-part_002c-model_002fview_002fcontroller"></a>
+
+<p>The Ewoc package constructs buffer text that represents a structure
+of Lisp objects, and updates the text to follow changes in that
+structure.  This is like the &ldquo;view&rdquo; component in the
+&ldquo;model&ndash;view&ndash;controller&rdquo; design paradigm.  Ewoc means &ldquo;Emacs&rsquo;s
+Widget for Object Collections&rdquo;.
+</p>
+<p>An <em class="dfn">ewoc</em> is a structure that organizes information required to
+construct buffer text that represents certain Lisp data.  The buffer
+text of the ewoc has three parts, in order: first, fixed <em class="dfn">header</em>
+text; next, textual descriptions of a series of data elements (Lisp
+objects that you specify); and last, fixed <em class="dfn">footer</em> text.
+Specifically, an ewoc contains information on:
+</p>
+<ul class="itemize mark-bullet">
+<li>The buffer which its text is generated in.
+
+</li><li>The text&rsquo;s start position in the buffer.
+
+</li><li>The header and footer strings.
+
+</li><li><a class="index-entry-id" id="index-node_002c-ewoc"></a>
+A doubly-linked chain of <em class="dfn">nodes</em>, each of which contains:
+
+<ul class="itemize mark-bullet">
+<li>A <em class="dfn">data element</em>, a single Lisp object.
+
+</li><li>Links to the preceding and following nodes in the chain.
+</li></ul>
+
+</li><li>A <em class="dfn">pretty-printer</em> function which is responsible for
+inserting the textual representation of a data
+element value into the current buffer.
+</li></ul>
+
+<p>Typically, you define an ewoc with <code class="code">ewoc-create</code>, and then pass
+the resulting ewoc structure to other functions in the Ewoc package to
+build nodes within it, and display it in the buffer.  Once it is
+displayed in the buffer, other functions determine the correspondence
+between buffer positions and nodes, move point from one node&rsquo;s textual
+representation to another, and so forth.  See <a class="xref" href="Abstract-Display-Functions.html">Abstract Display Functions</a>.
+</p>
+<a class="index-entry-id" id="index-encapsulation_002c-ewoc"></a>
+<p>A node <em class="dfn">encapsulates</em> a data element much the way a variable
+holds a value.  Normally, encapsulation occurs as a part of adding a
+node to the ewoc.  You can retrieve the data element value and place a
+new value in its place, like so:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(ewoc-data <var class="var">node</var>)
+&rArr; value
+
+(ewoc-set-data <var class="var">node</var> <var class="var">new-value</var>)
+&rArr; <var class="var">new-value</var>
+</pre></div>
+
+<p>You can also use, as the data element value, a Lisp object (list or
+vector) that is a container for the real value, or an index into
+some other structure.  The example (see <a class="pxref" href="Abstract-Display-Example.html">Abstract Display Example</a>)
+uses the latter approach.
+</p>
+<p>When the data changes, you will want to update the text in the
+buffer.  You can update all nodes by calling <code class="code">ewoc-refresh</code>, or
+just specific nodes using <code class="code">ewoc-invalidate</code>, or all nodes
+satisfying a predicate using <code class="code">ewoc-map</code>.  Alternatively, you can
+delete invalid nodes using <code class="code">ewoc-delete</code> or <code class="code">ewoc-filter</code>,
+and add new nodes in their place.  Deleting a node from an ewoc deletes
+its associated textual description from buffer, as well.
+</p>
+
+<ul class="mini-toc">
+<li><a href="Abstract-Display-Functions.html" accesskey="1">Abstract Display Functions</a></li>
+<li><a href="Abstract-Display-Example.html" accesskey="2">Abstract Display Example</a></li>
+</ul>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Blinking.html">Blinking Parentheses</a>, Previous: <a href="Buttons.html">Buttons</a>, Up: <a href="Display.html">Emacs Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

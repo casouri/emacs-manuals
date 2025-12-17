@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Garbage Collection (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Garbage Collection (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Garbage Collection (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="GNU-Emacs-Internals.html" rel="up" title="GNU Emacs Internals">
+<link href="Stack_002dallocated-Objects.html" rel="next" title="Stack-allocated Objects">
+<link href="Pure-Storage.html" rel="prev" title="Pure Storage">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Garbage-Collection">
+<div class="nav-panel">
+<p>
+Next: <a href="Stack_002dallocated-Objects.html" accesskey="n" rel="next">Stack-allocated Objects</a>, Previous: <a href="Pure-Storage.html" accesskey="p" rel="prev">Pure Storage</a>, Up: <a href="GNU-Emacs-Internals.html" accesskey="u" rel="up">GNU Emacs Internals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Garbage-Collection-1"><span>E.3 Garbage Collection<a class="copiable-link" href="#Garbage-Collection-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-memory-allocation"></a>
+<p>When a program creates a list or the user defines a new function
+(such as by loading a library), that data is placed in normal storage.
+If normal storage runs low, then Emacs asks the operating system to
+allocate more memory.  Different types of Lisp objects, such as
+symbols, cons cells, small vectors, markers, etc., are segregated in
+distinct blocks in memory.  (Large vectors, long strings, buffers and
+certain other editing types, which are fairly large, are allocated in
+individual blocks, one per object; small strings are packed into blocks
+of 8k bytes, and small vectors are packed into blocks of 4k bytes).
+</p>
+<a class="index-entry-id" id="index-vector_002dlike-objects_002c-storage"></a>
+<a class="index-entry-id" id="index-storage-of-vector_002dlike-Lisp-objects"></a>
+<p>Beyond the basic vector, a lot of objects like markers, overlays and
+buffers are managed as if they were vectors.  The corresponding C data
+structures include the <code class="code">union vectorlike_header</code> field whose
+<code class="code">size</code> member contains the subtype enumerated by <code class="code">enum pvec_type</code>
+and an information about how many <code class="code">Lisp_Object</code> fields this structure
+contains and what the size of the rest data is.  This information is
+needed to calculate the memory footprint of an object, and used
+by the vector allocation code while iterating over the vector blocks.
+</p>
+<a class="index-entry-id" id="index-garbage-collection"></a>
+<p>It is quite common to use some storage for a while, then release it
+by (for example) killing a buffer or deleting the last pointer to an
+object.  Emacs provides a <em class="dfn">garbage collector</em> to reclaim this
+abandoned storage.  The garbage collector operates, in essence, by
+finding and marking all Lisp objects that are still accessible to Lisp
+programs.  To begin with, it assumes all the symbols, their values and
+associated function definitions, and any data presently on the stack,
+are accessible.  Any objects that can be reached indirectly through
+other accessible objects are also accessible, but this calculation is
+done &ldquo;conservatively&rdquo;, so it may slightly overestimate how many
+objects that are accessible.
+</p>
+<p>When marking is finished, all objects still unmarked are garbage.  No
+matter what the Lisp program or the user does, it is impossible to refer
+to them, since there is no longer a way to reach them.  Their space
+might as well be reused, since no one will miss them.  The second
+(sweep) phase of the garbage collector arranges to reuse them.  (But
+since the marking was done &ldquo;conservatively&rdquo;, not all unused objects
+are guaranteed to be garbage-collected by any one sweep.)
+</p>
+
+<a class="index-entry-id" id="index-free-list"></a>
+<p>The sweep phase puts unused cons cells onto a <em class="dfn">free list</em>
+for future allocation; likewise for symbols and markers.  It compacts
+the accessible strings so they occupy fewer 8k blocks; then it frees the
+other 8k blocks.  Unreachable vectors from vector blocks are coalesced
+to create largest possible free areas; if a free area spans a complete
+4k block, that block is freed.  Otherwise, the free area is recorded
+in a free list array, where each entry corresponds to a free list
+of areas of the same size.  Large vectors, buffers, and other large
+objects are allocated and freed individually.
+</p>
+<a class="index-entry-id" id="index-CL-note_002d_002d_002dallocate-more-storage"></a>
+<blockquote class="quotation">
+<p><b class="b">Common Lisp note:</b> Unlike other Lisps, GNU Emacs Lisp does not
+call the garbage collector when the free list is empty.  Instead, it
+simply requests the operating system to allocate more storage, and
+processing continues until <code class="code">gc-cons-threshold</code> bytes have been
+used.
+</p>
+<p>This means that you can make sure that the garbage collector will not
+run during a certain portion of a Lisp program by calling the garbage
+collector explicitly just before it (provided that portion of the
+program does not use so much space as to force a second garbage
+collection).
+</p></blockquote>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-garbage_002dcollect"><span class="category-def">Command: </span><span><strong class="def-name">garbage-collect</strong><a class="copiable-link" href="#index-garbage_002dcollect"> &para;</a></span></dt>
+<dd><p>This command runs a garbage collection, and returns information on
+the amount of space in use.  (Garbage collection can also occur
+spontaneously if you use more than <code class="code">gc-cons-threshold</code> bytes of
+Lisp data since the previous garbage collection.)
+</p>
+<p><code class="code">garbage-collect</code> returns a list with information on amount of space in
+use, where each entry has the form &lsquo;<samp class="samp">(<var class="var">name</var> <var class="var">size</var> <var class="var">used</var>)</samp>&rsquo;
+or &lsquo;<samp class="samp">(<var class="var">name</var> <var class="var">size</var> <var class="var">used</var> <var class="var">free</var>)</samp>&rsquo;.  In the entry,
+<var class="var">name</var> is a symbol describing the kind of objects this entry represents,
+<var class="var">size</var> is the number of bytes used by each one, <var class="var">used</var> is the number
+of those objects that were found live in the heap, and optional <var class="var">free</var> is
+the number of those objects that are not live but that Emacs keeps around for
+future allocations.  So an overall result is:
+</p>
+<div class="example">
+<pre class="example-preformatted">((<code class="code">conses</code> <var class="var">cons-size</var> <var class="var">used-conses</var> <var class="var">free-conses</var>)
+ (<code class="code">symbols</code> <var class="var">symbol-size</var> <var class="var">used-symbols</var> <var class="var">free-symbols</var>)
+ (<code class="code">strings</code> <var class="var">string-size</var> <var class="var">used-strings</var> <var class="var">free-strings</var>)
+ (<code class="code">string-bytes</code> <var class="var">byte-size</var> <var class="var">used-bytes</var>)
+ (<code class="code">vectors</code> <var class="var">vector-size</var> <var class="var">used-vectors</var>)
+ (<code class="code">vector-slots</code> <var class="var">slot-size</var> <var class="var">used-slots</var> <var class="var">free-slots</var>)
+ (<code class="code">floats</code> <var class="var">float-size</var> <var class="var">used-floats</var> <var class="var">free-floats</var>)
+ (<code class="code">intervals</code> <var class="var">interval-size</var> <var class="var">used-intervals</var> <var class="var">free-intervals</var>)
+ (<code class="code">buffers</code> <var class="var">buffer-size</var> <var class="var">used-buffers</var>)
+ (<code class="code">heap</code> <var class="var">unit-size</var> <var class="var">total-size</var> <var class="var">free-size</var>))
+</pre></div>
+
+<p>Here is an example:
+</p>
+<div class="example">
+<pre class="example-preformatted">(garbage-collect)
+      &rArr; ((conses 16 49126 8058) (symbols 48 14607 0)
+                 (strings 32 2942 2607)
+                 (string-bytes 1 78607) (vectors 16 7247)
+                 (vector-slots 8 341609 29474) (floats 8 71 102)
+                 (intervals 56 27 26) (buffers 944 8)
+                 (heap 1024 11715 2678))
+</pre></div>
+
+<p>Below is a table explaining each element.  Note that last <code class="code">heap</code> entry
+is optional and present only if an underlying <code class="code">malloc</code> implementation
+provides <code class="code">mallinfo</code> function.
+</p>
+<dl class="table">
+<dt><var class="var">cons-size</var></dt>
+<dd><p>Internal size of a cons cell, i.e., <code class="code">sizeof (struct Lisp_Cons)</code>.
+</p>
+</dd>
+<dt><var class="var">used-conses</var></dt>
+<dd><p>The number of cons cells in use.
+</p>
+</dd>
+<dt><var class="var">free-conses</var></dt>
+<dd><p>The number of cons cells for which space has been obtained from
+the operating system, but that are not currently being used.
+</p>
+</dd>
+<dt><var class="var">symbol-size</var></dt>
+<dd><p>Internal size of a symbol, i.e., <code class="code">sizeof (struct Lisp_Symbol)</code>.
+</p>
+</dd>
+<dt><var class="var">used-symbols</var></dt>
+<dd><p>The number of symbols in use.
+</p>
+</dd>
+<dt><var class="var">free-symbols</var></dt>
+<dd><p>The number of symbols for which space has been obtained from
+the operating system, but that are not currently being used.
+</p>
+</dd>
+<dt><var class="var">string-size</var></dt>
+<dd><p>Internal size of a string header, i.e., <code class="code">sizeof (struct Lisp_String)</code>.
+</p>
+</dd>
+<dt><var class="var">used-strings</var></dt>
+<dd><p>The number of string headers in use.
+</p>
+</dd>
+<dt><var class="var">free-strings</var></dt>
+<dd><p>The number of string headers for which space has been obtained
+from the operating system, but that are not currently being used.
+</p>
+</dd>
+<dt><var class="var">byte-size</var></dt>
+<dd><p>This is used for convenience and equals to <code class="code">sizeof (char)</code>.
+</p>
+</dd>
+<dt><var class="var">used-bytes</var></dt>
+<dd><p>The total size of all string data in bytes.
+</p>
+</dd>
+<dt><var class="var">vector-size</var></dt>
+<dd><p>Size in bytes of a vector of length 1, including its header.
+</p>
+</dd>
+<dt><var class="var">used-vectors</var></dt>
+<dd><p>The number of vector headers allocated from the vector blocks.
+</p>
+</dd>
+<dt><var class="var">slot-size</var></dt>
+<dd><p>Internal size of a vector slot, always equal to <code class="code">sizeof (Lisp_Object)</code>.
+</p>
+</dd>
+<dt><var class="var">used-slots</var></dt>
+<dd><p>The number of slots in all used vectors.
+Slot counts might include some or all overhead from vector headers,
+depending on the platform.
+</p>
+</dd>
+<dt><var class="var">free-slots</var></dt>
+<dd><p>The number of free slots in all vector blocks.
+</p>
+</dd>
+<dt><var class="var">float-size</var></dt>
+<dd><p>Internal size of a float object, i.e., <code class="code">sizeof (struct Lisp_Float)</code>.
+(Do not confuse it with the native platform <code class="code">float</code> or <code class="code">double</code>.)
+</p>
+</dd>
+<dt><var class="var">used-floats</var></dt>
+<dd><p>The number of floats in use.
+</p>
+</dd>
+<dt><var class="var">free-floats</var></dt>
+<dd><p>The number of floats for which space has been obtained from
+the operating system, but that are not currently being used.
+</p>
+</dd>
+<dt><var class="var">interval-size</var></dt>
+<dd><p>Internal size of an interval object, i.e., <code class="code">sizeof (struct interval)</code>.
+</p>
+</dd>
+<dt><var class="var">used-intervals</var></dt>
+<dd><p>The number of intervals in use.
+</p>
+</dd>
+<dt><var class="var">free-intervals</var></dt>
+<dd><p>The number of intervals for which space has been obtained from
+the operating system, but that are not currently being used.
+</p>
+</dd>
+<dt><var class="var">buffer-size</var></dt>
+<dd><p>Internal size of a buffer, i.e., <code class="code">sizeof (struct buffer)</code>.
+(Do not confuse with the value returned by <code class="code">buffer-size</code> function.)
+</p>
+</dd>
+<dt><var class="var">used-buffers</var></dt>
+<dd><p>The number of buffer objects in use.  This includes killed buffers
+invisible to users, i.e., all buffers in <code class="code">all_buffers</code> list.
+</p>
+</dd>
+<dt><var class="var">unit-size</var></dt>
+<dd><p>The unit of heap space measurement, always equal to 1024 bytes.
+</p>
+</dd>
+<dt><var class="var">total-size</var></dt>
+<dd><p>Total heap size, in <var class="var">unit-size</var> units.
+</p>
+</dd>
+<dt><var class="var">free-size</var></dt>
+<dd><p>Heap space which is not currently used, in <var class="var">unit-size</var> units.
+</p></dd>
+</dl>
+
+<p>If there was overflow in pure space (see <a class="pxref" href="Pure-Storage.html">Pure Storage</a>), and Emacs
+was dumped using the (now obsolete) <code class="code">unexec</code> method
+(see <a class="pxref" href="Building-Emacs.html">Building Emacs</a>), then <code class="code">garbage-collect</code> returns
+<code class="code">nil</code>, because a real garbage collection cannot be done in that
+case.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-garbage_002dcollection_002dmessages"><span class="category-def">User Option: </span><span><strong class="def-name">garbage-collection-messages</strong><a class="copiable-link" href="#index-garbage_002dcollection_002dmessages"> &para;</a></span></dt>
+<dd><p>If this variable is non-<code class="code">nil</code>, Emacs displays a message at the
+beginning and end of garbage collection.  The default value is
+<code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-post_002dgc_002dhook"><span class="category-def">Variable: </span><span><strong class="def-name">post-gc-hook</strong><a class="copiable-link" href="#index-post_002dgc_002dhook"> &para;</a></span></dt>
+<dd><p>This is a normal hook that is run at the end of garbage collection.
+Garbage collection is inhibited while the hook functions run, so be
+careful writing them.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-gc_002dcons_002dthreshold"><span class="category-def">User Option: </span><span><strong class="def-name">gc-cons-threshold</strong><a class="copiable-link" href="#index-gc_002dcons_002dthreshold"> &para;</a></span></dt>
+<dd><p>The value of this variable is the number of bytes of storage that must
+be allocated for Lisp objects after one garbage collection in order to
+trigger another garbage collection.  You can use the result returned by
+<code class="code">garbage-collect</code> to get an information about size of the particular
+object type; space allocated to the contents of buffers does not count.
+</p>
+<p>The initial threshold value is <code class="code">GC_DEFAULT_THRESHOLD</code>, defined in
+<samp class="file">alloc.c</samp>.  Since it&rsquo;s defined in <code class="code">word_size</code> units, the
+value is 400,000 for the default 32-bit configuration and 800,000 for
+the 64-bit one.  If you specify a larger value, garbage collection
+will happen less often.  This reduces the amount of time spent garbage
+collecting (so Lisp programs will run faster between cycles of garbage
+collection that happen more rarely), but increases total memory use.
+You may want to do this when running a program that creates lots of
+Lisp data, especially if you need it to run faster.  However, we
+recommend against increasing the threshold for prolonged periods of
+time, and advise that you never set it higher than needed for the
+program to run in reasonable time.  Using thresholds higher than
+necessary could potentially cause higher system-wide memory pressure,
+and also make each garbage-collection cycle take much more time, and
+should therefore be avoided.
+</p>
+<p>You can make collections more frequent by specifying a smaller value, down
+to 1/10th of <code class="code">GC_DEFAULT_THRESHOLD</code>.  A value less than this minimum
+will remain in effect only until the subsequent garbage collection, at which
+time <code class="code">garbage-collect</code> will set the threshold back to the minimum.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-gc_002dcons_002dpercentage"><span class="category-def">User Option: </span><span><strong class="def-name">gc-cons-percentage</strong><a class="copiable-link" href="#index-gc_002dcons_002dpercentage"> &para;</a></span></dt>
+<dd><p>The value of this variable specifies the amount of consing before a
+garbage collection occurs, as a fraction of the current heap size.
+This criterion and <code class="code">gc-cons-threshold</code> apply in parallel, and
+garbage collection occurs only when both criteria are satisfied.
+</p>
+<p>As the heap size increases, the time to perform a garbage collection
+increases.  Thus, it can be desirable to do them less frequently in
+proportion.
+</p>
+<p>As with <code class="code">gc-cons-threshold</code>, do not enlarge this more than
+necessary, and never for prolonged periods of time.
+</p></dd></dl>
+
+<p>Control over the garbage collector via <code class="code">gc-cons-threshold</code> and
+<code class="code">gc-cons-percentage</code> is only approximate.  Although Emacs checks
+for threshold exhaustion regularly, for efficiency reasons it does not
+do so immediately after every change to the heap or to
+<code class="code">gc-cons-threshold</code> or <code class="code">gc-cons-percentage</code>, so exhausting
+the threshold does not immediately trigger garbage collection.  Also,
+for efficiency in threshold calculations Emacs approximates the heap
+size, which counts the bytes used by currently-accessible objects in
+the heap.
+</p>
+<p>The value returned by <code class="code">garbage-collect</code> describes the amount of
+memory used by Lisp data, broken down by data type.  By contrast, the
+function <code class="code">memory-limit</code> provides information on the total amount of
+memory Emacs is currently using.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-memory_002dlimit"><span class="category-def">Function: </span><span><strong class="def-name">memory-limit</strong><a class="copiable-link" href="#index-memory_002dlimit"> &para;</a></span></dt>
+<dd><p>This function returns an estimate of the total amount of bytes of
+virtual memory that Emacs is currently using, divided by 1024.
+You can use this to get a general idea of how your actions affect the
+memory usage.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-memory_002dfull"><span class="category-def">Variable: </span><span><strong class="def-name">memory-full</strong><a class="copiable-link" href="#index-memory_002dfull"> &para;</a></span></dt>
+<dd><p>This variable is <code class="code">t</code> if Emacs is nearly out of memory for Lisp
+objects, and <code class="code">nil</code> otherwise.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-memory_002duse_002dcounts"><span class="category-def">Function: </span><span><strong class="def-name">memory-use-counts</strong><a class="copiable-link" href="#index-memory_002duse_002dcounts"> &para;</a></span></dt>
+<dd><p>This returns a list of numbers that count the number of objects
+created in this Emacs session.  Each of these counters increments for
+a certain kind of object.  See the documentation string for details.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-memory_002dinfo"><span class="category-def">Function: </span><span><strong class="def-name">memory-info</strong><a class="copiable-link" href="#index-memory_002dinfo"> &para;</a></span></dt>
+<dd><p>This functions returns an amount of total system memory and how much
+of it is free.  On an unsupported system, the value may be <code class="code">nil</code>.
+</p>
+<p>If <code class="code">default-directory</code> points to a remote host, memory
+information of that host is returned.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-gcs_002ddone"><span class="category-def">Variable: </span><span><strong class="def-name">gcs-done</strong><a class="copiable-link" href="#index-gcs_002ddone"> &para;</a></span></dt>
+<dd><p>This variable contains the total number of garbage collections
+done so far in this Emacs session.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-gc_002delapsed"><span class="category-def">Variable: </span><span><strong class="def-name">gc-elapsed</strong><a class="copiable-link" href="#index-gc_002delapsed"> &para;</a></span></dt>
+<dd><p>This variable contains the total number of seconds of elapsed time
+during garbage collection so far in this Emacs session, as a
+floating-point number.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-memory_002dreport"><span class="category-def">Function: </span><span><strong class="def-name">memory-report</strong><a class="copiable-link" href="#index-memory_002dreport"> &para;</a></span></dt>
+<dd><p>It can sometimes be useful to see where Emacs is using memory (in
+various variables, buffers, and caches).  This command will open a new
+buffer (called &lsquo;<samp class="samp">&quot;*Memory Report*&quot;</samp>&rsquo;) that will give an overview,
+in addition to listing the &ldquo;largest&rdquo; buffers and variables.
+</p>
+<p>All the data here is approximate, because there&rsquo;s really no consistent
+way to compute the size of a variable.  For instance, two variables
+may share parts of a data structure, and this will be counted twice,
+but this command may still give a useful high-level overview of which
+parts of Emacs are using memory.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Stack_002dallocated-Objects.html">Stack-allocated Objects</a>, Previous: <a href="Pure-Storage.html">Pure Storage</a>, Up: <a href="GNU-Emacs-Internals.html">GNU Emacs Internals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Constant Variables (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Constant Variables (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Global-Variables.html" rel="prev" title="Global Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,54 +49,61 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Constant-Variables"></span><div class="header">
+<div class="section-level-extent" id="Constant-Variables">
+<div class="nav-panel">
 <p>
 Next: <a href="Local-Variables.html" accesskey="n" rel="next">Local Variables</a>, Previous: <a href="Global-Variables.html" accesskey="p" rel="prev">Global Variables</a>, Up: <a href="Variables.html" accesskey="u" rel="up">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Variables-that-Never-Change"></span><h3 class="section">12.2 Variables that Never Change</h3>
-<span id="index-setting_002dconstant-error"></span>
-<span id="index-keyword-symbol"></span>
-<span id="index-variable-with-constant-value"></span>
-<span id="index-constant-variables"></span>
-<span id="index-symbol-that-evaluates-to-itself"></span>
-<span id="index-symbol-with-constant-value"></span>
+<h3 class="section" id="Variables-that-Never-Change"><span>12.2 Variables that Never Change<a class="copiable-link" href="#Variables-that-Never-Change"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-setting_002dconstant-error"></a>
+<a class="index-entry-id" id="index-keyword-symbol"></a>
+<a class="index-entry-id" id="index-variable-with-constant-value"></a>
+<a class="index-entry-id" id="index-constant-variables"></a>
+<a class="index-entry-id" id="index-symbol-that-evaluates-to-itself"></a>
+<a class="index-entry-id" id="index-symbol-with-constant-value"></a>
 
 <p>In Emacs Lisp, certain symbols normally evaluate to themselves.  These
-include <code>nil</code> and <code>t</code>, as well as any symbol whose name starts
-with &lsquo;<samp>:</samp>&rsquo; (these are called <em>keywords</em>).  These symbols cannot
+include <code class="code">nil</code> and <code class="code">t</code>, as well as any symbol whose name starts
+with &lsquo;<samp class="samp">:</samp>&rsquo; (these are called <em class="dfn">keywords</em>).  These symbols cannot
 be rebound, nor can their values be changed.  Any attempt to set or bind
-<code>nil</code> or <code>t</code> signals a <code>setting-constant</code> error.  The
-same is true for a keyword (a symbol whose name starts with &lsquo;<samp>:</samp>&rsquo;),
+<code class="code">nil</code> or <code class="code">t</code> signals a <code class="code">setting-constant</code> error.  The
+same is true for a keyword (a symbol whose name starts with &lsquo;<samp class="samp">:</samp>&rsquo;),
 if it is interned in the standard obarray, except that setting such a
 symbol to itself is not an error.
 </p>
 <div class="example">
-<pre class="example">nil &equiv; 'nil
+<div class="group"><pre class="example-preformatted">nil &equiv; 'nil
      &rArr; nil
-</pre><pre class="example">(setq nil 500)
+</pre></div><div class="group"><pre class="example-preformatted">(setq nil 500)
 error&rarr; Attempt to set constant symbol: nil
-</pre></div>
+</pre></div></div>
 
-<dl>
-<dt id="index-keywordp">Function: <strong>keywordp</strong> <em>object</em></dt>
-<dd><p>function returns <code>t</code> if <var>object</var> is a symbol whose name
-starts with &lsquo;<samp>:</samp>&rsquo;, interned in the standard obarray, and returns
-<code>nil</code> otherwise.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-keywordp"><span class="category-def">Function: </span><span><strong class="def-name">keywordp</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-keywordp"> &para;</a></span></dt>
+<dd><p>function returns <code class="code">t</code> if <var class="var">object</var> is a symbol whose name
+starts with &lsquo;<samp class="samp">:</samp>&rsquo;, interned in the standard obarray, and returns
+<code class="code">nil</code> otherwise.
 </p></dd></dl>
 
 <p>These constants are fundamentally different from the constants
-defined using the <code>defconst</code> special form (see <a href="Defining-Variables.html">Defining Variables</a>).  A <code>defconst</code> form serves to inform human readers
+defined using the <code class="code">defconst</code> special form (see <a class="pxref" href="Defining-Variables.html">Defining Global Variables</a>).  A <code class="code">defconst</code> form serves to inform human readers
 that you do not intend to change the value of a variable, but Emacs
 does not raise an error if you actually change it.
 </p>
-<span id="index-read_002donly-variables"></span>
+<a class="index-entry-id" id="index-read_002donly-variables"></a>
 <p>A small number of additional symbols are made read-only for various
-practical reasons.  These include <code>enable-multibyte-characters</code>,
-<code>most-positive-fixnum</code>, <code>most-negative-fixnum</code>, and a few
+practical reasons.  These include <code class="code">enable-multibyte-characters</code>,
+<code class="code">most-positive-fixnum</code>, <code class="code">most-negative-fixnum</code>, and a few
 others.  Any attempt to set or bind these also signals a
-<code>setting-constant</code> error.
+<code class="code">setting-constant</code> error.
 </p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Local-Variables.html">Local Variables</a>, Previous: <a href="Global-Variables.html">Global Variables</a>, Up: <a href="Variables.html">Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Syntax Properties (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Syntax Properties (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Syntax Properties (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Syntax-Tables.html" rel="up" title="Syntax Tables">
+<link href="Motion-and-Syntax.html" rel="next" title="Motion and Syntax">
+<link href="Syntax-Table-Functions.html" rel="prev" title="Syntax Table Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Syntax-Properties">
+<div class="nav-panel">
+<p>
+Next: <a href="Motion-and-Syntax.html" accesskey="n" rel="next">Motion and Syntax</a>, Previous: <a href="Syntax-Table-Functions.html" accesskey="p" rel="prev">Syntax Table Functions</a>, Up: <a href="Syntax-Tables.html" accesskey="u" rel="up">Syntax Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Syntax-Properties-1"><span>36.4 Syntax Properties<a class="copiable-link" href="#Syntax-Properties-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-syntax_002dtable-_0028text-property_0029"></a>
+
+<p>When the syntax table is not flexible enough to specify the syntax of
+a language, you can override the syntax table for specific character
+occurrences in the buffer, by applying a <code class="code">syntax-table</code> text
+property.  See <a class="xref" href="Text-Properties.html">Text Properties</a>, for how to apply text properties.
+</p>
+<p>The valid values of <code class="code">syntax-table</code> text property are:
+</p>
+<dl class="table">
+<dt><var class="var">syntax-table</var></dt>
+<dd><p>If the property value is a syntax table, that table is used instead of
+the current buffer&rsquo;s syntax table to determine the syntax for the
+underlying text character.
+</p>
+</dd>
+<dt><code class="code">(<var class="var">syntax-code</var> . <var class="var">matching-char</var>)</code></dt>
+<dd><p>A cons cell of this format is a raw syntax descriptor (see <a class="pxref" href="Syntax-Table-Internals.html">Syntax Table Internals</a>), which directly specifies a syntax class for the
+underlying text character.
+</p>
+</dd>
+<dt><code class="code">nil</code></dt>
+<dd><p>If the property is <code class="code">nil</code>, the character&rsquo;s syntax is determined from
+the current syntax table in the usual way.
+</p></dd>
+</dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-parse_002dsexp_002dlookup_002dproperties"><span class="category-def">Variable: </span><span><strong class="def-name">parse-sexp-lookup-properties</strong><a class="copiable-link" href="#index-parse_002dsexp_002dlookup_002dproperties"> &para;</a></span></dt>
+<dd><p>If this is non-<code class="code">nil</code>, the syntax scanning functions, like
+<code class="code">forward-sexp</code>, pay attention to <code class="code">syntax-table</code> text
+properties.  Otherwise they use only the current syntax table.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-syntax_002dpropertize_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">syntax-propertize-function</strong><a class="copiable-link" href="#index-syntax_002dpropertize_002dfunction"> &para;</a></span></dt>
+<dd><p>This variable, if non-<code class="code">nil</code>, should store a function for applying
+<code class="code">syntax-table</code> properties to a specified stretch of text.  It is
+intended to be used by major modes to install a function which applies
+<code class="code">syntax-table</code> properties in some mode-appropriate way.
+</p>
+<p>The function is called by <code class="code">syntax-ppss</code> (see <a class="pxref" href="Position-Parse.html">Finding the Parse State for a Position</a>),
+and by Font Lock mode during syntactic fontification (see <a class="pxref" href="Syntactic-Font-Lock.html">Syntactic Font Lock</a>).  It is called with two arguments, <var class="var">start</var> and
+<var class="var">end</var>, which are the starting and ending positions of the text on
+which it should act.  It is allowed to arbitrarily move point within
+the region delimited by <var class="var">start</var> and <var class="var">end</var>; such motions don&rsquo;t
+need to use <code class="code">save-excursion</code> (see <a class="pxref" href="Excursions.html">Excursions</a>).  It is also
+allowed to call <code class="code">syntax-ppss</code> on any position before <var class="var">end</var>,
+but if a Lisp program calls <code class="code">syntax-ppss</code> on some position and
+later modifies the buffer at some earlier position, then it is that
+program&rsquo;s responsibility to call <code class="code">syntax-ppss-flush-cache</code> to
+flush the now obsolete info from the cache.
+</p>
+<p><strong class="strong">Caution:</strong> When this variable is non-<code class="code">nil</code>, Emacs removes
+<code class="code">syntax-table</code> text properties arbitrarily and relies on
+<code class="code">syntax-propertize-function</code> to reapply them.  Thus if this
+facility is used at all, the function must apply <strong class="strong">all</strong>
+<code class="code">syntax-table</code> text properties used by the major mode.  In
+particular, Modes derived from a CC Mode mode must not use this
+variable, since CC Mode uses other means to apply and remove these
+text properties.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-syntax_002dpropertize_002dextend_002dregion_002dfunctions"><span class="category-def">Variable: </span><span><strong class="def-name">syntax-propertize-extend-region-functions</strong><a class="copiable-link" href="#index-syntax_002dpropertize_002dextend_002dregion_002dfunctions"> &para;</a></span></dt>
+<dd><p>This abnormal hook is run by the syntax parsing code prior to calling
+<code class="code">syntax-propertize-function</code>.  Its role is to help locate safe
+starting and ending buffer positions for passing to
+<code class="code">syntax-propertize-function</code>.  For example, a major mode can add
+a function to this hook to identify multi-line syntactic constructs,
+and ensure that the boundaries do not fall in the middle of one.
+</p>
+<p>Each function in this hook should accept two arguments, <var class="var">start</var>
+and <var class="var">end</var>.  It should return either a cons cell of two adjusted
+buffer positions, <code class="code">(<var class="var">new-start</var> . <var class="var">new-end</var>)</code>, or
+<code class="code">nil</code> if no adjustment is necessary.  The hook functions are run
+in turn, repeatedly, until they all return <code class="code">nil</code>.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Motion-and-Syntax.html">Motion and Syntax</a>, Previous: <a href="Syntax-Table-Functions.html">Syntax Table Functions</a>, Up: <a href="Syntax-Tables.html">Syntax Tables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

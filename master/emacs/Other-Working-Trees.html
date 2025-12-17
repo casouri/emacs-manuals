@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Other Working Trees (GNU Emacs Manual)</title>
+
+<meta name="description" content="Other Working Trees (GNU Emacs Manual)">
+<meta name="keywords" content="Other Working Trees (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Miscellaneous-VC.html" rel="up" title="Miscellaneous VC">
+<link href="Version-Headers.html" rel="next" title="Version Headers">
+<link href="Outgoing-Base-Diffs.html" rel="prev" title="Outgoing Base Diffs">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Other-Working-Trees">
+<div class="nav-panel">
+<p>
+Next: <a href="Version-Headers.html" accesskey="n" rel="next">Inserting Version Control Headers</a>, Previous: <a href="Outgoing-Base-Diffs.html" accesskey="p" rel="prev">Commands for diffs including all outstanding changes</a>, Up: <a href="Miscellaneous-VC.html" accesskey="u" rel="up">Miscellaneous Commands and Features of VC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Multiple-Working-Trees-for-One-Repository"><span>30.1.12.6 Multiple Working Trees for One Repository<a class="copiable-link" href="#Multiple-Working-Trees-for-One-Repository"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-other-working-trees"></a>
+<a class="index-entry-id" id="index-multiple-working-trees"></a>
+<p>Some VCS support more than one working tree with the same backing
+repository or revisions store.  This means that you can have different
+revisions or branches (see <a class="pxref" href="Branches.html">Version Control Branches</a>) checked out simultaneously, in
+different working trees, but with all revision history, branches, tags
+and other metadata shared.
+</p>
+<p>Suppose your project has a trunk where you&rsquo;re developing the new version
+3 of your software, and a stable release branch from which you make
+point releases of version 2.  Someone sends you a patch fixing a bug
+that&rsquo;s present in version 2.  Your main working tree has version 3
+checked out, and you&rsquo;re in the middle of a big refactor that you don&rsquo;t
+want to disturb.  So you type <kbd class="kbd">C-x v w c</kbd> (see below) and create a
+new working tree, following the prompts to check out the version 2
+branch there.
+</p>
+<p>You apply the patch to that working tree using <kbd class="kbd">C-x&nbsp;v&nbsp;w&nbsp;a</kbd><!-- /@w --> (see
+below), build and test it.  Satisfied, you use <kbd class="kbd">C-x&nbsp;v&nbsp;P</kbd><!-- /@w -->
+(see <a class="pxref" href="Pulling-_002f-Pushing.html">Pulling/Pushing Changes into/from a Branch</a>) in the other working tree.  In the course of
+testing the patch, you&rsquo;ve realized that the bug exists in version 3 of
+the software, too.  So you switch back to your first working tree, and
+use <kbd class="kbd">C-x v m</kbd> (see <a class="pxref" href="Merging.html">Merging Branches</a>) to merge the branch you have checked
+out in the other working tree.  Now your version of the trunk has all of
+version 2&rsquo;s fixes merged into it, but you haven&rsquo;t pushed it yet because
+you&rsquo;re still refactoring.  You&rsquo;ll use <kbd class="kbd">C-x v P</kbd> later.
+</p>
+<p>Ordinary VC commands like <kbd class="kbd">C-x v v</kbd> (see <a class="pxref" href="Basic-VC-Editing.html">Basic Editing under Version Control</a>) and
+<kbd class="kbd">C-x v d</kbd> (see <a class="pxref" href="VC-Directory-Mode.html">VC Directory Mode</a>) don&rsquo;t work any differently
+when there exist other working trees, except that the commits, branches
+and other VC artifacts they create will be visible from all working
+trees.  Another way to put this is that any action taken in any working
+tree which creates new artefacts in the VCS backing store will be
+visible from other working trees, but actions which only affect
+workfiles won&rsquo;t be.  So if you apply a patch to some workfiles in one
+working tree, that only affects that working tree.  But if you commit
+the changes made by applying the patch, then that creates a new revision
+in the backing store, and so this action affects other working trees in
+the sense that their view of the repository&rsquo;s history will now have an
+additional commit in it.
+</p>
+<p>The following special commands let you switch between and modify
+different working trees.  It is an error to use them other than from
+within a VC working tree; that is, from a buffer visiting a
+VCS-controlled file, or otherwise from a buffer whose
+<code class="code">default-directory</code> (see <a class="pxref" href="File-Names.html">File Names</a>) is within a VC working
+tree.
+</p>
+<dl class="table">
+<dt><kbd class="kbd">C-x v w c</kbd></dt>
+<dd><p>Add a new working tree.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v w w</kbd></dt>
+<dd><p>Visit this file or directory in another working tree.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v w k</kbd></dt>
+<dd><p>Kill buffers visiting this file in other working trees.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v w s</kbd></dt>
+<dd><p>Invoke <kbd class="kbd">C-x p p</kbd> (<code class="code">project-switch-project</code>) but limited to
+other working trees.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v w a</kbd></dt>
+<dd><p>Copy or move fileset changes to another working tree.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v w A</kbd></dt>
+<dd><p>Copy or move all changes to another working tree.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v w x</kbd></dt>
+<dd><p>Delete a working tree you no longer need.
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v w R</kbd></dt>
+<dd><p>Relocate a working tree to another file name.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-C_002dx-v-w-c"></a>
+<a class="index-entry-id" id="index-vc_002dadd_002dworking_002dtree"></a>
+<p>You can start using multiple working trees by using the command
+<kbd class="kbd">C-x&nbsp;v&nbsp;w&nbsp;c</kbd><!-- /@w --> (<code class="code">vc-add-working-tree</code>) to create a new working
+tree.  This prompts you to specify a destination directory, which
+identifies the working tree, and which will hold the new set of
+workfiles.
+</p>
+<p>Different VCS have different rules about what may and must be checked
+out in other working trees, so there may be additional prompts depending
+on the VCS in use.  For example, Git requires that each branch be
+checked out in only one working tree at a time, so when using Git, Emacs
+will also prompt you for the name of the branch to be checked out in the
+new working tree.
+</p>
+<a class="index-entry-id" id="index-C_002dx-v-w-w"></a>
+<a class="index-entry-id" id="index-vc_002dswitch_002dworking_002dtree"></a>
+<p>Once your repository has other working trees, you can use the command
+<kbd class="kbd">C-x v w w</kbd> (<code class="code">vc-switch-working-tree</code>) to switch between them.
+It tries to find the analogue of the current buffer&rsquo;s file or directory
+under another working tree.  Typically the sets of workfiles under
+different working trees differ more in file contents than in which files
+do and do not exist.  In other words, the file or directory the current
+buffer visits probably exists in other working trees too, and this
+command lets you switch to those versions of the file.
+</p>
+<p><kbd class="kbd">C-x v w w</kbd> also works in Diff mode (see <a class="pxref" href="Diff-Mode.html">Diff Mode</a>) and Log View
+mode (see <a class="pxref" href="VC-Change-Log.html">VC Change Log</a>).  Instead of switching to a different
+buffer, the command changes the default directory of the buffer to the
+corresponding directory under another working tree.  This is
+particularly useful from Log View mode buffers generated by commands
+like <kbd class="kbd">C-x v L</kbd> (see <a class="pxref" href="VC-Change-Log.html">VC Change Log</a>).  After using <kbd class="kbd">C-x v w w</kbd>
+to change the default directory of the Log View buffer, you can move
+point to a revision of interest and type <kbd class="kbd">=</kbd> (<code class="code">log-view-diff</code>)
+to open a Diff mode buffer with that revision&rsquo;s changes.  Then you can
+use standard Diff mode commands like <kbd class="kbd">C-c&nbsp;C-a</kbd><!-- /@w -->
+(<code class="code">diff-apply-hunk</code>) to apply hunks to the other working tree.
+</p>
+<a class="index-entry-id" id="index-C_002dx-v-w-k"></a>
+<a class="index-entry-id" id="index-vc_002dkill_002dother_002dworking_002dtree_002dbuffers"></a>
+<p>After using <kbd class="kbd">C-x v w w</kbd> in file-visiting buffers you will have
+multiple buffers visiting identically named files (see <a class="pxref" href="Uniquify.html">Making Buffer Names Unique</a>).
+You can kill all but one of these buffers by typing <kbd class="kbd">C-x v w k</kbd>
+(<code class="code">vc-kill-other-working-tree-buffers</code>).  This command kills buffers
+visiting versions of the current buffer&rsquo;s file in other working trees,
+preserving the current buffer.  It does not work in non-file-visiting
+buffers.
+</p>
+<a class="index-entry-id" id="index-C_002dx-v-w-s"></a>
+<a class="index-entry-id" id="index-vc_002dworking_002dtree_002dswitch_002dproject"></a>
+<p>An alternative way to switch between working trees is <kbd class="kbd">C-x v w s</kbd>
+(<code class="code">vc-working-tree-switch-project</code>).  This prompts you to select a
+working tree, and then displays a menu of commands to operate on it.
+This is in fact just <kbd class="kbd">C-x p p</kbd> (<code class="code">project-switch-project</code>)
+(see <a class="pxref" href="Switching-Projects.html">Switching Projects</a>) but with the selection of projects limited
+to other working trees.  The main difference between <kbd class="kbd">C-x v w w</kbd> and
+<kbd class="kbd">C-x v w s</kbd> is that the former looks for an analogue of the current
+buffer in the other working tree while the latter considers the other
+working tree as a whole, independent project.
+</p>
+<a class="index-entry-id" id="index-C_002dx-v-w-a"></a>
+<a class="index-entry-id" id="index-vc_002dapply_002dto_002dother_002dworking_002dtree"></a>
+<p>The command <kbd class="kbd">C-x v w a</kbd> (<code class="code">vc-apply-to-other-working-tree</code>)
+prompts you to select another working tree, then copies changes from the
+current working tree to that other working tree.  With a prefix
+argument, it moves changes instead of just copying them.  Usually the
+command operates on local (uncommitted) changes to the current VC
+fileset.  When invoked in a buffer under Diff mode (see <a class="pxref" href="Diff-Mode.html">Diff Mode</a>), it
+operates on the changes specified by the contents of that buffer.  The
+command stops and does nothing if any of the changes don&rsquo;t apply to the
+target working tree.
+</p>
+<p><kbd class="kbd">C-x v w a</kbd> is useful to copy changes to a temporary working tree in
+order to test them.  It is also useful to copy fixes back to your main
+working tree for checking in.  For example, you might hack away at a bug
+in a temporary working tree, and fix it.  You&rsquo;d then want to copy or
+move the fix back to your main working tree to check it in and push it.
+</p>
+<a class="index-entry-id" id="index-C_002dx-v-w-A"></a>
+<a class="index-entry-id" id="index-vc_002dapply_002droot_002dto_002dother_002dworking_002dtree"></a>
+<p>The command <kbd class="kbd">C-x v w A</kbd> works similarly, except that it always
+copies or moves all local changes to the whole working tree, not just
+changes to the current VC fileset or changes represented by the contents
+of a Diff mode buffer.  With two prefix arguments, this command shows a
+preview of changes to be copied, leaving you to apply them using
+standard Diff mode commands like <kbd class="kbd">C-c C-a</kbd> and <kbd class="kbd">C-c&nbsp;&lt;RET&gt;&nbsp;a</kbd><!-- /@w -->
+(see <a class="pxref" href="Diff-Mode.html">Diff Mode</a>).  (<kbd class="kbd">C-u&nbsp;C-u&nbsp;C-x&nbsp;v&nbsp;w&nbsp;A</kbd><!-- /@w --> is roughly equivalent
+to typing <kbd class="kbd">C-x&nbsp;v&nbsp;D</kbd><!-- /@w --> followed by <kbd class="kbd">C-x&nbsp;v&nbsp;w&nbsp;w</kbd><!-- /@w -->.)
+</p>
+<a class="index-entry-id" id="index-C_002dx-v-w-x"></a>
+<a class="index-entry-id" id="index-C_002dx-v-w-R"></a>
+<a class="index-entry-id" id="index-vc_002ddelete_002dworking_002dtree"></a>
+<a class="index-entry-id" id="index-vc_002dmove_002dworking_002dtree"></a>
+<p>The commands <kbd class="kbd">C-x v w x</kbd> (<code class="code">vc-delete-working-tree</code>) and
+<kbd class="kbd">C-x v w R</kbd> (<code class="code">vc-move-working-tree</code>) are for performing
+maintenance tasks on other working trees, letting you delete, move and
+rename them.  Deleting other working trees is particular useful because
+a common use for multiple working trees is to create throwaway copies of
+the repository to quickly test changes, without interfering with any
+work-in-progress you may have in your primary working trees.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Version-Headers.html">Inserting Version Control Headers</a>, Previous: <a href="Outgoing-Base-Diffs.html">Commands for diffs including all outstanding changes</a>, Up: <a href="Miscellaneous-VC.html">Miscellaneous Commands and Features of VC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Keys in Documentation (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Keys in Documentation (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Keys in Documentation (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Documentation.html" rel="up" title="Documentation">
+<link href="Text-Quoting-Style.html" rel="next" title="Text Quoting Style">
+<link href="Accessing-Documentation.html" rel="prev" title="Accessing Documentation">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Keys-in-Documentation">
+<div class="nav-panel">
+<p>
+Next: <a href="Text-Quoting-Style.html" accesskey="n" rel="next">Text Quoting Style</a>, Previous: <a href="Accessing-Documentation.html" accesskey="p" rel="prev">Access to Documentation Strings</a>, Up: <a href="Documentation.html" accesskey="u" rel="up">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Substituting-Key-Bindings-in-Documentation"><span>25.3 Substituting Key Bindings in Documentation<a class="copiable-link" href="#Substituting-Key-Bindings-in-Documentation"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-documentation_002c-keys-in"></a>
+<a class="index-entry-id" id="index-keys-in-documentation-strings"></a>
+<a class="index-entry-id" id="index-substituting-keys-in-documentation"></a>
+<a class="index-entry-id" id="index-key-substitution-sequence"></a>
+
+<p>When documentation strings refer to key sequences, they should use the
+current, actual key bindings.  They can do so using certain special text
+sequences described below.  Accessing documentation strings in the usual
+way substitutes current key binding information for these special
+sequences.  This works by calling <code class="code">substitute-command-keys</code>.  You
+can also call that function yourself.
+</p>
+<p>Here is a list of the special sequences and what they mean:
+</p>
+<dl class="table">
+<dt><code class="code">\[<var class="var">command</var>]</code></dt>
+<dd><p>stands for a key sequence that will invoke <var class="var">command</var>, or &lsquo;<samp class="samp">M-x
+<var class="var">command</var></samp>&rsquo; if <var class="var">command</var> has no key bindings.
+</p>
+</dd>
+<dt><code class="code">\{<var class="var">mapvar</var>}</code></dt>
+<dd><p>stands for a summary of the keymap which is the value of the variable
+<var class="var">mapvar</var>.  The summary is made using <code class="code">describe-bindings</code>.
+The summary will normally exclude menu bindings, but if the
+<var class="var">include-menus</var> argument to <code class="code">substitute-command-keys</code> is
+non-<code class="code">nil</code>, the menu bindings will be included.
+</p>
+</dd>
+<dt><code class="code">\&lt;<var class="var">mapvar</var>&gt;</code></dt>
+<dd><p>stands for no text itself.  It is used only for a side effect: it
+specifies <var class="var">mapvar</var>&rsquo;s value as the keymap for any following
+&lsquo;<samp class="samp">\[<var class="var">command</var>]</samp>&rsquo; sequences in this documentation string.
+</p>
+</dd>
+<dt><code class="code">\`<var class="var">KEYSEQ</var>'</code></dt>
+<dd><p>stands for a key sequence <var class="var">KEYSEQ</var>, which will use the same face
+as a command substitution.  This should be used only when a key
+sequence has no corresponding command, for example when it is read
+directly with <code class="code">read-key-sequence</code>.  It must be a valid key
+sequence according to <code class="code">key-valid-p</code>.  It can also be used with
+command names, like &lsquo;<samp class="samp">\`M-x foo'</samp>&rsquo;, where you want this to be
+fontified like a keyboard sequence, but you want to inhibit
+translating it into a key sequence like &lsquo;<samp class="samp">\[foo]</samp>&rsquo; does.
+</p>
+</dd>
+<dt><code class="code">`</code></dt>
+<dd><p>(grave accent) stands for a left quote.
+This generates a left single quotation mark, an apostrophe, or a grave
+accent depending on the value of <code class="code">text-quoting-style</code>.
+See <a class="xref" href="Text-Quoting-Style.html">Text Quoting Style</a>.
+</p>
+</dd>
+<dt><code class="code">'</code></dt>
+<dd><p>(apostrophe) stands for a right quote.
+This generates a right single quotation mark or an apostrophe
+depending on the value of <code class="code">text-quoting-style</code>.
+</p>
+</dd>
+<dt><code class="code">\=</code></dt>
+<dd><p>quotes the following character and is discarded; thus, &lsquo;<samp class="samp">\=`</samp>&rsquo; puts
+&lsquo;<samp class="samp">`</samp>&rsquo; into the output, &lsquo;<samp class="samp">\=\[</samp>&rsquo; puts &lsquo;<samp class="samp">\[</samp>&rsquo; into the output,
+and &lsquo;<samp class="samp">\=\=</samp>&rsquo; puts &lsquo;<samp class="samp">\=</samp>&rsquo; into the output.
+</p>
+</dd>
+<dt><code class="code">\+</code></dt>
+<dd><p>This indicates that the symbol directly following should not be marked
+as a link in the <samp class="file">*Help*</samp> buffer.
+</p></dd>
+</dl>
+
+<p><strong class="strong">Please note:</strong> Each &lsquo;<samp class="samp">\</samp>&rsquo; must be doubled when written in a
+string in Emacs Lisp (see <a class="pxref" href="Syntax-for-Strings.html">Syntax for Strings</a>).
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-substitute_002dcommand_002dkeys"><span class="category-def">Function: </span><span><strong class="def-name">substitute-command-keys</strong> <var class="def-var-arguments">string &amp;optional no-face include-menus</var><a class="copiable-link" href="#index-substitute_002dcommand_002dkeys"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-help_002dkey_002dbinding-_0028face_0029"></a>
+<p>This function scans <var class="var">string</var> for the above special sequences and
+replaces them by what they stand for, returning the result as a string.
+This permits display of documentation that refers accurately to the
+user&rsquo;s own customized key bindings.  By default, the key bindings are
+given a special face <code class="code">help-key-binding</code>, but if the optional
+argument <var class="var">no-face</var> is non-<code class="code">nil</code>, the function doesn&rsquo;t add
+this face to the produced string.
+</p>
+<a class="index-entry-id" id="index-advertised-binding"></a>
+<p>If a command has multiple bindings, this function normally uses the
+first one it finds.  You can specify one particular key binding by
+assigning an <code class="code">:advertised-binding</code> symbol property to the
+command, like this:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(put 'undo :advertised-binding [?\C-/])
+</pre></div>
+
+<p>The <code class="code">:advertised-binding</code> property also affects the binding shown
+in menu items (see <a class="pxref" href="Menu-Bar.html">The Menu Bar</a>).  The property is ignored if it
+specifies a key binding that the command does not actually have.
+</p></dd></dl>
+
+<p>Here are examples of the special sequences:
+</p>
+<div class="example smallexample">
+<div class="group"><pre class="example-preformatted">(substitute-command-keys
+   &quot;To abort recursive edit, type `\\[abort-recursive-edit]'.&quot;)
+&rArr; &quot;To abort recursive edit, type ‘C-]’.&quot;
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">(substitute-command-keys
+   &quot;The keys that are defined for the minibuffer here are:
+  \\{minibuffer-local-must-match-map}&quot;)
+&rArr; &quot;The keys that are defined for the minibuffer here are:
+</pre></div><pre class="example-preformatted">
+
+?               minibuffer-completion-help
+SPC             minibuffer-complete-word
+TAB             minibuffer-complete
+C-j             minibuffer-complete-and-exit
+RET             minibuffer-complete-and-exit
+C-g             abort-recursive-edit
+&quot;
+
+The keymap description will normally exclude menu items, but if
+<var class="var">include-menus</var> is non-<code class="code">nil</code>, include them.
+
+</pre><div class="group"><pre class="example-preformatted">(substitute-command-keys
+   &quot;To abort a recursive edit from the minibuffer, type \
+`\\&lt;minibuffer-local-must-match-map&gt;\\[abort-recursive-edit]'.&quot;)
+&rArr; &quot;To abort a recursive edit from the minibuffer, type ‘C-g’.&quot;
+</pre></div></div>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-substitute_002dquotes"><span class="category-def">Function: </span><span><strong class="def-name">substitute-quotes</strong> <var class="def-var-arguments">string</var><a class="copiable-link" href="#index-substitute_002dquotes"> &para;</a></span></dt>
+<dd><p>This function works like <code class="code">substitute-command-keys</code>, but only
+replaces quote characters.
+</p></dd></dl>
+
+<p>There are other special conventions for the text in documentation
+strings&mdash;for instance, you can refer to functions, variables, and
+sections of this manual.  See <a class="xref" href="Documentation-Tips.html">Tips for Documentation Strings</a>, for details.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Text-Quoting-Style.html">Text Quoting Style</a>, Previous: <a href="Accessing-Documentation.html">Access to Documentation Strings</a>, Up: <a href="Documentation.html">Documentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

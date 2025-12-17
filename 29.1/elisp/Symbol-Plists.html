@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 29.1.
+
+Copyright © 1990-1996, 1998-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Symbol Plists (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Symbol Plists (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Symbol Plists (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Symbol-Properties.html" rel="up" title="Symbol Properties">
+<link href="Standard-Properties.html" rel="next" title="Standard Properties">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Symbol-Plists">
+<div class="nav-panel">
+<p>
+Next: <a href="Standard-Properties.html" accesskey="n" rel="next">Standard Symbol Properties</a>, Up: <a href="Symbol-Properties.html" accesskey="u" rel="up">Symbol Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Accessing-Symbol-Properties"><span>9.4.1 Accessing Symbol Properties<a class="copiable-link" href="#Accessing-Symbol-Properties"> &para;</a></span></h4>
+
+<p>The following functions can be used to access symbol properties.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-get"><span class="category-def">Function: </span><span><strong class="def-name">get</strong> <var class="def-var-arguments">symbol property</var><a class="copiable-link" href="#index-get"> &para;</a></span></dt>
+<dd><p>This function returns the value of the property named <var class="var">property</var>
+in <var class="var">symbol</var>&rsquo;s property list.  If there is no such property, it
+returns <code class="code">nil</code>.  Thus, there is no distinction between a value of
+<code class="code">nil</code> and the absence of the property.
+</p>
+<p>The name <var class="var">property</var> is compared with the existing property names
+using <code class="code">eq</code>, so any object is a legitimate property.
+</p>
+<p>See <code class="code">put</code> for an example.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-put"><span class="category-def">Function: </span><span><strong class="def-name">put</strong> <var class="def-var-arguments">symbol property value</var><a class="copiable-link" href="#index-put"> &para;</a></span></dt>
+<dd><p>This function puts <var class="var">value</var> onto <var class="var">symbol</var>&rsquo;s property list under
+the property name <var class="var">property</var>, replacing any previous property value.
+The <code class="code">put</code> function returns <var class="var">value</var>.
+</p>
+<div class="example">
+<pre class="example-preformatted">(put 'fly 'verb 'transitive)
+     &rArr;'transitive
+(put 'fly 'noun '(a buzzing little bug))
+     &rArr; (a buzzing little bug)
+(get 'fly 'verb)
+     &rArr; transitive
+(symbol-plist 'fly)
+     &rArr; (verb transitive noun (a buzzing little bug))
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-symbol_002dplist"><span class="category-def">Function: </span><span><strong class="def-name">symbol-plist</strong> <var class="def-var-arguments">symbol</var><a class="copiable-link" href="#index-symbol_002dplist"> &para;</a></span></dt>
+<dd><p>This function returns the property list of <var class="var">symbol</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-setplist"><span class="category-def">Function: </span><span><strong class="def-name">setplist</strong> <var class="def-var-arguments">symbol plist</var><a class="copiable-link" href="#index-setplist"> &para;</a></span></dt>
+<dd><p>This function sets <var class="var">symbol</var>&rsquo;s property list to <var class="var">plist</var>.
+Normally, <var class="var">plist</var> should be a well-formed property list, but this is
+not enforced.  The return value is <var class="var">plist</var>.
+</p>
+<div class="example">
+<pre class="example-preformatted">(setplist 'foo '(a 1 b (2 3) c nil))
+     &rArr; (a 1 b (2 3) c nil)
+(symbol-plist 'foo)
+     &rArr; (a 1 b (2 3) c nil)
+</pre></div>
+
+<p>For symbols in special obarrays, which are not used for ordinary
+purposes, it may make sense to use the property list cell in a
+nonstandard fashion; in fact, the abbrev mechanism does so
+(see <a class="pxref" href="Abbrevs.html">Abbrevs and Abbrev Expansion</a>).
+</p>
+<p>You could define <code class="code">put</code> in terms of <code class="code">setplist</code> and
+<code class="code">plist-put</code>, as follows:
+</p>
+<div class="example">
+<pre class="example-preformatted">(defun put (symbol prop value)
+  (setplist symbol
+            (plist-put (symbol-plist symbol) prop value)))
+</pre></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-function_002dget"><span class="category-def">Function: </span><span><strong class="def-name">function-get</strong> <var class="def-var-arguments">symbol property &amp;optional autoload</var><a class="copiable-link" href="#index-function_002dget"> &para;</a></span></dt>
+<dd><p>This function is identical to <code class="code">get</code>, except that if <var class="var">symbol</var>
+is the name of a function alias, it looks in the property list of the
+symbol naming the actual function.  See <a class="xref" href="Defining-Functions.html">Defining Functions</a>.  If the
+optional argument <var class="var">autoload</var> is non-<code class="code">nil</code>, and <var class="var">symbol</var>
+is auto-loaded, this function will try to autoload it, since
+autoloading might set <var class="var">property</var> of <var class="var">symbol</var>.  If
+<var class="var">autoload</var> is the symbol <code class="code">macro</code>, only try autoloading if
+<var class="var">symbol</var> is an auto-loaded macro.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-function_002dput"><span class="category-def">Function: </span><span><strong class="def-name">function-put</strong> <var class="def-var-arguments">function property value</var><a class="copiable-link" href="#index-function_002dput"> &para;</a></span></dt>
+<dd><p>This function sets <var class="var">property</var> of <var class="var">function</var> to <var class="var">value</var>.
+<var class="var">function</var> should be a symbol.  This function is preferred to
+calling <code class="code">put</code> for setting properties of a function, because it
+will allow us some day to implement remapping of old properties to new
+ones.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Standard-Properties.html">Standard Symbol Properties</a>, Up: <a href="Symbol-Properties.html">Symbol Properties</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Buffer End Motion (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Buffer End Motion (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Word-Motion.html" rel="prev" title="Word Motion">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,64 +48,66 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Buffer-End-Motion"></span><div class="header">
+<div class="subsection-level-extent" id="Buffer-End-Motion">
+<div class="nav-panel">
 <p>
-Next: <a href="Text-Lines.html" accesskey="n" rel="next">Text Lines</a>, Previous: <a href="Word-Motion.html" accesskey="p" rel="prev">Word Motion</a>, Up: <a href="Motion.html" accesskey="u" rel="up">Motion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Text-Lines.html" accesskey="n" rel="next">Motion by Text Lines</a>, Previous: <a href="Word-Motion.html" accesskey="p" rel="prev">Motion by Words</a>, Up: <a href="Motion.html" accesskey="u" rel="up">Motion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Motion-to-an-End-of-the-Buffer"></span><h4 class="subsection">29.2.3 Motion to an End of the Buffer</h4>
-<span id="index-move-to-beginning-or-end-of-buffer"></span>
+<h4 class="subsection" id="Motion-to-an-End-of-the-Buffer"><span>29.2.3 Motion to an End of the Buffer<a class="copiable-link" href="#Motion-to-an-End-of-the-Buffer"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-move-to-beginning-or-end-of-buffer"></a>
 
 <p>To move point to the beginning of the buffer, write:
 </p>
 <div class="example">
-<pre class="example">(goto-char (point-min))
-</pre></div>
+<div class="group"><pre class="example-preformatted">(goto-char (point-min))
+</pre></div></div>
 
 <p>Likewise, to move to the end of the buffer, use:
 </p>
 <div class="example">
-<pre class="example">(goto-char (point-max))
-</pre></div>
+<div class="group"><pre class="example-preformatted">(goto-char (point-max))
+</pre></div></div>
 
 <p>Here are two commands that users use to do these things.  They are
 documented here to warn you not to use them in Lisp programs, because
 they set the mark and display messages in the echo area.
 </p>
-<dl>
-<dt id="index-beginning_002dof_002dbuffer">Command: <strong>beginning-of-buffer</strong> <em>&amp;optional n</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-beginning_002dof_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">beginning-of-buffer</strong> <var class="def-var-arguments">&amp;optional n</var><a class="copiable-link" href="#index-beginning_002dof_002dbuffer"> &para;</a></span></dt>
 <dd><p>This function moves point to the beginning of the buffer (or the limits
 of the accessible portion, when narrowing is in effect), setting the
 mark at the previous position (except in Transient Mark mode, if
 the mark is already active, it does not set the mark.)
 </p>
-<p>If <var>n</var> is non-<code>nil</code>, then it puts point <var>n</var> tenths of the
+<p>If <var class="var">n</var> is non-<code class="code">nil</code>, then it puts point <var class="var">n</var> tenths of the
 way from the beginning of the accessible portion of the buffer.  In an
-interactive call, <var>n</var> is the numeric prefix argument, if provided;
-otherwise <var>n</var> defaults to <code>nil</code>.
+interactive call, <var class="var">n</var> is the numeric prefix argument, if provided;
+otherwise <var class="var">n</var> defaults to <code class="code">nil</code>.
 </p>
-<p><strong>Warning:</strong> Don&rsquo;t use this function in Lisp programs!
+<p><strong class="strong">Warning:</strong> Don&rsquo;t use this function in Lisp programs!
 </p></dd></dl>
 
-<dl>
-<dt id="index-end_002dof_002dbuffer">Command: <strong>end-of-buffer</strong> <em>&amp;optional n</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-end_002dof_002dbuffer"><span class="category-def">Command: </span><span><strong class="def-name">end-of-buffer</strong> <var class="def-var-arguments">&amp;optional n</var><a class="copiable-link" href="#index-end_002dof_002dbuffer"> &para;</a></span></dt>
 <dd><p>This function moves point to the end of the buffer (or the limits of
 the accessible portion, when narrowing is in effect), setting the mark
 at the previous position (except in Transient Mark mode when the mark
-is already active).  If <var>n</var> is non-<code>nil</code>, then it puts point
-<var>n</var> tenths of the way from the end of the accessible portion of
+is already active).  If <var class="var">n</var> is non-<code class="code">nil</code>, then it puts point
+<var class="var">n</var> tenths of the way from the end of the accessible portion of
 the buffer.
 </p>
-<p>In an interactive call, <var>n</var> is the numeric prefix argument,
-if provided; otherwise <var>n</var> defaults to <code>nil</code>.
+<p>In an interactive call, <var class="var">n</var> is the numeric prefix argument,
+if provided; otherwise <var class="var">n</var> defaults to <code class="code">nil</code>.
 </p>
-<p><strong>Warning:</strong> Don&rsquo;t use this function in Lisp programs!
+<p><strong class="strong">Warning:</strong> Don&rsquo;t use this function in Lisp programs!
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Text-Lines.html" accesskey="n" rel="next">Text Lines</a>, Previous: <a href="Word-Motion.html" accesskey="p" rel="prev">Word Motion</a>, Up: <a href="Motion.html" accesskey="u" rel="up">Motion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Text-Lines.html">Motion by Text Lines</a>, Previous: <a href="Word-Motion.html">Motion by Words</a>, Up: <a href="Motion.html">Motion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

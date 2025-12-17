@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Abbrevs (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Abbrevs (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Abbrev-Tables.html" rel="next" title="Abbrev Tables">
-<link href="Categories.html" rel="prev" title="Categories">
+<link href="Processes.html" rel="next" title="Processes">
+<link href="Syntax-Tables.html" rel="prev" title="Syntax Tables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,37 +46,38 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Abbrevs"></span><div class="header">
+<div class="chapter-level-extent" id="Abbrevs">
+<div class="nav-panel">
 <p>
-Next: <a href="Processes.html" accesskey="n" rel="next">Processes</a>, Previous: <a href="Syntax-Tables.html" accesskey="p" rel="prev">Syntax Tables</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Processes.html" accesskey="n" rel="next">Processes</a>, Previous: <a href="Syntax-Tables.html" accesskey="p" rel="prev">Syntax Tables</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Abbrevs-and-Abbrev-Expansion"></span><h2 class="chapter">35 Abbrevs and Abbrev Expansion</h2>
-<span id="index-abbrev"></span>
+<h2 class="chapter" id="Abbrevs-and-Abbrev-Expansion"><span>35 Abbrevs and Abbrev Expansion<a class="copiable-link" href="#Abbrevs-and-Abbrev-Expansion"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-abbrev"></a>
 
-<p>An abbreviation or <em>abbrev</em> is a string of characters that may be
+<p>An abbreviation or <em class="dfn">abbrev</em> is a string of characters that may be
 expanded to a longer string.  The user can insert the abbrev string and
 find it replaced automatically with the expansion of the abbrev.  This
 saves typing.
 </p>
-<p>The set of abbrevs currently in effect is recorded in an <em>abbrev
+<p>The set of abbrevs currently in effect is recorded in an <em class="dfn">abbrev
 table</em>.  Each buffer has a local abbrev table, but normally all buffers
 in the same major mode share one abbrev table.  There is also a global
 abbrev table.  Normally both are used.
 </p>
-<p>An abbrev table is represented as an obarray.  See <a href="Creating-Symbols.html">Creating Symbols</a>, for information about obarrays.  Each abbreviation is
+<p>An abbrev table is represented as an obarray.  See <a class="xref" href="Creating-Symbols.html">Creating and Interning Symbols</a>, for information about obarrays.  Each abbreviation is
 represented by a symbol in the obarray.  The symbol&rsquo;s name is the
 abbreviation; its value is the expansion; its function definition is
-the hook function for performing the expansion (see <a href="Defining-Abbrevs.html">Defining Abbrevs</a>); and its property list cell contains various additional
+the hook function for performing the expansion (see <a class="pxref" href="Defining-Abbrevs.html">Defining Abbrevs</a>); and its property list cell contains various additional
 properties, including the use count and the number of times the
-abbreviation has been expanded (see <a href="Abbrev-Properties.html">Abbrev Properties</a>).
+abbreviation has been expanded (see <a class="pxref" href="Abbrev-Properties.html">Abbrev Properties</a>).
 </p>
-<span id="index-system-abbrev"></span>
-<p>Certain abbrevs, called <em>system abbrevs</em>, are defined by a major
+<a class="index-entry-id" id="index-system-abbrev"></a>
+<p>Certain abbrevs, called <em class="dfn">system abbrevs</em>, are defined by a major
 mode instead of the user.  A system abbrev is identified by its
-non-<code>nil</code> <code>:system</code> property (see <a href="Abbrev-Properties.html">Abbrev Properties</a>).
+non-<code class="code">nil</code> <code class="code">:system</code> property (see <a class="pxref" href="Abbrev-Properties.html">Abbrev Properties</a>).
 When abbrevs are saved to an abbrev file, system abbrevs are omitted.
-See <a href="Abbrev-Files.html">Abbrev Files</a>.
+See <a class="xref" href="Abbrev-Files.html">Saving Abbrevs in Files</a>.
 </p>
 <p>Because the symbols used for abbrevs are not interned in the usual
 obarray, they will never appear as the result of reading a Lisp
@@ -95,33 +86,25 @@ that handles abbrevs.  Therefore, it is safe to use them in a
 nonstandard way.
 </p>
 <p>If the minor mode Abbrev mode is enabled, the buffer-local variable
-<code>abbrev-mode</code> is non-<code>nil</code>, and abbrevs are automatically
+<code class="code">abbrev-mode</code> is non-<code class="code">nil</code>, and abbrevs are automatically
 expanded in the buffer.  For the user-level commands for abbrevs, see
-<a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Abbrevs.html#Abbrevs">Abbrev Mode</a> in <cite>The GNU Emacs Manual</cite>.
+<a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Abbrevs.html#Abbrevs">Abbrev Mode</a> in <cite class="cite">The GNU Emacs Manual</cite>.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Abbrev-Tables.html" accesskey="1">Tables</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Creating and working with abbrev tables.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Defining-Abbrevs.html" accesskey="2">Defining Abbrevs</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Specifying abbreviations and their expansions.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Abbrev-Files.html" accesskey="3">Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Saving abbrevs in files.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Abbrev-Expansion.html" accesskey="4">Expansion</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Controlling expansion; expansion subroutines.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Standard-Abbrev-Tables.html" accesskey="5">Standard Abbrev Tables</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Abbrev tables used by various major modes.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Abbrev-Properties.html" accesskey="6">Abbrev Properties</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to read and set abbrev properties.
-                                Which properties have which effect.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Abbrev-Table-Properties.html" accesskey="7">Abbrev Table Properties</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to read and set abbrev table properties.
-                                Which properties have which effect.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Abbrev-Tables.html" accesskey="1">Abbrev Tables</a></li>
+<li><a href="Defining-Abbrevs.html" accesskey="2">Defining Abbrevs</a></li>
+<li><a href="Abbrev-Files.html" accesskey="3">Saving Abbrevs in Files</a></li>
+<li><a href="Abbrev-Expansion.html" accesskey="4">Looking Up and Expanding Abbreviations</a></li>
+<li><a href="Standard-Abbrev-Tables.html" accesskey="5">Standard Abbrev Tables</a></li>
+<li><a href="Abbrev-Properties.html" accesskey="6">Abbrev Properties</a></li>
+<li><a href="Abbrev-Table-Properties.html" accesskey="7">Abbrev Table Properties</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Processes.html" accesskey="n" rel="next">Processes</a>, Previous: <a href="Syntax-Tables.html" accesskey="p" rel="prev">Syntax Tables</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Processes.html">Processes</a>, Previous: <a href="Syntax-Tables.html">Syntax Tables</a>, Up: <a href="index.html">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Relative File Names (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Relative File Names (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="File-Name-Components.html" rel="prev" title="File Name Components">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,72 +48,74 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Relative-File-Names"></span><div class="header">
+<div class="subsection-level-extent" id="Relative-File-Names">
+<div class="nav-panel">
 <p>
 Next: <a href="Directory-Names.html" accesskey="n" rel="next">Directory Names</a>, Previous: <a href="File-Name-Components.html" accesskey="p" rel="prev">File Name Components</a>, Up: <a href="File-Names.html" accesskey="u" rel="up">File Names</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Absolute-and-Relative-File-Names"></span><h4 class="subsection">24.8.2 Absolute and Relative File Names</h4>
-<span id="index-absolute-file-name"></span>
-<span id="index-relative-file-name"></span>
+<h4 class="subsection" id="Absolute-and-Relative-File-Names"><span>24.8.2 Absolute and Relative File Names<a class="copiable-link" href="#Absolute-and-Relative-File-Names"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-absolute-file-name"></a>
+<a class="index-entry-id" id="index-relative-file-name"></a>
 
 <p>All the directories in the file system form a tree starting at the
 root directory.  A file name can specify all the directory names
 starting from the root of the tree; then it is called an
-<em>absolute</em> file name.  Or it can specify the position of the file
+<em class="dfn">absolute</em> file name.  Or it can specify the position of the file
 in the tree relative to a default directory; then it is called a
-<em>relative</em> file name.  On Unix and GNU/Linux, an absolute file
-name starts with a &lsquo;<samp>/</samp>&rsquo; or a &lsquo;<samp>~</samp>&rsquo;
-(see <a href="Directory-Names.html#abbreviate_002dfile_002dname">abbreviate-file-name</a>), and a relative one does not.  On
+<em class="dfn">relative</em> file name.  On Unix and GNU/Linux, an absolute file
+name starts with a &lsquo;<samp class="samp">/</samp>&rsquo; or a &lsquo;<samp class="samp">~</samp>&rsquo;
+(see <a class="pxref" href="Directory-Names.html#abbreviate_002dfile_002dname">abbreviate-file-name</a>), and a relative one does not.  On
 MS-DOS and MS-Windows, an absolute file name starts with a slash or a
-backslash, or with a drive specification &lsquo;<samp><var>x</var>:/</samp>&rsquo;, where
-<var>x</var> is the <em>drive letter</em>.
+backslash, or with a drive specification &lsquo;<samp class="samp"><var class="var">x</var>:/</samp>&rsquo;, where
+<var class="var">x</var> is the <em class="dfn">drive letter</em>.
 </p>
-<dl>
-<dt id="index-file_002dname_002dabsolute_002dp">Function: <strong>file-name-absolute-p</strong> <em>filename</em></dt>
-<dd><p>This function returns <code>t</code> if file <var>filename</var> is an absolute
-file name, <code>nil</code> otherwise.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dname_002dabsolute_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-name-absolute-p</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-file_002dname_002dabsolute_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if file <var class="var">filename</var> is an absolute
+file name, <code class="code">nil</code> otherwise.
 </p>
 <div class="example">
-<pre class="example">(file-name-absolute-p &quot;~rms/foo&quot;)
+<div class="group"><pre class="example-preformatted">(file-name-absolute-p &quot;~rms/foo&quot;)
      &rArr; t
-</pre><pre class="example">(file-name-absolute-p &quot;rms/foo&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-name-absolute-p &quot;rms/foo&quot;)
      &rArr; nil
-</pre><pre class="example">(file-name-absolute-p &quot;/user/rms/foo&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-name-absolute-p &quot;/user/rms/foo&quot;)
      &rArr; t
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
 <p>Given a possibly relative file name, you can convert it to an
-absolute name using <code>expand-file-name</code> (see <a href="File-Name-Expansion.html">File Name Expansion</a>).  This function converts absolute file names to relative
+absolute name using <code class="code">expand-file-name</code> (see <a class="pxref" href="File-Name-Expansion.html">Functions that Expand Filenames</a>).  This function converts absolute file names to relative
 names:
 </p>
-<dl>
-<dt id="index-file_002drelative_002dname">Function: <strong>file-relative-name</strong> <em>filename &amp;optional directory</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002drelative_002dname"><span class="category-def">Function: </span><span><strong class="def-name">file-relative-name</strong> <var class="def-var-arguments">filename &amp;optional directory</var><a class="copiable-link" href="#index-file_002drelative_002dname"> &para;</a></span></dt>
 <dd><p>This function tries to return a relative name that is equivalent to
-<var>filename</var>, assuming the result will be interpreted relative to
-<var>directory</var> (an absolute directory name or directory file name).
-If <var>directory</var> is omitted or <code>nil</code>, it defaults to the
+<var class="var">filename</var>, assuming the result will be interpreted relative to
+<var class="var">directory</var> (an absolute directory name or directory file name).
+If <var class="var">directory</var> is omitted or <code class="code">nil</code>, it defaults to the
 current buffer&rsquo;s default directory.
 </p>
 <p>On some operating systems, an absolute file name begins with a device
-name.  On such systems, <var>filename</var> has no relative equivalent based
-on <var>directory</var> if they start with two different device names.  In
-this case, <code>file-relative-name</code> returns <var>filename</var> in absolute
+name.  On such systems, <var class="var">filename</var> has no relative equivalent based
+on <var class="var">directory</var> if they start with two different device names.  In
+this case, <code class="code">file-relative-name</code> returns <var class="var">filename</var> in absolute
 form.
 </p>
 <div class="example">
-<pre class="example">(file-relative-name &quot;/foo/bar&quot; &quot;/foo/&quot;)
+<pre class="example-preformatted">(file-relative-name &quot;/foo/bar&quot; &quot;/foo/&quot;)
      &rArr; &quot;bar&quot;
 (file-relative-name &quot;/foo/bar&quot; &quot;/hack/&quot;)
      &rArr; &quot;../foo/bar&quot;
 </pre></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Directory-Names.html" accesskey="n" rel="next">Directory Names</a>, Previous: <a href="File-Name-Components.html" accesskey="p" rel="prev">File Name Components</a>, Up: <a href="File-Names.html" accesskey="u" rel="up">File Names</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Directory-Names.html">Directory Names</a>, Previous: <a href="File-Name-Components.html">File Name Components</a>, Up: <a href="File-Names.html">File Names</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

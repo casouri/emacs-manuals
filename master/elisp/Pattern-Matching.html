@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 31.0.50.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Pattern Matching (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Pattern Matching (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Pattern Matching (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Parsing-Program-Source.html" rel="up" title="Parsing Program Source">
+<link href="User_002ddefined-Things.html" rel="next" title="User-defined Things">
+<link href="Accessing-Node-Information.html" rel="prev" title="Accessing Node Information">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Pattern-Matching">
+<div class="nav-panel">
+<p>
+Next: <a href="User_002ddefined-Things.html" accesskey="n" rel="next">User-defined &ldquo;Things&rdquo; and Navigation</a>, Previous: <a href="Accessing-Node-Information.html" accesskey="p" rel="prev">Accessing Node Information</a>, Up: <a href="Parsing-Program-Source.html" accesskey="u" rel="up">Parsing Program Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Pattern-Matching-Tree_002dsitter-Nodes"><span>38.5 Pattern Matching Tree-sitter Nodes<a class="copiable-link" href="#Pattern-Matching-Tree_002dsitter-Nodes"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-pattern-matching-with-tree_002dsitter-nodes"></a>
+
+<a class="index-entry-id" id="index-capturing_002c-tree_002dsitter-node"></a>
+<p>Tree-sitter lets Lisp programs match patterns using a small
+declarative language.  This pattern matching consists of two steps:
+first tree-sitter matches a <em class="dfn">pattern</em> against nodes in the syntax
+tree, then it <em class="dfn">captures</em> specific nodes that matched the pattern
+and returns the captured nodes.
+</p>
+<p>We describe first how to write the most basic query pattern and how to
+capture nodes in a pattern, then the pattern-matching function, and
+finally the more advanced pattern syntax.
+</p>
+<h3 class="heading" id="Basic-query-syntax"><span>Basic query syntax<a class="copiable-link" href="#Basic-query-syntax"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-tree_002dsitter-query-pattern-syntax"></a>
+<a class="index-entry-id" id="index-pattern-syntax_002c-tree_002dsitter-query"></a>
+<a class="index-entry-id" id="index-query_002c-tree_002dsitter"></a>
+<p>A <em class="dfn">query</em> consists of multiple <em class="dfn">patterns</em>.  Each pattern is an
+s-expression that matches a certain node in the syntax node.  A
+pattern has the form <code class="code">(<var class="var">type</var>&nbsp;(<var class="var">child</var>&hellip;))</code><!-- /@w -->.
+</p>
+<p>For example, a pattern that matches a <code class="code">binary_expression</code> node that
+contains <code class="code">number_literal</code> child nodes would look like
+</p>
+<div class="example">
+<pre class="example-preformatted">(binary_expression (number_literal))
+</pre></div>
+
+<p>To <em class="dfn">capture</em> a node using the query pattern above, append
+<code class="code">@<var class="var">capture-name</var></code> after the node pattern you want to
+capture.  For example,
+</p>
+<div class="example">
+<pre class="example-preformatted">(binary_expression (number_literal) @number-in-exp)
+</pre></div>
+
+<p>captures <code class="code">number_literal</code> nodes that are inside a
+<code class="code">binary_expression</code> node with the capture name
+<code class="code">number-in-exp</code>.
+</p>
+<p>We can capture the <code class="code">binary_expression</code> node as well, with, for
+example, the capture name <code class="code">biexp</code>:
+</p>
+<div class="example">
+<pre class="example-preformatted">(binary_expression
+ (number_literal) @number-in-exp) @biexp
+</pre></div>
+
+<h3 class="heading" id="Query-function"><span>Query function<a class="copiable-link" href="#Query-function"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-query-functions_002c-tree_002dsitter"></a>
+<p>Now we can introduce the <em class="dfn">query functions</em>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-treesit_002dquery_002dcapture"><span class="category-def">Function: </span><span><strong class="def-name">treesit-query-capture</strong> <var class="def-var-arguments">node query &amp;optional beg end node-only grouped</var><a class="copiable-link" href="#index-treesit_002dquery_002dcapture"> &para;</a></span></dt>
+<dd><p>This function matches patterns in <var class="var">query</var> within <var class="var">node</var>.  The
+argument <var class="var">query</var> can be either an s-expression, a string, or a
+compiled query object.  For now, we focus on the s-expression syntax;
+string syntax and compiled queries are described at the end of
+the section.
+</p>
+<p>The argument <var class="var">node</var> can also be a parser or a language symbol.  A
+parser means use its root node, a language symbol means find or create
+a parser for that language in the current buffer, and use the root
+node.
+</p>
+<p>The function returns all the captured nodes in an alist with elements
+of the form <code class="code">(<var class="var">capture_name</var>&nbsp;.&nbsp;<var class="var">node</var>)</code><!-- /@w -->.  If
+<var class="var">node-only</var> is non-<code class="code">nil</code>, it returns the list of <var class="var">node</var>s
+instead.  By default the entire text of <var class="var">node</var> is searched, but if
+<var class="var">beg</var> and <var class="var">end</var> are both non-<code class="code">nil</code>, they specify the
+region of buffer text where this function should match nodes.  Any
+matching node whose span overlaps with the region between <var class="var">beg</var>
+and <var class="var">end</var> is captured; it doesn&rsquo;t have to be completely contained
+in the region.
+</p>
+<p>If <var class="var">grouped</var> is non-<code class="code">nil</code>, this function returns a grouped list
+of lists of captured nodes.  The grouping is determined by <var class="var">query</var>.
+Captures in the same match of a pattern in <var class="var">query</var> are grouped
+together.
+</p>
+<a class="index-entry-id" id="index-treesit_002dquery_002derror"></a>
+<a class="index-entry-id" id="index-treesit_002dquery_002dvalidate"></a>
+<p>This function raises the <code class="code">treesit-query-error</code> error if
+<var class="var">query</var> is malformed.  The signal data contains a description of
+the specific error.  You can use <code class="code">treesit-query-validate</code> to
+validate and debug the query.
+</p></dd></dl>
+
+<p>For example, suppose <var class="var">node</var>&rsquo;s text is <code class="code">1 + 2</code>, and
+<var class="var">query</var> is
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(setq query
+      '((binary_expression
+         (number_literal) @number-in-exp) @biexp)
+</pre></div></div>
+
+<p>Matching that query would return
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(treesit-query-capture node query)
+    &rArr; ((biexp . <var class="var">&lt;node for &quot;1 + 2&quot;&gt;</var>)
+       (number-in-exp . <var class="var">&lt;node for &quot;1&quot;&gt;</var>)
+       (number-in-exp . <var class="var">&lt;node for &quot;2&quot;&gt;</var>))
+</pre></div></div>
+
+<p>As mentioned earlier, <var class="var">query</var> could contain multiple patterns.
+For example, it could have two top-level patterns:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(setq query
+      '((binary_expression) @biexp
+        (number_literal) @number)
+</pre></div></div>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-treesit_002dquery_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">treesit-query-string</strong> <var class="def-var-arguments">string query language</var><a class="copiable-link" href="#index-treesit_002dquery_002dstring"> &para;</a></span></dt>
+<dd><p>This function parses <var class="var">string</var> as <var class="var">language</var>, matches its root
+node with <var class="var">query</var>, and returns the result.
+</p></dd></dl>
+
+<h3 class="heading" id="More-query-syntax"><span>More query syntax<a class="copiable-link" href="#More-query-syntax"> &para;</a></span></h3>
+
+<p>Besides node type and capture name, tree-sitter&rsquo;s pattern syntax can
+express anonymous node, field name, wildcard, quantification,
+grouping, alternation, anchor, and predicate.
+</p>
+<h4 class="subheading" id="Anonymous-node"><span>Anonymous node<a class="copiable-link" href="#Anonymous-node"> &para;</a></span></h4>
+
+<p>An anonymous node is written verbatim, surrounded by quotes.  A
+pattern matching (and capturing) keyword <code class="code">return</code> would be
+</p>
+<div class="example">
+<pre class="example-preformatted">&quot;return&quot; @keyword
+</pre></div>
+
+<h4 class="subheading" id="Wild-card"><span>Wild card<a class="copiable-link" href="#Wild-card"> &para;</a></span></h4>
+
+<p>In a pattern, &lsquo;<samp class="samp">(_)</samp>&rsquo; matches any named node, and &lsquo;<samp class="samp">_</samp>&rsquo; matches
+any named or anonymous node.  For example, to capture any named child
+of a <code class="code">binary_expression</code> node, the pattern would be
+</p>
+<div class="example">
+<pre class="example-preformatted">(binary_expression (_) @in-biexp)
+</pre></div>
+
+<h4 class="subheading" id="Field-name"><span>Field name<a class="copiable-link" href="#Field-name"> &para;</a></span></h4>
+
+<p>It is possible to capture child nodes that have specific field names.
+In the pattern below, <code class="code">declarator</code> and <code class="code">body</code> are field
+names, indicated by the colon following them.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(function_definition
+  declarator: (_) @func-declarator
+  body: (_) @func-body)
+</pre></div></div>
+
+<p>It is also possible to capture a node that doesn&rsquo;t have a certain
+field, say, a <code class="code">function_definition</code> without a <code class="code">body</code> field:
+</p>
+<div class="example">
+<pre class="example-preformatted">(function_definition !body) @func-no-body
+</pre></div>
+
+<h4 class="subheading" id="Quantify-node"><span>Quantify node<a class="copiable-link" href="#Quantify-node"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-quantify-node_002c-tree_002dsitter"></a>
+<p>Tree-sitter recognizes quantification operators &lsquo;<samp class="samp">:*</samp>&rsquo;, &lsquo;<samp class="samp">:+</samp>&rsquo;,
+and &lsquo;<samp class="samp">:?</samp>&rsquo;.  Their meanings are the same as in regular expressions:
+&lsquo;<samp class="samp">:*</samp>&rsquo; matches the preceding pattern zero or more times, &lsquo;<samp class="samp">:+</samp>&rsquo;
+matches one or more times, and &lsquo;<samp class="samp">:?</samp>&rsquo; matches zero or one times.
+</p>
+<p>For example, the following pattern matches <code class="code">type_declaration</code>
+nodes that have <em class="emph">zero or more</em> <code class="code">long</code> keywords.
+</p>
+<div class="example">
+<pre class="example-preformatted">(type_declaration &quot;long&quot; :*) @long-type
+</pre></div>
+
+<p>The following pattern matches a type declaration that may or may not
+have a <code class="code">long</code> keyword:
+</p>
+<div class="example">
+<pre class="example-preformatted">(type_declaration &quot;long&quot; :?) @long-type
+</pre></div>
+
+<h4 class="subheading" id="Grouping"><span>Grouping<a class="copiable-link" href="#Grouping"> &para;</a></span></h4>
+
+<p>Similar to groups in regular expressions, we can bundle patterns into
+groups and apply quantification operators to them.  For example, to
+express a comma-separated list of identifiers, one could write
+</p>
+<div class="example">
+<pre class="example-preformatted">(identifier) (&quot;,&quot; (identifier)) :*
+</pre></div>
+
+<h4 class="subheading" id="Alternation"><span>Alternation<a class="copiable-link" href="#Alternation"> &para;</a></span></h4>
+
+<p>Again, similar to regular expressions, we can express &ldquo;match any one
+of these patterns&rdquo; in a pattern.  The syntax is a vector of patterns.
+For example, to capture some keywords in C, the pattern would be
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">[
+  &quot;return&quot;
+  &quot;break&quot;
+  &quot;if&quot;
+  &quot;else&quot;
+] @keyword
+</pre></div></div>
+
+<h4 class="subheading" id="Anchor"><span>Anchor<a class="copiable-link" href="#Anchor"> &para;</a></span></h4>
+
+<p>The anchor operator <code class="code">:anchor</code> can be used to enforce juxtaposition,
+i.e., to enforce two things to be directly next to each other.  The
+two &ldquo;things&rdquo; can be two nodes, or a child and the end of its parent.
+For example, to capture the first child, the last child, or two
+adjacent children:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">;; Anchor the child with the end of its parent.
+(compound_expression (_) @last-child :anchor)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;; Anchor the child with the beginning of its parent.
+(compound_expression :anchor (_) @first-child)
+</pre></div><pre class="example-preformatted">
+
+</pre><div class="group"><pre class="example-preformatted">;; Anchor two adjacent children.
+(compound_expression
+ (_) @prev-child
+ :anchor
+ (_) @next-child)
+</pre></div></div>
+
+<p>Note that the enforcement of juxtaposition ignores any anonymous
+nodes.
+</p>
+<h4 class="subheading" id="Predicate"><span>Predicate<a class="copiable-link" href="#Predicate"> &para;</a></span></h4>
+
+<p>It is possible to add predicate constraints to a pattern.  For
+example, with the following pattern:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(
+ (array :anchor (_) @first (_) @last :anchor)
+ (:eq? @first @last)
+)
+</pre></div></div>
+
+<p>tree-sitter only matches arrays where the first element is equal to
+the last element.  To attach a predicate to a pattern, we need to
+group them together.  Currently there are three predicates:
+<code class="code">:eq?</code>, <code class="code">:match?</code>, and <code class="code">:pred?</code>.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-_003aeq_003f"><span class="category-def">Predicate: </span><span><strong class="def-name">:eq?</strong> <var class="def-var-arguments">arg1 arg2</var><a class="copiable-link" href="#index-_003aeq_003f"> &para;</a></span></dt>
+<dd><p>Matches if <var class="var">arg1</var> is equal to <var class="var">arg2</var>.  Arguments can be either
+strings or capture names.  Capture names represent the text that the
+captured node spans in the buffer.  Note that this is more like
+<code class="code">equal</code> in Elisp, but <code class="code">eq?</code> is the convention used by
+tree-sitter.  Previously we supported the <code class="code">:equal</code> predicate but
+it&rsquo;s now considered deprecated.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-_003amatch_003f"><span class="category-def">Predicate: </span><span><strong class="def-name">:match?</strong> <var class="def-var-arguments">capture-name regexp</var><a class="copiable-link" href="#index-_003amatch_003f"> &para;</a></span></dt>
+<dd><p>Matches if the text that <var class="var">capture-name</var>&rsquo;s node spans in the buffer
+matches regular expression <var class="var">regexp</var>, given as a string literal.
+Matching is case-sensitive.  The ordering of the arguments doesn&rsquo;t
+matter.  Previously we supported the <code class="code">:match</code> predicate but it&rsquo;s
+now considered deprecated.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-_003apred_003f"><span class="category-def">Predicate: </span><span><strong class="def-name">:pred?</strong> <var class="def-var-arguments">fn &amp;rest nodes</var><a class="copiable-link" href="#index-_003apred_003f"> &para;</a></span></dt>
+<dd><p>Matches if function <var class="var">fn</var> returns non-<code class="code">nil</code> when passed each
+node in <var class="var">nodes</var> as arguments.  The function runs with the current
+buffer set to the buffer of node being queried.  Be very careful when
+using this predicate, since it can be expensive when used in a tight
+loop.  Previously we supported the <code class="code">:pred</code> predicate but it&rsquo;s now
+considered deprecated.
+</p></dd></dl>
+
+<p>Note that a predicate can only refer to capture names that appear in
+the same pattern.  Indeed, it makes little sense to refer to capture
+names in other patterns.
+</p>
+<h3 class="heading" id="String-patterns"><span>String patterns<a class="copiable-link" href="#String-patterns"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-tree_002dsitter-patterns-as-strings"></a>
+<a class="index-entry-id" id="index-patterns_002c-tree_002dsitter_002c-in-string-form"></a>
+<p>Besides s-expressions, Emacs allows the tree-sitter&rsquo;s native query
+syntax to be used by writing them as strings.  It largely resembles
+the s-expression syntax.  For example, the following query
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(treesit-query-capture
+ node '((addition_expression
+         left: (_) @left
+         &quot;+&quot; @plus-sign
+         right: (_) @right) @addition
+
+         [&quot;return&quot; &quot;break&quot;] @keyword))
+</pre></div></div>
+
+<p>is equivalent to
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(treesit-query-capture
+ node &quot;(addition_expression
+        left: (_) @left
+        \&quot;+\&quot; @plus-sign
+        right: (_) @right) @addition
+
+        [\&quot;return\&quot; \&quot;break\&quot;] @keyword&quot;)
+</pre></div></div>
+
+<p>Most patterns can be written directly as s-expressions inside a string.
+Only a few of them need modification:
+</p>
+<ul class="itemize mark-bullet">
+<li>Anchor <code class="code">:anchor</code> is written as &lsquo;<samp class="samp">.</samp>&rsquo;.
+</li><li>&lsquo;<samp class="samp">:?</samp>&rsquo; is written as &lsquo;<samp class="samp">?</samp>&rsquo;.
+</li><li>&lsquo;<samp class="samp">:*</samp>&rsquo; is written as &lsquo;<samp class="samp">*</samp>&rsquo;.
+</li><li>&lsquo;<samp class="samp">:+</samp>&rsquo; is written as &lsquo;<samp class="samp">+</samp>&rsquo;.
+</li><li><code class="code">:eq?</code>, <code class="code">:match?</code> and <code class="code">:pred?</code> are written as
+<code class="code">#eq?</code>, <code class="code">#match?</code> and <code class="code">#pred?</code>, respectively.  In
+general, predicates change the &lsquo;<samp class="samp">:</samp>&rsquo; to &lsquo;<samp class="samp">#</samp>&rsquo;.
+</li></ul>
+
+<p>For example,
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">'((
+   (compound_expression :anchor (_) @first (_) :* @rest)
+   (:match? &quot;love&quot; @first)
+   ))
+</pre></div></div>
+
+<p>is written in string form as
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">&quot;(
+  (compound_expression . (_) @first (_)* @rest)
+  (#match? \&quot;love\&quot; @first)
+  )&quot;
+</pre></div></div>
+
+<h3 class="heading" id="Compiling-queries"><span>Compiling queries<a class="copiable-link" href="#Compiling-queries"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-compiling-tree_002dsitter-queries"></a>
+<a class="index-entry-id" id="index-queries_002c-compiling"></a>
+<p>If a query is intended to be used repeatedly, especially in tight
+loops, it is important to compile that query, because a compiled query
+is much faster than an uncompiled one.  A compiled query can be used
+anywhere a query is accepted.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-treesit_002dquery_002dcompile"><span class="category-def">Function: </span><span><strong class="def-name">treesit-query-compile</strong> <var class="def-var-arguments">language query</var><a class="copiable-link" href="#index-treesit_002dquery_002dcompile"> &para;</a></span></dt>
+<dd><p>This function compiles <var class="var">query</var> for <var class="var">language</var> into a compiled
+query object and returns it.
+</p>
+<p>This function raises the <code class="code">treesit-query-error</code> error if
+<var class="var">query</var> is malformed.  The signal data contains a description of
+the specific error.  You can use <code class="code">treesit-query-validate</code> to
+validate and debug the query.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-treesit_002dquery_002dlanguage"></a>
+<a class="index-entry-id" id="index-treesit_002dquery_002dexpand"></a>
+<a class="index-entry-id" id="index-treesit_002dpattern_002dexpand"></a>
+<a class="index-entry-id" id="index-treesit_002dquery_002dvalid_002dp"></a>
+<p>There are some additional functions for queries:
+<code class="code">treesit-query-language</code> returns the language of a query;
+<code class="code">treesit-query-valid-p</code> checks whether a query is valid;
+<code class="code">treesit-query-expand</code> converts a s-expression query into the
+string format; and <code class="code">treesit-pattern-expand</code> converts a pattern.
+</p>
+<a class="index-entry-id" id="index-treesit_002dquery_002dfirst_002dvalid"></a>
+<p>Tree-sitter grammars change overtime.  To support multiple possible
+versions of a grammar, a Lisp program can use
+<code class="code">treesit-query-first-valid</code> to pick the right query to use.  For
+example, if a grammar has a <code class="code">(defun)</code> node in one version, and
+later renamed it to <code class="code">(function_definition)</code>, a Lisp program can use
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(treesit-query-first-valid 'lang
+  '((defun) @defun)
+  '((function_definition) @defun))
+</pre></div></div>
+
+<p>to support both versions of the grammar.
+</p>
+<p>For more details, consider reading the tree-sitter project&rsquo;s
+documentation about pattern-matching.  The documentation can be found at
+<a class="uref" href="https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries">https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="User_002ddefined-Things.html">User-defined &ldquo;Things&rdquo; and Navigation</a>, Previous: <a href="Accessing-Node-Information.html">Accessing Node Information</a>, Up: <a href="Parsing-Program-Source.html">Parsing Program Source</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

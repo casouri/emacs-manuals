@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Enabling Advice (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Enabling Advice (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Activation-of-Advice.html" rel="prev" title="Activation of Advice">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,44 +47,45 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Enabling-Advice"></span><div class="header">
+<div class="section-level-extent" id="Enabling-Advice">
+<div class="nav-panel">
 <p>
-Next: <a href="Preactivation.html" accesskey="n" rel="next">Preactivation</a>, Previous: <a href="Activation-of-Advice.html" accesskey="p" rel="prev">Activation of Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Preactivation.html" accesskey="n" rel="next">Preactivation</a>, Previous: <a href="Activation-of-Advice.html" accesskey="p" rel="prev">Activation of Advice</a>, Up: <a href="Advising-Functions.html" accesskey="u" rel="up">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Enabling-and-Disabling-Advice"></span><h3 class="section">17.6 Enabling and Disabling Advice</h3>
-<span id="index-enabling-advice"></span>
-<span id="index-advice_002c-enabling-and-disabling"></span>
-<span id="index-disabling-advice"></span>
+<h3 class="section" id="Enabling-and-Disabling-Advice"><span>17.6 Enabling and Disabling Advice<a class="copiable-link" href="#Enabling-and-Disabling-Advice"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-enabling-advice"></a>
+<a class="index-entry-id" id="index-advice_002c-enabling-and-disabling"></a>
+<a class="index-entry-id" id="index-disabling-advice"></a>
 
 <p>Each piece of advice has a flag that says whether it is enabled or
 not.  By enabling or disabling a piece of advice, you can turn it on
 and off without having to undefine and redefine it.  For example, here is
-how to disable a particular piece of advice named <code>my-advice</code> for
-the function <code>foo</code>:
+how to disable a particular piece of advice named <code class="code">my-advice</code> for
+the function <code class="code">foo</code>:
 </p>
 <div class="example">
-<pre class="example">(ad-disable-advice 'foo 'before 'my-advice)
+<pre class="example-preformatted">(ad-disable-advice 'foo 'before 'my-advice)
 </pre></div>
 
 <p>This function by itself only changes the enable flag for a piece of
 advice.  To make the change take effect in the advised definition, you
-must activate the advice for <code>foo</code> again:
+must activate the advice for <code class="code">foo</code> again:
 </p>
 <div class="example">
-<pre class="example">(ad-activate 'foo)
+<pre class="example-preformatted">(ad-activate 'foo)
 </pre></div>
 
-<dl>
-<dt id="index-ad_002ddisable_002dadvice">Command: <strong>ad-disable-advice</strong> <em>function class name</em></dt>
-<dd><p>This command disables the piece of advice named <var>name</var> in class
-<var>class</var> on <var>function</var>.
+<dl class="first-deffn">
+<dt class="deffn" id="index-ad_002ddisable_002dadvice"><span class="category-def">Command: </span><span><strong class="def-name">ad-disable-advice</strong> <var class="def-var-arguments">function class name</var><a class="copiable-link" href="#index-ad_002ddisable_002dadvice"> &para;</a></span></dt>
+<dd><p>This command disables the piece of advice named <var class="var">name</var> in class
+<var class="var">class</var> on <var class="var">function</var>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-ad_002denable_002dadvice">Command: <strong>ad-enable-advice</strong> <em>function class name</em></dt>
-<dd><p>This command enables the piece of advice named <var>name</var> in class
-<var>class</var> on <var>function</var>.
+<dl class="first-deffn">
+<dt class="deffn" id="index-ad_002denable_002dadvice"><span class="category-def">Command: </span><span><strong class="def-name">ad-enable-advice</strong> <var class="def-var-arguments">function class name</var><a class="copiable-link" href="#index-ad_002denable_002dadvice"> &para;</a></span></dt>
+<dd><p>This command enables the piece of advice named <var class="var">name</var> in class
+<var class="var">class</var> on <var class="var">function</var>.
 </p></dd></dl>
 
 <p>You can also disable many pieces of advice at once, for various
@@ -100,18 +93,24 @@ functions, using a regular expression.  As always, the changes take real
 effect only when you next reactivate advice for the functions in
 question.
 </p>
-<dl>
-<dt id="index-ad_002ddisable_002dregexp">Command: <strong>ad-disable-regexp</strong> <em>regexp</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-ad_002ddisable_002dregexp"><span class="category-def">Command: </span><span><strong class="def-name">ad-disable-regexp</strong> <var class="def-var-arguments">regexp</var><a class="copiable-link" href="#index-ad_002ddisable_002dregexp"> &para;</a></span></dt>
 <dd><p>This command disables all pieces of advice whose names match
-<var>regexp</var>, in all classes, on all functions.
+<var class="var">regexp</var>, in all classes, on all functions.
 </p></dd></dl>
 
-<dl>
-<dt id="index-ad_002denable_002dregexp">Command: <strong>ad-enable-regexp</strong> <em>regexp</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-ad_002denable_002dregexp"><span class="category-def">Command: </span><span><strong class="def-name">ad-enable-regexp</strong> <var class="def-var-arguments">regexp</var><a class="copiable-link" href="#index-ad_002denable_002dregexp"> &para;</a></span></dt>
 <dd><p>This command enables all pieces of advice whose names match
-<var>regexp</var>, in all classes, on all functions.
+<var class="var">regexp</var>, in all classes, on all functions.
 </p></dd></dl>
 
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Preactivation.html">Preactivation</a>, Previous: <a href="Activation-of-Advice.html">Activation of Advice</a>, Up: <a href="Advising-Functions.html">Advising Emacs Lisp Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

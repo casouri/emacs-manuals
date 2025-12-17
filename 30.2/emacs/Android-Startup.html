@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.2.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Android Startup (GNU Emacs Manual)</title>
+
+<meta name="description" content="Android Startup (GNU Emacs Manual)">
+<meta name="keywords" content="Android Startup (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Android.html" rel="up" title="Android">
+<link href="Android-File-System.html" rel="next" title="Android File System">
+<link href="What-is-Android_003f.html" rel="prev" title="What is Android?">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Android-Startup">
+<div class="nav-panel">
+<p>
+Next: <a href="Android-File-System.html" accesskey="n" rel="next">What Files Emacs Can Access on Android</a>, Previous: <a href="What-is-Android_003f.html" accesskey="p" rel="prev">Android History</a>, Up: <a href="Android.html" accesskey="u" rel="up">Emacs and Android</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Starting-Emacs-on-Android"><span>H.2 Starting Emacs on Android<a class="copiable-link" href="#Starting-Emacs-on-Android"> &para;</a></span></h3>
+
+<p>Emacs is not installed on Android devices from source code or
+through a package manager.  Instead, Emacs is compiled for Android on
+a different operating system, with the resulting binaries packaged
+into an archive, that is then transferred to the system and installed.
+</p>
+<p>After being installed, the system places an application icon on the
+desktop (a.k.a &ldquo;home screen&rdquo;.)  Emacs then starts up once the
+application icon is clicked.
+</p>
+<a class="index-entry-id" id="index-_0060_0060adb-logcat_0027_0027"></a>
+
+<p>During startup, Emacs will display messages in the system log
+buffer; reading that buffer during start-up requires the Android Debug
+Bridge (<code class="command">adb</code>) utility to be installed on another computer.
+</p>
+<p>After enabling the &ldquo;USB Debugging&rdquo; feature on the Android system,
+and connecting it via USB to another system with the <code class="command">adb</code>
+utility installed, the log can be viewed by running the following
+command on that other system:
+</p>
+<div class="example">
+<pre class="example-preformatted">$ adb logcat | grep -E &quot;(android_run_debug_thread|[Ee]macs)&quot;
+</pre></div>
+
+<p>Assuming that the <code class="command">adb</code> utility is installed on a GNU/Linux
+or Unix system, follow the steps below to connect to your device.
+</p>
+<ol class="enumerate">
+<li> Enable &ldquo;developer options&rdquo; on your device, by going to the &ldquo;About&rdquo;
+page in the system settings application and clicking on the &ldquo;build
+version&rdquo; or &ldquo;kernel version&rdquo; items five to seven times.
+
+</li><li> Open the &ldquo;developer options&rdquo; settings page, which should be under
+the &ldquo;system&rdquo; page in the settings application.
+
+</li><li> Turn on the switch &ldquo;USB debugging&rdquo;.
+
+</li><li> Connect one end of a USB cable to your device, and the other end to
+your computer&rsquo;s USB port.
+
+</li><li> Run the command <code class="command">adb shell</code> on your computer.  This will fail
+or hang because you have not yet granted your computer permission to
+access the connected device.
+
+</li><li> Confirm the pop-up displayed on your device asking whether or not it
+should allow access from your computer.
+</li></ol>
+
+<p>Depending on the versions of Android and <code class="command">adb</code> installed,
+there may be other ways to establish a connection.  See the official
+documentation at
+<a class="url" href="https://developer.android.com/studio/command-line/adb">https://developer.android.com/studio/command-line/adb</a> for more
+details.
+</p>
+<p>Once Emacs starts up, simply running the command <code class="command">logcat</code> as
+an asynchronous shell command (see <a class="pxref" href="Shell.html">Running Shell Commands from Emacs</a>) will display the log
+buffer.
+</p>
+<a class="index-entry-id" id="index-emacsclient-wrapper_002c-android"></a>
+<p>Since there is no other way to start the <code class="command">emacsclient</code>
+program (see <a class="pxref" href="Emacs-Server.html">Using Emacs as a Server</a>) from another Android program, Emacs
+provides a wrapper around the <code class="command">emacsclient</code> program, which is
+registered with the system as an application that can open any file.
+</p>
+<p>When that wrapper is selected as the program with which to open a
+file, it invokes <code class="command">emacsclient</code> with the options
+<code class="command">--reuse-frame</code>, <code class="command">--timeout=10</code>, <code class="command">--no-wait</code>,
+and the name of the file being opened.  Then, upon success, the focus
+is transferred to any open Emacs frame.
+</p>
+<p>However, if Emacs is not running at the time the wrapper is opened,
+it starts Emacs and gives it the file to open as an argument.  Note
+that if that Emacs in turn does not start the Emacs server, subsequent
+attempts to open the file with the wrapper will fail.
+</p>
+<a class="index-entry-id" id="index-_002fcontent_002fby_002dauthority-directory_002c-android"></a>
+<a class="index-entry-id" id="index-_002fcontent_002fby_002dauthority_002dnamed-directory_002c-android"></a>
+<p>Some files are given to Emacs as &ldquo;content identifiers&rdquo; that the
+system provides access to independently of the normal filesystem APIs.
+Emacs uses pseudo-directories named <samp class="file">/content/by-authority</samp> and
+<samp class="file">/content/by-authority-named</samp> to access those files.  Do not make
+any assumptions about the contents of these directories, or try to open
+files in it yourself.
+</p>
+<p>This feature is not provided on Android 4.3 and earlier, in which
+case such files are copied to a temporary directory before being
+opened.
+</p>
+<a class="index-entry-id" id="index-_0060_0060org_002dprotocol_0027_0027-links_002c-android"></a>
+<p>In addition to opening ordinary text files, Emacs also registers its
+<code class="command">emacsclient</code> wrapper as a program capable of opening
+&ldquo;org-protocol&rdquo; links (see <a data-manual="org" href="https://www.gnu.org/software/emacs/manual/html_node/org/Protocols.html#Protocols">Protocols</a> in <cite class="cite">The Org Manual</cite>).
+</p>
+<a class="index-entry-id" id="index-_0060_0060mailto_0027_0027-links_002c-android"></a>
+<p>Furthermore, the wrapper is also registered as a program capable of
+sending mail to <code class="code">mailto</code> URIs; when it is invoked to open such a
+URL, it calls the function <code class="code">message-mailto</code> with that URI as its
+first argument.  This feature does not function when the Emacs server
+is not already running.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Android-File-System.html">What Files Emacs Can Access on Android</a>, Previous: <a href="What-is-Android_003f.html">Android History</a>, Up: <a href="Android.html">Emacs and Android</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

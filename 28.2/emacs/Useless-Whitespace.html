@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.2.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Useless Whitespace (GNU Emacs Manual)</title>
+
+<meta name="description" content="Useless Whitespace (GNU Emacs Manual)">
+<meta name="keywords" content="Useless Whitespace (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Selective-Display.html" rel="next" title="Selective Display">
+<link href="Displaying-Boundaries.html" rel="prev" title="Displaying Boundaries">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Useless-Whitespace">
+<div class="nav-panel">
+<p>
+Next: <a href="Selective-Display.html" accesskey="n" rel="next">Selective Display</a>, Previous: <a href="Displaying-Boundaries.html" accesskey="p" rel="prev">Displaying Boundaries</a>, Up: <a href="Display.html" accesskey="u" rel="up">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Useless-Whitespace-1"><span>14.16 Useless Whitespace<a class="copiable-link" href="#Useless-Whitespace-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-trailing-whitespace"></a>
+<a class="index-entry-id" id="index-whitespace_002c-trailing"></a>
+<a class="index-entry-id" id="index-show_002dtrailing_002dwhitespace"></a>
+<p>It is easy to leave unnecessary spaces at the end of a line, or
+empty lines at the end of a buffer, without realizing it.  In most
+cases, this <em class="dfn">trailing whitespace</em> has no effect, but sometimes it
+can be a nuisance.
+</p>
+<a class="index-entry-id" id="index-trailing_002dwhitespace-face"></a>
+<p>You can make trailing whitespace at the end of a line visible by
+setting the buffer-local variable <code class="code">show-trailing-whitespace</code> to
+<code class="code">t</code>.  Then Emacs displays trailing whitespace, using the face
+<code class="code">trailing-whitespace</code>.
+</p>
+<p>This feature does not apply when point is at the end of the line
+containing the whitespace.  Strictly speaking, that is trailing
+whitespace nonetheless, but displaying it specially in that case
+looks ugly while you are typing in new text.  In this special case,
+the location of point is enough to show you that the spaces are
+present.
+</p>
+<a class="index-entry-id" id="index-delete_002dtrailing_002dwhitespace"></a>
+<a class="index-entry-id" id="index-delete_002dtrailing_002dlines"></a>
+<p>Type <kbd class="kbd">M-x delete-trailing-whitespace</kbd> to delete all trailing
+whitespace.  This command deletes all extra spaces at the end of each
+line in the buffer, and all empty lines at the end of the buffer; to
+ignore the latter, change the variable <code class="code">delete-trailing-lines</code> to
+<code class="code">nil</code>.  If the region is active, the command instead deletes
+extra spaces at the end of each line in the region.
+</p>
+<a class="index-entry-id" id="index-indicate_002dempty_002dlines"></a>
+<a class="index-entry-id" id="index-unused-lines"></a>
+<a class="index-entry-id" id="index-fringes_002c-and-unused-line-indication"></a>
+<a class="anchor" id="indicate_002dempty_002dlines"></a><p>On graphical displays, Emacs can indicate unused lines at the end of
+the window with a small image in the left fringe (see <a class="pxref" href="Fringes.html">Window Fringes</a>).
+The image appears for screen lines that do not correspond to any
+buffer text, so blank lines at the end of the buffer stand out because
+they lack this image.  To enable this feature, set the buffer-local
+variable <code class="code">indicate-empty-lines</code> to a non-<code class="code">nil</code> value.  You
+can enable or disable this feature for all new buffers by setting the
+default value of this variable, e.g., <code class="code">(setq-default
+indicate-empty-lines t)</code>.
+</p>
+<a class="index-entry-id" id="index-Whitespace-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Whitespace"></a>
+<a class="index-entry-id" id="index-whitespace_002dmode"></a>
+<a class="index-entry-id" id="index-whitespace_002dstyle"></a>
+<a class="index-entry-id" id="index-whitespace_002dtoggle_002doptions"></a>
+<p>Whitespace mode is a buffer-local minor mode that lets you
+visualize many kinds of whitespace in the buffer, by either
+drawing the whitespace characters with a special face or displaying
+them as special glyphs.  To toggle this mode, type <kbd class="kbd">M-x
+whitespace-mode</kbd>.  The kinds of whitespace visualized are determined
+by the list variable <code class="code">whitespace-style</code>.  Individual elements in
+that list can be toggled on or off in the current buffer by typing
+<kbd class="kbd">M-x&nbsp;whitespace-toggle-options</kbd><!-- /@w -->.  Here is a partial list
+of possible elements (see the variable&rsquo;s documentation for the full
+list):
+</p>
+<dl class="table">
+<dt><code class="code">face</code></dt>
+<dd><p>Enable all visualizations which use special faces.  This element has a
+special meaning: if it is absent from the list, none of the other
+visualizations take effect except <code class="code">space-mark</code>, <code class="code">tab-mark</code>,
+and <code class="code">newline-mark</code>.
+</p>
+</dd>
+<dt><code class="code">trailing</code></dt>
+<dd><p>Highlight trailing whitespace.
+</p>
+</dd>
+<dt><code class="code">tabs</code></dt>
+<dd><p>Highlight tab characters.
+</p>
+</dd>
+<dt><code class="code">spaces</code></dt>
+<dd><p>Highlight space and non-breaking space characters.
+</p>
+</dd>
+<dt><a id="index-whitespace_002dline_002dcolumn"></a><span><code class="code">lines</code><a class="copiable-link" href="#index-whitespace_002dline_002dcolumn"> &para;</a></span></dt>
+<dd><p>Highlight lines longer than 80 columns.  To change the column limit,
+customize the variable <code class="code">whitespace-line-column</code>.
+</p>
+</dd>
+<dt><code class="code">newline</code></dt>
+<dd><p>Highlight newlines.
+</p>
+</dd>
+<dt><code class="code">missing-newline-at-eof</code></dt>
+<dd><p>Highlight the final character if the buffer doesn&rsquo;t end with a newline
+character.
+</p>
+</dd>
+<dt><code class="code">empty</code></dt>
+<dd><p>Highlight empty lines at the beginning and/or end of the buffer.
+</p>
+</dd>
+<dt><a id="index-whitespace_002dbig_002dindent_002dregexp"></a><span><code class="code">big-indent</code><a class="copiable-link" href="#index-whitespace_002dbig_002dindent_002dregexp"> &para;</a></span></dt>
+<dd><p>Highlight too-deep indentation.  By default any sequence of at least 4
+consecutive tab characters or 32 consecutive space characters is
+highlighted.  To change that, customize the regular expression
+<code class="code">whitespace-big-indent-regexp</code>.
+</p>
+</dd>
+<dt><code class="code">space-mark</code></dt>
+<dd><p>Draw space and non-breaking characters with a special glyph.
+</p>
+</dd>
+<dt><code class="code">tab-mark</code></dt>
+<dd><p>Draw tab characters with a special glyph.
+</p>
+</dd>
+<dt><code class="code">newline-mark</code></dt>
+<dd><p>Draw newline characters with a special glyph.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-global_002dwhitespace_002dtoggle_002doptions"></a>
+<a class="index-entry-id" id="index-global_002dwhitespace_002dmode"></a>
+<p>Global Whitespace mode is a global minor mode that lets you visualize
+whitespace in all buffers.  To toggle individual features, use
+<kbd class="kbd">M-x global-whitespace-toggle-options</kbd>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Selective-Display.html">Selective Display</a>, Previous: <a href="Displaying-Boundaries.html">Displaying Boundaries</a>, Up: <a href="Display.html">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

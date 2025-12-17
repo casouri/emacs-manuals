@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Simple Menu Items (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Simple Menu Items (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Simple Menu Items (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Defining-Menus.html" rel="up" title="Defining Menus">
+<link href="Extended-Menu-Items.html" rel="next" title="Extended Menu Items">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Simple-Menu-Items">
+<div class="nav-panel">
+<p>
+Next: <a href="Extended-Menu-Items.html" accesskey="n" rel="next">Extended Menu Items</a>, Up: <a href="Defining-Menus.html" accesskey="u" rel="up">Defining Menus</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Simple-Menu-Items-1"><span>23.17.1.1 Simple Menu Items<a class="copiable-link" href="#Simple-Menu-Items-1"> &para;</a></span></h4>
+
+<p>The simpler (and original) way to define a menu item is to bind some
+event type (it doesn&rsquo;t matter what event type) to a binding like this:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">item-string</var> . <var class="var">real-binding</var>)
+</pre></div>
+
+<p>The <small class="sc">CAR</small>, <var class="var">item-string</var>, is the string to be displayed in the
+menu.  It should be short&mdash;preferably one to three words.  It should
+describe the action of the command it corresponds to.  Note that not
+all graphical toolkits can display non-<abbr class="acronym">ASCII</abbr> text in menus
+(it will work for keyboard menus and will work to a large extent with
+the GTK+ toolkit).
+</p>
+<p>You can also supply a second string, called the help string, as follows:
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">item-string</var> <var class="var">help</var> . <var class="var">real-binding</var>)
+</pre></div>
+
+<p><var class="var">help</var> specifies a help-echo string to display while the mouse
+is on that item in the same way as <code class="code">help-echo</code> text properties
+(see <a class="pxref" href="Special-Properties.html#Help-display">Help display</a>).
+</p>
+<p>As far as <code class="code">define-key</code> is concerned, <var class="var">item-string</var> and
+<var class="var">help-string</var> are part of the event&rsquo;s binding.  However,
+<code class="code">lookup-key</code> returns just <var class="var">real-binding</var>, and only
+<var class="var">real-binding</var> is used for executing the key.
+</p>
+<p>If <var class="var">real-binding</var> is <code class="code">nil</code>, then <var class="var">item-string</var> appears in
+the menu but cannot be selected.
+</p>
+<p>If <var class="var">real-binding</var> is a symbol and has a non-<code class="code">nil</code>
+<code class="code">menu-enable</code> property, that property is an expression that
+controls whether the menu item is enabled.  Every time the keymap is
+used to display a menu, Emacs evaluates the expression, and it enables
+the menu item only if the expression&rsquo;s value is non-<code class="code">nil</code>.  When a
+menu item is disabled, it is displayed in a fuzzy fashion, and
+cannot be selected.
+</p>
+<p>The menu bar does not recalculate which items are enabled every time you
+look at a menu.  This is because the X toolkit requires the whole tree
+of menus in advance.  To force recalculation of the menu bar, call
+<code class="code">force-mode-line-update</code> (see <a class="pxref" href="Mode-Line-Format.html">Mode Line Format</a>).
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Extended-Menu-Items.html">Extended Menu Items</a>, Up: <a href="Defining-Menus.html">Defining Menus</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

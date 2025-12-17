@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Advising Functions (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Advising Functions (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Simple-Advice.html" rel="next" title="Simple Advice">
-<link href="Disassembly.html" rel="prev" title="Disassembly">
+<link href="Debugging.html" rel="next" title="Debugging">
+<link href="Byte-Compilation.html" rel="prev" title="Byte Compilation">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,24 +45,25 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Advising-Functions"></span><div class="header">
+<div class="chapter-level-extent" id="Advising-Functions">
+<div class="nav-panel">
 <p>
-Next: <a href="Debugging.html" accesskey="n" rel="next">Debugging</a>, Previous: <a href="Byte-Compilation.html" accesskey="p" rel="prev">Byte Compilation</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Debugging.html" accesskey="n" rel="next">Debugging Lisp Programs</a>, Previous: <a href="Byte-Compilation.html" accesskey="p" rel="prev">Byte Compilation</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Advising-Emacs-Lisp-Functions"></span><h2 class="chapter">17 Advising Emacs Lisp Functions</h2>
-<span id="index-advising-functions"></span>
+<h2 class="chapter" id="Advising-Emacs-Lisp-Functions"><span>17 Advising Emacs Lisp Functions<a class="copiable-link" href="#Advising-Emacs-Lisp-Functions"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-advising-functions"></a>
 
-<p>The <em>advice</em> feature lets you add to the existing definition of
-a function, by <em>advising the function</em>.  This is a cleaner method
+<p>The <em class="dfn">advice</em> feature lets you add to the existing definition of
+a function, by <em class="dfn">advising the function</em>.  This is a cleaner method
 for a library to customize functions defined within Emacs&mdash;cleaner
 than redefining the whole function.
 </p>
-<span id="index-piece-of-advice"></span>
-<p>Each function can have multiple <em>pieces of advice</em>, each of
-which can be separately defined and then <em>enabled</em> or
-<em>disabled</em>.  All the enabled pieces of advice for any given
-function actually take effect when you <em>activate advice</em> for that
+<a class="index-entry-id" id="index-piece-of-advice"></a>
+<p>Each function can have multiple <em class="dfn">pieces of advice</em>, each of
+which can be separately defined and then <em class="dfn">enabled</em> or
+<em class="dfn">disabled</em>.  All the enabled pieces of advice for any given
+function actually take effect when you <em class="dfn">activate advice</em> for that
 function, or when you define or redefine the function.  Note that
 enabling a piece of advice and activating advice for a function are
 not the same thing.
@@ -92,39 +83,30 @@ files should not put advice on functions in Emacs.  There are
 currently a few exceptions to this convention, but we aim to correct
 them.
 </p>
-<p>Unless you know what you are doing, do <em>not</em> advise a primitive
-(see <a href="What-Is-a-Function.html">What Is a Function</a>).  Some primitives are used by the advice
+<p>Unless you know what you are doing, do <em class="emph">not</em> advise a primitive
+(see <a class="pxref" href="What-Is-a-Function.html">What Is a Function?</a>).  Some primitives are used by the advice
 mechanism; advising them could cause an infinite recursion.  Also,
 many primitives are called directly from C code.  Calls to the
 primitive from Lisp code will take note of the advice, but calls from
 C code will ignore the advice.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Simple-Advice.html" accesskey="1">Simple Advice</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">A simple example to explain the basics of advice.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Defining-Advice.html" accesskey="2">Defining Advice</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Detailed description of <code>defadvice</code>.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Around_002dAdvice.html" accesskey="3">Around-Advice</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Wrapping advice around a function&rsquo;s definition.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Computed-Advice.html" accesskey="4">Computed Advice</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">...is to <code>defadvice</code> as <code>fset</code> is to <code>defun</code>.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Activation-of-Advice.html" accesskey="5">Activation of Advice</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Advice doesn&rsquo;t do anything until you activate it.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Enabling-Advice.html" accesskey="6">Enabling Advice</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">You can enable or disable each piece of advice.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Preactivation.html" accesskey="7">Preactivation</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Preactivation is a way of speeding up the
-                              loading of compiled advice.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Argument-Access-in-Advice.html" accesskey="8">Argument Access in Advice</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How advice can access the function&rsquo;s arguments.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Combined-Definition.html" accesskey="9">Combined Definition</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How advice is implemented.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Simple-Advice.html" accesskey="1">A Simple Advice Example</a></li>
+<li><a href="Defining-Advice.html" accesskey="2">Defining Advice</a></li>
+<li><a href="Around_002dAdvice.html" accesskey="3">Around-Advice</a></li>
+<li><a href="Computed-Advice.html" accesskey="4">Computed Advice</a></li>
+<li><a href="Activation-of-Advice.html" accesskey="5">Activation of Advice</a></li>
+<li><a href="Enabling-Advice.html" accesskey="6">Enabling and Disabling Advice</a></li>
+<li><a href="Preactivation.html" accesskey="7">Preactivation</a></li>
+<li><a href="Argument-Access-in-Advice.html" accesskey="8">Argument Access in Advice</a></li>
+<li><a href="Combined-Definition.html" accesskey="9">The Combined Definition</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Debugging.html" accesskey="n" rel="next">Debugging</a>, Previous: <a href="Byte-Compilation.html" accesskey="p" rel="prev">Byte Compilation</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Debugging.html">Debugging Lisp Programs</a>, Previous: <a href="Byte-Compilation.html">Byte Compilation</a>, Up: <a href="index.html">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

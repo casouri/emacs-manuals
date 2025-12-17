@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Converting to Lexical Binding (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Converting to Lexical Binding (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Variable-Scoping.html" rel="up" title="Variable Scoping">
-<link href="Buffer_002dLocal-Variables.html" rel="next" title="Buffer-Local Variables">
-<link href="Using-Lexical-Binding.html" rel="prev" title="Using Lexical Binding">
+<link href="Selecting-Lisp-Dialect.html" rel="prev" title="Selecting Lisp Dialect">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,33 +47,34 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Converting-to-Lexical-Binding"></span><div class="header">
+<div class="subsection-level-extent" id="Converting-to-Lexical-Binding">
+<div class="nav-panel">
 <p>
-Previous: <a href="Using-Lexical-Binding.html" accesskey="p" rel="prev">Using Lexical Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Variable Scoping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Selecting-Lisp-Dialect.html" accesskey="p" rel="prev">Selecting Lisp Dialect</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Converting-to-Lexical-Binding-1"></span><h4 class="subsection">12.10.5 Converting to Lexical Binding</h4>
+<h4 class="subsection" id="Converting-to-Lexical-Binding-1"><span>12.10.5 Converting to Lexical Binding<a class="copiable-link" href="#Converting-to-Lexical-Binding-1"> &para;</a></span></h4>
 
 <p>Converting an Emacs Lisp program to lexical binding is easy.  First,
-add a file-local variable setting of <code>lexical-binding</code> to
-<code>t</code> in the header line of the Emacs Lisp source file (see <a href="File-Local-Variables.html">File Local Variables</a>).  Second, check that every variable in the program
+add a file-local variable setting of <code class="code">lexical-binding</code> to
+<code class="code">t</code> in the header line of the Emacs Lisp source file (see <a class="pxref" href="File-Local-Variables.html">File Local Variables</a>).  Second, check that every variable in the program
 which needs to be dynamically bound has a variable definition, so that
 it is not inadvertently bound lexically.
 </p>
-<span id="index-free-variable"></span>
-<span id="index-unused-lexical-variable"></span>
+<a class="index-entry-id" id="index-free-variable"></a>
+<a class="index-entry-id" id="index-unused-lexical-variable"></a>
 <p>A simple way to find out which variables need a variable definition
-is to byte-compile the source file.  See <a href="Byte-Compilation.html">Byte Compilation</a>.  If a
-non-special variable is used outside of a <code>let</code> form, the
+is to byte-compile the source file.  See <a class="xref" href="Byte-Compilation.html">Byte Compilation</a>.  If a
+non-special variable is used outside of a <code class="code">let</code> form, the
 byte-compiler will warn about reference or assignment to a free
 variable.  If a non-special variable is bound but not used within a
-<code>let</code> form, the byte-compiler will warn about an unused lexical
+<code class="code">let</code> form, the byte-compiler will warn about an unused lexical
 variable.  The byte-compiler will also issue a warning if you use a
 special variable as a function argument.
 </p>
 <p>A warning about a reference or an assignment to a free variable is
 usually a clear sign that that variable should be marked as
-dynamically scoped, so you need to add an appropriate <code>defvar</code>
+dynamically scoped, so you need to add an appropriate <code class="code">defvar</code>
 before the first use of that variable.
 </p>
 <p>A warning about an unused variable may be a good hint that the
@@ -91,53 +82,54 @@ variable was intended to be dynamically scoped (because it is actually
 used, but in another function), but it may also be an indication that
 the variable is simply really not used and could simply be removed.
 So you need to find out which case it is, and based on that, either
-add a <code>defvar</code> or remove the variable altogether.  If removal is
+add a <code class="code">defvar</code> or remove the variable altogether.  If removal is
 not possible or not desirable (typically because it is a formal
 argument and that we cannot or don&rsquo;t want to change all the callers),
 you can also add a leading underscore to the variable&rsquo;s name to
 indicate to the compiler that this is a variable known not to
 be used.)
 </p>
-<span id="Cross_002dfile-variable-checking"></span><h4 class="subsubheading">Cross-file variable checking</h4>
+<h4 class="subsubheading" id="Cross_002dfile-variable-checking"><span>Cross-file variable checking<a class="copiable-link" href="#Cross_002dfile-variable-checking"> &para;</a></span></h4>
 
-<p><strong>Caution:</strong> This is an experimental feature that may change or
+<p><strong class="strong">Caution:</strong> This is an experimental feature that may change or
 disappear without prior notice.
 </p>
 <p>The byte-compiler can also warn about lexical variables that are
 special in other Emacs Lisp files, often indicating a missing
-<code>defvar</code> declaration.  This useful but somewhat specialised check
+<code class="code">defvar</code> declaration.  This useful but somewhat specialized check
 requires three steps:
 </p>
-<ol>
+<ol class="enumerate">
 <li> Byte-compile all files whose special variable declarations may be of
-interest, with the environment variable <code>EMACS_GENERATE_DYNVARS</code>
+interest, with the environment variable <code class="env">EMACS_GENERATE_DYNVARS</code>
 set to a nonempty string.  These are typically all the files in the
 same package or related packages or Emacs subsystems.  The process
-will generate a file whose name ends in <samp>.dynvars</samp> for each
+will generate a file whose name ends in <samp class="file">.dynvars</samp> for each
 compiled Emacs Lisp file.
 
-</li><li> Concatenate the <samp>.dynvars</samp> files into a single file.
+</li><li> Concatenate the <samp class="file">.dynvars</samp> files into a single file.
 
 </li><li> Byte-compile the files that need to be checked, this time with
-the environment variable <code>EMACS_DYNVARS_FILE</code> set to the name
+the environment variable <code class="env">EMACS_DYNVARS_FILE</code> set to the name
 of the aggregated file created in step 2.
 </li></ol>
 
 <p>Here is an example illustrating how this could be done, assuming that
-a Unix shell and <code>make</code> are used for byte-compilation:
+a Unix shell and <code class="command">make</code> are used for byte-compilation:
 </p>
 <div class="example">
-<pre class="example">$ rm *.elc                                # force recompilation
+<pre class="example-preformatted">$ rm *.elc                                # force recompilation
 $ EMACS_GENERATE_DYNVARS=1 make           # generate .dynvars
 $ cat *.dynvars &gt; ~/my-dynvars            # combine .dynvars
 $ rm *.elc                                # force recompilation
 $ EMACS_DYNVARS_FILE=~/my-dynvars make    # perform checks
 </pre></div>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Previous: <a href="Using-Lexical-Binding.html" accesskey="p" rel="prev">Using Lexical Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Variable Scoping</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Selecting-Lisp-Dialect.html">Selecting Lisp Dialect</a>, Up: <a href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

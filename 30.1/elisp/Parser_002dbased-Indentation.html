@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Parser-based Indentation (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Parser-based Indentation (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Parser-based Indentation (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Auto_002dIndentation.html" rel="up" title="Auto-Indentation">
+<link href="SMIE.html" rel="prev" title="SMIE">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Parser_002dbased-Indentation">
+<div class="nav-panel">
+<p>
+Previous: <a href="SMIE.html" accesskey="p" rel="prev">Simple Minded Indentation Engine</a>, Up: <a href="Auto_002dIndentation.html" accesskey="u" rel="up">Automatic Indentation of code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Parser_002dbased-Indentation-1"><span>24.8.2 Parser-based Indentation<a class="copiable-link" href="#Parser_002dbased-Indentation-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-parser_002dbased-indentation"></a>
+
+
+<p>When built with the tree-sitter library (see <a class="pxref" href="Parsing-Program-Source.html">Parsing Program Source</a>), Emacs is capable of parsing the program source and producing
+a syntax tree.  This syntax tree can be used for guiding the program
+source indentation commands.  For maximum flexibility, it is possible
+to write a custom indentation function that queries the syntax tree
+and indents accordingly for each language, but that is a lot of work.
+It is more convenient to use the simple indentation engine described
+below: then the major mode needs only write some indentation rules,
+and the engine takes care of the rest.
+</p>
+<p>To enable the parser-based indentation engine, set either
+<code class="code">treesit-simple-indent-rules</code> or <code class="code">treesit-indent-function</code>,
+then call <code class="code">treesit-major-mode-setup</code>.  (All that
+<code class="code">treesit-major-mode-setup</code> does is set the value of
+<code class="code">indent-line-function</code> to <code class="code">treesit-indent</code>, and
+<code class="code">indent-region-function</code> to <code class="code">treesit-indent-region</code>.)
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-treesit_002dindent_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">treesit-indent-function</strong><a class="copiable-link" href="#index-treesit_002dindent_002dfunction"> &para;</a></span></dt>
+<dd><p>This variable stores the actual function called by
+<code class="code">treesit-indent</code>.  By default, its value is
+<code class="code">treesit-simple-indent</code>.  In the future we might add other,
+more complex indentation engines.
+</p></dd></dl>
+
+<h3 class="heading" id="Writing-indentation-rules"><span>Writing indentation rules<a class="copiable-link" href="#Writing-indentation-rules"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-indentation-rules_002c-for-parser_002dbased-indentation"></a>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-treesit_002dsimple_002dindent_002drules"><span class="category-def">Variable: </span><span><strong class="def-name">treesit-simple-indent-rules</strong><a class="copiable-link" href="#index-treesit_002dsimple_002dindent_002drules"> &para;</a></span></dt>
+<dd><p>This local variable stores indentation rules for every language.  It
+is an alist with elements of the form <code class="code">(<var class="var">language</var>&nbsp;.&nbsp;<var class="var">rules</var>)</code><!-- /@w -->, where <var class="var">language</var> is a language symbol, and
+<var class="var">rules</var> is a list with elements of the form
+<code class="code">(<var class="var">matcher</var>&nbsp;<var class="var">anchor</var>&nbsp;<var class="var">offset</var>)</code><!-- /@w -->.
+</p>
+<p>First, Emacs passes the smallest tree-sitter node at the beginning of
+the current line to <var class="var">matcher</var>; if it returns non-<code class="code">nil</code>, this
+rule is applicable.  Then Emacs passes the node to <var class="var">anchor</var>, which
+returns a buffer position.  Emacs takes the column number of that
+position, adds <var class="var">offset</var> to it, and the result is the indentation
+column for the current line.
+</p>
+<p>The <var class="var">matcher</var> and <var class="var">anchor</var> are functions, and Emacs provides
+convenient defaults for them.
+</p>
+<p>Each <var class="var">matcher</var> or <var class="var">anchor</var> is a function that takes three
+arguments: <var class="var">node</var>, <var class="var">parent</var>, and <var class="var">bol</var>.  The argument
+<var class="var">bol</var> is the buffer position whose indentation is required: the
+position of the first non-whitespace character after the beginning of
+the line.  The argument <var class="var">node</var> is the largest node that starts at
+that position (and is not a root node); and <var class="var">parent</var> is the parent
+of <var class="var">node</var>.  However, when that position is in a whitespace or
+inside a multi-line string, no node can start at that position, so
+<var class="var">node</var> is <code class="code">nil</code>.  In that case, <var class="var">parent</var> would be the
+smallest node that spans that position.
+</p>
+<p><var class="var">matcher</var> should return non-<code class="code">nil</code> if the rule is applicable,
+and <var class="var">anchor</var> should return a buffer position.
+</p>
+<p><var class="var">offset</var> can be an integer, a variable whose value is an integer,
+or a function that returns an integer.  If it is a function, it is
+passed <var class="var">node</var>, <var class="var">parent</var>, and <var class="var">bol</var>, like matchers and
+anchors.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-treesit_002dsimple_002dindent_002dpresets"><span class="category-def">Variable: </span><span><strong class="def-name">treesit-simple-indent-presets</strong><a class="copiable-link" href="#index-treesit_002dsimple_002dindent_002dpresets"> &para;</a></span></dt>
+<dd><p>This is a list of defaults for <var class="var">matcher</var>s and <var class="var">anchor</var>s in
+<code class="code">treesit-simple-indent-rules</code>.  Each of them represents a
+function that takes 3 arguments: <var class="var">node</var>, <var class="var">parent</var>, and
+<var class="var">bol</var>.  The available default functions are:
+</p>
+<dl class="ftable">
+<dt><a id="index-no_002dnode"></a><span><code class="code">no-node</code><a class="copiable-link" href="#index-no_002dnode"> &para;</a></span></dt>
+<dd><p>This matcher is a function that is called with 3 arguments:
+<var class="var">node</var>, <var class="var">parent</var>, and <var class="var">bol</var>.  It returns non-<code class="code">nil</code>,
+indicating a match, if <var class="var">node</var> is <code class="code">nil</code>, i.e., there is no
+node that starts at <var class="var">bol</var>.  This is the case when <var class="var">bol</var> is on
+an empty line or inside a multi-line string, etc.
+</p>
+</dd>
+<dt><a id="index-parent_002dis"></a><span><code class="code">parent-is</code><a class="copiable-link" href="#index-parent_002dis"> &para;</a></span></dt>
+<dd><p>This matcher is a function of one argument, <var class="var">type</var>; it returns a
+function that is called with 3 arguments: <var class="var">node</var>, <var class="var">parent</var>,
+and <var class="var">bol</var>, and returns non-<code class="code">nil</code> (i.e., a match) if
+<var class="var">parent</var>&rsquo;s type matches regexp <var class="var">type</var>.
+</p>
+</dd>
+<dt><a id="index-node_002dis"></a><span><code class="code">node-is</code><a class="copiable-link" href="#index-node_002dis"> &para;</a></span></dt>
+<dd><p>This matcher is a function of one argument, <var class="var">type</var>; it returns a
+function that is called with 3 arguments: <var class="var">node</var>, <var class="var">parent</var>,
+and <var class="var">bol</var>, and returns non-<code class="code">nil</code> if <var class="var">node</var>&rsquo;s type matches
+regexp <var class="var">type</var>.
+</p>
+</dd>
+<dt><a id="index-field_002dis"></a><span><code class="code">field-is</code><a class="copiable-link" href="#index-field_002dis"> &para;</a></span></dt>
+<dd><p>This matcher is a function of one argument, <var class="var">name</var>; it returns a
+function that is called with 3 arguments: <var class="var">node</var>, <var class="var">parent</var>,
+and <var class="var">bol</var>, and returns non-<code class="code">nil</code> if <var class="var">node</var>&rsquo;s field name
+in <var class="var">parent</var> matches regexp <var class="var">name</var>.
+</p>
+</dd>
+<dt><a id="index-query"></a><span><code class="code">query</code><a class="copiable-link" href="#index-query"> &para;</a></span></dt>
+<dd><p>This matcher is a function of one argument, <var class="var">query</var>; it returns a
+function that is called with 3 arguments: <var class="var">node</var>, <var class="var">parent</var>,
+and <var class="var">bol</var>, and returns non-<code class="code">nil</code> if querying <var class="var">parent</var>
+with <var class="var">query</var> captures <var class="var">node</var> (see <a class="pxref" href="Pattern-Matching.html">Pattern Matching Tree-sitter Nodes</a>).
+</p>
+</dd>
+<dt><a id="index-match"></a><span><code class="code">match</code><a class="copiable-link" href="#index-match"> &para;</a></span></dt>
+<dd><p>This matcher is a function of 5 arguments: <var class="var">node-type</var>,
+<var class="var">parent-type</var>, <var class="var">node-field</var>, <var class="var">node-index-min</var>, and
+<var class="var">node-index-max</var>).  It returns a function that is called with 3
+arguments: <var class="var">node</var>, <var class="var">parent</var>, and <var class="var">bol</var>, and returns
+non-<code class="code">nil</code> if <var class="var">node</var>&rsquo;s type matches regexp <var class="var">node-type</var>,
+<var class="var">parent</var>&rsquo;s type matches regexp <var class="var">parent-type</var>, <var class="var">node</var>&rsquo;s
+field name in <var class="var">parent</var> matches regexp <var class="var">node-field</var>, and
+<var class="var">node</var>&rsquo;s index among its siblings is between <var class="var">node-index-min</var>
+and <var class="var">node-index-max</var>.  If the value of an argument is <code class="code">nil</code>,
+this matcher doesn&rsquo;t check that argument.  For example, to match the
+first child where parent is <code class="code">argument_list</code>, use
+</p>
+<div class="example">
+<pre class="example-preformatted">(match nil &quot;argument_list&quot; nil 0 0)
+</pre></div>
+
+<p>In addition, <var class="var">node-type</var> can be a special value <code class="code">null</code>,
+which matches when the value of <var class="var">node</var> is <code class="code">nil</code>.
+</p>
+</dd>
+<dt><a id="index-n_002dp_002dgp"></a><span><code class="code">n-p-gp</code><a class="copiable-link" href="#index-n_002dp_002dgp"> &para;</a></span></dt>
+<dd><p>Short for &ldquo;node-parent-grandparent&rdquo;, this matcher is a function of 3
+arguments: <var class="var">node-type</var>, <var class="var">parent-type</var>, and
+<var class="var">grandparent-type</var>.  It returns a function that is called with 3
+arguments: <var class="var">node</var>, <var class="var">parent</var>, and <var class="var">bol</var>, and returns
+non-<code class="code">nil</code> if: (1) <var class="var">node-type</var> matches <var class="var">node</var>&rsquo;s type, and
+(2) <var class="var">parent-type</var> matches <var class="var">parent</var>&rsquo;s type, and (3)
+<var class="var">grandparent-type</var> matches <var class="var">parent</var>&rsquo;s parent&rsquo;s type.  If any
+of <var class="var">node-type</var>, <var class="var">parent-type</var>, and <var class="var">grandparent-type</var> is
+<code class="code">nil</code>, this function doesn&rsquo;t check for it.
+</p>
+</dd>
+<dt><a id="index-comment_002dend"></a><span><code class="code">comment-end</code><a class="copiable-link" href="#index-comment_002dend"> &para;</a></span></dt>
+<dd><p>This matcher is a function that is called with 3 arguments:
+<var class="var">node</var>, <var class="var">parent</var>, and <var class="var">bol</var>, and returns non-<code class="code">nil</code> if
+point is before a comment-ending token.  Comment-ending tokens are
+defined by regexp <code class="code">comment-end-skip</code>.
+</p>
+</dd>
+<dt><a id="index-catch_002dall"></a><span><code class="code">catch-all</code><a class="copiable-link" href="#index-catch_002dall"> &para;</a></span></dt>
+<dd><p>This matcher is a function that is called with 3 arguments:
+<var class="var">node</var>, <var class="var">parent</var>, and <var class="var">bol</var>.  It always returns
+non-<code class="code">nil</code>, indicating a match.
+</p>
+</dd>
+<dt><a id="index-first_002dsibling"></a><span><code class="code">first-sibling</code><a class="copiable-link" href="#index-first_002dsibling"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the start of the first child
+of <var class="var">parent</var>.
+</p>
+</dd>
+<dt><a id="index-nth_002dsibling"></a><span><code class="code">nth-sibling</code><a class="copiable-link" href="#index-nth_002dsibling"> &para;</a></span></dt>
+<dd><p>This anchor is a function of two arguments: <var class="var">n</var>, and an optional
+argument <var class="var">named</var>.  It returns a function that is called with 3
+arguments: <var class="var">node</var>, <var class="var">parent</var>, and <var class="var">bol</var>, and returns the
+start of the <var class="var">n</var>th child of <var class="var">parent</var>.  If <var class="var">named</var> is
+non-<code class="code">nil</code>, only named children are counted (see <a class="pxref" href="Language-Grammar.html#tree_002dsitter-named-node">named node</a>).
+</p>
+</dd>
+<dt><a id="index-parent"></a><span><code class="code">parent</code><a class="copiable-link" href="#index-parent"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the start of <var class="var">parent</var>.
+</p>
+</dd>
+<dt><a id="index-grand_002dparent"></a><span><code class="code">grand-parent</code><a class="copiable-link" href="#index-grand_002dparent"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the start of <var class="var">parent</var>&rsquo;s
+parent.
+</p>
+</dd>
+<dt><a id="index-great_002dgrand_002dparent"></a><span><code class="code">great-grand-parent</code><a class="copiable-link" href="#index-great_002dgrand_002dparent"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the start of <var class="var">parent</var>&rsquo;s
+parent&rsquo;s parent.
+</p>
+</dd>
+<dt><a id="index-parent_002dbol"></a><span><code class="code">parent-bol</code><a class="copiable-link" href="#index-parent_002dbol"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the first non-space character
+on the line which <var class="var">parent</var>&rsquo;s start is on.
+</p>
+</dd>
+<dt><a id="index-standalone_002dparent"></a><span><code class="code">standalone-parent</code><a class="copiable-link" href="#index-standalone_002dparent"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>.  It finds the first ancestor node
+(parent, grandparent, etc.) of <var class="var">node</var> that starts on its own
+line, and return the start of that node.  &ldquo;Starting on its own line&rdquo;
+means there is only whitespace character before the node on the line
+which the node&rsquo;s start is on.
+</p>
+</dd>
+<dt><a id="index-prev_002dsibling"></a><span><code class="code">prev-sibling</code><a class="copiable-link" href="#index-prev_002dsibling"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the start of the previous
+sibling of <var class="var">node</var>.
+</p>
+</dd>
+<dt><a id="index-no_002dindent"></a><span><code class="code">no-indent</code><a class="copiable-link" href="#index-no_002dindent"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the start of <var class="var">node</var>.
+</p>
+</dd>
+<dt><a id="index-prev_002dline"></a><span><code class="code">prev-line</code><a class="copiable-link" href="#index-prev_002dline"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the first non-whitespace
+character on the previous line.
+</p>
+</dd>
+<dt><a id="index-column_002d0"></a><span><code class="code">column-0</code><a class="copiable-link" href="#index-column_002d0"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the beginning of the current
+line, which is at column 0.
+</p>
+</dd>
+<dt><a id="index-comment_002dstart"></a><span><code class="code">comment-start</code><a class="copiable-link" href="#index-comment_002dstart"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>, and returns the position after the
+comment-start token.  Comment-start tokens are defined by regular
+expression <code class="code">comment-start-skip</code>.  This function assumes
+<var class="var">parent</var> is the comment node.
+</p>
+</dd>
+<dt><a id="index-prev_002dadaptive_002dprefix"></a><span><code class="code">prev-adaptive-prefix</code><a class="copiable-link" href="#index-prev_002dadaptive_002dprefix"> &para;</a></span></dt>
+<dd><p>This anchor is a function that is called with 3 arguments: <var class="var">node</var>,
+<var class="var">parent</var>, and <var class="var">bol</var>.  It tries to match
+<code class="code">adaptive-fill-regexp</code> to the text at the beginning of the
+previous non-empty line.  If there is a match, this function returns
+the end of the match, otherwise it returns <code class="code">nil</code>.  However, if
+the current line begins with a prefix (e.g., &lsquo;<samp class="samp">-</samp>&rsquo;), return the
+beginning of the prefix of the previous line instead, so that the two
+prefixes align.  This anchor is useful for an
+<code class="code">indent-relative</code>-like indent behavior for block comments.
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<h3 class="heading" id="Indentation-utilities"><span>Indentation utilities<a class="copiable-link" href="#Indentation-utilities"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-utility-functions-for-parser_002dbased-indentation"></a>
+
+<p>Here are some utility functions that can help writing parser-based
+indentation rules.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-treesit_002dcheck_002dindent"><span class="category-def">Command: </span><span><strong class="def-name">treesit-check-indent</strong> <var class="def-var-arguments">mode</var><a class="copiable-link" href="#index-treesit_002dcheck_002dindent"> &para;</a></span></dt>
+<dd><p>This command checks the current buffer&rsquo;s indentation against major
+mode <var class="var">mode</var>.  It indents the current buffer according to
+<var class="var">mode</var> and compares the results with the current indentation.
+Then it pops up a buffer showing the differences.  Correct
+indentation (target) is shown in green color, current indentation is
+shown in red color.  </p></dd></dl>
+
+<p>It is also helpful to use <code class="code">treesit-inspect-mode</code> (see <a class="pxref" href="Language-Grammar.html">Tree-sitter Language Grammar</a>) when writing indentation rules.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="SMIE.html">Simple Minded Indentation Engine</a>, Up: <a href="Auto_002dIndentation.html">Automatic Indentation of code</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

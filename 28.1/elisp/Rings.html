@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.1.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Rings (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Rings (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Rings (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Sequences-Arrays-Vectors.html" rel="up" title="Sequences Arrays Vectors">
+<link href="Bool_002dVectors.html" rel="prev" title="Bool-Vectors">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Rings">
+<div class="nav-panel">
+<p>
+Previous: <a href="Bool_002dVectors.html" accesskey="p" rel="prev">Bool-vectors</a>, Up: <a href="Sequences-Arrays-Vectors.html" accesskey="u" rel="up">Sequences, Arrays, and Vectors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Managing-a-Fixed_002dSize-Ring-of-Objects"><span>6.8 Managing a Fixed-Size Ring of Objects<a class="copiable-link" href="#Managing-a-Fixed_002dSize-Ring-of-Objects"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-ring-data-structure"></a>
+<p>A <em class="dfn">ring</em> is a fixed-size data structure that supports insertion,
+deletion, rotation, and modulo-indexed reference and traversal.  An
+efficient ring data structure is implemented by the <code class="code">ring</code>
+package.  It provides the functions listed in this section.
+</p>
+<p>Note that several rings in Emacs, like the kill ring and the
+mark ring, are actually implemented as simple lists, <em class="emph">not</em> using
+the <code class="code">ring</code> package; thus the following functions won&rsquo;t work on
+them.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dring"><span class="category-def">Function: </span><span><strong class="def-name">make-ring</strong> <var class="def-var-arguments">size</var><a class="copiable-link" href="#index-make_002dring"> &para;</a></span></dt>
+<dd><p>This returns a new ring capable of holding <var class="var">size</var> objects.
+<var class="var">size</var> should be an integer.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dp"><span class="category-def">Function: </span><span><strong class="def-name">ring-p</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-ring_002dp"> &para;</a></span></dt>
+<dd><p>This returns <code class="code">t</code> if <var class="var">object</var> is a ring, <code class="code">nil</code> otherwise.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dsize"><span class="category-def">Function: </span><span><strong class="def-name">ring-size</strong> <var class="def-var-arguments">ring</var><a class="copiable-link" href="#index-ring_002dsize"> &para;</a></span></dt>
+<dd><p>This returns the maximum capacity of the <var class="var">ring</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dlength"><span class="category-def">Function: </span><span><strong class="def-name">ring-length</strong> <var class="def-var-arguments">ring</var><a class="copiable-link" href="#index-ring_002dlength"> &para;</a></span></dt>
+<dd><p>This returns the number of objects that <var class="var">ring</var> currently contains.
+The value will never exceed that returned by <code class="code">ring-size</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002delements"><span class="category-def">Function: </span><span><strong class="def-name">ring-elements</strong> <var class="def-var-arguments">ring</var><a class="copiable-link" href="#index-ring_002delements"> &para;</a></span></dt>
+<dd><p>This returns a list of the objects in <var class="var">ring</var>, in order, newest first.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dcopy"><span class="category-def">Function: </span><span><strong class="def-name">ring-copy</strong> <var class="def-var-arguments">ring</var><a class="copiable-link" href="#index-ring_002dcopy"> &para;</a></span></dt>
+<dd><p>This returns a new ring which is a copy of <var class="var">ring</var>.
+The new ring contains the same (<code class="code">eq</code>) objects as <var class="var">ring</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dempty_002dp"><span class="category-def">Function: </span><span><strong class="def-name">ring-empty-p</strong> <var class="def-var-arguments">ring</var><a class="copiable-link" href="#index-ring_002dempty_002dp"> &para;</a></span></dt>
+<dd><p>This returns <code class="code">t</code> if <var class="var">ring</var> is empty, <code class="code">nil</code> otherwise.
+</p></dd></dl>
+
+<p>The newest element in the ring always has index 0.  Higher indices
+correspond to older elements.  Indices are computed modulo the ring
+length.  Index &minus;1 corresponds to the oldest element, &minus;2
+to the next-oldest, and so forth.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dref"><span class="category-def">Function: </span><span><strong class="def-name">ring-ref</strong> <var class="def-var-arguments">ring index</var><a class="copiable-link" href="#index-ring_002dref"> &para;</a></span></dt>
+<dd><p>This returns the object in <var class="var">ring</var> found at index <var class="var">index</var>.
+<var class="var">index</var> may be negative or greater than the ring length.  If
+<var class="var">ring</var> is empty, <code class="code">ring-ref</code> signals an error.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dinsert"><span class="category-def">Function: </span><span><strong class="def-name">ring-insert</strong> <var class="def-var-arguments">ring object</var><a class="copiable-link" href="#index-ring_002dinsert"> &para;</a></span></dt>
+<dd><p>This inserts <var class="var">object</var> into <var class="var">ring</var>, making it the newest
+element, and returns <var class="var">object</var>.
+</p>
+<p>If the ring is full, insertion removes the oldest element to
+make room for the new element.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dremove"><span class="category-def">Function: </span><span><strong class="def-name">ring-remove</strong> <var class="def-var-arguments">ring &amp;optional index</var><a class="copiable-link" href="#index-ring_002dremove"> &para;</a></span></dt>
+<dd><p>Remove an object from <var class="var">ring</var>, and return that object.  The
+argument <var class="var">index</var> specifies which item to remove; if it is
+<code class="code">nil</code>, that means to remove the oldest item.  If <var class="var">ring</var> is
+empty, <code class="code">ring-remove</code> signals an error.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dinsert_002dat_002dbeginning"><span class="category-def">Function: </span><span><strong class="def-name">ring-insert-at-beginning</strong> <var class="def-var-arguments">ring object</var><a class="copiable-link" href="#index-ring_002dinsert_002dat_002dbeginning"> &para;</a></span></dt>
+<dd><p>This inserts <var class="var">object</var> into <var class="var">ring</var>, treating it as the oldest
+element.  The return value is not significant.
+</p>
+<p>If the ring is full, this function removes the newest element to make
+room for the inserted element.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-ring_002dresize"><span class="category-def">Function: </span><span><strong class="def-name">ring-resize</strong> <var class="def-var-arguments">ring size</var><a class="copiable-link" href="#index-ring_002dresize"> &para;</a></span></dt>
+<dd><p>Set the size of <var class="var">ring</var> to <var class="var">size</var>.  If the new size is smaller,
+then the oldest items in the ring are discarded.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-fifo-data-structure"></a>
+<p>If you are careful not to exceed the ring size, you can
+use the ring as a first-in-first-out queue.  For example:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(let ((fifo (make-ring 5)))
+  (mapc (lambda (obj) (ring-insert fifo obj))
+        '(0 one &quot;two&quot;))
+  (list (ring-remove fifo) t
+        (ring-remove fifo) t
+        (ring-remove fifo)))
+     &rArr; (0 t one t &quot;two&quot;)
+</pre></div>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Bool_002dVectors.html">Bool-vectors</a>, Up: <a href="Sequences-Arrays-Vectors.html">Sequences, Arrays, and Vectors</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

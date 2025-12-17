@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>User Lisp Directory (GNU Emacs Manual)</title>
+
+<meta name="description" content="User Lisp Directory (GNU Emacs Manual)">
+<meta name="keywords" content="User Lisp Directory (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Init-File.html" rel="up" title="Init File">
+<link href="Early-Init-File.html" rel="prev" title="Early Init File">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="User-Lisp-Directory">
+<div class="nav-panel">
+<p>
+Previous: <a href="Early-Init-File.html" accesskey="p" rel="prev">The Early Init File</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="User-Lisp-Directory-1"><span>51.4.7 User Lisp Directory<a class="copiable-link" href="#User-Lisp-Directory-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-user_002dlisp"></a>
+<a class="index-entry-id" id="index-user_002dlisp_002f-directory"></a>
+
+<a class="index-entry-id" id="index-user_002dlisp_002ddirectory"></a>
+<p>If the directory specified by <code class="code">user-lisp-directory</code>, defaulting
+to <samp class="file">~/.config/emacs/user-lisp/</samp> or <samp class="file">~/.emacs.d/user-lisp/</samp>,
+exists, then at startup Emacs will prepare Lisp files within that
+directory for use in the session.  Emacs does the following things:
+</p>
+<ul class="itemize mark-bullet">
+<li>Gather and activate autoload cookies.  This means that you can use
+autoloaded commands and other entry points for the files in your
+<code class="code">user-lisp-directory</code> without explicitly loading any of the
+files in your initialization file. (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Autoload.html#Autoload">Autoload</a> in <cite class="cite">The
+Emacs Lisp Reference Manual</cite>.)
+</li><li>Byte-compile all files, and if supported on your system, natively
+compile them too.  This speeds up the execution of the code in the
+files when they are loaded.  (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Byte-Compilation.html#Byte-Compilation">Byte Compilation</a> in <cite class="cite">The
+Emacs Lisp Reference Manual</cite>.)
+</li><li>Adjust <code class="code">load-path</code> such that all the files can be loaded and
+autoloaded in the usual ways.  (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Library-Search.html#Library-Search">Library Search</a> in <cite class="cite">The
+Emacs Lisp Reference Manual</cite>.)
+</li></ul>
+
+<p>The User Lisp directory is processed before loading the <a class="ref" href="Init-File.html">The Emacs Initialization File</a> file.  Therefore any customizations to the user options discussed
+below must be made in your early init file (see <a class="pxref" href="Early-Init-File.html">The Early Init File</a>) in
+order to have any effect.
+</p>
+<a class="index-entry-id" id="index-user_002dlisp_002dignored_002ddirectories"></a>
+<a class="index-entry-id" id="index-user_002dlisp_002dauto_002dscrape"></a>
+<a class="index-entry-id" id="index-prepare_002duser_002dlisp"></a>
+<p>By default, Emacs considers all Lisp files within
+<code class="code">user-lisp-directory</code>, including within subdirectories.  You can
+prevent Emacs from descending into specific subdirectories by
+customizing <code class="code">user-lisp-ignored-directories</code>.  You can completely
+disable scraping at startup by customizing <code class="code">user-lisp-auto-scrape</code>
+to <code class="code">nil</code>.  In addition to how Emacs prepares the Lisp files
+automatically at startup, you can manually invoke preparation using the
+command <code class="code">prepare-user-lisp</code>.
+</p>
+<p>Although Emacs automatically handles recompilation when the contents
+of any Lisp files within the User Lisp directory have changed, there are
+other reasons why recompilation can become necessary that Emacs can&rsquo;t
+autodetect.  A good rule of thumb that will catch most (but not all)
+such issues is to force recompilation each time you upgrade to a new
+release of Emacs.  Start the new version of Emacs, type <kbd class="kbd">C-u&nbsp;M-x&nbsp;prepare-user-lisp</kbd><!-- /@w -->, then quit and restart Emacs again.
+</p>
+<p>The User Lisp directory is a simpler mechanism than package
+installation (see <a class="pxref" href="Packages.html">Emacs Lisp Packages</a>).  In particular, there is no automatic
+dependency resolution or upgrading for files in the User Lisp directory,
+or any facility for building and registering package documentation.
+This means that usually the User Lisp directory is best for code you
+have written only for yourself.  However, it is possible to use the User
+Lisp directory for third party packages or public packages you maintain.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Early-Init-File.html">The Early Init File</a>, Up: <a href="Init-File.html">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

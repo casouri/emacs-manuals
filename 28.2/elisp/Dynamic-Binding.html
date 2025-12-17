@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Dynamic Binding (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Dynamic Binding (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Dynamic Binding (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Variable-Scoping.html" rel="up" title="Variable Scoping">
+<link href="Dynamic-Binding-Tips.html" rel="next" title="Dynamic Binding Tips">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Dynamic-Binding">
+<div class="nav-panel">
+<p>
+Next: <a href="Dynamic-Binding-Tips.html" accesskey="n" rel="next">Proper Use of Dynamic Binding</a>, Up: <a href="Variable-Scoping.html" accesskey="u" rel="up">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Dynamic-Binding-1"><span>12.10.1 Dynamic Binding<a class="copiable-link" href="#Dynamic-Binding-1"> &para;</a></span></h4>
+
+<p>By default, the local variable bindings made by Emacs are dynamic
+bindings.  When a variable is dynamically bound, its current binding
+at any point in the execution of the Lisp program is simply the most
+recently-created dynamic local binding for that symbol, or the global
+binding if there is no such local binding.
+</p>
+<p>Dynamic bindings have dynamic scope and extent, as shown by the
+following example:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defvar x -99)  ; <span class="r"><code class="code">x</code> receives an initial value of &minus;99.</span>
+
+(defun getx ()
+  x)            ; <span class="r"><code class="code">x</code> is used free in this function.</span>
+
+(let ((x 1))    ; <span class="r"><code class="code">x</code> is dynamically bound.</span>
+  (getx))
+     &rArr; 1
+
+;; <span class="r">After the <code class="code">let</code> form finishes, <code class="code">x</code> reverts to its</span>
+;; <span class="r">previous value, which is &minus;99.</span>
+
+(getx)
+     &rArr; -99
+</pre></div></div>
+
+<p>The function <code class="code">getx</code> refers to <code class="code">x</code>.  This is a <em class="dfn">free</em>
+reference, in the sense that there is no binding for <code class="code">x</code> within
+that <code class="code">defun</code> construct itself.  When we call <code class="code">getx</code> from
+within a <code class="code">let</code> form in which <code class="code">x</code> is (dynamically) bound, it
+retrieves the local value (i.e., 1).  But when we call <code class="code">getx</code>
+outside the <code class="code">let</code> form, it retrieves the global value (i.e.,
+&minus;99).
+</p>
+<p>Here is another example, which illustrates setting a dynamically
+bound variable using <code class="code">setq</code>:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defvar x -99)      ; <span class="r"><code class="code">x</code> receives an initial value of &minus;99.</span>
+
+(defun addx ()
+  (setq x (1+ x)))  ; <span class="r">Add 1 to <code class="code">x</code> and return its new value.</span>
+
+(let ((x 1))
+  (addx)
+  (addx))
+     &rArr; 3           ; <span class="r">The two <code class="code">addx</code> calls add to <code class="code">x</code> twice.</span>
+
+;; <span class="r">After the <code class="code">let</code> form finishes, <code class="code">x</code> reverts to its</span>
+;; <span class="r">previous value, which is &minus;99.</span>
+
+(addx)
+     &rArr; -98
+</pre></div></div>
+
+<p>Dynamic binding is implemented in Emacs Lisp in a simple way.  Each
+symbol has a value cell, which specifies its current dynamic value (or
+absence of value).  See <a class="xref" href="Symbol-Components.html">Symbol Components</a>.  When a symbol is given
+a dynamic local binding, Emacs records the contents of the value cell
+(or absence thereof) in a stack, and stores the new local value in the
+value cell.  When the binding construct finishes executing, Emacs pops
+the old value off the stack, and puts it in the value cell.
+</p>
+<p>Note that when code using Dynamic Binding is native compiled the
+native compiler will not perform any Lisp specific optimization.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dynamic-Binding-Tips.html">Proper Use of Dynamic Binding</a>, Up: <a href="Variable-Scoping.html">Scoping Rules for Variable Bindings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Warning Options (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Warning Options (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="Warning-Variables.html" rel="prev" title="Warning Variables">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,48 +49,97 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Warning-Options"></span><div class="header">
+<div class="subsection-level-extent" id="Warning-Options">
+<div class="nav-panel">
 <p>
-Next: <a href="Delayed-Warnings.html" accesskey="n" rel="next">Delayed Warnings</a>, Previous: <a href="Warning-Variables.html" accesskey="p" rel="prev">Warning Variables</a>, Up: <a href="Warnings.html" accesskey="u" rel="up">Warnings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Delayed-Warnings.html" accesskey="n" rel="next">Delayed Warnings</a>, Previous: <a href="Warning-Variables.html" accesskey="p" rel="prev">Warning Variables</a>, Up: <a href="Warnings.html" accesskey="u" rel="up">Reporting Warnings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Warning-Options-1"></span><h4 class="subsection">40.5.3 Warning Options</h4>
-<span id="index-warning-options"></span>
+<h4 class="subsection" id="Warning-Options-1"><span>42.5.3 Warning Options<a class="copiable-link" href="#Warning-Options-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-warning-options"></a>
 
 <p>These variables are used by users to control what happens
 when a Lisp program reports a warning.
 </p>
-<dl>
-<dt id="index-warning_002dminimum_002dlevel">User Option: <strong>warning-minimum-level</strong></dt>
-<dd><p>This user option specifies the minimum severity level that should be
-shown immediately to the user.  The default is <code>:warning</code>, which
-means to immediately display all warnings except <code>:debug</code>
-warnings.
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-warning_002ddisplay_002dat_002dbottom"><span class="category-def">User Option: </span><span><strong class="def-name">warning-display-at-bottom</strong><a class="copiable-link" href="#index-warning_002ddisplay_002dat_002dbottom"> &para;</a></span></dt>
+<dd><p>This user option controls the window in which the warnings buffer is
+shown.  By default, the value is <code class="code">t</code>, and Emacs displays the
+warnings buffer in a window at the bottom of the selected frame,
+creating a new window there if needed.  If customized to <code class="code">nil</code>, the
+warnings buffer will be shown using the default rules of
+<code class="code">display-buffer</code> (see <a class="pxref" href="Choosing-Window.html">Choosing a Window for Displaying a Buffer</a>); in that case the
+<code class="code">warning</code> category can be used in <code class="code">display-buffer-alist</code> to
+customize how <code class="code">display-buffer</code> will display these buffers
+(see <a class="pxref" href="Buffer-Display-Action-Alists.html">Action Alists for Buffer Display</a>).
 </p></dd></dl>
 
-<dl>
-<dt id="index-warning_002dminimum_002dlog_002dlevel">User Option: <strong>warning-minimum-log-level</strong></dt>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-warning_002dminimum_002dlevel"><span class="category-def">User Option: </span><span><strong class="def-name">warning-minimum-level</strong><a class="copiable-link" href="#index-warning_002dminimum_002dlevel"> &para;</a></span></dt>
 <dd><p>This user option specifies the minimum severity level that should be
-logged in the warnings buffer.  The default is <code>:warning</code>, which
-means to log all warnings except <code>:debug</code> warnings.
+shown immediately to the user, by popping the warnings buffer in some
+window.  The default is <code class="code">:warning</code>, which means to show the
+warning buffer for any warning severity except <code class="code">:debug</code>.  The
+warnings of lower severity levels will still be written into the
+warnings buffer, but the buffer will not be forced onto display.
 </p></dd></dl>
 
-<dl>
-<dt id="index-warning_002dsuppress_002dtypes">User Option: <strong>warning-suppress-types</strong></dt>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-warning_002dminimum_002dlog_002dlevel"><span class="category-def">User Option: </span><span><strong class="def-name">warning-minimum-log-level</strong><a class="copiable-link" href="#index-warning_002dminimum_002dlog_002dlevel"> &para;</a></span></dt>
+<dd><p>This user option specifies the minimum severity level that should be
+logged in the warnings buffer.  Warnings of lower severity will be
+completely ignored: not written to the warnings buffer and not
+displayed.  The default is <code class="code">:warning</code>, which means to log
+warnings of any severity except <code class="code">:debug</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-warning_002dsuppress_002dtypes"><span class="category-def">User Option: </span><span><strong class="def-name">warning-suppress-types</strong><a class="copiable-link" href="#index-warning_002dsuppress_002dtypes"> &para;</a></span></dt>
 <dd><p>This list specifies which warning types should not be displayed
-immediately for the user.  Each element of the list should be a list
-of symbols.  If its elements match the first elements in a warning
-type, then that warning is not displayed immediately.
+immediately when they occur.  Each element of the list should be a
+list of symbols.  If an element of this list has the same elements as
+the first elements in a warning type, then the warning of that type
+will not be shown on display by popping the warnings buffer in some
+window (the warning will still be logged in the warnings buffer).
+</p>
+<p>For example, if the value of this variable is a list like this:
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">((foo) (bar subtype))
+</pre></div>
+
+<p>then warnings whose types are <code class="code">foo</code> or <code class="code">(foo)</code> or
+<code class="code">(foo&nbsp;something)</code><!-- /@w --> or <code class="code">(bar&nbsp;subtype&nbsp;other)</code><!-- /@w --> will not
+be shown to the user.
 </p></dd></dl>
 
-<dl>
-<dt id="index-warning_002dsuppress_002dlog_002dtypes">User Option: <strong>warning-suppress-log-types</strong></dt>
-<dd><p>This list specifies which warning types should not be logged in the
-warnings buffer.  Each element of the list should be a list of
-symbols.  If it matches the first few elements in a warning type, then
-that warning is not logged.
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-warning_002dsuppress_002dlog_002dtypes"><span class="category-def">User Option: </span><span><strong class="def-name">warning-suppress-log-types</strong><a class="copiable-link" href="#index-warning_002dsuppress_002dlog_002dtypes"> &para;</a></span></dt>
+<dd><p>This list specifies which warning types should be ignored: not logged
+in the warnings buffer and not shown to the user.  The structure and
+the matching of warning types are the same as for
+<code class="code">warning-suppress-types</code> above.
 </p></dd></dl>
 
+<a class="index-entry-id" id="index-warnings_002c-suppressing-during-startup"></a>
+<a class="index-entry-id" id="index-prevent-warnings-in-init-files"></a>
+<p>During startup, Emacs delays showing any warnings until after it
+loads and processes the site-wide and user&rsquo;s init files
+(see <a class="pxref" href="Startup-Summary.html">Summary: Sequence of Actions at Startup</a>).  Let-binding (see <a class="pxref" href="Local-Variables.html">Local Variables</a>) the
+values of these options around some code in your init files which
+might emit a warning will therefore not work, because it will not be
+in effect by the time the warning is actually processed.  Thus, if you
+want to suppress some warnings during startup, change the values of
+the above options in your init file early enough, or put those
+let-binding forms in your <code class="code">after-init-hook</code> or
+<code class="code">emacs-startup-hook</code> functions.  See <a class="xref" href="Init-File.html">The Init File</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Delayed-Warnings.html">Delayed Warnings</a>, Previous: <a href="Warning-Variables.html">Warning Variables</a>, Up: <a href="Warnings.html">Reporting Warnings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

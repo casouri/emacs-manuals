@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Parser State (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Parser State (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Position-Parse.html" rel="prev" title="Position Parse">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,65 +47,66 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Parser-State"></span><div class="header">
+<div class="subsection-level-extent" id="Parser-State">
+<div class="nav-panel">
 <p>
-Next: <a href="Low_002dLevel-Parsing.html" accesskey="n" rel="next">Low-Level Parsing</a>, Previous: <a href="Position-Parse.html" accesskey="p" rel="prev">Position Parse</a>, Up: <a href="Parsing-Expressions.html" accesskey="u" rel="up">Parsing Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Low_002dLevel-Parsing.html" accesskey="n" rel="next">Low-Level Parsing</a>, Previous: <a href="Position-Parse.html" accesskey="p" rel="prev">Finding the Parse State for a Position</a>, Up: <a href="Parsing-Expressions.html" accesskey="u" rel="up">Parsing Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Parser-State-1"></span><h4 class="subsection">34.6.3 Parser State</h4>
-<span id="index-parser-state"></span>
+<h4 class="subsection" id="Parser-State-1"><span>34.6.3 Parser State<a class="copiable-link" href="#Parser-State-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-parser-state"></a>
 
-<p>A <em>parser state</em> is a list of ten elements describing the state
+<p>A <em class="dfn">parser state</em> is a list of ten elements describing the state
 of the syntactic parser, after it parses the text between a specified
 starting point and a specified end point in the buffer.  Parsing
-functions such as <code>syntax-ppss</code>
-(see <a href="Position-Parse.html">Position Parse</a>)
+functions such as <code class="code">syntax-ppss</code>
+(see <a class="pxref" href="Position-Parse.html">Finding the Parse State for a Position</a>)
 return a parser state as the value.  Some parsing functions accept a
 parser state as an argument, for resuming parsing.
 </p>
 <p>Here are the meanings of the elements of the parser state:
 </p>
-<ol start="0">
-<li> The depth in parentheses, counting from 0.  <strong>Warning:</strong> this can
+<ol class="enumerate" start="0">
+<li> The depth in parentheses, counting from 0.  <strong class="strong">Warning:</strong> this can
 be negative if there are more close parens than open parens between
 the parser&rsquo;s starting point and end point.
 
-</li><li> <span id="index-innermost-containing-parentheses"></span>
+</li><li> <a class="index-entry-id" id="index-innermost-containing-parentheses"></a>
 The character position of the start of the innermost parenthetical
-grouping containing the stopping point; <code>nil</code> if none.
+grouping containing the stopping point; <code class="code">nil</code> if none.
 
-</li><li> <span id="index-previous-complete-subexpression"></span>
+</li><li> <a class="index-entry-id" id="index-previous-complete-subexpression"></a>
 The character position of the start of the last complete subexpression
-terminated; <code>nil</code> if none.
+terminated; <code class="code">nil</code> if none.
 
-</li><li> <span id="index-inside-string"></span>
-Non-<code>nil</code> if inside a string.  More precisely, this is the
-character that will terminate the string, or <code>t</code> if a generic
+</li><li> <a class="index-entry-id" id="index-inside-string"></a>
+Non-<code class="code">nil</code> if inside a string.  More precisely, this is the
+character that will terminate the string, or <code class="code">t</code> if a generic
 string delimiter character should terminate it.
 
-</li><li> <span id="index-inside-comment"></span>
-<code>t</code> if inside a non-nestable comment (of any comment style;
-see <a href="Syntax-Flags.html">Syntax Flags</a>); or the comment nesting level if inside a
+</li><li> <a class="index-entry-id" id="index-inside-comment"></a>
+<code class="code">t</code> if inside a non-nestable comment (of any comment style;
+see <a class="pxref" href="Syntax-Flags.html">Syntax Flags</a>); or the comment nesting level if inside a
 comment that can be nested.
 
-</li><li> <span id="index-quote-character"></span>
-<code>t</code> if the end point is just after a quote character.
+</li><li> <a class="index-entry-id" id="index-quote-character"></a>
+<code class="code">t</code> if the end point is just after a quote character.
 
 </li><li> The minimum parenthesis depth encountered during this scan.
 
-</li><li> What kind of comment is active: <code>nil</code> if not in a comment or in a
-comment of style &lsquo;<samp>a</samp>&rsquo;; 1 for a comment of style &lsquo;<samp>b</samp>&rsquo;; 2 for a
-comment of style &lsquo;<samp>c</samp>&rsquo;; and <code>syntax-table</code> for a comment that
+</li><li> What kind of comment is active: <code class="code">nil</code> if not in a comment or in a
+comment of style &lsquo;<samp class="samp">a</samp>&rsquo;; 1 for a comment of style &lsquo;<samp class="samp">b</samp>&rsquo;; 2 for a
+comment of style &lsquo;<samp class="samp">c</samp>&rsquo;; and <code class="code">syntax-table</code> for a comment that
 should be ended by a generic comment delimiter character.
 
 </li><li> The string or comment start position.  While inside a comment, this is
 the position where the comment began; while inside a string, this is the
 position where the string began.  When outside of strings and comments,
-this element is <code>nil</code>.
+this element is <code class="code">nil</code>.
 
 </li><li> Internal data for continuing the parsing.  The meaning of this
 data is subject to change; it is used if you pass this list
-as the <var>state</var> argument to another call.
+as the <var class="var">state</var> argument to another call.
 </li></ol>
 
 <p>Elements 1, 2, and 6 are ignored in a state which you pass as an
@@ -125,21 +117,22 @@ parser code.
 <p>One additional piece of useful information is available from a
 parser state using this function:
 </p>
-<dl>
-<dt id="index-syntax_002dppss_002dtoplevel_002dpos">Function: <strong>syntax-ppss-toplevel-pos</strong> <em>state</em></dt>
-<dd><p>This function extracts, from parser state <var>state</var>, the last
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-syntax_002dppss_002dtoplevel_002dpos"><span class="category-def">Function: </span><span><strong class="def-name">syntax-ppss-toplevel-pos</strong> <var class="def-var-arguments">state</var><a class="copiable-link" href="#index-syntax_002dppss_002dtoplevel_002dpos"> &para;</a></span></dt>
+<dd><p>This function extracts, from parser state <var class="var">state</var>, the last
 position scanned in the parse which was at top level in grammatical
 structure.  &ldquo;At top level&rdquo; means outside of any parentheses,
 comments, or strings.
 </p>
-<p>The value is <code>nil</code> if <var>state</var> represents a parse which has
+<p>The value is <code class="code">nil</code> if <var class="var">state</var> represents a parse which has
 arrived at a top level position.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Low_002dLevel-Parsing.html" accesskey="n" rel="next">Low-Level Parsing</a>, Previous: <a href="Position-Parse.html" accesskey="p" rel="prev">Position Parse</a>, Up: <a href="Parsing-Expressions.html" accesskey="u" rel="up">Parsing Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Low_002dLevel-Parsing.html">Low-Level Parsing</a>, Previous: <a href="Position-Parse.html">Finding the Parse State for a Position</a>, Up: <a href="Parsing-Expressions.html">Parsing Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

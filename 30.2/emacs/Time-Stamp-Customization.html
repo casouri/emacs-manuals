@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.2.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Time Stamp Customization (GNU Emacs Manual)</title>
+
+<meta name="description" content="Time Stamp Customization (GNU Emacs Manual)">
+<meta name="keywords" content="Time Stamp Customization (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Time-Stamps.html" rel="up" title="Time Stamps">
+<link href="Time-Stamps-for-One-File.html" rel="next" title="Time Stamps for One File">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Time-Stamp-Customization">
+<div class="nav-panel">
+<p>
+Next: <a href="Time-Stamps-for-One-File.html" accesskey="n" rel="next">Forcing Time Stamps for One File</a>, Up: <a href="Time-Stamps.html" accesskey="u" rel="up">Updating Time Stamps Automatically</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Customizing-the-Time-Stamp"><span>20.3.6.1 Customizing the Time Stamp<a class="copiable-link" href="#Customizing-the-Time-Stamp"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-time_002dstamp_002dpattern"></a>
+<p>To customize the time stamp in a particular file, set the
+variable <code class="code">time-stamp-pattern</code> in that file&rsquo;s local variables
+list (see <a class="pxref" href="Specifying-File-Variables.html">Specifying File Variables</a>).
+You can change what pattern <code class="code">time-stamp</code> will match against to
+identify a template and where in the file to look for the pattern using
+<code class="code">time-stamp-pattern</code>; for details, see the variable&rsquo;s built-in
+documentation (with <kbd class="kbd">C-h v</kbd>, see <a class="pxref" href="Name-Help.html">Help by Command or Variable Name</a>).
+</p>
+<p>As a simple example, if this line occurs near the top of a file:
+</p>
+<div class="example">
+<pre class="example-preformatted">publishing_year_and_city = &quot;Published nnnn in Boston, Mass.&quot;;
+</pre></div>
+
+<p>then the following comment at the end of the same file tells
+<code class="code">time-stamp</code> how to identify and update that custom template:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">// Local variables:
+// time-stamp-pattern: &quot;Published %Y in Boston&quot;
+// End:
+</pre></div></div>
+
+<p>This pattern says that the text before the start of the time stamp is
+&ldquo;Published &rdquo;, and the text after the end is &ldquo; in Boston&rdquo;.
+If <code class="code">time-stamp</code> finds both in one of the first eight lines,
+what is between will be replaced by the current year, as requested by
+the <code class="code">%Y</code> format.
+</p>
+<p>After any change to file-local variables,
+type <kbd class="kbd">M-x normal-mode</kbd> to re-read them.
+</p>
+<p>Here is another example, with the time stamp inserted into
+the last paragraph of an HTML document.
+Since this template is at the end of the document, not in the first
+eight lines, <code class="code">time-stamp-pattern</code> starts with <code class="code">-10/</code> to tell
+<code class="code">time-stamp</code> to look at the last 10 lines.
+The <code class="code">%%</code> asks for the default format
+(specified by <code class="code">time-stamp-format</code>).
+</p>
+<div class="example">
+<pre class="example-preformatted"><span class="r">...</span>
+&lt;p&gt;Last modified: &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!--
+Local variables:
+time-stamp-pattern: &quot;-10/Last modified: %%&lt;/p&gt;$&quot;
+End:
+--&gt;
+</pre></div>
+
+<p>By default the time stamp is
+formatted according to your locale setting (see <a class="pxref" href="Environment.html">Environment Variables</a>) and
+time zone (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-of-Day.html#Time-of-Day">Time of Day</a> in <cite class="cite">The Emacs Lisp Reference
+Manual</cite>).
+<a class="index-entry-id" id="index-time_002dstamp_002dtime_002dzone"></a>
+Set <code class="code">time-stamp-time-zone</code> to override the time zone used.
+<a class="index-entry-id" id="index-time_002dstamp_002dformat"></a>
+See the built-in documentation for the variable <code class="code">time-stamp-format</code>
+for specifics on formatting and other variables that affect it.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Time-Stamps-for-One-File.html">Forcing Time Stamps for One File</a>, Up: <a href="Time-Stamps.html">Updating Time Stamps Automatically</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

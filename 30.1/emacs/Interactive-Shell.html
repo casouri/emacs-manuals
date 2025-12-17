@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.1.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Interactive Shell (GNU Emacs Manual)</title>
+
+<meta name="description" content="Interactive Shell (GNU Emacs Manual)">
+<meta name="keywords" content="Interactive Shell (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Shell.html" rel="up" title="Shell">
+<link href="Shell-Mode.html" rel="next" title="Shell Mode">
+<link href="Single-Shell.html" rel="prev" title="Single Shell">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Interactive-Shell">
+<div class="nav-panel">
+<p>
+Next: <a href="Shell-Mode.html" accesskey="n" rel="next">Shell Mode</a>, Previous: <a href="Single-Shell.html" accesskey="p" rel="prev">Single Shell Commands</a>, Up: <a href="Shell.html" accesskey="u" rel="up">Running Shell Commands from Emacs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section subsection-level-set-section" id="Interactive-Subshell"><span>40.2 Interactive Subshell<a class="copiable-link" href="#Interactive-Subshell"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-shell"></a>
+<p>To run a subshell interactively, type <kbd class="kbd">M-x shell</kbd>.  This creates
+(or reuses) a buffer named <samp class="file">*shell*</samp>, and runs a shell subprocess
+with input coming from and output going to that buffer.  That is to
+say, any terminal output from the subshell goes into the buffer,
+advancing point, and any terminal input for the subshell comes from
+text in the buffer.  To give input to the subshell, go to the end of
+the buffer and type the input, terminated by <kbd class="key">RET</kbd>.
+</p>
+<p>By default, when the subshell is invoked interactively, the
+<samp class="file">*shell*</samp> buffer is displayed in a new window, unless the current
+window already shows the <samp class="file">*shell*</samp> buffer.  This behavior can
+be customized via <code class="code">display-buffer-alist</code> (see <a class="pxref" href="Window-Choice.html">How <code class="code">display-buffer</code> works</a>).
+</p>
+<p>While the subshell is waiting or running a command, you can switch
+windows or buffers and perform other editing in Emacs.  Emacs inserts
+the output from the subshell into the Shell buffer whenever it has
+time to process it (e.g., while waiting for keyboard input).
+</p>
+<a class="index-entry-id" id="index-comint_002dhighlight_002dinput-face"></a>
+<a class="index-entry-id" id="index-comint_002dhighlight_002dprompt-face"></a>
+<p>In the Shell buffer, prompts are displayed with the face
+<code class="code">comint-highlight-prompt</code>, and submitted input lines are
+displayed with the face <code class="code">comint-highlight-input</code>.  This makes it
+easier to distinguish input lines from the shell output.
+See <a class="xref" href="Faces.html">Text Faces</a>.
+</p>
+<p>To make multiple subshells, invoke <kbd class="kbd">M-x shell</kbd> with a prefix
+argument (e.g., <kbd class="kbd">C-u M-x shell</kbd>).  Then the command will read a
+buffer name, and create (or reuse) a subshell in that buffer.  You can
+also rename the <samp class="file">*shell*</samp> buffer using <kbd class="kbd">M-x rename-uniquely</kbd>,
+then create a new <samp class="file">*shell*</samp> buffer using plain <kbd class="kbd">M-x shell</kbd>.
+Subshells in different buffers run independently and in parallel.
+</p>
+<p>Emacs attempts to keep track of what the current directory is by
+looking at the commands you enter, looking for &lsquo;<samp class="samp">cd</samp>&rsquo; commands and
+the like.  This is an error-prone solution, since there are many ways
+to change the current directory, so Emacs also looks for special
+<abbr class="acronym">OSC</abbr> (Operating System Commands) escape codes that are
+designed to convey this information in a more reliable fashion.  You
+should arrange for your shell to print the appropriate escape sequence
+at each prompt, for instance with the following command:
+</p>
+<div class="example">
+<pre class="example-preformatted">printf &quot;\e]7;file://%s%s\e\\&quot; &quot;$HOSTNAME&quot; &quot;$PWD&quot;
+</pre></div>
+
+<a class="index-entry-id" id="index-explicit_002dshell_002dfile_002dname"></a>
+<a class="index-entry-id" id="index-environment-variables-for-subshells"></a>
+<a class="index-entry-id" id="index-ESHELL-environment-variable"></a>
+<p>To specify the shell file name used by <kbd class="kbd">M-x shell</kbd>, customize
+the variable <code class="code">explicit-shell-file-name</code>.  If this is <code class="code">nil</code>
+(the default), Emacs uses the environment variable <code class="env">ESHELL</code> if it
+exists.  Otherwise, it usually uses the variable
+<code class="code">shell-file-name</code> (see <a class="pxref" href="Single-Shell.html">Single Shell Commands</a>); but if the default
+directory is remote (see <a class="pxref" href="Remote-Files.html">Remote Files</a>), it prompts you for the
+shell file name.  See <a class="xref" href="Minibuffer-File.html">Minibuffers for File Names</a>, for hints how to type remote
+file names effectively.
+</p>
+<p>Emacs sends the new shell the contents of the file
+<samp class="file">~/.emacs_<var class="var">shellname</var></samp> as input, if it exists, where
+<var class="var">shellname</var> is the name of the file that the shell was loaded
+from.  For example, if you use bash, the file sent to it is
+<samp class="file">~/.emacs_bash</samp>.  If this file is not found, Emacs tries with
+<samp class="file">~/.emacs.d/init_<var class="var">shellname</var>.sh</samp>.
+</p>
+<p>To specify a coding system for the shell, you can use the command
+<kbd class="kbd">C-x <kbd class="key">RET</kbd> c</kbd> immediately before <kbd class="kbd">M-x shell</kbd>.  You can
+also change the coding system for a running subshell by typing
+<kbd class="kbd">C-x <kbd class="key">RET</kbd> p</kbd> in the shell buffer.  See <a class="xref" href="Communication-Coding.html">Coding Systems for Interprocess Communication</a>.
+</p>
+<a class="index-entry-id" id="index-INSIDE_005fEMACS-environment-variable"></a>
+<p>Emacs sets the environment variable <code class="env">INSIDE_EMACS</code> in the
+subshell to &lsquo;<samp class="samp"><var class="var">version</var>,comint</samp>&rsquo;, where <var class="var">version</var> is the
+Emacs version (e.g., &lsquo;<samp class="samp">28.1</samp>&rsquo;).  Programs can check this variable
+to determine whether they are running inside an Emacs subshell.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Shell-Mode.html">Shell Mode</a>, Previous: <a href="Single-Shell.html">Single Shell Commands</a>, Up: <a href="Shell.html">Running Shell Commands from Emacs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

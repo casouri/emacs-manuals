@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Self-Evaluating Forms (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Self-Evaluating Forms (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Forms.html" rel="up" title="Forms">
 <link href="Symbol-Forms.html" rel="next" title="Symbol Forms">
-<link href="Forms.html" rel="prev" title="Forms">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,41 +48,42 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Self_002dEvaluating-Forms"></span><div class="header">
+<div class="subsection-level-extent" id="Self_002dEvaluating-Forms">
+<div class="nav-panel">
 <p>
-Next: <a href="Symbol-Forms.html" accesskey="n" rel="next">Symbol Forms</a>, Up: <a href="Forms.html" accesskey="u" rel="up">Forms</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Symbol-Forms.html" accesskey="n" rel="next">Symbol Forms</a>, Up: <a href="Forms.html" accesskey="u" rel="up">Kinds of Forms</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Self_002dEvaluating-Forms-1"></span><h4 class="subsection">10.2.1 Self-Evaluating Forms</h4>
-<span id="index-vector-evaluation"></span>
-<span id="index-literal-evaluation"></span>
-<span id="index-self_002devaluating-form"></span>
-<span id="index-form_002c-self_002devaluating"></span>
+<h4 class="subsection" id="Self_002dEvaluating-Forms-1"><span>10.2.1 Self-Evaluating Forms<a class="copiable-link" href="#Self_002dEvaluating-Forms-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-vector-evaluation"></a>
+<a class="index-entry-id" id="index-literal-evaluation"></a>
+<a class="index-entry-id" id="index-self_002devaluating-form"></a>
+<a class="index-entry-id" id="index-form_002c-self_002devaluating"></a>
 
-<p>A <em>self-evaluating form</em> is any form that is not a list or
+<p>A <em class="dfn">self-evaluating form</em> is any form that is not a list or
 symbol.  Self-evaluating forms evaluate to themselves: the result of
 evaluation is the same object that was evaluated.  Thus, the number 25
-evaluates to 25, and the string <code>&quot;foo&quot;</code> evaluates to the string
-<code>&quot;foo&quot;</code>.  Likewise, evaluating a vector does not cause evaluation
+evaluates to 25, and the string <code class="code">&quot;foo&quot;</code> evaluates to the string
+<code class="code">&quot;foo&quot;</code>.  Likewise, evaluating a vector does not cause evaluation
 of the elements of the vector&mdash;it returns the same vector with its
 contents unchanged.
 </p>
 <div class="example">
-<pre class="example">'123               ; <span class="roman">A number, shown without evaluation.</span>
+<div class="group"><pre class="example-preformatted">'123               ; <span class="r">A number, shown without evaluation.</span>
      &rArr; 123
-</pre><pre class="example">123                ; <span class="roman">Evaluated as usual&mdash;result is the same.</span>
+</pre></div><div class="group"><pre class="example-preformatted">123                ; <span class="r">Evaluated as usual&mdash;result is the same.</span>
      &rArr; 123
-</pre><pre class="example">(eval '123)        ; <span class="roman">Evaluated &quot;by hand&quot;&mdash;result is the same.</span>
+</pre></div><div class="group"><pre class="example-preformatted">(eval '123)        ; <span class="r">Evaluated &quot;by hand&quot;&mdash;result is the same.</span>
      &rArr; 123
-</pre><pre class="example">(eval (eval '123)) ; <span class="roman">Evaluating twice changes nothing.</span>
+</pre></div><div class="group"><pre class="example-preformatted">(eval (eval '123)) ; <span class="r">Evaluating twice changes nothing.</span>
      &rArr; 123
-</pre></div>
+</pre></div></div>
 
 <p>A self-evaluating form yields a value that becomes part of the program,
-and you should not try to modify it via <code>setcar</code>, <code>aset</code> or
+and you should not try to modify it via <code class="code">setcar</code>, <code class="code">aset</code> or
 similar operations.  The Lisp interpreter might unify the constants
 yielded by your program&rsquo;s self-evaluating forms, so that these
-constants might share structure.  See <a href="Mutability.html">Mutability</a>.
+constants might share structure.  See <a class="xref" href="Mutability.html">Mutability</a>.
 </p>
 <p>It is common to write numbers, characters, strings, and even vectors
 in Lisp code, taking advantage of the fact that they self-evaluate.
@@ -101,19 +93,20 @@ to construct Lisp expressions containing these types by means of a Lisp
 program.  Here is an example:
 </p>
 <div class="example">
-<pre class="example">;; <span class="roman">Build an expression containing a buffer object.</span>
+<div class="group"><pre class="example-preformatted">;; <span class="r">Build an expression containing a buffer object.</span>
 (setq print-exp (list 'print (current-buffer)))
      &rArr; (print #&lt;buffer eval.texi&gt;)
-</pre><pre class="example">;; <span class="roman">Evaluate it.</span>
+</pre></div><div class="group"><pre class="example-preformatted">;; <span class="r">Evaluate it.</span>
 (eval print-exp)
-     ⊣ #&lt;buffer eval.texi&gt;
+     -| #&lt;buffer eval.texi&gt;
      &rArr; #&lt;buffer eval.texi&gt;
-</pre></div>
+</pre></div></div>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Symbol-Forms.html" accesskey="n" rel="next">Symbol Forms</a>, Up: <a href="Forms.html" accesskey="u" rel="up">Forms</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Symbol-Forms.html">Symbol Forms</a>, Up: <a href="Forms.html">Kinds of Forms</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Surprising Local Vars (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Surprising Local Vars (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Argument-Evaluation.html" rel="prev" title="Argument Evaluation">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,54 +47,55 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Surprising-Local-Vars"></span><div class="header">
+<div class="subsection-level-extent" id="Surprising-Local-Vars">
+<div class="nav-panel">
 <p>
-Next: <a href="Eval-During-Expansion.html" accesskey="n" rel="next">Eval During Expansion</a>, Previous: <a href="Argument-Evaluation.html" accesskey="p" rel="prev">Argument Evaluation</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Problems with Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Eval-During-Expansion.html" accesskey="n" rel="next">Evaluating Macro Arguments in Expansion</a>, Previous: <a href="Argument-Evaluation.html" accesskey="p" rel="prev">Evaluating Macro Arguments Repeatedly</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Common Problems Using Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Local-Variables-in-Macro-Expansions"></span><h4 class="subsection">13.5.3 Local Variables in Macro Expansions</h4>
+<h4 class="subsection" id="Local-Variables-in-Macro-Expansions"><span>13.5.3 Local Variables in Macro Expansions<a class="copiable-link" href="#Local-Variables-in-Macro-Expansions"> &para;</a></span></h4>
 
-<p>In the previous section, the definition of <code>for</code> was fixed as
+<p>In the previous section, the definition of <code class="code">for</code> was fixed as
 follows to make the expansion evaluate the macro arguments the proper
 number of times:
 </p>
 <div class="example">
-<pre class="example">(defmacro for (var from init to final do &amp;rest body)
+<div class="group"><pre class="example-preformatted">(defmacro for (var from init to final do &amp;rest body)
   &quot;Execute a simple for loop: (for i from 1 to 10 do (print i)).&quot;
-</pre><pre class="example">  `(let ((,var ,init)
+</pre></div><div class="group"><pre class="example-preformatted">  `(let ((,var ,init)
          (max ,final))
      (while (&lt;= ,var max)
        ,@body
        (inc ,var))))
-</pre></div>
+</pre></div></div>
 
-<p>The new definition of <code>for</code> has a new problem: it introduces a
-local variable named <code>max</code> which the user does not expect.  This
+<p>The new definition of <code class="code">for</code> has a new problem: it introduces a
+local variable named <code class="code">max</code> which the user does not expect.  This
 causes trouble in examples such as the following:
 </p>
 <div class="example">
-<pre class="example">(let ((max 0))
+<div class="group"><pre class="example-preformatted">(let ((max 0))
   (for x from 0 to 10 do
     (let ((this (frob x)))
       (if (&lt; max this)
           (setq max this)))))
-</pre></div>
+</pre></div></div>
 
-<p>The references to <code>max</code> inside the body of the <code>for</code>, which
-are supposed to refer to the user&rsquo;s binding of <code>max</code>, really access
-the binding made by <code>for</code>.
+<p>The references to <code class="code">max</code> inside the body of the <code class="code">for</code>, which
+are supposed to refer to the user&rsquo;s binding of <code class="code">max</code>, really access
+the binding made by <code class="code">for</code>.
 </p>
 <p>The way to correct this is to use an uninterned symbol instead of
-<code>max</code> (see <a href="Creating-Symbols.html">Creating Symbols</a>).  The uninterned symbol can be
+<code class="code">max</code> (see <a class="pxref" href="Creating-Symbols.html">Creating and Interning Symbols</a>).  The uninterned symbol can be
 bound and referred to just like any other symbol, but since it is
-created by <code>for</code>, we know that it cannot already appear in the
+created by <code class="code">for</code>, we know that it cannot already appear in the
 user&rsquo;s program.  Since it is not interned, there is no way the user can
 put it into the program later.  It will never appear anywhere except
-where put by <code>for</code>.  Here is a definition of <code>for</code> that works
+where put by <code class="code">for</code>.  Here is a definition of <code class="code">for</code> that works
 this way:
 </p>
 <div class="example">
-<pre class="example">(defmacro for (var from init to final do &amp;rest body)
+<div class="group"><pre class="example-preformatted">(defmacro for (var from init to final do &amp;rest body)
   &quot;Execute a simple for loop: (for i from 1 to 10 do (print i)).&quot;
   (let ((tempvar (make-symbol &quot;max&quot;)))
     `(let ((,var ,init)
@@ -111,16 +103,17 @@ this way:
        (while (&lt;= ,var ,tempvar)
          ,@body
          (inc ,var)))))
-</pre></div>
+</pre></div></div>
 
-<p>This creates an uninterned symbol named <code>max</code> and puts it in the
-expansion instead of the usual interned symbol <code>max</code> that appears
+<p>This creates an uninterned symbol named <code class="code">max</code> and puts it in the
+expansion instead of the usual interned symbol <code class="code">max</code> that appears
 in expressions ordinarily.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Eval-During-Expansion.html" accesskey="n" rel="next">Eval During Expansion</a>, Previous: <a href="Argument-Evaluation.html" accesskey="p" rel="prev">Argument Evaluation</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Problems with Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Eval-During-Expansion.html">Evaluating Macro Arguments in Expansion</a>, Previous: <a href="Argument-Evaluation.html">Evaluating Macro Arguments Repeatedly</a>, Up: <a href="Problems-with-Macros.html">Common Problems Using Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

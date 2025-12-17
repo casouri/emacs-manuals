@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.4.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Windows Fonts (GNU Emacs Manual)</title>
 
 <meta name="description" content="Windows Fonts (GNU Emacs Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,11 @@ developing GNU and promoting software freedom." -->
 <link href="Windows-Printing.html" rel="prev" title="Windows Printing">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,145 +50,138 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Windows-Fonts"></span><div class="header">
+<div class="section-level-extent" id="Windows-Fonts">
+<div class="nav-panel">
 <p>
-Next: <a href="Windows-Misc.html" accesskey="n" rel="next">Windows Misc</a>, Previous: <a href="Windows-Printing.html" accesskey="p" rel="prev">Windows Printing</a>, Up: <a href="Microsoft-Windows.html" accesskey="u" rel="up">Microsoft Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Windows-Misc.html" accesskey="n" rel="next">Miscellaneous Windows-specific features</a>, Previous: <a href="Windows-Printing.html" accesskey="p" rel="prev">Printing and MS-Windows</a>, Up: <a href="Microsoft-Windows.html" accesskey="u" rel="up">Emacs and Microsoft Windows/MS-DOS</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Specifying-Fonts-on-MS_002dWindows"></span><h3 class="section">G.10 Specifying Fonts on MS-Windows</h3>
-<span id="index-font-specification-_0028MS-Windows_0029"></span>
+<h3 class="section" id="Specifying-Fonts-on-MS_002dWindows"><span>G.10 Specifying Fonts on MS-Windows<a class="copiable-link" href="#Specifying-Fonts-on-MS_002dWindows"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-font-specification-_0028MS-Windows_0029"></a>
 
 <p>Starting with Emacs 23, fonts are specified by their name, size
 and optional properties.  The format for specifying fonts comes from the
 fontconfig library used in modern Free desktops:
 </p>
 <div class="example">
-<pre class="example">  [Family[-PointSize]][:Option1=Value1[:Option2=Value2[...]]]
+<pre class="example-preformatted">  [Family[-PointSize]][:Option1=Value1[:Option2=Value2[...]]]
 </pre></div>
 
 <p>The old XLFD based format is also supported for backwards compatibility.
 </p>
-<span id="index-font-backend-selection-_0028MS_002dWindows_0029"></span>
+<a class="index-entry-id" id="index-font-backend-selection-_0028MS_002dWindows_0029"></a>
 <p>Emacs 23 and later supports a number of font backends.  Currently,
-the <code>gdi</code> and <code>uniscribe</code> backends are supported on Windows.
-The <code>gdi</code> font backend is available on all versions of Windows,
+the <code class="code">gdi</code> and <code class="code">uniscribe</code> backends are supported on Windows.
+The <code class="code">gdi</code> font backend is available on all versions of Windows,
 and supports all fonts that are natively supported by Windows.  The
-<code>uniscribe</code> font backend is available on Windows 2000 and later,
+<code class="code">uniscribe</code> font backend is available on Windows 2000 and later,
 and supports TrueType and OpenType fonts.  Some languages requiring
 complex layout can only be properly supported by the Uniscribe
 backend.  By default, both backends are enabled if supported, with
-<code>uniscribe</code> taking priority over <code>gdi</code>.  To override that
+<code class="code">uniscribe</code> taking priority over <code class="code">gdi</code>.  To override that
 and use the GDI backend even if Uniscribe is available, invoke Emacs
-with the <kbd>-xrm Emacs.fontBackend:gdi</kbd> command-line argument, or
-add a <code>Emacs.fontBackend</code> resource with the value <code>gdi</code> in
+with the <kbd class="kbd">-xrm Emacs.fontBackend:gdi</kbd> command-line argument, or
+add a <code class="code">Emacs.fontBackend</code> resource with the value <code class="code">gdi</code> in
 the Registry under either the
-&lsquo;<samp>HKEY_CURRENT_USER\SOFTWARE\GNU\Emacs</samp>&rsquo; or the
-&lsquo;<samp>HKEY_LOCAL_MACHINE\SOFTWARE\GNU\Emacs</samp>&rsquo; key (see <a href="Resources.html">Resources</a>).
+&lsquo;<samp class="samp">HKEY_CURRENT_USER\SOFTWARE\GNU\Emacs</samp>&rsquo; or the
+&lsquo;<samp class="samp">HKEY_LOCAL_MACHINE\SOFTWARE\GNU\Emacs</samp>&rsquo; key (see <a class="pxref" href="Resources.html">X Resources</a>).
 </p>
-<span id="index-font-properties-_0028MS-Windows_0029"></span>
+<a class="index-entry-id" id="index-font-properties-_0028MS-Windows_0029"></a>
 <p>Optional properties common to all font backends on MS-Windows are:
 </p>
-<dl compact="compact">
-<dd>
-<span id="index-font_002dweight_002dtable-_0028MS_002dWindows_0029"></span>
-</dd>
-<dt><code>weight</code></dt>
-<dd><p>Specifies the weight of the font.  Special values <code>light</code>,
-<code>medium</code>, <code>demibold</code>, <code>bold</code>, and <code>black</code> can be specified
-without <code>weight=</code> (e.g., <kbd>Courier New-12:bold</kbd>).  Otherwise,
+<dl class="table">
+<dt><a id="index-font_002dweight_002dtable-_0028MS_002dWindows_0029"></a><span><code class="code">weight</code><a class="copiable-link" href="#index-font_002dweight_002dtable-_0028MS_002dWindows_0029"> &para;</a></span></dt>
+<dd><p>Specifies the weight of the font.  Special values <code class="code">light</code>,
+<code class="code">medium</code>, <code class="code">demibold</code>, <code class="code">bold</code>, and <code class="code">black</code> can be specified
+without <code class="code">weight=</code> (e.g., <kbd class="kbd">Courier New-12:bold</kbd>).  Otherwise,
 the weight should be a numeric value between 100 and 900, or one of the
-named weights in <code>font-weight-table</code>.  If unspecified, a regular font
+named weights in <code class="code">font-weight-table</code>.  If unspecified, a regular font
 is assumed.
 </p>
-<span id="index-font_002dslant_002dtable-_0028MS_002dWindows_0029"></span>
 </dd>
-<dt><code>slant</code></dt>
+<dt><a id="index-font_002dslant_002dtable-_0028MS_002dWindows_0029"></a><span><code class="code">slant</code><a class="copiable-link" href="#index-font_002dslant_002dtable-_0028MS_002dWindows_0029"> &para;</a></span></dt>
 <dd><p>Specifies whether the font is italic.  Special values
-<code>roman</code>, <code>italic</code> and <code>oblique</code> can be specified
-without <code>slant=</code> (e.g., <kbd>Courier New-12:italic</kbd>).
+<code class="code">roman</code>, <code class="code">italic</code> and <code class="code">oblique</code> can be specified
+without <code class="code">slant=</code> (e.g., <kbd class="kbd">Courier New-12:italic</kbd>).
 Otherwise, the slant should be a numeric value, or one of the named
-slants in <code>font-slant-table</code>.  On Windows, any slant above 150 is
+slants in <code class="code">font-slant-table</code>.  On Windows, any slant above 150 is
 treated as italics, and anything below as roman.
 </p>
 </dd>
-<dt><code>family</code></dt>
+<dt><code class="code">family</code></dt>
 <dd><p>Specifies the font family, but normally this will be specified
 at the start of the font name.
 </p>
 </dd>
-<dt><code>pixelsize</code></dt>
+<dt><code class="code">pixelsize</code></dt>
 <dd><p>Specifies the font size in pixels.  This can be used instead
 of the point size specified after the family name.
 </p>
 </dd>
-<dt><code>adstyle</code></dt>
+<dt><code class="code">adstyle</code></dt>
 <dd><p>Specifies additional style information for the font.
-On MS-Windows, the values <code>mono</code>, <code>sans</code>, <code>serif</code>,
-<code>script</code> and <code>decorative</code> are recognized.  These are most useful
+On MS-Windows, the values <code class="code">mono</code>, <code class="code">sans</code>, <code class="code">serif</code>,
+<code class="code">script</code> and <code class="code">decorative</code> are recognized.  These are most useful
 as a fallback with the font family left unspecified.
 </p>
-<span id="index-w32_002dcharset_002dinfo_002dalist"></span>
 </dd>
-<dt><code>registry</code></dt>
+<dt><a id="index-w32_002dcharset_002dinfo_002dalist"></a><span><code class="code">registry</code><a class="copiable-link" href="#index-w32_002dcharset_002dinfo_002dalist"> &para;</a></span></dt>
 <dd><p>Specifies the character set registry that the font is
 expected to cover.  Most TrueType and OpenType fonts will be Unicode fonts
 that cover several national character sets, but you can narrow down the
 selection of fonts to those that support a particular character set by
-using a specific registry from <code>w32-charset-info-alist</code> here.
+using a specific registry from <code class="code">w32-charset-info-alist</code> here.
 </p>
 </dd>
-<dt><code>spacing</code></dt>
-<dd><p>Specifies how the font is spaced.  The <code>p</code> spacing specifies
-a proportional font, and <code>m</code> or <code>c</code> specify a monospaced font.
+<dt><code class="code">spacing</code></dt>
+<dd><p>Specifies how the font is spaced.  The <code class="code">p</code> spacing specifies
+a proportional font, and <code class="code">m</code> or <code class="code">c</code> specify a monospaced font.
 </p>
 </dd>
-<dt><code>foundry</code></dt>
+<dt><code class="code">foundry</code></dt>
 <dd><p>Not used on Windows, but for informational purposes and to
 prevent problems with code that expects it to be set, is set internally to
-<code>raster</code> for bitmapped fonts, <code>outline</code> for scalable fonts,
-or <code>unknown</code> if the type cannot be determined as one of those.
+<code class="code">raster</code> for bitmapped fonts, <code class="code">outline</code> for scalable fonts,
+or <code class="code">unknown</code> if the type cannot be determined as one of those.
 </p></dd>
 </dl>
 
-<span id="index-font-properties-_0028MS-Windows-gdi-backend_0029"></span>
-<p>Options specific to <code>GDI</code> fonts:
+<a class="index-entry-id" id="index-font-properties-_0028MS-Windows-gdi-backend_0029"></a>
+<p>Options specific to <code class="code">GDI</code> fonts:
 </p>
-<dl compact="compact">
-<dd>
-<span id="index-font-scripts-_0028MS-Windows_0029"></span>
-<span id="index-font-Unicode-subranges-_0028MS-Windows_0029"></span>
-</dd>
-<dt><code>script</code></dt>
+<dl class="table">
+<dt><a class="index-entry-id" id="index-font-Unicode-subranges-_0028MS-Windows_0029"></a>
+<a id="index-font-scripts-_0028MS-Windows_0029"></a><span><code class="code">script</code><a class="copiable-link" href="#index-font-scripts-_0028MS-Windows_0029"> &para;</a></span></dt>
 <dd><p>Specifies a Unicode subrange the font should support.
 </p>
-<p>The following scripts are recognized on Windows: <code>latin</code>, <code>greek</code>,
-<code>coptic</code>, <code>cyrillic</code>, <code>armenian</code>, <code>hebrew</code>, <code>arabic</code>,
-<code>syriac</code>, <code>nko</code>, <code>thaana</code>, <code>devanagari</code>, <code>bengali</code>,
-<code>gurmukhi</code>, <code>gujarati</code>, <code>oriya</code>, <code>tamil</code>, <code>telugu</code>,
-<code>kannada</code>, <code>malayam</code>, <code>sinhala</code>, <code>thai</code>, <code>lao</code>,
-<code>tibetan</code>, <code>myanmar</code>, <code>georgian</code>, <code>hangul</code>,
-<code>ethiopic</code>, <code>cherokee</code>, <code>canadian-aboriginal</code>, <code>ogham</code>,
-<code>runic</code>, <code>khmer</code>, <code>mongolian</code>, <code>symbol</code>, <code>braille</code>,
-<code>han</code>, <code>ideographic-description</code>, <code>cjk-misc</code>, <code>kana</code>,
-<code>bopomofo</code>, <code>kanbun</code>, <code>yi</code>, <code>byzantine-musical-symbol</code>,
-<code>musical-symbol</code>, and <code>mathematical</code>.
+<p>The following scripts are recognized on Windows: <code class="code">latin</code>, <code class="code">greek</code>,
+<code class="code">coptic</code>, <code class="code">cyrillic</code>, <code class="code">armenian</code>, <code class="code">hebrew</code>, <code class="code">arabic</code>,
+<code class="code">syriac</code>, <code class="code">nko</code>, <code class="code">thaana</code>, <code class="code">devanagari</code>, <code class="code">bengali</code>,
+<code class="code">gurmukhi</code>, <code class="code">gujarati</code>, <code class="code">oriya</code>, <code class="code">tamil</code>, <code class="code">telugu</code>,
+<code class="code">kannada</code>, <code class="code">malayam</code>, <code class="code">sinhala</code>, <code class="code">thai</code>, <code class="code">lao</code>,
+<code class="code">tibetan</code>, <code class="code">myanmar</code>, <code class="code">georgian</code>, <code class="code">hangul</code>,
+<code class="code">ethiopic</code>, <code class="code">cherokee</code>, <code class="code">canadian-aboriginal</code>, <code class="code">ogham</code>,
+<code class="code">runic</code>, <code class="code">khmer</code>, <code class="code">mongolian</code>, <code class="code">symbol</code>, <code class="code">braille</code>,
+<code class="code">han</code>, <code class="code">ideographic-description</code>, <code class="code">cjk-misc</code>, <code class="code">kana</code>,
+<code class="code">bopomofo</code>, <code class="code">kanbun</code>, <code class="code">yi</code>, <code class="code">byzantine-musical-symbol</code>,
+<code class="code">musical-symbol</code>, and <code class="code">mathematical</code>.
 </p>
-<span id="index-font-antialiasing-_0028MS-Windows_0029"></span>
 </dd>
-<dt><code>antialias</code></dt>
-<dd><p>Specifies the antialiasing method.  The value <code>none</code> means no
-antialiasing, <code>standard</code> means use standard antialiasing,
-<code>subpixel</code> means use subpixel antialiasing (known as Cleartype on
-Windows), and <code>natural</code> means use subpixel antialiasing with
+<dt><a id="index-font-antialiasing-_0028MS-Windows_0029"></a><span><code class="code">antialias</code><a class="copiable-link" href="#index-font-antialiasing-_0028MS-Windows_0029"> &para;</a></span></dt>
+<dd><p>Specifies the antialiasing method.  The value <code class="code">none</code> means no
+antialiasing, <code class="code">standard</code> means use standard antialiasing,
+<code class="code">subpixel</code> means use subpixel antialiasing (known as Cleartype on
+Windows), and <code class="code">natural</code> means use subpixel antialiasing with
 adjusted spacing between letters.  If unspecified, the font will use
 the system default antialiasing.
 </p></dd>
 </dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Windows-Misc.html" accesskey="n" rel="next">Windows Misc</a>, Previous: <a href="Windows-Printing.html" accesskey="p" rel="prev">Windows Printing</a>, Up: <a href="Microsoft-Windows.html" accesskey="u" rel="up">Microsoft Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Windows-Misc.html">Miscellaneous Windows-specific features</a>, Previous: <a href="Windows-Printing.html">Printing and MS-Windows</a>, Up: <a href="Microsoft-Windows.html">Emacs and Microsoft Windows/MS-DOS</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

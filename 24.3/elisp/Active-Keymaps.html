@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Active Keymaps (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Active Keymaps (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Prefix-Keys.html" rel="prev" title="Prefix Keys">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,133 +48,135 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Active-Keymaps"></span><div class="header">
+<div class="section-level-extent" id="Active-Keymaps">
+<div class="nav-panel">
 <p>
-Next: <a href="Searching-Keymaps.html" accesskey="n" rel="next">Searching Keymaps</a>, Previous: <a href="Prefix-Keys.html" accesskey="p" rel="prev">Prefix Keys</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Searching-Keymaps.html" accesskey="n" rel="next">Searching the Active Keymaps</a>, Previous: <a href="Prefix-Keys.html" accesskey="p" rel="prev">Prefix Keys</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Active-Keymaps-1"></span><h3 class="section">22.7 Active Keymaps</h3>
-<span id="index-active-keymap"></span>
-<span id="index-global-keymap"></span>
-<span id="index-local-keymap"></span>
+<h3 class="section" id="Active-Keymaps-1"><span>22.7 Active Keymaps<a class="copiable-link" href="#Active-Keymaps-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-active-keymap"></a>
+<a class="index-entry-id" id="index-global-keymap"></a>
+<a class="index-entry-id" id="index-local-keymap"></a>
 
 <p>Emacs normally contains many keymaps; at any given time, just a few
-of them are <em>active</em>, meaning that they participate in the
+of them are <em class="dfn">active</em>, meaning that they participate in the
 interpretation of user input.  All the active keymaps are used
 together to determine what command to execute when a key is entered.
 </p>
-<p>Normally the active keymaps are the <code>keymap</code> property keymap,
+<p>Normally the active keymaps are the <code class="code">keymap</code> property keymap,
 the keymaps of any enabled minor modes, the current buffer&rsquo;s local
 keymap, and the global keymap, in that order.  Emacs searches for each
-input key sequence in all these keymaps.  See <a href="Searching-Keymaps.html">Searching Keymaps</a>,
+input key sequence in all these keymaps.  See <a class="xref" href="Searching-Keymaps.html">Searching the Active Keymaps</a>,
 for more details of this procedure.
 </p>
 <p>When the key sequence starts with a mouse event,
 the active keymaps are determined based on the
 position in that event.  If the event happened on a string embedded
-with a <code>display</code>, <code>before-string</code>, or <code>after-string</code>
-property (see <a href="Special-Properties.html">Special Properties</a>), the non-<code>nil</code> map
+with a <code class="code">display</code>, <code class="code">before-string</code>, or <code class="code">after-string</code>
+property (see <a class="pxref" href="Special-Properties.html">Properties with Special Meanings</a>), the non-<code class="code">nil</code> map
 properties of the string override those of the buffer (if the
 underlying buffer text contains map properties in its text properties
 or overlays, they are ignored).
 </p>
-<p>The <em>global keymap</em> holds the bindings of keys that are defined
-regardless of the current buffer, such as <kbd>C-f</kbd>.  The variable
-<code>global-map</code> holds this keymap, which is always active.
+<p>The <em class="dfn">global keymap</em> holds the bindings of keys that are defined
+regardless of the current buffer, such as <kbd class="kbd">C-f</kbd>.  The variable
+<code class="code">global-map</code> holds this keymap, which is always active.
 </p>
-<p>Each buffer may have another keymap, its <em>local keymap</em>, which
+<p>Each buffer may have another keymap, its <em class="dfn">local keymap</em>, which
 may contain new or overriding definitions for keys.  The current
 buffer&rsquo;s local keymap is always active except when
-<code>overriding-local-map</code> overrides it.  The <code>local-map</code> text
+<code class="code">overriding-local-map</code> overrides it.  The <code class="code">local-map</code> text
 or overlay property can specify an alternative local keymap for certain
-parts of the buffer; see <a href="Special-Properties.html">Special Properties</a>.
+parts of the buffer; see <a class="ref" href="Special-Properties.html">Properties with Special Meanings</a>.
 </p>
 <p>Each minor mode can have a keymap; if it does, the keymap is active
 when the minor mode is enabled.  Modes for emulation can specify
 additional active keymaps through the variable
-<code>emulation-mode-map-alists</code>.
+<code class="code">emulation-mode-map-alists</code>.
 </p>
-<p>The highest precedence normal keymap comes from the <code>keymap</code>
-text or overlay property.  If that is non-<code>nil</code>, it is the first
+<p>The highest precedence normal keymap comes from the <code class="code">keymap</code>
+text or overlay property.  If that is non-<code class="code">nil</code>, it is the first
 keymap to be processed, in normal circumstances.  Next comes
-any keymap added by the function <code>set-temporary-overlay-map</code>.
-See <a href="Controlling-Active-Maps.html">Controlling Active Maps</a>.
+any keymap added by the function <code class="code">set-temporary-overlay-map</code>.
+See <a class="xref" href="Controlling-Active-Maps.html">Controlling the Active Keymaps</a>.
 </p>
 <p>However, there are also special ways for programs to substitute
 other keymaps for some of those.  The variable
-<code>overriding-local-map</code>, if non-<code>nil</code>, specifies a keymap
+<code class="code">overriding-local-map</code>, if non-<code class="code">nil</code>, specifies a keymap
 that replaces all the usual active keymaps except the global keymap.
-Another way to do this is with <code>overriding-terminal-local-map</code>;
+Another way to do this is with <code class="code">overriding-terminal-local-map</code>;
 it operates on a per-terminal basis.  These variables are documented
 below.
 </p>
-<span id="index-major-mode-keymap"></span>
+<a class="index-entry-id" id="index-major-mode-keymap"></a>
 <p>Since every buffer that uses the same major mode normally uses the
 same local keymap, you can think of the keymap as local to the mode.  A
-change to the local keymap of a buffer (using <code>local-set-key</code>, for
+change to the local keymap of a buffer (using <code class="code">local-set-key</code>, for
 example) is seen also in the other buffers that share that keymap.
 </p>
 <p>The local keymaps that are used for Lisp mode and some other major
 modes exist even if they have not yet been used.  These local keymaps are
-the values of variables such as <code>lisp-mode-map</code>.  For most major
+the values of variables such as <code class="code">lisp-mode-map</code>.  For most major
 modes, which are less frequently used, the local keymap is constructed
 only when the mode is used for the first time in a session.
 </p>
 <p>The minibuffer has local keymaps, too; they contain various completion
-and exit commands.  See <a href="Intro-to-Minibuffers.html">Intro to Minibuffers</a>.
+and exit commands.  See <a class="xref" href="Intro-to-Minibuffers.html">Introduction to Minibuffers</a>.
 </p>
 <p>Emacs has other keymaps that are used in a different way&mdash;translating
-events within <code>read-key-sequence</code>.  See <a href="Translation-Keymaps.html">Translation Keymaps</a>.
+events within <code class="code">read-key-sequence</code>.  See <a class="xref" href="Translation-Keymaps.html">Keymaps for Translating Sequences of Events</a>.
 </p>
-<p>See <a href="Standard-Keymaps.html">Standard Keymaps</a>, for a list of some standard keymaps.
+<p>See <a class="xref" href="Standard-Keymaps.html">Standard Keymaps</a>, for a list of some standard keymaps.
 </p>
-<dl>
-<dt id="index-current_002dactive_002dmaps">Function: <strong>current-active-maps</strong> <em>&amp;optional olp position</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-current_002dactive_002dmaps"><span class="category-def">Function: </span><span><strong class="def-name">current-active-maps</strong> <var class="def-var-arguments">&amp;optional olp position</var><a class="copiable-link" href="#index-current_002dactive_002dmaps"> &para;</a></span></dt>
 <dd><p>This returns the list of active keymaps that would be used by the
 command loop in the current circumstances to look up a key sequence.
-Normally it ignores <code>overriding-local-map</code> and
-<code>overriding-terminal-local-map</code>, but if <var>olp</var> is non-<code>nil</code>
-then it pays attention to them.  <var>position</var> can optionally be either
-an event position as returned by <code>event-start</code> or a buffer
+Normally it ignores <code class="code">overriding-local-map</code> and
+<code class="code">overriding-terminal-local-map</code>, but if <var class="var">olp</var> is non-<code class="code">nil</code>
+then it pays attention to them.  <var class="var">position</var> can optionally be either
+an event position as returned by <code class="code">event-start</code> or a buffer
 position, and may change the keymaps as described for
-<code>key-binding</code>.
+<code class="code">key-binding</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-key_002dbinding">Function: <strong>key-binding</strong> <em>key &amp;optional accept-defaults no-remap position</em></dt>
-<dd><p>This function returns the binding for <var>key</var> according to the
-current active keymaps.  The result is <code>nil</code> if <var>key</var> is
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-key_002dbinding"><span class="category-def">Function: </span><span><strong class="def-name">key-binding</strong> <var class="def-var-arguments">key &amp;optional accept-defaults no-remap position</var><a class="copiable-link" href="#index-key_002dbinding"> &para;</a></span></dt>
+<dd><p>This function returns the binding for <var class="var">key</var> according to the
+current active keymaps.  The result is <code class="code">nil</code> if <var class="var">key</var> is
 undefined in the keymaps.
 </p>
-<p>The argument <var>accept-defaults</var> controls checking for default
-bindings, as in <code>lookup-key</code> (see <a href="Functions-for-Key-Lookup.html">Functions for Key Lookup</a>).
+<p>The argument <var class="var">accept-defaults</var> controls checking for default
+bindings, as in <code class="code">lookup-key</code> (see <a class="pxref" href="Functions-for-Key-Lookup.html">Functions for Key Lookup</a>).
 </p>
-<p>When commands are remapped (see <a href="Remapping-Commands.html">Remapping Commands</a>),
-<code>key-binding</code> normally processes command remappings so as to
+<p>When commands are remapped (see <a class="pxref" href="Remapping-Commands.html">Remapping Commands</a>),
+<code class="code">key-binding</code> normally processes command remappings so as to
 return the remapped command that will actually be executed.  However,
-if <var>no-remap</var> is non-<code>nil</code>, <code>key-binding</code> ignores
-remappings and returns the binding directly specified for <var>key</var>.
+if <var class="var">no-remap</var> is non-<code class="code">nil</code>, <code class="code">key-binding</code> ignores
+remappings and returns the binding directly specified for <var class="var">key</var>.
 </p>
-<p>If <var>key</var> starts with a mouse event (perhaps following a prefix
+<p>If <var class="var">key</var> starts with a mouse event (perhaps following a prefix
 event), the maps to be consulted are determined based on the event&rsquo;s
 position.  Otherwise, they are determined based on the value of point.
-However, you can override either of them by specifying <var>position</var>.
-If <var>position</var> is non-<code>nil</code>, it should be either a buffer
-position or an event position like the value of <code>event-start</code>.
-Then the maps consulted are determined based on <var>position</var>.
+However, you can override either of them by specifying <var class="var">position</var>.
+If <var class="var">position</var> is non-<code class="code">nil</code>, it should be either a buffer
+position or an event position like the value of <code class="code">event-start</code>.
+Then the maps consulted are determined based on <var class="var">position</var>.
 </p>
-<p>An error is signaled if <var>key</var> is not a string or a vector.
+<p>An error is signaled if <var class="var">key</var> is not a string or a vector.
 </p>
 <div class="example">
-<pre class="example">(key-binding &quot;\C-x\C-f&quot;)
+<div class="group"><pre class="example-preformatted">(key-binding &quot;\C-x\C-f&quot;)
     &rArr; find-file
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Searching-Keymaps.html" accesskey="n" rel="next">Searching Keymaps</a>, Previous: <a href="Prefix-Keys.html" accesskey="p" rel="prev">Prefix Keys</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Searching-Keymaps.html">Searching the Active Keymaps</a>, Previous: <a href="Prefix-Keys.html">Prefix Keys</a>, Up: <a href="Keymaps.html">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

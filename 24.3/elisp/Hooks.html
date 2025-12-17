@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Hooks (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Hooks (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,17 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Modes.html" rel="up" title="Modes">
-<link href="Running-Hooks.html" rel="next" title="Running Hooks">
-<link href="Modes.html" rel="prev" title="Modes">
+<link href="Major-Modes.html" rel="next" title="Major Modes">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,65 +44,65 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Hooks"></span><div class="header">
+<div class="section-level-extent" id="Hooks">
+<div class="nav-panel">
 <p>
-Next: <a href="Major-Modes.html" accesskey="n" rel="next">Major Modes</a>, Up: <a href="Modes.html" accesskey="u" rel="up">Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Major-Modes.html" accesskey="n" rel="next">Major Modes</a>, Up: <a href="Modes.html" accesskey="u" rel="up">Major and Minor Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Hooks-1"></span><h3 class="section">23.1 Hooks</h3>
-<span id="index-hooks"></span>
+<h3 class="section" id="Hooks-1"><span>23.1 Hooks<a class="copiable-link" href="#Hooks-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-hooks"></a>
 
-<p>A <em>hook</em> is a variable where you can store a function or functions
+<p>A <em class="dfn">hook</em> is a variable where you can store a function or functions
 to be called on a particular occasion by an existing program.  Emacs
 provides hooks for the sake of customization.  Most often, hooks are set
-up in the init file (see <a href="Init-File.html">Init File</a>), but Lisp programs can set them also.
-See <a href="Standard-Hooks.html">Standard Hooks</a>, for a list of some standard hook variables.
+up in the init file (see <a class="pxref" href="Init-File.html">The Init File</a>), but Lisp programs can set them also.
+See <a class="xref" href="Standard-Hooks.html">Standard Hooks</a>, for a list of some standard hook variables.
 </p>
-<span id="index-normal-hook"></span>
-<p>Most of the hooks in Emacs are <em>normal hooks</em>.  These variables
+<a class="index-entry-id" id="index-normal-hook"></a>
+<p>Most of the hooks in Emacs are <em class="dfn">normal hooks</em>.  These variables
 contain lists of functions to be called with no arguments.  By
-convention, whenever the hook name ends in &lsquo;<samp>-hook</samp>&rsquo;, that tells
+convention, whenever the hook name ends in &lsquo;<samp class="samp">-hook</samp>&rsquo;, that tells
 you it is normal.  We try to make all hooks normal, as much as
 possible, so that you can use them in a uniform way.
 </p>
 <p>Every major mode command is supposed to run a normal hook called the
-<em>mode hook</em> as one of the last steps of initialization.  This makes
+<em class="dfn">mode hook</em> as one of the last steps of initialization.  This makes
 it easy for a user to customize the behavior of the mode, by overriding
 the buffer-local variable assignments already made by the mode.  Most
 minor mode functions also run a mode hook at the end.  But hooks are
-used in other contexts too.  For example, the hook <code>suspend-hook</code>
-runs just before Emacs suspends itself (see <a href="Suspending-Emacs.html">Suspending Emacs</a>).
+used in other contexts too.  For example, the hook <code class="code">suspend-hook</code>
+runs just before Emacs suspends itself (see <a class="pxref" href="Suspending-Emacs.html">Suspending Emacs</a>).
 </p>
 <p>The recommended way to add a hook function to a hook is by calling
-<code>add-hook</code> (see <a href="Setting-Hooks.html">Setting Hooks</a>).  The hook functions may be any
-of the valid kinds of functions that <code>funcall</code> accepts (see <a href="What-Is-a-Function.html">What Is a Function</a>).  Most normal hook variables are initially void;
-<code>add-hook</code> knows how to deal with this.  You can add hooks either
-globally or buffer-locally with <code>add-hook</code>.
+<code class="code">add-hook</code> (see <a class="pxref" href="Setting-Hooks.html">Setting Hooks</a>).  The hook functions may be any
+of the valid kinds of functions that <code class="code">funcall</code> accepts (see <a class="pxref" href="What-Is-a-Function.html">What Is a Function?</a>).  Most normal hook variables are initially void;
+<code class="code">add-hook</code> knows how to deal with this.  You can add hooks either
+globally or buffer-locally with <code class="code">add-hook</code>.
 </p>
-<span id="index-abnormal-hook"></span>
-<p>If the hook variable&rsquo;s name does not end with &lsquo;<samp>-hook</samp>&rsquo;, that
-indicates it is probably an <em>abnormal hook</em>.  That means the hook
+<a class="index-entry-id" id="index-abnormal-hook"></a>
+<p>If the hook variable&rsquo;s name does not end with &lsquo;<samp class="samp">-hook</samp>&rsquo;, that
+indicates it is probably an <em class="dfn">abnormal hook</em>.  That means the hook
 functions are called with arguments, or their return values are used
 in some way.  The hook&rsquo;s documentation says how the functions are
-called.  You can use <code>add-hook</code> to add a function to an abnormal
+called.  You can use <code class="code">add-hook</code> to add a function to an abnormal
 hook, but you must write the function to follow the hook&rsquo;s calling
 convention.
 </p>
-<p>By convention, abnormal hook names end in &lsquo;<samp>-functions</samp>&rsquo;.  If the
-variable&rsquo;s name ends in &lsquo;<samp>-function</samp>&rsquo;, then its value is just a single
+<p>By convention, abnormal hook names end in &lsquo;<samp class="samp">-functions</samp>&rsquo;.  If the
+variable&rsquo;s name ends in &lsquo;<samp class="samp">-function</samp>&rsquo;, then its value is just a single
 function, not a list of functions.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Running-Hooks.html" accesskey="1">Running Hooks</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to run a hook.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Setting-Hooks.html" accesskey="2">Setting Hooks</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to put functions on a hook, or remove them.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Running-Hooks.html" accesskey="1">Running Hooks</a></li>
+<li><a href="Setting-Hooks.html" accesskey="2">Setting Hooks</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Major-Modes.html" accesskey="n" rel="next">Major Modes</a>, Up: <a href="Modes.html" accesskey="u" rel="up">Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Major-Modes.html">Major Modes</a>, Up: <a href="Modes.html">Major and Minor Modes</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

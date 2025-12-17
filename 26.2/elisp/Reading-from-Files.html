@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Reading from Files (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Reading from Files (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Saving-Buffers.html" rel="prev" title="Saving Buffers">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,78 +48,80 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Reading-from-Files"></span><div class="header">
+<div class="section-level-extent" id="Reading-from-Files">
+<div class="nav-panel">
 <p>
 Next: <a href="Writing-to-Files.html" accesskey="n" rel="next">Writing to Files</a>, Previous: <a href="Saving-Buffers.html" accesskey="p" rel="prev">Saving Buffers</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Reading-from-Files-1"></span><h3 class="section">25.3 Reading from Files</h3>
-<span id="index-reading-from-files"></span>
+<h3 class="section" id="Reading-from-Files-1"><span>25.3 Reading from Files<a class="copiable-link" href="#Reading-from-Files-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-reading-from-files"></a>
 
 <p>To copy the contents of a file into a buffer, use the function
-<code>insert-file-contents</code>.  (Don&rsquo;t use the command
-<code>insert-file</code> in a Lisp program, as that sets the mark.)
+<code class="code">insert-file-contents</code>.  (Don&rsquo;t use the command
+<code class="code">insert-file</code> in a Lisp program, as that sets the mark.)
 </p>
-<dl>
-<dt id="index-insert_002dfile_002dcontents">Function: <strong>insert-file-contents</strong> <em>filename &amp;optional visit beg end replace</em></dt>
-<dd><p>This function inserts the contents of file <var>filename</var> into the
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-insert_002dfile_002dcontents"><span class="category-def">Function: </span><span><strong class="def-name">insert-file-contents</strong> <var class="def-var-arguments">filename &amp;optional visit beg end replace</var><a class="copiable-link" href="#index-insert_002dfile_002dcontents"> &para;</a></span></dt>
+<dd><p>This function inserts the contents of file <var class="var">filename</var> into the
 current buffer after point.  It returns a list of the absolute file name
 and the length of the data inserted.  An error is signaled if
-<var>filename</var> is not the name of a file that can be read.
+<var class="var">filename</var> is not the name of a file that can be read.
 </p>
 <p>This function checks the file contents against the defined file
 formats, and converts the file contents if appropriate and also calls
-the functions in the list <code>after-insert-file-functions</code>.
-See <a href="Format-Conversion.html">Format Conversion</a>.  Normally, one of the functions in the
-<code>after-insert-file-functions</code> list determines the coding system
-(see <a href="Coding-Systems.html">Coding Systems</a>) used for decoding the file&rsquo;s contents,
+the functions in the list <code class="code">after-insert-file-functions</code>.
+See <a class="xref" href="Format-Conversion.html">File Format Conversion</a>.  Normally, one of the functions in the
+<code class="code">after-insert-file-functions</code> list determines the coding system
+(see <a class="pxref" href="Coding-Systems.html">Coding Systems</a>) used for decoding the file&rsquo;s contents,
 including end-of-line conversion.  However, if the file contains null
 bytes, it is by default visited without any code conversions.
-See <a href="Lisp-and-Coding-Systems.html">inhibit-null-byte-detection</a>.
+See <a class="xref" href="Lisp-and-Coding-Systems.html">inhibit-null-byte-detection</a>.
 </p>
-<p>If <var>visit</var> is non-<code>nil</code>, this function additionally marks the
+<p>If <var class="var">visit</var> is non-<code class="code">nil</code>, this function additionally marks the
 buffer as unmodified and sets up various fields in the buffer so that it
-is visiting the file <var>filename</var>: these include the buffer&rsquo;s visited
+is visiting the file <var class="var">filename</var>: these include the buffer&rsquo;s visited
 file name and its last save file modtime.  This feature is used by
-<code>find-file-noselect</code> and you probably should not use it yourself.
+<code class="code">find-file-noselect</code> and you probably should not use it yourself.
 </p>
-<p>If <var>beg</var> and <var>end</var> are non-<code>nil</code>, they should be numbers
+<p>If <var class="var">beg</var> and <var class="var">end</var> are non-<code class="code">nil</code>, they should be numbers
 that are byte offsets specifying the portion of the file to insert.
-In this case, <var>visit</var> must be <code>nil</code>.  For example,
+In this case, <var class="var">visit</var> must be <code class="code">nil</code>.  For example,
 </p>
 <div class="example">
-<pre class="example">(insert-file-contents filename nil 0 500)
+<pre class="example-preformatted">(insert-file-contents filename nil 0 500)
 </pre></div>
 
 <p>inserts the first 500 characters of a file.
 </p>
-<p>If the argument <var>replace</var> is non-<code>nil</code>, it means to replace the
+<p>If the argument <var class="var">replace</var> is non-<code class="code">nil</code>, it means to replace the
 contents of the buffer (actually, just the accessible portion) with the
 contents of the file.  This is better than simply deleting the buffer
 contents and inserting the whole file, because (1) it preserves some
 marker positions and (2) it puts less data in the undo list.
 </p>
 <p>It is possible to read a special file (such as a FIFO or an I/O device)
-with <code>insert-file-contents</code>, as long as <var>replace</var> and
-<var>visit</var> are <code>nil</code>.
+with <code class="code">insert-file-contents</code>, as long as <var class="var">replace</var> and
+<var class="var">visit</var> are <code class="code">nil</code>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-insert_002dfile_002dcontents_002dliterally">Function: <strong>insert-file-contents-literally</strong> <em>filename &amp;optional visit beg end replace</em></dt>
-<dd><p>This function works like <code>insert-file-contents</code> except that it
-does not run <code>after-insert-file-functions</code>, and does not do
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-insert_002dfile_002dcontents_002dliterally"><span class="category-def">Function: </span><span><strong class="def-name">insert-file-contents-literally</strong> <var class="def-var-arguments">filename &amp;optional visit beg end replace</var><a class="copiable-link" href="#index-insert_002dfile_002dcontents_002dliterally"> &para;</a></span></dt>
+<dd><p>This function works like <code class="code">insert-file-contents</code> except that it
+does not run <code class="code">after-insert-file-functions</code>, and does not do
 format decoding, character code conversion, automatic uncompression,
 and so on.
 </p></dd></dl>
 
 <p>If you want to pass a file name to another process so that another
-program can read the file, use the function <code>file-local-copy</code>; see
-<a href="Magic-File-Names.html">Magic File Names</a>.
+program can read the file, use the function <code class="code">file-local-copy</code>; see
+<a class="ref" href="Magic-File-Names.html">Making Certain File Names &ldquo;Magic&rdquo;</a>.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Writing-to-Files.html" accesskey="n" rel="next">Writing to Files</a>, Previous: <a href="Saving-Buffers.html" accesskey="p" rel="prev">Saving Buffers</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Writing-to-Files.html">Writing to Files</a>, Previous: <a href="Saving-Buffers.html">Saving Buffers</a>, Up: <a href="Files.html">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

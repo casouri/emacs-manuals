@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Defining Faces (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Defining Faces (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,11 @@ developing GNU and promoting software freedom." -->
 <link href="Face-Attributes.html" rel="prev" title="Face Attributes">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 
@@ -55,121 +48,122 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Defining-Faces"></span><div class="header">
+<div class="subsection-level-extent" id="Defining-Faces">
+<div class="nav-panel">
 <p>
-Next: <a href="Attribute-Functions.html" accesskey="n" rel="next">Attribute Functions</a>, Previous: <a href="Face-Attributes.html" accesskey="p" rel="prev">Face Attributes</a>, Up: <a href="Faces.html" accesskey="u" rel="up">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Attribute-Functions.html" accesskey="n" rel="next">Face Attribute Functions</a>, Previous: <a href="Face-Attributes.html" accesskey="p" rel="prev">Face Attributes</a>, Up: <a href="Faces.html" accesskey="u" rel="up">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Defining-Faces-1"></span><h4 class="subsection">38.12.2 Defining Faces</h4>
+<h4 class="subsection" id="Defining-Faces-1"><span>38.12.2 Defining Faces<a class="copiable-link" href="#Defining-Faces-1"> &para;</a></span></h4>
 
-<p>The usual way to define a face is through the <code>defface</code> macro.
+<p>The usual way to define a face is through the <code class="code">defface</code> macro.
 This macro defines a face name, and associates that name with a set of
 face attributes.  It also sets up the face so that the user can
-customize it via the Customize interface (see <a href="Customization.html">Customization</a>).
+customize it via the Customize interface (see <a class="pxref" href="Customization.html">Customization Settings</a>).
 </p>
-<dl>
-<dt id="index-defface">Macro: <strong>defface</strong> <em>face spec doc [keyword value]&hellip;</em></dt>
-<dd><p>This macro declares <var>face</var> as a customizable face whose default
-attributes are given by <var>spec</var>.  You should not quote the symbol
-<var>face</var>, and it should not end in &lsquo;<samp>-face</samp>&rsquo; (that would be
-redundant).  The argument <var>doc</var> is a documentation string for the
-face.  The additional <var>keyword</var> arguments have the same meanings
-as in <code>defgroup</code> and <code>defcustom</code> (see <a href="Common-Keywords.html">Common Keywords</a>).
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-defface"><span class="category-def">Macro: </span><span><strong class="def-name">defface</strong> <var class="def-var-arguments">face spec doc [keyword value]&hellip;</var><a class="copiable-link" href="#index-defface"> &para;</a></span></dt>
+<dd><p>This macro declares <var class="var">face</var> as a customizable face whose default
+attributes are given by <var class="var">spec</var>.  You should not quote the symbol
+<var class="var">face</var>, and it should not end in &lsquo;<samp class="samp">-face</samp>&rsquo; (that would be
+redundant).  The argument <var class="var">doc</var> is a documentation string for the
+face.  The additional <var class="var">keyword</var> arguments have the same meanings
+as in <code class="code">defgroup</code> and <code class="code">defcustom</code> (see <a class="pxref" href="Common-Keywords.html">Common Item Keywords</a>).
 </p>
-<p>When <code>defface</code> executes, it defines the face according to
-<var>spec</var>, then uses any customizations that were read from the
-init file (see <a href="Init-File.html">Init File</a>) to override that specification.
+<p>When <code class="code">defface</code> executes, it defines the face according to
+<var class="var">spec</var>, then uses any customizations that were read from the
+init file (see <a class="pxref" href="Init-File.html">The Init File</a>) to override that specification.
 </p>
-<p>When you evaluate a <code>defface</code> form with <kbd>C-M-x</kbd> in Emacs
-Lisp mode (<code>eval-defun</code>), a special feature of <code>eval-defun</code>
+<p>When you evaluate a <code class="code">defface</code> form with <kbd class="kbd">C-M-x</kbd> in Emacs
+Lisp mode (<code class="code">eval-defun</code>), a special feature of <code class="code">eval-defun</code>
 overrides any customizations of the face.  This way, the face reflects
-exactly what the <code>defface</code> says.
+exactly what the <code class="code">defface</code> says.
 </p>
-<span id="index-face-specification"></span>
-<p>The <var>spec</var> argument is a <em>face specification</em>, which states
+<a class="index-entry-id" id="index-face-specification"></a>
+<p>The <var class="var">spec</var> argument is a <em class="dfn">face specification</em>, which states
 how the face should appear on different kinds of terminals.  It should
 be an alist whose elements each have the form
 </p>
 <div class="example">
-<pre class="example">(<var>display</var> . <var>plist</var>)
+<pre class="example-preformatted">(<var class="var">display</var> . <var class="var">plist</var>)
 </pre></div>
 
-<p><var>display</var> specifies a class of terminals (see below).  <var>plist</var>
+<p><var class="var">display</var> specifies a class of terminals (see below).  <var class="var">plist</var>
 is a property list of face attributes and their values, specifying how
 the face appears on such terminals.  For backward compatibility, you
-can also write an element as <code>(<var>display</var> <var>plist</var>)</code>.
+can also write an element as <code class="code">(<var class="var">display</var> <var class="var">plist</var>)</code>.
 </p>
-<p>The <var>display</var> part of an element of <var>spec</var> determines which
-terminals the element matches.  If more than one element of <var>spec</var>
+<p>The <var class="var">display</var> part of an element of <var class="var">spec</var> determines which
+terminals the element matches.  If more than one element of <var class="var">spec</var>
 matches a given terminal, the first element that matches is the one
 used for that terminal.  There are three possibilities for
-<var>display</var>:
+<var class="var">display</var>:
 </p>
-<dl compact="compact">
-<dt><code>default</code></dt>
-<dd><p>This element of <var>spec</var> doesn&rsquo;t match any terminal; instead, it
+<dl class="table">
+<dt><code class="code">default</code></dt>
+<dd><p>This element of <var class="var">spec</var> doesn&rsquo;t match any terminal; instead, it
 specifies defaults that apply to all terminals.  This element, if
-used, must be the first element of <var>spec</var>.  Each of the following
+used, must be the first element of <var class="var">spec</var>.  Each of the following
 elements can override any or all of these defaults.
 </p>
 </dd>
-<dt><code>t</code></dt>
-<dd><p>This element of <var>spec</var> matches all terminals.  Therefore, any
-subsequent elements of <var>spec</var> are never used.  Normally <code>t</code>
-is used in the last (or only) element of <var>spec</var>.
+<dt><code class="code">t</code></dt>
+<dd><p>This element of <var class="var">spec</var> matches all terminals.  Therefore, any
+subsequent elements of <var class="var">spec</var> are never used.  Normally <code class="code">t</code>
+is used in the last (or only) element of <var class="var">spec</var>.
 </p>
 </dd>
 <dt>a list</dt>
-<dd><p>If <var>display</var> is a list, each element should have the form
-<code>(<var>characteristic</var> <var>value</var>&hellip;)</code>.  Here
-<var>characteristic</var> specifies a way of classifying terminals, and the
-<var>value</var>s are possible classifications which <var>display</var> should
-apply to.  Here are the possible values of <var>characteristic</var>:
+<dd><p>If <var class="var">display</var> is a list, each element should have the form
+<code class="code">(<var class="var">characteristic</var> <var class="var">value</var>&hellip;)</code>.  Here
+<var class="var">characteristic</var> specifies a way of classifying terminals, and the
+<var class="var">value</var>s are possible classifications which <var class="var">display</var> should
+apply to.  Here are the possible values of <var class="var">characteristic</var>:
 </p>
-<dl compact="compact">
-<dt><code>type</code></dt>
-<dd><p>The kind of window system the terminal uses&mdash;either <code>graphic</code>
-(any graphics-capable display), <code>x</code>, <code>pc</code> (for the MS-DOS
-console), <code>w32</code> (for MS Windows 9X/NT/2K/XP), or <code>tty</code> (a
-non-graphics-capable display).  See <a href="Window-Systems.html">window-system</a>.
-</p>
-</dd>
-<dt><code>class</code></dt>
-<dd><p>What kinds of colors the terminal supports&mdash;either <code>color</code>,
-<code>grayscale</code>, or <code>mono</code>.
+<dl class="table">
+<dt><code class="code">type</code></dt>
+<dd><p>The kind of window system the terminal uses&mdash;either <code class="code">graphic</code>
+(any graphics-capable display), <code class="code">x</code>, <code class="code">pc</code> (for the MS-DOS
+console), <code class="code">w32</code> (for MS Windows 9X/NT/2K/XP), or <code class="code">tty</code> (a
+non-graphics-capable display).  See <a class="xref" href="Window-Systems.html">window-system</a>.
 </p>
 </dd>
-<dt><code>background</code></dt>
-<dd><p>The kind of background&mdash;either <code>light</code> or <code>dark</code>.
+<dt><code class="code">class</code></dt>
+<dd><p>What kinds of colors the terminal supports&mdash;either <code class="code">color</code>,
+<code class="code">grayscale</code>, or <code class="code">mono</code>.
 </p>
 </dd>
-<dt><code>min-colors</code></dt>
+<dt><code class="code">background</code></dt>
+<dd><p>The kind of background&mdash;either <code class="code">light</code> or <code class="code">dark</code>.
+</p>
+</dd>
+<dt><code class="code">min-colors</code></dt>
 <dd><p>An integer that represents the minimum number of colors the terminal
 should support.  This matches a terminal if its
-<code>display-color-cells</code> value is at least the specified integer.
+<code class="code">display-color-cells</code> value is at least the specified integer.
 </p>
 </dd>
-<dt><code>supports</code></dt>
+<dt><code class="code">supports</code></dt>
 <dd><p>Whether or not the terminal can display the face attributes given in
-<var>value</var>&hellip; (see <a href="Face-Attributes.html">Face Attributes</a>).  See <a href="Display-Feature-Testing.html#Display-Face-Attribute-Testing">Display Face Attribute Testing</a>, for more information on exactly how this testing
+<var class="var">value</var>&hellip; (see <a class="pxref" href="Face-Attributes.html">Face Attributes</a>).  See <a class="xref" href="Display-Feature-Testing.html#Display-Face-Attribute-Testing">Display Face Attribute Testing</a>, for more information on exactly how this testing
 is done.
 </p></dd>
 </dl>
 
-<p>If an element of <var>display</var> specifies more than one <var>value</var> for
-a given <var>characteristic</var>, any of those values is acceptable.  If
-<var>display</var> has more than one element, each element should specify a
-different <var>characteristic</var>; then <em>each</em> characteristic of the
-terminal must match one of the <var>value</var>s specified for it in
-<var>display</var>.
+<p>If an element of <var class="var">display</var> specifies more than one <var class="var">value</var> for
+a given <var class="var">characteristic</var>, any of those values is acceptable.  If
+<var class="var">display</var> has more than one element, each element should specify a
+different <var class="var">characteristic</var>; then <em class="emph">each</em> characteristic of the
+terminal must match one of the <var class="var">value</var>s specified for it in
+<var class="var">display</var>.
 </p></dd>
 </dl>
 </dd></dl>
 
-<p>Here&rsquo;s how the standard face <code>highlight</code> is defined:
+<p>Here&rsquo;s how the standard face <code class="code">highlight</code> is defined:
 </p>
 <div class="example">
-<pre class="example">(defface highlight
+<pre class="example-preformatted">(defface highlight
   '((((class color) (min-colors 88) (background light))
      :background &quot;darkseagreen2&quot;)
     (((class color) (min-colors 88) (background dark))
@@ -186,26 +180,27 @@ terminal must match one of the <var>value</var>s specified for it in
 </pre></div>
 
 <p>Internally, Emacs stores the face&rsquo;s default specification in its
-<code>face-defface-spec</code> symbol property (see <a href="Symbol-Properties.html">Symbol Properties</a>).
-The <code>saved-face</code> property stores the face specification saved by
-the user, using the customization buffer; the <code>customized-face</code>
+<code class="code">face-defface-spec</code> symbol property (see <a class="pxref" href="Symbol-Properties.html">Symbol Properties</a>).
+The <code class="code">saved-face</code> property stores the face specification saved by
+the user, using the customization buffer; the <code class="code">customized-face</code>
 property stores the face specification customized for the current
-session, but not saved; and the <code>theme-face</code> property stores an
+session, but not saved; and the <code class="code">theme-face</code> property stores an
 alist associating the active customization settings and Custom themes
 with their specifications for that face.  The face&rsquo;s documentation
-string is stored in the <code>face-documentation</code> property.  But
+string is stored in the <code class="code">face-documentation</code> property.  But
 normally you should not try to set any of these properties directly.
-See <a href="Applying-Customizations.html">Applying Customizations</a>, for the <code>custom-set-faces</code>
+See <a class="xref" href="Applying-Customizations.html">Applying Customizations</a>, for the <code class="code">custom-set-faces</code>
 function, which is used to apply customized face settings.
 </p>
 <p>People are sometimes tempted to create variables whose values
 specify a face to use.  In the vast majority of cases, this is not
 necessary; it is preferable to simply use faces directly.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Attribute-Functions.html" accesskey="n" rel="next">Attribute Functions</a>, Previous: <a href="Face-Attributes.html" accesskey="p" rel="prev">Face Attributes</a>, Up: <a href="Faces.html" accesskey="u" rel="up">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Attribute-Functions.html">Face Attribute Functions</a>, Previous: <a href="Face-Attributes.html">Face Attributes</a>, Up: <a href="Faces.html">Faces</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

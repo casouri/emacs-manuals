@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Output Streams (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Output Streams (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Input-Functions.html" rel="prev" title="Input Functions">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,29 +47,28 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Output-Streams"></span><div class="header">
+<div class="section-level-extent" id="Output-Streams">
+<div class="nav-panel">
 <p>
-Next: <a href="Output-Functions.html" accesskey="n" rel="next">Output Functions</a>, Previous: <a href="Input-Functions.html" accesskey="p" rel="prev">Input Functions</a>, Up: <a href="Read-and-Print.html" accesskey="u" rel="up">Read and Print</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Output-Functions.html" accesskey="n" rel="next">Output Functions</a>, Previous: <a href="Input-Functions.html" accesskey="p" rel="prev">Input Functions</a>, Up: <a href="Read-and-Print.html" accesskey="u" rel="up">Reading and Printing Lisp Objects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Output-Streams-1"></span><h3 class="section">18.4 Output Streams</h3>
-<span id="index-stream-_0028for-printing_0029"></span>
-<span id="index-output-stream"></span>
+<h3 class="section" id="Output-Streams-1"><span>18.4 Output Streams<a class="copiable-link" href="#Output-Streams-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-stream-_0028for-printing_0029"></a>
+<a class="index-entry-id" id="index-output-stream"></a>
 
 <p>An output stream specifies what to do with the characters produced
 by printing.  Most print functions accept an output stream as an
 optional argument.  Here are the possible types of output stream:
 </p>
-<dl compact="compact">
-<dt><var>buffer</var></dt>
-<dd><span id="index-buffer-output-stream"></span>
-<p>The output characters are inserted into <var>buffer</var> at point.
+<dl class="table">
+<dt><a id="index-buffer-output-stream"></a><span><var class="var">buffer</var><a class="copiable-link" href="#index-buffer-output-stream"> &para;</a></span></dt>
+<dd><p>The output characters are inserted into <var class="var">buffer</var> at point.
 Point advances as characters are inserted.
 </p>
 </dd>
-<dt><var>marker</var></dt>
-<dd><span id="index-marker-output-stream"></span>
-<p>The output characters are inserted into the buffer that <var>marker</var>
+<dt><a id="index-marker-output-stream"></a><span><var class="var">marker</var><a class="copiable-link" href="#index-marker-output-stream"> &para;</a></span></dt>
+<dd><p>The output characters are inserted into the buffer that <var class="var">marker</var>
 points into, at the marker position.  The marker position advances as
 characters are inserted.  The value of point in the buffer has no effect
 on printing when the stream is a marker, and this kind of printing
@@ -87,27 +77,24 @@ position of point, point advances with the surrounding text, as
 usual).
 </p>
 </dd>
-<dt><var>function</var></dt>
-<dd><span id="index-function-output-stream"></span>
-<p>The output characters are passed to <var>function</var>, which is responsible
+<dt><a id="index-function-output-stream"></a><span><var class="var">function</var><a class="copiable-link" href="#index-function-output-stream"> &para;</a></span></dt>
+<dd><p>The output characters are passed to <var class="var">function</var>, which is responsible
 for storing them away.  It is called with a single character as
 argument, as many times as there are characters to be output, and
 is responsible for storing the characters wherever you want to put them.
 </p>
 </dd>
-<dt><code>t</code></dt>
-<dd><span id="index-t-output-stream"></span>
-<p>The output characters are displayed in the echo area.
+<dt><a id="index-t-output-stream"></a><span><code class="code">t</code><a class="copiable-link" href="#index-t-output-stream"> &para;</a></span></dt>
+<dd><p>The output characters are displayed in the echo area.
 </p>
 </dd>
-<dt><code>nil</code></dt>
-<dd><span id="index-nil-output-stream"></span>
-<p><code>nil</code> specified as an output stream means to use the value of
-<code>standard-output</code> instead; that value is the <em>default output
-stream</em>, and must not be <code>nil</code>.
+<dt><a id="index-nil-output-stream"></a><span><code class="code">nil</code><a class="copiable-link" href="#index-nil-output-stream"> &para;</a></span></dt>
+<dd><p><code class="code">nil</code> specified as an output stream means to use the value of
+<code class="code">standard-output</code> instead; that value is the <em class="dfn">default output
+stream</em>, and must not be <code class="code">nil</code>.
 </p>
 </dd>
-<dt><var>symbol</var></dt>
+<dt><var class="var">symbol</var></dt>
 <dd><p>A symbol as output stream is equivalent to the symbol&rsquo;s function
 definition (if any).
 </p></dd>
@@ -118,109 +105,110 @@ difference between input and output streams is therefore more a matter
 of how you use a Lisp object, than of different types of object.
 </p>
 <p>Here is an example of a buffer used as an output stream.  Point is
-initially located as shown immediately before the &lsquo;<samp>h</samp>&rsquo; in
-&lsquo;<samp>the</samp>&rsquo;.  At the end, point is located directly before that same
-&lsquo;<samp>h</samp>&rsquo;.
+initially located as shown immediately before the &lsquo;<samp class="samp">h</samp>&rsquo; in
+&lsquo;<samp class="samp">the</samp>&rsquo;.  At the end, point is located directly before that same
+&lsquo;<samp class="samp">h</samp>&rsquo;.
 </p>
-<span id="index-print-example"></span>
+<a class="index-entry-id" id="index-print-example"></a>
 <div class="example">
-<pre class="example">---------- Buffer: foo ----------
+<div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
 This is t&lowast;he contents of foo.
 ---------- Buffer: foo ----------
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
 (print &quot;This is the output&quot; (get-buffer &quot;foo&quot;))
      &rArr; &quot;This is the output&quot;
 
-</pre><pre class="example">---------- Buffer: foo ----------
+</pre><div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
 This is t
 &quot;This is the output&quot;
 &lowast;he contents of foo.
 ---------- Buffer: foo ----------
-</pre></div>
+</pre></div></div>
 
 <p>Now we show a use of a marker as an output stream.  Initially, the
-marker is in buffer <code>foo</code>, between the &lsquo;<samp>t</samp>&rsquo; and the &lsquo;<samp>h</samp>&rsquo; in
-the word &lsquo;<samp>the</samp>&rsquo;.  At the end, the marker has advanced over the
-inserted text so that it remains positioned before the same &lsquo;<samp>h</samp>&rsquo;.
+marker is in buffer <code class="code">foo</code>, between the &lsquo;<samp class="samp">t</samp>&rsquo; and the &lsquo;<samp class="samp">h</samp>&rsquo; in
+the word &lsquo;<samp class="samp">the</samp>&rsquo;.  At the end, the marker has advanced over the
+inserted text so that it remains positioned before the same &lsquo;<samp class="samp">h</samp>&rsquo;.
 Note that the location of point, shown in the usual fashion, has no
 effect.
 </p>
 <div class="example">
-<pre class="example">---------- Buffer: foo ----------
+<div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
 This is the &lowast;output
 ---------- Buffer: foo ----------
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(setq m (copy-marker 10))
+</pre><div class="group"><pre class="example-preformatted">(setq m (copy-marker 10))
      &rArr; #&lt;marker at 10 in foo&gt;
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(print &quot;More output for foo.&quot; m)
+</pre><div class="group"><pre class="example-preformatted">(print &quot;More output for foo.&quot; m)
      &rArr; &quot;More output for foo.&quot;
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">---------- Buffer: foo ----------
+</pre><div class="group"><pre class="example-preformatted">---------- Buffer: foo ----------
 This is t
 &quot;More output for foo.&quot;
 he &lowast;output
 ---------- Buffer: foo ----------
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">m
+</pre><div class="group"><pre class="example-preformatted">m
      &rArr; #&lt;marker at 34 in foo&gt;
-</pre></div>
+</pre></div></div>
 
 <p>The following example shows output to the echo area:
 </p>
 <div class="example">
-<pre class="example">(print &quot;Echo Area output&quot; t)
+<div class="group"><pre class="example-preformatted">(print &quot;Echo Area output&quot; t)
      &rArr; &quot;Echo Area output&quot;
 ---------- Echo Area ----------
 &quot;Echo Area output&quot;
 ---------- Echo Area ----------
-</pre></div>
+</pre></div></div>
 
 <p>Finally, we show the use of a function as an output stream.  The
-function <code>eat-output</code> takes each character that it is given and
-conses it onto the front of the list <code>last-output</code> (see <a href="Building-Lists.html">Building Lists</a>).  At the end, the list contains all the characters output, but
+function <code class="code">eat-output</code> takes each character that it is given and
+conses it onto the front of the list <code class="code">last-output</code> (see <a class="pxref" href="Building-Lists.html">Building Cons Cells and Lists</a>).  At the end, the list contains all the characters output, but
 in reverse order.
 </p>
 <div class="example">
-<pre class="example">(setq last-output nil)
+<div class="group"><pre class="example-preformatted">(setq last-output nil)
      &rArr; nil
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(defun eat-output (c)
+</pre><div class="group"><pre class="example-preformatted">(defun eat-output (c)
   (setq last-output (cons c last-output)))
      &rArr; eat-output
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(print &quot;This is the output&quot; 'eat-output)
+</pre><div class="group"><pre class="example-preformatted">(print &quot;This is the output&quot; 'eat-output)
      &rArr; &quot;This is the output&quot;
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">last-output
+</pre><div class="group"><pre class="example-preformatted">last-output
      &rArr; (10 34 116 117 112 116 117 111 32 101 104
     116 32 115 105 32 115 105 104 84 34 10)
-</pre></div>
+</pre></div></div>
 
 <p>Now we can put the output in the proper order by reversing the list:
 </p>
 <div class="example">
-<pre class="example">(concat (nreverse last-output))
+<div class="group"><pre class="example-preformatted">(concat (nreverse last-output))
      &rArr; &quot;
 \&quot;This is the output\&quot;
 &quot;
-</pre></div>
+</pre></div></div>
 
-<p>Calling <code>concat</code> converts the list to a string so you can see its
+<p>Calling <code class="code">concat</code> converts the list to a string so you can see its
 contents more clearly.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Output-Functions.html" accesskey="n" rel="next">Output Functions</a>, Previous: <a href="Input-Functions.html" accesskey="p" rel="prev">Input Functions</a>, Up: <a href="Read-and-Print.html" accesskey="u" rel="up">Read and Print</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Output-Functions.html">Output Functions</a>, Previous: <a href="Input-Functions.html">Input Functions</a>, Up: <a href="Read-and-Print.html">Reading and Printing Lisp Objects</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

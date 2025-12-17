@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.2.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Region Indent (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Region Indent (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,9 @@ developing GNU and promoting software freedom." -->
 <link href="Mode_002dSpecific-Indent.html" rel="prev" title="Mode-Specific Indent">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,85 +48,87 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Region-Indent"></span><div class="header">
+<div class="subsection-level-extent" id="Region-Indent">
+<div class="nav-panel">
 <p>
-Next: <a href="Relative-Indent.html" accesskey="n" rel="next">Relative Indent</a>, Previous: <a href="Mode_002dSpecific-Indent.html" accesskey="p" rel="prev">Mode-Specific Indent</a>, Up: <a href="Indentation.html" accesskey="u" rel="up">Indentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Relative-Indent.html" accesskey="n" rel="next">Indentation Relative to Previous Lines</a>, Previous: <a href="Mode_002dSpecific-Indent.html" accesskey="p" rel="prev">Indentation Controlled by Major Mode</a>, Up: <a href="Indentation.html" accesskey="u" rel="up">Indentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Indenting-an-Entire-Region"></span><h4 class="subsection">32.17.3 Indenting an Entire Region</h4>
+<h4 class="subsection" id="Indenting-an-Entire-Region"><span>32.17.3 Indenting an Entire Region<a class="copiable-link" href="#Indenting-an-Entire-Region"> &para;</a></span></h4>
 
 <p>This section describes commands that indent all the lines in the
 region.  They return unpredictable values.
 </p>
-<dl>
-<dt id="index-indent_002dregion">Command: <strong>indent-region</strong> <em>start end &amp;optional to-column</em></dt>
-<dd><p>This command indents each nonblank line starting between <var>start</var>
-(inclusive) and <var>end</var> (exclusive).  If <var>to-column</var> is
-<code>nil</code>, <code>indent-region</code> indents each nonblank line by calling
+<dl class="first-deffn">
+<dt class="deffn" id="index-indent_002dregion"><span class="category-def">Command: </span><span><strong class="def-name">indent-region</strong> <var class="def-var-arguments">start end &amp;optional to-column</var><a class="copiable-link" href="#index-indent_002dregion"> &para;</a></span></dt>
+<dd><p>This command indents each nonblank line starting between <var class="var">start</var>
+(inclusive) and <var class="var">end</var> (exclusive).  If <var class="var">to-column</var> is
+<code class="code">nil</code>, <code class="code">indent-region</code> indents each nonblank line by calling
 the current mode&rsquo;s indentation function, the value of
-<code>indent-line-function</code>.
+<code class="code">indent-line-function</code>.
 </p>
-<p>If <var>to-column</var> is non-<code>nil</code>, it should be an integer
+<p>If <var class="var">to-column</var> is non-<code class="code">nil</code>, it should be an integer
 specifying the number of columns of indentation; then this function
 gives each line exactly that much indentation, by either adding or
 deleting whitespace.
 </p>
-<p>If there is a fill prefix, <code>indent-region</code> indents each line
+<p>If there is a fill prefix, <code class="code">indent-region</code> indents each line
 by making it start with the fill prefix.
 </p></dd></dl>
 
-<dl>
-<dt id="index-indent_002dregion_002dfunction">Variable: <strong>indent-region-function</strong></dt>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-indent_002dregion_002dfunction"><span class="category-def">Variable: </span><span><strong class="def-name">indent-region-function</strong><a class="copiable-link" href="#index-indent_002dregion_002dfunction"> &para;</a></span></dt>
 <dd><p>The value of this variable is a function that can be used by
-<code>indent-region</code> as a short cut.  It should take two arguments, the
+<code class="code">indent-region</code> as a short cut.  It should take two arguments, the
 start and end of the region.  You should design the function so
 that it will produce the same results as indenting the lines of the
 region one by one, but presumably faster.
 </p>
-<p>If the value is <code>nil</code>, there is no short cut, and
-<code>indent-region</code> actually works line by line.
+<p>If the value is <code class="code">nil</code>, there is no short cut, and
+<code class="code">indent-region</code> actually works line by line.
 </p>
 <p>A short-cut function is useful in modes such as C mode and Lisp mode,
-where the <code>indent-line-function</code> must scan from the beginning of
+where the <code class="code">indent-line-function</code> must scan from the beginning of
 the function definition: applying it to each line would be quadratic in
 time.  The short cut can update the scan information as it moves through
 the lines indenting them; this takes linear time.  In a mode where
 indenting a line individually is fast, there is no need for a short cut.
 </p>
-<p><code>indent-region</code> with a non-<code>nil</code> argument <var>to-column</var> has
+<p><code class="code">indent-region</code> with a non-<code class="code">nil</code> argument <var class="var">to-column</var> has
 a different meaning and does not use this variable.
 </p></dd></dl>
 
-<dl>
-<dt id="index-indent_002drigidly">Command: <strong>indent-rigidly</strong> <em>start end count</em></dt>
-<dd><p>This function indents all lines starting between <var>start</var>
-(inclusive) and <var>end</var> (exclusive) sideways by <var>count</var> columns.
+<dl class="first-deffn">
+<dt class="deffn" id="index-indent_002drigidly"><span class="category-def">Command: </span><span><strong class="def-name">indent-rigidly</strong> <var class="def-var-arguments">start end count</var><a class="copiable-link" href="#index-indent_002drigidly"> &para;</a></span></dt>
+<dd><p>This function indents all lines starting between <var class="var">start</var>
+(inclusive) and <var class="var">end</var> (exclusive) sideways by <var class="var">count</var> columns.
 This preserves the shape of the affected region, moving it as a
 rigid unit.
 </p>
 <p>This is useful not only for indenting regions of unindented text, but
 also for indenting regions of formatted code.  For example, if
-<var>count</var> is 3, this command adds 3 columns of indentation to every
+<var class="var">count</var> is 3, this command adds 3 columns of indentation to every
 line that begins in the specified region.
 </p>
 <p>If called interactively with no prefix argument, this command invokes
-a transient mode for adjusting indentation rigidly.  See <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Indentation-Commands.html#Indentation-Commands">Indentation
-Commands</a> in <cite>The GNU Emacs Manual</cite>.
+a transient mode for adjusting indentation rigidly.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Indentation-Commands.html#Indentation-Commands">Indentation
+Commands</a> in <cite class="cite">The GNU Emacs Manual</cite>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-indent_002dcode_002drigidly">Command: <strong>indent-code-rigidly</strong> <em>start end columns &amp;optional nochange-regexp</em></dt>
-<dd><p>This is like <code>indent-rigidly</code>, except that it doesn&rsquo;t alter lines
+<dl class="first-deffn">
+<dt class="deffn" id="index-indent_002dcode_002drigidly"><span class="category-def">Command: </span><span><strong class="def-name">indent-code-rigidly</strong> <var class="def-var-arguments">start end columns &amp;optional nochange-regexp</var><a class="copiable-link" href="#index-indent_002dcode_002drigidly"> &para;</a></span></dt>
+<dd><p>This is like <code class="code">indent-rigidly</code>, except that it doesn&rsquo;t alter lines
 that start within strings or comments.
 </p>
-<p>In addition, it doesn&rsquo;t alter a line if <var>nochange-regexp</var> matches at
-the beginning of the line (if <var>nochange-regexp</var> is non-<code>nil</code>).
+<p>In addition, it doesn&rsquo;t alter a line if <var class="var">nochange-regexp</var> matches at
+the beginning of the line (if <var class="var">nochange-regexp</var> is non-<code class="code">nil</code>).
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Relative-Indent.html" accesskey="n" rel="next">Relative Indent</a>, Previous: <a href="Mode_002dSpecific-Indent.html" accesskey="p" rel="prev">Mode-Specific Indent</a>, Up: <a href="Indentation.html" accesskey="u" rel="up">Indentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Relative-Indent.html">Indentation Relative to Previous Lines</a>, Previous: <a href="Mode_002dSpecific-Indent.html">Indentation Controlled by Major Mode</a>, Up: <a href="Indentation.html">Indentation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

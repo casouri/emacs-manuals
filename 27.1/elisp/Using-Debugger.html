@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.1.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Using Debugger (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Using Debugger (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,9 @@ developing GNU and promoting software freedom." -->
 <link href="Explicit-Debug.html" rel="prev" title="Explicit Debug">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,55 +48,57 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Using-Debugger"></span><div class="header">
+<div class="subsection-level-extent" id="Using-Debugger">
+<div class="nav-panel">
 <p>
-Next: <a href="Backtraces.html" accesskey="n" rel="next">Backtraces</a>, Previous: <a href="Explicit-Debug.html" accesskey="p" rel="prev">Explicit Debug</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Backtraces.html" accesskey="n" rel="next">Backtraces</a>, Previous: <a href="Explicit-Debug.html" accesskey="p" rel="prev">Explicit Entry to the Debugger</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">The Lisp Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Using-the-Debugger"></span><h4 class="subsection">18.1.6 Using the Debugger</h4>
+<h4 class="subsection" id="Using-the-Debugger"><span>18.1.6 Using the Debugger<a class="copiable-link" href="#Using-the-Debugger"> &para;</a></span></h4>
 
 <p>When the debugger is entered, it displays the previously selected
-buffer in one window and a buffer named <samp>*Backtrace*</samp> in another
+buffer in one window and a buffer named <samp class="file">*Backtrace*</samp> in another
 window.  The backtrace buffer contains one line for each level of Lisp
 function execution currently going on.  At the beginning of this buffer
 is a message describing the reason that the debugger was invoked (such
 as the error message and associated data, if it was invoked due to an
 error).
 </p>
-<span id="index-debugger_002dbury_002dor_002dkill"></span>
+<a class="index-entry-id" id="index-debugger_002dbury_002dor_002dkill"></a>
 <p>The backtrace buffer is read-only and uses a special major mode,
 Debugger mode, in which letters are defined as debugger commands.  The
 usual Emacs editing commands are available; thus, you can switch windows
 to examine the buffer that was being edited at the time of the error,
 switch buffers, visit files, or do any other sort of editing.  However,
-the debugger is a recursive editing level (see <a href="Recursive-Editing.html">Recursive Editing</a>)
+the debugger is a recursive editing level (see <a class="pxref" href="Recursive-Editing.html">Recursive Editing</a>)
 and it is wise to go back to the backtrace buffer and exit the debugger
-(with the <kbd>q</kbd> command) when you are finished with it.  Exiting
+(with the <kbd class="kbd">q</kbd> command) when you are finished with it.  Exiting
 the debugger gets out of the recursive edit and buries the backtrace
-buffer.  (You can customize what the <kbd>q</kbd> command does with the
-backtrace buffer by setting the variable <code>debugger-bury-or-kill</code>.
-For example, set it to <code>kill</code> if you prefer to kill the buffer
+buffer.  (You can customize what the <kbd class="kbd">q</kbd> command does with the
+backtrace buffer by setting the variable <code class="code">debugger-bury-or-kill</code>.
+For example, set it to <code class="code">kill</code> if you prefer to kill the buffer
 rather than bury it.  Consult the variable&rsquo;s documentation for more
 possibilities.)
 </p>
-<p>When the debugger has been entered, the <code>debug-on-error</code>
+<p>When the debugger has been entered, the <code class="code">debug-on-error</code>
 variable is temporarily set according to
-<code>eval-expression-debug-on-error</code>.  If the latter variable is
-non-<code>nil</code>, <code>debug-on-error</code> will temporarily be set to
-<code>t</code>.  This means that any further errors that occur while doing a
+<code class="code">eval-expression-debug-on-error</code>.  If the latter variable is
+non-<code class="code">nil</code>, <code class="code">debug-on-error</code> will temporarily be set to
+<code class="code">t</code>.  This means that any further errors that occur while doing a
 debugging session will (by default) trigger another backtrace.  If
 this is not what you want, you can either set
-<code>eval-expression-debug-on-error</code> to <code>nil</code>, or set
-<code>debug-on-error</code> to <code>nil</code> in <code>debugger-mode-hook</code>.
+<code class="code">eval-expression-debug-on-error</code> to <code class="code">nil</code>, or set
+<code class="code">debug-on-error</code> to <code class="code">nil</code> in <code class="code">debugger-mode-hook</code>.
 </p>
 <p>The debugger itself must be run byte-compiled, since it makes
 assumptions about the state of the Lisp interpreter.  These
 assumptions are false if the debugger is running interpreted.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Backtraces.html" accesskey="n" rel="next">Backtraces</a>, Previous: <a href="Explicit-Debug.html" accesskey="p" rel="prev">Explicit Debug</a>, Up: <a href="Debugger.html" accesskey="u" rel="up">Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Backtraces.html">Backtraces</a>, Previous: <a href="Explicit-Debug.html">Explicit Entry to the Debugger</a>, Up: <a href="Debugger.html">The Lisp Debugger</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

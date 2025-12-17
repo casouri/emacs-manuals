@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Saving Match Data (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Saving Match Data (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Match-Data.html" rel="up" title="Match Data">
-<link href="Search-and-Replace.html" rel="next" title="Search and Replace">
 <link href="Entire-Match-Data.html" rel="prev" title="Entire Match Data">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,12 +48,13 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Saving-Match-Data"></span><div class="header">
+<div class="subsection-level-extent" id="Saving-Match-Data">
+<div class="nav-panel">
 <p>
-Previous: <a href="Entire-Match-Data.html" accesskey="p" rel="prev">Entire Match Data</a>, Up: <a href="Match-Data.html" accesskey="u" rel="up">Match Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="Entire-Match-Data.html" accesskey="p" rel="prev">Accessing the Entire Match Data</a>, Up: <a href="Match-Data.html" accesskey="u" rel="up">The Match Data</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Saving-and-Restoring-the-Match-Data"></span><h4 class="subsection">33.6.4 Saving and Restoring the Match Data</h4>
+<h4 class="subsection" id="Saving-and-Restoring-the-Match-Data"><span>33.6.4 Saving and Restoring the Match Data<a class="copiable-link" href="#Saving-and-Restoring-the-Match-Data"> &para;</a></span></h4>
 
 <p>When you call a function that may search, you may need to save
 and restore the match data around that call, if you want to preserve the
@@ -69,38 +62,39 @@ match data from an earlier search for later use.  Here is an example
 that shows the problem that arises if you fail to save the match data:
 </p>
 <div class="example">
-<pre class="example">(re-search-forward &quot;The \\(cat \\)&quot;)
+<div class="group"><pre class="example-preformatted">(re-search-forward &quot;The \\(cat \\)&quot;)
      &rArr; 48
-(foo)                   ; <span class="roman"><code>foo</code> does more searching.</span>
+(foo)                   ; <span class="r"><code class="code">foo</code> does more searching.</span>
 (match-end 0)
-     &rArr; 61              ; <span class="roman">Unexpected result&mdash;not 48!</span>
-</pre></div>
+     &rArr; 61              ; <span class="r">Unexpected result&mdash;not 48!</span>
+</pre></div></div>
 
-<p>You can save and restore the match data with <code>save-match-data</code>:
+<p>You can save and restore the match data with <code class="code">save-match-data</code>:
 </p>
-<dl>
-<dt id="index-save_002dmatch_002ddata">Macro: <strong>save-match-data</strong> <em>body&hellip;</em></dt>
-<dd><p>This macro executes <var>body</var>, saving and restoring the match
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-save_002dmatch_002ddata"><span class="category-def">Macro: </span><span><strong class="def-name">save-match-data</strong> <var class="def-var-arguments">body&hellip;</var><a class="copiable-link" href="#index-save_002dmatch_002ddata"> &para;</a></span></dt>
+<dd><p>This macro executes <var class="var">body</var>, saving and restoring the match
 data around it.  The return value is the value of the last form in
-<var>body</var>.
+<var class="var">body</var>.
 </p></dd></dl>
 
-<p>You could use <code>set-match-data</code> together with <code>match-data</code> to
-imitate the effect of the special form <code>save-match-data</code>.  Here is
+<p>You could use <code class="code">set-match-data</code> together with <code class="code">match-data</code> to
+imitate the effect of the special form <code class="code">save-match-data</code>.  Here is
 how:
 </p>
 <div class="example">
-<pre class="example">(let ((data (match-data)))
+<div class="group"><pre class="example-preformatted">(let ((data (match-data)))
   (unwind-protect
-      &hellip;   ; <span class="roman">Ok to change the original match data.</span>
+      ...   ; <span class="r">Ok to change the original match data.</span>
     (set-match-data data)))
-</pre></div>
+</pre></div></div>
 
 <p>Emacs automatically saves and restores the match data when it runs
-process filter functions (see <a href="Filter-Functions.html">Filter Functions</a>) and process
-sentinels (see <a href="Sentinels.html">Sentinels</a>).
+process filter functions (see <a class="pxref" href="Filter-Functions.html">Process Filter Functions</a>) and process
+sentinels (see <a class="pxref" href="Sentinels.html">Sentinels: Detecting Process Status Changes</a>).
 </p>
 
+</div>
 
 
 

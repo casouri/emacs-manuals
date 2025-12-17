@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Intro to Minibuffers (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Intro to Minibuffers (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,17 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Minibuffers.html" rel="up" title="Minibuffers">
 <link href="Text-from-Minibuffer.html" rel="next" title="Text from Minibuffer">
-<link href="Minibuffers.html" rel="prev" title="Minibuffers">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,29 +44,30 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Intro-to-Minibuffers"></span><div class="header">
+<div class="section-level-extent" id="Intro-to-Minibuffers">
+<div class="nav-panel">
 <p>
-Next: <a href="Text-from-Minibuffer.html" accesskey="n" rel="next">Text from Minibuffer</a>, Up: <a href="Minibuffers.html" accesskey="u" rel="up">Minibuffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Text-from-Minibuffer.html" accesskey="n" rel="next">Reading Text Strings with the Minibuffer</a>, Up: <a href="Minibuffers.html" accesskey="u" rel="up">Minibuffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Introduction-to-Minibuffers"></span><h3 class="section">20.1 Introduction to Minibuffers</h3>
+<h3 class="section" id="Introduction-to-Minibuffers"><span>20.1 Introduction to Minibuffers<a class="copiable-link" href="#Introduction-to-Minibuffers"> &para;</a></span></h3>
 
 <p>In most ways, a minibuffer is a normal Emacs buffer.  Most operations
-<em>within</em> a buffer, such as editing commands, work normally in a
+<em class="emph">within</em> a buffer, such as editing commands, work normally in a
 minibuffer.  However, many operations for managing buffers do not apply
-to minibuffers.  The name of a minibuffer always has the form &lsquo;<samp>&nbsp;<span class="nolinebreak">*Minibuf-</span><var>number</var>*</samp>&rsquo;<!-- /@w -->, and it cannot be changed.  Minibuffers are
+to minibuffers.  The name of a minibuffer always has the form &lsquo;<samp class="samp">&nbsp;*Minibuf-<var class="var">number</var>*</samp>&rsquo;<!-- /@w -->, and it cannot be changed.  Minibuffers are
 displayed only in special windows used only for minibuffers; these
 windows always appear at the bottom of a frame.  (Sometimes frames have
 no minibuffer window, and sometimes a special kind of frame contains
-nothing but a minibuffer window; see <a href="Minibuffers-and-Frames.html">Minibuffers and Frames</a>.)
+nothing but a minibuffer window; see <a class="ref" href="Minibuffers-and-Frames.html">Minibuffers and Frames</a>.)
 </p>
-<p>The text in the minibuffer always starts with the <em>prompt string</em>,
+<p>The text in the minibuffer always starts with the <em class="dfn">prompt string</em>,
 the text that was specified by the program that is using the minibuffer
 to tell the user what sort of input to type.  This text is marked
 read-only so you won&rsquo;t accidentally delete or change it.  It is also
-marked as a field (see <a href="Fields.html">Fields</a>), so that certain motion functions,
-including <code>beginning-of-line</code>, <code>forward-word</code>,
-<code>forward-sentence</code>, and <code>forward-paragraph</code>, stop at the
+marked as a field (see <a class="pxref" href="Fields.html">Defining and Using Fields</a>), so that certain motion functions,
+including <code class="code">beginning-of-line</code>, <code class="code">forward-word</code>,
+<code class="code">forward-sentence</code>, and <code class="code">forward-paragraph</code>, stop at the
 boundary between the prompt and the actual text.
 </p>
 <p>The minibuffer&rsquo;s window is normally a single line; it grows
@@ -87,48 +77,49 @@ sizing commands; it reverts to its normal size when the minibuffer is
 exited.  When the minibuffer is not active, you can resize it
 permanently by using the window sizing commands in the frame&rsquo;s other
 window, or dragging the mode line with the mouse.  (Due to details of
-the current implementation, for this to work <code>resize-mini-windows</code>
-must be <code>nil</code>.)  If the frame contains just a minibuffer, you can
+the current implementation, for this to work <code class="code">resize-mini-windows</code>
+must be <code class="code">nil</code>.)  If the frame contains just a minibuffer, you can
 change the minibuffer&rsquo;s size by changing the frame&rsquo;s size.
 </p>
 <p>Use of the minibuffer reads input events, and that alters the values
-of variables such as <code>this-command</code> and <code>last-command</code>
-(see <a href="Command-Loop-Info.html">Command Loop Info</a>).  Your program should bind them around the
+of variables such as <code class="code">this-command</code> and <code class="code">last-command</code>
+(see <a class="pxref" href="Command-Loop-Info.html">Information from the Command Loop</a>).  Your program should bind them around the
 code that uses the minibuffer, if you do not want that to change them.
 </p>
 <p>Under some circumstances, a command can use a minibuffer even if
 there is an active minibuffer; such a minibuffer is called a
-<em>recursive minibuffer</em>.  The first minibuffer is named
-&lsquo;<samp>&nbsp;<span class="nolinebreak">*Minibuf-1*</span></samp>&rsquo;<!-- /@w -->.  Recursive minibuffers are named by
+<em class="dfn">recursive minibuffer</em>.  The first minibuffer is named
+&lsquo;<samp class="samp">&nbsp;*Minibuf-1*</samp>&rsquo;<!-- /@w -->.  Recursive minibuffers are named by
 incrementing the number at the end of the name.  (The names begin with
 a space so that they won&rsquo;t show up in normal buffer lists.)  Of
 several recursive minibuffers, the innermost (or most recently
 entered) is the active minibuffer.  We usually call this &ldquo;the&rdquo;
 minibuffer.  You can permit or forbid recursive minibuffers by setting
-the variable <code>enable-recursive-minibuffers</code>, or by putting
-properties of that name on command symbols (See <a href="Recursive-Mini.html">Recursive Mini</a>.)
+the variable <code class="code">enable-recursive-minibuffers</code>, or by putting
+properties of that name on command symbols (See <a class="xref" href="Recursive-Mini.html">Recursive Minibuffers</a>.)
 </p>
 <p>Like other buffers, a minibuffer uses a local keymap
-(see <a href="Keymaps.html">Keymaps</a>) to specify special key bindings.  The function that
+(see <a class="pxref" href="Keymaps.html">Keymaps</a>) to specify special key bindings.  The function that
 invokes the minibuffer also sets up its local map according to the job
-to be done.  See <a href="Text-from-Minibuffer.html">Text from Minibuffer</a>, for the non-completion
-minibuffer local maps.  See <a href="Completion-Commands.html">Completion Commands</a>, for the minibuffer
+to be done.  See <a class="xref" href="Text-from-Minibuffer.html">Reading Text Strings with the Minibuffer</a>, for the non-completion
+minibuffer local maps.  See <a class="xref" href="Completion-Commands.html">Minibuffer Commands that Do Completion</a>, for the minibuffer
 local maps for completion.
 </p>
-<span id="index-inactive-minibuffer"></span>
+<a class="index-entry-id" id="index-inactive-minibuffer"></a>
 <p>When a minibuffer is inactive, its major mode is
-<code>minibuffer-inactive-mode</code>, with keymap
-<code>minibuffer-inactive-mode-map</code>.  This is only really useful if
-the minibuffer is in a separate frame.  See <a href="Minibuffers-and-Frames.html">Minibuffers and Frames</a>.
+<code class="code">minibuffer-inactive-mode</code>, with keymap
+<code class="code">minibuffer-inactive-mode-map</code>.  This is only really useful if
+the minibuffer is in a separate frame.  See <a class="xref" href="Minibuffers-and-Frames.html">Minibuffers and Frames</a>.
 </p>
 <p>When Emacs is running in batch mode, any request to read from the
 minibuffer actually reads a line from the standard input descriptor that
 was supplied when Emacs was started.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Text-from-Minibuffer.html" accesskey="n" rel="next">Text from Minibuffer</a>, Up: <a href="Minibuffers.html" accesskey="u" rel="up">Minibuffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Text-from-Minibuffer.html">Reading Text Strings with the Minibuffer</a>, Up: <a href="Minibuffers.html">Minibuffers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

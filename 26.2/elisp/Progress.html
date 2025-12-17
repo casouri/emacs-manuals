@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.2.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Progress (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Progress (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Displaying-Messages.html" rel="prev" title="Displaying Messages">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,23 +48,24 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Progress"></span><div class="header">
+<div class="subsection-level-extent" id="Progress">
+<div class="nav-panel">
 <p>
-Next: <a href="Logging-Messages.html" accesskey="n" rel="next">Logging Messages</a>, Previous: <a href="Displaying-Messages.html" accesskey="p" rel="prev">Displaying Messages</a>, Up: <a href="The-Echo-Area.html" accesskey="u" rel="up">The Echo Area</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Logging-Messages.html" accesskey="n" rel="next">Logging Messages in <samp class="file">*Messages*</samp></a>, Previous: <a href="Displaying-Messages.html" accesskey="p" rel="prev">Displaying Messages in the Echo Area</a>, Up: <a href="The-Echo-Area.html" accesskey="u" rel="up">The Echo Area</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Reporting-Operation-Progress"></span><h4 class="subsection">39.4.2 Reporting Operation Progress</h4>
-<span id="index-progress-reporting"></span>
+<h4 class="subsection" id="Reporting-Operation-Progress"><span>39.4.2 Reporting Operation Progress<a class="copiable-link" href="#Reporting-Operation-Progress"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-progress-reporting"></a>
 
 <p>When an operation can take a while to finish, you should inform the
 user about the progress it makes.  This way the user can estimate
 remaining time and clearly see that Emacs is busy working, not hung.
-A convenient way to do this is to use a <em>progress reporter</em>.
+A convenient way to do this is to use a <em class="dfn">progress reporter</em>.
 </p>
 <p>Here is a working example that does nothing useful:
 </p>
-<div class="example">
-<pre class="example">(let ((progress-reporter
+<div class="example smallexample">
+<pre class="example-preformatted">(let ((progress-reporter
        (make-progress-reporter &quot;Collecting mana for Emacs...&quot;
                                0  500)))
   (dotimes (k 500)
@@ -81,95 +74,95 @@ A convenient way to do this is to use a <em>progress reporter</em>.
   (progress-reporter-done progress-reporter))
 </pre></div>
 
-<dl>
-<dt id="index-make_002dprogress_002dreporter">Function: <strong>make-progress-reporter</strong> <em>message &amp;optional min-value max-value current-value min-change min-time</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-make_002dprogress_002dreporter"><span class="category-def">Function: </span><span><strong class="def-name">make-progress-reporter</strong> <var class="def-var-arguments">message &amp;optional min-value max-value current-value min-change min-time</var><a class="copiable-link" href="#index-make_002dprogress_002dreporter"> &para;</a></span></dt>
 <dd><p>This function creates and returns a progress reporter object, which
 you will use as an argument for the other functions listed below.  The
 idea is to precompute as much data as possible to make progress
 reporting very fast.
 </p>
 <p>When this progress reporter is subsequently used, it will display
-<var>message</var> in the echo area, followed by progress percentage.
-<var>message</var> is treated as a simple string.  If you need it to depend
-on a filename, for instance, use <code>format-message</code> before calling this
+<var class="var">message</var> in the echo area, followed by progress percentage.
+<var class="var">message</var> is treated as a simple string.  If you need it to depend
+on a filename, for instance, use <code class="code">format-message</code> before calling this
 function.
 </p>
-<p>The arguments <var>min-value</var> and <var>max-value</var> should be numbers
+<p>The arguments <var class="var">min-value</var> and <var class="var">max-value</var> should be numbers
 standing for the starting and final states of the operation.  For
 instance, an operation that scans a buffer should set these to the
-results of <code>point-min</code> and <code>point-max</code> correspondingly.
-<var>max-value</var> should be greater than <var>min-value</var>.
+results of <code class="code">point-min</code> and <code class="code">point-max</code> correspondingly.
+<var class="var">max-value</var> should be greater than <var class="var">min-value</var>.
 </p>
-<p>Alternatively, you can set <var>min-value</var> and <var>max-value</var> to
-<code>nil</code>.  In that case, the progress reporter does not report
+<p>Alternatively, you can set <var class="var">min-value</var> and <var class="var">max-value</var> to
+<code class="code">nil</code>.  In that case, the progress reporter does not report
 process percentages; it instead displays a &ldquo;spinner&rdquo; that rotates a
 notch each time you update the progress reporter.
 </p>
-<p>If <var>min-value</var> and <var>max-value</var> are numbers, you can give the
-argument <var>current-value</var> a numerical value specifying the initial
-progress; if omitted, this defaults to <var>min-value</var>.
+<p>If <var class="var">min-value</var> and <var class="var">max-value</var> are numbers, you can give the
+argument <var class="var">current-value</var> a numerical value specifying the initial
+progress; if omitted, this defaults to <var class="var">min-value</var>.
 </p>
 <p>The remaining arguments control the rate of echo area updates.  The
-progress reporter will wait for at least <var>min-change</var> more
+progress reporter will wait for at least <var class="var">min-change</var> more
 percents of the operation to be completed before printing next
-message; the default is one percent.  <var>min-time</var> specifies the
+message; the default is one percent.  <var class="var">min-time</var> specifies the
 minimum time in seconds to pass between successive prints; the default
 is 0.2 seconds.  (On some operating systems, the progress reporter may
 handle fractions of seconds with varying precision).
 </p>
-<p>This function calls <code>progress-reporter-update</code>, so the first
+<p>This function calls <code class="code">progress-reporter-update</code>, so the first
 message is printed immediately.
 </p></dd></dl>
 
-<dl>
-<dt id="index-progress_002dreporter_002dupdate">Function: <strong>progress-reporter-update</strong> <em>reporter &amp;optional value</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-progress_002dreporter_002dupdate"><span class="category-def">Function: </span><span><strong class="def-name">progress-reporter-update</strong> <var class="def-var-arguments">reporter &amp;optional value</var><a class="copiable-link" href="#index-progress_002dreporter_002dupdate"> &para;</a></span></dt>
 <dd><p>This function does the main work of reporting progress of your
-operation.  It displays the message of <var>reporter</var>, followed by
-progress percentage determined by <var>value</var>.  If percentage is zero,
-or close enough according to the <var>min-change</var> and <var>min-time</var>
+operation.  It displays the message of <var class="var">reporter</var>, followed by
+progress percentage determined by <var class="var">value</var>.  If percentage is zero,
+or close enough according to the <var class="var">min-change</var> and <var class="var">min-time</var>
 arguments, then it is omitted from the output.
 </p>
-<p><var>reporter</var> must be the result of a call to
-<code>make-progress-reporter</code>.  <var>value</var> specifies the current
-state of your operation and must be between <var>min-value</var> and
-<var>max-value</var> (inclusive) as passed to
-<code>make-progress-reporter</code>.  For instance, if you scan a buffer,
-then <var>value</var> should be the result of a call to <code>point</code>.
+<p><var class="var">reporter</var> must be the result of a call to
+<code class="code">make-progress-reporter</code>.  <var class="var">value</var> specifies the current
+state of your operation and must be between <var class="var">min-value</var> and
+<var class="var">max-value</var> (inclusive) as passed to
+<code class="code">make-progress-reporter</code>.  For instance, if you scan a buffer,
+then <var class="var">value</var> should be the result of a call to <code class="code">point</code>.
 </p>
-<p>This function respects <var>min-change</var> and <var>min-time</var> as passed
-to <code>make-progress-reporter</code> and so does not output new messages
+<p>This function respects <var class="var">min-change</var> and <var class="var">min-time</var> as passed
+to <code class="code">make-progress-reporter</code> and so does not output new messages
 on every invocation.  It is thus very fast and normally you should not
 try to reduce the number of calls to it: resulting overhead will most
 likely negate your effort.
 </p></dd></dl>
 
-<dl>
-<dt id="index-progress_002dreporter_002dforce_002dupdate">Function: <strong>progress-reporter-force-update</strong> <em>reporter &amp;optional value new-message</em></dt>
-<dd><p>This function is similar to <code>progress-reporter-update</code> except
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-progress_002dreporter_002dforce_002dupdate"><span class="category-def">Function: </span><span><strong class="def-name">progress-reporter-force-update</strong> <var class="def-var-arguments">reporter &amp;optional value new-message</var><a class="copiable-link" href="#index-progress_002dreporter_002dforce_002dupdate"> &para;</a></span></dt>
+<dd><p>This function is similar to <code class="code">progress-reporter-update</code> except
 that it prints a message in the echo area unconditionally.
 </p>
 <p>The first two arguments have the same meaning as for
-<code>progress-reporter-update</code>.  Optional <var>new-message</var> allows
-you to change the message of the <var>reporter</var>.  Since this function
+<code class="code">progress-reporter-update</code>.  Optional <var class="var">new-message</var> allows
+you to change the message of the <var class="var">reporter</var>.  Since this function
 always updates the echo area, such a change will be immediately
 presented to the user.
 </p></dd></dl>
 
-<dl>
-<dt id="index-progress_002dreporter_002ddone">Function: <strong>progress-reporter-done</strong> <em>reporter</em></dt>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-progress_002dreporter_002ddone"><span class="category-def">Function: </span><span><strong class="def-name">progress-reporter-done</strong> <var class="def-var-arguments">reporter</var><a class="copiable-link" href="#index-progress_002dreporter_002ddone"> &para;</a></span></dt>
 <dd><p>This function should be called when the operation is finished.  It
-prints the message of <var>reporter</var> followed by word &lsquo;<samp>done</samp>&rsquo; in the
+prints the message of <var class="var">reporter</var> followed by word &lsquo;<samp class="samp">done</samp>&rsquo; in the
 echo area.
 </p>
 <p>You should always call this function and not hope for
-<code>progress-reporter-update</code> to print &lsquo;<samp>100%</samp>&rsquo;.  Firstly, it may
+<code class="code">progress-reporter-update</code> to print &lsquo;<samp class="samp">100%</samp>&rsquo;.  Firstly, it may
 never print it, there are many good reasons for this not to happen.
-Secondly, &lsquo;<samp>done</samp>&rsquo; is more explicit.
+Secondly, &lsquo;<samp class="samp">done</samp>&rsquo; is more explicit.
 </p></dd></dl>
 
-<dl>
-<dt id="index-dotimes_002dwith_002dprogress_002dreporter">Macro: <strong>dotimes-with-progress-reporter</strong> <em>(var count [result]) message body&hellip;</em></dt>
-<dd><p>This is a convenience macro that works the same way as <code>dotimes</code>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-dotimes_002dwith_002dprogress_002dreporter"><span class="category-def">Macro: </span><span><strong class="def-name">dotimes-with-progress-reporter</strong> <var class="def-var-arguments">(var count [result]) message body&hellip;</var><a class="copiable-link" href="#index-dotimes_002dwith_002dprogress_002dreporter"> &para;</a></span></dt>
+<dd><p>This is a convenience macro that works the same way as <code class="code">dotimes</code>
 does, but also reports loop progress using the functions described
 above.  It allows you to save some typing.
 </p>
@@ -177,17 +170,18 @@ above.  It allows you to save some typing.
 this macro this way:
 </p>
 <div class="example">
-<pre class="example">(dotimes-with-progress-reporter
+<pre class="example-preformatted">(dotimes-with-progress-reporter
     (k 500)
     &quot;Collecting some mana for Emacs...&quot;
   (sit-for 0.01))
 </pre></div>
 </dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Logging-Messages.html" accesskey="n" rel="next">Logging Messages</a>, Previous: <a href="Displaying-Messages.html" accesskey="p" rel="prev">Displaying Messages</a>, Up: <a href="The-Echo-Area.html" accesskey="u" rel="up">The Echo Area</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Logging-Messages.html">Logging Messages in <samp class="file">*Messages*</samp></a>, Previous: <a href="Displaying-Messages.html">Displaying Messages in the Echo Area</a>, Up: <a href="The-Echo-Area.html">The Echo Area</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

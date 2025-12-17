@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>General Escape Syntax (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="General Escape Syntax (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,9 @@ developing GNU and promoting software freedom." -->
 <link href="Basic-Char-Syntax.html" rel="prev" title="Basic Char Syntax">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,63 +48,66 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="General-Escape-Syntax"></span><div class="header">
+<div class="subsubsection-level-extent" id="General-Escape-Syntax">
+<div class="nav-panel">
 <p>
-Next: <a href="Ctl_002dChar-Syntax.html" accesskey="n" rel="next">Ctl-Char Syntax</a>, Previous: <a href="Basic-Char-Syntax.html" accesskey="p" rel="prev">Basic Char Syntax</a>, Up: <a href="Character-Type.html" accesskey="u" rel="up">Character Type</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Ctl_002dChar-Syntax.html" accesskey="n" rel="next">Control-Character Syntax</a>, Previous: <a href="Basic-Char-Syntax.html" accesskey="p" rel="prev">Basic Char Syntax</a>, Up: <a href="Character-Type.html" accesskey="u" rel="up">Character Type</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="General-Escape-Syntax-1"></span><h4 class="subsubsection">2.4.3.2 General Escape Syntax</h4>
+<h4 class="subsubsection" id="General-Escape-Syntax-1"><span>2.4.3.2 General Escape Syntax<a class="copiable-link" href="#General-Escape-Syntax-1"> &para;</a></span></h4>
 
 <p>In addition to the specific escape sequences for special important
 control characters, Emacs provides several types of escape syntax that
-you can use to specify non-<acronym>ASCII</acronym> text characters.
+you can use to specify non-<abbr class="acronym">ASCII</abbr> text characters.
 </p>
-<ol>
-<li> <span id="index-_005c-in-character-constant"></span>
-<span id="index-backslash-in-character-constants"></span>
-<span id="index-unicode-character-escape"></span>
+<ol class="enumerate">
+<li> <a class="index-entry-id" id="index-_005c-in-character-constant"></a>
+<a class="index-entry-id" id="index-backslash-in-character-constants"></a>
+<a class="index-entry-id" id="index-unicode-character-escape"></a>
 You can specify characters by their Unicode names, if any.
-<code>?\N{<var>NAME</var>}</code> represents the Unicode character named
-<var>NAME</var>.  Thus, &lsquo;<samp>?\N{LATIN SMALL LETTER A WITH GRAVE}</samp>&rsquo; is
-equivalent to <code>?à</code> and denotes the Unicode character U+00E0.  To
+<code class="code">?\N{<var class="var">NAME</var>}</code> represents the Unicode character named
+<var class="var">NAME</var>.  Thus, &lsquo;<samp class="samp">?\N{LATIN SMALL LETTER A WITH GRAVE}</samp>&rsquo; is
+equivalent to <code class="code">?à</code> and denotes the Unicode character U+00E0.  To
 simplify entering multi-line strings, you can replace spaces in the
 names by non-empty sequences of whitespace (e.g., newlines).
 
 </li><li> You can specify characters by their Unicode values.
-<code>?\N{U+<var>X</var>}</code> represents a character with Unicode code point
-<var>X</var>, where <var>X</var> is a hexadecimal number.  Also,
-<code>?\u<var>xxxx</var></code> and <code>?\U<var>xxxxxxxx</var></code> represent code
-points <var>xxxx</var> and <var>xxxxxxxx</var>, respectively, where each <var>x</var>
-is a single hexadecimal digit.  For example, <code>?\N{U+E0}</code>,
-<code>?\u00e0</code> and <code>?\U000000E0</code> are all equivalent to <code>?à</code>
-and to &lsquo;<samp>?\N{LATIN SMALL LETTER A WITH GRAVE}</samp>&rsquo;.  The Unicode
-Standard defines code points only up to &lsquo;<samp>U+<var>10ffff</var></samp>&rsquo;, so if
-you specify a code point higher than that, Emacs signals an error.
+<code class="code">?\N{U+<var class="var">X</var>}</code> represents a character with Unicode code point
+<var class="var">X</var>, where <var class="var">X</var> is a hexadecimal number.  Also,
+<code class="code">?\u<var class="var">xxxx</var></code> and <code class="code">?\U<var class="var">xxxxxxxx</var></code> represent code
+points <var class="var">xxxx</var> and <var class="var">xxxxxxxx</var>, respectively, where each <var class="var">x</var>
+is a single hexadecimal digit.  For example, <code class="code">?\N{U+E0}</code>,
+<code class="code">?\u00e0</code> and <code class="code">?\U000000E0</code> are all equivalent to
+<code class="code">?&agrave;</code> and to &lsquo;<samp class="samp">?\N{LATIN SMALL LETTER A WITH GRAVE}</samp>&rsquo;.  The
+Unicode Standard defines code points only up to &lsquo;<samp class="samp">U+<var class="var">10ffff</var></samp>&rsquo;,
+so if you specify a code point higher than that, Emacs signals an
+error.
 
 </li><li> You can specify characters by their hexadecimal character
 codes.  A hexadecimal escape sequence consists of a backslash,
-&lsquo;<samp>x</samp>&rsquo;, and the hexadecimal character code.  Thus, &lsquo;<samp>?\x41</samp>&rsquo; is
-the character <kbd>A</kbd>, &lsquo;<samp>?\x1</samp>&rsquo; is the character <kbd>C-a</kbd>, and
-<code>?\xe0</code> is the character <kbd>à</kbd> (<kbd>a</kbd> with grave accent).
-You can use any number of hex digits, so you can represent any
-character code in this way.
+&lsquo;<samp class="samp">x</samp>&rsquo;, and the hexadecimal character code.  Thus, &lsquo;<samp class="samp">?\x41</samp>&rsquo; is
+the character <kbd class="kbd">A</kbd>, &lsquo;<samp class="samp">?\x1</samp>&rsquo; is the character <kbd class="kbd">C-a</kbd>, and
+<code class="code">?\xe0</code> is the character <kbd class="kbd">&agrave;</kbd> (<kbd class="kbd">a</kbd> with grave accent).
+You can use one or more hex digits after &lsquo;<samp class="samp">x</samp>&rsquo;, so you can
+represent any character code in this way.
 
-</li><li> <span id="index-octal-character-code"></span>
+</li><li> <a class="index-entry-id" id="index-octal-character-code"></a>
 You can specify characters by their character code in
 octal.  An octal escape sequence consists of a backslash followed by
-up to three octal digits; thus, &lsquo;<samp>?\101</samp>&rsquo; for the character
-<kbd>A</kbd>, &lsquo;<samp>?\001</samp>&rsquo; for the character <kbd>C-a</kbd>, and <code>?\002</code>
-for the character <kbd>C-b</kbd>.  Only characters up to octal code 777 can
+up to three octal digits; thus, &lsquo;<samp class="samp">?\101</samp>&rsquo; for the character
+<kbd class="kbd">A</kbd>, &lsquo;<samp class="samp">?\001</samp>&rsquo; for the character <kbd class="kbd">C-a</kbd>, and <code class="code">?\002</code>
+for the character <kbd class="kbd">C-b</kbd>.  Only characters up to octal code 777 can
 be specified this way.
 
 </li></ol>
 
-<p>These escape sequences may also be used in strings.  See <a href="Non_002dASCII-in-Strings.html">Non-ASCII in Strings</a>.
+<p>These escape sequences may also be used in strings.  See <a class="xref" href="Non_002dASCII-in-Strings.html">Non-<abbr class="acronym">ASCII</abbr> Characters in Strings</a>.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Ctl_002dChar-Syntax.html" accesskey="n" rel="next">Ctl-Char Syntax</a>, Previous: <a href="Basic-Char-Syntax.html" accesskey="p" rel="prev">Basic Char Syntax</a>, Up: <a href="Character-Type.html" accesskey="u" rel="up">Character Type</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Ctl_002dChar-Syntax.html">Control-Character Syntax</a>, Previous: <a href="Basic-Char-Syntax.html">Basic Char Syntax</a>, Up: <a href="Character-Type.html">Character Type</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

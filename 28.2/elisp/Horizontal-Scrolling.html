@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 28.2.
+
+Copyright © 1990-1996, 1998-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Horizontal Scrolling (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Horizontal Scrolling (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Horizontal Scrolling (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Windows.html" rel="up" title="Windows">
+<link href="Coordinates-and-Windows.html" rel="next" title="Coordinates and Windows">
+<link href="Vertical-Scrolling.html" rel="prev" title="Vertical Scrolling">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Horizontal-Scrolling">
+<div class="nav-panel">
+<p>
+Next: <a href="Coordinates-and-Windows.html" accesskey="n" rel="next">Coordinates and Windows</a>, Previous: <a href="Vertical-Scrolling.html" accesskey="p" rel="prev">Vertical Fractional Scrolling</a>, Up: <a href="Windows.html" accesskey="u" rel="up">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Horizontal-Scrolling-1"><span>29.23 Horizontal Scrolling<a class="copiable-link" href="#Horizontal-Scrolling-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-horizontal-scrolling"></a>
+
+<p><em class="dfn">Horizontal scrolling</em> means shifting the image in the window left
+or right by a specified multiple of the normal character width.  Each
+window has a <em class="dfn">horizontal scroll position</em>, which is a number, never
+less than zero.  It specifies how far to shift the contents left.
+Shifting the window contents left generally makes all or part of some
+characters disappear off the left, and all or part of some other
+characters appear at the right.  The usual value is zero.
+</p>
+<p>The horizontal scroll position is measured in units of the normal
+character width, which is the width of space in the default font.  Thus,
+if the value is 5, that means the window contents are scrolled left by 5
+times the normal character width.  How many characters actually
+disappear off to the left depends on their width, and could vary from
+line to line.
+</p>
+<p>Because we read from side to side in the inner loop, and from top
+to bottom in the outer loop, the effect of horizontal scrolling is
+not like that of textual or vertical scrolling.  Textual scrolling
+involves selection of a portion of text to display, and vertical
+scrolling moves the window contents contiguously; but horizontal
+scrolling causes part of <em class="emph">each line</em> to go off screen.
+</p>
+<p>Usually, no horizontal scrolling is in effect; then the leftmost
+column is at the left edge of the window.  In this state, scrolling to
+the right is meaningless, since there is no data to the left of the edge
+to be revealed by it; so this is not allowed.  Scrolling to the left is
+allowed; it scrolls the first columns of text off the edge of the window
+and can reveal additional columns on the right that were truncated
+before.  Once a window has a nonzero amount of leftward horizontal
+scrolling, you can scroll it back to the right, but only so far as to
+reduce the net horizontal scroll to zero.  There is no limit to how far
+left you can scroll, but eventually all the text will disappear off the
+left edge.
+</p>
+<a class="index-entry-id" id="index-auto_002dhscroll_002dmode"></a>
+<p>If <code class="code">auto-hscroll-mode</code> is set, redisplay automatically alters
+the horizontal scrolling of a window as necessary to ensure that point
+is always visible.  However, you can still set the horizontal
+scrolling value explicitly.  The value you specify serves as a lower
+bound for automatic scrolling, i.e., automatic scrolling will not
+scroll a window to a column less than the specified one.
+</p>
+<p>The default value of <code class="code">auto-hscroll-mode</code> is <code class="code">t</code>; setting
+it to <code class="code">current-line</code> activates a variant of automatic horizontal
+scrolling whereby only the line showing the cursor is horizontally
+scrolled to make point visible, the rest of the window is left either
+unscrolled, or at the minimum scroll amount set by <code class="code">scroll-left</code>
+and <code class="code">scroll-right</code>, see below.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-scroll_002dleft"><span class="category-def">Command: </span><span><strong class="def-name">scroll-left</strong> <var class="def-var-arguments">&amp;optional count set-minimum</var><a class="copiable-link" href="#index-scroll_002dleft"> &para;</a></span></dt>
+<dd><p>This function scrolls the selected window <var class="var">count</var> columns to the
+left (or to the right if <var class="var">count</var> is negative).  The default
+for <var class="var">count</var> is the window width, minus 2.
+</p>
+<p>The return value is the total amount of leftward horizontal scrolling in
+effect after the change&mdash;just like the value returned by
+<code class="code">window-hscroll</code> (below).
+</p>
+<p>Note that text in paragraphs whose base direction is right-to-left
+(see <a class="pxref" href="Bidirectional-Display.html">Bidirectional Display</a>) moves in the opposite direction: e.g.,
+it moves to the right when <code class="code">scroll-left</code> is invoked with a
+positive value of <var class="var">count</var>.
+</p>
+<p>Once you scroll a window as far right as it can go, back to its normal
+position where the total leftward scrolling is zero, attempts to scroll
+any farther right have no effect.
+</p>
+<p>If <var class="var">set-minimum</var> is non-<code class="code">nil</code>, the new scroll amount becomes
+the lower bound for automatic scrolling; that is, automatic scrolling
+will not scroll a window to a column less than the value returned by
+this function.  Interactive calls pass non-<code class="code">nil</code> for
+<var class="var">set-minimum</var>.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-scroll_002dright"><span class="category-def">Command: </span><span><strong class="def-name">scroll-right</strong> <var class="def-var-arguments">&amp;optional count set-minimum</var><a class="copiable-link" href="#index-scroll_002dright"> &para;</a></span></dt>
+<dd><p>This function scrolls the selected window <var class="var">count</var> columns to the
+right (or to the left if <var class="var">count</var> is negative).  The default
+for <var class="var">count</var> is the window width, minus 2.  Aside from the direction
+of scrolling, this works just like <code class="code">scroll-left</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-window_002dhscroll"><span class="category-def">Function: </span><span><strong class="def-name">window-hscroll</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dhscroll"> &para;</a></span></dt>
+<dd><p>This function returns the total leftward horizontal scrolling of
+<var class="var">window</var>&mdash;the number of columns by which the text in <var class="var">window</var>
+is scrolled left past the left margin.  (In right-to-left paragraphs,
+the value is the total amount of the rightward scrolling instead.)
+The default for <var class="var">window</var> is the selected window.
+</p>
+<p>The return value is never negative.  It is zero when no horizontal
+scrolling has been done in <var class="var">window</var> (which is usually the case).
+</p>
+
+<div class="example">
+<div class="group"><pre class="example-preformatted">(window-hscroll)
+     &rArr; 0
+</pre></div><div class="group"><pre class="example-preformatted">(scroll-left 5)
+     &rArr; 5
+</pre></div><div class="group"><pre class="example-preformatted">(window-hscroll)
+     &rArr; 5
+</pre></div></div>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-set_002dwindow_002dhscroll"><span class="category-def">Function: </span><span><strong class="def-name">set-window-hscroll</strong> <var class="def-var-arguments">window columns</var><a class="copiable-link" href="#index-set_002dwindow_002dhscroll"> &para;</a></span></dt>
+<dd><p>This function sets horizontal scrolling of <var class="var">window</var>.  The value of
+<var class="var">columns</var> specifies the amount of scrolling, in terms of columns
+from the left margin (right margin in right-to-left paragraphs).  The
+argument <var class="var">columns</var> should be zero or positive; if not, it is taken
+as zero.  Fractional values of <var class="var">columns</var> are not supported at
+present.
+</p>
+<p>Note that <code class="code">set-window-hscroll</code> may appear not to work if you test
+it by evaluating a call with <kbd class="kbd">M-:</kbd> in a simple way.  What happens
+is that the function sets the horizontal scroll value and returns, but
+then redisplay adjusts the horizontal scrolling to make point visible,
+and this overrides what the function did.  You can observe the
+function&rsquo;s effect if you call it while point is sufficiently far from
+the left margin that it will remain visible.
+</p>
+<p>The value returned is <var class="var">columns</var>.
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(set-window-hscroll (selected-window) 10)
+     &rArr; 10
+</pre></div></div>
+</dd></dl>
+
+<p>Here is how you can determine whether a given position <var class="var">position</var>
+is off the screen due to horizontal scrolling:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defun hscroll-on-screen (window position)
+  (save-excursion
+    (goto-char position)
+    (and
+     (&gt;= (- (current-column) (window-hscroll window)) 0)
+     (&lt; (- (current-column) (window-hscroll window))
+        (window-width window)))))
+</pre></div></div>
+
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Coordinates-and-Windows.html">Coordinates and Windows</a>, Previous: <a href="Vertical-Scrolling.html">Vertical Fractional Scrolling</a>, Up: <a href="Windows.html">Windows</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

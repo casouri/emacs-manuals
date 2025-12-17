@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Pattern matching case statement (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Pattern matching case statement (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,17 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Conditionals.html" rel="up" title="Conditionals">
-<link href="Combining-Conditions.html" rel="next" title="Combining Conditions">
-<link href="Conditionals.html" rel="prev" title="Conditionals">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,32 +44,33 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Pattern-matching-case-statement"></span><div class="header">
+<div class="subsection-level-extent" id="Pattern-matching-case-statement">
+<div class="nav-panel">
 <p>
 Up: <a href="Conditionals.html" accesskey="u" rel="up">Conditionals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Pattern-matching-case-statement-1"></span><h4 class="subsection">10.2.1 Pattern matching case statement</h4>
-<span id="index-pcase"></span>
-<span id="index-pattern-matching"></span>
+<h4 class="subsection" id="Pattern-matching-case-statement-1"><span>10.2.1 Pattern matching case statement<a class="copiable-link" href="#Pattern-matching-case-statement-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-pcase"></a>
+<a class="index-entry-id" id="index-pattern-matching"></a>
 
 <p>To compare a particular value against various possible cases, the macro
-<code>pcase</code> can come handy.  It takes the following form:
+<code class="code">pcase</code> can come handy.  It takes the following form:
 </p>
 <div class="example">
-<pre class="example">(pcase <var>exp</var> <var>branch</var>1 <var>branch</var>2 <var>branch</var>3 &hellip;)
+<pre class="example-preformatted">(pcase <var class="var">exp</var> <var class="var">branch</var>1 <var class="var">branch</var>2 <var class="var">branch</var>3 ...)
 </pre></div>
 
-<p>where each <var>branch</var> takes the form <code>(<var>upattern</var>
-<var>body-forms</var>&hellip;)</code>.
+<p>where each <var class="var">branch</var> takes the form <code class="code">(<var class="var">upattern</var>
+<var class="var">body-forms</var>&hellip;)</code>.
 </p>
-<p>It will first evaluate <var>exp</var> and then compare the value against each
-<var>upattern</var> to see which <var>branch</var> to use, after which it will run the
-corresponding <var>body-forms</var>.  A common use case is to distinguish
+<p>It will first evaluate <var class="var">exp</var> and then compare the value against each
+<var class="var">upattern</var> to see which <var class="var">branch</var> to use, after which it will run the
+corresponding <var class="var">body-forms</var>.  A common use case is to distinguish
 between a few different constant values:
 </p>
 <div class="example">
-<pre class="example">(pcase (get-return-code x)
+<pre class="example-preformatted">(pcase (get-return-code x)
   (`success       (message &quot;Done!&quot;))
   (`would-block   (message &quot;Sorry, can't do it now&quot;))
   (`read-only     (message &quot;The shmliblick is read-only&quot;))
@@ -88,14 +78,14 @@ between a few different constant values:
   (code           (message &quot;Unknown return code %S&quot; code)))
 </pre></div>
 
-<p>In the last clause, <code>code</code> is a variable that gets bound to the value that
-was returned by <code>(get-return-code x)</code>.
+<p>In the last clause, <code class="code">code</code> is a variable that gets bound to the value that
+was returned by <code class="code">(get-return-code x)</code>.
 </p>
 <p>To give a more complex example, a simple interpreter for a little
 expression language could look like:
 </p>
 <div class="example">
-<pre class="example">(defun evaluate (exp env)
+<pre class="example-preformatted">(defun evaluate (exp env)
   (pcase exp
     (`(add ,x ,y)         (+ (evaluate x env) (evaluate y env)))
     (`(call ,fun ,arg)    (funcall (evaluate fun) (evaluate arg env)))
@@ -106,18 +96,18 @@ expression language could look like:
     (_                    (error &quot;Unknown expression %S&quot; exp))))
 </pre></div>
 
-<p>Where <code>`(add ,x ,y)</code> is a pattern that checks that <code>exp</code> is a three
-element list starting with the symbol <code>add</code>, then extracts the second and
-third elements and binds them to the variables <code>x</code> and <code>y</code>.
-<code>(pred numberp)</code> is a pattern that simply checks that <code>exp</code>
-is a number, and <code>_</code> is the catch-all pattern that matches anything.
+<p>Where <code class="code">`(add ,x ,y)</code> is a pattern that checks that <code class="code">exp</code> is a three
+element list starting with the symbol <code class="code">add</code>, then extracts the second and
+third elements and binds them to the variables <code class="code">x</code> and <code class="code">y</code>.
+<code class="code">(pred numberp)</code> is a pattern that simply checks that <code class="code">exp</code>
+is a number, and <code class="code">_</code> is the catch-all pattern that matches anything.
 </p>
-<p>There are two kinds of patterns involved in <code>pcase</code>, called
-<em>U-patterns</em> and <em>Q-patterns</em>.  The <var>upattern</var> mentioned above
+<p>There are two kinds of patterns involved in <code class="code">pcase</code>, called
+<em class="emph">U-patterns</em> and <em class="emph">Q-patterns</em>.  The <var class="var">upattern</var> mentioned above
 are U-patterns and can take the following forms:
 </p>
-<dl compact="compact">
-<dt><code>`<var>qpattern</var></code></dt>
+<dl class="table">
+<dt><code class="code">`<var class="var">qpattern</var></code></dt>
 <dd><p>This is one of the most common form of patterns.  The intention is to mimic the
 backquote macro: this pattern matches those values that could have been built
 by such a backquote expression.  Since we&rsquo;re pattern matching rather than
@@ -126,53 +116,54 @@ but instead it lets one specify a U-pattern that should match the value at
 that location.
 </p>
 <p>More specifically, a Q-pattern can take the following forms:
-</p><dl compact="compact">
-<dt><code>(<var>qpattern1</var> . <var>qpattern2</var>)</code></dt>
-<dd><p>This pattern matches any cons cell whose <code>car</code> matches <var>QPATTERN1</var> and
-whose <code>cdr</code> matches <var>PATTERN2</var>.
+</p><dl class="table">
+<dt><code class="code">(<var class="var">qpattern1</var> . <var class="var">qpattern2</var>)</code></dt>
+<dd><p>This pattern matches any cons cell whose <code class="code">car</code> matches <var class="var">QPATTERN1</var> and
+whose <code class="code">cdr</code> matches <var class="var">PATTERN2</var>.
 </p></dd>
-<dt><code><var>atom</var></code></dt>
-<dd><p>This pattern matches any atom <code>equal</code> to <var>atom</var>.
+<dt><code class="code"><var class="var">atom</var></code></dt>
+<dd><p>This pattern matches any atom <code class="code">equal</code> to <var class="var">atom</var>.
 </p></dd>
-<dt><code>,<var>upattern</var></code></dt>
-<dd><p>This pattern matches any object that matches the <var>upattern</var>.
+<dt><code class="code">,<var class="var">upattern</var></code></dt>
+<dd><p>This pattern matches any object that matches the <var class="var">upattern</var>.
 </p></dd>
 </dl>
 
 </dd>
-<dt><code><var>symbol</var></code></dt>
+<dt><code class="code"><var class="var">symbol</var></code></dt>
 <dd><p>A mere symbol in a U-pattern matches anything, and additionally let-binds this
 symbol to the value that it matched, so that you can later refer to it, either
-in the <var>body-forms</var> or also later in the pattern.
+in the <var class="var">body-forms</var> or also later in the pattern.
 </p></dd>
-<dt><code>_</code></dt>
-<dd><p>This so-called <em>don&rsquo;t care</em> pattern matches anything, like the previous
+<dt><code class="code">_</code></dt>
+<dd><p>This so-called <em class="emph">don&rsquo;t care</em> pattern matches anything, like the previous
 one, but unless symbol patterns it does not bind any variable.
 </p></dd>
-<dt><code>(pred <var>pred</var>)</code></dt>
-<dd><p>This pattern matches if the function <var>pred</var> returns non-<code>nil</code> when
+<dt><code class="code">(pred <var class="var">pred</var>)</code></dt>
+<dd><p>This pattern matches if the function <var class="var">pred</var> returns non-<code class="code">nil</code> when
 called with the object being matched.
 </p></dd>
-<dt><code>(or <var>upattern1</var> <var>upattern2</var>&hellip;)</code></dt>
+<dt><code class="code">(or <var class="var">upattern1</var> <var class="var">upattern2</var>&hellip;)</code></dt>
 <dd><p>This pattern matches as soon as one of the argument patterns succeeds.
 All argument patterns should let-bind the same variables.
 </p></dd>
-<dt><code>(and <var>upattern1</var> <var>upattern2</var>&hellip;)</code></dt>
+<dt><code class="code">(and <var class="var">upattern1</var> <var class="var">upattern2</var>&hellip;)</code></dt>
 <dd><p>This pattern matches only if all the argument patterns succeed.
 </p></dd>
-<dt><code>(guard <var>exp</var>)</code></dt>
-<dd><p>This pattern ignores the object being examined and simply succeeds if <var>exp</var>
-evaluates to non-<code>nil</code> and fails otherwise.  It is typically used inside
-an <code>and</code> pattern.  For example, <code>(and x (guard (&lt; x 10)))</code>
+<dt><code class="code">(guard <var class="var">exp</var>)</code></dt>
+<dd><p>This pattern ignores the object being examined and simply succeeds if <var class="var">exp</var>
+evaluates to non-<code class="code">nil</code> and fails otherwise.  It is typically used inside
+an <code class="code">and</code> pattern.  For example, <code class="code">(and x (guard (&lt; x 10)))</code>
 is a pattern which matches any number smaller than 10 and let-binds it to
-the variable <code>x</code>.
+the variable <code class="code">x</code>.
 </p></dd>
 </dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Up: <a href="Conditionals.html" accesskey="u" rel="up">Conditionals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Up: <a href="Conditionals.html">Conditionals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

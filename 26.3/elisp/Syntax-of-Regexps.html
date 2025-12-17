@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Syntax of Regexps (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Syntax of Regexps (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,17 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Regular-Expressions.html" rel="up" title="Regular Expressions">
-<link href="Regexp-Special.html" rel="next" title="Regexp Special">
-<link href="Regular-Expressions.html" rel="prev" title="Regular Expressions">
+<link href="Regexp-Example.html" rel="next" title="Regexp Example">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,56 +45,55 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Syntax-of-Regexps"></span><div class="header">
+<div class="subsection-level-extent" id="Syntax-of-Regexps">
+<div class="nav-panel">
 <p>
-Next: <a href="Regexp-Example.html" accesskey="n" rel="next">Regexp Example</a>, Up: <a href="Regular-Expressions.html" accesskey="u" rel="up">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Regexp-Example.html" accesskey="n" rel="next">Complex Regexp Example</a>, Up: <a href="Regular-Expressions.html" accesskey="u" rel="up">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Syntax-of-Regular-Expressions"></span><h4 class="subsection">34.3.1 Syntax of Regular Expressions</h4>
-<span id="index-regexp-syntax"></span>
-<span id="index-syntax-of-regular-expressions"></span>
+<h4 class="subsection" id="Syntax-of-Regular-Expressions"><span>34.3.1 Syntax of Regular Expressions<a class="copiable-link" href="#Syntax-of-Regular-Expressions"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-regexp-syntax"></a>
+<a class="index-entry-id" id="index-syntax-of-regular-expressions"></a>
 
 <p>Regular expressions have a syntax in which a few characters are
-special constructs and the rest are <em>ordinary</em>.  An ordinary
+special constructs and the rest are <em class="dfn">ordinary</em>.  An ordinary
 character is a simple regular expression that matches that character
-and nothing else.  The special characters are &lsquo;<samp>.</samp>&rsquo;, &lsquo;<samp>*</samp>&rsquo;,
-&lsquo;<samp>+</samp>&rsquo;, &lsquo;<samp>?</samp>&rsquo;, &lsquo;<samp>[</samp>&rsquo;, &lsquo;<samp>^</samp>&rsquo;, &lsquo;<samp>$</samp>&rsquo;, and &lsquo;<samp>\</samp>&rsquo;; no new
+and nothing else.  The special characters are &lsquo;<samp class="samp">.</samp>&rsquo;, &lsquo;<samp class="samp">*</samp>&rsquo;,
+&lsquo;<samp class="samp">+</samp>&rsquo;, &lsquo;<samp class="samp">?</samp>&rsquo;, &lsquo;<samp class="samp">[</samp>&rsquo;, &lsquo;<samp class="samp">^</samp>&rsquo;, &lsquo;<samp class="samp">$</samp>&rsquo;, and &lsquo;<samp class="samp">\</samp>&rsquo;; no new
 special characters will be defined in the future.  The character
-&lsquo;<samp>]</samp>&rsquo; is special if it ends a character alternative (see later).
-The character &lsquo;<samp>-</samp>&rsquo; is special inside a character alternative.  A
-&lsquo;<samp>[:</samp>&rsquo; and balancing &lsquo;<samp>:]</samp>&rsquo; enclose a character class inside a
+&lsquo;<samp class="samp">]</samp>&rsquo; is special if it ends a character alternative (see later).
+The character &lsquo;<samp class="samp">-</samp>&rsquo; is special inside a character alternative.  A
+&lsquo;<samp class="samp">[:</samp>&rsquo; and balancing &lsquo;<samp class="samp">:]</samp>&rsquo; enclose a character class inside a
 character alternative.  Any other character appearing in a regular
-expression is ordinary, unless a &lsquo;<samp>\</samp>&rsquo; precedes it.
+expression is ordinary, unless a &lsquo;<samp class="samp">\</samp>&rsquo; precedes it.
 </p>
-<p>For example, &lsquo;<samp>f</samp>&rsquo; is not a special character, so it is ordinary, and
-therefore &lsquo;<samp>f</samp>&rsquo; is a regular expression that matches the string
-&lsquo;<samp>f</samp>&rsquo; and no other string.  (It does <em>not</em> match the string
-&lsquo;<samp>fg</samp>&rsquo;, but it does match a <em>part</em> of that string.)  Likewise,
-&lsquo;<samp>o</samp>&rsquo; is a regular expression that matches only &lsquo;<samp>o</samp>&rsquo;.
+<p>For example, &lsquo;<samp class="samp">f</samp>&rsquo; is not a special character, so it is ordinary, and
+therefore &lsquo;<samp class="samp">f</samp>&rsquo; is a regular expression that matches the string
+&lsquo;<samp class="samp">f</samp>&rsquo; and no other string.  (It does <em class="emph">not</em> match the string
+&lsquo;<samp class="samp">fg</samp>&rsquo;, but it does match a <em class="emph">part</em> of that string.)  Likewise,
+&lsquo;<samp class="samp">o</samp>&rsquo; is a regular expression that matches only &lsquo;<samp class="samp">o</samp>&rsquo;.
 </p>
-<p>Any two regular expressions <var>a</var> and <var>b</var> can be concatenated.  The
-result is a regular expression that matches a string if <var>a</var> matches
-some amount of the beginning of that string and <var>b</var> matches the rest of
+<p>Any two regular expressions <var class="var">a</var> and <var class="var">b</var> can be concatenated.  The
+result is a regular expression that matches a string if <var class="var">a</var> matches
+some amount of the beginning of that string and <var class="var">b</var> matches the rest of
 the string.
 </p>
-<p>As a simple example, we can concatenate the regular expressions &lsquo;<samp>f</samp>&rsquo;
-and &lsquo;<samp>o</samp>&rsquo; to get the regular expression &lsquo;<samp>fo</samp>&rsquo;, which matches only
-the string &lsquo;<samp>fo</samp>&rsquo;.  Still trivial.  To do something more powerful, you
+<p>As a simple example, we can concatenate the regular expressions &lsquo;<samp class="samp">f</samp>&rsquo;
+and &lsquo;<samp class="samp">o</samp>&rsquo; to get the regular expression &lsquo;<samp class="samp">fo</samp>&rsquo;, which matches only
+the string &lsquo;<samp class="samp">fo</samp>&rsquo;.  Still trivial.  To do something more powerful, you
 need to use one of the special regular expression constructs.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Regexp-Special.html" accesskey="1">Regexp Special</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Special characters in regular expressions.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Char-Classes.html" accesskey="2">Char Classes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Character classes used in regular expressions.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Regexp-Backslash.html" accesskey="3">Regexp Backslash</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Backslash-sequences in regular expressions.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Regexp-Special.html" accesskey="1">Special Characters in Regular Expressions</a></li>
+<li><a href="Char-Classes.html" accesskey="2">Character Classes</a></li>
+<li><a href="Regexp-Backslash.html" accesskey="3">Backslash Constructs in Regular Expressions</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Regexp-Example.html" accesskey="n" rel="next">Regexp Example</a>, Up: <a href="Regular-Expressions.html" accesskey="u" rel="up">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Regexp-Example.html">Complex Regexp Example</a>, Up: <a href="Regular-Expressions.html">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

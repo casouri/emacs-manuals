@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Scrolling (GNU Emacs Manual)</title>
+
+<meta name="description" content="Scrolling (GNU Emacs Manual)">
+<meta name="keywords" content="Scrolling (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Recentering.html" rel="next" title="Recentering">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Scrolling">
+<div class="nav-panel">
+<p>
+Next: <a href="Recentering.html" accesskey="n" rel="next">Recentering</a>, Up: <a href="Display.html" accesskey="u" rel="up">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Scrolling-1"><span>15.1 Scrolling<a class="copiable-link" href="#Scrolling-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-scrolling"></a>
+
+<p>If a window is too small to display all the text in its buffer, it
+displays only a portion of it.  <em class="dfn">Scrolling</em> commands change which
+portion of the buffer is displayed.
+</p>
+<p>Scrolling forward or up advances the portion of the buffer
+displayed in the window; equivalently, it moves the buffer text
+upwards relative to the window.  Scrolling backward or down
+displays an earlier portion of the buffer, and moves the text
+downwards relative to the window.
+</p>
+<p>In Emacs, scrolling up or down refers to the direction that
+the text moves in the window, <em class="emph">not</em> the direction that the window
+moves relative to the text.  This terminology was adopted by Emacs
+before the modern meaning of &ldquo;scrolling up&rdquo; and &ldquo;scrolling down&rdquo;
+became widespread.  Hence, the strange result that <kbd class="key">PageDown</kbd>
+scrolls up in the Emacs sense.
+</p>
+<p>The portion of a buffer displayed in a window always contains point.
+If you move point past the bottom or top of the window, scrolling
+occurs automatically to bring it back onscreen (see <a class="pxref" href="Auto-Scrolling.html">Automatic Scrolling</a>).  You can also scroll explicitly with these commands:
+</p>
+<dl class="table">
+<dt><kbd class="kbd">C-v</kbd></dt>
+<dt><kbd class="kbd"><kbd class="key">PageDown</kbd></kbd></dt>
+<dt><kbd class="kbd"><kbd class="key">next</kbd></kbd></dt>
+<dd><p>Scroll forward by nearly a full window (<code class="code">scroll-up-command</code>).
+</p></dd>
+<dt><kbd class="kbd">M-v</kbd></dt>
+<dt><kbd class="kbd"><kbd class="key">PageUp</kbd></kbd></dt>
+<dt><kbd class="kbd"><kbd class="key">prior</kbd></kbd></dt>
+<dd><p>Scroll backward (<code class="code">scroll-down-command</code>).
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-C_002dv-1"></a>
+<a class="index-entry-id" id="index-M_002dv-1"></a>
+<a class="index-entry-id" id="index-PageDown-1"></a>
+<a class="index-entry-id" id="index-PageUp-1"></a>
+<a class="index-entry-id" id="index-next-1"></a>
+<a class="index-entry-id" id="index-prior-1"></a>
+<a class="index-entry-id" id="index-scroll_002dup_002dcommand"></a>
+<a class="index-entry-id" id="index-scroll_002ddown_002dcommand"></a>
+<p><kbd class="kbd">C-v</kbd> (<code class="code">scroll-up-command</code>) scrolls forward by nearly the
+whole window height.  The effect is to take the two lines at the
+bottom of the window and put them at the top, followed by lines that
+were not previously visible.  If point was in the text that scrolled
+off the top, it ends up on the window&rsquo;s new topmost line.  The
+<kbd class="key">PageDown</kbd> (or <kbd class="key">next</kbd>) key is equivalent to <kbd class="kbd">C-v</kbd>.
+</p>
+<p><kbd class="kbd">M-v</kbd> (<code class="code">scroll-down-command</code>) scrolls backward in a similar
+way.  The <kbd class="key">PageUp</kbd> (or <kbd class="key">prior</kbd>) key is equivalent to
+<kbd class="kbd">M-v</kbd>.
+</p>
+<a class="index-entry-id" id="index-next_002dscreen_002dcontext_002dlines"></a>
+<p>The number of lines of overlap left by these scroll commands is
+controlled by the variable <code class="code">next-screen-context-lines</code>, whose
+default value is 2.  You can supply the commands with a numeric prefix
+argument, <var class="var">n</var>, to scroll by <var class="var">n</var> lines; Emacs attempts to leave
+point unchanged, so that the text and point move up or down together.
+<kbd class="kbd">C-v</kbd> with a negative argument is like <kbd class="kbd">M-v</kbd> and vice versa.
+</p>
+<a class="index-entry-id" id="index-scroll_002derror_002dtop_002dbottom"></a>
+<p>By default, these commands signal an error (by beeping or flashing
+the screen) if no more scrolling is possible, because the window has
+reached the beginning or end of the buffer.  If you change the
+variable <code class="code">scroll-error-top-bottom</code> to <code class="code">t</code>, these commands
+move point to the farthest possible position.  If point is already
+there, the commands signal an error.
+</p>
+<a class="index-entry-id" id="index-scroll_002dpreserve_002dscreen_002dposition"></a>
+<a class="index-entry-id" id="index-scroll_002dcommand-property"></a>
+<p>Some users like scroll commands to keep point at the same screen
+position, so that scrolling back to the same screen conveniently
+returns point to its original position.  You can enable this behavior
+via the variable <code class="code">scroll-preserve-screen-position</code>.  If the value
+is <code class="code">t</code>, Emacs adjusts point to keep the cursor at the same screen
+position whenever a scroll command moves it off-window, rather than
+moving it to the topmost or bottommost line.  With any other
+non-<code class="code">nil</code> value, Emacs adjusts point this way even if the scroll
+command leaves point in the window.  This variable affects all the
+scroll commands documented in this section, as well as scrolling with
+the mouse wheel (see <a class="pxref" href="Mouse-Commands.html">Mouse Commands for Editing</a>); in general, it affects any
+command that has a non-<code class="code">nil</code> <code class="code">scroll-command</code> property.
+See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Property-Lists.html#Property-Lists">Property Lists</a> in <cite class="cite">The Emacs Lisp Reference Manual</cite>.  The
+same property also causes Emacs not to exit incremental search when
+one of these commands is invoked and <code class="code">isearch-allow-scroll</code> is
+non-<code class="code">nil</code> (see <a class="pxref" href="Not-Exiting-Isearch.html">Not Exiting Incremental Search</a>).
+</p>
+<a class="index-entry-id" id="index-fast_002dbut_002dimprecise_002dscrolling"></a>
+<p>Sometimes, particularly when you hold down keys such as <kbd class="kbd">C-v</kbd>
+and <kbd class="kbd">M-v</kbd>, activating keyboard auto-repeat, Emacs fails to keep up
+with the rapid rate of scrolling requested; the display doesn&rsquo;t update
+and Emacs can become unresponsive to input for quite a long time.  You
+can counter this sluggishness by setting the variable
+<code class="code">fast-but-imprecise-scrolling</code> to a non-<code class="code">nil</code> value.  This
+instructs the scrolling commands not to fontify (see <a class="pxref" href="Font-Lock.html">Font Lock mode</a>)
+any unfontified text they scroll over, instead to assume it has the
+default face.  This can cause Emacs to scroll to somewhat wrong buffer
+positions when the faces in use are not all the same size, even with
+single (i.e., without auto-repeat) scrolling operations.
+</p>
+<a class="index-entry-id" id="index-jit_002dlock_002ddefer_002dtime"></a>
+<p>As an alternative to setting <code class="code">fast-but-imprecise-scrolling</code> you
+might prefer to enable jit-lock deferred fontification (see <a class="pxref" href="Font-Lock.html">Font Lock mode</a>).  To do this, customize <code class="code">jit-lock-defer-time</code> to a small
+positive number such as 0.25, or even 0.1 if you type quickly.  This
+gives you less jerky scrolling when you hold down <kbd class="kbd">C-v</kbd>, but the
+window contents after any action which scrolls into a fresh portion of
+the buffer will be momentarily unfontified.
+</p>
+<a class="index-entry-id" id="index-redisplay_002dskip_002dfontification_002don_002dinput"></a>
+<p>Finally, a third alternative to these variables is
+<code class="code">redisplay-skip-fontification-on-input</code>.  If this variable is
+non-<code class="code">nil</code>, skip some fontifications if there&rsquo;s input pending.
+This usually does not affect the display because redisplay is
+completely skipped anyway if input was pending, but it can make
+scrolling smoother by avoiding unnecessary fontification.
+</p>
+<a class="index-entry-id" id="index-scroll_002dup"></a>
+<a class="index-entry-id" id="index-scroll_002ddown"></a>
+<a class="index-entry-id" id="index-scroll_002dup_002dline"></a>
+<a class="index-entry-id" id="index-scroll_002ddown_002dline"></a>
+<p>The commands <kbd class="kbd">M-x scroll-up</kbd> and <kbd class="kbd">M-x scroll-down</kbd> behave
+similarly to <code class="code">scroll-up-command</code> and <code class="code">scroll-down-command</code>,
+except they do not obey <code class="code">scroll-error-top-bottom</code>.  Prior to
+Emacs 24, these were the default commands for scrolling up and down.
+The commands <kbd class="kbd">M-x scroll-up-line</kbd> and <kbd class="kbd">M-x scroll-down-line</kbd>
+scroll the current window by one line at a time.  If you intend to use
+any of these commands, you might want to give them key bindings
+(see <a class="pxref" href="Init-Rebinding.html">Rebinding Keys in Your Init File</a>).
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Recentering.html">Recentering</a>, Up: <a href="Display.html">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

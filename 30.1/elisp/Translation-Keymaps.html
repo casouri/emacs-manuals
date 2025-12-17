@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Translation Keymaps (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Translation Keymaps (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Translation Keymaps (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Keymaps.html" rel="up" title="Keymaps">
+<link href="Key-Binding-Commands.html" rel="next" title="Key Binding Commands">
+<link href="Remapping-Commands.html" rel="prev" title="Remapping Commands">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Translation-Keymaps">
+<div class="nav-panel">
+<p>
+Next: <a href="Key-Binding-Commands.html" accesskey="n" rel="next">Commands for Binding Keys</a>, Previous: <a href="Remapping-Commands.html" accesskey="p" rel="prev">Remapping Commands</a>, Up: <a href="Keymaps.html" accesskey="u" rel="up">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Keymaps-for-Translating-Sequences-of-Events"><span>23.15 Keymaps for Translating Sequences of Events<a class="copiable-link" href="#Keymaps-for-Translating-Sequences-of-Events"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-translation-keymap"></a>
+<a class="index-entry-id" id="index-keymaps-for-translating-events"></a>
+
+<p>When the <code class="code">read-key-sequence</code> function reads a key sequence
+(see <a class="pxref" href="Key-Sequence-Input.html">Key Sequence Input</a>), it uses <em class="dfn">translation keymaps</em> to
+translate certain event sequences into others.  The translation
+keymaps are <code class="code">input-decode-map</code>, <code class="code">local-function-key-map</code>,
+and <code class="code">key-translation-map</code> (in order of priority).
+</p>
+<p>Translation keymaps have the same structure as other keymaps, but
+are used differently: they specify translations to make while reading
+key sequences, rather than bindings for complete key sequences.  As
+each key sequence is read, it is checked against each translation
+keymap.  If one of the translation keymaps binds <var class="var">k</var> to a
+vector <var class="var">v</var>, then whenever <var class="var">k</var> appears as a sub-sequence
+<em class="emph">anywhere</em> in a key sequence, that sub-sequence is replaced with
+the events in <var class="var">v</var>.
+</p>
+<p>For example, VT100 terminals send <kbd class="kbd"><kbd class="key">ESC</kbd> O P</kbd> when the
+keypad key <kbd class="key">PF1</kbd> is pressed.  On such terminals, Emacs must
+translate that sequence of events into a single event <code class="code">pf1</code>.
+This is done by binding <kbd class="kbd"><kbd class="key">ESC</kbd> O P</kbd> to <code class="code">[pf1]</code> in
+<code class="code">input-decode-map</code>.  Thus, when you type <kbd class="kbd">C-c <kbd class="key">PF1</kbd></kbd> on
+the terminal, the terminal emits the character sequence <kbd class="kbd">C-c
+<kbd class="key">ESC</kbd> O P</kbd>, and <code class="code">read-key-sequence</code> translates this back into
+<kbd class="kbd">C-c <kbd class="key">PF1</kbd></kbd> and returns it as the vector <code class="code">[?\C-c pf1]</code>.
+</p>
+<p>Translation keymaps take effect only after Emacs has decoded the
+keyboard input (via the input coding system specified by
+<code class="code">keyboard-coding-system</code>).  See <a class="xref" href="Terminal-I_002fO-Encoding.html">Terminal I/O Encoding</a>.
+</p>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-input_002ddecode_002dmap"><span class="category-def">Variable: </span><span><strong class="def-name">input-decode-map</strong><a class="copiable-link" href="#index-input_002ddecode_002dmap"> &para;</a></span></dt>
+<dd><p>This variable holds a keymap that describes the character sequences sent
+by function keys on an ordinary character terminal.
+</p>
+<p>The value of <code class="code">input-decode-map</code> is usually set up automatically
+according to the terminal&rsquo;s Terminfo or Termcap entry, but sometimes
+those need help from terminal-specific Lisp files.  Emacs comes with
+terminal-specific files for many common terminals; their main purpose is
+to make entries in <code class="code">input-decode-map</code> beyond those that can be
+deduced from Termcap and Terminfo.  See <a class="xref" href="Terminal_002dSpecific.html">Terminal-Specific Initialization</a>.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-function_002dkey_002dmap"></a>
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-local_002dfunction_002dkey_002dmap"><span class="category-def">Variable: </span><span><strong class="def-name">local-function-key-map</strong><a class="copiable-link" href="#index-local_002dfunction_002dkey_002dmap"> &para;</a></span></dt>
+<dd><p>This variable holds a keymap similar to <code class="code">input-decode-map</code> except
+that it describes key sequences which should be translated to
+alternative interpretations that are usually preferred.  It applies
+after <code class="code">input-decode-map</code> and before <code class="code">key-translation-map</code>.
+</p>
+<p>Entries in <code class="code">local-function-key-map</code> are ignored if they conflict
+with bindings made in the minor mode, local, or global keymaps.  I.e.,
+the remapping only applies if the original key sequence would
+otherwise not have any binding.
+</p>
+<p><code class="code">local-function-key-map</code> inherits from <code class="code">function-key-map</code>.
+The latter should only be altered if you want the binding to apply in
+all terminals, so using the former is almost always preferred.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-key_002dtranslation_002dmap"><span class="category-def">Variable: </span><span><strong class="def-name">key-translation-map</strong><a class="copiable-link" href="#index-key_002dtranslation_002dmap"> &para;</a></span></dt>
+<dd><p>This variable is another keymap used just like <code class="code">input-decode-map</code>
+to translate input events into other events.  It differs from
+<code class="code">input-decode-map</code> in that it goes to work after
+<code class="code">local-function-key-map</code> is finished rather than before; it
+receives the results of translation by <code class="code">local-function-key-map</code>.
+</p>
+<p>Just like <code class="code">input-decode-map</code>, but unlike
+<code class="code">local-function-key-map</code>, this keymap is applied regardless of
+whether the input key-sequence has a normal binding.  Note however
+that actual key bindings can have an effect on
+<code class="code">key-translation-map</code>, even though they are overridden by it.
+Indeed, actual key bindings override <code class="code">local-function-key-map</code> and
+thus may alter the key sequence that <code class="code">key-translation-map</code>
+receives.  Clearly, it is better to avoid this type of situation.
+</p>
+<p>The intent of <code class="code">key-translation-map</code> is for users to map one
+character set to another, including ordinary characters normally bound
+to <code class="code">self-insert-command</code>.
+</p></dd></dl>
+
+<a class="index-entry-id" id="index-key-translation-function"></a>
+<p>You can use <code class="code">input-decode-map</code>, <code class="code">local-function-key-map</code>,
+and <code class="code">key-translation-map</code> for more than simple aliases, by using
+a function, instead of a key sequence, as the translation of a
+key.  Then this function is called to compute the translation of that
+key.
+</p>
+<p>The key translation function receives one argument, which is the prompt
+that was specified in <code class="code">read-key-sequence</code>&mdash;or <code class="code">nil</code> if the
+key sequence is being read by the editor command loop.  In most cases
+you can ignore the prompt value.
+</p>
+<p>If the function reads input itself, it can have the effect of altering
+the event that follows.  For example, here&rsquo;s how to define <kbd class="kbd">C-c h</kbd>
+to turn the character that follows into a Hyper character:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defun hyperify (prompt)
+  (let ((e (read-event)))
+    (vector (if (numberp e)
+                (logior (ash 1 24) e)
+              (if (memq 'hyper (event-modifiers e))
+                  e
+                (add-event-modifier &quot;H-&quot; e))))))
+
+(defun add-event-modifier (string e)
+  (let ((symbol (if (symbolp e) e (car e))))
+    (setq symbol (intern (concat string
+                                 (symbol-name symbol))))
+    (if (symbolp e)
+        symbol
+      (cons symbol (cdr e)))))
+
+(keymap-set local-function-key-map &quot;C-c h&quot; 'hyperify)
+</pre></div></div>
+
+<a class="index-entry-id" id="index-accessing-events-within-a-key-translation-function"></a>
+<a class="index-entry-id" id="index-current_002dkey_002dremap_002dsequence"></a>
+<p>A key translation function might want to adjust its behavior based on
+parameters to events within a key sequence containing non-key events
+(see <a class="pxref" href="Input-Events.html">Input Events</a>.)  This information is available from the
+variable <code class="code">current-key-remap-sequence</code>, which is bound to the key
+sub-sequence being translated around calls to key translation
+functions.
+</p>
+<ul class="mini-toc">
+<li><a href="#Interaction-with-normal-keymaps" accesskey="1">Interaction with normal keymaps</a></li>
+</ul>
+<div class="subsection-level-extent" id="Interaction-with-normal-keymaps">
+<h4 class="subsection"><span>23.15.1 Interaction with normal keymaps<a class="copiable-link" href="#Interaction-with-normal-keymaps"> &para;</a></span></h4>
+
+<p>The end of a key sequence is detected when that key sequence either is bound
+to a command, or when Emacs determines that no additional event can lead
+to a sequence that is bound to a command.
+</p>
+<p>This means that, while <code class="code">input-decode-map</code> and <code class="code">key-translation-map</code>
+apply regardless of whether the original key sequence would have a binding, the
+presence of such a binding can still prevent translation from taking place.
+For example, let us return to our VT100 example above and add a binding for
+<kbd class="kbd">C-c <kbd class="key">ESC</kbd></kbd> to the global map; now when the user hits <kbd class="kbd">C-c
+<kbd class="key">PF1</kbd></kbd> Emacs will fail to decode <kbd class="kbd">C-c <kbd class="key">ESC</kbd> O P</kbd> into <kbd class="kbd">C-c
+<kbd class="key">PF1</kbd></kbd> because it will stop reading keys right after <kbd class="kbd">C-c <kbd class="key">ESC</kbd></kbd>,
+leaving <kbd class="kbd">O P</kbd> for later.  This is in case the user really hit <kbd class="kbd">C-c
+<kbd class="key">ESC</kbd></kbd>, in which case Emacs should not sit there waiting for the next key
+to decide whether the user really pressed <kbd class="kbd"><kbd class="key">ESC</kbd></kbd> or <kbd class="kbd"><kbd class="key">PF1</kbd></kbd>.
+</p>
+<p>For that reason, it is better to avoid binding commands to key sequences where
+the end of the key sequence is a prefix of a key translation.  The main such
+problematic suffixes/prefixes are <kbd class="kbd"><kbd class="key">ESC</kbd></kbd>, <kbd class="kbd">M-O</kbd> (which is really
+<kbd class="kbd"><kbd class="key">ESC</kbd> O</kbd>) and <kbd class="kbd">M-[</kbd> (which is really <kbd class="kbd"><kbd class="key">ESC</kbd> [</kbd>).
+</p>
+</div>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Key-Binding-Commands.html">Commands for Binding Keys</a>, Previous: <a href="Remapping-Commands.html">Remapping Commands</a>, Up: <a href="Keymaps.html">Keymaps</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

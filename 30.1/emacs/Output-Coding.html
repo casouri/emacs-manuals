@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 30.1.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Output Coding (GNU Emacs Manual)</title>
+
+<meta name="description" content="Output Coding (GNU Emacs Manual)">
+<meta name="keywords" content="Output Coding (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="International.html" rel="up" title="International">
+<link href="Text-Coding.html" rel="next" title="Text Coding">
+<link href="Specify-Coding.html" rel="prev" title="Specify Coding">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Output-Coding">
+<div class="nav-panel">
+<p>
+Next: <a href="Text-Coding.html" accesskey="n" rel="next">Specifying a Coding System for File Text</a>, Previous: <a href="Specify-Coding.html" accesskey="p" rel="prev">Specifying a File&rsquo;s Coding System</a>, Up: <a href="International.html" accesskey="u" rel="up">International Character Set Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Choosing-Coding-Systems-for-Output"><span>24.8 Choosing Coding Systems for Output<a class="copiable-link" href="#Choosing-Coding-Systems-for-Output"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-buffer_002dfile_002dcoding_002dsystem"></a>
+<p>Once Emacs has chosen a coding system for a buffer, it stores that
+coding system in <code class="code">buffer-file-coding-system</code>.  That makes it the
+default for operations that write from this buffer into a file, such
+as <code class="code">save-buffer</code> and <code class="code">write-region</code>.  You can specify a
+different coding system for further file output from the buffer using
+<code class="code">set-buffer-file-coding-system</code> (see <a class="pxref" href="Text-Coding.html">Specifying a Coding System for File Text</a>).
+</p>
+<p>You can insert any character Emacs supports into any Emacs buffer,
+but most coding systems can only handle a subset of these characters.
+Therefore, it&rsquo;s possible that the characters you insert cannot be
+encoded with the coding system that will be used to save the buffer.
+For example, you could visit a text file in Polish, encoded in
+<code class="code">iso-8859-2</code>, and add some Russian words to it.  When you save
+that buffer, Emacs cannot use the current value of
+<code class="code">buffer-file-coding-system</code>, because the characters you added
+cannot be encoded by that coding system.
+</p>
+<p>When that happens, Emacs tries the most-preferred coding system (set
+by <kbd class="kbd">M-x prefer-coding-system</kbd> or <kbd class="kbd">M-x
+set-language-environment</kbd>).  If that coding system can safely encode
+all of the characters in the buffer, Emacs uses it, and stores its
+value in <code class="code">buffer-file-coding-system</code>.  Otherwise, Emacs displays
+a list of coding systems suitable for encoding the buffer&rsquo;s contents,
+and asks you to choose one of those coding systems.
+</p>
+<p>If you insert the unsuitable characters in a mail message, Emacs
+behaves a bit differently.  It additionally checks whether the
+most-preferred coding system is recommended for use in MIME messages;
+if not, it informs you of this fact and prompts you for another coding
+system.  This is so you won&rsquo;t inadvertently send a message encoded in
+a way that your recipient&rsquo;s mail software will have difficulty
+decoding.  (You can still use an unsuitable coding system if you enter
+its name at the prompt.)
+</p>
+<a class="index-entry-id" id="index-sendmail_002dcoding_002dsystem"></a>
+<p>When you send a mail message (see <a class="pxref" href="Sending-Mail.html">Sending Mail</a>),
+Emacs has four different ways to determine the coding system to use
+for encoding the message text.  It first tries the buffer&rsquo;s own value of
+<code class="code">buffer-file-coding-system</code>, if that is non-<code class="code">nil</code>.
+Otherwise, it uses the value of <code class="code">sendmail-coding-system</code>, if that
+is non-<code class="code">nil</code>.  Thirdly, it uses the value of
+<code class="code">default-sendmail-coding-system</code>.
+If all of these three values are <code class="code">nil</code>, Emacs encodes outgoing
+mail using the default coding system for new files (i.e., the
+default value of <code class="code">buffer-file-coding-system</code>), which is
+controlled by your choice of language environment.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Text-Coding.html">Specifying a Coding System for File Text</a>, Previous: <a href="Specify-Coding.html">Specifying a File&rsquo;s Coding System</a>, Up: <a href="International.html">International Character Set Support</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

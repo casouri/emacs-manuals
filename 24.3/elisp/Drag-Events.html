@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Drag Events (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Drag Events (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Click-Events.html" rel="prev" title="Click Events">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 
@@ -55,45 +46,47 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Drag-Events"></span><div class="header">
+<div class="subsection-level-extent" id="Drag-Events">
+<div class="nav-panel">
 <p>
 Next: <a href="Button_002dDown-Events.html" accesskey="n" rel="next">Button-Down Events</a>, Previous: <a href="Click-Events.html" accesskey="p" rel="prev">Click Events</a>, Up: <a href="Input-Events.html" accesskey="u" rel="up">Input Events</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Drag-Events-1"></span><h4 class="subsection">21.7.5 Drag Events</h4>
-<span id="index-drag-event"></span>
-<span id="index-mouse-drag-event"></span>
+<h4 class="subsection" id="Drag-Events-1"><span>21.7.5 Drag Events<a class="copiable-link" href="#Drag-Events-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-drag-event"></a>
+<a class="index-entry-id" id="index-mouse-drag-event"></a>
 
 <p>With Emacs, you can have a drag event without even changing your
-clothes.  A <em>drag event</em> happens every time the user presses a mouse
+clothes.  A <em class="dfn">drag event</em> happens every time the user presses a mouse
 button and then moves the mouse to a different character position before
 releasing the button.  Like all mouse events, drag events are
 represented in Lisp as lists.  The lists record both the starting mouse
 position and the final position, like this:
 </p>
 <div class="example">
-<pre class="example">(<var>event-type</var>
- (<var>window1</var> START-POSITION)
- (<var>window2</var> END-POSITION))
+<pre class="example-preformatted">(<var class="var">event-type</var>
+ (<var class="var">window1</var> START-POSITION)
+ (<var class="var">window2</var> END-POSITION))
 </pre></div>
 
-<p>For a drag event, the name of the symbol <var>event-type</var> contains the
-prefix &lsquo;<samp>drag-</samp>&rsquo;.  For example, dragging the mouse with button 2
-held down generates a <code>drag-mouse-2</code> event.  The second and third
+<p>For a drag event, the name of the symbol <var class="var">event-type</var> contains the
+prefix &lsquo;<samp class="samp">drag-</samp>&rsquo;.  For example, dragging the mouse with button 2
+held down generates a <code class="code">drag-mouse-2</code> event.  The second and third
 elements of the event give the starting and ending position of the
-drag, as mouse position lists (see <a href="Click-Events.html">Click Events</a>).  You can access
+drag, as mouse position lists (see <a class="pxref" href="Click-Events.html">Click Events</a>).  You can access
 the second element of any mouse event in the same way, with no need to
 distinguish drag events from others.
 </p>
-<p>The &lsquo;<samp>drag-</samp>&rsquo; prefix follows the modifier key prefixes such as
-&lsquo;<samp>C-</samp>&rsquo; and &lsquo;<samp>M-</samp>&rsquo;.
+<p>The &lsquo;<samp class="samp">drag-</samp>&rsquo; prefix follows the modifier key prefixes such as
+&lsquo;<samp class="samp">C-</samp>&rsquo; and &lsquo;<samp class="samp">M-</samp>&rsquo;.
 </p>
-<p>If <code>read-key-sequence</code> receives a drag event that has no key
+<p>If <code class="code">read-key-sequence</code> receives a drag event that has no key
 binding, and the corresponding click event does have a binding, it
 changes the drag event into a click event at the drag&rsquo;s starting
 position.  This means that you don&rsquo;t have to distinguish between click
 and drag events unless you want to.
 </p>
+</div>
 
 
 

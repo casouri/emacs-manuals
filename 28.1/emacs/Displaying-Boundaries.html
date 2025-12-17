@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 28.1.
+
+Copyright © 1985-1987, 1993-2022 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Displaying Boundaries (GNU Emacs Manual)</title>
+
+<meta name="description" content="Displaying Boundaries (GNU Emacs Manual)">
+<meta name="keywords" content="Displaying Boundaries (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Display.html" rel="up" title="Display">
+<link href="Useless-Whitespace.html" rel="next" title="Useless Whitespace">
+<link href="Fringes.html" rel="prev" title="Fringes">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Displaying-Boundaries">
+<div class="nav-panel">
+<p>
+Next: <a href="Useless-Whitespace.html" accesskey="n" rel="next">Useless Whitespace</a>, Previous: <a href="Fringes.html" accesskey="p" rel="prev">Window Fringes</a>, Up: <a href="Display.html" accesskey="u" rel="up">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Displaying-Boundaries-1"><span>14.15 Displaying Boundaries<a class="copiable-link" href="#Displaying-Boundaries-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-mode_002c-display_002dfill_002dcolumn_002dindicator"></a>
+<a class="index-entry-id" id="index-display_002dfill_002dcolumn_002dindicator_002dmode"></a>
+<a class="index-entry-id" id="index-global_002ddisplay_002dfill_002dcolumn_002dindicator_002dmode"></a>
+<p>Emacs can display an indication of the <code class="code">fill-column</code> position
+(see <a class="pxref" href="Fill-Commands.html">Explicit Fill Commands</a>).  The fill-column indicator is a useful
+functionality especially in <code class="code">prog-mode</code> and its descendants
+(see <a class="pxref" href="Major-Modes.html">Major Modes</a>) to indicate the position of a specific column
+that has some special meaning for formatting the source code of a
+program.
+</p>
+<p>To activate the fill-column indication display, use the minor modes
+<code class="code">display-fill-column-indicator-mode</code> and
+<code class="code">global-display-fill-column-indicator-mode</code>, which enable
+the indicator locally or globally, respectively.
+</p>
+<p>Alternatively, you can set the two buffer-local variables
+<code class="code">display-fill-column-indicator</code> and
+<code class="code">display-fill-column-indicator-character</code> to activate the
+indicator and control the character used for the indication.  Note
+that both variables must be non-<code class="code">nil</code> for the indication to be
+displayed.  (Turning on the minor mode sets both these variables.)
+</p>
+<p>There are 2 buffer local variables and a face to customize this mode:
+</p>
+<dl class="table">
+<dt><a id="index-display_002dfill_002dcolumn_002dindicator_002dcolumn"></a><span><code class="code">display-fill-column-indicator-column</code><a class="copiable-link" href="#index-display_002dfill_002dcolumn_002dindicator_002dcolumn"> &para;</a></span></dt>
+<dd><p>Specifies the column number where the indicator should be set.  It can
+take positive numerical values for the column, or the special value
+<code class="code">t</code>, which means that the value of the variable
+<code class="code">fill-column</code> will be used.
+</p>
+<p>Any other value disables the indicator.  The default value is <code class="code">t</code>.
+</p>
+</dd>
+<dt><a id="index-display_002dfill_002dcolumn_002dindicator_002dcharacter"></a><span><code class="code">display-fill-column-indicator-character</code><a class="copiable-link" href="#index-display_002dfill_002dcolumn_002dindicator_002dcharacter"> &para;</a></span></dt>
+<dd><p>Specifies the character used for the indicator.  This character can be
+any valid character including Unicode ones if the font supports them.
+The value <code class="code">nil</code> disables the indicator.  When the mode is enabled
+through the functions <code class="code">display-fill-column-indicator-mode</code> or
+<code class="code">global-display-fill-column-indicator-mode</code>, they will use the
+character specified by this variable, if it is non-<code class="code">nil</code>;
+otherwise Emacs will use the character U+2502 <small class="sc">BOX DRAWINGS LIGHT VERTICAL</small>,
+falling back to &lsquo;<samp class="samp">|</samp>&rsquo; if U+2502 cannot be displayed.
+</p>
+</dd>
+<dt><a id="index-fill_002dcolumn_002dindicator"></a><span><code class="code">fill-column-indicator</code><a class="copiable-link" href="#index-fill_002dcolumn_002dindicator"> &para;</a></span></dt>
+<dd><p>Specifies the face used to display the indicator.  It inherits its
+default values from the face <code class="code">shadow</code>, but without background
+color.  To change the indicator color, you need only set the foreground
+color of this face.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-indicate_002dbuffer_002dboundaries"></a>
+<p>On graphical displays, Emacs can indicate the buffer boundaries in
+the fringes.  If you enable this feature, the first line and the last
+line are marked with angle images in the fringes.  This can be
+combined with up and down arrow images which say whether it is
+possible to scroll the window.
+</p>
+<p>The buffer-local variable <code class="code">indicate-buffer-boundaries</code> controls
+how the buffer boundaries and window scrolling is indicated in the
+fringes.  If the value is <code class="code">left</code> or <code class="code">right</code>, both angle and
+arrow bitmaps are displayed in the left or right fringe, respectively.
+</p>
+<p>If value is an alist (see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Association-Lists.html#Association-Lists">Association Lists</a> in <cite class="cite">the Emacs
+Lisp Reference Manual</cite>), each element <code class="code">(<var class="var">indicator</var> .
+<var class="var">position</var>)</code> specifies the position of one of the indicators.  The
+<var class="var">indicator</var> must be one of <code class="code">top</code>, <code class="code">bottom</code>, <code class="code">up</code>,
+<code class="code">down</code>, or <code class="code">t</code> which specifies the default position for the
+indicators not present in the alist.  The <var class="var">position</var> is one of
+<code class="code">left</code>, <code class="code">right</code>, or <code class="code">nil</code> which specifies not to show
+this indicator.
+</p>
+<p>For example, <code class="code">((top . left) (t . right))</code> places the top angle
+bitmap in left fringe, the bottom angle bitmap in right fringe, and
+both arrow bitmaps in right fringe.  To show just the angle bitmaps in
+the left fringe, but no arrow bitmaps, use <code class="code">((top .  left)
+(bottom . left))</code>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Useless-Whitespace.html">Useless Whitespace</a>, Previous: <a href="Fringes.html">Window Fringes</a>, Up: <a href="Display.html">Controlling the Display</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.2.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Custom Themes (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Custom Themes (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Custom Themes (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Customization.html" rel="up" title="Customization">
+<link href="Applying-Customizations.html" rel="prev" title="Applying Customizations">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Custom-Themes">
+<div class="nav-panel">
+<p>
+Previous: <a href="Applying-Customizations.html" accesskey="p" rel="prev">Applying Customizations</a>, Up: <a href="Customization.html" accesskey="u" rel="up">Customization Settings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Custom-Themes-1"><span>15.6 Custom Themes<a class="copiable-link" href="#Custom-Themes-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-custom-themes"></a>
+<p><em class="dfn">Custom themes</em> are collections of settings that can be enabled
+or disabled as a unit.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html#Custom-Themes">Custom Themes</a> in <cite class="cite">The GNU Emacs
+Manual</cite>.  Each Custom theme is defined by an Emacs Lisp source file,
+which should follow the conventions described in this section.
+(Instead of writing a Custom theme by hand, you can also create one
+using a Customize-like interface; see <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Creating-Custom-Themes.html#Creating-Custom-Themes">Creating Custom Themes</a> in <cite class="cite">The GNU Emacs Manual</cite>.)
+</p>
+<p>A Custom theme file should be named <samp class="file"><var class="var">foo</var>-theme.el</samp>, where
+<var class="var">foo</var> is the theme name.  The first Lisp form in the file should
+be a call to <code class="code">deftheme</code>, and the last form should be a call to
+<code class="code">provide-theme</code>.
+</p>
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-deftheme"><span class="category-def">Macro: </span><span><strong class="def-name">deftheme</strong> <var class="def-var-arguments">theme &amp;optional doc &amp;rest properties</var><a class="copiable-link" href="#index-deftheme"> &para;</a></span></dt>
+<dd><p>This macro declares <var class="var">theme</var> (a symbol) as the name of a Custom
+theme.  The optional argument <var class="var">doc</var> should be a string describing
+the theme; this is the description shown when the user invokes the
+<code class="code">describe-theme</code> command or types <kbd class="kbd">?</kbd> in the &lsquo;<samp class="samp">*Custom
+Themes*</samp>&rsquo; buffer.  The remaining arguments <var class="var">properties</var> are used
+pass a property list with theme attributes.
+</p>
+<p>The following attributes are supported:
+</p>
+<dl class="table">
+<dt><code class="code">:family</code></dt>
+<dd><p>A symbol designating what &ldquo;family&rdquo; a theme belongs to.  A
+<em class="dfn">family</em> of themes is a set of similar themes that differ by minor
+aspects, such as face colors that are meant for the light vs dark
+background of the frame.
+</p></dd>
+<dt><code class="code">:kind</code></dt>
+<dd><p>A symbol.  If a theme is enabled and this property has the value
+<code class="code">color-scheme</code>, then the <code class="code">theme-choose-variant</code> command will
+look for other available themes that belong to the same family in
+order to switch the themes.  Other values are currently unspecified
+and should not be used.
+</p></dd>
+<dt><code class="code">:background-mode</code></dt>
+<dd><p>A symbol, either <code class="code">light</code> or <code class="code">dark</code>.  This attribute is
+currently unused, but should still be specified.
+</p></dd>
+</dl>
+
+<p>Two special theme names are disallowed (using them causes an error):
+<code class="code">user</code> is a dummy theme that stores the user&rsquo;s direct
+customization settings, and <code class="code">changed</code> is a dummy theme that
+stores changes made outside of the Customize system.
+</p></dd></dl>
+
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-provide_002dtheme"><span class="category-def">Macro: </span><span><strong class="def-name">provide-theme</strong> <var class="def-var-arguments">theme</var><a class="copiable-link" href="#index-provide_002dtheme"> &para;</a></span></dt>
+<dd><p>This macro declares that the theme named <var class="var">theme</var> has been fully
+specified.
+</p></dd></dl>
+
+<p>In between <code class="code">deftheme</code> and <code class="code">provide-theme</code> are Lisp forms
+specifying the theme settings: usually a call to
+<code class="code">custom-theme-set-variables</code> and/or a call to
+<code class="code">custom-theme-set-faces</code>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-custom_002dtheme_002dset_002dvariables"><span class="category-def">Function: </span><span><strong class="def-name">custom-theme-set-variables</strong> <var class="def-var-arguments">theme &amp;rest args</var><a class="copiable-link" href="#index-custom_002dtheme_002dset_002dvariables"> &para;</a></span></dt>
+<dd><p>This function specifies the Custom theme <var class="var">theme</var>&rsquo;s variable
+settings.  <var class="var">theme</var> should be a symbol.  Each argument in
+<var class="var">args</var> should be a list of the form
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">var</var> <var class="var">expression</var> [<var class="var">now</var> [<var class="var">request</var> [<var class="var">comment</var>]]])
+</pre></div>
+
+<p>where the list entries have the same meanings as in
+<code class="code">custom-set-variables</code>.  See <a class="xref" href="Applying-Customizations.html">Applying Customizations</a>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-custom_002dtheme_002dset_002dfaces"><span class="category-def">Function: </span><span><strong class="def-name">custom-theme-set-faces</strong> <var class="def-var-arguments">theme &amp;rest args</var><a class="copiable-link" href="#index-custom_002dtheme_002dset_002dfaces"> &para;</a></span></dt>
+<dd><p>This function specifies the Custom theme <var class="var">theme</var>&rsquo;s face settings.
+<var class="var">theme</var> should be a symbol.  Each argument in <var class="var">args</var> should be
+a list of the form
+</p>
+<div class="example">
+<pre class="example-preformatted">(<var class="var">face</var> <var class="var">spec</var> [<var class="var">now</var> [<var class="var">comment</var>]])
+</pre></div>
+
+<p>where the list entries have the same meanings as in
+<code class="code">custom-set-faces</code>.  See <a class="xref" href="Applying-Customizations.html">Applying Customizations</a>.
+</p></dd></dl>
+
+<p>In theory, a theme file can also contain other Lisp forms, which
+would be evaluated when loading the theme, but that is bad form.
+To protect against loading themes containing malicious code, Emacs
+displays the source file and asks for confirmation from the user
+before loading any non-built-in theme for the first time.  As
+such, themes are not ordinarily byte-compiled, and source files
+usually take precedence when Emacs is looking for a theme to load.
+</p>
+<p>The following functions are useful for programmatically enabling and
+disabling themes:
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-custom_002dtheme_002dp"><span class="category-def">Function: </span><span><strong class="def-name">custom-theme-p</strong> <var class="def-var-arguments">theme</var><a class="copiable-link" href="#index-custom_002dtheme_002dp"> &para;</a></span></dt>
+<dd><p>This function return a non-<code class="code">nil</code> value if <var class="var">theme</var> (a symbol)
+is the name of a Custom theme (i.e., a Custom theme which has been
+loaded into Emacs, whether or not the theme is enabled).  Otherwise,
+it returns <code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-custom_002dknown_002dthemes"><span class="category-def">Variable: </span><span><strong class="def-name">custom-known-themes</strong><a class="copiable-link" href="#index-custom_002dknown_002dthemes"> &para;</a></span></dt>
+<dd><p>The value of this variable is a list of themes loaded into Emacs.
+Each theme is represented by a Lisp symbol (the theme name).  The
+default value of this variable is a list containing two dummy
+themes: <code class="code">(user changed)</code>.  The <code class="code">changed</code> theme stores
+settings made before any Custom themes are applied (e.g., variables
+set outside of Customize).  The <code class="code">user</code> theme stores settings the
+user has customized and saved.  Any additional themes declared with
+the <code class="code">deftheme</code> macro are added to the front of this list.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-load_002dtheme"><span class="category-def">Command: </span><span><strong class="def-name">load-theme</strong> <var class="def-var-arguments">theme &amp;optional no-confirm no-enable</var><a class="copiable-link" href="#index-load_002dtheme"> &para;</a></span></dt>
+<dd><p>This function loads the Custom theme named <var class="var">theme</var> from its source
+file, looking for the source file in the directories specified by the
+variable <code class="code">custom-theme-load-path</code>.  See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html#Custom-Themes">Custom Themes</a> in <cite class="cite">The GNU Emacs Manual</cite>.  It also <em class="dfn">enables</em> the theme (unless the
+optional argument <var class="var">no-enable</var> is non-<code class="code">nil</code>), causing its
+variable and face settings to take effect.  It prompts the user for
+confirmation before loading the theme, unless the optional argument
+<var class="var">no-confirm</var> is non-<code class="code">nil</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-require_002dtheme"><span class="category-def">Function: </span><span><strong class="def-name">require-theme</strong> <var class="def-var-arguments">feature &amp;optional noerror</var><a class="copiable-link" href="#index-require_002dtheme"> &para;</a></span></dt>
+<dd><p>This function searches <code class="code">custom-theme-load-path</code> for a file that
+provides <var class="var">feature</var> and then loads it.  This is like the function
+<code class="code">require</code> (see <a class="pxref" href="Named-Features.html">Features</a>), except it searches
+<code class="code">custom-theme-load-path</code> instead of <code class="code">load-path</code>
+(see <a class="pxref" href="Library-Search.html">Library Search</a>).  This can be useful in Custom themes that
+need to load supporting Lisp files when <code class="code">require</code> is unsuitable
+for that.
+</p>
+<p>If <var class="var">feature</var>, which should be a symbol, is not already present in
+the current Emacs session according to <code class="code">featurep</code>, then
+<code class="code">require-theme</code> searches for a file named <var class="var">feature</var> with an
+added &lsquo;<samp class="samp">.elc</samp>&rsquo; or &lsquo;<samp class="samp">.el</samp>&rsquo; suffix, in that order, in the
+directories specified by <code class="code">custom-theme-load-path</code>.
+</p>
+<p>If a file providing <var class="var">feature</var> is successfully found and loaded,
+then <code class="code">require-theme</code> returns <var class="var">feature</var>.  The optional
+argument <var class="var">noerror</var> determines what happens if the search or
+loading fails.  If it is <code class="code">nil</code>, the function signals an error;
+otherwise, it returns <code class="code">nil</code>.  If the file loads successfully but
+does not provide <var class="var">feature</var>, then <code class="code">require-theme</code> signals an
+error; this cannot be suppressed.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-enable_002dtheme"><span class="category-def">Command: </span><span><strong class="def-name">enable-theme</strong> <var class="def-var-arguments">theme</var><a class="copiable-link" href="#index-enable_002dtheme"> &para;</a></span></dt>
+<dd><p>This function enables the Custom theme named <var class="var">theme</var>.  It signals
+an error if no such theme has been loaded.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-disable_002dtheme"><span class="category-def">Command: </span><span><strong class="def-name">disable-theme</strong> <var class="def-var-arguments">theme</var><a class="copiable-link" href="#index-disable_002dtheme"> &para;</a></span></dt>
+<dd><p>This function disables the Custom theme named <var class="var">theme</var>.  The theme
+remains loaded, so that a subsequent call to <code class="code">enable-theme</code> will
+re-enable it.
+</p></dd></dl>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Previous: <a href="Applying-Customizations.html">Applying Customizations</a>, Up: <a href="Customization.html">Customization Settings</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

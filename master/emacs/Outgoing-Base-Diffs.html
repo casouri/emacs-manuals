@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Outgoing Base Diffs (GNU Emacs Manual)</title>
+
+<meta name="description" content="Outgoing Base Diffs (GNU Emacs Manual)">
+<meta name="keywords" content="Outgoing Base Diffs (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Miscellaneous-VC.html" rel="up" title="Miscellaneous VC">
+<link href="Other-Working-Trees.html" rel="next" title="Other Working Trees">
+<link href="Merge-Bases.html" rel="prev" title="Merge Bases">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Outgoing-Base-Diffs">
+<div class="nav-panel">
+<p>
+Next: <a href="Other-Working-Trees.html" accesskey="n" rel="next">Multiple Working Trees for One Repository</a>, Previous: <a href="Merge-Bases.html" accesskey="p" rel="prev">Merge Bases</a>, Up: <a href="Miscellaneous-VC.html" accesskey="u" rel="up">Miscellaneous Commands and Features of VC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Commands-for-diffs-including-all-outstanding-changes"><span>30.1.12.5 Commands for diffs including all outstanding changes<a class="copiable-link" href="#Commands-for-diffs-including-all-outstanding-changes"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-outstanding-changes"></a>
+
+<dl class="table">
+<dt><kbd class="kbd">C-x v B =</kbd></dt>
+<dd><p>Display diffs of changes to the VC fileset since the merge base of this
+branch and its upstream counterpart (<code class="code">vc-diff-outgoing-base</code>).
+</p>
+</dd>
+<dt><kbd class="kbd">C-x v B D</kbd></dt>
+<dd><p>Display all changes since the merge base of this branch and its upstream
+counterpart (<code class="code">vc-root-diff-outgoing-base</code>).
+</p></dd>
+</dl>
+
+<p>For decentralized version control systems (see <a class="pxref" href="VCS-Repositories.html">Decentralized vs Centralized Repositories</a>),
+these commands provide specialized versions of <kbd class="kbd">C-x v M D</kbd> (see
+see <a class="pxref" href="Merge-Bases.html">Merge Bases</a>) which also take into account the state of upstream
+repositories.  These commands are useful both when working on a single
+branch and when developing features on a separate branch
+(see <a class="pxref" href="Branches.html">Version Control Branches</a>).  These two cases involve using the commands
+differently, and so we will describe them separately.
+</p>
+<p>First, consider working on a single branch.  <em class="dfn">Outstanding changes</em>
+are those which you haven&rsquo;t yet pushed upstream.  This includes both
+unpushed commits and uncommitted changes in your working tree.  In many
+cases the reason these changes are not pushed yet is that they are not
+finished: the changes committed so far don&rsquo;t make sense in isolation.
+</p>
+<a class="index-entry-id" id="index-C_002dx-v-B-_003d"></a>
+<a class="index-entry-id" id="index-vc_002ddiff_002doutgoing_002dbase"></a>
+<a class="index-entry-id" id="index-C_002dx-v-B-D"></a>
+<a class="index-entry-id" id="index-vc_002droot_002ddiff_002doutgoing_002dbase"></a>
+<p>Type <kbd class="kbd">C-x v B D</kbd> (<code class="code">vc-root-diff-outgoing-base</code>) to display a
+summary of all these changes, committed and uncommitted.  This summary
+is in the form of a diff of what committing and pushing (see <a class="pxref" href="Pulling-_002f-Pushing.html">Pulling/Pushing Changes into/from a Branch</a>) all these changes would do to the upstream repository.  You
+can use <kbd class="kbd">C-x v B =</kbd> (<code class="code">vc-diff-outgoing-base</code>) instead to limit
+the display of changes to the current VC fileset.  (The difference
+between <kbd class="kbd">C-x&nbsp;v&nbsp;B&nbsp;D</kbd><!-- /@w --> and <kbd class="kbd">C-x&nbsp;v&nbsp;B&nbsp;=</kbd><!-- /@w --> is like the
+difference between <kbd class="kbd">C-x v D</kbd> and <kbd class="kbd">C-x v =</kbd> (see <a class="pxref" href="Old-Revisions.html">Examining And Comparing Old Revisions</a>).)<a class="footnote" id="DOCF21" href="#FOOT21"><sup>21</sup></a>
+</p>
+<p>Second, consider developing a feature on a separate branch.  Call this
+the <em class="dfn">feature branch</em>,<a class="footnote" id="DOCF22" href="#FOOT22"><sup>22</sup></a> and call the branch from which the feature
+branch was originally created the <em class="dfn">trunk</em> or <em class="dfn">development
+trunk</em>.
+</p>
+<p>In this case, outstanding changes is a more specific notion than just
+unpushed and uncommitted changes on the feature branch.  You&rsquo;re not
+finished sharing changes with your collaborators until they have been
+merged into the trunk, and pushed.  Therefore, in this example,
+outstanding changes are those which haven&rsquo;t yet been integrated into the
+upstream repository&rsquo;s development trunk.  That means committed changes
+on the feature branch that haven&rsquo;t yet been merged into the trunk, plus
+uncommitted changes.
+</p>
+<a class="index-entry-id" id="index-outgoing-base_002c-version-control"></a>
+<p>The <em class="dfn">outgoing base</em> is the upstream location for which the changes
+are destined once they are no longer outstanding.  In this case, that&rsquo;s
+the upstream version of the trunk, to which you and your collaborators
+push finished work.
+</p>
+<p>To display a summary of outgoing changes in this multi-branch example,
+supply a prefix argument, by typing <kbd class="kbd">C-u&nbsp;C-x&nbsp;v&nbsp;B&nbsp;=</kbd><!-- /@w --> or
+<kbd class="kbd">C-u&nbsp;C-x&nbsp;v&nbsp;B&nbsp;D</kbd><!-- /@w -->.  When prompted, enter the outgoing base.
+Exactly what you must supply here depends on the name of your
+development trunk and the version control system in use.  For example,
+with Git, usually you will enter <kbd class="kbd">origin/master</kbd>.  We hope to
+improve these commands such that no prefix argument is required in the
+multi-branch case, too.
+</p>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT21" href="#DOCF21">(21)</a></h5>
+<p>Another point of comparison is that these
+commands are like <kbd class="kbd">C-x&nbsp;v&nbsp;O&nbsp;=</kbd><!-- /@w --> (<code class="code">vc-fileset-diff-outgoing</code>)
+and <kbd class="kbd">C-x v O D</kbd> (<code class="code">vc-root-diff-outgoing</code>) except that they
+include uncommitted changes in the reported diffs.  Like those other
+commands, you can use a prefix argument to specify a particular upstream
+location.</p>
+<h5 class="footnote-body-heading"><a id="FOOT22" href="#DOCF22">(22)</a></h5>
+<p>Many version control workflows
+involve developing new features on isolated branches.  However, the term
+&ldquo;feature branch&rdquo; is usually reserved for a particular kind of isolated
+branch, one that other branches are repeatedly merged into.
+</p>
+<p>That doesn&rsquo;t matter to this explanation, so we use &ldquo;feature branch&rdquo; to
+refer to the separate branch used for developing the feature even though
+whether it is really a feature branch depends on other aspects of the
+branching workflow in use.</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Other-Working-Trees.html">Multiple Working Trees for One Repository</a>, Previous: <a href="Merge-Bases.html">Merge Bases</a>, Up: <a href="Miscellaneous-VC.html">Miscellaneous Commands and Features of VC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

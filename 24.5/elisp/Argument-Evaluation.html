@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Argument Evaluation (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Argument Evaluation (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,9 @@ developing GNU and promoting software freedom." -->
 <link href="Wrong-Time.html" rel="prev" title="Wrong Time">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,104 +47,106 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Argument-Evaluation"></span><div class="header">
+<div class="subsection-level-extent" id="Argument-Evaluation">
+<div class="nav-panel">
 <p>
-Next: <a href="Surprising-Local-Vars.html" accesskey="n" rel="next">Surprising Local Vars</a>, Previous: <a href="Wrong-Time.html" accesskey="p" rel="prev">Wrong Time</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Problems with Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Surprising-Local-Vars.html" accesskey="n" rel="next">Local Variables in Macro Expansions</a>, Previous: <a href="Wrong-Time.html" accesskey="p" rel="prev">Wrong Time</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Common Problems Using Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Evaluating-Macro-Arguments-Repeatedly"></span><h4 class="subsection">13.5.2 Evaluating Macro Arguments Repeatedly</h4>
+<h4 class="subsection" id="Evaluating-Macro-Arguments-Repeatedly"><span>13.5.2 Evaluating Macro Arguments Repeatedly<a class="copiable-link" href="#Evaluating-Macro-Arguments-Repeatedly"> &para;</a></span></h4>
 
 <p>When defining a macro you must pay attention to the number of times
 the arguments will be evaluated when the expansion is executed.  The
 following macro (used to facilitate iteration) illustrates the
 problem.  This macro allows us to write a &ldquo;for&rdquo; loop construct.
 </p>
-<span id="index-for"></span>
+<a class="index-entry-id" id="index-for"></a>
 <div class="example">
-<pre class="example">(defmacro for (var from init to final do &amp;rest body)
+<div class="group"><pre class="example-preformatted">(defmacro for (var from init to final do &amp;rest body)
   &quot;Execute a simple \&quot;for\&quot; loop.
 For example, (for i from 1 to 10 do (print i)).&quot;
   (list 'let (list (list var init))
         (cons 'while
               (cons (list '&lt;= var final)
                     (append body (list (list 'inc var)))))))
-</pre><pre class="example">
+</pre></div><pre class="example-preformatted">
 
-</pre><pre class="example">(for i from 1 to 3 do
+</pre><div class="group"><pre class="example-preformatted">(for i from 1 to 3 do
    (setq square (* i i))
    (princ (format &quot;\n%d %d&quot; i square)))
 &rarr;
-</pre><pre class="example">(let ((i 1))
+</pre></div><div class="group"><pre class="example-preformatted">(let ((i 1))
   (while (&lt;= i 3)
     (setq square (* i i))
     (princ (format &quot;\n%d %d&quot; i square))
     (inc i)))
-</pre><pre class="example">
+</pre></div><div class="group"><pre class="example-preformatted">
 
-     ⊣1       1
-     ⊣2       4
-     ⊣3       9
+     -|1       1
+     -|2       4
+     -|3       9
 &rArr; nil
-</pre></div>
+</pre></div></div>
 
-<p>The arguments <code>from</code>, <code>to</code>, and <code>do</code> in this macro are
+<p>The arguments <code class="code">from</code>, <code class="code">to</code>, and <code class="code">do</code> in this macro are
 &ldquo;syntactic sugar&rdquo;; they are entirely ignored.  The idea is that you
-will write noise words (such as <code>from</code>, <code>to</code>, and <code>do</code>)
+will write noise words (such as <code class="code">from</code>, <code class="code">to</code>, and <code class="code">do</code>)
 in those positions in the macro call.
 </p>
 <p>Here&rsquo;s an equivalent definition simplified through use of backquote:
 </p>
 <div class="example">
-<pre class="example">(defmacro for (var from init to final do &amp;rest body)
+<div class="group"><pre class="example-preformatted">(defmacro for (var from init to final do &amp;rest body)
   &quot;Execute a simple \&quot;for\&quot; loop.
 For example, (for i from 1 to 10 do (print i)).&quot;
   `(let ((,var ,init))
      (while (&lt;= ,var ,final)
        ,@body
        (inc ,var))))
-</pre></div>
+</pre></div></div>
 
 <p>Both forms of this definition (with backquote and without) suffer from
-the defect that <var>final</var> is evaluated on every iteration.  If
-<var>final</var> is a constant, this is not a problem.  If it is a more
-complex form, say <code>(long-complex-calculation x)</code>, this can slow
-down the execution significantly.  If <var>final</var> has side effects,
+the defect that <var class="var">final</var> is evaluated on every iteration.  If
+<var class="var">final</var> is a constant, this is not a problem.  If it is a more
+complex form, say <code class="code">(long-complex-calculation x)</code>, this can slow
+down the execution significantly.  If <var class="var">final</var> has side effects,
 executing it more than once is probably incorrect.
 </p>
-<span id="index-macro-argument-evaluation"></span>
+<a class="index-entry-id" id="index-macro-argument-evaluation"></a>
 <p>A well-designed macro definition takes steps to avoid this problem by
 producing an expansion that evaluates the argument expressions exactly
 once unless repeated evaluation is part of the intended purpose of the
-macro.  Here is a correct expansion for the <code>for</code> macro:
+macro.  Here is a correct expansion for the <code class="code">for</code> macro:
 </p>
 <div class="example">
-<pre class="example">(let ((i 1)
+<div class="group"><pre class="example-preformatted">(let ((i 1)
       (max 3))
   (while (&lt;= i max)
     (setq square (* i i))
     (princ (format &quot;%d      %d&quot; i square))
     (inc i)))
-</pre></div>
+</pre></div></div>
 
 <p>Here is a macro definition that creates this expansion:
 </p>
 <div class="example">
-<pre class="example">(defmacro for (var from init to final do &amp;rest body)
+<div class="group"><pre class="example-preformatted">(defmacro for (var from init to final do &amp;rest body)
   &quot;Execute a simple for loop: (for i from 1 to 10 do (print i)).&quot;
   `(let ((,var ,init)
          (max ,final))
      (while (&lt;= ,var max)
        ,@body
        (inc ,var))))
-</pre></div>
+</pre></div></div>
 
 <p>Unfortunately, this fix introduces another problem,
 described in the following section.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Surprising-Local-Vars.html" accesskey="n" rel="next">Surprising Local Vars</a>, Previous: <a href="Wrong-Time.html" accesskey="p" rel="prev">Wrong Time</a>, Up: <a href="Problems-with-Macros.html" accesskey="u" rel="up">Problems with Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Surprising-Local-Vars.html">Local Variables in Macro Expansions</a>, Previous: <a href="Wrong-Time.html">Wrong Time</a>, Up: <a href="Problems-with-Macros.html">Common Problems Using Macros</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

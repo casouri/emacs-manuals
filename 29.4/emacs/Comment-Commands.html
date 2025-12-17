@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Comment Commands (GNU Emacs Manual)</title>
+
+<meta name="description" content="Comment Commands (GNU Emacs Manual)">
+<meta name="keywords" content="Comment Commands (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Comments.html" rel="up" title="Comments">
+<link href="Multi_002dLine-Comments.html" rel="next" title="Multi-Line Comments">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Comment-Commands">
+<div class="nav-panel">
+<p>
+Next: <a href="Multi_002dLine-Comments.html" accesskey="n" rel="next">Multiple Lines of Comments</a>, Up: <a href="Comments.html" accesskey="u" rel="up">Manipulating Comments</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Comment-Commands-1"><span>27.5.1 Comment Commands<a class="copiable-link" href="#Comment-Commands-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-indentation-for-comments"></a>
+<a class="index-entry-id" id="index-alignment-for-comments"></a>
+
+<p>The following commands operate on comments:
+</p>
+<dl class="table">
+<dt><kbd class="kbd">M-;</kbd></dt>
+<dd><p>Insert or realign comment on current line; if the region is active,
+comment or uncomment the region instead (<code class="code">comment-dwim</code>).
+</p></dd>
+<dt><kbd class="kbd">C-x C-;</kbd></dt>
+<dd><p>Comment or uncomment the current line (<code class="code">comment-line</code>).  If the
+region is active, comment or uncomment the lines in the region
+instead.
+</p></dd>
+<dt><kbd class="kbd">C-u M-;</kbd></dt>
+<dd><p>Kill comment on current line (<code class="code">comment-kill</code>).
+</p></dd>
+<dt><kbd class="kbd">C-x ;</kbd></dt>
+<dd><p>Set comment column (<code class="code">comment-set-column</code>).
+</p></dd>
+<dt><kbd class="kbd">C-M-j</kbd></dt>
+<dt><kbd class="kbd">M-j</kbd></dt>
+<dd><p>Like <kbd class="kbd"><kbd class="key">RET</kbd></kbd> followed by inserting and aligning a comment
+(<code class="code">default-indent-new-line</code>).  See <a class="xref" href="Multi_002dLine-Comments.html">Multiple Lines of Comments</a>.
+</p></dd>
+<dt><kbd class="kbd">M-x comment-region</kbd></dt>
+<dt><kbd class="kbd">C-c C-c</kbd> (in C-like modes)</dt>
+<dd><p>Add comment delimiters to all the lines in the region.
+</p></dd>
+</dl>
+
+<a class="index-entry-id" id="index-M_002d_003b"></a>
+<a class="index-entry-id" id="index-comment_002ddwim"></a>
+<p>The command to create or align a comment is <kbd class="kbd">M-;</kbd>
+(<code class="code">comment-dwim</code>).  The word &ldquo;dwim&rdquo; is an acronym for &ldquo;Do What
+I Mean&rdquo;; it indicates that this command can be used for many
+different jobs relating to comments, depending on the situation where
+you use it.
+</p>
+<p>When a region is active (see <a class="pxref" href="Mark.html">The Mark and the Region</a>), <kbd class="kbd">M-;</kbd> either adds
+comment delimiters to the region, or removes them.  If every line in
+the region is already a comment, it uncomments each of those lines
+by removing their comment delimiters.  Otherwise, it adds comment
+delimiters to enclose the text in the region.
+</p>
+<p>If you supply a prefix argument to <kbd class="kbd">M-;</kbd> when a region is
+active, that specifies the number of comment delimiters to add or
+delete.  A positive argument <var class="var">n</var> adds <var class="var">n</var> delimiters, while a
+negative argument &minus;<var class="var">n</var> removes <var class="var">n</var> delimiters.
+</p>
+<p>If the region is not active, and there is no existing comment on the
+current line, <kbd class="kbd">M-;</kbd> adds a new comment to the current line.  If
+the line is blank (i.e., empty or containing only whitespace
+characters), the comment is indented to the same position where
+<kbd class="kbd"><kbd class="key">TAB</kbd></kbd> would indent to (see <a class="pxref" href="Basic-Indent.html">Basic Program Indentation Commands</a>).  If the line
+is non-blank, the comment is placed after the last non-whitespace
+character on the line.  Emacs tries to fit the comment between the
+columns specified by the variables <code class="code">comment-column</code> and
+<code class="code">comment-fill-column</code> (see <a class="pxref" href="Options-for-Comments.html">Options Controlling Comments</a>), if
+possible.  Otherwise, it will choose some other suitable position,
+usually separated from the non-comment text by at least one space.  In
+each case, Emacs places point after the comment&rsquo;s starting delimiter,
+so that you can start typing the comment text right away.
+</p>
+<p>You can also use <kbd class="kbd">M-;</kbd> to align an existing comment.  If a line
+already contains the comment-start string, <kbd class="kbd">M-;</kbd> realigns it to
+the conventional alignment and moves point after the comment&rsquo;s
+starting delimiter.  As an exception, comments starting in column 0
+are not moved.  Even when an existing comment is properly aligned,
+<kbd class="kbd">M-;</kbd> is still useful for moving directly to the start of the
+comment text.
+</p>
+<a class="index-entry-id" id="index-comment_002dline"></a>
+<a class="index-entry-id" id="index-C_002dx-C_002d_003b"></a>
+<p><kbd class="kbd">C-x C-;</kbd> (<code class="code">comment-line</code>) comments or uncomments complete
+lines.  When a region is active (see <a class="pxref" href="Mark.html">The Mark and the Region</a>), <kbd class="kbd">C-x C-;</kbd> either
+comments or uncomments the lines in the region.  If the region is not
+active, this command comments or uncomments the line point is on.
+With a positive prefix argument <var class="var">n</var>, it operates on <var class="var">n</var> lines
+starting with the current one; with a negative argument
+&minus;<var class="var">n</var>, it affects <var class="var">n</var> preceding lines.  After invoking
+this command with a negative argument, successive invocations with a
+positive argument will operate on preceding lines as if the argument
+were negated.
+</p>
+<a class="index-entry-id" id="index-comment_002dkill"></a>
+<a class="index-entry-id" id="index-C_002du-M_002d_003b"></a>
+<p><kbd class="kbd">C-u M-;</kbd> (<code class="code">comment-dwim</code> with a prefix argument) when the
+region is not active kills any comment on the current line, along with
+the whitespace before it.  Since the comment is saved to the kill
+ring, you can reinsert it on another line by moving to the end of that
+line, doing <kbd class="kbd">C-y</kbd>, and then <kbd class="kbd">M-;</kbd> to realign the comment.  You
+can achieve the same effect as <kbd class="kbd">C-u M-;</kbd> by typing <kbd class="kbd">M-x
+comment-kill</kbd> (<code class="code">comment-dwim</code> actually calls <code class="code">comment-kill</code>
+as a subroutine when it is given a prefix argument).  Invoking
+<code class="code">comment-dwim</code> with a prefix numeric argument, as in <kbd class="kbd">C-u&nbsp;<var class="var">n</var>&nbsp;M-;</kbd><!-- /@w -->, when there&rsquo;s no active region, tells
+<code class="code">comment-kill</code> to kill comments on <var class="var">n</var> lines.
+</p>
+<a class="index-entry-id" id="index-C_002dc-C_002dc-_0028C-mode_0029"></a>
+<a class="index-entry-id" id="index-comment_002dregion"></a>
+<a class="index-entry-id" id="index-uncomment_002dregion"></a>
+<p>The command <kbd class="kbd">M-x comment-region</kbd> is equivalent to calling
+<kbd class="kbd">M-;</kbd> on an active region, except that it always acts on the
+region, even if the mark is inactive.  In C mode and related modes,
+this command is bound to <kbd class="kbd">C-c C-c</kbd>.  The command <kbd class="kbd">M-x
+uncomment-region</kbd> uncomments each line in the region; a numeric prefix
+argument specifies the number of comment delimiters to remove
+(negative arguments specify the number of comment delimiters to add).
+</p>
+<p>For C-like modes, you can configure the exact effect of <kbd class="kbd">M-;</kbd> by
+setting the variables <code class="code">c-indent-comment-alist</code> and
+<code class="code">c-indent-comments-syntactically-p</code>.  For example, on a line
+ending in a closing brace, <kbd class="kbd">M-;</kbd> puts the comment one space after
+the brace rather than at <code class="code">comment-column</code>.  For full details see
+<a data-manual="ccmode" href="https://www.gnu.org/software/emacs/manual/html_node/ccmode/Comment-Commands.html#Comment-Commands">Comment Commands</a> in <cite class="cite">The CC Mode Manual</cite>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Multi_002dLine-Comments.html">Multiple Lines of Comments</a>, Up: <a href="Comments.html">Manipulating Comments</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

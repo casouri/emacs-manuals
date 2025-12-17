@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.1.
+
+Copyright © 1985-1987, 1993-2023 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Comparing Files (GNU Emacs Manual)</title>
+
+<meta name="description" content="Comparing Files (GNU Emacs Manual)">
+<meta name="keywords" content="Comparing Files (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Files.html" rel="up" title="Files">
+<link href="Diff-Mode.html" rel="next" title="Diff Mode">
+<link href="Directories.html" rel="prev" title="Directories">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Comparing-Files">
+<div class="nav-panel">
+<p>
+Next: <a href="Diff-Mode.html" accesskey="n" rel="next">Diff Mode</a>, Previous: <a href="Directories.html" accesskey="p" rel="prev">File Directories</a>, Up: <a href="Files.html" accesskey="u" rel="up">File Handling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Comparing-Files-1"><span>19.9 Comparing Files<a class="copiable-link" href="#Comparing-Files-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-comparing-files"></a>
+
+<a class="index-entry-id" id="index-diff"></a>
+<a class="index-entry-id" id="index-diff_002dswitches"></a>
+<p>The command <kbd class="kbd">M-x diff</kbd> prompts for two file names, using the
+minibuffer, and displays the differences between the two files in a
+buffer named <samp class="file">*diff*</samp>.  This works by running the <code class="command">diff</code>
+program, using options taken from the variable <code class="code">diff-switches</code>.
+The value of <code class="code">diff-switches</code> should be a string; the default is
+<code class="code">&quot;-u&quot;</code> to specify a unified context diff.
+See <a data-manual="diffutils" href="https://www.gnu.org/software/diffutils/manual/html_node/index.html#Top">Diff</a> in <cite class="cite">Comparing and Merging Files</cite>, for more
+information about the <code class="command">diff</code> program.
+</p>
+<p>The output of the <code class="code">diff</code> command is shown using a major mode
+called Diff mode.  See <a class="xref" href="Diff-Mode.html">Diff Mode</a>.
+</p>
+<p>A (much more sophisticated) alternative is <kbd class="kbd">M-x ediff</kbd>
+(see <a data-manual="ediff" href="https://www.gnu.org/software/emacs/manual/html_node/ediff/index.html#Top">Ediff</a> in <cite class="cite">The Ediff Manual</cite>).
+</p>
+<a class="index-entry-id" id="index-diff_002dbackup"></a>
+<p>The command <kbd class="kbd">M-x diff-backup</kbd> compares a specified file with its
+most recent backup.  If you specify the name of a backup file,
+<code class="code">diff-backup</code> compares it with the source file that it is a
+backup of.  In all other respects, this behaves like <kbd class="kbd">M-x diff</kbd>.
+</p>
+<a class="index-entry-id" id="index-diff_002dbuffer_002dwith_002dfile"></a>
+<p>The command <kbd class="kbd">M-x diff-buffer-with-file</kbd> compares a specified
+buffer with its corresponding file.  This shows you what changes you
+would make to the file if you save the buffer.
+</p>
+<a class="index-entry-id" id="index-diff_002dbuffers"></a>
+<p>The command <kbd class="kbd">M-x diff-buffers</kbd> compares the contents of two
+specified buffers.
+</p>
+<a class="index-entry-id" id="index-compare_002dwindows"></a>
+<p>The command <kbd class="kbd">M-x compare-windows</kbd> compares the text in the
+current window with that in the window that was the selected window
+before you selected the current one.  (For more information about
+windows in Emacs, see <a class="pxref" href="Windows.html">Multiple Windows</a>.)  Comparison starts at point in
+each window, after pushing each initial point value on the mark ring
+(see <a class="pxref" href="Mark-Ring.html">The Mark Ring</a>) in its respective buffer.  Then it moves point
+forward in each window, one character at a time, until it reaches
+characters that don&rsquo;t match.  Then the command exits.
+</p>
+<p>If point in the two windows is followed by non-matching text when
+the command starts, <kbd class="kbd">M-x compare-windows</kbd> tries heuristically to
+advance up to matching text in the two windows, and then exits.  So if
+you use <kbd class="kbd">M-x compare-windows</kbd> repeatedly (see <a class="pxref" href="Repeating.html">Repeating a Command</a>), each
+time it either skips one matching range or finds the start of another.
+</p>
+<a class="index-entry-id" id="index-compare_002dignore_002dcase"></a>
+<a class="index-entry-id" id="index-compare_002dignore_002dwhitespace"></a>
+<p>With a numeric argument, <code class="code">compare-windows</code> ignores changes in
+whitespace.  If the variable <code class="code">compare-ignore-case</code> is
+non-<code class="code">nil</code>, the comparison ignores differences in case as well.
+If the variable <code class="code">compare-ignore-whitespace</code> is non-<code class="code">nil</code>,
+<code class="code">compare-windows</code> by default ignores changes in whitespace, but a
+prefix argument turns that off for that single invocation of the
+command.
+</p>
+<a class="index-entry-id" id="index-Smerge-mode"></a>
+<a class="index-entry-id" id="index-smerge_002dmode"></a>
+<a class="index-entry-id" id="index-failed-merges"></a>
+<a class="index-entry-id" id="index-merges_002c-failed"></a>
+<a class="index-entry-id" id="index-comparing-3-files-_0028diff3_0029"></a>
+<p>You can use <kbd class="kbd">M-x smerge-mode</kbd> to turn on Smerge mode, a minor
+mode for editing output from the <code class="command">diff3</code> program.  This is
+typically the result of a failed merge from a version control system
+update outside VC, due to conflicting changes to a file.  Smerge
+mode provides commands to resolve conflicts by selecting specific
+changes.
+</p>
+<p>See <a class="xref" href="Emerge.html">Merging Files with Emerge</a>,
+for the Emerge facility, which provides a powerful interface for
+merging files.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Diff-Mode.html">Diff Mode</a>, Previous: <a href="Directories.html">File Directories</a>, Up: <a href="Files.html">File Handling</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

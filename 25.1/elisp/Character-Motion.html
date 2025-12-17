@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 25.1.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Character Motion (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Character Motion (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,18 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Motion.html" rel="up" title="Motion">
 <link href="Word-Motion.html" rel="next" title="Word Motion">
-<link href="Motion.html" rel="prev" title="Motion">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,55 +46,57 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Character-Motion"></span><div class="header">
+<div class="subsection-level-extent" id="Character-Motion">
+<div class="nav-panel">
 <p>
-Next: <a href="Word-Motion.html" accesskey="n" rel="next">Word Motion</a>, Up: <a href="Motion.html" accesskey="u" rel="up">Motion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Word-Motion.html" accesskey="n" rel="next">Motion by Words</a>, Up: <a href="Motion.html" accesskey="u" rel="up">Motion</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Motion-by-Characters"></span><h4 class="subsection">29.2.1 Motion by Characters</h4>
+<h4 class="subsection" id="Motion-by-Characters"><span>29.2.1 Motion by Characters<a class="copiable-link" href="#Motion-by-Characters"> &para;</a></span></h4>
 
 <p>These functions move point based on a count of characters.
-<code>goto-char</code> is the fundamental primitive; the other functions use
+<code class="code">goto-char</code> is the fundamental primitive; the other functions use
 that.
 </p>
-<dl>
-<dt id="index-goto_002dchar">Command: <strong>goto-char</strong> <em>position</em></dt>
+<dl class="first-deffn">
+<dt class="deffn" id="index-goto_002dchar"><span class="category-def">Command: </span><span><strong class="def-name">goto-char</strong> <var class="def-var-arguments">position</var><a class="copiable-link" href="#index-goto_002dchar"> &para;</a></span></dt>
 <dd><p>This function sets point in the current buffer to the value
-<var>position</var>.
+<var class="var">position</var>.
 </p>
-<p>If narrowing is in effect, <var>position</var> still counts from the
+<p>If narrowing is in effect, <var class="var">position</var> still counts from the
 beginning of the buffer, but point cannot go outside the accessible
-portion.  If <var>position</var> is out of range, <code>goto-char</code> moves
+portion.  If <var class="var">position</var> is out of range, <code class="code">goto-char</code> moves
 point to the beginning or the end of the accessible portion.
 </p>
-<p>When this function is called interactively, <var>position</var> is the
+<p>When this function is called interactively, <var class="var">position</var> is the
 numeric prefix argument, if provided; otherwise it is read from the
 minibuffer.
 </p>
-<p><code>goto-char</code> returns <var>position</var>.
+<p><code class="code">goto-char</code> returns <var class="var">position</var>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-forward_002dchar">Command: <strong>forward-char</strong> <em>&amp;optional count</em></dt>
-<dd><p>This function moves point <var>count</var> characters forward, towards the
+<dl class="first-deffn">
+<dt class="deffn" id="index-forward_002dchar"><span class="category-def">Command: </span><span><strong class="def-name">forward-char</strong> <var class="def-var-arguments">&amp;optional count</var><a class="copiable-link" href="#index-forward_002dchar"> &para;</a></span></dt>
+<dd><p>This function moves point <var class="var">count</var> characters forward, towards the
 end of the buffer (or backward, towards the beginning of the buffer, if
-<var>count</var> is negative).  If <var>count</var> is <code>nil</code>, the default
+<var class="var">count</var> is negative).  If <var class="var">count</var> is <code class="code">nil</code>, the default
 is 1.
 </p>
 <p>If this attempts to move past the beginning or end of the buffer (or
 the limits of the accessible portion, when narrowing is in effect), it
-signals an error with error symbol <code>beginning-of-buffer</code> or
-<code>end-of-buffer</code>.
+signals an error with error symbol <code class="code">beginning-of-buffer</code> or
+<code class="code">end-of-buffer</code>.
 </p>
-<p>In an interactive call, <var>count</var> is the numeric prefix argument.
+<p>In an interactive call, <var class="var">count</var> is the numeric prefix argument.
 </p></dd></dl>
 
-<dl>
-<dt id="index-backward_002dchar">Command: <strong>backward-char</strong> <em>&amp;optional count</em></dt>
-<dd><p>This is just like <code>forward-char</code> except that it moves
+<dl class="first-deffn">
+<dt class="deffn" id="index-backward_002dchar"><span class="category-def">Command: </span><span><strong class="def-name">backward-char</strong> <var class="def-var-arguments">&amp;optional count</var><a class="copiable-link" href="#index-backward_002dchar"> &para;</a></span></dt>
+<dd><p>This is just like <code class="code">forward-char</code> except that it moves
 in the opposite direction.
 </p></dd></dl>
 
+</div>
 
 
 

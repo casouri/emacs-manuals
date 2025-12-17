@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.4.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>GTK Names in Emacs (GNU Emacs Manual)</title>
+
+<meta name="description" content="GTK Names in Emacs (GNU Emacs Manual)">
+<meta name="keywords" content="GTK Names in Emacs (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="GTK-resources.html" rel="up" title="GTK resources">
+<link href="GTK-styles.html" rel="next" title="GTK styles">
+<link href="GTK-Widget-Names.html" rel="prev" title="GTK Widget Names">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="appendixsubsec-level-extent" id="GTK-Names-in-Emacs">
+<div class="nav-panel">
+<p>
+Next: <a href="GTK-styles.html" accesskey="n" rel="next">GTK+ styles</a>, Previous: <a href="GTK-Widget-Names.html" accesskey="p" rel="prev">GTK+ widget names</a>, Up: <a href="GTK-resources.html" accesskey="u" rel="up">GTK+ resources</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="appendixsubsec" id="GTK_002b-Widget-Names-in-Emacs"><span>D.5.3 GTK+ Widget Names in Emacs<a class="copiable-link" href="#GTK_002b-Widget-Names-in-Emacs"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-GTK_002b-widget-names-in-Emacs"></a>
+<a class="index-entry-id" id="index-GTK_002b-widget-classes"></a>
+
+<p>The GTK+ widgets used by an Emacs frame are listed below:
+</p>
+<dl class="table">
+<dt><code class="code">Emacs</code> (class <code class="code">GtkWindow</code>)</dt>
+<dd><dl class="table">
+<dt><code class="code">pane</code> (class <code class="code">GtkVBox</code>)</dt>
+<dd><dl class="table">
+<dt><code class="code">menubar</code> (class <code class="code">GtkMenuBar</code>)</dt>
+<dd><dl class="table">
+<dt>[menu item widgets]</dt>
+</dl>
+</dd>
+<dt>[unnamed widget] (class <code class="code">GtkHandleBox</code>)</dt>
+<dd><dl class="table">
+<dt><code class="code">emacs-toolbar</code> (class <code class="code">GtkToolbar</code>)</dt>
+<dd><dl class="table">
+<dt>[tool bar item widgets]</dt>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="code">emacs</code> (class <code class="code">GtkFixed</code>)</dt>
+<dd><dl class="table">
+<dt><code class="code">verticalScrollBar</code> (class <code class="code">GtkVScrollbar</code>)</dt>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+
+<p>The contents of Emacs windows are drawn in the <code class="code">emacs</code> widget.
+Note that even if there are multiple Emacs windows, each scroll bar
+widget is named <code class="code">verticalScrollBar</code>.
+</p>
+<p>For example, here are two different ways to set the menu bar style:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">widget &quot;Emacs.pane.menubar.*&quot; style &quot;my_style&quot;
+widget_class &quot;GtkWindow.GtkVBox.GtkMenuBar.*&quot; style &quot;my_style&quot;
+</pre></div>
+
+<p>For GTK+ dialogs, Emacs uses a widget named <code class="code">emacs-dialog</code>, of
+class <code class="code">GtkDialog</code>.  For file selection, Emacs uses a widget named
+<code class="code">emacs-filedialog</code>, of class <code class="code">GtkFileSelection</code>.
+</p>
+<p>Because the widgets for pop-up menus and dialogs are free-standing
+windows and not contained in the <code class="code">Emacs</code> widget, their GTK+
+absolute names do not start with &lsquo;<samp class="samp">Emacs</samp>&rsquo;.  To customize these
+widgets, use wildcards like this:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">widget &quot;*emacs-dialog*&quot; style &quot;my_dialog_style&quot;
+widget &quot;*emacs-filedialog* style &quot;my_file_style&quot;
+widget &quot;*emacs-menuitem* style &quot;my_menu_style&quot;
+</pre></div>
+
+<p>If you want to apply a style to all menus in Emacs, use this:
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">widget_class &quot;*Menu*&quot; style &quot;my_menu_style&quot;
+</pre></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="GTK-styles.html">GTK+ styles</a>, Previous: <a href="GTK-Widget-Names.html">GTK+ widget names</a>, Up: <a href="GTK-resources.html">GTK+ resources</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

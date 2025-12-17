@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 27.2.
 
@@ -18,9 +21,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Projects (GNU Emacs Manual)</title>
 
 <meta name="description" content="Projects (GNU Emacs Manual)">
@@ -28,28 +28,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Maintaining.html" rel="up" title="Maintaining">
 <link href="Change-Log.html" rel="next" title="Change Log">
-<link href="CVS-Options.html" rel="prev" title="CVS Options">
+<link href="Version-Control.html" rel="prev" title="Version Control">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,82 +50,84 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Projects"></span><div class="header">
+<div class="section-level-extent" id="Projects">
+<div class="nav-panel">
 <p>
-Next: <a href="Change-Log.html" accesskey="n" rel="next">Change Log</a>, Previous: <a href="Version-Control.html" accesskey="p" rel="prev">Version Control</a>, Up: <a href="Maintaining.html" accesskey="u" rel="up">Maintaining</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Change-Log.html" accesskey="n" rel="next">Change Logs</a>, Previous: <a href="Version-Control.html" accesskey="p" rel="prev">Version Control</a>, Up: <a href="Maintaining.html" accesskey="u" rel="up">Maintaining Large Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Working-with-Projects"></span><h3 class="section">28.2 Working with Projects</h3>
-<span id="index-projects"></span>
+<h3 class="section" id="Working-with-Projects"><span>28.2 Working with Projects<a class="copiable-link" href="#Working-with-Projects"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-projects"></a>
 
-<span id="index-project-root"></span>
-<p>A <em>project</em> is a collection of files used for producing one or
+<a class="index-entry-id" id="index-project-root"></a>
+<p>A <em class="dfn">project</em> is a collection of files used for producing one or
 more programs.  Files that belong to a project are typically stored in
 a hierarchy of directories; the top-level directory of the hierarchy
-is known as the <em>project root</em>.
+is known as the <em class="dfn">project root</em>.
 </p>
-<span id="index-project-back_002dend"></span>
+<a class="index-entry-id" id="index-project-back_002dend"></a>
 <p>Whether a given directory is a root of some project is determined by
-the project-specific infrastructure, known as <em>project back-end</em>.
-Emacs currently supports two such back-ends: VC (see <a href="Version-Control.html">Version Control</a>), whereby a VCS repository is considered a project; and EDE
-(see <a href="EDE.html">EDE</a>).  This is expected to be extended in the future to
+the project-specific infrastructure, known as <em class="dfn">project back-end</em>.
+Emacs currently supports two such back-ends: VC (see <a class="pxref" href="Version-Control.html">Version Control</a>), whereby a VCS repository is considered a project; and EDE
+(see <a class="pxref" href="EDE.html">Emacs Development Environment</a>).  This is expected to be extended in the future to
 support additional types of projects.
 </p>
 <p>Which files do or don&rsquo;t belong to a project is also determined by
 the project back-end.  For example, the VC back-end doesn&rsquo;t consider
-&ldquo;ignored&rdquo; files (see <a href="VC-Ignore.html">VC Ignore</a>) to be part of the project.
+&ldquo;ignored&rdquo; files (see <a class="pxref" href="VC-Ignore.html">Ignore Version Control Files</a>) to be part of the project.
 </p>
 <p>Emacs provides commands for handling project files conveniently.
 This section describes these commands.
 </p>
-<span id="index-current-project"></span>
+<a class="index-entry-id" id="index-current-project"></a>
 <p>All of the commands described here share the notion of the
-<em>current project</em>.  The current project is determined by the
-<code>default-directory</code> (see <a href="File-Names.html">File Names</a>) of the buffer that is
+<em class="dfn">current project</em>.  The current project is determined by the
+<code class="code">default-directory</code> (see <a class="pxref" href="File-Names.html">File Names</a>) of the buffer that is
 the current buffer when the command is invoked.  If that directory
 doesn&rsquo;t seem to belong to a recognizable project, these commands
 prompt you for the project directory.
 </p>
-<span id="index-project_002dfind_002dfile"></span>
-<p>The command <code>project-find-file</code> is a convenient way of visiting
-files (see <a href="Visiting.html">Visiting</a>) that belong to the current project.  Unlike
-<kbd>C-x C-f</kbd>, this command doesn&rsquo;t require to type the full file name
+<a class="index-entry-id" id="index-project_002dfind_002dfile"></a>
+<p>The command <code class="code">project-find-file</code> is a convenient way of visiting
+files (see <a class="pxref" href="Visiting.html">Visiting Files</a>) that belong to the current project.  Unlike
+<kbd class="kbd">C-x C-f</kbd>, this command doesn&rsquo;t require to type the full file name
 of the file to visit, you can type only the file&rsquo;s base name (i.e.,
 omit the leading directories).  In addition, the completion candidates
 considered by the command include only the files belonging to the
 current project, and nothing else.  If there&rsquo;s a file name at point,
 this command offers that file as the default to visit.
 </p>
-<span id="index-project_002dfind_002dregexp"></span>
-<p>The command <code>project-find-regexp</code> is similar to <code>rgrep</code>
-(see <a href="Grep-Searching.html">Grep Searching</a>), but it searches only the files that belong
+<a class="index-entry-id" id="index-project_002dfind_002dregexp"></a>
+<p>The command <code class="code">project-find-regexp</code> is similar to <code class="code">rgrep</code>
+(see <a class="pxref" href="Grep-Searching.html">Searching with Grep under Emacs</a>), but it searches only the files that belong
 to the current project.  The command prompts for the regular
 expression to search, and pops up an Xref mode buffer with the search
 results, where you can select a match using the Xref mode commands
-(see <a href="Xref-Commands.html">Xref Commands</a>).  When invoked with a prefix argument, this
+(see <a class="pxref" href="Xref-Commands.html">Commands Available in the <samp class="file">*xref*</samp> Buffer</a>).  When invoked with a prefix argument, this
 command additionally prompts for the base directory from which to
 start the search; this allows, for example, to limit the search only
 to project files under a certain subdirectory of the project root.
 </p>
-<span id="index-project_002dsearch"></span>
-<p><kbd>M-x project-search</kbd> is an interactive variant of
-<code>project-find-regexp</code>.  It prompts for a regular expression to
+<a class="index-entry-id" id="index-project_002dsearch"></a>
+<p><kbd class="kbd">M-x project-search</kbd> is an interactive variant of
+<code class="code">project-find-regexp</code>.  It prompts for a regular expression to
 search in the current project&rsquo;s files, but instead of finding all the
 matches and displaying them, it stops when it finds a match and visits
 the matched file at the locus of the match, allowing you to edit the
-matched file.  To find the rest of the matches, type <kbd><span class="nolinebreak">M-x</span>&nbsp;<span class="nolinebreak">fileloop-continue</span>&nbsp;<span class="key">RET</span></kbd><!-- /@w -->.
+matched file.  To find the rest of the matches, type <kbd class="kbd">M-x&nbsp;fileloop-continue&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w -->.
 </p>
-<span id="index-project_002dquery_002dreplace_002dregexp"></span>
-<p><kbd>M-x project-query-replace-regexp</kbd> is similar to
-<code>project-search</code>, but it prompts you for whether to replace each
-match it finds, like <code>query-replace</code> does (see <a href="Query-Replace.html">Query Replace</a>), and continues to the next match after you respond.  If your
+<a class="index-entry-id" id="index-project_002dquery_002dreplace_002dregexp"></a>
+<p><kbd class="kbd">M-x project-query-replace-regexp</kbd> is similar to
+<code class="code">project-search</code>, but it prompts you for whether to replace each
+match it finds, like <code class="code">query-replace</code> does (see <a class="pxref" href="Query-Replace.html">Query Replace</a>), and continues to the next match after you respond.  If your
 response causes Emacs to exit the query-replace loop, you can later
-continue with <kbd><span class="nolinebreak">M-x</span>&nbsp;<span class="nolinebreak">fileloop-continue</span>&nbsp;<span class="key">RET</span></kbd><!-- /@w -->.
+continue with <kbd class="kbd">M-x&nbsp;fileloop-continue&nbsp;<kbd class="key">RET</kbd></kbd><!-- /@w -->.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Change-Log.html" accesskey="n" rel="next">Change Log</a>, Previous: <a href="Version-Control.html" accesskey="p" rel="prev">Version Control</a>, Up: <a href="Maintaining.html" accesskey="u" rel="up">Maintaining</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Change-Log.html">Change Logs</a>, Previous: <a href="Version-Control.html">Version Control</a>, Up: <a href="Maintaining.html">Maintaining Large Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

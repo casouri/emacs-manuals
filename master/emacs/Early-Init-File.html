@@ -1,10 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
-updated for Emacs version 29.0.50.
+updated for Emacs version 31.0.50.
 
-Copyright © 1985-1987, 1993-2021 Free Software Foundation,
-Inc.
+Copyright © 1985-2025 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -18,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Early Init File (GNU Emacs Manual)</title>
 
 <meta name="description" content="Early Init File (GNU Emacs Manual)">
@@ -28,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Init-File.html" rel="up" title="Init File">
-<link href="Authentication.html" rel="next" title="Authentication">
+<link href="User-Lisp-Directory.html" rel="next" title="User Lisp Directory">
 <link href="Init-Non_002dASCII.html" rel="prev" title="Init Non-ASCII">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,39 +49,47 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Early-Init-File"></span><div class="header">
+<div class="subsection-level-extent" id="Early-Init-File">
+<div class="nav-panel">
 <p>
-Previous: <a href="Init-Non_002dASCII.html" accesskey="p" rel="prev">Init Non-ASCII</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">Init File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="User-Lisp-Directory.html" accesskey="n" rel="next">User Lisp Directory</a>, Previous: <a href="Init-Non_002dASCII.html" accesskey="p" rel="prev">Non-<abbr class="acronym">ASCII</abbr> Characters in Init Files</a>, Up: <a href="Init-File.html" accesskey="u" rel="up">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="The-Early-Init-File"></span><h4 class="subsection">49.4.6 The Early Init File</h4>
-<span id="index-early-init-file"></span>
+<h4 class="subsection" id="The-Early-Init-File"><span>51.4.6 The Early Init File<a class="copiable-link" href="#The-Early-Init-File"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-early-init-file"></a>
+<a class="index-entry-id" id="index-early_002dinit_002eel-file"></a>
 
 <p>Most customizations for Emacs should be put in the normal init file.
-See <a href="Init-File.html">Init File</a>.  However, it is sometimes necessary
+See <a class="xref" href="Init-File.html">The Emacs Initialization File</a>.  However, it is sometimes necessary
 to have customizations take effect during Emacs startup earlier than the
 normal init file is processed.  Such customizations can be put in the early
-init file, <samp>~/.config/emacs/early-init.el</samp> or <samp>~/.emacs.d/early-init.el</samp>.  This file is loaded before the
+init file, <samp class="file">~/.config/emacs/early-init.el</samp> or <samp class="file">~/.emacs.d/early-init.el</samp>.  This file is loaded before the
 package system and GUI is initialized, so in it you can customize variables
 that affect the package initialization process,
-such as <code>package-enable-at-startup</code>, <code>package-load-list</code>, and
-<code>package-user-dir</code>.  Note that variables like <code>package-archives</code>
+such as <code class="code">package-enable-at-startup</code>, <code class="code">package-load-list</code>, and
+<code class="code">package-user-dir</code>.  Note that variables like <code class="code">package-archives</code>
 which only affect the installation of new packages, and not the process of
 making already-installed packages available, may be customized in the regular
-init file.  See <a href="Package-Installation.html">Package Installation</a>.
+init file.  See <a class="xref" href="Package-Installation.html">Package Installation</a>.
 </p>
-<p>We do not recommend that you move into <samp>early-init.el</samp>
+<p>We do not recommend that you move into <samp class="file">early-init.el</samp>
 customizations that can be left in the normal init files.  That is
 because the early init file is read before the GUI is initialized, so
 customizations related to GUI features will not work reliably in
-<samp>early-init.el</samp>.  By contrast, the normal init files are read
+<samp class="file">early-init.el</samp>.  By contrast, the normal init files are read
 after the GUI is initialized.  If you must have customizations in the
 early init file that rely on GUI features, make them run off hooks
-provided by the Emacs startup, such as <code>window-setup-hook</code> or
-<code>tty-setup-hook</code>.  See <a href="Hooks.html">Hooks</a>.
+provided by the Emacs startup, such as <code class="code">window-setup-hook</code> or
+<code class="code">tty-setup-hook</code>.  See <a class="xref" href="Hooks.html">Hooks</a>.
 </p>
-<p>For more information on the early init file, see <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File">Init File</a> in <cite>The Emacs Lisp Reference Manual</cite>.
+<p>For more information on the early init file, see <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File">Init File</a> in <cite class="cite">The Emacs Lisp Reference Manual</cite>.
 </p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="User-Lisp-Directory.html">User Lisp Directory</a>, Previous: <a href="Init-Non_002dASCII.html">Non-<abbr class="acronym">ASCII</abbr> Characters in Init Files</a>, Up: <a href="Init-File.html">The Emacs Initialization File</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

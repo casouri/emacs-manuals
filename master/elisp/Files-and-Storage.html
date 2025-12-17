@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
-corresponding to Emacs version 29.0.50.
+corresponding to Emacs version 31.0.50.
 
-Copyright © 1990-1996, 1998-2021 Free Software Foundation,
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
 Inc.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Files and Storage (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Files and Storage (GNU Emacs Lisp Reference Manual)">
@@ -27,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -35,20 +37,8 @@ developing GNU and promoting software freedom." -->
 <link href="Changing-Files.html" rel="prev" title="Changing Files">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,13 +47,14 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Files-and-Storage"></span><div class="header">
+<div class="section-level-extent" id="Files-and-Storage">
+<div class="nav-panel">
 <p>
-Next: <a href="File-Names.html" accesskey="n" rel="next">File Names</a>, Previous: <a href="Changing-Files.html" accesskey="p" rel="prev">Changing Files</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="File-Names.html" accesskey="n" rel="next">File Names</a>, Previous: <a href="Changing-Files.html" accesskey="p" rel="prev">Changing File Names and Attributes</a>, Up: <a href="Files.html" accesskey="u" rel="up">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Files-and-Secondary-Storage"></span><h3 class="section">26.8 Files and Secondary Storage</h3>
-<span id="index-secondary-storage"></span>
+<h3 class="section" id="Files-and-Secondary-Storage"><span>26.8 Files and Secondary Storage<a class="copiable-link" href="#Files-and-Secondary-Storage"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-secondary-storage"></a>
 
 <p>After Emacs changes a file, there are two reasons the changes might
 not survive later failures of power or media, both having to do with
@@ -72,17 +63,34 @@ data already stored elsewhere on secondary storage until one file or
 the other is later modified; this will lose both files if the only
 copy on secondary storage is lost due to media failure.  Second, the
 operating system might not write data to secondary storage
-immediately, which will lose the data if power is lost.
+immediately, which will lose the data if power is lost
+or if there is a media failure.
 </p>
-<span id="index-write_002dregion-1"></span>
+<a class="index-entry-id" id="index-write_002dregion-1"></a>
 <p>Although both sorts of failures can largely be avoided by a suitably
-configured file system, such systems are typically more expensive or
-less efficient.  In more-typical systems, to survive media failure you
+configured system, such systems are typically more expensive or
+less efficient.  In lower-end systems, to survive media failure you
 can copy the file to a different device, and to survive a power
-failure you can use the <code>write-region</code> function with the
-<code>write-region-inhibit-fsync</code> variable set to <code>nil</code>.
-See <a href="Writing-to-Files.html">Writing to Files</a>.
+failure (or be immediately notified of a media failure) you can use
+the <code class="code">write-region</code> function with the
+<code class="code">write-region-inhibit-fsync</code> variable set to <code class="code">nil</code>.
+Although this variable is ordinarily <code class="code">t</code> because that can
+significantly improve performance, it may make sense to temporarily
+bind it to <code class="code">nil</code> if using Emacs to implement database-like
+transactions that survive power failure on lower-end systems.
+See <a class="xref" href="Writing-to-Files.html">Writing to Files</a>.
 </p>
+<p>On some platforms when Emacs changes a file other processes might not
+be notified of the change immediately.  Setting
+<code class="code">write-region-inhibit-fsync</code> to <code class="code">nil</code> may improve
+notification speed in this case, though there are no guarantees.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="File-Names.html">File Names</a>, Previous: <a href="Changing-Files.html">Changing File Names and Attributes</a>, Up: <a href="Files.html">Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

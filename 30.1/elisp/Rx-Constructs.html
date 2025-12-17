@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 30.1.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Rx Constructs (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Rx Constructs (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Rx Constructs (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Rx-Notation.html" rel="up" title="Rx Notation">
+<link href="Rx-Functions.html" rel="next" title="Rx Functions">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Rx-Constructs">
+<div class="nav-panel">
+<p>
+Next: <a href="Rx-Functions.html" accesskey="n" rel="next">Functions and macros using <code class="code">rx</code> regexps</a>, Up: <a href="Rx-Notation.html" accesskey="u" rel="up">The <code class="code">rx</code> Structured Regexp Notation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Constructs-in-rx-regexps"><span>35.3.3.1 Constructs in <code class="code">rx</code> regexps<a class="copiable-link" href="#Constructs-in-rx-regexps"> &para;</a></span></h4>
+
+<p>The various forms in <code class="code">rx</code> regexps are described below.  The
+shorthand <var class="var">rx</var> represents any <code class="code">rx</code> form.  <var class="var">rx</var>&hellip;
+means zero or more <code class="code">rx</code> forms and, unless stated otherwise,
+matches these forms in sequence as if wrapped in a <code class="code">(seq &hellip;)</code>
+subform.
+</p>
+<p>These are all valid arguments to the <code class="code">rx</code> macro.  All forms are
+defined by their described semantics; the corresponding string regexps
+are provided for ease of understanding only.  <var class="var">A</var>, <var class="var">B</var>, &hellip;
+denote (suitably bracketed) string regexp subexpressions therein.
+</p>
+<h4 class="subsubheading" id="Literals"><span>Literals<a class="copiable-link" href="#Literals"> &para;</a></span></h4>
+
+<dl class="table">
+<dt><code class="code">&quot;some-string&quot;</code></dt>
+<dd><p>Match the string &lsquo;<samp class="samp">some-string</samp>&rsquo; literally.  There are no
+characters with special meaning, unlike in string regexps.
+</p>
+</dd>
+<dt><code class="code">?C</code></dt>
+<dd><p>Match the character &lsquo;<samp class="samp">C</samp>&rsquo; literally.
+</p></dd>
+</dl>
+
+<h4 class="subsubheading" id="Sequence-and-alternative"><span>Sequence and alternative<a class="copiable-link" href="#Sequence-and-alternative"> &para;</a></span></h4>
+
+<dl class="table">
+<dt><a id="index-and-in-rx"></a><span><code class="code">(seq <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-and-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-seq-in-rx"></a>
+</dd>
+<dt><code class="code">(sequence <var class="var">rx</var>&hellip;)</code></dt>
+<dd><a class="index-entry-id" id="index-sequence-in-rx"></a>
+</dd>
+<dt><code class="code">(: <var class="var">rx</var>&hellip;)</code></dt>
+<dd><a class="index-entry-id" id="index-_003a-in-rx"></a>
+</dd>
+<dt><code class="code">(and <var class="var">rx</var>&hellip;)</code></dt>
+<dd><p>Match the <var class="var">rx</var>s in sequence.  Without arguments, the expression
+matches the empty string.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var><var class="var">B</var>&hellip;</samp>&rsquo;
+(subexpressions in sequence).
+</p>
+</dd>
+<dt><a id="index-_007c-in-rx"></a><span><code class="code">(or <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-_007c-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-or-in-rx"></a>
+</dd>
+<dt><code class="code">(| <var class="var">rx</var>&hellip;)</code></dt>
+<dd><p>Match exactly one of the <var class="var">rx</var>s.
+If all arguments are strings, characters, or <code class="code">or</code> forms
+so constrained, the longest possible match will always be used.
+Otherwise, either the longest match or the
+first (in left-to-right order) will be used.
+Without arguments, the expression will not match anything at all.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>\|<var class="var">B</var>\|&hellip;</samp>&rsquo;.
+</p>
+</dd>
+<dt><a id="index-unmatchable-in-rx"></a><span><code class="code">unmatchable</code><a class="copiable-link" href="#index-unmatchable-in-rx"> &para;</a></span></dt>
+<dd><p>Refuse any match.  Equivalent to <code class="code">(or)</code>.
+See <a class="xref" href="Regexp-Functions.html#regexp_002dunmatchable">regexp-unmatchable</a>.
+</p></dd>
+</dl>
+
+<h4 class="subsubheading" id="Repetition"><span>Repetition<a class="copiable-link" href="#Repetition"> &para;</a></span></h4>
+
+<p>Normally, repetition forms are greedy, in that they attempt to match
+as many times as possible.  Some forms are non-greedy; they try to
+match as few times as possible (see <a class="pxref" href="Regexp-Special.html#Non_002dgreedy-repetition">Non-greedy repetition</a>).
+</p>
+<dl class="table">
+<dt><a id="index-0_002b-in-rx"></a><span><code class="code">(zero-or-more <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-0_002b-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-zero_002dor_002dmore-in-rx"></a>
+</dd>
+<dt><code class="code">(0+ <var class="var">rx</var>&hellip;)</code></dt>
+<dd><p>Match the <var class="var">rx</var>s zero or more times.  Greedy by default.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>*</samp>&rsquo; (greedy),
+&lsquo;<samp class="samp"><var class="var">A</var>*?</samp>&rsquo; (non-greedy)
+</p>
+</dd>
+<dt><a id="index-1_002b-in-rx"></a><span><code class="code">(one-or-more <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-1_002b-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-one_002dor_002dmore-in-rx"></a>
+</dd>
+<dt><code class="code">(1+ <var class="var">rx</var>&hellip;)</code></dt>
+<dd><p>Match the <var class="var">rx</var>s one or more times.  Greedy by default.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>+</samp>&rsquo; (greedy),
+&lsquo;<samp class="samp"><var class="var">A</var>+?</samp>&rsquo; (non-greedy)
+</p>
+</dd>
+<dt><a id="index-opt-in-rx"></a><span><code class="code">(zero-or-one <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-opt-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-zero_002dor_002done-in-rx"></a>
+</dd>
+<dt><code class="code">(optional <var class="var">rx</var>&hellip;)</code></dt>
+<dd><a class="index-entry-id" id="index-optional-in-rx"></a>
+</dd>
+<dt><code class="code">(opt <var class="var">rx</var>&hellip;)</code></dt>
+<dd><p>Match the <var class="var">rx</var>s once or an empty string.  Greedy by default.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>?</samp>&rsquo; (greedy),
+&lsquo;<samp class="samp"><var class="var">A</var>??</samp>&rsquo; (non-greedy).
+</p>
+</dd>
+<dt><a id="index-_002a-in-rx"></a><span><code class="code">(* <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-_002a-in-rx"> &para;</a></span></dt>
+<dd><p>Match the <var class="var">rx</var>s zero or more times.  Greedy.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>*</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-_002b-in-rx"></a><span><code class="code">(+ <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-_002b-in-rx"> &para;</a></span></dt>
+<dd><p>Match the <var class="var">rx</var>s one or more times.  Greedy.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>+</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-_003f-in-rx"></a><span><code class="code">(? <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-_003f-in-rx"> &para;</a></span></dt>
+<dd><p>Match the <var class="var">rx</var>s once or an empty string.  Greedy.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>?</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-_002a_003f-in-rx"></a><span><code class="code">(*? <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-_002a_003f-in-rx"> &para;</a></span></dt>
+<dd><p>Match the <var class="var">rx</var>s zero or more times.  Non-greedy.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>*?</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-_002b_003f-in-rx"></a><span><code class="code">(+? <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-_002b_003f-in-rx"> &para;</a></span></dt>
+<dd><p>Match the <var class="var">rx</var>s one or more times.  Non-greedy.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>+?</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-_003f_003f-in-rx"></a><span><code class="code">(?? <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-_003f_003f-in-rx"> &para;</a></span></dt>
+<dd><p>Match the <var class="var">rx</var>s or an empty string.  Non-greedy.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>??</samp>&rsquo;
+</p>
+</dd>
+<dt><code class="code">(= <var class="var">n</var> <var class="var">rx</var>&hellip;)</code></dt>
+<dd><a class="index-entry-id" id="index-_003d-in-rx"></a>
+</dd>
+<dt><code class="code">(repeat <var class="var">n</var> <var class="var">rx</var>)</code></dt>
+<dd><p>Match the <var class="var">rx</var>s exactly <var class="var">n</var> times.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>\{<var class="var">n</var>\}</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-_003e_003d-in-rx"></a><span><code class="code">(&gt;= <var class="var">n</var> <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-_003e_003d-in-rx"> &para;</a></span></dt>
+<dd><p>Match the <var class="var">rx</var>s <var class="var">n</var> or more times.  Greedy.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>\{<var class="var">n</var>,\}</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-repeat-in-rx"></a><span><code class="code">(** <var class="var">n</var> <var class="var">m</var> <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-repeat-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-_002a_002a-in-rx"></a>
+</dd>
+<dt><code class="code">(repeat <var class="var">n</var> <var class="var">m</var> <var class="var">rx</var>&hellip;)</code></dt>
+<dd><p>Match the <var class="var">rx</var>s at least <var class="var">n</var> but no more than <var class="var">m</var> times.  Greedy.<br>
+Corresponding string regexp: &lsquo;<samp class="samp"><var class="var">A</var>\{<var class="var">n</var>,<var class="var">m</var>\}</samp>&rsquo;
+</p></dd>
+</dl>
+
+<p>The greediness of some repetition forms can be controlled using the
+following constructs.  However, it is usually better to use the
+explicit non-greedy forms above when such matching is required.
+</p>
+<dl class="table">
+<dt><a id="index-minimal_002dmatch-in-rx"></a><span><code class="code">(minimal-match <var class="var">rx</var>)</code><a class="copiable-link" href="#index-minimal_002dmatch-in-rx"> &para;</a></span></dt>
+<dd><p>Match <var class="var">rx</var>, with <code class="code">zero-or-more</code>, <code class="code">0+</code>,
+<code class="code">one-or-more</code>, <code class="code">1+</code>, <code class="code">zero-or-one</code>, <code class="code">opt</code> and
+<code class="code">optional</code> using non-greedy matching.
+</p>
+</dd>
+<dt><a id="index-maximal_002dmatch-in-rx"></a><span><code class="code">(maximal-match <var class="var">rx</var>)</code><a class="copiable-link" href="#index-maximal_002dmatch-in-rx"> &para;</a></span></dt>
+<dd><p>Match <var class="var">rx</var>, with <code class="code">zero-or-more</code>, <code class="code">0+</code>,
+<code class="code">one-or-more</code>, <code class="code">1+</code>, <code class="code">zero-or-one</code>, <code class="code">opt</code> and
+<code class="code">optional</code> using greedy matching.  This is the default.
+</p></dd>
+</dl>
+
+<h4 class="subsubheading" id="Matching-single-characters"><span>Matching single characters<a class="copiable-link" href="#Matching-single-characters"> &para;</a></span></h4>
+
+<dl class="table">
+<dt><a class="index-entry-id" id="index-character-class-in-rx"></a>
+<a id="index-in-in-rx"></a><span><code class="code">(any <var class="var">set</var>&hellip;)</code><a class="copiable-link" href="#index-in-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-any-in-rx"></a>
+</dd>
+<dt><code class="code">(char <var class="var">set</var>&hellip;)</code></dt>
+<dd><a class="index-entry-id" id="index-char-in-rx"></a>
+</dd>
+<dt><code class="code">(in <var class="var">set</var>&hellip;)</code></dt>
+<dd><p>Match a single character from one of the <var class="var">set</var>s.  Each <var class="var">set</var>
+is a character, a string representing the set of its characters, a
+range or a character class (see below).  A range is either a
+hyphen-separated string like <code class="code">&quot;A-Z&quot;</code>, or a cons of characters
+like <code class="code">(?A . ?Z)</code>.
+</p>
+<p>Note that hyphen (<code class="code">-</code>) is special in strings in this construct,
+since it acts as a range separator.  To include a hyphen, add it as a
+separate character or single-character string.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">[&hellip;]</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-not-in-rx"></a><span><code class="code">(not <var class="var">charspec</var>)</code><a class="copiable-link" href="#index-not-in-rx"> &para;</a></span></dt>
+<dd><p>Match a character not included in <var class="var">charspec</var>.  <var class="var">charspec</var> can
+be a character, a single-character string, an <code class="code">any</code>, <code class="code">not</code>,
+<code class="code">or</code>, <code class="code">intersection</code>, <code class="code">syntax</code> or <code class="code">category</code> form,
+or a character class.
+If <var class="var">charspec</var> is an <code class="code">or</code> form, its arguments have the same
+restrictions as those of <code class="code">intersection</code>; see below.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">[^&hellip;]</samp>&rsquo;, &lsquo;<samp class="samp">\S<var class="var">code</var></samp>&rsquo;,
+&lsquo;<samp class="samp">\C<var class="var">code</var></samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-intersection-in-rx"></a><span><code class="code">(intersection <var class="var">charset</var>&hellip;)</code><a class="copiable-link" href="#index-intersection-in-rx"> &para;</a></span></dt>
+<dd><p>Match a character included in all of the <var class="var">charset</var>s.
+Each <var class="var">charset</var> can be a character, a single-character string, an
+<code class="code">any</code> form without character classes, or an <code class="code">intersection</code>,
+<code class="code">or</code> or <code class="code">not</code> form whose arguments are also <var class="var">charset</var>s.
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-nonl-in-rx"></a>
+<a id="index-not_002dnewline-in-rx"></a><span><code class="code">not-newline</code>, <code class="code">nonl</code><a class="copiable-link" href="#index-not_002dnewline-in-rx"> &para;</a></span></dt>
+<dd><p>Match any character except a newline.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">.</samp>&rsquo; (dot)
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-anything-in-rx"></a>
+<a id="index-anychar-in-rx"></a><span><code class="code">anychar</code>, <code class="code">anything</code><a class="copiable-link" href="#index-anychar-in-rx"> &para;</a></span></dt>
+<dd><p>Match any character.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">.\|\n</samp>&rsquo; (for example)
+</p>
+</dd>
+<dt><a id="index-character-class-in-rx-1"></a><span>character class<a class="copiable-link" href="#index-character-class-in-rx-1"> &para;</a></span></dt>
+<dd><p>Match a character from a named character class:
+</p>
+<dl class="table">
+<dt><code class="code">alpha</code>, <code class="code">alphabetic</code>, <code class="code">letter</code></dt>
+<dd><p>Match alphabetic characters.  More precisely, match characters whose
+Unicode &lsquo;<samp class="samp">general-category</samp>&rsquo; property indicates that they are
+alphabetic.
+</p>
+</dd>
+<dt><code class="code">alnum</code>, <code class="code">alphanumeric</code></dt>
+<dd><p>Match alphabetic characters and digits.  More precisely, match
+characters whose Unicode &lsquo;<samp class="samp">general-category</samp>&rsquo; property indicates
+that they are alphabetic or decimal digits.
+</p>
+</dd>
+<dt><code class="code">digit</code>, <code class="code">numeric</code>, <code class="code">num</code></dt>
+<dd><p>Match the digits &lsquo;<samp class="samp">0</samp>&rsquo;&ndash;&lsquo;<samp class="samp">9</samp>&rsquo;.
+</p>
+</dd>
+<dt><code class="code">xdigit</code>, <code class="code">hex-digit</code>, <code class="code">hex</code></dt>
+<dd><p>Match the hexadecimal digits &lsquo;<samp class="samp">0</samp>&rsquo;&ndash;&lsquo;<samp class="samp">9</samp>&rsquo;, &lsquo;<samp class="samp">A</samp>&rsquo;&ndash;&lsquo;<samp class="samp">F</samp>&rsquo;
+and &lsquo;<samp class="samp">a</samp>&rsquo;&ndash;&lsquo;<samp class="samp">f</samp>&rsquo;.
+</p>
+</dd>
+<dt><code class="code">cntrl</code>, <code class="code">control</code></dt>
+<dd><p>Match any character whose code is in the range 0&ndash;31.
+</p>
+</dd>
+<dt><code class="code">blank</code></dt>
+<dd><p>Match horizontal whitespace.  More precisely, match characters whose
+Unicode &lsquo;<samp class="samp">general-category</samp>&rsquo; property indicates that they are
+spacing separators.
+</p>
+</dd>
+<dt><code class="code">space</code>, <code class="code">whitespace</code>, <code class="code">white</code></dt>
+<dd><p>Match any character that has whitespace syntax
+(see <a class="pxref" href="Syntax-Class-Table.html">Table of Syntax Classes</a>).
+</p>
+</dd>
+<dt><code class="code">lower</code>, <code class="code">lower-case</code></dt>
+<dd><p>Match anything lower-case, as determined by the current case table.
+If <code class="code">case-fold-search</code> is non-<code class="code">nil</code>, this also matches any
+upper-case letter.
+</p>
+</dd>
+<dt><code class="code">upper</code>, <code class="code">upper-case</code></dt>
+<dd><p>Match anything upper-case, as determined by the current case table.
+If <code class="code">case-fold-search</code> is non-<code class="code">nil</code>, this also matches any
+lower-case letter.
+</p>
+</dd>
+<dt><code class="code">graph</code>, <code class="code">graphic</code></dt>
+<dd><p>Match any character except whitespace, <abbr class="acronym">ASCII</abbr> and
+non-<abbr class="acronym">ASCII</abbr> control characters, surrogates, and codepoints
+unassigned by Unicode, as indicated by the Unicode
+&lsquo;<samp class="samp">general-category</samp>&rsquo; property.
+</p>
+</dd>
+<dt><code class="code">print</code>, <code class="code">printing</code></dt>
+<dd><p>Match whitespace or a character matched by <code class="code">graph</code>.
+</p>
+</dd>
+<dt><code class="code">punct</code>, <code class="code">punctuation</code></dt>
+<dd><p>Match any punctuation character.  (At present, for multibyte
+characters, anything that has non-word syntax.)
+</p>
+</dd>
+<dt><code class="code">word</code>, <code class="code">wordchar</code></dt>
+<dd><p>Match any character that has word syntax (see <a class="pxref" href="Syntax-Class-Table.html">Table of Syntax Classes</a>).
+</p>
+</dd>
+<dt><code class="code">ascii</code></dt>
+<dd><p>Match any <abbr class="acronym">ASCII</abbr> character (codes 0&ndash;127).
+</p>
+</dd>
+<dt><code class="code">nonascii</code></dt>
+<dd><p>Match any non-<abbr class="acronym">ASCII</abbr> character (but not raw bytes).
+</p></dd>
+</dl>
+
+<p>The classes <code class="code">space</code>, <code class="code">word</code> and <code class="code">punct</code> use the
+syntax-table of the current buffer but not any overriding syntax text
+properties (see <a class="pxref" href="Syntax-Properties.html">Syntax Properties</a>).<br>
+Corresponding string regexp: &lsquo;<samp class="samp">[[:<var class="var">class</var>:]]</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-syntax-in-rx"></a><span><code class="code">(syntax <var class="var">syntax</var>)</code><a class="copiable-link" href="#index-syntax-in-rx"> &para;</a></span></dt>
+<dd><p>Match a character with syntax <var class="var">syntax</var>, being one of the following
+names:
+</p>
+<table class="multitable">
+<thead><tr><th>Syntax name</th><th>Syntax character</th></tr></thead>
+<tbody><tr><td><code class="code">whitespace</code></td><td><code class="code">-</code></td></tr>
+<tr><td><code class="code">punctuation</code></td><td><code class="code">.</code></td></tr>
+<tr><td><code class="code">word</code></td><td><code class="code">w</code></td></tr>
+<tr><td><code class="code">symbol</code></td><td><code class="code">_</code></td></tr>
+<tr><td><code class="code">open-parenthesis</code></td><td><code class="code">(</code></td></tr>
+<tr><td><code class="code">close-parenthesis</code></td><td><code class="code">)</code></td></tr>
+<tr><td><code class="code">expression-prefix</code></td><td><code class="code">'</code></td></tr>
+<tr><td><code class="code">string-quote</code></td><td><code class="code">&quot;</code></td></tr>
+<tr><td><code class="code">paired-delimiter</code></td><td><code class="code">$</code></td></tr>
+<tr><td><code class="code">escape</code></td><td><code class="code">\</code></td></tr>
+<tr><td><code class="code">character-quote</code></td><td><code class="code">/</code></td></tr>
+<tr><td><code class="code">comment-start</code></td><td><code class="code">&lt;</code></td></tr>
+<tr><td><code class="code">comment-end</code></td><td><code class="code">&gt;</code></td></tr>
+<tr><td><code class="code">string-delimiter</code></td><td><code class="code">|</code></td></tr>
+<tr><td><code class="code">comment-delimiter</code></td><td><code class="code">!</code></td></tr>
+</tbody>
+</table>
+
+<p>For details, see <a class="pxref" href="Syntax-Class-Table.html">Table of Syntax Classes</a>.  Please note that
+<code class="code">(syntax punctuation)</code> is <em class="emph">not</em> equivalent to the character class
+<code class="code">punctuation</code>.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\s<var class="var">char</var></samp>&rsquo; where <var class="var">char</var> is the
+syntax character.
+</p>
+</dd>
+<dt><a id="index-category-in-rx"></a><span><code class="code">(category <var class="var">category</var>)</code><a class="copiable-link" href="#index-category-in-rx"> &para;</a></span></dt>
+<dd><p>Match a character in category <var class="var">category</var>, which is either one of
+the names below or its category character.
+</p>
+<table class="multitable">
+<thead><tr><th>Category name</th><th>Category character</th></tr></thead>
+<tbody><tr><td><code class="code">space-for-indent</code></td><td>space</td></tr>
+<tr><td><code class="code">base</code></td><td><code class="code">.</code></td></tr>
+<tr><td><code class="code">consonant</code></td><td><code class="code">0</code></td></tr>
+<tr><td><code class="code">base-vowel</code></td><td><code class="code">1</code></td></tr>
+<tr><td><code class="code">upper-diacritical-mark</code></td><td><code class="code">2</code></td></tr>
+<tr><td><code class="code">lower-diacritical-mark</code></td><td><code class="code">3</code></td></tr>
+<tr><td><code class="code">tone-mark</code></td><td><code class="code">4</code></td></tr>
+<tr><td><code class="code">symbol</code></td><td><code class="code">5</code></td></tr>
+<tr><td><code class="code">digit</code></td><td><code class="code">6</code></td></tr>
+<tr><td><code class="code">vowel-modifying-diacritical-mark</code></td><td><code class="code">7</code></td></tr>
+<tr><td><code class="code">vowel-sign</code></td><td><code class="code">8</code></td></tr>
+<tr><td><code class="code">semivowel-lower</code></td><td><code class="code">9</code></td></tr>
+<tr><td><code class="code">not-at-end-of-line</code></td><td><code class="code">&lt;</code></td></tr>
+<tr><td><code class="code">not-at-beginning-of-line</code></td><td><code class="code">&gt;</code></td></tr>
+<tr><td><code class="code">alpha-numeric-two-byte</code></td><td><code class="code">A</code></td></tr>
+<tr><td><code class="code">chinese-two-byte</code></td><td><code class="code">C</code></td></tr>
+<tr><td><code class="code">greek-two-byte</code></td><td><code class="code">G</code></td></tr>
+<tr><td><code class="code">japanese-hiragana-two-byte</code></td><td><code class="code">H</code></td></tr>
+<tr><td><code class="code">indian-two-byte</code></td><td><code class="code">I</code></td></tr>
+<tr><td><code class="code">japanese-katakana-two-byte</code></td><td><code class="code">K</code></td></tr>
+<tr><td><code class="code">strong-left-to-right</code></td><td><code class="code">L</code></td></tr>
+<tr><td><code class="code">korean-hangul-two-byte</code></td><td><code class="code">N</code></td></tr>
+<tr><td><code class="code">strong-right-to-left</code></td><td><code class="code">R</code></td></tr>
+<tr><td><code class="code">cyrillic-two-byte</code></td><td><code class="code">Y</code></td></tr>
+<tr><td><code class="code">combining-diacritic</code></td><td><code class="code">^</code></td></tr>
+<tr><td><code class="code">ascii</code></td><td><code class="code">a</code></td></tr>
+<tr><td><code class="code">arabic</code></td><td><code class="code">b</code></td></tr>
+<tr><td><code class="code">chinese</code></td><td><code class="code">c</code></td></tr>
+<tr><td><code class="code">ethiopic</code></td><td><code class="code">e</code></td></tr>
+<tr><td><code class="code">greek</code></td><td><code class="code">g</code></td></tr>
+<tr><td><code class="code">korean</code></td><td><code class="code">h</code></td></tr>
+<tr><td><code class="code">indian</code></td><td><code class="code">i</code></td></tr>
+<tr><td><code class="code">japanese</code></td><td><code class="code">j</code></td></tr>
+<tr><td><code class="code">japanese-katakana</code></td><td><code class="code">k</code></td></tr>
+<tr><td><code class="code">latin</code></td><td><code class="code">l</code></td></tr>
+<tr><td><code class="code">lao</code></td><td><code class="code">o</code></td></tr>
+<tr><td><code class="code">tibetan</code></td><td><code class="code">q</code></td></tr>
+<tr><td><code class="code">japanese-roman</code></td><td><code class="code">r</code></td></tr>
+<tr><td><code class="code">thai</code></td><td><code class="code">t</code></td></tr>
+<tr><td><code class="code">vietnamese</code></td><td><code class="code">v</code></td></tr>
+<tr><td><code class="code">hebrew</code></td><td><code class="code">w</code></td></tr>
+<tr><td><code class="code">cyrillic</code></td><td><code class="code">y</code></td></tr>
+<tr><td><code class="code">can-break</code></td><td><code class="code">|</code></td></tr>
+</tbody>
+</table>
+
+<p>For more information about currently defined categories, run the
+command <kbd class="kbd">M-x describe-categories <kbd class="key">RET</kbd></kbd>.  For how to define
+new categories, see <a class="pxref" href="Categories.html">Categories</a>.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\c<var class="var">char</var></samp>&rsquo; where <var class="var">char</var> is the
+category character.
+</p></dd>
+</dl>
+
+<h4 class="subsubheading" id="Zero_002dwidth-assertions"><span>Zero-width assertions<a class="copiable-link" href="#Zero_002dwidth-assertions"> &para;</a></span></h4>
+
+<p>These all match the empty string, but only in specific places.
+</p>
+<dl class="table">
+<dt><a class="index-entry-id" id="index-bol-in-rx"></a>
+<a id="index-line_002dstart-in-rx"></a><span><code class="code">line-start</code>, <code class="code">bol</code><a class="copiable-link" href="#index-line_002dstart-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the beginning of a line.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">^</samp>&rsquo;
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-eol-in-rx"></a>
+<a id="index-line_002dend-in-rx"></a><span><code class="code">line-end</code>, <code class="code">eol</code><a class="copiable-link" href="#index-line_002dend-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the end of a line.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">$</samp>&rsquo;
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-bos-in-rx"></a>
+<a class="index-entry-id" id="index-buffer_002dstart-in-rx"></a>
+<a class="index-entry-id" id="index-bot-in-rx"></a>
+<a id="index-string_002dstart-in-rx"></a><span><code class="code">string-start</code>, <code class="code">bos</code>, <code class="code">buffer-start</code>, <code class="code">bot</code><a class="copiable-link" href="#index-string_002dstart-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the start of the string or buffer being matched against.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\`</samp>&rsquo;
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-eos-in-rx"></a>
+<a class="index-entry-id" id="index-buffer_002dend-in-rx"></a>
+<a class="index-entry-id" id="index-eot-in-rx"></a>
+<a id="index-string_002dend-in-rx"></a><span><code class="code">string-end</code>, <code class="code">eos</code>, <code class="code">buffer-end</code>, <code class="code">eot</code><a class="copiable-link" href="#index-string_002dend-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the end of the string or buffer being matched against.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\'</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-point-in-rx"></a><span><code class="code">point</code><a class="copiable-link" href="#index-point-in-rx"> &para;</a></span></dt>
+<dd><p>Match at point.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\=</samp>&rsquo;
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-bow-in-rx"></a>
+<a id="index-word_002dstart-in-rx"></a><span><code class="code">word-start</code>, <code class="code">bow</code><a class="copiable-link" href="#index-word_002dstart-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the beginning of a word.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\&lt;</samp>&rsquo;
+</p>
+</dd>
+<dt><a class="index-entry-id" id="index-eow-in-rx"></a>
+<a id="index-word_002dend-in-rx"></a><span><code class="code">word-end</code>, <code class="code">eow</code><a class="copiable-link" href="#index-word_002dend-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the end of a word.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\&gt;</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-word_002dboundary-in-rx"></a><span><code class="code">word-boundary</code><a class="copiable-link" href="#index-word_002dboundary-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the beginning or end of a word.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\b</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-not_002dword_002dboundary-in-rx"></a><span><code class="code">not-word-boundary</code><a class="copiable-link" href="#index-not_002dword_002dboundary-in-rx"> &para;</a></span></dt>
+<dd><p>Match anywhere but at the beginning or end of a word.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\B</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-symbol_002dstart-in-rx"></a><span><code class="code">symbol-start</code><a class="copiable-link" href="#index-symbol_002dstart-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the beginning of a symbol.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\_&lt;</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-symbol_002dend-in-rx"></a><span><code class="code">symbol-end</code><a class="copiable-link" href="#index-symbol_002dend-in-rx"> &para;</a></span></dt>
+<dd><p>Match at the end of a symbol.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\_&gt;</samp>&rsquo;
+</p></dd>
+</dl>
+
+<h4 class="subsubheading" id="Capture-groups"><span>Capture groups<a class="copiable-link" href="#Capture-groups"> &para;</a></span></h4>
+
+<dl class="table">
+<dt><a id="index-submatch-in-rx"></a><span><code class="code">(group <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-submatch-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-group-in-rx"></a>
+</dd>
+<dt><code class="code">(submatch <var class="var">rx</var>&hellip;)</code></dt>
+<dd><p>Match the <var class="var">rx</var>s, making the matched text and position accessible
+in the match data.  The first group in a regexp is numbered 1;
+subsequent groups will be numbered one above the previously
+highest-numbered group in the pattern so far.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\(&hellip;\)</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-submatch_002dn-in-rx"></a><span><code class="code">(group-n <var class="var">n</var> <var class="var">rx</var>&hellip;)</code><a class="copiable-link" href="#index-submatch_002dn-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-group_002dn-in-rx"></a>
+</dd>
+<dt><code class="code">(submatch-n <var class="var">n</var> <var class="var">rx</var>&hellip;)</code></dt>
+<dd><p>Like <code class="code">group</code>, but explicitly assign the group number <var class="var">n</var>.
+<var class="var">n</var> must be positive.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\(?<var class="var">n</var>:&hellip;\)</samp>&rsquo;
+</p>
+</dd>
+<dt><a id="index-backref-in-rx"></a><span><code class="code">(backref <var class="var">n</var>)</code><a class="copiable-link" href="#index-backref-in-rx"> &para;</a></span></dt>
+<dd><p>Match the text previously matched by group number <var class="var">n</var>.
+<var class="var">n</var> must be in the range 1&ndash;9.<br>
+Corresponding string regexp: &lsquo;<samp class="samp">\<var class="var">n</var></samp>&rsquo;
+</p></dd>
+</dl>
+
+<h4 class="subsubheading" id="Dynamic-inclusion"><span>Dynamic inclusion<a class="copiable-link" href="#Dynamic-inclusion"> &para;</a></span></h4>
+
+<dl class="table">
+<dt><a id="index-literal-in-rx"></a><span><code class="code">(literal <var class="var">expr</var>)</code><a class="copiable-link" href="#index-literal-in-rx"> &para;</a></span></dt>
+<dd><p>Match the literal string that is the result from evaluating the Lisp
+expression <var class="var">expr</var>.  The evaluation takes place at call time, in
+the current lexical environment.
+</p>
+</dd>
+<dt><a id="index-regex-in-rx"></a><span><code class="code">(regexp <var class="var">expr</var>)</code><a class="copiable-link" href="#index-regex-in-rx"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-regexp-in-rx"></a>
+</dd>
+<dt><code class="code">(regex <var class="var">expr</var>)</code></dt>
+<dd><p>Match the string regexp that is the result from evaluating the Lisp
+expression <var class="var">expr</var>.  The evaluation takes place at call time, in
+the current lexical environment.
+</p>
+</dd>
+<dt><a id="index-eval-in-rx"></a><span><code class="code">(eval <var class="var">expr</var>)</code><a class="copiable-link" href="#index-eval-in-rx"> &para;</a></span></dt>
+<dd><p>Match the rx form that is the result from evaluating the Lisp
+expression <var class="var">expr</var>.  The evaluation takes place at macro-expansion
+time for <code class="code">rx</code>, at call time for <code class="code">rx-to-string</code>,
+in the current global environment.
+</p></dd>
+</dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Rx-Functions.html">Functions and macros using <code class="code">rx</code> regexps</a>, Up: <a href="Rx-Notation.html">The <code class="code">rx</code> Structured Regexp Notation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

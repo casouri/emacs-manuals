@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 29.3.
+
+Copyright © 1985-2024 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Mac / GNUstep Basics (GNU Emacs Manual)</title>
+
+<meta name="description" content="Mac / GNUstep Basics (GNU Emacs Manual)">
+<meta name="keywords" content="Mac / GNUstep Basics (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Mac-OS-_002f-GNUstep.html" rel="up" title="Mac OS / GNUstep">
+<link href="Mac-_002f-GNUstep-Customization.html" rel="next" title="Mac / GNUstep Customization">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="Mac-_002f-GNUstep-Basics">
+<div class="nav-panel">
+<p>
+Next: <a href="Mac-_002f-GNUstep-Customization.html" accesskey="n" rel="next">Mac / GNUstep Customization</a>, Up: <a href="Mac-OS-_002f-GNUstep.html" accesskey="u" rel="up">Emacs and macOS / GNUstep</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Basic-Emacs-usage-under-macOS-and-GNUstep"><span>F.1 Basic Emacs usage under macOS and GNUstep<a class="copiable-link" href="#Basic-Emacs-usage-under-macOS-and-GNUstep"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-modifier-keys-_0028macOS_0029"></a>
+<p>By default, the <kbd class="key">Alt</kbd> and <kbd class="key">Option</kbd> keys are the same as
+<kbd class="key">Meta</kbd>.  The Mac <kbd class="key">Cmd</kbd> key is the same as <kbd class="key">Super</kbd>, and
+Emacs provides a set of key bindings using this modifier key that mimic
+other Mac / GNUstep applications (see <a class="pxref" href="Mac-_002f-GNUstep-Events.html">Windowing System Events under macOS / GNUstep</a>).  You
+can change these bindings in the usual way (see <a class="pxref" href="Key-Bindings.html">Customizing Key Bindings</a>).
+The modifiers themselves can be customized;
+see <a class="pxref" href="Mac-_002f-GNUstep-Customization.html">Mac / GNUstep Customization</a>.
+</p>
+<p><kbd class="kbd">S-mouse-1</kbd> adjusts the region to the click position,
+just like <kbd class="kbd">mouse-3</kbd> (<code class="code">mouse-save-then-kill</code>); it does not pop
+up a menu for changing the default face, as <kbd class="kbd">S-mouse-1</kbd> normally
+does (see <a class="pxref" href="Text-Scale.html">Text Scale</a>).  This change makes Emacs behave more like
+other Mac / GNUstep applications.
+</p>
+<p>When you open or save files using the menus, or using the
+<kbd class="kbd">Cmd-o</kbd> and <kbd class="kbd">Cmd-S</kbd> bindings, Emacs uses graphical file
+dialogs to read file names.  However, if you use the regular Emacs key
+sequences, such as <kbd class="kbd">C-x C-f</kbd>, Emacs uses the minibuffer to read
+file names.
+</p>
+<a class="index-entry-id" id="index-copy_002fpaste-to_002ffrom-primary-selection-_0028macOS_0029"></a>
+<p>On GNUstep, in an X-windows environment you need to use <kbd class="kbd">Cmd-c</kbd>
+instead of one of the <kbd class="kbd">C-w</kbd> or <kbd class="kbd">M-w</kbd> commands to transfer text
+to the X primary selection; otherwise, Emacs will use the
+clipboard selection.  Likewise, <kbd class="kbd">Cmd-y</kbd> (instead of <kbd class="kbd">C-y</kbd>)
+yanks from the X primary selection instead of the kill-ring or
+clipboard.
+</p>
+
+<ul class="mini-toc">
+<li><a href="#Grabbing-environment-variables" accesskey="1">Grabbing environment variables</a></li>
+</ul>
+<div class="subsection-level-extent" id="Grabbing-environment-variables">
+<h4 class="subsection"><span>F.1.1 Grabbing environment variables<a class="copiable-link" href="#Grabbing-environment-variables"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-environment-variables-_0028macOS_0029"></a>
+<p>Many programs which may run under Emacs, like latex or man, depend on the
+settings of environment variables.  If Emacs is launched from the shell, it
+will automatically inherit these environment variables and its subprocesses
+will inherit them from it.  But if Emacs is launched from the Finder it
+is not a descendant of any shell, so its environment variables haven&rsquo;t been
+set, which often causes the subprocesses it launches to behave differently than
+they would when launched from the shell.
+</p>
+<p>For the PATH and MANPATH variables, a system-wide method
+of setting PATH is recommended on macOS, using the
+<samp class="file">/etc/paths</samp> files and the <samp class="file">/etc/paths.d</samp> directory.
+</p>
+</div>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Mac-_002f-GNUstep-Customization.html">Mac / GNUstep Customization</a>, Up: <a href="Mac-OS-_002f-GNUstep.html">Emacs and macOS / GNUstep</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

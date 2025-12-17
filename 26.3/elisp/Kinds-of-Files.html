@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 26.3.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Kinds of Files (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Kinds of Files (GNU Emacs Lisp Reference Manual)">
@@ -26,6 +26,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -34,20 +36,10 @@ developing GNU and promoting software freedom." -->
 <link href="Testing-Accessibility.html" rel="prev" title="Testing Accessibility">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,53 +48,54 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Kinds-of-Files"></span><div class="header">
+<div class="subsection-level-extent" id="Kinds-of-Files">
+<div class="nav-panel">
 <p>
 Next: <a href="Truenames.html" accesskey="n" rel="next">Truenames</a>, Previous: <a href="Testing-Accessibility.html" accesskey="p" rel="prev">Testing Accessibility</a>, Up: <a href="Information-about-Files.html" accesskey="u" rel="up">Information about Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Distinguishing-Kinds-of-Files"></span><h4 class="subsection">25.6.2 Distinguishing Kinds of Files</h4>
-<span id="index-file-classification"></span>
-<span id="index-classification-of-file-types"></span>
-<span id="index-symbolic-links"></span>
+<h4 class="subsection" id="Distinguishing-Kinds-of-Files"><span>25.6.2 Distinguishing Kinds of Files<a class="copiable-link" href="#Distinguishing-Kinds-of-Files"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-file-classification"></a>
+<a class="index-entry-id" id="index-classification-of-file-types"></a>
+<a class="index-entry-id" id="index-symbolic-links"></a>
 
 <p>This section describes how to distinguish various kinds of files, such
 as directories, symbolic links, and ordinary files.
 </p>
 <p>Symbolic links are ordinarily followed wherever they appear.  For
-example, to interpret the file name <samp>a/b/c</samp>, any of <samp>a</samp>,
-<samp>a/b</samp>, and <samp>a/b/c</samp> can be symbolic links that are followed,
+example, to interpret the file name <samp class="file">a/b/c</samp>, any of <samp class="file">a</samp>,
+<samp class="file">a/b</samp>, and <samp class="file">a/b/c</samp> can be symbolic links that are followed,
 possibly recursively if the link targets are themselves symbolic
 links.  However, a few functions do not follow symbolic links at the
-end of a file name (<samp>a/b/c</samp> in this example).  Such a function
-is said to <em>not follow symbolic links</em>.
+end of a file name (<samp class="file">a/b/c</samp> in this example).  Such a function
+is said to <em class="dfn">not follow symbolic links</em>.
 </p>
-<dl>
-<dt id="index-file_002dsymlink_002dp">Function: <strong>file-symlink-p</strong> <em>filename</em></dt>
-<dd><span id="index-symbolic-links-1"></span>
-<p>If the file <var>filename</var> is a symbolic link, this function does not
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dsymlink_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-symlink-p</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-file_002dsymlink_002dp"> &para;</a></span></dt>
+<dd><a class="index-entry-id" id="index-symbolic-links-1"></a>
+<p>If the file <var class="var">filename</var> is a symbolic link, this function does not
 follow it and instead returns its link target
 as a string.  (The link target string is not necessarily the full
 absolute file name of the target; determining the full file name that
 the link points to is nontrivial, see below.)
 </p>
-<p>If the file <var>filename</var> is not a symbolic link, or does not exist,
-<code>file-symlink-p</code> returns <code>nil</code>.
+<p>If the file <var class="var">filename</var> is not a symbolic link, or does not exist,
+<code class="code">file-symlink-p</code> returns <code class="code">nil</code>.
 </p>
 <p>Here are a few examples of using this function:
 </p>
 <div class="example">
-<pre class="example">(file-symlink-p &quot;not-a-symlink&quot;)
+<div class="group"><pre class="example-preformatted">(file-symlink-p &quot;not-a-symlink&quot;)
      &rArr; nil
-</pre><pre class="example">(file-symlink-p &quot;sym-link&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-symlink-p &quot;sym-link&quot;)
      &rArr; &quot;not-a-symlink&quot;
-</pre><pre class="example">(file-symlink-p &quot;sym-link2&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-symlink-p &quot;sym-link2&quot;)
      &rArr; &quot;sym-link&quot;
-</pre><pre class="example">(file-symlink-p &quot;/bin&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-symlink-p &quot;/bin&quot;)
      &rArr; &quot;/pub/bin&quot;
-</pre></div>
+</pre></div></div>
 
-<p>Note that in the third example, the function returned <samp>sym-link</samp>,
+<p>Note that in the third example, the function returned <samp class="file">sym-link</samp>,
 but did not proceed to resolve it, although that file is itself a
 symbolic link.  That is because this function does not follow symbolic
 links&mdash;the process of following the symbolic links does not apply to
@@ -110,62 +103,63 @@ the last component of the file name.
 </p>
 <p>The string that this function returns is what is recorded in the
 symbolic link; it may or may not include any leading directories.
-This function does <em>not</em> expand the link target to produce a
+This function does <em class="emph">not</em> expand the link target to produce a
 fully-qualified file name, and in particular does not use the leading
-directories, if any, of the <var>filename</var> argument if the link target
+directories, if any, of the <var class="var">filename</var> argument if the link target
 is not an absolute file name.  Here&rsquo;s an example:
 </p>
 <div class="example">
-<pre class="example">(file-symlink-p &quot;/foo/bar/baz&quot;)
+<div class="group"><pre class="example-preformatted">(file-symlink-p &quot;/foo/bar/baz&quot;)
      &rArr; &quot;some-file&quot;
-</pre></div>
+</pre></div></div>
 
-<p>Here, although <samp>/foo/bar/baz</samp> was given as a fully-qualified file
+<p>Here, although <samp class="file">/foo/bar/baz</samp> was given as a fully-qualified file
 name, the result is not, and in fact does not have any leading
-directories at all.  And since <samp>some-file</samp> might itself be a
+directories at all.  And since <samp class="file">some-file</samp> might itself be a
 symbolic link, you cannot simply prepend leading directories to it,
-nor even naively use <code>expand-file-name</code> (see <a href="File-Name-Expansion.html">File Name Expansion</a>) to produce its absolute file name.
+nor even naively use <code class="code">expand-file-name</code> (see <a class="pxref" href="File-Name-Expansion.html">Functions that Expand Filenames</a>) to produce its absolute file name.
 </p>
 <p>For this reason, this function is seldom useful if you need to
 determine more than just the fact that a file is or isn&rsquo;t a symbolic
 link.  If you actually need the file name of the link target, use
-<code>file-chase-links</code> or <code>file-truename</code>, described in
-<a href="Truenames.html">Truenames</a>.
+<code class="code">file-chase-links</code> or <code class="code">file-truename</code>, described in
+<a class="ref" href="Truenames.html">Truenames</a>.
 </p></dd></dl>
 
-<dl>
-<dt id="index-file_002ddirectory_002dp">Function: <strong>file-directory-p</strong> <em>filename</em></dt>
-<dd><p>This function returns <code>t</code> if <var>filename</var> is the name of an
-existing directory, <code>nil</code> otherwise.
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002ddirectory_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-directory-p</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-file_002ddirectory_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if <var class="var">filename</var> is the name of an
+existing directory, <code class="code">nil</code> otherwise.
 This function follows symbolic links.
 </p>
 <div class="example">
-<pre class="example">(file-directory-p &quot;~rms&quot;)
+<div class="group"><pre class="example-preformatted">(file-directory-p &quot;~rms&quot;)
      &rArr; t
-</pre><pre class="example">(file-directory-p &quot;~rms/lewis/files.texi&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-directory-p &quot;~rms/lewis/files.texi&quot;)
      &rArr; nil
-</pre><pre class="example">(file-directory-p &quot;~rms/lewis/no-such-file&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-directory-p &quot;~rms/lewis/no-such-file&quot;)
      &rArr; nil
-</pre><pre class="example">(file-directory-p &quot;$HOME&quot;)
+</pre></div><div class="group"><pre class="example-preformatted">(file-directory-p &quot;$HOME&quot;)
      &rArr; nil
-</pre><pre class="example">(file-directory-p
+</pre></div><div class="group"><pre class="example-preformatted">(file-directory-p
  (substitute-in-file-name &quot;$HOME&quot;))
      &rArr; t
-</pre></div>
+</pre></div></div>
 </dd></dl>
 
-<dl>
-<dt id="index-file_002dregular_002dp">Function: <strong>file-regular-p</strong> <em>filename</em></dt>
-<dd><p>This function returns <code>t</code> if the file <var>filename</var> exists and is
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-file_002dregular_002dp"><span class="category-def">Function: </span><span><strong class="def-name">file-regular-p</strong> <var class="def-var-arguments">filename</var><a class="copiable-link" href="#index-file_002dregular_002dp"> &para;</a></span></dt>
+<dd><p>This function returns <code class="code">t</code> if the file <var class="var">filename</var> exists and is
 a regular file (not a directory, named pipe, terminal, or
 other I/O device).
 This function follows symbolic links.
 </p></dd></dl>
 
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Truenames.html" accesskey="n" rel="next">Truenames</a>, Previous: <a href="Testing-Accessibility.html" accesskey="p" rel="prev">Testing Accessibility</a>, Up: <a href="Information-about-Files.html" accesskey="u" rel="up">Information about Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Truenames.html">Truenames</a>, Previous: <a href="Testing-Accessibility.html">Testing Accessibility</a>, Up: <a href="Information-about-Files.html">Information about Files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

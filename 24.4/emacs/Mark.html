@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
 updated for Emacs version 24.4.
 
@@ -17,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Mark (GNU Emacs Manual)</title>
 
 <meta name="description" content="Mark (GNU Emacs Manual)">
@@ -27,28 +27,20 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="index.html" rel="up" title="Top">
-<link href="Setting-Mark.html" rel="next" title="Setting Mark">
-<link href="Help-Echo.html" rel="prev" title="Help Echo">
+<link href="Killing.html" rel="next" title="Killing">
+<link href="Help.html" rel="prev" title="Help">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,75 +49,70 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Mark"></span><div class="header">
+<div class="chapter-level-extent" id="Mark">
+<div class="nav-panel">
 <p>
-Next: <a href="Killing.html" accesskey="n" rel="next">Killing</a>, Previous: <a href="Help.html" accesskey="p" rel="prev">Help</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Killing.html" accesskey="n" rel="next">Killing and Moving Text</a>, Previous: <a href="Help.html" accesskey="p" rel="prev">Help</a>, Up: <a href="index.html" accesskey="u" rel="up">The Emacs Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="The-Mark-and-the-Region"></span><h2 class="chapter">11 The Mark and the Region</h2>
-<span id="index-mark"></span>
-<span id="index-setting-a-mark"></span>
-<span id="index-region"></span>
+<h2 class="chapter" id="The-Mark-and-the-Region"><span>11 The Mark and the Region<a class="copiable-link" href="#The-Mark-and-the-Region"> &para;</a></span></h2>
+<a class="index-entry-id" id="index-mark"></a>
+<a class="index-entry-id" id="index-setting-a-mark"></a>
+<a class="index-entry-id" id="index-region"></a>
 
 <p>Many Emacs commands operate on an arbitrary contiguous part of the
 current buffer.  To specify the text for such a command to operate on,
-you set <em>the mark</em> at one end of it, and move point to the other
-end.  The text between point and the mark is called <em>the region</em>.
+you set <em class="dfn">the mark</em> at one end of it, and move point to the other
+end.  The text between point and the mark is called <em class="dfn">the region</em>.
 The region always extends between point and the mark, no matter which
 one comes earlier in the text; each time you move point, the region
 changes.
 </p>
-<span id="index-active-region"></span>
-<p>Setting the mark at a position in the text also <em>activates</em> it.
+<a class="index-entry-id" id="index-active-region"></a>
+<p>Setting the mark at a position in the text also <em class="dfn">activates</em> it.
 When the mark is active, we say also that the region is active; Emacs
 indicates its extent by highlighting the text within it, using the
-<code>region</code> face (see <a href="Face-Customization.html">Face Customization</a>).
+<code class="code">region</code> face (see <a class="pxref" href="Face-Customization.html">Customizing Faces</a>).
 </p>
 <p>After certain non-motion commands, including any command that
-changes the text in the buffer, Emacs automatically <em>deactivates</em>
+changes the text in the buffer, Emacs automatically <em class="dfn">deactivates</em>
 the mark; this turns off the highlighting.  You can also explicitly
-deactivate the mark at any time, by typing <kbd>C-g</kbd>
-(see <a href="Quitting.html">Quitting</a>).
+deactivate the mark at any time, by typing <kbd class="kbd">C-g</kbd>
+(see <a class="pxref" href="Quitting.html">Quitting and Aborting</a>).
 </p>
 <p>The above default behavior is known as Transient Mark mode.
 Disabling Transient Mark mode switches Emacs to an alternative
 behavior, in which the region is usually not highlighted.
-See <a href="Disabled-Transient-Mark.html">Disabled Transient Mark</a>.
+See <a class="xref" href="Disabled-Transient-Mark.html">Disabling Transient Mark Mode</a>.
 </p>
-<span id="index-highlight_002dnonselected_002dwindows"></span>
+<a class="index-entry-id" id="index-highlight_002dnonselected_002dwindows"></a>
 <p>Setting the mark in one buffer has no effect on the marks in other
 buffers.  When you return to a buffer with an active mark, the mark is
 at the same place as before.  When multiple windows show the same
 buffer, they can have different values of point, and thus different
-regions, but they all share one common mark position.  See <a href="Windows.html">Windows</a>.
+regions, but they all share one common mark position.  See <a class="xref" href="Windows.html">Multiple Windows</a>.
 Ordinarily, only the selected window highlights its region; however,
-if the variable <code>highlight-nonselected-windows</code> is
-non-<code>nil</code>, each window highlights its own region.
+if the variable <code class="code">highlight-nonselected-windows</code> is
+non-<code class="code">nil</code>, each window highlights its own region.
 </p>
 <p>There is another kind of region: the &ldquo;rectangular region&rdquo;.
-See <a href="Rectangles.html">Rectangles</a>.
+See <a class="xref" href="Rectangles.html">Rectangles</a>.
 </p>
-<table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Setting-Mark.html" accesskey="1">Setting Mark</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Commands to set the mark.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Marking-Objects.html" accesskey="2">Marking Objects</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Commands to put region around textual units.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Using-Region.html" accesskey="3">Using Region</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Summary of ways to operate on contents of the region.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Mark-Ring.html" accesskey="4">Mark Ring</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Previous mark positions saved so you can go back there.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Global-Mark-Ring.html" accesskey="5">Global Mark Ring</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Previous mark positions in various buffers.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Shift-Selection.html" accesskey="6">Shift Selection</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Using shifted cursor motion keys.
-</td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Disabled-Transient-Mark.html" accesskey="7">Disabled Transient Mark</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Leaving regions unhighlighted by default.
-</td></tr>
-</table>
 
+<ul class="mini-toc">
+<li><a href="Setting-Mark.html" accesskey="1">Setting the Mark</a></li>
+<li><a href="Marking-Objects.html" accesskey="2">Commands to Mark Textual Objects</a></li>
+<li><a href="Using-Region.html" accesskey="3">Operating on the Region</a></li>
+<li><a href="Mark-Ring.html" accesskey="4">The Mark Ring</a></li>
+<li><a href="Global-Mark-Ring.html" accesskey="5">The Global Mark Ring</a></li>
+<li><a href="Shift-Selection.html" accesskey="6">Shift Selection</a></li>
+<li><a href="Disabled-Transient-Mark.html" accesskey="7">Disabling Transient Mark Mode</a></li>
+</ul>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Killing.html" accesskey="n" rel="next">Killing</a>, Previous: <a href="Help.html" accesskey="p" rel="prev">Help</a>, Up: <a href="index.html" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Killing.html">Killing and Moving Text</a>, Previous: <a href="Help.html">Help</a>, Up: <a href="index.html">The Emacs Editor</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

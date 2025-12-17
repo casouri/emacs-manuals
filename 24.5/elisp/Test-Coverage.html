@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 24.5.
 
@@ -16,9 +19,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Test Coverage (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Test Coverage (GNU Emacs Lisp Reference Manual)">
@@ -26,28 +26,21 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Debugging.html" rel="up" title="Debugging">
 <link href="Profiling.html" rel="next" title="Profiling">
-<link href="Excess-Close.html" rel="prev" title="Excess Close">
+<link href="Syntax-Errors.html" rel="prev" title="Syntax Errors">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -56,53 +49,60 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Test-Coverage"></span><div class="header">
+<div class="section-level-extent" id="Test-Coverage">
+<div class="nav-panel">
 <p>
-Next: <a href="Profiling.html" accesskey="n" rel="next">Profiling</a>, Previous: <a href="Syntax-Errors.html" accesskey="p" rel="prev">Syntax Errors</a>, Up: <a href="Debugging.html" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Profiling.html" accesskey="n" rel="next">Profiling</a>, Previous: <a href="Syntax-Errors.html" accesskey="p" rel="prev">Debugging Invalid Lisp Syntax</a>, Up: <a href="Debugging.html" accesskey="u" rel="up">Debugging Lisp Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Test-Coverage-1"></span><h3 class="section">17.4 Test Coverage</h3>
-<span id="index-coverage-testing"></span>
+<h3 class="section" id="Test-Coverage-1"><span>17.4 Test Coverage<a class="copiable-link" href="#Test-Coverage-1"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-coverage-testing"></a>
 
-<span id="index-testcover_002dstart"></span>
-<span id="index-testcover_002dmark_002dall"></span>
-<span id="index-testcover_002dnext_002dmark"></span>
+<a class="index-entry-id" id="index-testcover_002dstart"></a>
+<a class="index-entry-id" id="index-testcover_002dmark_002dall"></a>
+<a class="index-entry-id" id="index-testcover_002dnext_002dmark"></a>
 <p>You can do coverage testing for a file of Lisp code by loading the
-<code>testcover</code> library and using the command <kbd>M-x
-testcover-start <span class="key">RET</span> <var>file</var> <span class="key">RET</span></kbd> to instrument the
+<code class="code">testcover</code> library and using the command <kbd class="kbd">M-x
+testcover-start <kbd class="key">RET</kbd> <var class="var">file</var> <kbd class="key">RET</kbd></kbd> to instrument the
 code.  Then test your code by calling it one or more times.  Then use
-the command <kbd>M-x testcover-mark-all</kbd> to display colored highlights
+the command <kbd class="kbd">M-x testcover-mark-all</kbd> to display colored highlights
 on the code to show where coverage is insufficient.  The command
-<kbd>M-x testcover-next-mark</kbd> will move point forward to the next
+<kbd class="kbd">M-x testcover-next-mark</kbd> will move point forward to the next
 highlighted spot.
 </p>
 <p>Normally, a red highlight indicates the form was never completely
 evaluated; a brown highlight means it always evaluated to the same
 value (meaning there has been little testing of what is done with the
 result).  However, the red highlight is skipped for forms that can&rsquo;t
-possibly complete their evaluation, such as <code>error</code>.  The brown
+possibly complete their evaluation, such as <code class="code">error</code>.  The brown
 highlight is skipped for forms that are expected to always evaluate to
-the same value, such as <code>(setq x 14)</code>.
+the same value, such as <code class="code">(setq x 14)</code>.
 </p>
 <p>For difficult cases, you can add do-nothing macros to your code to
 give advice to the test coverage tool.
 </p>
-<dl>
-<dt id="index-1value">Macro: <strong>1value</strong> <em>form</em></dt>
-<dd><p>Evaluate <var>form</var> and return its value, but inform coverage testing
-that <var>form</var>&rsquo;s value should always be the same.
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-1value"><span class="category-def">Macro: </span><span><strong class="def-name">1value</strong> <var class="def-var-arguments">form</var><a class="copiable-link" href="#index-1value"> &para;</a></span></dt>
+<dd><p>Evaluate <var class="var">form</var> and return its value, but inform coverage testing
+that <var class="var">form</var>&rsquo;s value should always be the same.
 </p></dd></dl>
 
-<dl>
-<dt id="index-noreturn">Macro: <strong>noreturn</strong> <em>form</em></dt>
-<dd><p>Evaluate <var>form</var>, informing coverage testing that <var>form</var> should
+<dl class="first-deffn first-defmac-alias-first-deffn">
+<dt class="deffn defmac-alias-deffn" id="index-noreturn"><span class="category-def">Macro: </span><span><strong class="def-name">noreturn</strong> <var class="def-var-arguments">form</var><a class="copiable-link" href="#index-noreturn"> &para;</a></span></dt>
+<dd><p>Evaluate <var class="var">form</var>, informing coverage testing that <var class="var">form</var> should
 never return.  If it ever does return, you get a run-time error.
 </p></dd></dl>
 
-<p>Edebug also has a coverage testing feature (see <a href="Coverage-Testing.html">Coverage Testing</a>).  These features partly duplicate each other, and it would
+<p>Edebug also has a coverage testing feature (see <a class="pxref" href="Coverage-Testing.html">Coverage Testing</a>).  These features partly duplicate each other, and it would
 be cleaner to combine them.
 </p>
 
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Profiling.html">Profiling</a>, Previous: <a href="Syntax-Errors.html">Debugging Invalid Lisp Syntax</a>, Up: <a href="Debugging.html">Debugging Lisp Programs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 

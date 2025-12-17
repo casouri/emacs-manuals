@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Lisp Reference Manual
 corresponding to Emacs version 27.2.
 
@@ -17,9 +20,6 @@ section entitled "GNU Free Documentation License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Regexp Example (GNU Emacs Lisp Reference Manual)</title>
 
 <meta name="description" content="Regexp Example (GNU Emacs Lisp Reference Manual)">
@@ -27,28 +27,19 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Index.html" rel="index" title="Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Regular-Expressions.html" rel="up" title="Regular Expressions">
 <link href="Rx-Notation.html" rel="next" title="Rx Notation">
-<link href="Regexp-Backslash.html" rel="prev" title="Regexp Backslash">
+<link href="Syntax-of-Regexps.html" rel="prev" title="Syntax of Regexps">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -57,57 +48,58 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Regexp-Example"></span><div class="header">
+<div class="subsection-level-extent" id="Regexp-Example">
+<div class="nav-panel">
 <p>
-Next: <a href="Rx-Notation.html" accesskey="n" rel="next">Rx Notation</a>, Previous: <a href="Syntax-of-Regexps.html" accesskey="p" rel="prev">Syntax of Regexps</a>, Up: <a href="Regular-Expressions.html" accesskey="u" rel="up">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Rx-Notation.html" accesskey="n" rel="next">The <code class="code">rx</code> Structured Regexp Notation</a>, Previous: <a href="Syntax-of-Regexps.html" accesskey="p" rel="prev">Syntax of Regular Expressions</a>, Up: <a href="Regular-Expressions.html" accesskey="u" rel="up">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Complex-Regexp-Example"></span><h4 class="subsection">34.3.2 Complex Regexp Example</h4>
+<h4 class="subsection" id="Complex-Regexp-Example"><span>34.3.2 Complex Regexp Example<a class="copiable-link" href="#Complex-Regexp-Example"> &para;</a></span></h4>
 
 <p>Here is a complicated regexp which was formerly used by Emacs to
 recognize the end of a sentence together with any whitespace that
 follows.  (Nowadays Emacs uses a similar but more complex default
-regexp constructed by the function <code>sentence-end</code>.
-See <a href="Standard-Regexps.html">Standard Regexps</a>.)
+regexp constructed by the function <code class="code">sentence-end</code>.
+See <a class="xref" href="Standard-Regexps.html">Standard Regular Expressions Used in Editing</a>.)
 </p>
 <p>Below, we show first the regexp as a string in Lisp syntax (to
 distinguish spaces from tab characters), and then the result of
 evaluating it.  The string constant begins and ends with a
-double-quote.  &lsquo;<samp>\&quot;</samp>&rsquo; stands for a double-quote as part of the
-string, &lsquo;<samp>\\</samp>&rsquo; for a backslash as part of the string, &lsquo;<samp>\t</samp>&rsquo; for a
-tab and &lsquo;<samp>\n</samp>&rsquo; for a newline.
+double-quote.  &lsquo;<samp class="samp">\&quot;</samp>&rsquo; stands for a double-quote as part of the
+string, &lsquo;<samp class="samp">\\</samp>&rsquo; for a backslash as part of the string, &lsquo;<samp class="samp">\t</samp>&rsquo; for a
+tab and &lsquo;<samp class="samp">\n</samp>&rsquo; for a newline.
 </p>
 <div class="example">
-<pre class="example">&quot;[.?!][]\&quot;')}]*\\($\\| $\\|\t\\|&nbsp;&nbsp;\\)[ \t\n]*&quot;
+<div class="group"><pre class="example-preformatted">&quot;[.?!][]\&quot;')}]*\\($\\| $\\|\t\\|&nbsp;&nbsp;\\)[ \t\n]*&quot;
      &rArr; &quot;[.?!][]\&quot;')}]*\\($\\| $\\|  \\|&nbsp;&nbsp;\\)[
 ]*&quot;
-</pre></div>
+</pre></div></div>
 
 <p>In the output, tab and newline appear as themselves.
 </p>
 <p>This regular expression contains four parts in succession and can be
 deciphered as follows:
 </p>
-<dl compact="compact">
-<dt><code>[.?!]</code></dt>
+<dl class="table">
+<dt><code class="code">[.?!]</code></dt>
 <dd><p>The first part of the pattern is a character alternative that matches
 any one of three characters: period, question mark, and exclamation
 mark.  The match must begin with one of these three characters.  (This
 is one point where the new default regexp used by Emacs differs from
-the old.  The new value also allows some non-<acronym>ASCII</acronym>
+the old.  The new value also allows some non-<abbr class="acronym">ASCII</abbr>
 characters that end a sentence without any following whitespace.)
 </p>
 </dd>
-<dt><code>[]\&quot;')}]*</code></dt>
+<dt><code class="code">[]\&quot;')}]*</code></dt>
 <dd><p>The second part of the pattern matches any closing braces and quotation
 marks, zero or more of them, that may follow the period, question mark
-or exclamation mark.  The <code>\&quot;</code> is Lisp syntax for a double-quote in
-a string.  The &lsquo;<samp>*</samp>&rsquo; at the end indicates that the immediately
+or exclamation mark.  The <code class="code">\&quot;</code> is Lisp syntax for a double-quote in
+a string.  The &lsquo;<samp class="samp">*</samp>&rsquo; at the end indicates that the immediately
 preceding regular expression (a character alternative, in this case) may be
 repeated zero or more times.
 </p>
 </dd>
-<dt><code>\\($\\|&nbsp;$\\|\t\\|&nbsp;&nbsp;\\)</code></dt>
+<dt><code class="code">\\($\\|&nbsp;$\\|\t\\|&nbsp;&nbsp;\\)</code></dt>
 <dd><p>The third part of the pattern matches the whitespace that follows the
 end of a sentence: the end of a line (optionally with a space), or a
 tab, or two spaces.  The double backslashes mark the parentheses and
@@ -116,31 +108,32 @@ group and the vertical bars separate alternatives.  The dollar sign is
 used to match the end of a line.
 </p>
 </dd>
-<dt><code>[ \t\n]*</code></dt>
+<dt><code class="code">[ \t\n]*</code></dt>
 <dd><p>Finally, the last part of the pattern matches any additional whitespace
 beyond the minimum needed to end a sentence.
 </p></dd>
 </dl>
 
-<p>In the <code>rx</code> notation (see <a href="Rx-Notation.html">Rx Notation</a>), the regexp could be written
+<p>In the <code class="code">rx</code> notation (see <a class="pxref" href="Rx-Notation.html">The <code class="code">rx</code> Structured Regexp Notation</a>), the regexp could be written
 </p>
 <div class="example">
-<pre class="example">(rx (any &quot;.?!&quot;)                    ; Punctuation ending sentence.
+<div class="group"><pre class="example-preformatted">(rx (any &quot;.?!&quot;)                    ; Punctuation ending sentence.
     (zero-or-more (any &quot;\&quot;')]}&quot;))  ; Closing quotes or brackets.
     (or line-end
         (seq &quot; &quot; line-end)
         &quot;\t&quot;
         &quot;  &quot;)                      ; Two spaces.
     (zero-or-more (any &quot;\t\n &quot;)))  ; Optional extra whitespace.
-</pre></div>
+</pre></div></div>
 
-<p>Since <code>rx</code> regexps are just S-expressions, they can be formatted
+<p>Since <code class="code">rx</code> regexps are just S-expressions, they can be formatted
 and commented as such.
 </p>
+</div>
 <hr>
-<div class="header">
+<div class="nav-panel">
 <p>
-Next: <a href="Rx-Notation.html" accesskey="n" rel="next">Rx Notation</a>, Previous: <a href="Syntax-of-Regexps.html" accesskey="p" rel="prev">Syntax of Regexps</a>, Up: <a href="Regular-Expressions.html" accesskey="u" rel="up">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Rx-Notation.html">The <code class="code">rx</code> Structured Regexp Notation</a>, Previous: <a href="Syntax-of-Regexps.html">Syntax of Regular Expressions</a>, Up: <a href="Regular-Expressions.html">Regular Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

@@ -1,10 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is the GNU Emacs Manual,
-updated for Emacs version 29.0.50.
+updated for Emacs version 31.0.50.
 
-Copyright © 1985-1987, 1993-2021 Free Software Foundation,
-Inc.
+Copyright © 1985-2025 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -18,9 +20,6 @@ License."
 (a) The FSF's Back-Cover Text is: "You have the freedom to copy and
 modify this GNU manual.  Buying copies from the FSF supports it in
 developing GNU and promoting software freedom." -->
-<!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>VC Undo (GNU Emacs Manual)</title>
 
 <meta name="description" content="VC Undo (GNU Emacs Manual)">
@@ -28,6 +27,8 @@ developing GNU and promoting software freedom." -->
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <link href="index.html" rel="start" title="Top">
 <link href="Key-Index.html" rel="index" title="Key Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
@@ -36,20 +37,10 @@ developing GNU and promoting software freedom." -->
 <link href="VC-Change-Log.html" rel="prev" title="VC Change Log">
 <style type="text/css">
 <!--
-a.summary-letter {text-decoration: none}
-blockquote.indentedblock {margin-right: 0em}
-div.display {margin-left: 3.2em}
-div.example {margin-left: 3.2em}
-div.lisp {margin-left: 3.2em}
-kbd {font-style: oblique}
-pre.display {font-family: inherit}
-pre.format {font-family: inherit}
-pre.menu-comment {font-family: serif}
-pre.menu-preformatted {font-family: serif}
-span.nolinebreak {white-space: nowrap}
-span.roman {font-family: initial; font-weight: normal}
-span.sansserif {font-family: sans-serif; font-weight: normal}
-ul.no-bullet {list-style: none}
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -58,41 +49,91 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="VC-Undo"></span><div class="header">
+<div class="subsection-level-extent" id="VC-Undo">
+<div class="nav-panel">
 <p>
-Next: <a href="VC-Ignore.html" accesskey="n" rel="next">VC Ignore</a>, Previous: <a href="VC-Change-Log.html" accesskey="p" rel="prev">VC Change Log</a>, Up: <a href="Version-Control.html" accesskey="u" rel="up">Version Control</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+Next: <a href="VC-Ignore.html" accesskey="n" rel="next">Ignore Version Control Files</a>, Previous: <a href="VC-Change-Log.html" accesskey="p" rel="prev">VC Change Log</a>, Up: <a href="Version-Control.html" accesskey="u" rel="up">Version Control</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<span id="Undoing-Version-Control-Actions"></span><h4 class="subsection">28.1.8 Undoing Version Control Actions</h4>
+<h4 class="subsection" id="Undoing-Version-Control-Actions"><span>30.1.8 Undoing Version Control Actions<a class="copiable-link" href="#Undoing-Version-Control-Actions"> &para;</a></span></h4>
 
-<dl compact="compact">
-<dt><kbd>C-x v u</kbd></dt>
+<dl class="table">
+<dt><kbd class="kbd">C-x v u</kbd></dt>
 <dd><p>Revert the work file(s) in the current VC fileset to the last revision
-(<code>vc-revert</code>).
+(<code class="code">vc-revert</code>).
+</p>
+</dd>
+<dt><kbd class="kbd">M-x vc-revert-or-delete-revision</kbd></dt>
+<dd><p>Undo the effects of an older commit.
+</p>
+</dd>
+<dt><kbd class="kbd">M-x vc-revert-revision</kbd></dt>
+<dd><p>Make a new commit which undoes the changes made by an older one.
+</p>
+</dd>
+<dt><kbd class="kbd">M-x vc-delete-revision</kbd></dt>
+<dd><p>Delete an unpushed commit from the revision history.
 </p></dd>
 </dl>
 
-<span id="index-C_002dx-v-u"></span>
-<span id="index-vc_002drevert"></span>
-<span id="index-vc_002drevert_002dshow_002ddiff"></span>
+<a class="index-entry-id" id="index-C_002dx-v-u"></a>
+<a class="index-entry-id" id="index-vc_002drevert"></a>
+<a class="index-entry-id" id="index-vc_002drevert_002dshow_002ddiff"></a>
 <p>If you want to discard all the changes you have made to the current
-VC fileset, type <kbd>C-x v u</kbd> (<code>vc-revert</code>).  This will ask you
+VC fileset, type <kbd class="kbd">C-x v u</kbd> (<code class="code">vc-revert</code>).  This will ask you
 for confirmation before discarding the changes.  If you agree, the
 fileset is reverted.
 </p>
-<p>If <code>vc-revert-show-diff</code> is non-<code>nil</code>, this command will
+<p>If <code class="code">vc-revert-show-diff</code> is non-<code class="code">nil</code>, this command will
 show you a diff between the work file(s) and the revision from which
 you started editing.  Afterwards, the diff buffer will either be
-killed (if this variable is <code>kill</code>), or the buffer will be buried
-(any other non-<code>nil</code> value).  If you don&rsquo;t want <kbd>C-x v u</kbd> to
-show a diff, set this variable to <code>nil</code> (you can still view the
-diff directly with <kbd>C-x v =</kbd>; see <a href="Old-Revisions.html">Old Revisions</a>).
+killed (if this variable is <code class="code">kill</code>), or the buffer will be buried
+(any other non-<code class="code">nil</code> value).  If you don&rsquo;t want <kbd class="kbd">C-x v u</kbd> to
+show a diff, set this variable to <code class="code">nil</code> (you can still view the
+diff directly with <kbd class="kbd">C-x v =</kbd>; see <a class="pxref" href="Old-Revisions.html">Examining And Comparing Old Revisions</a>).
 </p>
-<p>On locking-based version control systems, <kbd>C-x v u</kbd> leaves files
+<p>On locking-based version control systems, <kbd class="kbd">C-x v u</kbd> leaves files
 unlocked; you must lock again to resume editing.  You can also use
-<kbd>C-x v u</kbd> to unlock a file if you lock it and then decide not to
+<kbd class="kbd">C-x v u</kbd> to unlock a file if you lock it and then decide not to
 change it.
 </p>
+<a class="index-entry-id" id="index-vc_002drevert_002dor_002ddelete_002drevision"></a>
+<a class="index-entry-id" id="index-reverting-commits"></a>
+<p>To discard changes that have already been committed, by yourself or
+someone else, you can use <kbd class="kbd">M-x&nbsp;vc-revert-or-delete-revision</kbd><!-- /@w -->.
+This is called <em class="dfn">reverting</em> a commit.  The command prompts for a
+revision to revert, and then the VC backend reverts it.
+</p>
+<p>Most backends implement this by making a new commit which undoes the
+changes made by the revision.  For a distributed VCS, if the commit is
+one that you made and have not yet pushed, Emacs will offer to delete it
+entirely, instead.  With a prefix argument, this command will only try
+to entirely delete the revision, failing if it has already been pushed.
+</p>
+<p>An alternative way to access this functionality is the
+<code class="code">log-view-revert-or-delete-revisions</code> command, bound to <kbd class="kbd">R</kbd> in
+Log View mode buffers (see <a class="pxref" href="VC-Change-Log.html">VC Change Log</a>).  Compared to using
+<kbd class="kbd">M-x&nbsp;vc-revision&nbsp;revert</kbd><!-- /@w --> directly, this can make it easier to be
+sure you are reverting the revision you intend.
+</p>
+<a class="index-entry-id" id="index-vc_002drevert_002drevision"></a>
+<a class="index-entry-id" id="index-vc_002ddelete_002drevision"></a>
+<p>More specific, specialized commands are <kbd class="kbd">M-x&nbsp;vc-revert-revision</kbd><!-- /@w --> and <kbd class="kbd">M-x&nbsp;vc-delete-revision</kbd><!-- /@w -->.  The first of
+these prompts for a revision and then always makes a new commit which
+undoes the changes made by that revision, regardless of the VCS in use
+and whether or not the revision is pushed.  The second command prompts
+for a revision and then always deletes it, though it will stop if the
+commit has been pushed.  Usually <code class="code">vc-revert-or-delete-revision</code> is
+sufficient, but <code class="code">vc-revert-revision</code> and <code class="code">vc-delete-revision</code>
+can sometimes be useful for constructing particular version control
+histories.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="VC-Ignore.html">Ignore Version Control Files</a>, Previous: <a href="VC-Change-Log.html">VC Change Log</a>, Up: <a href="Version-Control.html">Version Control</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
 
 
 
