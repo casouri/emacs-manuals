@@ -87,3 +87,4 @@ build 24.4
 build 24.3
 
 cp "$ROOT"/index.html "$DIST"
+
