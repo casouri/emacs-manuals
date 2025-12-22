@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 31.0.50.
+
+Copyright © 1990-1996, 1998-2025 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>System Taskbar (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="System Taskbar (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="System Taskbar (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="System-Interface.html" rel="up" title="System Interface">
+<link href="File-Notifications.html" rel="next" title="File Notifications">
+<link href="Desktop-Notifications.html" rel="prev" title="Desktop Notifications">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="System-Taskbar">
+<div class="nav-panel">
+<p>
+Next: <a href="File-Notifications.html" accesskey="n" rel="next">Notifications on File Changes</a>, Previous: <a href="Desktop-Notifications.html" accesskey="p" rel="prev">Desktop Notifications</a>, Up: <a href="System-Interface.html" accesskey="u" rel="up">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Controlling-System-GUI-Taskbar-Features"><span>43.20 Controlling System GUI Taskbar Features<a class="copiable-link" href="#Controlling-System-GUI-Taskbar-Features"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-system-taskbar"></a>
+<a class="index-entry-id" id="index-mode_002c-system-taskbar"></a>
+
+<p>See <a data-manual="emacs" href="https://www.gnu.org/software/emacs/manual/html_node/emacs/System-Taskbar.html#System-Taskbar">System Taskbar</a> in <cite class="cite">The GNU Emacs Manual</cite>, for an overview
+and configuration.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-system_002dtaskbar_002dbadge"><span class="category-def">Function: </span><span><strong class="def-name">system-taskbar-badge</strong> <var class="def-var-arguments">&amp;optional count</var><a class="copiable-link" href="#index-system_002dtaskbar_002dbadge"> &para;</a></span></dt>
+<dd><p>This function displays <var class="var">count</var> as an overlay on the system taskbar
+Emacs icon.
+</p>
+<p>If <var class="var">count</var> is an integer, display that.
+</p>
+<p>If <var class="var">count</var> is a string on back ends that support strings, display
+that.  The string should be short.
+</p>
+<p>On back ends which do not support strings, convert <var class="var">count</var> to an
+integer, or <code class="code">nil</code> if that fails.
+</p>
+<p>If <var class="var">count</var> is <code class="code">nil</code> or an empty string, remove the counter or
+short string.
+</p>
+<p>Display the system taskbar icon badge set to <var class="var">count</var>.  If
+<var class="var">count</var> is <code class="code">nil</code>, clear the badge.  <var class="var">count</var> is typically an
+integer.
+</p>
+<p>If <var class="var">count</var> is a string, it is converted to an integer on systems
+that do not support string badges, such as GNU/Linux D-Bus, and the
+badge will be cleared if the string is an invalid integer
+representation.  On systems that support strings, such as macOS/GNUstep
+and MS-Windows, the badge is set to the string and displayed, and may be
+truncated to fit the visual space allocated by the system.  In any case,
+if the string is empty, clear the badge.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-system_002dtaskbar_002dattention"><span class="category-def">Function: </span><span><strong class="def-name">system-taskbar-attention</strong> <var class="def-var-arguments">&amp;optional urgency timeout</var><a class="copiable-link" href="#index-system_002dtaskbar_002dattention"> &para;</a></span></dt>
+<dd><p>This function flashes or bounces system taskbar Emacs icon and/or its
+frame to alert the user.
+</p>
+<p><var class="var">urgency</var> can be one of the symbols <code class="code">informational</code>, or
+<code class="code">critical</code>.
+</p>
+<p>If <var class="var">urgency</var> is <code class="code">nil</code>, clear the attention indicator.
+</p>
+<p>The attention indicator is cleared by the earliest of bringing the Emacs
+GUI into focus, or after <var class="var">timeout</var> seconds.  If <var class="var">timeout</var> is
+<code class="code">nil</code>, the system GUI behavior has priority.
+</p>
+<p>On some back ends, <code class="code">critical</code> has the same effect as
+<code class="code">informational</code>.
+</p>
+<p>On some back ends, attention will be displayed
+only if Emacs is not the currently focused application.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-system_002dtaskbar_002dprogress"><span class="category-def">Function: </span><span><strong class="def-name">system-taskbar-progress</strong> <var class="def-var-arguments">&amp;optional progress</var><a class="copiable-link" href="#index-system_002dtaskbar_002dprogress"> &para;</a></span></dt>
+<dd><p>This function displays a progress indicator overlay on the system
+taskbar Emacs icon.
+</p>
+<p><var class="var">progress</var> is a float in the range 0.0 to 1.0.  If <var class="var">progress</var> is
+<code class="code">nil</code>, remove the progress indicator.
+</p>
+<p>It is convenient to use the built-in progress reporter functions which,
+when <code class="code">system-taskbar-mode</code> is enabled, integrate with
+<code class="code">system-taskbar-progress</code> by default.  See <a class="xref" href="Progress.html">Reporting Operation Progress</a>.
+</p></dd></dl>
+
+<p>Examples of system taskbar functions:
+</p>
+<div class="example lisp">
+<div class="group"><pre class="lisp-preformatted">;; Enable and initialize system-taskbar-mode before calling its
+;; package functions.
+(system-taskbar-mode)
+
+;; Display a badge integer on the taskbar icon.
+(system-taskbar-badge emacs-major-version)
+
+;; A string representation of an integer is converted to an
+;; integer on GNU/Linux.
+(system-taskbar-badge &quot;31&quot;)
+
+;; Short strings are displayed on macOS/GNUstep and MS-Windows.
+(system-taskbar-badge &quot;Test&quot;)
+
+;; Clear the badge.
+(system-taskbar-badge)
+</pre></div><pre class="lisp-preformatted">
+
+</pre><div class="group"><pre class="lisp-preformatted">;; Get the user's attention and clear the request after 3 seconds.
+(system-taskbar-attention 'informational 3)
+
+;; Get the user's attention and clear when Emacs is focused.
+(system-taskbar-attention 'critical)
+
+;; Clear the attention request.
+(system-taskbar-attention)
+</pre></div><pre class="lisp-preformatted">
+
+</pre><div class="group"><pre class="lisp-preformatted">;; Make sure system taskbar is integrated with progress-reporter.
+(setopt system-taskbar-use-progress-reporter t) ; t is the default
+(system-taskbar-mode)
+
+;; Report `dotimes` progress on the taskbar icon.
+(dotimes-with-progress-reporter
+    (i 10)
+    &quot;Counting from 1 to 10...&quot;
+  (sleep-for 1))
+
+;; Report `dolist` progress on the taskbar icon.
+(dolist-with-progress-reporter
+    (i (make-list 10 t))
+    &quot;Progress from 1 to 10 elements...&quot;
+  (sleep-for 1))
+</pre></div></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="File-Notifications.html">Notifications on File Changes</a>, Previous: <a href="Desktop-Notifications.html">Desktop Notifications</a>, Up: <a href="System-Interface.html">Operating System Interface</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

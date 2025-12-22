@@ -151,7 +151,11 @@ made with quoting (that is, using <code class="code">prin1</code>&mdash;see <a c
 </dd>
 <dt><a id="index-integer-to-octal"></a><span>&lsquo;<samp class="samp">%o</samp>&rsquo;<a class="copiable-link" href="#index-integer-to-octal"> &para;</a></span></dt>
 <dd><p>Replace the specification with the base-eight representation of an
-integer.  The object can also be a floating-point number that is formatted
+integer.  The representation has leading &lsquo;<samp class="samp">-</samp>&rsquo; if negative;
+for an unsigned two&rsquo;s complement representation of a possibly-negative
+integer <var class="var">n</var>, format <code class="code">(logand <var class="var">n</var> <var class="var">mask</var>)</code>
+where <var class="var">mask</var> corresponds to the desired word size.
+The object can also be a floating-point number that is formatted
 as an integer, dropping any fraction.
 </p>
 </dd>
@@ -165,8 +169,9 @@ formatted as an integer, dropping any fraction.
 <dt><a id="index-integer-to-hexadecimal"></a><span>&lsquo;<samp class="samp">%x</samp>&rsquo;<a class="copiable-link" href="#index-integer-to-hexadecimal"> &para;</a></span></dt>
 <dt>&lsquo;<samp class="samp">%X</samp>&rsquo;</dt>
 <dd><p>Replace the specification with the base-sixteen representation of an
-integer.  &lsquo;<samp class="samp">%x</samp>&rsquo; uses lower case and &lsquo;<samp class="samp">%X</samp>&rsquo; uses upper
-case.  The object can also be a floating-point number that is
+integer.  Like &lsquo;<samp class="samp">%o</samp>&rsquo;, the representation has leading &lsquo;<samp class="samp">-</samp>&rsquo; if negative.
+&lsquo;<samp class="samp">%x</samp>&rsquo; uses lower case and &lsquo;<samp class="samp">%X</samp>&rsquo; uses upper case.
+The object can also be a floating-point number that is
 formatted as an integer, dropping any fraction.
 </p>
 </dd>
@@ -341,11 +346,10 @@ family produce.
 retrieve a copy of the formatted value, use a specification that lets
 <code class="code">read</code> reconstruct the value.  To format numbers in this
 reversible way you can use &lsquo;<samp class="samp">%s</samp>&rsquo; and &lsquo;<samp class="samp">%S</samp>&rsquo;, to format just
-integers you can also use &lsquo;<samp class="samp">%d</samp>&rsquo;, and to format just nonnegative
-integers you can also use &lsquo;<samp class="samp">#x%x</samp>&rsquo; and &lsquo;<samp class="samp">#o%o</samp>&rsquo;.  Other formats
-may be problematic; for example, &lsquo;<samp class="samp">%d</samp>&rsquo; and &lsquo;<samp class="samp">%g</samp>&rsquo; can mishandle
-NaNs and can lose precision and type, and &lsquo;<samp class="samp">#x%x</samp>&rsquo; and &lsquo;<samp class="samp">#o%o</samp>&rsquo;
-can mishandle negative integers.  See <a class="xref" href="Input-Functions.html">Input Functions</a>.
+integers you can also use &lsquo;<samp class="samp">%d</samp>&rsquo;, &lsquo;<samp class="samp">#x%x</samp>&rsquo; and &lsquo;<samp class="samp">#o%o</samp>&rsquo;.
+Other formats do not guarantee preservation of all values; for example,
+&lsquo;<samp class="samp">%g</samp>&rsquo; can lose precision and type and does not preserve NaN or
+infinity.  See <a class="xref" href="Input-Functions.html">Input Functions</a>.
 </p>
 <p>The functions described in this section accept a fixed set of
 specification characters.  The next section describes a function

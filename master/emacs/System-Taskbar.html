@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2025 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>System Taskbar (GNU Emacs Manual)</title>
+
+<meta name="description" content="System Taskbar (GNU Emacs Manual)">
+<meta name="keywords" content="System Taskbar (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Frames.html" rel="up" title="Frames">
+<link href="Dialog-Boxes.html" rel="next" title="Dialog Boxes">
+<link href="Tab-Bars.html" rel="prev" title="Tab Bars">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="section-level-extent" id="System-Taskbar">
+<div class="nav-panel">
+<p>
+Next: <a href="Dialog-Boxes.html" accesskey="n" rel="next">Using Dialog Boxes</a>, Previous: <a href="Tab-Bars.html" accesskey="p" rel="prev">Tab Bars</a>, Up: <a href="Frames.html" accesskey="u" rel="up">Frames and Graphical Displays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h3 class="section" id="Using-System-GUI-Taskbar-Features"><span>23.18 Using System GUI Taskbar Features<a class="copiable-link" href="#Using-System-GUI-Taskbar-Features"> &para;</a></span></h3>
+<a class="index-entry-id" id="index-system-taskbar"></a>
+<a class="index-entry-id" id="index-mode_002c-system-taskbar"></a>
+
+<p>Emacs can use your GUI system taskbar to display a badge overlay on
+the Emacs taskbar icon, a progress bar report, and alert the user that
+an Emacs session needs attention.  Note: The system taskbar might be
+called the dock, the launcher, or something similar.
+</p>
+<a class="index-entry-id" id="index-system-taskbar_002c-GNU_002fLinux"></a>
+<p>On GNU/Linux eligible GUI desktops, system taskbar effects will appear
+on the desktop destinations determined by your shell extension, most
+often the application launcher or dock panel, or the top panel.  Effects
+are global for an Emacs instance.
+</p>
+<p>Note: The GNU/Linux implementation sends system taskbar messages to the
+GUI using D-Bus.  You may need to install or configure shell extensions
+such as <a class="url" href="https://extensions.gnome.org/extension/307/dash-to-dock/">https://extensions.gnome.org/extension/307/dash-to-dock/</a>
+that implement Ubuntu&rsquo;s Unity D-Bus launcher spec which you can read
+more about here <a class="url" href="https://wiki.ubuntu.com/Unity/LauncherAPI">https://wiki.ubuntu.com/Unity/LauncherAPI</a>.
+See <cite class="cite"><a data-manual="dbus" href="https://www.gnu.org/software/emacs/manual/html_node/dbus/index.html#Top">The D-Bus Manual</a></cite>.
+</p>
+<a class="index-entry-id" id="index-system-taskbar_002c-macOS_002fGNUstep"></a>
+<a class="index-entry-id" id="index-system-taskbar_002c-NS"></a>
+<p>On macOS/GNUstep 10.5+, system taskbar effects appear on the Dock and in
+the App Switcher.  Effects are global for an Emacs instance.
+macOS/GNUstep need no special configuration.
+</p>
+<a class="index-entry-id" id="index-system-taskbar_002c-MS_002dWindows"></a>
+<p>On MS-Windows 7+, taskbar effects appear on the Windows system taskbar.
+Effects are associated with the frame from which they are initiated.
+MS-Windows needs no special configuration.
+</p>
+<a class="index-entry-id" id="index-system_002dtaskbar_002dmode"></a>
+<p>You must initialize system taskbar before using it.  To do that, type
+<kbd class="kbd">M-x system-taskbar-mode</kbd>.
+</p>
+<a class="index-entry-id" id="index-system_002dtaskbar_002duse_002dprogress_002dreporter"></a>
+<p>The user option <code class="code">system-taskbar-use-progress-reporter</code> integrates
+<code class="code">system-taskbar-mode</code> with Emacs progress report functions, which
+many longer-running functions use to indicate the progress of their
+work.  Progress reports will appear in the echo area and on the system
+taskbar Emacs icon.  This variable defaults to <code class="code">t</code>.  Customize this
+variable before enabling <code class="code">system-taskbar-mode</code>.  See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Progress.html#Progress">(elisp)Progress</a>
+</p>
+<a class="index-entry-id" id="index-system_002dtaskbar_002dclear_002dattention_002don_002dframe_002dfocus"></a>
+<p>The user option <code class="code">system-taskbar-clear-attention-on-frame-focus</code>
+turns on a helper useful on GNU/Linux D-Bus platforms which
+automatically clears the system taskbar attention indicator when any
+Emacs frame is focused.  This has no effect on macOS/GNUstep or
+MS-Windows.  It defaults to <code class="code">t</code>.  Customize this variable before
+enabling <code class="code">system-taskbar-mode</code>.
+</p>
+<a class="index-entry-id" id="index-system_002dtaskbar_002ddbus_002ddesktop_002dfile_002dname"></a>
+<p>The user option <code class="code">system-taskbar-dbus-desktop-file-name</code> helps
+D-Bus on GNU/Linux identify launched instance of Emacs.  It defaults to
+&lsquo;<samp class="samp">emacsclient</samp>&rsquo; and may need to be changed to &lsquo;<samp class="samp">emacs</samp>&rsquo; depending
+on your GNU/Linux configuration.
+</p>
+<a class="index-entry-id" id="index-system_002dtaskbar_002ddbus_002dtimeout"></a>
+<p>The user option <code class="code">system-taskbar-dbus-timeout</code> is a
+troubleshooting tool and it likely does not need to be customized.  It
+defaults to <code class="code">nil</code> which uses the D-Bus default timeout which is
+25,000ms or 25s.
+</p>
+<p>See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/System-Taskbar.html#System-Taskbar">System Taskbar</a> in <cite class="cite">The Emacs Lisp Reference Manual</cite>
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Dialog-Boxes.html">Using Dialog Boxes</a>, Previous: <a href="Tab-Bars.html">Tab Bars</a>, Up: <a href="Frames.html">Frames and Graphical Displays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
