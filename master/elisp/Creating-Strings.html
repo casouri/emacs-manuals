@@ -219,7 +219,7 @@ string to be used as a shell command, see <a class="ref" href="Shell-Arguments.h
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-split_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">split-string</strong> <var class="def-var-arguments">string &amp;optional separators omit-nulls trim</var><a class="copiable-link" href="#index-split_002dstring"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-split_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">split-string</strong> <var class="def-var-arguments">string &amp;optional separators omit-empty trim</var><a class="copiable-link" href="#index-split_002dstring"> &para;</a></span></dt>
 <dd><p>This function splits <var class="var">string</var> into substrings based on the regular
 expression <var class="var">separators</var> (see <a class="pxref" href="Regular-Expressions.html">Regular Expressions</a>).  Each match
 for <var class="var">separators</var> defines a splitting point; the substrings between
@@ -227,86 +227,36 @@ splitting points are made into a list, which is returned.
 </p>
 <p>If <var class="var">separators</var> is <code class="code">nil</code> (or omitted), the default is the
 value of <code class="code">split-string-default-separators</code> and the function
-behaves as if <var class="var">omit-nulls</var> were <code class="code">t</code>.
+behaves as if <var class="var">omit-empty</var> were <code class="code">t</code>.
 </p>
-<p>If <var class="var">omit-nulls</var> is <code class="code">nil</code> (or omitted), the result contains
-null strings whenever there are two consecutive matches for
+<p>If <var class="var">omit-empty</var> is <code class="code">nil</code> (or omitted), the result contains
+empty strings whenever there are two consecutive matches for
 <var class="var">separators</var>, or a match is adjacent to the beginning or end of
-<var class="var">string</var>.  If <var class="var">omit-nulls</var> is <code class="code">t</code>, these null strings are
+<var class="var">string</var>.  If <var class="var">omit-empty</var> is <code class="code">t</code>, these empty strings are
 omitted from the result.
 </p>
 <p>If the optional argument <var class="var">trim</var> is non-<code class="code">nil</code>, it should be a
 regular expression to match text to trim from the beginning and end of
-each substring.  If trimming makes the substring empty, it is treated
-as null.
+each substring.  Trimming may make the substring empty and omitted from
+the result if <var class="var">omit-empty</var> is <code class="code">t</code> as above.
 </p>
 <p>If you need to split a string into a list of individual command-line
 arguments suitable for <code class="code">call-process</code> or <code class="code">start-process</code>,
 see <a class="ref" href="Shell-Arguments.html">split-string-and-unquote</a>.
 </p>
+<p>Do not use a value for <var class="var">separators</var> that matches the empty string,
+or the results will be unpredictable.  To split a string into individual
+characters, use <code class="code">string-to-list</code> or <code class="code">string-to-vector</code>.
+</p>
 <p>Examples:
 </p>
 <div class="example">
-<pre class="example-preformatted">(split-string &quot;  two words &quot;)
-     &rArr; (&quot;two&quot; &quot;words&quot;)
-</pre></div>
-
-<p>The result is not <code class="code">(&quot;&quot; &quot;two&quot; &quot;words&quot; &quot;&quot;)</code>, which would rarely be
-useful.  If you need such a result, use an explicit value for
-<var class="var">separators</var>:
-</p>
-<div class="example">
-<pre class="example-preformatted">(split-string &quot;  two words &quot;
-              split-string-default-separators)
-     &rArr; (&quot;&quot; &quot;two&quot; &quot;words&quot; &quot;&quot;)
-</pre></div>
-
-<div class="example">
-<pre class="example-preformatted">(split-string &quot;Soup is good food&quot; &quot;o&quot;)
-     &rArr; (&quot;S&quot; &quot;up is g&quot; &quot;&quot; &quot;d f&quot; &quot;&quot; &quot;d&quot;)
-(split-string &quot;Soup is good food&quot; &quot;o&quot; t)
-     &rArr; (&quot;S&quot; &quot;up is g&quot; &quot;d f&quot; &quot;d&quot;)
-(split-string &quot;Soup is good food&quot; &quot;o+&quot;)
-     &rArr; (&quot;S&quot; &quot;up is g&quot; &quot;d f&quot; &quot;d&quot;)
-</pre></div>
-
-<p>Empty matches do count, except that <code class="code">split-string</code> will not look
-for a final empty match when it already reached the end of the string
-using a non-empty match or when <var class="var">string</var> is empty:
-</p>
-<div class="example">
-<pre class="example-preformatted">(split-string &quot;aooob&quot; &quot;o*&quot;)
-     &rArr; (&quot;&quot; &quot;a&quot; &quot;&quot; &quot;b&quot; &quot;&quot;)
-(split-string &quot;ooaboo&quot; &quot;o*&quot;)
-     &rArr; (&quot;&quot; &quot;&quot; &quot;a&quot; &quot;b&quot; &quot;&quot;)
-(split-string &quot;&quot; &quot;&quot;)
-     &rArr; (&quot;&quot;)
-</pre></div>
-
-<p>However, when <var class="var">separators</var> can match the empty string,
-<var class="var">omit-nulls</var> is usually <code class="code">t</code>, so that the subtleties in the
-three previous examples are rarely relevant:
-</p>
-<div class="example">
-<pre class="example-preformatted">(split-string &quot;Soup is good food&quot; &quot;o*&quot; t)
-     &rArr; (&quot;S&quot; &quot;u&quot; &quot;p&quot; &quot; &quot; &quot;i&quot; &quot;s&quot; &quot; &quot; &quot;g&quot; &quot;d&quot; &quot; &quot; &quot;f&quot; &quot;d&quot;)
-(split-string &quot;Nice doggy!&quot; &quot;&quot; t)
-     &rArr; (&quot;N&quot; &quot;i&quot; &quot;c&quot; &quot;e&quot; &quot; &quot; &quot;d&quot; &quot;o&quot; &quot;g&quot; &quot;g&quot; &quot;y&quot; &quot;!&quot;)
-(split-string &quot;&quot; &quot;&quot; t)
-     &rArr; nil
-</pre></div>
-
-<p>Somewhat odd, but predictable, behavior can occur for certain
-&ldquo;non-greedy&rdquo; values of <var class="var">separators</var> that can prefer empty
-matches over non-empty matches.  Again, such values rarely occur in
-practice:
-</p>
-<div class="example">
-<pre class="example-preformatted">(split-string &quot;ooo&quot; &quot;o*&quot; t)
-     &rArr; nil
-(split-string &quot;ooo&quot; &quot;\\|o+&quot; t)
-     &rArr; (&quot;o&quot; &quot;o&quot; &quot;o&quot;)
-</pre></div>
+<div class="group"><pre class="example-preformatted">(split-string &quot;  one  two   &quot;)            &rArr; (&quot;one&quot; &quot;two&quot;)
+(split-string &quot;one::two:&quot; &quot;:&quot;)            &rArr; (&quot;one&quot; &quot;&quot; &quot;two&quot; &quot;&quot;)
+(split-string &quot;one::two:&quot; &quot;:+&quot;)           &rArr; (&quot;one&quot; &quot;two&quot; &quot;&quot;)
+(split-string &quot;one::two:&quot; &quot;:&quot; t)          &rArr; (&quot;one&quot; &quot;two&quot;)
+(split-string &quot;one: : two : &quot; &quot;:&quot; t &quot; +&quot;) &rArr; (&quot;one&quot; &quot;two&quot;)
+</pre></div></div>
 </dd></dl>
 
 <dl class="first-defvr first-defvar-alias-first-defvr">
@@ -373,9 +323,9 @@ display purposes; use <code class="code">truncate-string-to-width</code> or
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-string_002dlines"><span class="category-def">Function: </span><span><strong class="def-name">string-lines</strong> <var class="def-var-arguments">string &amp;optional omit-nulls keep-newlines</var><a class="copiable-link" href="#index-string_002dlines"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-string_002dlines"><span class="category-def">Function: </span><span><strong class="def-name">string-lines</strong> <var class="def-var-arguments">string &amp;optional omit-empty keep-newlines</var><a class="copiable-link" href="#index-string_002dlines"> &para;</a></span></dt>
 <dd><p>Split <var class="var">string</var> into a list of strings on newline boundaries.  If
-the optional argument <var class="var">omit-nulls</var> is non-<code class="code">nil</code>, remove empty
+the optional argument <var class="var">omit-empty</var> is non-<code class="code">nil</code>, remove empty
 lines from the results.  If the optional argument <var class="var">keep-newlines</var>
 is non-<code class="code">nil</code>, don&rsquo;t remove the trailing newlines from the result
 strings.
