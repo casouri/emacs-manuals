@@ -419,7 +419,7 @@ is much faster than an uncompiled one.  A compiled query can be used
 anywhere a query is accepted.
 </p>
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-treesit_002dquery_002dcompile"><span class="category-def">Function: </span><span><strong class="def-name">treesit-query-compile</strong> <var class="def-var-arguments">language query</var><a class="copiable-link" href="#index-treesit_002dquery_002dcompile"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-treesit_002dquery_002dcompile"><span class="category-def">Function: </span><span><strong class="def-name">treesit-query-compile</strong> <var class="def-var-arguments">language query &amp;optional eager</var><a class="copiable-link" href="#index-treesit_002dquery_002dcompile"> &para;</a></span></dt>
 <dd><p>This function compiles <var class="var">query</var> for <var class="var">language</var> into a compiled
 query object and returns it.
 </p>
@@ -427,17 +427,33 @@ query object and returns it.
 <var class="var">query</var> is malformed.  The signal data contains a description of
 the specific error.  You can use <code class="code">treesit-query-validate</code> to
 validate and debug the query.
+</p>
+<p>By default, Emacs lazily compiles <var class="var">query</var>, meaning <var class="var">query</var> isn&rsquo;t
+actually compiled until it&rsquo;s used.  To compile <var class="var">query</var> immediately,
+pass non-<code class="code">nil</code> for <var class="var">eager</var>.
+</p>
+<a class="index-entry-id" id="index-treesit_002dquery_002deagerly_002dcompiled_002dp"></a>
+<p>To tell an actually compiled query apart from one that hasn&rsquo;t been
+compiled, use <code class="code">treesit-query-eagerly-compiled-p</code>.
+</p>
+<p>If <var class="var">query</var> is malformed or language can&rsquo;t be loaded, this function
+signals <code class="code">treesit-query-error</code>.  Obviously this will only happen
+when <var class="var">eager</var> is non-<code class="code">nil</code>, since otherwise Emacs doesn&rsquo;t
+actually compile <var class="var">query</var>.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-treesit_002dquery_002dlanguage"></a>
+<a class="index-entry-id" id="index-treesit_002dquery_002dsource"></a>
 <a class="index-entry-id" id="index-treesit_002dquery_002dexpand"></a>
 <a class="index-entry-id" id="index-treesit_002dpattern_002dexpand"></a>
 <a class="index-entry-id" id="index-treesit_002dquery_002dvalid_002dp"></a>
 <p>There are some additional functions for queries:
 <code class="code">treesit-query-language</code> returns the language of a query;
-<code class="code">treesit-query-valid-p</code> checks whether a query is valid;
-<code class="code">treesit-query-expand</code> converts a s-expression query into the
-string format; and <code class="code">treesit-pattern-expand</code> converts a pattern.
+<code class="code">treesit-query-source</code> returns the original string or sexp source
+query of a compiled query; <code class="code">treesit-query-valid-p</code> checks whether a
+query is valid; <code class="code">treesit-query-expand</code> converts a s-expression
+query into the string format; and <code class="code">treesit-pattern-expand</code> converts
+a pattern.
 </p>
 <a class="index-entry-id" id="index-treesit_002dquery_002dfirst_002dvalid"></a>
 <p>Tree-sitter grammars change overtime.  To support multiple possible
