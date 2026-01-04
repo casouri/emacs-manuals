@@ -374,6 +374,74 @@ single window, it is not used.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002din_002dnew_002dtab"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-in-new-tab</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002din_002dnew_002dtab"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> in a new tab.
+</p>
+<p>If <var class="var">alist</var> contains a non-<code class="code">nil</code> <code class="code">tab-name</code> entry (which
+may be a string or a function), the buffer is displayed in a new tab
+with that name.  If the <code class="code">tab-name</code> entry is a function, it is
+called with two arguments (<var class="var">buffer</var> and <var class="var">alist</var>), and should
+return the tab name.
+</p>
+<p>If the <code class="code">tab-name</code> entry is omitted or <code class="code">nil</code>, a new tab is
+created without an explicit name.
+</p>
+<p>If <var class="var">alist</var> contains a non-<code class="code">nil</code> <code class="code">tab-group</code> entry, this
+defines the tab group, overriding user option
+<code class="code">tab-bar-new-tab-group</code>.  This entry may again be a string or a
+function which is called in the same manner as <code class="code">tab-name</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002din_002dtab"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-in-tab</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002din_002dtab"> &para;</a></span></dt>
+<dd><p>This function tries to display <var class="var">buffer</var> in a new or existing tab.
+</p>
+<p>If <var class="var">alist</var> contains a non-<code class="code">nil</code> <code class="code">reusable-frames</code> entry
+then the frames indicated by its value are searched for an existing tab
+which already displays the buffer.  The possible values of
+<code class="code">reusable-frames</code> are:
+</p>
+<ul class="itemize mark-bullet">
+<li><code class="code">t</code>
+means consider all existing frames.
+</li><li><code class="code">visible</code>
+means consider all visible frames.
+</li><li>0
+means consider all frames on the current terminal.
+</li><li>A frame
+means consider that frame only.
+</li><li>Any other non-<code class="code">nil</code> value
+means consider the selected frame.
+</li><li><code class="code">nil</code>
+means do not search any frames (equivalent to omitting the entry).  Note
+that this is different to the typical meaning of the value <code class="code">nil</code>
+for a <code class="code">reusable-frames</code> entry in a buffer display action alist.
+</li></ul>
+
+<p>If <var class="var">alist</var> contains a non-<code class="code">nil</code> <code class="code">ignore-current-tab</code>
+entry, then the current tab is skipped when searching for a reusable
+tab.  Otherwise the current tab is used by preference if it already
+displays the buffer.
+</p>
+<p>If a window displaying the buffer is located in any reusable tab then
+that tab and window are selected.
+</p>
+<p>If no such window is located, the buffer is displayed in a new or
+existing tab based on the <var class="var">alist</var> entry <code class="code">tab-name</code> (which may
+be a string or a function).  If a tab with this name already exists then
+that tab is selected, otherwise a new tab with that name is created.  If
+the <code class="code">tab-name</code> entry is a function, it is called with two arguments
+(<var class="var">buffer</var> and <var class="var">alist</var>), and should return the tab name.  If the
+<code class="code">tab-name</code> entry is omitted or <code class="code">nil</code>, a new tab is created
+without an explicit name.
+</p>
+<p>If a new tab is created and <var class="var">alist</var> contains a non-<code class="code">nil</code>
+<code class="code">tab-group</code> entry, this defines the tab group, overriding user
+option <code class="code">tab-bar-new-tab-group</code>.  This entry may again be a string
+or a function which is called in the same manner as <code class="code">tab-name</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-display_002dbuffer_002dno_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">display-buffer-no-window</strong> <var class="def-var-arguments">buffer alist</var><a class="copiable-link" href="#index-display_002dbuffer_002dno_002dwindow"> &para;</a></span></dt>
 <dd><p>If <var class="var">alist</var> has a non-<code class="code">nil</code> <code class="code">allow-no-window</code> entry, then
 this function does not display <var class="var">buffer</var> and returns the symbol
