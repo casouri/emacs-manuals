@@ -1,0 +1,109 @@
+name: Monthly Emacs Version Check
+
+on:
+  schedule:
+    # Run at 9pm PST on the 1st of every month (5am UTC on the 2nd)
+    - cron: '0 5 2 * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-versions:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check for new Emacs versions and create PR if needed
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        set -e
+
+        # Extract current versions from build.sh (lines like "build 30.2")
+        current_versions=$(grep -E '^build [0-9]+\.[0-9]+' build.sh | awk '{print $2}' | sort -V)
+        echo "Current versions in build.sh:"
+        echo "$current_versions"
+
+        # Get all release tags from Emacs git repository
+        # Filter to only stable releases (X.Y format, no pretest/rc)
+        echo ""
+        echo "Fetching Emacs release tags..."
+        all_tags=$(git ls-remote --tags git://git.sv.gnu.org/emacs.git | \
+                   grep -oE 'refs/tags/emacs-[0-9]+\.[0-9]+$' | \
+                   sed 's|refs/tags/emacs-||' | \
+                   sort -V)
+        echo "Available Emacs releases:"
+        echo "$all_tags"
+
+        # Find missing versions
+        missing_versions=$(comm -23 <(echo "$all_tags") <(echo "$current_versions"))
+
+        if [ -z "$missing_versions" ]; then
+          echo ""
+          echo "No new Emacs versions found. build.sh is up to date."
+          exit 0
+        fi
+
+        echo ""
+        echo "Missing versions found:"
+        echo "$missing_versions"
+
+        # Create updated build.sh with new versions
+        # Insert new versions after "build master" line, in descending order
+        missing_desc=$(echo "$missing_versions" | sort -Vr)
+
+        # Build the new file content
+        {
+          # Print everything up to and including "build master"
+          sed -n '1,/^build master$/p' build.sh
+
+          # Print new versions in descending order
+          for version in $missing_desc; do
+            echo "build ${version}"
+          done
+
+          # Print everything after "build master"
+          sed -n '/^build master$/,${/^build master$/d;p}' build.sh
+        } > build.sh.new
+
+        mv build.sh.new build.sh
+        chmod +x build.sh
+
+        echo ""
+        echo "Updated build.sh:"
+        grep -E '^build ' build.sh
+
+        # Configure git
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+        # Create a new branch
+        branch_name="auto/add-emacs-versions-$(date +%Y%m%d)"
+        git checkout -b "$branch_name"
+
+        # Commit changes
+        git add build.sh
+        version_list=$(echo "$missing_versions" | tr '\n' ', ' | sed 's/,$//')
+        git commit -m "Add new Emacs versions: ${version_list}"
+
+        # Push branch
+        git push -u origin "$branch_name"
+
+        # Create PR body
+        pr_body="This PR adds the following new Emacs versions to build.sh:"
+        pr_body="$pr_body"$'\n\n'
+        for v in $missing_desc; do
+          pr_body="$pr_body- $v"$'\n'
+        done
+        pr_body="$pr_body"$'\n'"This PR was automatically created by the monthly version check workflow."
+
+        # Create PR
+        gh pr create \
+          --title "Add new Emacs versions: ${version_list}" \
+          --body "$pr_body" \
+          --base master
