@@ -67,13 +67,16 @@ identify a template and where in the file to look for the pattern using
 <code class="code">time-stamp-pattern</code>; for details, see the variable&rsquo;s built-in
 documentation (with <kbd class="kbd">C-h v</kbd>, see <a class="pxref" href="Name-Help.html">Help by Command or Variable Name</a>).
 </p>
-<p>As a simple example, if this line occurs near the top of a file:
+<p>As a simple example, suppose you want a manuscript to say the year
+and city of publication.
+You would like the year updated as you make revisions.
+You could have this line near the top of a file:
 </p>
 <div class="example">
 <pre class="example-preformatted">publishing_year_and_city = &quot;Published nnnn in Boston, Mass.&quot;;
 </pre></div>
 
-<p>then the following comment at the end of the same file tells
+<p>and the following comment at the end of the same file to tell
 <code class="code">time-stamp</code> how to identify and update that custom template:
 </p>
 <div class="example">
@@ -84,12 +87,24 @@ documentation (with <kbd class="kbd">C-h v</kbd>, see <a class="pxref" href="Nam
 
 <p>This pattern says that the text before the start of the time stamp is
 &ldquo;Published &rdquo;, and the text after the end is &ldquo; in Boston&rdquo;.
-If <code class="code">time-stamp</code> finds both in one of the first eight lines,
-what is between will be replaced by the current year, as requested by
-the <code class="code">%Y</code> format.
+If <code class="code">time-stamp</code> finds both the start and the end in one of the
+first eight lines,
+what is between will be updated as specified by the format, <code class="code">%Y</code> in
+this example.  Since <code class="code">%Y</code> requests the year, the result might look
+like this:
 </p>
-<p>After any change to file-local variables,
-type <kbd class="kbd">M-x normal-mode</kbd> to re-read them.
+<div class="example">
+<pre class="example-preformatted">publishing_year_and_city = &quot;Published 2025 in Boston, Mass.&quot;;
+</pre></div>
+
+<p>By specifying a format of <code class="code">%Y</code>, we get exactly the year
+substituted; other parts of the default format (day, time and
+author) are not part of this example pattern and so do not appear in the
+result.
+</p>
+<p>After changing the value of <code class="code">time-stamp-pattern</code>
+(or any file-local variable),
+type <kbd class="kbd">M-x normal-mode</kbd> so that Emacs notices.
 </p>
 <p>Here is another example, with the time stamp inserted into
 the last paragraph of an HTML document.
