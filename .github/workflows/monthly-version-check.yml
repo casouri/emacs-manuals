@@ -30,14 +30,15 @@ jobs:
         echo "$current_versions"
 
         # Get all release tags from Emacs git repository
-        # Filter to only stable releases (X.Y format, no pretest/rc)
+        # Filter to only stable releases (X.Y format, no pretest/rc, version >= 25)
         echo ""
         echo "Fetching Emacs release tags..."
         all_tags=$(git ls-remote --tags git://git.sv.gnu.org/emacs.git | \
                    grep -oE 'refs/tags/emacs-[0-9]+\.[0-9]+$' | \
                    sed 's|refs/tags/emacs-||' | \
+                   awk -F. '$1 >= 25' | \
                    sort -V)
-        echo "Available Emacs releases:"
+        echo "Available Emacs releases (>= 25):"
         echo "$all_tags"
 
         # Find missing versions
