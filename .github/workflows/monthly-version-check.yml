@@ -54,22 +54,21 @@ jobs:
         echo "Missing versions found:"
         echo "$missing_versions"
 
-        # Create updated build.sh with new versions
-        # Insert new versions after "build master" line, in descending order
-        missing_desc=$(echo "$missing_versions" | sort -Vr)
+        # Combine current and missing versions, sort in descending order
+        all_versions=$(echo -e "${current_versions}\n${missing_versions}" | sort -Vr)
 
         # Build the new file content
         {
           # Print everything up to and including "build master"
           sed -n '1,/^build master$/p' build.sh
 
-          # Print new versions in descending order
-          for version in $missing_desc; do
+          # Print all versions in descending order
+          for version in $all_versions; do
             echo "build ${version}"
           done
 
-          # Print everything after "build master"
-          sed -n '/^build master$/,${/^build master$/d;p}' build.sh
+          # Print everything after the last "build X.Y" line (the cp line and any trailing content)
+          sed -n '/^cp /,$p' build.sh
         } > build.sh.new
 
         mv build.sh.new build.sh
