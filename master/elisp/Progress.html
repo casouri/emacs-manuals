@@ -76,7 +76,7 @@ A convenient way to do this is to use a <em class="dfn">progress reporter</em>.
 </pre></div>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-make_002dprogress_002dreporter"><span class="category-def">Function: </span><span><strong class="def-name">make-progress-reporter</strong> <var class="def-var-arguments">message &amp;optional min-value max-value current-value min-change min-time</var><a class="copiable-link" href="#index-make_002dprogress_002dreporter"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-make_002dprogress_002dreporter"><span class="category-def">Function: </span><span><strong class="def-name">make-progress-reporter</strong> <var class="def-var-arguments">message &amp;optional min-value max-value current-value min-change min-time context</var><a class="copiable-link" href="#index-make_002dprogress_002dreporter"> &para;</a></span></dt>
 <dd><p>This function creates and returns a progress reporter object, which
 you will use as an argument for the other functions listed below.  The
 idea is to precompute as much data as possible to make progress
@@ -103,13 +103,19 @@ notch each time you update the progress reporter.
 argument <var class="var">current-value</var> a numerical value specifying the initial
 progress; if omitted, this defaults to <var class="var">min-value</var>.
 </p>
-<p>The remaining arguments control the rate of echo area updates.  The
-progress reporter will wait for at least <var class="var">min-change</var> more
-percents of the operation to be completed before printing next
-message; the default is one percent.  <var class="var">min-time</var> specifies the
-minimum time in seconds to pass between successive prints; the default
-is 0.2 seconds.  (On some operating systems, the progress reporter may
-handle fractions of seconds with varying precision).
+<p>The arguments <var class="var">min-change</var> and <var class="var">min-time</var> control the rate of
+echo area updates.  The progress reporter will wait for at least
+<var class="var">min-change</var> more percents of the operation to be completed before
+printing next message; the default is one percent.  <var class="var">min-time</var>
+specifies the minimum time in seconds to pass between successive prints;
+the default is 0.2 seconds.  (On some operating systems, the progress
+reporter may handle fractions of seconds with varying precision).
+</p>
+<p>If <var class="var">context</var> is the symbol <code class="code">async</code>, it announces that the updates
+will occur asynchronously.  Backends can use that info to prevent the
+progress updates from interfering with other data.  For example the
+backend that displays the progress in the echo area will not display
+those async updates when the echo area is in use.
 </p>
 <p>This function calls <code class="code">progress-reporter-update</code>, so the first
 message is printed immediately.
