@@ -65,11 +65,22 @@ sense is advised.
 (s);</code> unless the length of <code class="code">s</code> is required for other reasons to
 fit in <code class="code">int</code> range.
 
-</li><li>Do not assume that signed integer arithmetic wraps around on overflow.
+</li><li><a class="index-entry-id" id="index-overflow-in-integers"></a>
+<a class="index-entry-id" id="index-integer-overflow"></a>
+Do not assume that signed integer arithmetic wraps around on overflow.
 This is no longer true of Emacs porting targets: signed integer
 overflow has undefined behavior in practice, and can dump core or
 even cause earlier or later code to behave illogically.  Unsigned
-overflow does wrap around reliably, modulo a power of two.
+overflow does wrap around reliably, modulo a power of two,
+if all operand types are unsigned and are <code class="code">unsigned int</code> or wider.
+
+</li><li>Use the macros of <code class="code">&lt;stdckdint.h&gt;</code> to check for integer overflow
+or to implement wraparound arithmetic reliably with integer types
+that are signed or are narrower than <code class="code">unsigned int</code>.
+Although <code class="code">&lt;stdckdint.h&gt;</code> was not standardized until C23,
+on non-C23 platforms Emacs internally provides a fallback substitute.
+Avoid complex arguments to its macros <code class="code">ckd_add</code>, <code class="code">ckd_sub</code> and
+<code class="code">ckd_mul</code>, as the fallback macros might evaluate arguments more than once.
 
 </li><li>Prefer signed types to unsigned, as code gets confusing when signed
 and unsigned types are combined.  Many other guidelines assume that
@@ -120,9 +131,15 @@ signed, unless this assumption is known to be safe.  For example,
 although <code class="code">off_t</code> is always signed, <code class="code">time_t</code> need not be.
 
 </li><li>Prefer <code class="code">intmax_t</code> for representing values that might be any
-signed integer value.
+signed integer value in machine range.
 A <code class="code">printf</code>-family function can print such a value
 via a format like <code class="code">&quot;%&quot;PRIdMAX</code>.
+
+</li><li>Prefer Emacs integers, which are either fixnums or bignums,
+for representing values that might be outside machine range.
+Although low level code uses GMP directly for efficiency,
+Emacs integers are typically more convenient at higher levels of
+abstraction.
 
 </li><li>Prefer <code class="code">bool</code>, <code class="code">false</code> and <code class="code">true</code> for booleans.
 Using <code class="code">bool</code> can make programs easier to read and a bit faster than

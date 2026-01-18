@@ -268,6 +268,7 @@ point to an array of at least <var class="var">count</var> elements specifying t
 little-endian magnitude of the return value.
 </p></dd></dl>
 
+<a class="index-entry-id" id="index-GMP_002c-the-GNU-Multiprecision-Library"></a>
 <p>The following example uses the GNU Multiprecision Library (GMP) to
 calculate the next probable prime after a given integer.
 See <a data-manual="gmp" href="https://www.gmplib.org/manual/index.html#Top">(gmp)Top</a>, for a general overview of GMP, and see <a data-manual="gmp" href="https://www.gmplib.org/manual/Integer-Import-and-Export.html#Integer-Import-and-Export">(gmp)Integer
@@ -360,7 +361,11 @@ next_prime (emacs_env *env, ptrdiff_t nargs, emacs_value *args,
   mpz_t p;
   mpz_init (p);
   extract_big_integer (env, args[0], p);
+
+  /* Assume Emacs is linked to the full GMP library,
+     not to its mini-gmp subset that lacks mpz_nextprime.  */
   mpz_nextprime (p, p);
+
   emacs_value result = make_big_integer (env, p);
   mpz_clear (p);
   return result;

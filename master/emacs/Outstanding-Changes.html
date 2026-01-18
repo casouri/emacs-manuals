@@ -41,6 +41,7 @@ a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 kbd.kbd {font-style: oblique}
 kbd.key {font-style: normal}
 span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -75,8 +76,8 @@ these commands provide specialized versions of <kbd class="kbd">C-x v M D</kbd> 
 see <a class="pxref" href="Merge-Bases.html">Merge Bases</a>) which also take into account the state of upstream
 repositories.  These commands are useful both when working on a single
 branch and when developing features on a separate branch
-(see <a class="pxref" href="Branches.html">Version Control Branches</a>).  These two cases involve using the commands
-differently, and so we will describe them separately.
+(see <a class="pxref" href="Branches.html">Version Control Branches</a>).  These two cases are conceptually distinct, and so
+we will introduce them separately.
 </p>
 <p>First, consider working on a single branch.  <em class="dfn">Outstanding changes</em>
 are those which you haven&rsquo;t yet pushed upstream.  This includes both
@@ -97,9 +98,9 @@ between <kbd class="kbd">C-x&nbsp;v&nbsp;o&nbsp;D</kbd><!-- /@w --> and <kbd cla
 difference between <kbd class="kbd">C-x v D</kbd> and <kbd class="kbd">C-x v =</kbd> (see <a class="pxref" href="Old-Revisions.html">Examining And Comparing Old Revisions</a>).)<a class="footnote" id="DOCF21" href="#FOOT21"><sup>21</sup></a>
 </p>
 <p>Second, consider developing a feature on a separate branch.  Call this
-the <em class="dfn">topic branch</em>,<a class="footnote" id="DOCF22" href="#FOOT22"><sup>22</sup></a> and call the
-branch from which the topic branch was originally created the
-<em class="dfn">trunk</em> or <em class="dfn">development trunk</em>.
+the <em class="dfn">topic branch</em>,<a class="footnote" id="DOCF22" href="#FOOT22"><sup>22</sup></a> and call the branch from
+which the topic branch was originally created the <em class="dfn">trunk</em> or
+<em class="dfn">development trunk</em>.
 </p>
 <p>In this case, outstanding changes is a more specific notion than just
 unpushed and uncommitted changes on the topic branch.  You&rsquo;re not
@@ -110,21 +111,98 @@ upstream repository&rsquo;s development trunk.  That means committed changes
 on the topic branch that haven&rsquo;t yet been merged into the trunk, plus
 uncommitted changes.
 </p>
-<a class="index-entry-id" id="index-outgoing-base_002c-version-control"></a>
-<p>The <em class="dfn">outgoing base</em> is the upstream location for which the changes
-are destined once they are no longer outstanding.  In this case, that&rsquo;s
-the upstream version of the trunk, to which you and your collaborators
-push finished work.
+<p>When the current branch is a topic branch and you type <kbd class="kbd">C-x v o D</kbd>,
+Emacs displays a summary of all the changes that are outstanding against
+the trunk to which the current branch will be merged.  This summary is
+in the form of a diff of what committing and pushing all the changes,
+<em class="emph">and</em> subsequently merging the topic branch, would do to the trunk.
+As above, you can use <kbd class="kbd">C-x v o =</kbd> instead to limit the display of
+changes to the current VC fileset.
 </p>
-<p>To display a summary of outgoing changes in this multi-branch example,
-supply a prefix argument, by typing <kbd class="kbd">C-u&nbsp;C-x&nbsp;v&nbsp;o&nbsp;=</kbd><!-- /@w --> or
-<kbd class="kbd">C-u&nbsp;C-x&nbsp;v&nbsp;o&nbsp;D</kbd><!-- /@w -->.  When prompted, enter the outgoing base.
-Exactly what you must supply here depends on the name of your
-development trunk and the version control system in use.  For example,
-with Git, usually you will enter <kbd class="kbd">origin/master</kbd>.  We hope to
-improve these commands such that no prefix argument is required in the
-multi-branch case, too.
+<p>This functionality relies on Emacs correctly detecting whether the
+current branch is a trunk or a topic branch, and in the latter case,
+correctly determining the branch to which the topic branch will
+eventually be merged.  If the autodetection doesn&rsquo;t produce the right
+results, there are several options to tweak and override it.
 </p>
+<a class="index-entry-id" id="index-vc_002dtrunk_002dbranch_002dregexps"></a>
+<a class="index-entry-id" id="index-vc_002dtopic_002dbranch_002dregexps"></a>
+<p>The variables <code class="code">vc-trunk-branch-regexps</code> and
+<code class="code">vc-topic-branch-regexps</code> contain lists of regular expressions
+matching the names of branches that should always be considered trunk
+and topic branches, respectively.  You can also specify prefix arguments
+to <kbd class="kbd">C-x v o D</kbd> and <kbd class="kbd">C-x v o =</kbd>.  Here is a summary of how to use
+these controls:
+</p>
+<ol class="enumerate">
+<li> If the problem is that Emacs thinks your topic branch is a trunk, you
+can add either its name, or a regular expression matching its name
+(see <a class="pxref" href="Regexps.html">Syntax of Regular Expressions</a>), to the <code class="code">vc-topic-branch-regexps</code> variable.
+There are a few special kinds of value to simplify common use cases:
+
+<ul class="itemize mark-bullet">
+<li>If an element contains no characters that are special in regular
+expressions, then the regular expression is implictly anchored at both
+ends, i.e., it matches only a branch with exactly that name.
+
+</li><li>If the first element of <code class="code">vc-topic-branch-regexps</code> is the symbol
+<code class="code">not</code>, then the meaning of <code class="code">vc-topic-branch-regexps</code> is
+inverted, in that Emacs treats all branches whose names <em class="emph">don&rsquo;t</em>
+match any element of <code class="code">vc-topic-branch-regexps</code> to be topic
+branches.
+
+</li><li>If instead of a list of regular expressions the
+<code class="code">vc-topic-branch-regexps</code> variable has the special value <code class="code">t</code>,
+then Emacs treats as a topic branch any branch that the
+<code class="code">vc-trunk-branch-regexps</code> variable doesn&rsquo;t positively identify as a
+trunk.
+</li></ul>
+
+<p>See <a class="xref" href="Directory-Variables.html">Per-Directory Local Variables</a>, regarding how to specify values of
+<code class="code">vc-topic-branch-regexps</code> and <code class="code">vc-trunk-branch-regexps</code> for a
+single VC repository.
+</p>
+</li><li> If the problem is that Emacs thinks your trunk is a topic branch, you
+can add either its name, or a regular expression matching its name, to
+the <code class="code">vc-trunk-branch-regexps</code> variable.  This works just like
+<code class="code">vc-topic-branch-regexps</code> with the same special values we just
+described.  E.g., if the value of <code class="code">vc-trunk-branch-regexps</code> is
+<code class="code">t</code>, Emacs treats as a trunk any branch that the
+<code class="code">vc-topic-branch-regexps</code> variable doesn&rsquo;t identify as a topic
+branch.
+
+</li><li> Supply a double prefix argument, i.e. <kbd class="kbd">C-u&nbsp;C-u&nbsp;C-x&nbsp;v&nbsp;o&nbsp;&hellip;</kbd><!-- /@w -->,
+and Emacs will treat the current branch as a trunk, no matter what.
+This is useful when you simply want to obtain a diff of all outgoing
+changes (see <a class="pxref" href="VC-Change-Log.html">VC Change Log</a>) plus uncommitted changes.
+
+</li><li> <a class="index-entry-id" id="index-outgoing-base_002c-version-control"></a>
+Finally, you can take full manual control by supplying a single prefix
+argument, i.e. <kbd class="kbd">C-u&nbsp;C-x&nbsp;v&nbsp;o&nbsp;&hellip;</kbd><!-- /@w -->.  Emacs will prompt you for
+the <em class="dfn">outgoing base</em>, which is the upstream location for which the
+changes are destined once they are no longer outstanding.
+
+<p>To treat the current branch as a trunk specify a reference to the
+upstream version of the current branch, to which you and your
+collaborators push finished work.  To treat the current branch as a
+topic branch specify a reference to the upstream version of the trunk to
+which the topic branch will later be merged.
+</p>
+<p>Exactly how to specify a reference to the upstream version of a branch
+depends on the version control system in use.  For example, with Git, to
+refer to the upstream version of a branch <var class="var">foo</var>, you would supply
+<kbd class="kbd">origin/<var class="var">foo</var></kbd>.  So if <var class="var">foo</var> is the current branch then you
+would enter an outgoing base of <kbd class="kbd">origin/<var class="var">foo</var></kbd> to treat
+<var class="var">foo</var> as a trunk, or an outgoing base of <kbd class="kbd">origin/<var class="var">bar</var></kbd> to
+treat <var class="var">foo</var> as a topic branch which will later be merged into a
+trunk named <var class="var">bar</var>.
+</p>
+<p>If there is a default option, it is what Emacs thinks you need to enter
+in order to treat the current branch as a topic branch.  If there is no
+default, then entering nothing at the prompt means to treat the current
+branch as a trunk.
+</p></li></ol>
+
 </div>
 <div class="footnotes-segment">
 <hr>
@@ -138,10 +216,12 @@ include uncommitted changes in the reported diffs.  Like those other
 commands, you can use a prefix argument to specify a particular upstream
 location.</p>
 <h5 class="footnote-body-heading"><a id="FOOT22" href="#DOCF22">(22)</a></h5>
-<p>Topic branches are sometimes called
-&ldquo;feature branches&rdquo;.  It is also common for the term &ldquo;feature branch&rdquo;
-to be reserved for a particular kind of topic branch, one that another
-branch or other branches are repeatedly merged into.</p>
+<p>What we mean by a topic branch is any
+shorter-lived branch used for work which will later be merged into a
+longer-lived branch.  Topic branches are sometimes called &ldquo;feature
+branches&rdquo;.  It is also common for the term &ldquo;feature branch&rdquo; to be
+reserved for a particular kind of topic branch, one that another branch
+or other branches are repeatedly merged into.</p>
 </div>
 <hr>
 <div class="nav-panel">
