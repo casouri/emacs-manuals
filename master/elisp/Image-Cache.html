@@ -91,7 +91,7 @@ below), you can opt to flush unused images yourself, instead of
 waiting for Emacs to do it automatically.
 </p>
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-clear_002dimage_002dcache"><span class="category-def">Function: </span><span><strong class="def-name">clear-image-cache</strong> <var class="def-var-arguments">&amp;optional filter</var><a class="copiable-link" href="#index-clear_002dimage_002dcache"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-clear_002dimage_002dcache"><span class="category-def">Function: </span><span><strong class="def-name">clear-image-cache</strong> <var class="def-var-arguments">&amp;optional filter animation-filter</var><a class="copiable-link" href="#index-clear_002dimage_002dcache"> &para;</a></span></dt>
 <dd><p>This function clears an image cache, removing all the images stored in
 it.  If <var class="var">filter</var> is omitted or <code class="code">nil</code>, it clears the cache for
 the selected frame.  If <var class="var">filter</var> is a frame, it clears the cache
@@ -99,6 +99,16 @@ for that frame.  If <var class="var">filter</var> is <code class="code">t</code>
 cleared.  Otherwise, <var class="var">filter</var> is taken to be a file name, and all
 images associated with that file name are removed from all image
 caches.
+</p>
+<p>This function also clears the image animation cache, which is a separate
+cache that Emacs maintains for animated multi-frame images
+(see <a class="pxref" href="Multi_002dFrame-Images.html">Multi-Frame Images</a>).  If <var class="var">animation-filter</var> is omitted or
+<code class="code">nil</code>, it clears the animation cache in addition to the image
+caches selected by <var class="var">filter</var>.  Otherwise, this function removes the
+image with specification <code class="code">eq</code> to <var class="var">animation-filter</var> only from
+the animation cache, and does not clear any image caches.  This can help
+reduce memory usage after an animation is stopped but the image is still
+displayed.
 </p></dd></dl>
 
 <p>If an image in the image cache has not been displayed for a specified
