@@ -94,16 +94,19 @@ window.  If <var class="var">window</var> cannot be split, it returns <code clas
 <var class="var">window</var> is omitted or <code class="code">nil</code>, it defaults to the selected
 window.
 </p>
-<p>This function obeys the usual rules that determine when a window may
-be split (see <a class="pxref" href="Splitting-Windows.html">Splitting Windows</a>).  It first tries to split by
-placing the new window below, subject to the restriction imposed by
-<code class="code">split-height-threshold</code> (see below), in addition to any other
-restrictions.  If that fails, it tries to split by placing the new
-window to the right, subject to <code class="code">split-width-threshold</code> (see
-below).  If that also fails, and the window is the only window on its
-frame, this function again tries to split and place the new window
-below, disregarding <code class="code">split-height-threshold</code>.  If this fails as
-well, this function gives up and returns <code class="code">nil</code>.
+<p>This function obeys the usual rules that determine when a window may be
+split (see <a class="pxref" href="Splitting-Windows.html">Splitting Windows</a>).  It first tries either a vertical
+split by placing the new window below, subject to the restriction
+imposed by <code class="code">split-height-threshold</code> (see below), or a horizontal
+split that places the new window to the right, subject to
+<code class="code">split-width-threshold</code>, in addition to any other restrictions.
+Whether it tries first to split vertically or horizontally depends on
+the value of the user option <code class="code">split-window-preferred-direction</code>.
+If splitting along the first dimension fails, it tries to split along
+the other dimension.  If that also fails, and the window is the only
+window on its frame, this function again tries to split and place the
+new window below, disregarding <code class="code">split-height-threshold</code>.  If this
+fails as well, this function gives up and returns <code class="code">nil</code>.
 </p></dd></dl>
 
 <dl class="first-defvr first-defopt-alias-first-defvr">
@@ -122,6 +125,19 @@ allowed to split the window placing the new window to the right.  If
 the value is an integer, that means to split only if the original
 window has at least that many columns.  If the value is <code class="code">nil</code>,
 that means not to split this way.
+</p></dd></dl>
+
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-split_002dwindow_002dpreferred_002ddirection"><span class="category-def">User Option: </span><span><strong class="def-name">split-window-preferred-direction</strong><a class="copiable-link" href="#index-split_002dwindow_002dpreferred_002ddirection"> &para;</a></span></dt>
+<dd><p>This variable determines the first dimension along which
+<code class="code">split-window-sensibly</code> tries to split the window, if the window
+could be split both vertically and horizontally, as determined by the
+values of <code class="code">split-height-threshold</code> and
+<code class="code">split-width-threshold</code>.  The default value is <code class="code">longest</code>,
+which means to split vertically if the height of the window&rsquo;s frame is
+greater or equal to its width, and horizontally otherwise.  The values
+<code class="code">vertical</code> and <code class="code">horizontal</code> specify the direction in which to
+attempt the first split.
 </p></dd></dl>
 
 <dl class="first-defvr first-defopt-alias-first-defvr">
