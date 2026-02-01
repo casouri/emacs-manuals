@@ -41,6 +41,7 @@ div.example {margin-left: 3.2em}
 kbd.kbd {font-style: oblique}
 kbd.key {font-style: normal}
 span:hover a.copiable-link {visibility: visible}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -61,24 +62,29 @@ Previous: <a href="Directory-Variables.html" accesskey="p" rel="prev">Per-Direct
 <a class="index-entry-id" id="index-per_002dconnection-local-variables"></a>
 
 <p>Most of the variables reflect the situation on the local machine.
-Often, they must use a different value when you operate in buffers
-with a remote default directory.  Think about the behavior when
-calling <code class="code">shell</code> &ndash; on your local machine, you might use
-<samp class="file">/bin/bash</samp> and rely on termcap, but on a remote machine, it may
-be <samp class="file">/bin/ksh</samp> and terminfo.
+Often, they must use a different value when you operate in buffers with
+a remote default directory.  Think about the behavior when calling
+<code class="code">shell</code> &mdash; on your local machine, you might use <samp class="file">/bin/bash</samp>
+and rely on termcap, but on a remote machine, it may be <samp class="file">/bin/ksh</samp>
+and terminfo.
 </p>
-<p>This can be accomplished with <em class="dfn">connection-local variables</em>.
-Directory and file local variables override connection-local
-variables.  Unsafe connection-local variables are handled in the same
-way as unsafe file-local variables (see <a class="pxref" href="Safe-File-Variables.html">Safety of File Variables</a>).
+<p>This can be accomplished with <em class="dfn">connection-local variables</em>.  Such
+variables are declared depending on the value of
+<code class="code">default-directory</code> of the current buffer.  When a buffer has a
+remote <code class="code">default-directory</code>, and there exist a connection-local
+variable which matches <code class="code">default-directory</code>, this alternative value
+of the variable is used.  Directory and file local variables override
+connection-local variables.  Unsafe connection-local variables are
+handled in the same way as unsafe file-local variables (see <a class="pxref" href="Safe-File-Variables.html">Safety of File Variables</a>).
 </p>
 <a class="index-entry-id" id="index-connection_002dlocal_002dset_002dprofile_002dvariables"></a>
 <a class="index-entry-id" id="index-connection_002dlocal_002dset_002dprofiles"></a>
-<p>Connection-local variables are declared as a group of
-variables/value pairs in a <em class="dfn">profile</em>, using the
+<p>Connection-local variables are declared as a group of variables/value
+pairs in a <em class="dfn">profile</em>, using the
 <code class="code">connection-local-set-profile-variables</code> function.  The function
-<code class="code">connection-local-set-profiles</code> activates profiles for a given
-criteria, identifying a remote machine:
+<code class="code">connection-local-set-profiles</code> declares profiles for a given
+criteria (the first argument), identifying a remote machine with respect
+to <code class="code">default-directory</code> of the current buffer:
 </p>
 <div class="example">
 <pre class="example-preformatted">(connection-local-set-profile-variables 'remote-terminfo
@@ -100,13 +106,47 @@ criteria, identifying a remote machine:
 
 <p>This code declares three different profiles, <code class="code">remote-terminfo</code>,
 <code class="code">remote-ksh</code>, and <code class="code">remote-bash</code>.  The profiles
-<code class="code">remote-terminfo</code> and <code class="code">remote-ksh</code> are applied to all
-buffers which have a remote default directory matching the regexp
-<code class="code">&quot;remotemachine&quot;</code> as host name.  Such a criteria can also
-discriminate for the properties <code class="code">:protocol</code> (this is the Tramp
-method) or <code class="code">:user</code> (a remote user name).  The <code class="code">nil</code> criteria
-matches all buffers with a remote default directory.
+<code class="code">remote-terminfo</code> and <code class="code">remote-ksh</code> are applied to all buffers
+which have a remote <code class="code">default-directory</code> matching the string
+<code class="code">&quot;remotemachine&quot;</code> as host name.
 </p>
+<p>Criteria, the first argument of <code class="code">connection-local-set-profiles</code>,
+specifies, how the profiles match <code class="code">default-directory</code>.  It is a
+plist identifying a connection and the application using this
+connection.  Property names might be <code class="code">:application</code>,
+<code class="code">:protocol</code>, <code class="code">:user</code> and <code class="code">:machine</code>.  The property value
+of <code class="code">:application</code> is a symbol, all other property values are
+strings.  In general the symbol <code class="code">tramp</code> should be used as
+<code class="code">:application</code> value.  Some packages use a different
+<code class="code">:application</code> (for example <code class="code">eshell</code> or <code class="code">vc-git</code>); they
+say it in their documentation then.  All properties are optional.
+</p>
+<p>The other properties are used for checking <code class="code">default-directory</code>.
+The propertiy <code class="code">:protocol</code> is used for the method a remote
+<code class="code">default-directory</code> uses, the property
+<code class="code">:user</code> is the remote user name, and the property <code class="code">:machine</code>
+is the remote host name.  All checks are performed via
+<code class="code">string-equal</code>.  The <code class="code">nil</code> criteria matches all buffers
+with a remote default directory.
+</p>
+<p>Connection-local variables are not activated by default.  A package
+which uses connection-local variables must activate them for a given
+buffer, specifying for which <code class="code">:application</code> it uses them.
+See <a data-manual="elisp" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Applying-Connection-Local-Variables.html#Applying-Connection-Local-Variables">Applying Connection Local Variables</a> in <cite class="cite">The Emacs Lisp
+Reference Manual</cite>, for details.
+</p>
+<p>After the above definition of profiles and their activation, any
+connection made by Tramp to the &lsquo;<samp class="samp">remotemachine</samp>&rsquo; system will use
+</p>
+<ul class="itemize mark-bullet">
+<li><code class="code">t</code> as the connection-specific value of <code class="code">system-uses-terminfo</code>,
+</li><li>&lsquo;<samp class="samp">dumb-emacs-ansi</samp>&rsquo; as the connection-specific value of
+<code class="code">comint-terminfo-terminal</code>,
+</li><li>&lsquo;<samp class="samp">/bin/ksh</samp>&rsquo; as the connection-specific value of as
+<code class="code">shell-file-name</code>,
+</li><li>&lsquo;<samp class="samp">-c</samp>&rsquo; as the connection-specific value of <code class="code">shell-command-switch</code>.
+</li></ul>
+
 <p>Be careful when declaring different profiles with the same variable,
 and setting these profiles to criteria which could match in parallel.
 It is unspecified which variable value is used then.

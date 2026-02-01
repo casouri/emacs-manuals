@@ -191,7 +191,20 @@ is <code class="code">nil</code>, the value of
 </p>
 <p>If <var class="var">symbol</var> does not have a connection-local
 binding, the value is the default binding of the variable.
-</p></dd></dl>
+</p>
+<p>The difference to <code class="code">with-connection-local{-application}-variables</code>
+is, that <code class="code">symbol</code> is not set buffer-local.  A typical usage pattern
+is to use only the the connection value of a variable if it exists, and
+not to use its default value otherwise (using <code class="code">my-app-variable</code>
+initialized above):
+</p>
+<div class="example lisp">
+<pre class="lisp-preformatted">(if (connection-local-p my-app-variable 'my-app)
+    (connection-local-value my-app-variable 'my-app)
+  ;; Something else.
+  )
+</pre></div>
+</dd></dl>
 
 <dl class="first-defvr first-defvar-alias-first-defvr">
 <dt class="defvr defvar-alias-defvr" id="index-enable_002dconnection_002dlocal_002dvariables"><span class="category-def">Variable: </span><span><strong class="def-name">enable-connection-local-variables</strong><a class="copiable-link" href="#index-enable_002dconnection_002dlocal_002dvariables"> &para;</a></span></dt>

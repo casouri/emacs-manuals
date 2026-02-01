@@ -134,6 +134,9 @@ means hide the excess parts of <var class="var">string</var> with a <code class=
 property (see <a class="pxref" href="Display-Property.html">The <code class="code">display</code> Property</a>) showing the ellipsis, instead of
 actually truncating the string.
 </p>
+<p>See also the function <code class="code">truncate-string-pixelwise</code> for pixel-level
+resolution.
+</p>
 <div class="example">
 <div class="group"><pre class="example-preformatted">(truncate-string-to-width &quot;\tab\t&quot; 12 4)
      &rArr; &quot;ab&quot;
@@ -332,6 +335,38 @@ include newlines.  The meaning of this result is the widest line taken
 by the string if inserted into a buffer.  If <var class="var">buffer</var> is
 non-<code class="code">nil</code>, use any face remappings (see <a class="pxref" href="Face-Remapping.html">Face Remapping</a>) from
 that buffer when computing the width of <var class="var">string</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-truncate_002dstring_002dpixelwise"><span class="category-def">Function: </span><span><strong class="def-name">truncate-string-pixelwise</strong> <var class="def-var-arguments">string max-pixels &amp;optional buffer ellipsis ellipsis-pixels</var><a class="copiable-link" href="#index-truncate_002dstring_002dpixelwise"> &para;</a></span></dt>
+<dd><p>This is a convenience function that uses <code class="code">window-text-pixel-size</code>
+to truncate <var class="var">string</var> to <var class="var">max-pixels</var> pixels.  Caveat: if you
+call this function to measure the width of a string with embedded
+newlines, it will then return the width of the widest substring that
+does not include newlines.  The meaning of this result is the widest
+line taken by the string if inserted into a buffer.  If <var class="var">buffer</var> is
+non-<code class="code">nil</code>, use any face remappings (see <a class="pxref" href="Face-Remapping.html">Face Remapping</a>) from
+that buffer when computing the width of <var class="var">string</var>.
+</p>
+<p>If <var class="var">ellipsis</var> is non-<code class="code">nil</code>, it should be a string which will
+replace the end of <var class="var">string</var> when it is truncated.  In this case,
+more characters will be removed from <var class="var">string</var> to free enough space
+for <var class="var">ellipsis</var> to fit within <var class="var">max-pixels</var> pixels.  However, if
+the pixel width of <var class="var">string</var> is less than the pixel width of
+<var class="var">ellipsis</var>, <var class="var">ellipsis</var> will not be appended to the result.  If
+<var class="var">ellipsis</var> is non-<code class="code">nil</code> and not a string, it stands for the
+value returned by the function <code class="code">truncate-string-ellipsis</code>,
+described above.
+</p>
+<p>If <var class="var">ellipsis-pixels</var> is non-<code class="code">nil</code> and <var class="var">ellipsis</var> is
+non-<code class="code">nil</code>, it should be the number of pixels of <var class="var">ellipsis</var> that
+you should precompute using <code class="code">string-pixel-width</code>, specifying the
+same buffer.  This is useful to avoid the cost of recomputing this value
+repeatedly when you have many strings to truncate using the same
+ellipsis string.
+</p>
+<p>See also the function <code class="code">truncate-string-to-width</code> for
+character-level resolution.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
