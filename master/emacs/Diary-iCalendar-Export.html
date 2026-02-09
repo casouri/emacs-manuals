@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2026 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Diary iCalendar Export (GNU Emacs Manual)</title>
+
+<meta name="description" content="Diary iCalendar Export (GNU Emacs Manual)">
+<meta name="keywords" content="Diary iCalendar Export (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Diary-Conversion.html" rel="up" title="Diary Conversion">
+<link href="Diary-Outlook-Import.html" rel="next" title="Diary Outlook Import">
+<link href="Diary-iCalendar-Display.html" rel="prev" title="Diary iCalendar Display">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Diary-iCalendar-Export">
+<div class="nav-panel">
+<p>
+Next: <a href="Diary-Outlook-Import.html" accesskey="n" rel="next">Importing Outlook appointments as Diary Entries</a>, Previous: <a href="Diary-iCalendar-Display.html" accesskey="p" rel="prev">Displaying iCalendar entries in the Diary</a>, Up: <a href="Diary-Conversion.html" accesskey="u" rel="up">Importing and Exporting Diary Entries</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Exporting-Diary-Entries-to-iCalendar"><span>33.10.7.3 Exporting Diary Entries to iCalendar<a class="copiable-link" href="#Exporting-Diary-Entries-to-iCalendar"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-export-diary-to-iCalendar"></a>
+
+<p>The following commands will export diary entries in iCalendar format:
+</p>
+<dl class="ftable">
+<dt><a id="index-diary_002dicalendar_002dexport_002dfile"></a><span><code class="code">diary-icalendar-export-file</code><a class="copiable-link" href="#index-diary_002dicalendar_002dexport_002dfile"> &para;</a></span></dt>
+<dd><p>Exports a diary file to iCalendar format.
+</p>
+</dd>
+<dt><a id="index-diary_002dicalendar_002dexport_002dregion"></a><span><code class="code">diary-icalendar-export-region</code><a class="copiable-link" href="#index-diary_002dicalendar_002dexport_002dregion"> &para;</a></span></dt>
+<dd><p>Exports a region of diary text to iCalendar format.
+</p></dd>
+</dl>
+
+<p>iCalendar export depends on a number of user-customizable variables, which
+are in the <code class="code">diary-icalendar-export</code> customization group.  You can
+review and customize these variables with <kbd class="kbd">M-x customize-group</kbd>.
+See <a class="xref" href="Customization-Groups.html">Customization Groups</a>.
+</p>
+<p>Exporting diary entries to iCalendar requires you to respect certain
+conventions in your diary, so that iCalendar properties can be parsed
+from your diary entries.
+</p>
+<p>By default, the exporter will use the first line of the entry (after the
+date and time) as the iCalendar summary and the rest of the entry as its
+iCalendar description.  Other iCalendar properties can also be encoded in
+the entry on separate lines, like this:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">2025/11/11 Bender's birthday bash
+  Location: Robot House
+  Attendees:
+    Fry &lt;philip.fry@mars.edu&gt;
+    Günter &lt;guenter@mars.edu&gt;
+</pre></div></div>
+
+<p>This format matches the format produced by the default import
+functions.
+</p>
+<a class="index-entry-id" id="index-diary_002dicalendar_002daddress_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dclass_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002ddescription_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dlocation_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dorganizer_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dstatus_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dsummary_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dtodo_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002duid_002dregexp"></a>
+<a class="index-entry-id" id="index-diary_002dicalendar_002durl_002dregexp"></a>
+<p>If you customize the import format, or you want to export diary entries
+in a different format, you will need to customize the export variables
+to detect the format of your diary entries.  The most common iCalendar
+properties are parsed from diary entries using regular expressions.  See
+the variables named <code class="code">diary-icalendar-*-regexp</code> in the
+<code class="code">diary-icalendar-export</code> customization group to modify how these
+properties are parsed.
+</p>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dother_002dproperties_002dparser"></a>
+<p>If you need to export other iCalendar properties, or do more
+complicated parsing, you can define a function to do so and set it as
+the value of the variable <code class="code">diary-icalendar-other-properties-parser</code>;
+see its docstring for details.
+</p>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dexport_002dlinewise"></a>
+<p>By default, the exporter assumes that each diary entry represents a
+single iCalendar event.  If you like to keep your diary in a
+one-entry-per-day format, with different events on continuation
+lines within the same entry, you can still export such entries as
+distinct iCalendar events.  To do this, set the variable
+<code class="code">diary-icalendar-export-linewise</code> to a non-nil value.
+</p>
+<p>For example, after setting this variable, an entry like:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">2025-05-03
+  9AM Lab meeting
+    Günter to present on new assay
+  Start experiment A
+  12:30-1:30PM Lunch with Phil
+  16:00 Experiment A finishes; move to freezer
+</pre></div></div>
+
+<p>will be exported as four events, each on the same day, but with
+different start times (except for the second event, &ldquo;Start experiment
+A&rdquo;, which has no start time).  See the docstring of
+<code class="code">diary-icalendar-export-linewise</code> for more information.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Diary-Outlook-Import.html">Importing Outlook appointments as Diary Entries</a>, Previous: <a href="Diary-iCalendar-Display.html">Displaying iCalendar entries in the Diary</a>, Up: <a href="Diary-Conversion.html">Importing and Exporting Diary Entries</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

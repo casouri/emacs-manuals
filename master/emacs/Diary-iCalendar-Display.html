@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Manual,
+updated for Emacs version 31.0.50.
+
+Copyright © 1985-2026 Free Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "The GNU Manifesto," "Distribution" and
+"GNU GENERAL PUBLIC LICENSE," with the Front-Cover Texts being "A GNU
+Manual," and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled "GNU Free Documentation
+License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Diary iCalendar Display (GNU Emacs Manual)</title>
+
+<meta name="description" content="Diary iCalendar Display (GNU Emacs Manual)">
+<meta name="keywords" content="Diary iCalendar Display (GNU Emacs Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Key-Index.html" rel="index" title="Key Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Diary-Conversion.html" rel="up" title="Diary Conversion">
+<link href="Diary-iCalendar-Export.html" rel="next" title="Diary iCalendar Export">
+<link href="Diary-iCalendar-Import.html" rel="prev" title="Diary iCalendar Import">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+kbd.kbd {font-style: oblique}
+kbd.key {font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection-level-extent" id="Diary-iCalendar-Display">
+<div class="nav-panel">
+<p>
+Next: <a href="Diary-iCalendar-Export.html" accesskey="n" rel="next">Exporting Diary Entries to iCalendar</a>, Previous: <a href="Diary-iCalendar-Import.html" accesskey="p" rel="prev">Importing iCalendar data as Diary Entries</a>, Up: <a href="Diary-Conversion.html" accesskey="u" rel="up">Importing and Exporting Diary Entries</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsubsection" id="Displaying-iCalendar-entries-in-the-Diary"><span>33.10.7.2 Displaying iCalendar entries in the Diary<a class="copiable-link" href="#Displaying-iCalendar-entries-in-the-Diary"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-display-iCalendar-in-diary"></a>
+
+<p>If you primarily store your calendar data outside of Emacs, but still
+want to see it in the Emacs calendar and diary, you can do so by
+including an iCalendar file from your diary file.
+</p>
+<p>Suppose, for example, that you download your calendar from an
+external server to a file called <samp class="file">Appointments.ics</samp>.  Then you can
+include this file in your diary by writing a line like
+</p>
+<div class="example">
+<pre class="example-preformatted">#include &quot;path/to/Appointments.ics&quot;
+</pre></div>
+
+<p>in your diary file.  You must also set up some hooks to display the
+data in that file as diary entries and mark them in the calendar:
+</p>
+<div class="example lisp">
+<div class="group"><pre class="lisp-preformatted">(add-hook 'diary-mark-entries-hook
+          #'diary-mark-included-diary-files)
+(add-hook 'diary-nongregorian-marking-hook
+          #'diary-icalendar-mark-entries)
+(add-hook 'diary-list-entries-hook
+          #'diary-include-other-diary-files)
+(add-hook 'diary-nongregorian-listing-hook
+          #'diary-icalendar-display-entries)
+</pre></div></div>
+
+<p>Events, tasks, and journal entries in <samp class="file">Appointments.ics</samp> will then show
+up on the appropriate days when you display the diary from the calendar.
+See <a class="xref" href="Displaying-the-Diary.html">Displaying the Diary</a>.
+</p>
+<p>The advantage of doing this is that you don&rsquo;t need to synchronize the
+data between the calendar server and your diary file.  This is simpler
+and more reliable than regularly importing and exporting between diary
+and iCalendar format.
+</p>
+<a class="index-entry-id" id="index-diary_002dicalendar_002dmailcap_002dviewer"></a>
+<p>You can also display iCalendar attachments in email messages
+without importing them to your diary file using the function
+<code class="code">diary-icalendar-mailcap-viewer</code>.  You can add this function, for
+example, to the variable <code class="code">mailcap-user-mime-data</code>; see its docstring
+for more information.
+</p>
+<p>Displaying iCalendar entries uses the same infrastructure as importing
+them, so customizing the import format will also change the format of
+the displayed entries.  See <a class="xref" href="Diary-iCalendar-Import.html">Importing iCalendar data as Diary Entries</a>.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Diary-iCalendar-Export.html">Exporting Diary Entries to iCalendar</a>, Previous: <a href="Diary-iCalendar-Import.html">Importing iCalendar data as Diary Entries</a>, Up: <a href="Diary-Conversion.html">Importing and Exporting Diary Entries</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

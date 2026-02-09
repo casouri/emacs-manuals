@@ -56,23 +56,25 @@ Previous: <a href="Destructuring-with-pcase-Patterns.html" accesskey="p" rel="pr
 <h4 class="subsection" id="The-cond_002a-macro"><span>11.4.5 The <code class="code">cond*</code> macro<a class="copiable-link" href="#The-cond_002a-macro"> &para;</a></span></h4>
 <a class="index-entry-id" id="index-cond_002a_002c-a-macro"></a>
 
-<p>The <code class="code">cond*</code> macro is an alternative to <code class="code">pcase</code>, and supports
-the same functionality, but using syntax that some might find less
-cryptic.
+<p>You can use the <code class="code">cond*</code> macro as an alternative to <code class="code">pcase</code>
+if you find <code class="code">pcase</code>&rsquo;s syntax too cryptic.  In addition,
+<code class="code">cond*</code> offers some new forms of control flow that aren&rsquo;t related
+to being an alternative to <code class="code">pcase</code>.
 </p>
 <dl class="first-deffn first-defmac-alias-first-deffn">
 <dt class="deffn defmac-alias-deffn" id="index-cond_002a"><span class="category-def">Macro: </span><span><strong class="def-name">cond*</strong> <var class="def-var-arguments">&amp;rest clauses</var><a class="copiable-link" href="#index-cond_002a"> &para;</a></span></dt>
 <dd><p>The <code class="code">cond*</code> macro is an extended form of the traditional
 <code class="code">cond</code>.  A <code class="code">cond*</code> expression contains a series of
-<var class="var">clauses</var>, each of which can use <code class="code">bind*</code> to specify binding
-variables, use <code class="code">match*</code> to specify matching a pattern as a
-condition, or specify an expression as a condition to evaluate as a
-test.
+<var class="var">clauses</var>, each of which can use <code class="code">bind*</code> or <code class="code">bind-and*</code> to
+specify binding variables, use <code class="code">match*</code> or <code class="code">pcase*</code> to specify
+matching a pattern as a condition, or specify an expression as a
+condition to evaluate as a test.
 </p>
 <p>Each clause normally has the form <code class="code">(<var class="var">condition</var>&nbsp;<var class="var">body</var>&hellip;)</code><!-- /@w -->.
 </p>
 <p><var class="var">condition</var> can be a Lisp expression, as in <code class="code">cond</code>
-(see <a class="pxref" href="Conditionals.html">Conditionals</a>).  Or it can be <code class="code">(bind*&nbsp;<var class="var">bindings</var>&hellip;)</code><!-- /@w --> or <code class="code">(match*&nbsp;<var class="var">pattern</var>&nbsp;<var class="var">datum</var>)</code><!-- /@w -->.
+(see <a class="pxref" href="Conditionals.html">Conditionals</a>).  Or it can be <code class="code">(bind*&nbsp;<var class="var">bindings</var>&hellip;)</code><!-- /@w -->, <code class="code">(match*&nbsp;<var class="var">pattern</var>&nbsp;<var class="var">datum</var>)</code><!-- /@w -->,
+<code class="code">(bind-and*&nbsp;<var class="var">bindings</var>&hellip;)</code><!-- /@w --> or <code class="code">(pcase*&nbsp;<var class="var">pattern</var>&nbsp;<var class="var">datum</var>)</code><!-- /@w -->
 </p>
 <a class="index-entry-id" id="index-bind_002a"></a>
 <p><code class="code">(bind* <var class="var">bindings</var>&hellip;)</code> means to bind <var class="var">bindings</var> (like
@@ -83,10 +85,10 @@ true if the first binding&rsquo;s value is non-<code class="code">nil</code>.
 <a class="index-entry-id" id="index-bind_002dand_002a"></a>
 <p><code class="code">(bind-and* <var class="var">bindings</var>&hellip;)</code> means to bind <var class="var">bindings</var>
 (like the bindings list in <code class="code">if-let*</code>, see <a class="pxref" href="Conditionals.html">Conditionals</a>) for
-only the body of the clause.  As a condition, it counts as true if none
-of the bindings evaluate to <code class="code">nil</code>.  In addition, if any binding
-evaluates to <code class="code">nil</code>, the expressions for the values of subsequent
-bindings are not evaluated.
+only the body of the clause.  It is always a non-exit clause.  As a
+condition, it counts as true if none of the bindings evaluate to
+<code class="code">nil</code>.  In addition, if any binding evaluates to <code class="code">nil</code>, the
+expressions for the values of subsequent bindings are not evaluated.
 </p>
 <a class="index-entry-id" id="index-match_002a"></a>
 <a class="index-entry-id" id="index-pcase_002a"></a>
@@ -97,23 +99,24 @@ bind to the parts of <var class="var">datum</var> that they match.
 <code class="code">(pcase* <var class="var">pattern</var> <var class="var">datum</var>)</code> works in the same way except it
 uses the Pcase syntax for <var class="var">pattern</var>.
 </p>
-<p><code class="code">bind*</code>, <code class="code">match*</code>, and <code class="code">pcase*</code> normally bind their bindings over
-the execution of the whole containing clause.  However, if the clause is
-written to specify &ldquo;non-exit&rdquo;, the clause&rsquo;s bindings cover the whole
-rest of the <code class="code">cond*</code>.
+<p><code class="code">match*</code>, and <code class="code">pcase*</code> normally bind their bindings over the
+execution of the whole containing clause.  However, if the clause is
+written to specify &ldquo;non-exit&rdquo; (see below), the clause&rsquo;s bindings cover
+the whole rest of the <code class="code">cond*</code>.
 </p>
 <p>When a clause&rsquo;s condition is true, and it exits the <code class="code">cond*</code> or is
 the last clause, the value of the last expression in the clause&rsquo;s body
 becomes the return value of the <code class="code">cond*</code> construct.
 </p>
-<h4 class="subheading" id="Non_002dexit-clause"><span>Non-exit clause<a class="copiable-link" href="#Non_002dexit-clause"> &para;</a></span></h4>
+<h4 class="subheading" id="Non_002dexit-clauses"><span>Non-exit clauses<a class="copiable-link" href="#Non_002dexit-clauses"> &para;</a></span></h4>
 
-<p>If a clause has only one element, or if its first element is <code class="code">t</code>,
-or if it ends with the keyword <code class="code">:non-exit</code>, then this clause never
-exits the <code class="code">cond*</code> construct.  Instead, control falls through to the
-next clause (if any).  The bindings made in <var class="var">condition</var> for the
-<var class="var">body</var> of the non-exit clause are passed along to the rest of the
-clauses in this <code class="code">cond*</code> construct.
+<p>If a clause has only one element, or if its first element is <code class="code">t</code>, a
+<code class="code">bind*</code> form or a <code class="code">bind-and*</code> form, or if it ends with the
+keyword <code class="code">:non-exit</code>, then this clause never exits the <code class="code">cond*</code>
+construct.  Instead, control falls through to the next clause (if any).
+Except for <code class="code">bind-and*</code>, the bindings made in <var class="var">condition</var> for
+the <var class="var">body</var> of the non-exit clause are passed along to the rest of
+the clauses in this <code class="code">cond*</code> construct.
 </p>
 <p>Note: <code class="code">pcase*</code> does not support <code class="code">:non-exit</code>, and when used in
 a non-exit clause, it follows the semantics of <code class="code">pcase-let</code>, see
