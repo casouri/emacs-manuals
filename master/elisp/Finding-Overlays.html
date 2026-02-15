@@ -60,11 +60,11 @@ Previous: <a href="Overlay-Properties.html" accesskey="p" rel="prev">Overlay Pro
 
 <dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-overlays_002dat"><span class="category-def">Function: </span><span><strong class="def-name">overlays-at</strong> <var class="def-var-arguments">pos &amp;optional sorted</var><a class="copiable-link" href="#index-overlays_002dat"> &para;</a></span></dt>
-<dd><p>This function returns a list of all the overlays that cover the character at
+<dd><p>This function returns a list of all the overlays that contain the character at
 position <var class="var">pos</var> in the current buffer.  If <var class="var">sorted</var> is non-<code class="code">nil</code>,
-the list is in decreasing order of priority, otherwise it is in no particular
-order.  An overlay contains position <var class="var">pos</var> if it begins at or before
-<var class="var">pos</var>, and ends after <var class="var">pos</var>.
+the returned list is in decreasing order of priority, otherwise it is in no
+particular order.  An overlay contains the character at <var class="var">pos</var> if it begins
+at or before <var class="var">pos</var>, and ends after <var class="var">pos</var>.
 </p>
 <p>To illustrate usage, here is a Lisp function that returns a list of the
 overlays that specify property <var class="var">prop</var> for the character at point:
@@ -80,17 +80,37 @@ overlays that specify property <var class="var">prop</var> for the character at 
       (setq overlays (cdr overlays)))
     found))
 </pre></div>
-</dd></dl>
+
+<p>Empty overlays (see <a class="pxref" href="Managing-Overlays.html#empty-overlays">empty overlays</a>) do not contain any characters,
+so this function does not return them.  Use <code class="code">overlays-in</code>,
+described below, instead if empty overlays are of interest.
+</p>
+<p>Note that this function can return overlays outside of the current
+narrowing of the buffer (see <a class="pxref" href="Narrowing.html">Narrowing</a>) if <var class="var">pos</var> is outside of
+the narrowing.
+</p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-overlays_002din"><span class="category-def">Function: </span><span><strong class="def-name">overlays-in</strong> <var class="def-var-arguments">beg end</var><a class="copiable-link" href="#index-overlays_002din"> &para;</a></span></dt>
-<dd><p>This function returns a list of the overlays that overlap the region
+<dd><p>This function returns a list of the overlays that overlap with the region
 <var class="var">beg</var> through <var class="var">end</var>.  An overlay overlaps with a region if it
-contains one or more characters in the region; empty overlays
-(see <a class="pxref" href="Managing-Overlays.html">empty overlay</a>) overlap if they are at
-<var class="var">beg</var>, strictly between <var class="var">beg</var> and <var class="var">end</var>, or at <var class="var">end</var>
-when <var class="var">end</var> denotes the position at the end of the accessible part
-of the buffer.
+contains one or more characters between <var class="var">beg</var> and <var class="var">end</var>; this
+excludes the characters at (i.e. after) <var class="var">end</var>.
+</p>
+<p>Empty overlays do not contain any characters, so the rule for including
+them is different: they are said to overlap if they are at <var class="var">beg</var>,
+strictly between <var class="var">beg</var> and <var class="var">end</var> excluding <var class="var">end</var>, or at
+<var class="var">end</var> when <var class="var">end</var> denotes the position at the end of the buffer.
+(The special handling of empty overlays at end of buffer is to allow
+such overlays to be found and processed.  For any other value of
+<var class="var">end</var> you could increment the <var class="var">end</var> position instead.)
+</p>
+<p>The order in which the overlays appear in the returned list is
+unpredictable.
+</p>
+<p>Note that this function can return overlays outside of the current
+narrowing of the buffer if <var class="var">beg</var> and/or <var class="var">end</var> are outside of
+the narrowing.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
