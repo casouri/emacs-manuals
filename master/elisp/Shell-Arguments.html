@@ -170,6 +170,66 @@ are consing a command from the individual command-line arguments,
 every argument that includes embedded blanks will be quoted.
 </p></dd></dl>
 
+<p>Systems running Emacs impose a limit on the maximum total length of a
+command and its arguments submitted for execution.  If a list of
+arguments to be processed by an external command might be arbitrarily
+long, then there is a risk of exceeding this limit, in which case
+executing the command will fail.  In some cases this problem can be
+avoided by running the command multiple times on subsequent partitions
+of the list of arguments.  When you know that it will not cause problems
+to run the command more than once, you can use this function to
+preemptively partition a list of arguments:
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-multiple_002dcommand_002dpartition_002darguments"><span class="category-def">Function: </span><span><strong class="def-name">multiple-command-partition-arguments</strong> <var class="def-var-arguments">command arguments &amp;optional shellp</var><a class="copiable-link" href="#index-multiple_002dcommand_002dpartition_002darguments"> &para;</a></span></dt>
+<dd><p>This function returns a list of subsequent partitions of
+<var class="var">arguments</var>, a list of strings.  <var class="var">command</var> is a string or list
+of strings specifying the command to be run on <var class="var">arguments</var> (unless
+<var class="var">shellp</var> is non-nil, see below), and including any arguments that
+must be passed to every invocation of the command.  Then, running a
+command formed of <var class="var">command</var> plus any one of the returned partitions
+will not exceed the system&rsquo;s limits on the maximum total length of a
+command and its arguments.
+</p>
+<p>If optional argument <var class="var">shellp</var> is non-<code class="code">nil</code>, this function
+implicitly includes <code class="code">shell-file-name</code> and
+<code class="code">shell-command-switch</code> at the beginning of <var class="var">command</var>
+(see <a class="pxref" href="Asynchronous-Processes.html">Creating an Asynchronous Process</a>).  In addition, in that case, this
+function accounts for the extra length taken up by quoting and space
+characters in its partitioning calculations.
+</p>
+<p>On systems where the <code class="code">process-environment</code> (see <a class="pxref" href="System-Environment.html">Operating System Environment</a>) counts against command line length limits, this function
+takes that into account too.
+</p>
+<p>In the following example we impose an artificially small limit on
+command line length and provide a fixed <code class="code">process-environment</code> for
+demonstration purposes.  The partitioning of the list of arguments into
+two sublists in the returned value implies that running <code class="code">cmd&nbsp;foo&nbsp;bar&nbsp;baz</code><!-- /@w --> on this hypothetical system would exceed system limits, and
+thus fail.  The calling code should run <code class="code">cmd</code> twice, on each of the
+two partitions, so <code class="code">cmd&nbsp;foo&nbsp;bar</code><!-- /@w --> and then <code class="code">cmd&nbsp;baz</code><!-- /@w -->.
+</p>
+<div class="example smallexample">
+<pre class="example-preformatted">(let ((system-type 'gnu/linux)
+      (command-line-max-length 20)
+      (process-environment '(&quot;BLAH=blah&quot;)))
+  (multiple-command-partition-arguments &quot;cmd&quot; '(&quot;foo&quot; &quot;bar&quot; &quot;baz&quot;)))
+     &rArr; ((&quot;foo&quot; &quot;bar&quot;) (&quot;baz&quot;))
+</pre></div>
+
+<p>This function takes a conservative approach and does not try to minimize
+the number of partitions of <var class="var">arguments</var>, because doing that would
+require a great deal of platform-specific information, and also
+information about encoding which is not currently made available to
+Lisp.
+</p></dd></dl>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-command_002dline_002dmax_002dlength"><span class="category-def">Variable: </span><span><strong class="def-name">command-line-max-length</strong><a class="copiable-link" href="#index-command_002dline_002dmax_002dlength"> &para;</a></span></dt>
+<dd><p>This variable holds the maximum length of a command and its arguments on
+this system, measured in characters, as used by
+<code class="code">multiple-command-partition-arguments</code>.
+</p></dd></dl>
+
 </div>
 <hr>
 <div class="nav-panel">
