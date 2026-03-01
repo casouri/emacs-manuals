@@ -95,6 +95,9 @@ See <a class="xref" href="Multiple-Terminals.html">Multiple Terminals</a>.
 </p>
 <p>If <var class="var">string</var> is non-<code class="code">nil</code>, its characters are sent to Emacs&rsquo;s
 superior shell, to be read as terminal input.
+However, this action is skipped if Emacs is not running interactively on
+a terminal, or if stuffing characters into the terminal input requires
+special privileges or is not supported on this platform.
 </p>
 <p>Before suspending, <code class="code">suspend-emacs</code> runs the normal hook
 <code class="code">suspend-hook</code>.  After the user resumes Emacs,
@@ -115,7 +118,7 @@ See <a class="xref" href="Refresh-Screen.html">Refreshing the Screen</a>.
                                  (sit-for 2)))
 </pre></div>
 
-<p>Here is what you would see upon evaluating <code class="code">(suspend-emacs &quot;pwd&quot;)</code>:
+<p>Here is what you would see upon evaluating <code class="code">(suspend-emacs)</code>:
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">---------- Buffer: Minibuffer ----------
@@ -124,8 +127,6 @@ Really suspend? <kbd class="kbd">y</kbd>
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">---------- Parent Shell ----------
-bash$ pwd
-/home/username
 bash$ fg
 </pre></div><pre class="example-preformatted">
 
