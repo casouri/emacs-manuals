@@ -92,6 +92,46 @@ a part of the current display.
 </p></dd>
 </dl>
 
+<ul class="mini-toc">
+<li><a href="#Single_002dkeyboard-mode" accesskey="1">Single-keyboard mode</a></li>
+</ul>
+<div class="subsection-level-extent" id="Single_002dkeyboard-mode">
+<h4 class="subsection"><span>23.10.1 Single-keyboard mode<a class="copiable-link" href="#Single_002dkeyboard-mode"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-single_002dkeyboard-mode"></a>
+
+<p>Each display has an associated keyboard.  Normally, Emacs assumes that
+these keyboards are physically distinct, so that someone could be typing
+on one keyboard and someone else typing on another, into different
+frames on different terminals.  In certain situations, however, Emacs
+enters <em class="dfn">single-keyboard mode</em>, in which input from all but one keyboard is
+blocked.  This prevents keys typed on one keyboard from interfering with
+an operation started on another keyboard.  The main operation to which
+this applies is entering a recursive edit (see <a class="pxref" href="Recursive-Edit.html">Recursive Editing Levels</a>),
+which includes all minibuffer prompting (see <a class="pxref" href="Basic-Minibuffer.html">Using the Minibuffer</a>).
+</p>
+<p>Single-keyboard mode can be inconvenient when there are distinct
+displays and so distinct keyboards, but only one user and one physical
+keyboard in control of Emacs.  This can happen with X forwarding: with a
+remote Emacs daemon and multiple frames created with a command like
+<code class="code">ssh&nbsp;-X&nbsp;daemon-host&nbsp;emacsclient&nbsp;-c</code><!-- /@w -->, then from the remote Emacs
+daemon&rsquo;s point of view there is one terminal and one keyboard per
+<code class="code">ssh&nbsp;-X&nbsp;daemon-host</code><!-- /@w --> command invoked, but in fact a single
+local X server displays all frames, and there is just one physical
+keyboard.
+</p>
+<a class="index-entry-id" id="index-multiple_002dterminals_002dmerge_002dkeyboards"></a>
+<p>In this situation, you may prefer to have the different frames behave
+as though they had been created with <kbd class="kbd">C-x 5 2</kbd> (see <a class="pxref" href="Creating-Frames.html">Creating Frames</a>).  In that case, starting a recursive edit in one frame does not
+mean that keyboard input into other frames is blocked.  Customize the
+variable <code class="code">multiple-terminals-merge-keyboards</code> to a non-<code class="code">nil</code>
+value to achieve this.
+</p>
+</div>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Frame-Parameters.html">Frame Parameters</a>, Previous: <a href="Speedbar.html">Speedbar Frames</a>, Up: <a href="Frames.html">Frames and Graphical Displays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Key-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

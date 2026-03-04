@@ -179,24 +179,42 @@ undefined and just returns <code class="code">nil</code>; but it still signals t
 <var class="var">thing</var> is a malformed predicate.
 </p></dd></dl>
 
+<p>Functions below are responsible for finding things and moving across
+them, and they have to deal with the fact that a buffer sometimes
+contains multiple adjacent or nested parsers.  By default, these
+functions try to be helpful and search in every relevant parser at
+point, from most specific (deepest embedded) to the least.  Lisp
+programs should be cautious and assess whether this behavior is desired
+when using these functions as building blocks of other functions; if
+not, explicitly pass a parser or language.
+</p>
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-treesit_002dthing_002dprev"><span class="category-def">Function: </span><span><strong class="def-name">treesit-thing-prev</strong> <var class="def-var-arguments">position thing</var><a class="copiable-link" href="#index-treesit_002dthing_002dprev"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-treesit_002dthing_002dprev"><span class="category-def">Function: </span><span><strong class="def-name">treesit-thing-prev</strong> <var class="def-var-arguments">position thing &amp;optional parser</var><a class="copiable-link" href="#index-treesit_002dthing_002dprev"> &para;</a></span></dt>
 <dd><p>This function returns the first node before <var class="var">position</var> in the
 current buffer that is the specified <var class="var">thing</var>.  If no such node
 exists, it returns <code class="code">nil</code>.
-It&rsquo;s guaranteed that, if a node is returned, the node&rsquo;s end position is
+</p>
+<p>It&rsquo;s guaranteed that, if a node is returned, the node&rsquo;s end position is
 less or equal to <var class="var">position</var>.  In other words, this function never
 returns a node that encloses <var class="var">position</var>.
 </p>
 <p>Again, <var class="var">thing</var> can be either a symbol or a predicate.
+</p>
+<p>If <var class="var">parser</var> is non-<code class="code">nil</code>, only use that parser&rsquo;s parse tree.
+Otherwise try each parser covering point, from the most specific
+(deepest-embedded) to the least specific.  If there are multiple parsers with
+the same embed level at <var class="var">position</var>, which parser is tried first is
+undefined.  If <var class="var">parser</var> is a language symbol, the function limits
+the parsers it tries to the ones for that language.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-treesit_002dthing_002dnext"><span class="category-def">Function: </span><span><strong class="def-name">treesit-thing-next</strong> <var class="def-var-arguments">position thing</var><a class="copiable-link" href="#index-treesit_002dthing_002dnext"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-treesit_002dthing_002dnext"><span class="category-def">Function: </span><span><strong class="def-name">treesit-thing-next</strong> <var class="def-var-arguments">position thing &amp;optional parser</var><a class="copiable-link" href="#index-treesit_002dthing_002dnext"> &para;</a></span></dt>
 <dd><p>This function is similar to <code class="code">treesit-thing-prev</code>, only it returns
 the first node <em class="emph">after</em> <var class="var">position</var> that&rsquo;s the <var class="var">thing</var>.  It
 also guarantees that if a node is returned, the node&rsquo;s start position is
-greater or equal to <var class="var">position</var>.
+greater or equal to <var class="var">position</var>.  The <var class="var">parser</var> parameter is the
+same as in <code class="code">treesit-thing-prev</code>.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
@@ -215,7 +233,11 @@ function doesn&rsquo;t move point.
 <var class="var">thing</var>.
 </p>
 <p>Like in <code class="code">treesit-thing-prev</code>, <var class="var">thing</var> can be a thing symbol
-defined in <code class="code">treesit-thing-settings</code>, or a predicate.
+defined in <code class="code">treesit-thing-settings</code>, or a predicate, and
+<var class="var">parser</var> can be either <code class="code">nil</code>, a parser, or a language symbol.
+Like in that function, <var class="var">parser</var> decides which parsers or languages
+are searched.  When there are multiple parsers available, this function
+tries each until it succeeds.
 </p>
 <p><var class="var">tactic</var> determines how this function moves between things.  It can
 be <code class="code">nested</code>, <code class="code">top-level</code>, <code class="code">restricted</code>,
@@ -232,7 +254,7 @@ there&rsquo;s no parent.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-treesit_002dthing_002dat"><span class="category-def">Function: </span><span><strong class="def-name">treesit-thing-at</strong> <var class="def-var-arguments">position thing &amp;optional strict</var><a class="copiable-link" href="#index-treesit_002dthing_002dat"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-treesit_002dthing_002dat"><span class="category-def">Function: </span><span><strong class="def-name">treesit-thing-at</strong> <var class="def-var-arguments">position thing &amp;optional strict parser</var><a class="copiable-link" href="#index-treesit_002dthing_002dat"> &para;</a></span></dt>
 <dd><p>This function returns the smallest node that&rsquo;s the <var class="var">thing</var> and
 encloses <var class="var">position</var>; if there&rsquo;s no such node, it returns <code class="code">nil</code>.
 </p>
@@ -246,6 +268,12 @@ position must be strictly greater than <var class="var">position</var>.
 </p>
 <p><var class="var">thing</var> can be either a thing symbol defined in
 <code class="code">treesit-thing-settings</code>, or a predicate.
+</p>
+<p>If <var class="var">parser</var> is non-nil, only use that parser&rsquo;s parse tree.
+Otherwise try each parser covering point, from the most specific
+(deepest-embedded) to the least specific.  If there are multiple parsers
+with the same embed level at <var class="var">position</var>, which parser is tried first is
+undefined.  <var class="var">parser</var> can also be a language symbol.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-treesit_002dbeginning_002dof_002dthing"></a>

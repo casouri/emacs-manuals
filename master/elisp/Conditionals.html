@@ -278,6 +278,31 @@ for <code class="code">nil</code>.
 <code class="code">when</code> and <code class="code">when-let*</code> are for forms evaluated for side-effect
 with returned values ignored.
 </p>
+<p>As a matter of style, it is best not to use these macros to bind values
+that will always be non-<code class="code">nil</code>.  For example, suppose that
+<code class="code">foo-p</code> and <code class="code">bar-p</code> might return <code class="code">nil</code>, and the code
+should not proceed in that case.  Instead of
+</p>
+<div class="example">
+<pre class="example-preformatted">(when-let* ((foo-val (foo-p))
+            (num (+ 2 foo-val))
+            (bar-val (bar-p num)))
+  ...)
+</pre></div>
+
+<p>consider using
+</p>
+<div class="example">
+<pre class="example-preformatted">(when-let* ((foo-val (foo-p)))
+  (let ((num (+ 2 foo-val))
+    (when-let* ((bar-val (bar-p num)))
+      ...)))
+</pre></div>
+
+<p>because this makes it clearer that the execution of the code is
+conditional on <code class="code">foo-val</code> and <code class="code">bar-val</code> being non-<code class="code">nil</code>,
+but not directly conditional on <code class="code">num</code>.
+</p>
 <p>There is no <code class="code">cond-let*</code> macro because extending the structure
 shared by <code class="code">if-let*</code>, <code class="code">when-let*</code> and <code class="code">and-let*</code> to the
 case of <code class="code">cond</code> is not simple.<a class="footnote" id="DOCF10" href="#FOOT10"><sup>10</sup></a>  However, you can use the <code class="code">cond*</code> macro&rsquo;s
