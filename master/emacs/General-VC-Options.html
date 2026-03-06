@@ -80,9 +80,23 @@ and <kbd class="kbd">C-x v i</kbd> can save the current buffer without asking, a
 </p>
 <a class="index-entry-id" id="index-vc_002dcommand_002dmessages"></a>
 <p>VC mode does much of its work by running the shell commands for the
-appropriate version control system.  If <code class="code">vc-command-messages</code> is
-non-<code class="code">nil</code>, VC displays messages to indicate which shell commands
-it runs, and additional messages when the commands finish.
+appropriate version control system.  If <code class="code">vc-command-messages</code> has
+the value <code class="code">log</code>, VC logs messages to the <samp class="file">*Messages*</samp> buffer
+to indicate which shell commands it runs, and logs additional messages
+when the commands finish.  If the variable has any other non-<code class="code">nil</code>
+value, Emacs both logs and displays these messages.
+</p>
+<a class="index-entry-id" id="index-vc_002ddisplay_002dfailed_002dasync_002dcommands"></a>
+<p>VC mode runs certain shell commands asynchronously, allowing you to
+continue to use Emacs for other purposes while the command completes.
+This is mostly used for commands which access the network, such as
+pulling and pushing for distributed VCS (see <a class="pxref" href="Pulling-_002f-Pushing.html">Pulling/Pushing Changes into/from a Branch</a>).
+When the command starts, VC displays a buffer into which the commands
+output will be written.  If <code class="code">vc-display-failed-async-commands</code> is
+non-<code class="code">nil</code>, VC will additionally ensure that this buffer is
+displayed when the command finishes running but failed.  This means you
+can freely close the window displaying the command&rsquo;s buffer and know
+that it&rsquo;ll pop up again in the case that running the command failed.
 </p>
 <a class="index-entry-id" id="index-vc_002dasync_002dcheckin"></a>
 <p>Normally checkin operations are done synchronously; that is, Emacs

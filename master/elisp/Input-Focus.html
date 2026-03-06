@@ -171,45 +171,6 @@ could switch to a different terminal without switching back when
 you&rsquo;re done.
 </p></dd></dl>
 
-<a class="index-entry-id" id="index-most-recently-used-frame"></a>
-<dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-get_002dmru_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">get-mru-frame</strong> <var class="def-var-arguments">&amp;optional all-frames exclude</var><a class="copiable-link" href="#index-get_002dmru_002dframe"> &para;</a></span></dt>
-<dd>
-<p>This function is like <code class="code">get-mru-window</code>, but it returns the most
-recently used frame.  The <em class="dfn">most recently used frame</em> is the frame
-with the most recently selected window as computed by
-<code class="code">get-mru-window</code>.  (see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>)
-</p>
-<p>This function will return <code class="code">nil</code> if no candidate frames are found,
-for example, if there is only one frame.  Tooltip, minibuffer only, and
-child frames are never candidates.
-</p>
-<p>Since in practice the most recently used frame is always the selected
-one, it usually makes sense to call this function with a non-<code class="code">nil</code>
-<var class="var">exclude</var> argument with, for example, the selected frame.
-</p>
-<p>The optional argument <var class="var">all-frames</var> specifies which frames to
-consider:
-</p>
-<ul class="itemize mark-bullet">
-<li><code class="code">visible</code>
-means to consider all visible frames on the current terminal or
-<var class="var">exclude</var>&rsquo;s terminal.
-
-</li><li>0
-means to consider all visible or iconified frames on the current
-terminal or <var class="var">exclude</var>&rsquo;s terminal.
-
-</li><li>Anything else
-means to consider all frames.
-</li></ul>
-
-<p>If <code class="code">get-mru-frame</code> is called from within the body of
-<code class="code">with-selected-frame</code>, it may yield unexpected results as the most
-recently used window will not necessarily match the selected one in the
-temporarily selected frame.  (see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>)
-</p></dd></dl>
-
 <a class="index-entry-id" id="index-frame-use-time"></a>
 <a class="index-entry-id" id="index-use-time-of-frame"></a>
 <a class="index-entry-id" id="index-frame-order-by-time-of-last-use"></a>
@@ -217,10 +178,77 @@ temporarily selected frame.  (see <a class="pxref" href="Selecting-Windows.html"
 <dt class="deffn defun-alias-deffn" id="index-frame_002duse_002dtime"><span class="category-def">Function: </span><span><strong class="def-name">frame-use-time</strong> <var class="def-var-arguments">&amp;optional frame</var><a class="copiable-link" href="#index-frame_002duse_002dtime"> &para;</a></span></dt>
 <dd>
 <p>This function returns the use time of frame <var class="var">frame</var>.  <var class="var">frame</var>
-must be a live frame and defaults to the selected one.  The result is
-the <code class="code">window-use-time</code> of <var class="var">frame</var>&rsquo;s most recently used window
-computed by <code class="code">get-mru-window</code>.  (see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>)
+must be a live frame and defaults to the selected one.
+</p>
+<p>The <em class="dfn">use time of a frame</em> is the highest use time as reported by
+<code class="code">window-use-time</code> of any window on <var class="var">frame</var>.
 </p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-get_002dmru_002dframe"><span class="category-def">Function: </span><span><strong class="def-name">get-mru-frame</strong> <var class="def-var-arguments">&amp;optional all-frames exclude-child-frames exclude-frame</var><a class="copiable-link" href="#index-get_002dmru_002dframe"> &para;</a></span></dt>
+<dd>
+<p>This function returns the frame with the highest use time as reported by
+<code class="code">frame-use-time</code>.  It returns <code class="code">nil</code> if no candidate frames are
+found which usually happens if frames are excluded with the help of the
+optional arguments.
+</p>
+<p>By default, tooltip and minibuffer-only frames are never candidates.  If
+the optional argument <var class="var">exclude-child-frames</var> is non-nil, child
+frames are excluded too.  The <var class="var">exclude-frame</var> argument, if present,
+excludes the frame it specifies too.  Since in practice the most
+recently used frame is always the selected one, it usually makes sense
+to call this function with a non-<code class="code">nil</code> <var class="var">exclude-frame</var> argument
+specifying the selected frame.
+</p>
+<p>The optional argument <var class="var">all-frames</var> specifies which frames to
+consider:
+</p>
+<ul class="itemize mark-bullet">
+<li><code class="code">visible</code>
+means to consider all visible frames on the current terminal or
+<var class="var">exclude-frame</var>&rsquo;s terminal.
+
+</li><li>0
+means to consider all visible or iconified frames on the current
+terminal or <var class="var">exclude-frame</var>&rsquo;s terminal.
+
+</li><li>Anything else
+means to consider all frames.
+</li></ul>
+</dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-get_002dmru_002dframes"><span class="category-def">Function: </span><span><strong class="def-name">get-mru-frames</strong> <var class="def-var-arguments">&amp;optional all-frames exclude-child-frames exclude-frame</var><a class="copiable-link" href="#index-get_002dmru_002dframes"> &para;</a></span></dt>
+<dd>
+<p>This function returns a list of frames sorted by highest use time as
+reported by <code class="code">frame-use-time</code> which is computed using each frame&rsquo;s
+most recently used window.
+</p>
+<p>By default, tooltip and minibuffer-only frames are never candidates.  If
+the optional argument <var class="var">exclude-child-frames</var> is non-nil, child
+frames are excluded too.  The <var class="var">exclude-frame</var> argument, if present,
+excludes the frame it specifies too.
+</p>
+<p>It can return <code class="code">nil</code> which can happen if frames are excluded with
+the help of the optional arguments, for example, if there is a single
+frame and <var class="var">exclude-frame</var> is the selected frame.
+</p>
+<p>The optional argument <var class="var">all-frames</var> specifies which frames to
+consider:
+</p>
+<ul class="itemize mark-bullet">
+<li><code class="code">visible</code>
+means to consider all visible frames on the current terminal or
+<var class="var">exclude-frame</var>&rsquo;s terminal.
+
+</li><li>0
+means to consider all visible or iconified frames on the current
+terminal or <var class="var">exclude-frame</var>&rsquo;s terminal.
+
+</li><li>Anything else
+means to consider all frames.
+</li></ul>
+</dd></dl>
 
 <dl class="first-deffn">
 <dt class="deffn" id="index-select_002dframe_002dby_002did"><span class="category-def">Command: </span><span><strong class="def-name">select-frame-by-id</strong> <var class="def-var-arguments">id &amp;optional noerror</var><a class="copiable-link" href="#index-select_002dframe_002dby_002did"> &para;</a></span></dt>
