@@ -204,12 +204,13 @@ as the overall value.
 <p>The argument <var class="var">var</var> is a variable.  <code class="code">condition-case</code> does not
 bind this variable when executing the <var class="var">protected-form</var>, only when it
 handles an error.  At that time, it binds <var class="var">var</var> locally to an
-<em class="dfn">error description</em>, which is a list giving the particulars of the
-error.  The error description has the form <code class="code">(<var class="var">error-symbol</var>
+<em class="dfn">error descriptor</em>, also sometimes called error description,
+which is a list giving the particulars of the error.
+The error descriptor has the form <code class="code">(<var class="var">error-symbol</var>
 . <var class="var">data</var>)</code>.  The handler can refer to this list to decide what to
 do.  For example, if the error is for failure opening a file, the file
 name is the second element of <var class="var">data</var>&mdash;the third element of the
-error description.
+error descriptor.
 </p>
 <p>If <var class="var">var</var> is <code class="code">nil</code>, that means no variable is bound.  Then the
 error symbol and associated data are not available to the handler.
@@ -226,12 +227,26 @@ with <var class="var">var</var> (if non-<code class="code">nil</code>) bound to 
 how to do that:
 </p>
 <div class="example">
-<pre class="example-preformatted">  (signal (car err) (cdr err))
+<pre class="example-preformatted">  (signal err)
 </pre></div>
 
-<p>where <code class="code">err</code> is the error description variable, the first argument
+<p>where <code class="code">err</code> is the error descriptor variable, the first argument
 to <code class="code">condition-case</code> whose error condition you want to re-throw.
 See <a class="xref" href="Signaling-Errors.html#Definition-of-signal">Definition of signal</a>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-error_002dtype"><span class="category-def">Function: </span><span><strong class="def-name">error-type</strong> <var class="def-var-arguments">error</var><a class="copiable-link" href="#index-error_002dtype"> &para;</a></span></dt>
+<dd><p>This function returns the error symbol of the error descriptor <var class="var">error</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-error_002dslot_002dvalue"><span class="category-def">Function: </span><span><strong class="def-name">error-slot-value</strong> <var class="def-var-arguments">error pos</var><a class="copiable-link" href="#index-error_002dslot_002dvalue"> &para;</a></span></dt>
+<dd><p>This function returns the value in the field number <var class="var">pos</var> of the error
+descriptor <var class="var">error</var>.  The fields are numbered starting with 1.  E.g.,
+for an error of type <code class="code">wrong-type-argument</code>, <code class="code">(error-slot-value
+<var class="var">error</var> 2)</code> returns the object that failed the type test, and
+<code class="code">(error-slot-value <var class="var">error</var> 1)</code> returns the predicate that failed.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
@@ -363,7 +378,7 @@ Emacs searches all the active <code class="code">condition-case</code> and
 specifies one or more of these condition names.  When the innermost
 matching handler is one installed by <code class="code">handler-bind</code>, the
 <var class="var">handler</var> function is called with a single argument holding the
-error description.
+error descriptor.
 </p>
 <p>Contrary to what happens with <code class="code">condition-case</code>, <var class="var">handler</var> is
 called in the dynamic context where the error happened.  This means it

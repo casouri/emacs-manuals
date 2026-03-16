@@ -379,11 +379,15 @@ through a simple example:
      &rArr; white
 </pre></div>
 
-<p>The <var class="var">body</var> is inspected at compilation time, and only the symbols
-that appear in <var class="var">body</var> with a &lsquo;<samp class="samp">.</samp>&rsquo; as the first character in
+<p>The <var class="var">body</var> is inspected during macro-expansion, and the symbols that
+appear literally in <var class="var">body</var> with a &lsquo;<samp class="samp">.</samp>&rsquo; as the first character in
 the symbol name will be bound.  Finding the keys is done with
-<code class="code">assq</code>, and the <code class="code">cdr</code> of the return value of this
-<code class="code">assq</code> is assigned as the value for the binding.
+<code class="code">assq</code>, and the <code class="code">cdr</code> of the return value of this <code class="code">assq</code>
+is assigned as the value for the binding.  The generated code performs
+all <var class="var">alist</var> lookups before any other part of <var class="var">body</var>, so a symbol
+<code class="code">.foo</code> that appears anywhere in body will be looked up (using key
+<code class="code">foo</code>) and bound whether or not it is actually used in <var class="var">body</var>
+at runtime.
 </p>
 <p>Nested association lists is supported:
 </p>
@@ -409,7 +413,7 @@ outer <code class="code">let-alist</code>.
 
 <p>Note that forms like &lsquo;<samp class="samp">.0</samp>&rsquo; or &lsquo;<samp class="samp">.3</samp>&rsquo; are interpreted as numbers
 rather than as symbols, so they won&rsquo;t be bound to the corresponding
-values in ALIST.
+values in <var class="var">alist</var>.
 </p>
 </dd></dl>
 
