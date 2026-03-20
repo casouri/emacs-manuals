@@ -60,10 +60,10 @@ Next: <a href="Resizing-Windows.html" accesskey="n" rel="next">Resizing Windows<
 
 <p>Emacs provides miscellaneous functions for finding the height and width
 of a window.  The return value of many of these functions can be
-specified either in units of pixels or in units of lines and columns.
-On a graphical display, the latter actually correspond to the height and
-width of a default character specified by the frame&rsquo;s default font as
-returned by <code class="code">frame-char-height</code> and <code class="code">frame-char-width</code>
+specified either in units of pixels or in units of canonical lines and
+columns.  On a graphical display, the latter actually correspond to the
+height and width of a default character specified by the frame&rsquo;s default
+font as returned by <code class="code">frame-char-height</code> and <code class="code">frame-char-width</code>
 (see <a class="pxref" href="Frame-Font.html">Frame Font</a>).  Thus, if a window is displaying text with a
 different font or size, the reported line height and column width for
 that window may differ from the actual number of text lines or columns
@@ -77,10 +77,10 @@ its body and its top and bottom decorations (see <a class="pxref" href="Basic-Wi
 </p>
 <dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-window_002dtotal_002dheight"><span class="category-def">Function: </span><span><strong class="def-name">window-total-height</strong> <var class="def-var-arguments">&amp;optional window round</var><a class="copiable-link" href="#index-window_002dtotal_002dheight"> &para;</a></span></dt>
-<dd><p>This function returns the total height, in lines, of the window
-<var class="var">window</var>.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it defaults to
-the selected window.  If <var class="var">window</var> is an internal window, the return
-value is the total height occupied by its descendant windows.
+<dd><p>This function returns the total height, in canonical lines, of the
+window <var class="var">window</var>.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it
+defaults to the selected window.  If <var class="var">window</var> is an internal window,
+the return value is the total height occupied by its descendant windows.
 </p>
 <p>If a window&rsquo;s pixel height is not an integral multiple of its frame&rsquo;s
 default character height, the number of lines occupied by the window is
@@ -93,9 +93,9 @@ vertically combined and has a next sibling, the topmost row of that
 sibling can be calculated as the sum of this window&rsquo;s topmost row and
 total height (see <a class="pxref" href="Coordinates-and-Windows.html">Coordinates and Windows</a>)
 </p>
-<p>If the optional argument <var class="var">round</var> is <code class="code">ceiling</code>, this
-function returns the smallest integer larger than <var class="var">window</var>&rsquo;s pixel
-height divided by the character height of its frame; if it is
+<p>If the optional argument <var class="var">round</var> is <code class="code">ceiling</code>, this function
+returns the smallest integer larger than <var class="var">window</var>&rsquo;s pixel height
+divided by the canonical character height of its frame; if it is
 <code class="code">floor</code>, it returns the largest integer smaller than said value;
 with any other <var class="var">round</var> it returns the internal value of
 <var class="var">windows</var>&rsquo;s total height.
@@ -109,19 +109,19 @@ body and its left and right decorations (see <a class="pxref" href="Basic-Window
 </p>
 <dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-window_002dtotal_002dwidth"><span class="category-def">Function: </span><span><strong class="def-name">window-total-width</strong> <var class="def-var-arguments">&amp;optional window round</var><a class="copiable-link" href="#index-window_002dtotal_002dwidth"> &para;</a></span></dt>
-<dd><p>This function returns the total width, in columns, of the window
-<var class="var">window</var>.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it defaults to
-the selected window.  If <var class="var">window</var> is internal, the return value is
-the total width occupied by its descendant windows.
+<dd><p>This function returns the total width, in canonical columns, of the
+window <var class="var">window</var>.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it
+defaults to the selected window.  If <var class="var">window</var> is internal, the
+return value is the total width occupied by its descendant windows.
 </p>
 <p>If a window&rsquo;s pixel width is not an integral multiple of its frame&rsquo;s
-character width, the number of columns occupied by the window is rounded
-internally.  This is done in a way such that, if the window is a parent
-window, the sum of the total widths of all its children internally
-equals the total width of their parent.  This means that although two
-windows have the same pixel width, their internal total widths may
-differ by one column.  This means also, that if this window is
-horizontally combined and has a next sibling, the leftmost column of
+canonical character width, the number of columns occupied by the window
+is rounded internally.  This is done in a way such that, if the window
+is a parent window, the sum of the total widths of all its children
+internally equals the total width of their parent.  This means that
+although two windows have the same pixel width, their internal total
+widths may differ by one column.  This means also, that if this window
+is horizontally combined and has a next sibling, the leftmost column of
 that sibling can be calculated as the sum of this window&rsquo;s leftmost
 column and total width (see <a class="pxref" href="Coordinates-and-Windows.html">Coordinates and Windows</a>).  The optional
 argument <var class="var">round</var> behaves as it does for <code class="code">window-total-height</code>.
@@ -198,17 +198,17 @@ does not include any of its top or bottom decorations (see <a class="pxref" href
 </p>
 <dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-window_002dbody_002dheight"><span class="category-def">Function: </span><span><strong class="def-name">window-body-height</strong> <var class="def-var-arguments">&amp;optional window pixelwise</var><a class="copiable-link" href="#index-window_002dbody_002dheight"> &para;</a></span></dt>
-<dd><p>This function returns the height, in lines, of the body of window
-<var class="var">window</var>.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it defaults to
-the selected window; otherwise it must be a live window.
+<dd><p>This function returns the height, in canonical lines, of the body of
+window <var class="var">window</var>.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it
+defaults to the selected window; otherwise it must be a live window.
 </p>
 <p>The optional argument <var class="var">pixelwise</var> defines the units to use for the
 height.  If <code class="code">nil</code>, return the body height of <var class="var">window</var> in
-characters, rounded down to the nearest integer, if necessary.  This
-means that if a line at the bottom of the text area is only partially
-visible, that line is not counted.  It also means that the height of a
-window&rsquo;s body can never exceed its total height as returned by
-<code class="code">window-total-height</code>.
+canonical characters, rounded down to the nearest integer, if necessary.
+This means that if a line at the bottom of the text area is only
+partially visible, that line is not counted.  It also means that the
+height of a window&rsquo;s body can never exceed its total height as returned
+by <code class="code">window-total-height</code>.
 </p>
 <p>If <var class="var">pixelwise</var> is <code class="code">remap</code> and the default face is remapped
 (see <a class="pxref" href="Face-Remapping.html">Face Remapping</a>), use the remapped face to determine the
@@ -231,16 +231,16 @@ peculiarity into account.)
 </p>
 <dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-window_002dbody_002dwidth"><span class="category-def">Function: </span><span><strong class="def-name">window-body-width</strong> <var class="def-var-arguments">&amp;optional window pixelwise</var><a class="copiable-link" href="#index-window_002dbody_002dwidth"> &para;</a></span></dt>
-<dd><p>This function returns the width, in columns, of the body of window
-<var class="var">window</var>.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it defaults to
-the selected window; otherwise it must be a live window.
+<dd><p>This function returns the width, in canonical columns, of the body of
+window <var class="var">window</var>.  If <var class="var">window</var> is omitted or <code class="code">nil</code>, it
+defaults to the selected window; otherwise it must be a live window.
 </p>
 <p>The optional argument <var class="var">pixelwise</var> defines the units to use for the
 width.  If <code class="code">nil</code>, return the body width of <var class="var">window</var> in
-characters, rounded down to the nearest integer, if necessary.  This
-means that if a column on the right of the text area is only partially
-visible, that column is not counted.  It also means that the width of
-a window&rsquo;s body can never exceed its total width as returned by
+canonical characters, rounded down to the nearest integer, if necessary.
+This means that if a column on the right of the text area is only
+partially visible, that column is not counted.  It also means that the
+width of a window&rsquo;s body can never exceed its total width as returned by
 <code class="code">window-total-width</code>.
 </p>
 <p>If <var class="var">pixelwise</var> is <code class="code">remap</code> and the default face is remapped
