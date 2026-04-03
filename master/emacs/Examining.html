@@ -130,13 +130,19 @@ otherwise stated, affects only the current Emacs session.  The only
 way to alter the variable in future sessions is to put something in
 your initialization file (see <a class="pxref" href="Init-File.html">The Emacs Initialization File</a>).
 </p>
-<p>If you&rsquo;re setting a customizable variable in your initialization
-file, and you don&rsquo;t want to use the Customize interface, you can use
-the <code class="code">setopt</code> macro.  For instance:
-</p>
 <a class="index-entry-id" id="index-setopt"></a>
+<p>If you&rsquo;re setting a customizable variable, and you don&rsquo;t want to use
+the Customize interface, you can use the <code class="code">setopt</code> macro.  For
+instance:
+</p>
 <div class="example">
-<pre class="example-preformatted">(setopt fill-column 75)
+<pre class="example-preformatted"> M-: (setopt fill-column 75) <kbd class="key">RET</kbd>
+</pre></div>
+
+<p>Or, if you want to do this in your initialization file:
+</p>
+<div class="example">
+<pre class="example-preformatted"> (setopt fill-column 75)
 </pre></div>
 
 <p>This works the same as <code class="code">setq</code>, but if the variable has any
@@ -145,6 +151,33 @@ special setter functions, they will be run automatically when using
 non-customizable variables, but this is less efficient than using
 <code class="code">setq</code>.
 </p>
+<a class="index-entry-id" id="index-setopt_002dlocal"></a>
+<p>There is also a buffer-local version of <code class="code">setopt</code>, called
+<code class="code">setopt-local</code>, that you can use to set buffer specific values for
+customizable options, for example, in mode hooks (see <a class="pxref" href="Hooks.html">Hooks</a>).
+</p>
+<p>This works the same as <code class="code">setq-local</code>, but if the variable has any
+special setter functions, they will be run automatically when using
+<code class="code">setopt-local</code>.  You can also use <code class="code">setopt-local</code> on other,
+non-customizable variables, but this is less efficient than using
+<code class="code">setq-local</code>.
+</p>
+<p>If you want to change the value of a customizable variable only in
+your current buffer, you can use the <code class="code">setopt-local</code> macro.  For
+instance:
+</p>
+<div class="example">
+<pre class="example-preformatted"> M-: (setopt-local fill-column 75) <kbd class="key">RET</kbd>
+</pre></div>
+
+<p>Or, if you want to do this in your initialization file, use the
+following inside a mode hook so this variable will be automatically
+customized in buffers of that mode (see <a class="pxref" href="Hooks.html">Hooks</a>):
+</p>
+<div class="example">
+<pre class="example-preformatted"> (setopt-local fill-column 75)
+</pre></div>
+
 </div>
 <hr>
 <div class="nav-panel">

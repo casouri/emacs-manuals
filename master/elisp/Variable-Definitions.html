@@ -146,12 +146,15 @@ added by calls to <code class="code">custom-add-frequent-value</code> (see below
 <dt><a id="index-set_002c-defcustom-keyword"></a><span><code class="code">:set <var class="var">setfunction</var></code><a class="copiable-link" href="#index-set_002c-defcustom-keyword"> &para;</a></span></dt>
 <dd><p>Specify <var class="var">setfunction</var> as the way to change the value of this
 option when using the Customize interface.  The function
-<var class="var">setfunction</var> should take two arguments, a symbol (the option
-name) and the new value, and should do whatever is necessary to update
+<var class="var">setfunction</var> should take two or three arguments, a symbol (the option
+name), the new value, and an optional <var class="var">buffer-local</var> indicator.
+<var class="var">setfunction</var> should do whatever is necessary to update
 the value properly for this option (which may not mean simply setting
 the option as a Lisp variable); preferably, though, it should not
-modify its value argument destructively.  The default for
-<var class="var">setfunction</var> is <code class="code">set-default-toplevel-value</code>.
+modify its value argument destructively.  If optional <var class="var">buffer-local</var>
+is non-nil, the new value should be set buffer locally and not affect its
+global or default values.  The default for <var class="var">setfunction</var> is
+<code class="code">set-default-toplevel-value</code>.
 </p>
 <p>If defined, <var class="var">setfunction</var> will also be called when evaluating a
 <code class="code">defcustom</code> form with <kbd class="kbd">C-M-x</kbd> in Emacs Lisp mode and when the
@@ -161,7 +164,7 @@ modify its value argument destructively.  The default for
 <p>If you specify this keyword, the variable&rsquo;s documentation string
 should describe how to do the same job in hand-written Lisp code,
 either by invoking <var class="var">setfunction</var> directly or by using
-<code class="code">setopt</code>.
+<code class="code">setopt</code> or <code class="code">setopt-local</code>.
 </p>
 </dd>
 <dt><a id="index-get_002c-defcustom-keyword"></a><span><code class="code">:get <var class="var">getfunction</var></code><a class="copiable-link" href="#index-get_002c-defcustom-keyword"> &para;</a></span></dt>
