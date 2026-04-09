@@ -97,6 +97,33 @@ you should set its value in your init file (see <a class="pxref" href="Init-File
 directly or via <kbd class="kbd">M-x customize-variable</kbd>, which lets you save the
 customized value, see <a class="ref" href="Saving-Customizations.html">Saving Customizations</a>.
 </p>
+<a class="index-entry-id" id="index-w32_002duse_002dvirtual_002dterminal"></a>
+<a class="index-entry-id" id="index-Windows-Terminal_002c-Windows-Console_002c-MS_002dWindows"></a>
+<p>The implementation of display functionality for Windows Console
+differs from the implementation for other terminal emulators,
+because historically, Windows required use of an idiosyncractic API.
+That API limited Windows Console display of Emacs to 16 basic colors.
+With the introduction of Windows Terminal, Microsoft implemented
+support for ANSI control sequences, modelled on the VT100 and Xterm,
+as well as 24-bit RBG color display.
+</p>
+<p>The functions <code class="code">w32-use-virtual-terminal</code> and
+<code class="code">w32-use-virtual-terminal-p</code> can be used to set and inspect
+(respectively) an internal variable which determines whether this newer
+mechanism is used for display, or the older one.  The internal variable is
+automatically set based on your terminal&rsquo;s capabilities on startup.
+By default, 24-bit RGB color will be used, but other (8, 16, 256) color
+spaces may be used, by passing the <code class="code">--color</code> command line argument,
+or setting the value of the <code class="code">tty-color-mode</code> frame parameter.
+</p>
+<p><code class="code">'(w32-use-virtual-terminal-p)</code> evaluates to <code class="code">t</code> if and only if
+the internal variable has a non-zero numerical value, and otherwise to
+<code class="code">nil</code>.  If it evaluates to <code class="code">t</code>, ANSI escape sequences are used
+for color, otherwise, the older mechanism is used.  The internal variable
+can be set by evaluating <code class="code">(w32-use-virtual-terminal x)</code>, where <code class="code">x</code> is
+<code class="code">t</code> or <code class="code">nil</code>: if <code class="code">x</code> is <code class="code">t</code> and the feature is supported by
+your terminal, it will be enabled.  Otherwise, the feature will be disabled.
+</p>
 </div>
 <hr>
 <div class="nav-panel">
