@@ -80,7 +80,11 @@ buffer.  A value of <code class="code">t</code> disables the recording of undo i
 <dd><p>This kind of element records a previous value of point; undoing this
 element moves point to <var class="var">position</var>.  Ordinary cursor motion does not
 make any sort of undo record, but deletion operations use these entries
-to record where point was before the command.
+to record where point was before the command if re-inserting the deleted
+text by undoing the deletion will not already place point at the right
+position.  Lisp programs that need to ensure correct restoration of
+point by undoing a command can explicitly push <code class="code">(point)</code> to
+<code class="code">buffer-undo-list</code> to record the position to restore.
 </p>
 </dd>
 <dt><code class="code">(<var class="var">beg</var> . <var class="var">end</var>)</code></dt>
