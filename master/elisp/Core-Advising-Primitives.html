@@ -158,7 +158,7 @@ function, it can also be the <code class="code">name</code> of the piece of advi
 and its properties.
 </p></dd></dl>
 
-<dl class="first-deffn first-defun-alias-first-deffn">
+<a class="anchor" id="advice_002deval_002dinteractive_002dspec"></a><dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-advice_002deval_002dinteractive_002dspec"><span class="category-def">Function: </span><span><strong class="def-name">advice-eval-interactive-spec</strong> <var class="def-var-arguments">spec</var><a class="copiable-link" href="#index-advice_002deval_002dinteractive_002dspec"> &para;</a></span></dt>
 <dd><p>Evaluate the interactive <var class="var">spec</var> just like an interactive call to a function
 with such a spec would, and then return the corresponding list of arguments
@@ -171,7 +171,7 @@ the current prefix argument.
 could say something like this:
 </p>
 <div class="example">
-<pre class="example-preformatted">(defun my-compose-mail-advice (orig &amp;rest args)
+<pre class="example-preformatted">(defun my-compose-mail-advice (&amp;rest _)
   &quot;Read From: address interactively.&quot;
   (interactive
    (lambda (spec)
@@ -185,9 +185,10 @@ could say something like this:
        ;; Put the From header into the OTHER-HEADERS argument.
        (push (cons 'From from) (nth 2 spec))
        spec)))
-  (apply orig args))
+  ;; This body is not used.
+  nil)
 
-(advice-add 'compose-mail :around #'my-compose-mail-advice)
+(advice-add 'compose-mail :interactive-only #'my-compose-mail-advice)
 </pre></div>
 </dd></dl>
 
