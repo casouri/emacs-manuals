@@ -113,6 +113,25 @@ Therefore, all else being equal, it is preferable to pass a buffer than
 a string as <var class="var">source</var> argument.
 </p></dd></dl>
 
+<p>Sometimes <code class="code">replace-region-contents</code> is unable to understand the
+nature of the change in which case information such as overlays and
+markers will not be preserved as well as we would like.  If this is
+important and you have enough knowledge about the change, you can
+preserve this information manually.  For example, when sorting the lines
+of a region, you can start by collecting all the overlays and markers in
+the affected region using <code class="code">overlays-in</code> and <code class="code">markers-in</code> as
+well as recording a description of the line on which they were found.
+After inserting the sorted lines, you can then move the objects back to
+their rightful position.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-markers_002din"><span class="category-def">Function: </span><span><strong class="def-name">markers-in</strong> <var class="def-var-arguments">&amp;optional beg end</var><a class="copiable-link" href="#index-markers_002din"> &para;</a></span></dt>
+<dd><p>Return a list of all the markers found between <var class="var">beg</var> and <var class="var">end</var>
+in the current buffer.  <var class="var">beg</var> defaults the <code class="code">point-min</code> and
+<var class="var">end</var> defaults to <code class="code">point-max</code>.  Do not rely on the order of the
+markers in the list, because it is unspecified.
+</p></dd></dl>
+
 </div>
 <hr>
 <div class="nav-panel">
