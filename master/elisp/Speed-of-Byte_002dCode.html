@@ -63,26 +63,26 @@ Here is an example:
 <div class="example">
 <div class="group"><pre class="example-preformatted">(defun silly-loop (n)
   &quot;Return the time, in seconds, to run N iterations of a loop.&quot;
-  (let ((t1 (float-time)))
+  (let ((t1 (current-time)))
     (while (&gt; (setq n (1- n)) 0))
-    (- (float-time) t1)))
+    (float-time (time-since t1))))
 &rArr; silly-loop
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">(silly-loop 50000000)
-&rArr; 5.200886011123657
+</pre><div class="group"><pre class="example-preformatted">(silly-loop 100000000)
+&rArr; 2.236908583
 </pre></div><pre class="example-preformatted">
 
 </pre><div class="group"><pre class="example-preformatted">(byte-compile 'silly-loop)
 &rArr; <span class="r">[Compiled code not shown]</span>
 </pre></div><pre class="example-preformatted">
 
-</pre><div class="group"><pre class="example-preformatted">(silly-loop 50000000)
-&rArr; 0.6239290237426758
+</pre><div class="group"><pre class="example-preformatted">(silly-loop 100000000)
+&rArr; 0.374873305
 </pre></div></div>
 
-<p>In this example, the interpreted code required more than 5 seconds to run,
-whereas the byte-compiled code required less than 1 second.  These
+<p>In this example, the interpreted code was about six times slower
+than the byte-compiled code.  These
 results are representative, but actual results may vary.
 </p>
 </div>
