@@ -122,7 +122,7 @@ message is printed immediately.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-progress_002dreporter_002dupdate"><span class="category-def">Function: </span><span><strong class="def-name">progress-reporter-update</strong> <var class="def-var-arguments">reporter &amp;optional value suffix</var><a class="copiable-link" href="#index-progress_002dreporter_002dupdate"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-progress_002dreporter_002dupdate"><span class="category-def">Function: </span><span><strong class="def-name">progress-reporter-update</strong> <var class="def-var-arguments">reporter &amp;optional value update-text</var><a class="copiable-link" href="#index-progress_002dreporter_002dupdate"> &para;</a></span></dt>
 <dd><p>This function does the main work of reporting progress of your
 operation.  It displays the message of <var class="var">reporter</var>, followed by
 progress percentage determined by <var class="var">value</var>.  If percentage is zero,
@@ -136,10 +136,11 @@ state of your operation and must be between <var class="var">min-value</var> and
 <code class="code">make-progress-reporter</code>.  For instance, if you scan a buffer,
 then <var class="var">value</var> should be the result of a call to <code class="code">point</code>.
 </p>
-<p>Optional argument <var class="var">suffix</var> is a string to be displayed after
-<var class="var">reporter</var>&rsquo;s main message and progress text.  If <var class="var">reporter</var> is
-a non-numerical reporter, then <var class="var">value</var> should be <code class="code">nil</code>, or a
-string to use instead of <var class="var">suffix</var>.
+<p>Optional argument <var class="var">update-text</var> is a string to be displayed after
+<var class="var">reporter</var>&rsquo;s main message and progress text.  One typical use is as
+the &ldquo;step&rdquo; of a long-running process so the user knows where it is.
+If <var class="var">reporter</var> is a non-numerical reporter, then <var class="var">value</var> should
+be <code class="code">nil</code>, or a string to use instead of <var class="var">update-text</var>.
 </p>
 <p>This function respects <var class="var">min-change</var> and <var class="var">min-time</var> as passed
 to <code class="code">make-progress-reporter</code> and so does not output new messages
@@ -149,11 +150,11 @@ likely negate your effort.
 </p></dd></dl>
 
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-progress_002dreporter_002dforce_002dupdate"><span class="category-def">Function: </span><span><strong class="def-name">progress-reporter-force-update</strong> <var class="def-var-arguments">reporter &amp;optional value new-message suffix</var><a class="copiable-link" href="#index-progress_002dreporter_002dforce_002dupdate"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-progress_002dreporter_002dforce_002dupdate"><span class="category-def">Function: </span><span><strong class="def-name">progress-reporter-force-update</strong> <var class="def-var-arguments">reporter &amp;optional value new-message update-text</var><a class="copiable-link" href="#index-progress_002dreporter_002dforce_002dupdate"> &para;</a></span></dt>
 <dd><p>This function is similar to <code class="code">progress-reporter-update</code> except
 that it prints a message in the echo area unconditionally.
 </p>
-<p><var class="var">reporter</var>, <var class="var">value</var>, and <var class="var">suffix</var> have the same meaning as for
+<p><var class="var">reporter</var>, <var class="var">value</var>, and <var class="var">update-text</var> have the same meaning as for
 <code class="code">progress-reporter-update</code>.  Optional <var class="var">new-message</var> allows
 you to change the message of the <var class="var">reporter</var>.  Since this function
 always updates the echo area, such a change will be immediately
