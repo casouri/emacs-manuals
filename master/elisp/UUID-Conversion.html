@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 32.0.50.
+
+Copyright © 1990-1996, 1998-2026 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>UUID Conversion (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="UUID Conversion (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="UUID Conversion (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="UUIDs.html" rel="up" title="UUIDs">
+<link href="Special-UUID-values.html" rel="next" title="Special UUID values">
+<link href="UUID-Generation.html" rel="prev" title="UUID Generation">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span.r {font-family: initial; font-weight: normal; font-style: normal}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="UUID-Conversion">
+<div class="nav-panel">
+<p>
+Next: <a href="Special-UUID-values.html" accesskey="n" rel="next">Special UUID values</a>, Previous: <a href="UUID-Generation.html" accesskey="p" rel="prev">UUID Generation</a>, Up: <a href="UUIDs.html" accesskey="u" rel="up">UUIDs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="UUID-Conversion-1"><span>41.21.2 UUID Conversion<a class="copiable-link" href="#UUID-Conversion-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-uuid-conversion"></a>
+
+<p>To use a UUID, typically it is converted to a string, and sometimes to a
+binary representation.  This is done using <code class="code">uuid-to-string</code> function.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-uuid_002dto_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">uuid-to-string</strong> <var class="def-var-arguments">uuid</var><a class="copiable-link" href="#index-uuid_002dto_002dstring"> &para;</a></span></dt>
+<dd><p>Return the standard string value, with hex values and dashes, of Lisp
+object <code class="code">uuid</code>.
+</p></dd></dl>
+
+<div class="example">
+<pre class="example-preformatted">(uuid-to-string (uuid-v4))     ; <span class="r">&quot;230156d4-488a-45d1-93c9-507ec8be37ca&quot;</span>
+</pre></div>
+
+<p>Binary can also be generated, which generates a unibyte string, using
+<code class="code">uuid-to-bytes</code>, and a numeric representation of a UUID can be
+generated with <code class="code">uuid-to-number</code>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-uuid_002dto_002dbytes"><span class="category-def">Function: </span><span><strong class="def-name">uuid-to-bytes</strong> <var class="def-var-arguments">uuid</var><a class="copiable-link" href="#index-uuid_002dto_002dbytes"> &para;</a></span></dt>
+<dd><p>Return a unibyte string representing the binary value of <code class="code">uuid</code>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-uuid_002dto_002dnumber"><span class="category-def">Function: </span><span><strong class="def-name">uuid-to-number</strong> <var class="def-var-arguments">uuid</var><a class="copiable-link" href="#index-uuid_002dto_002dnumber"> &para;</a></span></dt>
+<dd><p>Return a numeric representation of the value of <code class="code">uuid</code>.
+</p></dd></dl>
+
+<p>String UUIDs can also be converted to a UUID Lisp object, with
+<code class="code">uuid-from-string</code>, and bytes can be converted with
+<code class="code">uuid-from-bytes</code>.  These work with all UUIDs, not just the ones
+this module can generate.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-uuid_002dfrom_002dstring"><span class="category-def">Function: </span><span><strong class="def-name">uuid-from-string</strong> <var class="def-var-arguments">uuid-str</var><a class="copiable-link" href="#index-uuid_002dfrom_002dstring"> &para;</a></span></dt>
+<dd><p>Return a UUID Lisp object that represents <var class="var">uuid-str</var>.
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-uuid_002dfrom_002dbytes"><span class="category-def">Function: </span><span><strong class="def-name">uuid-from-bytes</strong> <var class="def-var-arguments">uuid-bytes</var><a class="copiable-link" href="#index-uuid_002dfrom_002dbytes"> &para;</a></span></dt>
+<dd><p>Return a UUID Lisp object that represents <var class="var">uuid-bytes</var>, which is
+expected to be a unibyte string.
+</p></dd></dl>
+
+<p>Valid UUIDs have types, which can be used with <code class="code">cl-typep</code>,
+<code class="code">cl-check-type</code> and <code class="code">cl-typecase</code>.  The type is specified with
+the type specifier <code class="code">(uuid-v &lt;version&gt;)</code>.  <var class="var">version</var> can be any
+version of UUID, but we make sure the UUID variant is correctly
+<code class="code">2</code>; any other value is not a valid version.
+</p>
+<div class="example">
+<pre class="example-preformatted">(when (cl-typep my-uuid '(uuid-v 4))
+    (process-v4-uuid my-uuid))
+
+(defun process-v4-uuid (uuid)
+    ;; Error if not the correct type
+    (cl-check-type uuid (uuid-v 4))
+    ;; Proceed to process the UUIDv4.
+    (more-processing uuid))
+</pre></div>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Special-UUID-values.html">Special UUID values</a>, Previous: <a href="UUID-Generation.html">UUID Generation</a>, Up: <a href="UUIDs.html">UUIDs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

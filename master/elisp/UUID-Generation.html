@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 32.0.50.
+
+Copyright © 1990-1996, 1998-2026 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>UUID Generation (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="UUID Generation (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="UUID Generation (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="UUIDs.html" rel="up" title="UUIDs">
+<link href="UUID-Conversion.html" rel="next" title="UUID Conversion">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="UUID-Generation">
+<div class="nav-panel">
+<p>
+Next: <a href="UUID-Conversion.html" accesskey="n" rel="next">UUID Conversion</a>, Up: <a href="UUIDs.html" accesskey="u" rel="up">UUIDs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="UUID-Generation-1"><span>41.21.1 UUID Generation<a class="copiable-link" href="#UUID-Generation-1"> &para;</a></span></h4>
+<a class="index-entry-id" id="index-uuid-generation"></a>
+
+<p>To generate UUIDs, call <code class="code">uuid-v4</code>, <code class="code">uuid-v5</code> or
+<code class="code">uuid-v7</code>.  UUID v4 and v7 will by default use the normal elisp
+<em class="dfn">random</em> for random numbers, but a different random number generator
+can be passed in, as long as it can be called with an arg of the end of
+the range of acceptable integers to generate (exclusive), and returns an
+integer.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-uuid_002dv4"><span class="category-def">Function: </span><span><strong class="def-name">uuid-v4</strong> <var class="def-var-arguments">&amp;key rng</var><a class="copiable-link" href="#index-uuid_002dv4"> &para;</a></span></dt>
+<dd><p>Return a <code class="code">uuid-v4</code> Lisp object representing a new UUIDv4.
+<var class="var">rng</var>, if provided, is a function that will, when called with a
+numeric argument, return a random number between 0 and that number
+(exclusive).
+</p></dd></dl>
+
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-uuid_002dv7"><span class="category-def">Function: </span><span><strong class="def-name">uuid-v7</strong> <var class="def-var-arguments">&amp;key rng</var><a class="copiable-link" href="#index-uuid_002dv7"> &para;</a></span></dt>
+<dd><p>Similar to <code class="code">uuid-v4</code> but returns a <code class="code">uuid-v7</code>, which is
+generated with a timestamp in addition to random numbers (generated from
+<var class="var">rng</var> in a similar manner as <code class="code">uuid-v4</code>).
+</p></dd></dl>
+
+<p>These use random numbers, which should be cryptographically secure.
+See <a class="xref" href="Random-Numbers.html">Random Numbers</a>, but generally these random numbers are not
+sufficient to generate sufficiently random UUIDs.  For private uses, the
+default behavior should be sufficient, but for professional uses,
+<var class="var">rng</var> should be used, and provide cryptographically secure random
+numbers.
+</p>
+<p>UUIDv5s must be created with a namespace and a name.  The namespaces are
+defined in <code class="code">uuid-namespace-alist</code> and are by default <code class="code">dns</code>,
+<code class="code">url</code>, <code class="code">oid</code>, and <code class="code">x500</code>.
+</p>
+<dl class="first-deffn first-defun-alias-first-deffn">
+<dt class="deffn defun-alias-deffn" id="index-uuid_002dv5"><span class="category-def">Function: </span><span><strong class="def-name">uuid-v5</strong> <var class="def-var-arguments">namespace name</var><a class="copiable-link" href="#index-uuid_002dv5"> &para;</a></span></dt>
+<dd><p>This function returns a new <code class="code">uuid-v5</code> Lisp object based on
+<var class="var">namespace</var>, which is a symbol in the key of the
+<code class="code">uuid-namespace-alist</code>: <code class="code">dns</code>, <code class="code">url</code>, <code class="code">oid</code>,
+<code class="code">x500</code>, or any symbol added.  This is combined with <var class="var">name</var> to
+construct a new UUIDv5.
+</p></dd></dl>
+
+<p>An example is:
+</p>
+<a class="index-entry-id" id="index-uuidv5"></a>
+<div class="example">
+<pre class="example-preformatted">(uuid-v5 'dns &quot;www.example.com&quot;)
+</pre></div>
+
+<dl class="first-defvr first-defvar-alias-first-defvr">
+<dt class="defvr defvar-alias-defvr" id="index-uuid_002dnamespace_002dalist"><span class="category-def">Variable: </span><span><strong class="def-name">uuid-namespace-alist</strong><a class="copiable-link" href="#index-uuid_002dnamespace_002dalist"> &para;</a></span></dt>
+<dd><p>A list of namespace symbols and their corresponding UUIDs.  Each alist
+entry is a cons of the symbol and a UUID Lisp object representing the
+namespace.  This is used in <code class="code">uuid-v5</code>, see above for more info on
+how this is used.
+</p></dd></dl>
+
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="UUID-Conversion.html">UUID Conversion</a>, Up: <a href="UUIDs.html">UUIDs</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
