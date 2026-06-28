@@ -113,9 +113,11 @@ many Emacs primitives will signal an error if a command attempts to
 modify text of a read-only buffer, even if the command&rsquo;s interactive
 spec does not include &lsquo;<samp class="samp">*</samp>&rsquo;.  So this character is for when you want
 to forcibly signal an error even if the command&rsquo;s implementation doesn&rsquo;t
-invoke any primitives which modify the buffer.  For example, a command
-that binds <code class="code">inhibit-read-only</code> non-<code class="code">nil</code> (because it affects
-more than just read-only buffers), or a command which, depending on the
+invoke any primitives which modify the buffer, or if you want to avoid
+processing or side effects of a command that will fail later due to
+buffer modifications.  For example, a command that binds
+<code class="code">inhibit-read-only</code> non-<code class="code">nil</code> (because it affects more than
+just read-only buffers), or a command which, depending on the
 conditions, might end up not modifying the buffer, but you want it to
 signal this error anyway.
 </p>
