@@ -63,47 +63,81 @@ Next: <a href="Registering.html" accesskey="n" rel="next">Registering a File for
 <p>When you tell VC to commit a change, it pops up a buffer named
 <samp class="file">*vc-log*</samp>.  In this buffer, you should write a <em class="dfn">log entry</em>
 describing the changes you have made (see <a class="pxref" href="Why-Version-Control_003f.html">Understanding the Problems it Addresses</a>).
-After you are done, type <kbd class="kbd">C-c C-c</kbd> (<code class="code">log-edit-done</code>) to exit
-the buffer and commit the change, together with your log entry.
+Alternatively, you can have the entry automatically inserted from a
+ChangeLog file or buffer (see below), which you can further edit in the
+<samp class="file">*vc-log*</samp> buffer if necessary.  After you are done, type <kbd class="kbd">C-c
+C-c</kbd> (<code class="code">log-edit-done</code>) to exit the buffer and commit the change,
+together with your log entry.
 </p>
-<a class="index-entry-id" id="index-Log-Edit-mode"></a>
-<a class="index-entry-id" id="index-mode_002c-Log-Edit"></a>
-<a class="index-entry-id" id="index-vc_002dlog_002dmode_002dhook"></a>
-<p>The major mode for the <samp class="file">*vc-log*</samp> buffer is Log Edit mode, a
-variant of Text mode (see <a class="pxref" href="Text-Mode.html">Text Mode</a>).  On entering Log Edit mode,
-Emacs runs the hooks <code class="code">text-mode-hook</code> and <code class="code">vc-log-mode-hook</code>
-(see <a class="pxref" href="Hooks.html">Hooks</a>).
-</p>
-<p>In the <samp class="file">*vc-log*</samp> buffer, you can write one or more <em class="dfn">header
-lines</em>, specifying additional information to be supplied to the
-version control system.  Each header line must occupy a single line at
-the top of the buffer; the first line that is not a header line is
-treated as the start of the log entry.  For example, the following
-header line states that the present change was not written by you, but
-by another developer:
+<p>In the <samp class="file">*vc-log*</samp> buffer, you can also write one or more
+<em class="dfn">header lines</em> specifying additional information to be supplied to
+the version control system.  For example, the following header line
+states that the present change was not written by you, but by another
+developer:
 </p>
 <div class="example smallexample">
 <pre class="example-preformatted">Author: J. R. Hacker &lt;jrh@example.com&gt;
 </pre></div>
 
-<p>Apart from the &lsquo;<samp class="samp">Author</samp>&rsquo; header, Emacs recognizes the headers
-&lsquo;<samp class="samp">Summary</samp>&rsquo; (a one-line summary of the changeset), &lsquo;<samp class="samp">Date</samp>&rsquo; (a
-manually-specified commit time), and &lsquo;<samp class="samp">Fixes</samp>&rsquo; (a reference to a
-bug fixed by the change).  Not all version control systems recognize
-all headers.  If you specify a header for a system that does not
-support it, the header is treated as part of the log entry.
+<p>Each header line must occupy a single line at the top of the buffer; the
+first line that is not a header line is treated as the start of the log
+entry.  In addition to the &lsquo;<samp class="samp">Author</samp>&rsquo; header, most version control
+systems also support the headers &lsquo;<samp class="samp">Summary</samp>&rsquo; (a one-line summary of
+the changeset) and &lsquo;<samp class="samp">Date</samp>&rsquo; (a manually specified commit time).
+Emacs recognizes these as well as several VCS-specific headers.  If you
+specify a header for a VCS that does not support it, the header is
+treated as part of the log entry.
+</p>
+<a class="index-entry-id" id="index-Log-Edit-mode"></a>
+<a class="index-entry-id" id="index-mode_002c-Log-Edit"></a>
+<a class="index-entry-id" id="index-vc_002dlog_002dmode_002dhook"></a>
+<a class="index-entry-id" id="index-log_002dedit_002dhook"></a>
+<p>The major mode for the <samp class="file">*vc-log*</samp> buffer is Log Edit mode, a
+variant of Text mode (see <a class="pxref" href="Text-Mode.html">Text Mode</a>).  On entering Log Edit mode,
+Emacs runs the hooks <code class="code">text-mode-hook</code> and <code class="code">vc-log-mode-hook</code>
+(see <a class="pxref" href="Hooks.html">Hooks</a>).  In addition, to set up the <samp class="file">*vc-log*</samp> buffer,
+Emacs runs the hook <code class="code">log-edit-hook</code>, which optionally makes several
+useful features available.  The following paragraphs describe several of
+these features, including three that are generally useful and enabled by
+default.  (To see a complete list of the features and enable or disable
+any of them, type <kbd class="kbd">M-x&nbsp;customize-option&nbsp;RET&nbsp;log-edit-hook&nbsp;RET</kbd><!-- /@w -->;
+see <a class="pxref" href="Specific-Customization.html">Customizing Specific Items</a>.)
+</p>
+<a class="index-entry-id" id="index-log_002dedit_002dinsert_002dmessage_002dtemplate"></a>
+<p>The function <code class="code">log-edit-insert-message-template</code> produces the
+default <samp class="file">*vc-log*</samp> buffer setup, containing &lsquo;<samp class="samp">Author</samp>&rsquo; and
+&lsquo;<samp class="samp">Summary</samp>&rsquo; headers, and displays a thick line separating the header
+part of the buffer from the log entry part.  If you remove
+<code class="code">log-edit-insert-message-template</code> from <code class="code">log-edit-hook</code>, then
+the initial <samp class="file">*vc-log*</samp> buffer is simply empty.  The two header
+lines are initially empty.  If you are the author of the change and you
+have configured the VCS to use your name and email address in commit
+messages, you can leave the &lsquo;<samp class="samp">Author</samp>&rsquo; header empty.  If you leave
+the &lsquo;<samp class="samp">Summary</samp>&rsquo; header empty, most systems will use the first line of
+the log entry as the summary line (see below for a way to have the
+&lsquo;<samp class="samp">Summary</samp>&rsquo; header automatically filled).
 </p>
 <a class="index-entry-id" id="index-C_002dc-C_002df-_0028Log-Edit-mode_0029"></a>
 <a class="index-entry-id" id="index-log_002dedit_002dshow_002dfiles"></a>
+<p>When VC pops up the <samp class="file">*vc-log*</samp> buffer, a buffer named
+<samp class="file">*log-edit-files*</samp> listing the current VC fileset, that is, the
+files that will be committed if you type <kbd class="kbd">C-c&nbsp;C-c</kbd><!-- /@w -->, also pops up
+by default.  If you have removed the command <code class="code">log-edit-show-files</code>
+from <code class="code">log-edit-hook</code>, the <samp class="file">*log-edit-files*</samp> buffer does not
+automatically pop up, but you can invoke the command by typing
+<kbd class="kbd">C-c&nbsp;C-f</kbd><!-- /@w -->.  Likewise, if you kill or bury the
+<samp class="file">*log-edit-files*</samp> buffer, typing <kbd class="kbd">C-c&nbsp;C-f</kbd><!-- /@w --> will pop it up
+again.
+</p>
 <a class="index-entry-id" id="index-C_002dc-C_002dd-_0028Log-Edit-mode_0029"></a>
 <a class="index-entry-id" id="index-log_002dedit_002dshow_002ddiff"></a>
-<p>While in the <samp class="file">*vc-log*</samp> buffer, the current VC fileset is
-considered to be the fileset that will be committed if you type
-<kbd class="kbd">C-c&nbsp;C-c</kbd><!-- /@w -->.  To view a list of the files in the VC fileset,
-type <kbd class="kbd">C-c&nbsp;C-f</kbd><!-- /@w --> (<code class="code">log-edit-show-files</code>).  To view a diff
-of changes between the VC fileset and the version from which you
-started editing (see <a class="pxref" href="Old-Revisions.html">Examining And Comparing Old Revisions</a>), type <kbd class="kbd">C-c C-d</kbd>
-(<code class="code">log-edit-show-diff</code>).
+<p>To view a diff of changes between the VC fileset and the version from
+which you started editing (see <a class="pxref" href="Old-Revisions.html">Examining And Comparing Old Revisions</a>), type <kbd class="kbd">C-c C-d</kbd>
+(<code class="code">log-edit-show-diff</code>).  This command also selects the window
+displaying the diff.  To have VC automatically display the diff when it
+pops up the <samp class="file">*vc-log*</samp> buffer, add <code class="code">log-edit-maybe-show-diff</code>
+to <code class="code">log-edit-hook</code>; unlike <kbd class="kbd">C-c C-d</kbd>, this function does not
+select the window displaying the diff.
 </p>
 <a class="index-entry-id" id="index-C_002dc-C_002dw-_0028Log-Edit-mode_0029"></a>
 <a class="index-entry-id" id="index-log_002dedit_002dgenerate_002dchangelog_002dfrom_002ddiff"></a>
@@ -119,14 +153,36 @@ VC root, customize <code class="code">diff-add-log-use-relative-names</code>.
 </p>
 <a class="index-entry-id" id="index-C_002dc-C_002da-_0028Log-Edit-mode_0029"></a>
 <a class="index-entry-id" id="index-log_002dedit_002dinsert_002dchangelog"></a>
-<p>If the VC fileset includes one or more <samp class="file">ChangeLog</samp> files
-(see <a class="pxref" href="Change-Log.html">Change Logs</a>), type <kbd class="kbd">C-c C-a</kbd>
-(<code class="code">log-edit-insert-changelog</code>) to pull the relevant entries into
-the <samp class="file">*vc-log*</samp> buffer.  If the topmost item in each
-<samp class="file">ChangeLog</samp> was made under your user name on the current date,
-this command searches that item for entries matching the file(s) to be
-committed, and inserts them.
-If you are using CVS or RCS, see <a class="ref" href="Change-Logs-and-VC.html">Change Logs and VC</a>, for the
+<p>If you have added log entries for the current VC fileset to one or
+more <samp class="file">ChangeLog</samp> files or to a temporary ChangeLog buffer
+(see <a class="pxref" href="Change-Log.html">Change Logs</a>), by default VC automatically inserts these entries
+into the <samp class="file">*vc-log*</samp> buffer on popping it up.  If you have removed
+the command <code class="code">log-edit-insert-changelog</code> from <code class="code">log-edit-hook</code>,
+VC does not automatically insert the log entries, but you can invoke the
+command by typing <kbd class="kbd">C-c C-a</kbd>.  Likewise, if you delete or otherwise
+change the content of this buffer and then decide you want to use the
+ChangeLog entries after all, type <kbd class="kbd">C-c C-a</kbd> to repopulate the buffer
+with these entries.
+</p>
+<p>If the relevant log entries are in one or more <samp class="file">ChangeLog</samp> files
+and the topmost item in each file was made under your user name on the
+current date, this command searches that item (or those items) for
+entries matching the file(s) to be committed, and inserts them.  If you
+invoke the command with a prefix argument (<kbd class="kbd">C-u C-c C-a</kbd>) or repeat
+it immediately (<kbd class="kbd">C-c C-a C-c C-a</kbd>), it searches the topmost item
+regardless of the user name and date of the item.
+</p>
+<p>If VC detects that all log entries come from the same ChangeLog file
+or buffer, then the command simply inserts the entire body of the entry
+into the <samp class="file">*vc-log*</samp> buffer.  In addition, if the first line of the
+entry does not begin with &lsquo;<samp class="samp">* </samp>&rsquo; (an asterisk followed by a space),
+VC considers it to be a summary line and moves it to the &lsquo;<samp class="samp">Summary</samp>&rsquo;
+header.  Finally, if VC detects that the set of changed files listed in
+the ChangeLog entry differs from the current VC fileset, it displays a
+warning urging you to fix this discrepancy before committing the
+changes.
+</p>
+<p>If you are using CVS or RCS, see <a class="ref" href="Change-Logs-and-VC.html">Change Logs and VC</a>, for the
 opposite way of working&mdash;generating ChangeLog entries from the Log
 Edit buffer.
 </p>

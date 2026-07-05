@@ -102,9 +102,10 @@ cannot be marked with this command if any file in its tree is marked.
 </dd>
 <dt><kbd class="kbd">M</kbd></dt>
 <dd><p>If point is on a file entry, mark all files with the same status; if
-point is on a directory entry, mark all files in that directory tree
-(<code class="code">vc-dir-mark-all-files</code>).  With a prefix argument, mark all
-listed files and directories.
+point is on a directory entry, mark all and only the files that are
+immediate descendents (i.e., children) of that directory
+(<code class="code">vc-dir-mark-all-files</code>).  With a prefix argument, mark all listed
+files.
 </p>
 </dd>
 <dt><a id="index-vc_002ddir_002dmark_002dby_002dregexp"></a><span><kbd class="kbd">% m</kbd><a class="copiable-link" href="#index-vc_002ddir_002dmark_002dby_002dregexp"> &para;</a></span></dt>
@@ -146,9 +147,10 @@ active, unmark all the files in the region (<code class="code">vc-dir-unmark</co
 </dd>
 <dt><kbd class="kbd">U</kbd></dt>
 <dd><p>If point is on a file entry, unmark all files with the same status; if
-point is on a directory entry, unmark all files in that directory tree
+point is on a directory entry, unmark all and only the files that are
+immediate descendents (i.e., children) of that directory
 (<code class="code">vc-dir-unmark-all-files</code>).  With a prefix argument, unmark all
-files and directories.
+listed files and directories.
 </p>
 </dd>
 <dt><kbd class="kbd">x</kbd></dt>
@@ -171,13 +173,21 @@ whose state is that of the item at point.
 <p>While in the VC Directory buffer, all the files that you mark with
 <kbd class="kbd">m</kbd> (<code class="code">vc-dir-mark</code>) or <kbd class="kbd">M</kbd> (<code class="code">vc-dir-mark-all-files</code>)
 are in the current VC fileset.  If you mark a directory entry with
-<kbd class="kbd">m</kbd>, all the listed files in that directory tree are in the
-current VC fileset.  The files and directories that belong to the
-current VC fileset are indicated with a &lsquo;<samp class="samp">*</samp>&rsquo; character in the VC
-Directory buffer, next to their VC status.  In this way, you can set
-up a multi-file VC fileset to be acted on by VC commands like
-<kbd class="kbd">C-x&nbsp;v&nbsp;v</kbd><!-- /@w --> (see <a class="pxref" href="Basic-VC-Editing.html">Basic Editing under Version Control</a>), <kbd class="kbd">C-x&nbsp;v&nbsp;=</kbd><!-- /@w -->
-(see <a class="pxref" href="Old-Revisions.html">Examining And Comparing Old Revisions</a>), and <kbd class="kbd">C-x&nbsp;v&nbsp;u</kbd><!-- /@w --> (see <a class="pxref" href="VC-Undo.html">Undoing Version Control Actions</a>).
+<kbd class="kbd">m</kbd>, all the listed files in that directory tree (i.e., not only the
+listed files of the directory but also the listed files of its
+subdirectories) are in the current VC fileset.  The files and
+directories that belong to the current VC fileset are indicated with a
+&lsquo;<samp class="samp">*</samp>&rsquo; character in the VC Directory buffer, next to their VC status.
+In this way, you can set up a multi-file VC fileset to be acted on by VC
+commands like <kbd class="kbd">C-x&nbsp;v&nbsp;v</kbd><!-- /@w --> (see <a class="pxref" href="Basic-VC-Editing.html">Basic Editing under Version Control</a>), <kbd class="kbd">C-x&nbsp;v&nbsp;=</kbd><!-- /@w --> (see <a class="pxref" href="Old-Revisions.html">Examining And Comparing Old Revisions</a>), and <kbd class="kbd">C-x&nbsp;v&nbsp;u</kbd><!-- /@w --> (see <a class="pxref" href="VC-Undo.html">Undoing Version Control Actions</a>).
+</p>
+<p>In a VC Directory buffer containing no marked file or directory
+entries, the current VC fileset is determined as follows.  If point is
+on a file entry, the fileset consists of just that file.  If point is on
+a directory entry, the fileset consists of all files in that directory
+tree.  Consequently, if point in on (or above) the entry &lsquo;<samp class="samp">./</samp>&rsquo;
+(representing the working directory), the fileset consists of all listed
+files.
 </p>
 <p>The VC Directory buffer also defines some single-key shortcuts for
 VC commands with the <kbd class="kbd">C-x v</kbd> prefix: <kbd class="kbd">=</kbd>, <kbd class="kbd">+</kbd>, <kbd class="kbd">l</kbd>,
