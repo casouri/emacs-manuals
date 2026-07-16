@@ -121,7 +121,10 @@ reordering of bidirectional text, use the
 <dt class="deffn defun-alias-deffn" id="index-filter_002dbuffer_002dsubstring"><span class="category-def">Function: </span><span><strong class="def-name">filter-buffer-substring</strong> <var class="def-var-arguments">start end &amp;optional delete</var><a class="copiable-link" href="#index-filter_002dbuffer_002dsubstring"> &para;</a></span></dt>
 <dd><p>This function filters the buffer text between <var class="var">start</var> and <var class="var">end</var>
 using a function specified by the variable
-<code class="code">filter-buffer-substring-function</code>, and returns the result.
+<code class="code">filter-buffer-substring-function</code>, and returns the result.  The
+order of buffer positions specified by <var class="var">start</var> and <var class="var">end</var> should
+not matter, since this function is frequently used for extracting text
+passed to kill functions (see <a class="pxref" href="Kill-Functions.html">Functions for Killing</a>).
 </p>
 <p>The default filter function consults the obsolete wrapper hook
 <code class="code">filter-buffer-substring-functions</code> (see the documentation string
@@ -148,6 +151,9 @@ will call to do the actual work.  The function receives three
 arguments, the same as those of <code class="code">filter-buffer-substring</code>,
 which it should treat as per the documentation of that function.  It
 should return the filtered text (and optionally delete the source text).
+Note that it must process the <var class="var">start</var> and <var class="var">end</var> arguments
+regardless of the order of the buffer positions they specify, to comply
+with the protocol of extracting text for the purposes of killing it.
 </p></dd></dl>
 
 <p>The following two variables are obsoleted by

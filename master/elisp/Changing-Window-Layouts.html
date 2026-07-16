@@ -80,9 +80,9 @@ below, we shall always assume that the windows displayed constitute
 their frame&rsquo;s main window and the <var class="var">window</var> argument is <code class="code">nil</code>
 unless stated otherwise.
 </p>
-<p>The first two commands rotate a window layout either clockwise or
-counterclockwise.
 <a class="index-entry-id" id="index-rotate-window-layout"></a>
+<p>The first two commands rotate an entire window layout either
+clockwise or counterclockwise.
 </p>
 <dl class="first-deffn">
 <dt class="deffn" id="index-window_002dlayout_002drotate_002dclockwise"><span class="category-def">Command: </span><span><strong class="def-name">window-layout-rotate-clockwise</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dlayout_002drotate_002dclockwise"> &para;</a></span></dt>
@@ -120,9 +120,10 @@ layout in the opposite direction as demonstrated in the example below.
 </pre></div></div>
 </dd></dl>
 
-<p>The next two commands <small class="sc">FLIP</small> the window layout&mdash;rotate it around an
-imaginary horizontal or vertical axis.
 <a class="index-entry-id" id="index-flip-window-layout"></a>
+<p>The next two commands <small class="sc">FLIP</small> the window layout&mdash;rotate it around an
+imaginary horizontal or vertical axis.  If the number of windows to be
+flipped is odd, the window in the middle remains in its original place.
 </p>
 <dl class="first-deffn">
 <dt class="deffn" id="index-window_002dlayout_002dflip_002dtopdown"><span class="category-def">Command: </span><span><strong class="def-name">window-layout-flip-topdown</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dlayout_002dflip_002dtopdown"> &para;</a></span></dt>
@@ -144,7 +145,7 @@ windows on the top and vice-versa as in the example below.
 <dl class="first-deffn">
 <dt class="deffn" id="index-window_002dlayout_002dflip_002dleftright"><span class="category-def">Command: </span><span><strong class="def-name">window-layout-flip-leftright</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dlayout_002dflip_002dleftright"> &para;</a></span></dt>
 <dd><p>This command rearranges window in a way that the windows on the right
-become the window on the left, and vice-versa.
+become the windows on the left, and vice-versa.
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">     ___________        ___________
@@ -179,17 +180,23 @@ becomes a vertical split and vice versa.
 </pre></div></div>
 </dd></dl>
 
-<p>The final two commands can be used to rotate windows within the existing
+<a class="index-entry-id" id="index-rotating-windows"></a>
+<p>The final two commands can be used to <em class="dfn">rotate</em> windows within the existing
 layout.  They are like the commands that rotate the layout but leave the
 underlying structure of the layout unchanged.  What actually changes are
-the positions of windows within the existing layout.
-<a class="index-entry-id" id="index-rotating-windows"></a>
+the positions of windows within the existing layout.  This happens in a
+way that the space formerly occupied by any window will be occupied by
+the window preceding (following if <var class="var">reverse</var> is non-<code class="code">nil</code>) it
+in the cyclic ordering of windows (see <a class="pxref" href="Cyclic-Window-Ordering.html">Cyclic Ordering of Windows</a>) on
+<var class="var">window</var>&rsquo;s frame.  These commands may signal an error if windows
+chosen to rotate are dedicated to their buffers, atomic or of fixed
+size.
 </p>
 <dl class="first-deffn">
 <dt class="deffn" id="index-rotate_002dwindows"><span class="category-def">Command: </span><span><strong class="def-name">rotate-windows</strong> <var class="def-var-arguments">&amp;optional window reverse</var><a class="copiable-link" href="#index-rotate_002dwindows"> &para;</a></span></dt>
-<dd><p>This rotate windows under <var class="var">window</var> in cyclic ordering.  The optional
-argument <var class="var">reverse</var> means to rotate windows backward, in reverse
-cyclic order.
+<dd><p>This command rotates <var class="var">window</var>&rsquo;c child windows in cyclic ordering.
+The optional argument <var class="var">reverse</var> means to rotate windows backwards,
+in reverse cyclic order.
 </p>
 <div class="example smallexample">
 <div class="group"><pre class="example-preformatted">     ___________        ___________
@@ -205,7 +212,7 @@ cyclic order.
 
 <dl class="first-deffn">
 <dt class="deffn" id="index-rotate_002dwindows_002dback"><span class="category-def">Command: </span><span><strong class="def-name">rotate-windows-back</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-rotate_002dwindows_002dback"> &para;</a></span></dt>
-<dd><p>This command rotates windows under <var class="var">window</var> backward in cyclic
+<dd><p>This command rotates <var class="var">window</var>&rsquo;s child windows backwards in cyclic
 ordering.
 </p>
 <div class="example smallexample">
@@ -227,7 +234,7 @@ ordering.
 <dd><p>If this is <code class="code">nil</code>, the selected window will remain unaffected by
 <code class="code">rotate-windows</code> and <code class="code">rotate-windows-back</code>.  Otherwise, the
 selected window will change to the window that appears at the location
-of the selected window before any of these commands were invoked.
+of the window selected before any of these commands were invoked.
 </p></dd></dl>
 
 
