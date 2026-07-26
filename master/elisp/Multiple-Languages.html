@@ -41,6 +41,7 @@ a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
 div.example {margin-left: 3.2em}
 span:hover a.copiable-link {visibility: visible}
 strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+ul.mark-bullet {list-style-type: disc}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="./manual.css">
@@ -189,11 +190,12 @@ for nodes in a region.
 <dt class="deffn defun-alias-deffn" id="index-treesit_002dlanguage_002dat"><span class="category-def">Function: </span><span><strong class="def-name">treesit-language-at</strong> <var class="def-var-arguments">pos</var><a class="copiable-link" href="#index-treesit_002dlanguage_002dat"> &para;</a></span></dt>
 <dd><p>This function returns the language of the text at buffer position
 <var class="var">pos</var>.  Under the hood it calls
-<code class="code">treesit-language-at-point-function</code> and returns its return
-value.  If <code class="code">treesit-language-at-point-function</code> is <code class="code">nil</code>,
-this function returns the language of the deepest parser by embed level
-among parsers returned by <code class="code">treesit-parsers-at</code>.  If there is no
-parser at that buffer position, it returns <code class="code">nil</code>.
+<code class="code">treesit-language-at-point-function</code> and returns its return value.
+If <code class="code">treesit-language-at-point-function</code> is <code class="code">nil</code>, this
+function returns the language of the deepest parser by embed level
+(see <a class="pxref" href="#parser_002dembed_002dlevel">parser-embed-level</a>) among parsers returned by
+<code class="code">treesit-parsers-at</code>.  If there is no parser at that buffer
+position, it returns <code class="code">nil</code>.
 </p></dd></dl>
 
 <h3 class="heading" id="Supporting-multiple-languages-in-major-modes"><span>Supporting multiple languages in major modes<a class="copiable-link" href="#Supporting-multiple-languages-in-major-modes"> &para;</a></span></h3>
@@ -299,10 +301,38 @@ a <var class="var">query</var> preceded by zero or more <var class="var">keyword
 pairs.  Each <var class="var">query</var> is a tree-sitter query in either the string,
 s-expression, or compiled form, or a function.
 </p>
+<p><code class="code">treesit-update-ranges</code> uses <var class="var">query</var> to figure out how to set
+the ranges for parsers for the embedded language.  It queries
+<var class="var">query</var> in a host language parser, computes the ranges which the
+captured nodes span, and applies these ranges to embedded language
+parsers.
+</p>
 <p>If <var class="var">query</var> is a tree-sitter query, it should be preceded by two
 <var class="var">keyword</var>/<var class="var">value</var> pairs, where the <code class="code">:embed</code> keyword
-specifies the embedded language, and the <code class="code">:host</code> keyword
-specifies the host language.
+specifies the embedded language, and the <code class="code">:host</code> keyword specifies
+the host language.  The captured nodes determine the range of embedded
+parsers.  The capture names don&rsquo;t matter, but names that starts with an
+underscore are ignored, and the <code class="code">@language</code> capture name is
+reserved.
+</p>
+<p>If the embedded language is dynamic, then <code class="code">:embed</code> can specify a
+function rathar than a static language.  The function takes the node
+captured with <code class="code">@language</code> capture name.  Care have to be taken that
+the <code class="code">@language</code> capture and the range capture are in the same
+match group.  The function should return either a language symbol, or nil
+if no valid language can be found.
+</p>
+<p>If the query is given a <code class="code">:offset</code> keyword whose value is a pair
+of numbers, each captured range is offset by those numbers.  For
+example, an offset of <code class="code">(1 . -1)</code> will update a captured range of
+<code class="code">(2 . 8)</code> to be <code class="code">(3 . 7)</code>.  This can be used to exclude things
+like surrounding delimiters from being included in the range covered by
+an embedded parser.
+</p>
+<p>By default, a parser sees its ranges as a continuum, rather than
+treating them as separate independent segments.  Therefore, if the
+embedded ranges are semantically independent segments, they should be
+processed by local parsers, described below.
 </p>
 <a class="index-entry-id" id="index-local-parser"></a>
 <p>If the query is given the <code class="code">:local</code> keyword whose value is
@@ -310,19 +340,41 @@ specifies the host language.
 otherwise the range shares a parser with other ranges for the same
 language.
 </p>
-<p>By default, a parser sees its ranges as a continuum, rather than
-treating them as separate independent segments.  Therefore, if the
-embedded ranges are semantically independent segments, they should be
-processed by local parsers, described below.
-</p>
-<p>Local parser set to a range can be retrieved by
+<p>Local parsers set to a range can be retrieved by
 <code class="code">treesit-local-parsers-at</code> and <code class="code">treesit-local-parsers-on</code>.
 </p>
-<p><code class="code">treesit-update-ranges</code> uses <var class="var">query</var> to figure out how to set
-the ranges for parsers for the embedded language.  It queries
-<var class="var">query</var> in a host language parser, computes the ranges which the
-captured nodes span, and applies these ranges to embedded language
-parsers.
+<p>Emacs treats local embedded parsers and non-local embedded parsers quite
+differently:
+</p>
+<ul class="itemize mark-bullet">
+<li>Local parsers are managed by Emacs.  Emacs creates new local parsers when
+they are needed and deletes them when they are not.  Non-local parsers
+must be created by major modes, and Emacs only make use of them if one
+exists.
+
+</li><li>Because local parsers can be freely created by Emacs, they are suitable
+for recursively nested embedded parsers, where the embed level can be
+arbitrarily deep.  On the other hand, since non-local parsers created by
+major modes, they can only handle a fix number of embed levels.
+</li></ul>
+
+<a class="anchor" id="parser_002dembed_002dlevel"></a><a class="index-entry-id" id="index-embed-level_002c-tree_002dsitter"></a>
+<p>The embed level of the top-level parsers is 0 or omitted, the first
+level of embedded parsers get embed level 1, and so on.  For local
+parsers, each embed level creates a new parser; for non-local parsers,
+since Emacs cannot create non-local parsers freely, it tries to find a
+usable parser at the right embed level; if none exists, Emacs just gives
+up.
+</p>
+<p>If the query is given a <code class="code">:range-fn</code> keyword whose value is a
+function, Emacs uses that function to compute the ranges to use for the
+embedded parser.  The function takes as arguments the captured node and
+the offset given by the <code class="code">:offset</code> keyword, and returns a list of
+ranges, where each range is a cons of the start and end position.  For
+local parsers, each <var class="var">query</var> creates one local parser, and the ranges
+set by the <code class="code">:range-fn</code> are applied to that parser; for non-local
+parsers, all the ranges (including ranges created by <code class="code">:range-fn</code>)
+in that embed level are joined together and applied to the same parser.
 </p>
 <p>If <var class="var">query</var> is a function, it doesn&rsquo;t need any <var class="var">keyword</var> and
 <var class="var">value</var> pair.  It should be a function that takes 2 arguments,
