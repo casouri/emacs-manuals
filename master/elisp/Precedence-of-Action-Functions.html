@@ -201,10 +201,40 @@ displaying <samp class="file">*foo*</samp> at the bottom of the frame.
 the window already showing <samp class="file">*foo*</samp> since both functions supplied
 by the <var class="var">action</var> argument try to reuse such a window first.
 </p>
-<p>By setting the <var class="var">action</var> argument, an application effectively
+<p>There are cases, however, where Lisp programs want to modify the
+default behavior of a <code class="code">display-buffer</code> call hidden behind another
+function.  In those cases, setting the <var class="var">action</var> argument is not an
+option.  Fortunately, the <code class="code">display-buffer-default-alist</code> variable
+can be used to specify a list of conditional default actions.  Consider
+the following example:
+</p>
+<div class="example">
+<div class="group"><pre class="example-preformatted">(defun foo (buffer)
+   (display-buffer
+    buffer
+    '((display-buffer-below-selected display-buffer-at-bottom))))
+
+(defun bar ()
+   (let ((display-buffer-default-alist
+         '((&quot;\\*bar\\*&quot; (display-buffer-pop-up-frame)))))
+     (foo (get-buffer-create &quot;*bar*&quot;))))
+
+(defun baz ()
+   (let ((display-buffer-default-alist
+         '((&quot;\\*baz\\*&quot; (display-buffer-same-window)))))
+     (foo (get-buffer-create &quot;*baz*&quot;))))
+</pre></div></div>
+
+<p>Here, <code class="code">foo</code> calls <code class="code">display-buffer</code> with a specific
+<var class="var">action</var>.  Let-binding <code class="code">display-buffer-default-alist</code> allows
+the functions <code class="code">bar</code> and <code class="code">baz</code> to specify their own action
+functions.
+</p>
+<p>By setting the <var class="var">action</var> argument and/or the
+<code class="code">display-buffer-default-alist</code> variable, an application effectively
 overrules any customization of <code class="code">display-buffer-base-action</code>.  Our
-user can now either accept the choice of the application, or redouble
-by customizing the option <code class="code">display-buffer-alist</code> as follows:
+user can now either accept the choice of the application, or redouble by
+customizing the option <code class="code">display-buffer-alist</code> as follows:
 </p>
 <div class="example">
 <div class="group"><pre class="example-preformatted">(setopt
