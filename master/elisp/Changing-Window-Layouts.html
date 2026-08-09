@@ -69,7 +69,10 @@ windows by deleting them first and resurrecting them
 (see <a class="pxref" href="Resurrecting-Windows.html">Resurrecting Windows</a>) in their new locations afterwards.  No
 window gets lost and no window is added or duplicated.  Where possible,
 these commands try to preserve the relative size of windows as well as
-all other non-geometric properties including parameters.
+all other non-geometric properties including parameters.  These commands
+will signal an error if windows chosen to transpose or rotate are atomic
+or of fixed size.  The option <code class="code">transpose-dedicated-windows</code> below
+decides whether dedicated windows may be transposed or rotated.
 </p>
 <p>The <var class="var">window</var> argument of all functions described in this section
 must specify a valid parent window (see <a class="pxref" href="Windows-and-Frames.html">Windows and Frames</a>).  If it
@@ -181,16 +184,13 @@ becomes a vertical split and vice versa.
 </dd></dl>
 
 <a class="index-entry-id" id="index-rotating-windows"></a>
-<p>The final two commands can be used to <em class="dfn">rotate</em> windows within the existing
-layout.  They are like the commands that rotate the layout but leave the
-underlying structure of the layout unchanged.  What actually changes are
-the positions of windows within the existing layout.  This happens in a
-way that the space formerly occupied by any window will be occupied by
-the window preceding (following if <var class="var">reverse</var> is non-<code class="code">nil</code>) it
-in the cyclic ordering of windows (see <a class="pxref" href="Cyclic-Window-Ordering.html">Cyclic Ordering of Windows</a>) on
-<var class="var">window</var>&rsquo;s frame.  These commands may signal an error if windows
-chosen to rotate are dedicated to their buffers, atomic or of fixed
-size.
+<p>The final two commands can be used to <em class="dfn">rotate</em> windows within the
+existing layout.  They are like the commands that rotate the layout but
+leave the underlying structure of the layout unchanged.  What actually
+changes are the positions of windows within the existing layout.  This
+happens in a way that the space formerly occupied by any window will be
+occupied by the window preceding (following if <var class="var">reverse</var> is
+non-<code class="code">nil</code>) it in the cyclic ordering of windows (see <a class="pxref" href="Cyclic-Window-Ordering.html">Cyclic Ordering of Windows</a>) on <var class="var">window</var>&rsquo;s frame.
 </p>
 <dl class="first-deffn">
 <dt class="deffn" id="index-rotate_002dwindows"><span class="category-def">Command: </span><span><strong class="def-name">rotate-windows</strong> <var class="def-var-arguments">&amp;optional window reverse</var><a class="copiable-link" href="#index-rotate_002dwindows"> &para;</a></span></dt>
@@ -226,6 +226,15 @@ ordering.
 
 </pre></div></div>
 </dd></dl>
+
+<p>All commands described above are subject to the following option.
+</p>
+<dl class="first-defvr first-defopt-alias-first-defvr">
+<dt class="defvr defopt-alias-defvr" id="index-transpose_002ddedicated_002dwindows"><span class="category-def">User Option: </span><span><strong class="def-name">transpose-dedicated-windows</strong><a class="copiable-link" href="#index-transpose_002ddedicated_002dwindows"> &para;</a></span></dt>
+<dd><p>If this is <code class="code">nil</code>, the functions described in this section will
+report an error when they encounter a dedicated window (see <a class="pxref" href="Dedicated-Windows.html">Dedicated Windows</a>).  If this is <code class="code">t</code>, they handle dedicated windows like
+non-dedicated ones.
+</p></dd></dl>
 
 <p>The last two commands are subject to the following option.
 </p>
