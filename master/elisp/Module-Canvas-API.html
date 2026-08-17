@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- This is the GNU Emacs Lisp Reference Manual
+corresponding to Emacs version 32.0.50.
+
+Copyright © 1990-1996, 1998-2026 Free Software Foundation,
+Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual.  Buying copies from the FSF supports it in
+developing GNU and promoting software freedom." -->
+<title>Module Canvas API (GNU Emacs Lisp Reference Manual)</title>
+
+<meta name="description" content="Module Canvas API (GNU Emacs Lisp Reference Manual)">
+<meta name="keywords" content="Module Canvas API (GNU Emacs Lisp Reference Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Writing-Dynamic-Modules.html" rel="up" title="Writing Dynamic Modules">
+<link href="Module-Nonlocal.html" rel="next" title="Module Nonlocal">
+<link href="Module-Misc.html" rel="prev" title="Module Misc">
+<style type="text/css">
+<!--
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+div.example {margin-left: 3.2em}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="./manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Module-Canvas-API">
+<div class="nav-panel">
+<p>
+Next: <a href="Module-Nonlocal.html" accesskey="n" rel="next">Nonlocal Exits in Modules</a>, Previous: <a href="Module-Misc.html" accesskey="p" rel="prev">Miscellaneous Convenience Functions for Modules</a>, Up: <a href="Writing-Dynamic-Modules.html" accesskey="u" rel="up">Writing Dynamically-Loaded Modules</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Using-Canvas-API-With-Modules"><span>E.7.5 Using Canvas API With Modules<a class="copiable-link" href="#Using-Canvas-API-With-Modules"> &para;</a></span></h4>
+
+<p>Emacs supports creating image objects called &ldquo;canvas&rdquo; which have a
+pixel buffer associated with them.  These image objects can be accessed
+and updated natively via dynamic modules.  See <a class="xref" href="Canvas-Images.html">Canvas Images</a>, for what
+they are.
+</p>
+<p>The following functions allow you to operate on canvas image objects
+with dynamic modules:
+</p>
+<a class="anchor" id="canvas_005fdata"></a><dl class="first-deftypefn">
+<dt class="deftypefn" id="index-_002acanvas_005fdata"><span class="category-def">Function: </span><span><code class="def-type">uint32_t</code> <strong class="def-name">*canvas_data</strong> <code class="def-code-arguments">(emacs_env *<var class="var">env</var>, emacs_value <var class="var">canvas</var>)</code><a class="copiable-link" href="#index-_002acanvas_005fdata"> &para;</a></span></dt>
+<dd><p>The function gives access to the pixel buffer of <var class="var">canvas</var>.  The
+pixel buffer is in row-major order with a size <code class="code"><var class="var">width</var>x<var class="var">height</var></code>.
+The pixel format is ARGB32 on all platforms.  Return <code class="code">NULL</code> in case
+of error.
+</p></dd></dl>
+
+<p>Note that the pixel buffer is only valid as long as the canvas object is
+alive and its dimensions have not been changed.  If it has changed, Emacs
+will create a new pixel buffer and automatically resize the canvas.
+</p>
+<p>Once we update the canvas pixel buffer via dynamic modules, we also have
+to call <code class="code">canvas-refresh</code> for Emacs to redisplay the canvas.  This
+can be done from the module via an Elisp funcall.
+</p>
+<div class="example">
+<pre class="example-preformatted">/* Access the pixel buffer */
+uint32_t *pixel = env-&gt;canvas_data (env, canvas);
+/* Write to the pixel buffer */
+...
+/* Redraw the canvas */
+env-&gt;funcall(env, env-&gt;intern(env, &quot;canvas-refresh&quot;), 2,
+             (emacs_value[]){canvas, Qnil});
+</pre></div>
+
+<p>Note that <code class="code">canvas-refresh</code> has an optional boolean argument to
+reload the <code class="code">:data</code> vector or string from the canvas image
+specification.  When called from dynamic modules, the argument should
+usually be <code class="code">Qnil</code>.
+</p>
+<p>Thus, one can simply define a module function that takes as an argument
+a canvas image object, following the specification as laid down in
+<a class="ref" href="Canvas-Images.html">Canvas Images</a>, and then use the above code to manipulate the pixel
+buffer of the canvas and redraw it.
+</p>
+</div>
+<hr>
+<div class="nav-panel">
+<p>
+Next: <a href="Module-Nonlocal.html">Nonlocal Exits in Modules</a>, Previous: <a href="Module-Misc.html">Miscellaneous Convenience Functions for Modules</a>, Up: <a href="Writing-Dynamic-Modules.html">Writing Dynamically-Loaded Modules</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>
