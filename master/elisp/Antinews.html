@@ -38,6 +38,7 @@ developing GNU and promoting software freedom." -->
 <style type="text/css">
 <!--
 a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+kbd.kbd {font-style: oblique}
 span:hover a.copiable-link {visibility: visible}
 ul.mark-bullet {list-style-type: disc}
 -->
@@ -54,100 +55,115 @@ ul.mark-bullet {list-style-type: disc}
 Next: <a href="GNU-Free-Documentation-License.html" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="Packaging.html" accesskey="p" rel="prev">Preparing Lisp code for distribution</a>, Up: <a href="index.html" accesskey="u" rel="up">Emacs Lisp</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
-<h2 class="appendix" id="Emacs-29-Antinews"><span>Appendix A Emacs 29 Antinews<a class="copiable-link" href="#Emacs-29-Antinews"> &para;</a></span></h2>
+<h2 class="appendix" id="Emacs-30-Antinews"><span>Appendix A Emacs 30 Antinews<a class="copiable-link" href="#Emacs-30-Antinews"> &para;</a></span></h2>
 
 <p>For those users who live backwards in time, here is information about
-downgrading to Emacs version 29.4.  We hope you will enjoy the greater
+downgrading to Emacs version 30.2.  We hope you will enjoy the greater
 simplicity that results from the absence of many Emacs&nbsp;32.0.50<!-- /@w --> features.
 </p>
 <ul class="itemize mark-bullet">
-<li>Mouse wheel events once again follow the platform and window-system
-conventions: sometimes they are <code class="code">wheel-up/down</code> and sometimes
-<code class="code">mouse-4/5/6/7</code>.  Lisp programs which use these should once again
-be aware of the conventions in effect and behave accordingly.
+<li>Lisp strings are now mutable.  You can use <code class="code">aset</code> on unibyte
+strings to replace single bytes by multibyte characters, and <code class="code">aset</code>
+on multibyte strings can replace any character by any other character,
+regardless if they are ASCII or multibyte non-ASCII.  We feel those
+restrictions are un-Emacsy and get in the way of doing all kinds of
+exciting things with strings.
 
-</li><li>The command <code class="code">describe-function</code> no longer distracts you by showing
-unnecessary details like the type of the function&rsquo;s object.  Emacs
-hackers always know whether a function is a primitive, a native-compiled
-Lisp function, or any other kind.  Stating the obvious simply wastes the
-precious screen estate; as you move into the past, and the typical
-dimensions of the screen become smaller, that waste is less and less
-justified.  So we made the waste smaller.
+</li><li>Buffers that are current to a non-main thread cannot be killed by other
+threads.  We decided to get rid of the numerous complications which were
+needed to allow killing such buffers.  If your program needs to kill
+such buffers, you will need to use a disciplined approach of first
+making some other buffer current to the thread.
 
-</li><li>The support for styled underline in face attribute was dropped.  The
-simple underline should be enough; anything else is just code bloat and
-creeping featurism.  Colorful underlines on TTY frames are no longer
-supported for the same reason.
+</li><li>We removed the early detection of faces that inherit from themselves.
+As you move back in time, Emacs Lisp programmers become more and more
+proficient, so disallowing such tricks feels wrong.  Those who don&rsquo;t
+know well enough what they are doing will be amply punished by having
+their Lisp programs barf at display time or even wedge Emacs cold.
 
-</li><li>IELM stopped recording its input history.  You will no longer be annoyed
-by inputs from your past sessions; each session starts with a clean
-slate.  What can be simpler and easier to remember?
+</li><li>Calling <code class="code">debug</code> in batch mode now kills Emacs.  We decided that
+there&rsquo;s no sense in continuing a batch session that entered the
+debugger: who and how will debug it, anyway?
 
-</li><li>You can no longer disable JavaScript in xwidget Webkit sessions.  Since
-xwidgets are going away in one of the previous Emacs versions, we
-decided to make this one step in that direction and get rid of this
-complication.
+<p>For the same reason, <kbd class="kbd">C-c</kbd> in batch mode now always kills Emacs, it
+never quits.
+</p>
+</li><li>The functions that access and manipulate error descriptors were deleted.
+Functions like <code class="code">error-type</code>, <code class="code">error-slot-value</code> and others are
+useless bloat, since Lisp programs can simply access the data structure
+directly, as God intended!
 
-</li><li>The <code class="code">minibuffer-regexp-mode</code> was removed.  Regular expressions are
-just strings, so no fancy mode should be needed for editing them.
+</li><li>We removed <code class="code">frame-initial-p</code>, as its job can easily be done by
+testing several obscure variables and frame parameters.
 
-</li><li>We removed the Compat package.  Forward compatibility for ELPA packages
-becomes less and less important as you move back through time, and soon
-enough ELPA will disappear entirely.  We decided it was prudent to start
-preparing for that now.
+</li><li>We&rsquo;ve added the <code class="code">redisplay-dont-pause</code> variable, so we could allow
+interrupting a runaway redisplay cycle in one of the past versions of
+Emacs.
 
-</li><li>We are back to interpreting <code class="code">\x</code> without any following hex digits
-as character code zero (<abbr class="acronym">NUL</abbr>), as it always was in Emacs.  The
-savings in typing due to this alone are enough to justify this
-simplification.
+</li><li>There&rsquo;s no longer a guarantee that all the digit characters will have
+the <code class="code">digit</code> (<code class="code">?6</code>) category.  We feel that such silly
+consistency robs Lisp programmers of too much fun, whereby they should
+discover which digits have this category by trial-and-error.
 
-</li><li>To keep Emacs clean and elegant, we&rsquo;ve removed the ability to show
-tooltips for fringe bitmaps.  What important information cam be shown on
-the fringes, and why would it require tooltips to explain its purpose?
-We decided it isn&rsquo;t justified to keep this in past versions of Emacs.
+<p>For the same reason, not all characters belonging to the <code class="code">symbol</code>
+script will have the <code class="code">symbol</code> (<code class="code">?5</code>) category.
+</p>
+</li><li>Lisp programs can now easily delete that daemon frame by calling
+<code class="code">delete-frame</code>, as with any other frame.  We decided there&rsquo;s no
+reason to make a special case for the daemon frames, especially as some
+past Emacs version will remove the daemon feature entirely.
 
-</li><li>Fancy sorting-related facilities, like the <code class="code">value&lt;</code> function and
-keyword arguments for <code class="code">sort</code>, were deleted as too complex.  The
-basic <code class="code">sort</code> function should all that&rsquo;s needed in the years to go.
+</li><li>Lisp files found on <code class="code">load-path</code> are no longer cached.  We intend to
+make the <code class="code">load-path</code> list shorter and shorter as we move to
+previous versions of Emacs, so caching files is an unnecessary
+complication and bloat of precious memory.
 
-</li><li>Features related to the inheritance graph of major modes were deemed
-unnecessary and thus were dropped.  This includes
-<code class="code">provided-mode-derived-p</code>, <code class="code">derived-mode-add-parents</code>, and
-others.  We decided that untangling the mode inheritance relationships
-by hand facilitates more clear code and makes the intent evident.
+</li><li>The annoying warning about the missing <code class="code">lexical-binding</code> cookie
+when loading Lisp files was removed.  This is one more step towards
+eventual elimination of lexical binding from Emacs in one of the past
+versions.
 
-</li><li>We removed unnecessary functionality for handling touch screen events,
-as touch screens gradually disappear from view as you move back in time.
-There&rsquo;s no need to keep obsolete these new inventions in the past.
+<p>For the same reason, Lisp files loaded via the <samp class="option">-x</samp> and
+<samp class="option">--script</samp> command-line options no longer use lexical binding by
+default.
+</p>
+</li><li>To keep Emacs clean and elegant, we deleted the <code class="code">setopt-local</code>
+macro.  This was one more useless bloat, since it is easy to do the same
+using <code class="code">setq-local</code>, and avoids the annoying warnings about mismatch
+between the value and expected type defined by <code class="code">defcustom</code>.
 
-</li><li>Various new functions and variables for moving and transposing sexps and
-for moving by program statements were dropped as unnecessary.  The
-original commands that move by balanced expressions are more than
-enough.
+</li><li>Pure storage is now part of Emacs, and is here to stay.  The function
+<code class="code">purecopy</code> really copies its argument to pure storage.  This is a
+significant step towards making Emacs more memory-efficient on
+yesterday&rsquo;s computers, and more generally towards using <code class="code">unexec</code> as
+the only way of dumping Emacs.
 
-</li><li>We deleted some fancy <code class="code">declare</code> forms for functions, such as
-<code class="code">ftype</code>.  Emacs Lisp is not a string-typed language, which makes
-these declarations anathema.  The types <code class="code">closure</code> and
-<code class="code">interpreted-function</code> are gone for the same reason: no need to
-distinguish types of Lisp functions.
+</li><li>The <code class="code">cond*</code> macro was removed.  You can still use <code class="code">pcase</code>
+instead, but better start using the venerable <code class="code">cond</code> exclusively,
+as <code class="code">pcase</code> and its ilk will disappear from Emacs in the near past.
+No one should need these fancy and hard-to-read constructs with their
+obscure semantics and myriads of backticks!  The original control-flow
+special forms of the pristine Emacs Lisp are more than enough.
 
-</li><li>The byte compiler stopped issuing warnings about practices some purists
-consider questionable.  This includes warnings about missing
-<code class="code">lexical-binding</code> cookies, empty bodies of special forms and
-macros, comparison with literals, <code class="code">condition-case</code> without
-handlers, mutation of constants, and some others.  As time moves into
-the past, the typical Emacs hacker knows best what&rsquo;s correct code and
-what isn&rsquo;t, and thus these warnings become useless annoyances.  Good
-riddance!
+</li><li>Xref commands automatically suggest visiting a tags table.  This is to
+enable symbol completion,and generally move towards removing all
+backends except the <code class="code">etags</code> one in some past Emacs version.
 
-</li><li>The <code class="code">obarray</code> type is gone.  Obarrays are back to their original
-representation as vectors.  Each removed Lisp data type makes Emacs
-simpler and easier to use, so this is a welcome deletion.
+</li><li>Support for SHA-3 message digests was removed from the function
+<code class="code">secure-hash</code>.  We plan to continue removing algorithms from this
+function, so as to keep Emacs as lean as possible.  Eventually, just one
+kind of digest should be enough for everyone!
+
+</li><li>We deleted unnecessary functions like <code class="code">incf</code>, <code class="code">decf</code>,
+<code class="code">plusp</code>, <code class="code">minusp</code>, <code class="code">oddp</code>, and <code class="code">evenp</code>.  Use the
+corresponding functions from <samp class="file">cl-lib</samp> or just write these trivial
+functions when you need them.  For the same reason, <code class="code">all</code>,
+<code class="code">any</code>, <code class="code">drop-while</code>, and <code class="code">take-while</code> are also gone.
 
 </li><li>As part of the ongoing quest for simplicity, many other functions and
 variables have been eliminated.  Other functions and variables, that
-were declared obsolete since Emacs 24, have been added back, in
-preparation for releasing Emacs 24 in some distant past.
+were declared obsolete since Emacs 25, have been added back, in
+preparation for releasing Emacs 25 in some distant past.
 </li></ul>
 </div>
 <hr>
