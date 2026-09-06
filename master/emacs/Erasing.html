@@ -91,13 +91,37 @@ it is active (<code class="code">delete-forward-char</code>).
 </p></dd>
 </dl>
 
-<p>The <kbd class="kbd"><kbd class="key">DEL</kbd></kbd> (<code class="code">delete-backward-char</code>) command removes
-the character before point, moving the cursor and the characters after
-it backwards.  If point was at the beginning of a line, this deletes
-the preceding newline, joining this line to the previous one.
+<a class="index-entry-id" id="index-grapheme-cluster"></a>
+<a class="index-entry-id" id="index-delete-part-of-composed-sequence-of-characters"></a>
+<p>The <kbd class="kbd"><kbd class="key">DEL</kbd></kbd> (<code class="code">delete-backward-char</code>) command removes the
+character before point, moving the cursor and the characters after it
+backwards.  If point was at the beginning of a line, this deletes the
+preceding newline, joining this line to the previous one.  If the
+character before point is composed with one or more of the preceding
+characters, and is displayed together with them as a single display
+unit, a so-called <em class="dfn">grapheme cluster</em> representing the entire
+sequence, <kbd class="kbd"><kbd class="key">DEL</kbd></kbd> deletes only a single character from the
+composed sequence, which in some cases can significantly change the
+appearance of the text on display.  (The command
+<code class="code">backward-delete-char-untabify</code>, usually bound to <kbd class="key">DEL</kbd> in
+programming modes, does the same, see <a class="pxref" href="Program-Modes.html">Major Modes for Programming Languages</a>.)  This is in
+contrast with commands like <code class="code">delete-char-forward</code>, which delete the
+entire composed sequence of characters after point, see below.
 </p>
-<p>If, however, the region is active, <kbd class="kbd"><kbd class="key">DEL</kbd></kbd> instead deletes
-the text in the region.  See <a class="xref" href="Mark.html">The Mark and the Region</a>, for a description of the region.
+<a class="index-entry-id" id="index-composition_002dbreak_002dat_002dpoint"></a>
+<p>For long enough sequences of composed characters, using
+<kbd class="kbd"><kbd class="key">DEL</kbd></kbd> to delete them one by one might be inconvenient.  In
+those cases, you can customize the option
+<code class="code">composition-break-at-point</code> to a non-<code class="code">nil</code> value, to have
+Emacs show characters around point separately, instead of showing the
+result of their composition.  This allows editing the composed sequence
+of characters more conveniently, because you can move point inside the
+composed sequence and delete characters there without having to delete
+(and later re-insert) the following ones.
+</p>
+<p>If the region is active, <kbd class="kbd"><kbd class="key">DEL</kbd></kbd> deletes the text in the
+region instead of deleting a single character.  See <a class="xref" href="Mark.html">The Mark and the Region</a>, for a
+description of the region.
 </p>
 <p>On most keyboards, <kbd class="key">DEL</kbd> is labeled <kbd class="key">BACKSPACE</kbd>, but we
 refer to it as <kbd class="key">DEL</kbd> in this manual.  (Do not confuse <kbd class="key">DEL</kbd>
@@ -105,18 +129,20 @@ with the <kbd class="key">Delete</kbd> key; we will discuss <kbd class="key">Del
 On some text terminals, Emacs may not recognize the <kbd class="key">DEL</kbd> key
 properly.  See <a class="xref" href="DEL-Does-Not-Delete.html">If <kbd class="key">DEL</kbd> Fails to Delete</a>, if you encounter this problem.
 </p>
-<a class="index-entry-id" id="index-grapheme-cluster_002c-deletion"></a>
+<a class="index-entry-id" id="index-composed-sequence-of-characters_002c-deletion"></a>
 <a class="index-entry-id" id="index-delete-entire-grapheme-cluster"></a>
 <p>The <kbd class="key">Delete</kbd> (<code class="code">delete-forward-char</code>) command deletes in the
 opposite direction: it deletes the character after point, i.e., the
 character under the cursor.  If point was at the end of a line, this
 joins the following line onto this one.  Like <kbd class="kbd"><kbd class="key">DEL</kbd></kbd>, it
 deletes the text in the region if the region is active (see <a class="pxref" href="Mark.html">The Mark and the Region</a>).
-If the character after point is composed with following characters and
-displayed as a single display unit, a so-called <em class="dfn">grapheme cluster</em>
-representing the entire sequence, <kbd class="key">Delete</kbd> deletes the entire
-sequence in one go.  This is in contrast to <kbd class="key">DEL</kbd> which always
-deletes a single character, even if the character is composed.
+If the character after point is composed with following characters,
+<kbd class="key">Delete</kbd> deletes the entire composed sequence in one go.  This is in
+contrast to <kbd class="key">DEL</kbd> which always deletes a single character, even if
+the character is composed.  If <code class="code">composition-break-at-point</code> is
+non-<code class="code">nil</code>, <kbd class="key">Delete</kbd> deletes all of the composed characters from
+point to the end of the composed sequence, which could be only a part of
+the sequence if you moved point into the sequence.
 </p>
 <p><kbd class="kbd">C-d</kbd> (<code class="code">delete-char</code>) deletes the character after point,
 similar to <kbd class="key">Delete</kbd>, but regardless of whether the region is
