@@ -83,17 +83,26 @@ value, the replace commands show a preview of the replacement while you
 type it: the matches visible in the window are displayed as they would
 look after the replacement.  This tells you what back-references like
 &lsquo;<samp class="samp">\1</samp>&rsquo; (see <a class="pxref" href="Regexp-Replace.html">Regexp Replacement</a>) expand to before you commit to the
-replacement.  However, replacements that use &lsquo;<samp class="samp">\,</samp>&rsquo; or &lsquo;<samp class="samp">\#</samp>&rsquo; are
-not previewed.
+replacement.  The preview also appears at the prompt that reads the text
+to replace, as soon as its input holds both halves separated by an
+arrow, which is what <kbd class="kbd">M-p</kbd> recalls from the history.  However,
+replacements that use &lsquo;<samp class="samp">\,</samp>&rsquo; or &lsquo;<samp class="samp">\#</samp>&rsquo; are not previewed.
 </p>
-<p>The value can be <code class="code">replace-preview-replacement-only</code>, to display
-the replacement alone, <code class="code">replace-preview-both</code>, to display the match
-next to its replacement, separated by an arrow, or a function of your
-own, written by copying either of those two.  Such a function takes the
-match and the replacement and returns the string to display in place of
-the match.  If the replacement is empty,
-<code class="code">replace-preview-replacement-only</code> would display nothing at all, so
-it displays a thin bar to mark the place of the match.
+<p>Only the matches that the command will replace are previewed: those
+after point, or those before it when replacing backward
+(see <a class="pxref" href="Query-Replace.html">Query Replace</a>).  The other ones are still highlighted, to show
+that the buffer has more of them.  When the region is active, the
+preview covers all of it, as the replacement does.
+</p>
+<p>The value can be <code class="code">replacement-only</code>, to display the replacement
+alone, <code class="code">both</code>, to display the match next to its replacement,
+separated by an arrow, or a function of your own, written by copying
+<code class="code">replace-preview-replacement-only</code> or <code class="code">replace-preview-both</code>,
+which are the functions those two symbols stand for.  Such a function
+takes the match and the replacement and returns the string to display in
+place of the match, or <code class="code">nil</code> to leave that match alone.  If the
+replacement is empty, <code class="code">replacement-only</code> would display nothing at
+all, so it displays a thin bar to mark the place of the match.
 </p>
 <a class="index-entry-id" id="index-query_002dreplace_002dpreview-face"></a>
 <a class="index-entry-id" id="index-query_002dreplace_002dpreview_002dmatch-face"></a>
