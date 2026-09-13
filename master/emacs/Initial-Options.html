@@ -277,6 +277,21 @@ about using Emacs as a daemon.  A &ldquo;background&rdquo; daemon disconnects
 from the terminal and runs in the background (&lsquo;<samp class="samp">--daemon</samp>&rsquo; is an
 alias for &lsquo;<samp class="samp">--bg-daemon</samp>&rsquo;).
 </p>
+<a class="index-entry-id" id="index-server_002dafter_002dmake_002dframe_002dhook"></a>
+<a class="index-entry-id" id="index-customizations-don_0027t-work-in-daemon-sessions"></a>
+<p>If you have in your init file (see <a class="pxref" href="Init-File.html">The Emacs Initialization File</a>) customizations that
+need various capabilities available only on graphic displays, or
+activate there optional features which need such capabilities, like
+colors, mouse, fonts, etc., such customizations might not work when you
+start Emacs as a daemon, because the daemon lacks access to a capable
+display.  Instead, define a Lisp function which performs all those
+customizations, and then use <code class="code">add-hook</code> to add that function to the
+hook <code class="code">server-after-make-frame-hook</code> (see <a class="pxref" href="Init-Examples.html">Init File Examples</a>).  Then these
+customizations will be run by Emacs after it creates a frame when you
+invoke <code class="command">emacsclient</code>.  (You will probably need to arrange for
+these customizations to run only once, the first time a client frame is
+created.)
+</p>
 </dd>
 <dt><a id="index-_002d_002dno_002ddesktop"></a><span>&lsquo;<samp class="samp">--no-desktop</samp>&rsquo;<a class="copiable-link" href="#index-_002d_002dno_002ddesktop"> &para;</a></span></dt>
 <dd><p>Do not reload any saved desktop.  See <a class="xref" href="Saving-Emacs-Sessions.html">Saving Emacs Sessions</a>.
