@@ -87,9 +87,10 @@ other strings to choose various seed values.
 <dd><p>This function returns a pseudo-random integer.  Repeated calls return a
 series of pseudo-random integers.
 </p>
-<p>If <var class="var">limit</var> is a positive integer, the value is chosen to be
-nonnegative and less than <var class="var">limit</var>.  Otherwise, the value might be
-any fixnum, i.e., any integer from <code class="code">most-negative-fixnum</code> through
+<p>If the optional argument <var class="var">limit</var> is a positive integer, the value is
+chosen to be nonnegative and less than <var class="var">limit</var>; negative values of
+<var class="var">limit</var> signal an error.  Otherwise, the value might be any fixnum,
+i.e., any integer from <code class="code">most-negative-fixnum</code> through
 <code class="code">most-positive-fixnum</code> (see <a class="pxref" href="Integer-Basics.html">Integer Basics</a>).
 </p>
 <p>If <var class="var">limit</var> is a string, it means to choose a new seed based on the
@@ -100,7 +101,8 @@ a reproducible sequence of results.
 were restarting.  This causes later calls to <code class="code">random</code> to return
 an unpredictable sequence of results.
 </p>
-</dd></dl>
+<p>Any other value of <var class="var">limit</var> is interpreted as <code class="code">nil</code>.
+</p></dd></dl>
 
 <p>If you need a random nonce for cryptographic purposes, using
 <code class="code">random</code> is typically not the best approach, for several reasons:
