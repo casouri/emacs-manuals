@@ -116,30 +116,34 @@ See <var class="var">file-symlink-p</var> to distinguish symlinks.
 
 <a class="index-entry-id" id="index-recursive-traverse-of-directory-tree"></a>
 <dl class="first-deffn first-defun-alias-first-deffn">
-<dt class="deffn defun-alias-deffn" id="index-directory_002dfiles_002drecursively"><span class="category-def">Function: </span><span><strong class="def-name">directory-files-recursively</strong> <var class="def-var-arguments">directory regexp &amp;optional include-directories predicate follow-symlinks</var><a class="copiable-link" href="#index-directory_002dfiles_002drecursively"> &para;</a></span></dt>
+<dt class="deffn defun-alias-deffn" id="index-directory_002dfiles_002drecursively"><span class="category-def">Function: </span><span><strong class="def-name">directory-files-recursively</strong> <var class="def-var-arguments">directory regexp &amp;optional include-directories predicate follow-symlinks lessp</var><a class="copiable-link" href="#index-directory_002dfiles_002drecursively"> &para;</a></span></dt>
 <dd><p>Return all files under <var class="var">directory</var> whose names match <var class="var">regexp</var>.
 This function searches the specified <var class="var">directory</var> and its
-sub-directories, recursively, for files whose basenames (i.e., without
-the leading directories) match the specified <var class="var">regexp</var>, and returns
-a list of the absolute file names of the matching files
-(see <a class="pxref" href="Relative-File-Names.html">absolute file names</a>).  The file names
-are returned in depth-first order, meaning that files in some
-sub-directory are returned before the files in its parent directory.
-In addition, matching files found in each subdirectory are sorted
-alphabetically by their basenames.  By default, directories whose
-names match <var class="var">regexp</var> are omitted from the list, but if the
+subdirectories, recursively, for files whose basenames (i.e., without
+the leading directories) match the specified <var class="var">regexp</var>, and returns a
+list of the absolute file names of the matching files (see <a class="pxref" href="Relative-File-Names.html">absolute file names</a>).  The file names are returned in
+depth-first order, meaning that files in some subdirectory are returned
+before the files in its parent directory.  By default, directories whose
+basenames match <var class="var">regexp</var> are omitted from the list, but if the
 optional argument <var class="var">include-directories</var> is non-<code class="code">nil</code>, they
 are included.
 </p>
 <p>By default, all subdirectories are descended into.  If <var class="var">predicate</var>
 is <code class="code">t</code>, errors when trying to descend into a subdirectory (for
 instance, if it&rsquo;s not readable by this user) are ignored.  If it&rsquo;s
-neither <code class="code">nil</code> nor <code class="code">t</code>, it should be a function that takes
-one parameter (the subdirectory name) and should return non-<code class="code">nil</code>
+neither <code class="code">nil</code> nor <code class="code">t</code>, it should be a function that takes one
+parameter (the subdirectory&rsquo;s absolute name) and returns non-<code class="code">nil</code>
 if the directory is to be descended into.
 </p>
 <p>Symbolic links to subdirectories are not followed by default, but if
 <var class="var">follow-symlinks</var> is non-<code class="code">nil</code>, they are followed.
+</p>
+<p>By default, the file names returned are sorted lexicographically by
+basename per subdirectory.  If <var class="var">lessp</var> is <code class="code">t</code>, they are not
+sorted and appear in arbitrary order in each subdirectory.  If
+<var class="var">lessp</var> is neither <code class="code">nil</code> nor <code class="code">t</code>, it should be a function
+suitable as a <code class="code">:lessp</code> predicate for <code class="code">sort</code> (see <a class="pxref" href="Sequence-Functions.html#definition-of-sort">definition of sort</a>), that takes two arguments (two file basenames) and returns
+non-<code class="code">nil</code> if the first should precede the second.
 </p></dd></dl>
 
 
