@@ -61,33 +61,34 @@ Next: <a href="Window-Start-and-End.html" accesskey="n" rel="next">The Window St
 <a class="index-entry-id" id="index-position-in-window"></a>
 <a class="index-entry-id" id="index-point-in-window"></a>
 
-<p>Each window has its own value of point (see <a class="pxref" href="Point.html">Point</a>), independent of
-the value of point in other windows displaying the same buffer.  This
-makes it useful to have multiple windows showing one buffer.
+<p>Each window has its own value for point (see <a class="pxref" href="Point.html">Point</a>), the
+<em class="dfn">window point</em>, independent of the values for point of other windows
+displaying the same buffer.  This is useful when there are multiple
+windows showing one buffer.
 </p>
 <ul class="itemize mark-bullet">
-<li>Window point is established when a window is first created; it is
-initialized from the buffer&rsquo;s point, or from window point of another
-window opened on the buffer if such a window exists.
+<li>A window&rsquo;s point is established when a window is first created; it is
+initialized from the buffer&rsquo;s point (again, see <a class="pxref" href="Point.html">Point</a>), or from the
+window point of another window showing the same buffer, if one exists.
 
-</li><li>Selecting a window sets the value of point in its buffer from the
-window&rsquo;s value of point.  Conversely, deselecting a window sets the
-window&rsquo;s value of point from that of the buffer.  Thus, when you switch
-between windows that display a given buffer, the point value for the
-selected window is in effect in the buffer, while the point values for
-the other windows are stored in those windows.
+</li><li>Selecting a window sets point from the value of the window&rsquo;s point.
+Deselecting a window sets the window&rsquo;s point to the buffer point of the
+buffer displayed in it.  Thus, when you switch between windows that
+display a given buffer, the window point value for the selected window
+is in effect in the buffer, while the window point values for the other
+windows are stored for those windows.
 
 </li><li>As long as the selected window displays the current buffer, the window&rsquo;s
 point and the buffer&rsquo;s point always move together; they remain equal.
 
 </li><li>Many Emacs functions temporarily select a window in order to operate on
-its contents.  This will move point (see <a class="pxref" href="Point.html">Point</a>) of that
-window&rsquo;s buffer to the position of window point of that window and
-not restore buffer point to its previous position when terminating
-the temporary selection.  This means that when one and the same buffer
-is simultaneously displayed in more than one window, its buffer point
-may change in unpredictable ways to the position of window point of any
-of these windows as a side-effect of things like redisplay, calling
+its contents.  This will move the buffer point (see <a class="pxref" href="Point.html">Point</a>) of that
+window&rsquo;s buffer to the position of the window point of that window but not
+restore the buffer&rsquo;s point to its previous position upon terminating the
+temporary selection.  This means that when one and the same buffer is
+simultaneously displayed in more than one window, its buffer point may
+change in unpredictable ways, to the window points of any of these
+windows, as a side-effect of things like redisplay, calling
 <code class="code">with-selected-window</code> (see <a class="pxref" href="Selecting-Windows.html">Selecting Windows</a>) or running
 <code class="code">window-configuration-change-hook</code> (see <a class="pxref" href="Window-Hooks.html">Hooks for Window Scrolling and Changes</a>).
 </li></ul>
@@ -103,7 +104,7 @@ that display element.
 </p>
 <dl class="first-deffn first-defun-alias-first-deffn">
 <dt class="deffn defun-alias-deffn" id="index-window_002dpoint"><span class="category-def">Function: </span><span><strong class="def-name">window-point</strong> <var class="def-var-arguments">&amp;optional window</var><a class="copiable-link" href="#index-window_002dpoint"> &para;</a></span></dt>
-<dd><p>This function returns the current position of point in <var class="var">window</var>.
+<dd><p>This function returns the window point for <var class="var">window</var>.
 For a nonselected window, this is the value point would have (in that
 window&rsquo;s buffer) if that window were selected.  The default for
 <var class="var">window</var> is the selected window.
