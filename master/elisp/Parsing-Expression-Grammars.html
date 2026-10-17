@@ -130,10 +130,15 @@ of a larger grammar.
 succeeded or not.  If <var class="var">success-function</var> is provided, it should be a
 function that receives as its only argument an anonymous function that
 runs all the actions collected on the stack during parsing.  By default
-this anonymous function is simply executed.  If parsing fails, a
-function provided as <var class="var">failure-function</var> will be called with a list
-of <abbr class="acronym">PEG</abbr> expressions that failed during parsing.  By default
-this list is discarded.
+this anonymous function is simply executed, with point where
+<var class="var">peg-matcher</var> left it.
+</p>
+<p>If parsing fails, on the other hand, regardless where <var class="var">peg-matcher</var>
+left point, point is moved to the furthest position the parser managed
+to reach, which is often a good guess of the &ldquo;error location&rdquo;.
+Then the function provided as <var class="var">failure-function</var> is called with
+a list of <abbr class="acronym">PEG</abbr> expressions that failed during parsing.
+By default this list is discarded.
 </p></dd></dl>
 
 <p>The <var class="var">peg-matcher</var> passed to <code class="code">peg-run</code> is produced by a call to
@@ -197,7 +202,7 @@ syntax, using the macro <code class="code">define-peg-rule</code>:
 later calls to <code class="code">peg-run</code> or <code class="code">with-peg-rules</code>:
 </p>
 <div class="example">
-<div class="group"><pre class="example-preformatted">(with-peg-rules number-grammar
+<div class="group"><pre class="example-preformatted">(with-peg-rules (number-grammar)
   (peg-run (peg number)))
 </pre></div></div>
 
