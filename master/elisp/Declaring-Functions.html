@@ -114,12 +114,14 @@ actually defines <var class="var">function</var>.
 <a class="index-entry-id" id="index-check_002ddeclare_002dfile"></a>
 <a class="index-entry-id" id="index-check_002ddeclare_002ddirectory"></a>
 <p>To verify that these functions really are declared where
-<code class="code">declare-function</code> says they are, use <code class="code">check-declare-file</code>
-to check all <code class="code">declare-function</code> calls in one source file, or use
+<code class="code">declare-function</code> says they are, use <code class="code">check-declare-file</code> to
+check all <code class="code">declare-function</code> calls in one source file, or use
 <code class="code">check-declare-directory</code> check all the files in and under a
-certain directory.
+certain directory.  If these commands find problematic declarations,
+they present a <samp class="file">*Warnings*</samp> buffer describing each problem they
+found.  See <a class="xref" href="Warnings.html">Reporting Warnings</a>.
 </p>
-<p>These commands find the file that ought to contain a function&rsquo;s
+<p>These commands look for the file that ought to contain a function&rsquo;s
 definition using <code class="code">locate-library</code>; if that finds no file, they
 expand the definition file name relative to the directory of the file
 that contains the <code class="code">declare-function</code> call.
@@ -129,10 +131,16 @@ name ending in &lsquo;<samp class="samp">.c</samp>&rsquo; or &lsquo;<samp class=
 call a primitive that is defined only on certain systems.  Most
 primitives are always defined, so they will never give you a warning.
 </p>
-<p>Sometimes a file will optionally use functions from an external package.
-If you prefix the filename in the <code class="code">declare-function</code> statement with
-&lsquo;<samp class="samp">ext:</samp>&rsquo;, then it will be checked if it is found, otherwise skipped
-without error.
+<a class="index-entry-id" id="index-check_002ddeclare_002dext_002derrors"></a>
+<p>Sometimes a file will optionally use functions from an external
+package, which might not be found where these commands look.  If you
+prefix the filename in the <code class="code">declare-function</code> statement with the
+string &lsquo;<samp class="samp">ext:</samp>&rsquo;, then its function definitions (or just its
+existence, if <var class="var">fileonly</var> is non-<code class="code">nil</code>) will be checked if the
+file is found, otherwise the file is skipped without error.  However, if
+you customize the variable <code class="code">check-declare-ext-errors</code> to a
+non-<code class="code">nil</code> value, these commands will produce a &lsquo;<samp class="samp">file not
+found</samp>&rsquo; warning for such missing files.
 </p>
 <p>There are some function definitions that &lsquo;<samp class="samp">check-declare</samp>&rsquo; does not
 understand (e.g., <code class="code">defstruct</code> and some other macros).  In such cases,
