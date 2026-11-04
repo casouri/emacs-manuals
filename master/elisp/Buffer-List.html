@@ -110,6 +110,8 @@ regardless of which frames they were displayed on.
 </pre></div></div>
 </dd></dl>
 
+<a class="index-entry-id" id="index-changing-order-of-buffers"></a>
+<a class="index-entry-id" id="index-ordering-of-buffers_002c-how-to-change"></a>
 <p>The list returned by <code class="code">buffer-list</code> is constructed specifically;
 it is not an internal Emacs data structure, and modifying it has no
 effect on the order of buffers.  If you want to change the order of
@@ -124,7 +126,11 @@ buffers in the fundamental buffer list, here is an easy way:
 
 <p>With this method, you can specify any order for the list, but there is
 no danger of losing a buffer or adding something that is not a valid
-live buffer.
+live buffer.  Note, however, that burying a buffer will also change the
+value of the <code class="code">buried-buffer-list</code> parameter (see <a class="pxref" href="Buffer-Parameters.html">Buffer Parameters</a>) of the frame selected at the time <code class="code">bury-buffer</code> is
+called.  Since this may affect future invocations of <code class="code">last-buffer</code>
+(see below) on that frame, it may be a good idea to save the value of
+that parameter around calls to <code class="code">bury-buffer</code>.
 </p>
 <p>To change the order or value of a specific frame&rsquo;s buffer list, set
 that frame&rsquo;s <code class="code">buffer-list</code> parameter with
