@@ -122,10 +122,10 @@ this function kills Emacs if the signaled error has no handler.
 argument <var class="var">data</var> is a list of additional Lisp objects relevant to
 the circumstances of the error.
 </p>
-<p>The argument <var class="var">error-symbol</var> must be an <em class="dfn">error symbol</em>&mdash;a symbol
-defined with <code class="code">define-error</code>.  This is how Emacs Lisp classifies different
-sorts of errors.  See <a class="xref" href="Error-Symbols.html">Error Symbols and Condition Names</a>, for a description of error symbols,
-error conditions and condition names.
+<p>The argument <var class="var">error-symbol</var> is usually an <em class="dfn">error symbol</em>&mdash;a
+symbol defined with <code class="code">define-error</code>.  This is how Emacs Lisp
+classifies different sorts of errors.  See <a class="xref" href="Error-Symbols.html">Error Symbols and Condition Names</a>, for a
+description of error symbols, error conditions and condition names.
 </p>
 <p>If the error is not handled, the two arguments are used in printing
 the error message.  Normally, this error message is provided by the
@@ -158,7 +158,11 @@ this function eventually kills Emacs.
 </pre><div class="group"><pre class="example-preformatted">(signal 'no-such-error '(&quot;My unknown error condition&quot;))
      error&rarr; peculiar error: &quot;My unknown error condition&quot;
 </pre></div></div>
-</dd></dl>
+
+<p>Instead of an error symbol, <var class="var">error-symbol</var> can also be an error
+descriptor.  In that case, <var class="var">data</var> has to be <code class="code">nil</code>.  This form
+is only valid inside a <code class="code">condition-case</code> handler; <a class="ref" href="Handling-Errors.html">Writing Code to Handle Errors</a>.
+</p></dd></dl>
 
 <a class="index-entry-id" id="index-user-errors_002c-signaling"></a>
 <dl class="first-deffn first-defun-alias-first-deffn def-block">
