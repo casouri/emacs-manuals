@@ -113,10 +113,11 @@ of <code class="code">quit-window</code>.
 </p>
 <dl class="first-deffn first-defun-alias-first-deffn def-block">
 <dt class="deffn defun-alias-deffn def-line" id="index-quit_002drestore_002dwindow"><span class="category-def">Function: </span><span><strong class="def-name">quit-restore-window</strong> <var class="def-var-arguments">&amp;optional window bury-or-kill</var><a class="copiable-link" href="#index-quit_002drestore_002dwindow"> &para;</a></span></dt>
-<dd><p>This function handles <var class="var">window</var> and its buffer after quitting.  The
-optional argument <var class="var">window</var> must be a live window and defaults to
-the selected one.  The function takes account of the <var class="var">window</var>&rsquo;s
-<code class="code">quit-restore</code> parameter.
+<dd><p>This function quits <var class="var">window</var> and then performs additional actions on
+it and its buffer.  The optional argument <var class="var">window</var> must be a live
+window and defaults to the selected one.  The function uses the
+information stored in the <var class="var">window</var>&rsquo;s <code class="code">quit-restore</code> and
+<code class="code">quit-restore-prev</code> parameters.
 </p>
 <p>The optional argument <var class="var">bury-or-kill</var> specifies how to deal with
 <var class="var">window</var>&rsquo;s buffer.  The following values are meaningful:
@@ -166,6 +167,10 @@ terminal.  If <var class="var">bury-or-kill</var> equals <code class="code">kill
 delete the frame.  Otherwise, the fate of the frame is determined by
 calling <code class="code">frame-auto-hide-function</code> (see below) with that frame as
 sole argument.
+</p>
+<p>The abnormal hook <code class="code">window-deletable-functions</code> can be used to
+control whether the window should be deleted by this function
+(see <a class="pxref" href="Deleting-Windows.html">Deleting Windows</a>).
 </p></dd></dl>
 
 <p>A window&rsquo;s <code class="code">quit-restore</code> and <code class="code">quit-restore-prev</code> parameters
